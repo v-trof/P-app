@@ -1,0 +1,836 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"bro",
+				"browser	$.browser()"
+			],
+			[
+				"li",
+				"link	Tag"
+			],
+			[
+				"ax",
+				"ax"
+			],
+			[
+				"ay",
+				"ay"
+			],
+			[
+				"Y",
+				"Y"
+			],
+			[
+				"X",
+				"X"
+			],
+			[
+				"dis",
+				"disabled"
+			],
+			[
+				"tra",
+				"translateY()"
+			],
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"trans",
+				"transition"
+			],
+			[
+				"border-le",
+				"border-left-color"
+			],
+			[
+				"box",
+				"box-shadow"
+			],
+			[
+				"tr",
+				"transform"
+			],
+			[
+				"op",
+				"op	opacity"
+			],
+			[
+				"line",
+				"line-height"
+			],
+			[
+				"font-",
+				"font-size"
+			],
+			[
+				"ra",
+				"range"
+			],
+			[
+				"border-bo",
+				"border-box"
+			],
+			[
+				"inl",
+				"inline-block"
+			],
+			[
+				"pa",
+				"padding"
+			],
+			[
+				"st",
+				"style	Tag"
+			],
+			[
+				"c",
+				"c"
+			],
+			[
+				"is",
+				"isupper"
+			],
+			[
+				"ma",
+				"Matrix"
+			],
+			[
+				"fil",
+				"fillY"
+			],
+			[
+				"fi",
+				"fillX"
+			],
+			[
+				"fadeTo",
+				"fadeToTop"
+			],
+			[
+				"attr",
+				"attr	.attr() - single"
+			],
+			[
+				"ca",
+				"carouselRotateLeft"
+			],
+			[
+				"prev",
+				"previousPage"
+			],
+			[
+				"slid",
+				"slideNum"
+			],
+			[
+				"at",
+				"attr	.attr() - single"
+			],
+			[
+				"box-",
+				"box-sizing"
+			],
+			[
+				"padd",
+				"padding-left"
+			],
+			[
+				"cur",
+				"cursor"
+			],
+			[
+				"rg",
+				"rgba()"
+			],
+			[
+				"nav",
+				"navOpen"
+			],
+			[
+				"sp",
+				"space-normal"
+			],
+			[
+				"mai",
+				"color-main"
+			],
+			[
+				"colo",
+				"color"
+			],
+			[
+				"color",
+				"color"
+			],
+			[
+				"color-",
+				"color-main"
+			],
+			[
+				"margi",
+				"margin-left"
+			],
+			[
+				"border",
+				"border"
+			],
+			[
+				"ba",
+				"background"
+			],
+			[
+				"main",
+				"main-color"
+			],
+			[
+				"spac",
+				"space-normal"
+			],
+			[
+				"no-",
+				"no-repeat"
+			],
+			[
+				"wi",
+				"width"
+			],
+			[
+				"spa",
+				"space-normal"
+			],
+			[
+				"no",
+				"normal"
+			],
+			[
+				"curr",
+				"current"
+			],
+			[
+				"sl",
+				"slideAction"
+			],
+			[
+				"bef",
+				"beforeSwitch"
+			],
+			[
+				"eff",
+				"effect"
+			],
+			[
+				"ef",
+				"effect"
+			],
+			[
+				"req",
+				"require"
+			],
+			[
+				"cu",
+				"current"
+			],
+			[
+				"curre",
+				"currPage"
+			],
+			[
+				"slide",
+				"slideUp	.slideUp()"
+			],
+			[
+				"animat",
+				"animation"
+			],
+			[
+				"openT",
+				"openToLeft"
+			],
+			[
+				"ro",
+				"roomRotateUp"
+			],
+			[
+				"next",
+				"nextPage"
+			],
+			[
+				"scale",
+				"scaleFromRight"
+			],
+			[
+				"anima",
+				"animation"
+			],
+			[
+				"out",
+				"outClass"
+			],
+			[
+				"ev",
+				"event"
+			],
+			[
+				"ani",
+				"animcursor"
+			],
+			[
+				"nex",
+				"nextPage"
+			],
+			[
+				"sli",
+				"slideToggle	.slideToggle()"
+			],
+			[
+				"bo",
+				"bottom"
+			],
+			[
+				"le",
+				"left"
+			],
+			[
+				"cs",
+				"css	.css() - multiple"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"abs",
+				"absolute"
+			],
+			[
+				"css",
+				"css	.css() - single"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"fade",
+				"fadeIn	.fadeIn()"
+			],
+			[
+				"space",
+				"space-big"
+			],
+			[
+				"re",
+				"ready	$(document).ready"
+			],
+			[
+				"f",
+				"fz	font-size"
+			],
+			[
+				"pos",
+				"position"
+			],
+			[
+				"issue",
+				"issues"
+			],
+			[
+				"write",
+				"writeFile"
+			],
+			[
+				"add",
+				"addUser"
+			],
+			[
+				"vers",
+				"version"
+			],
+			[
+				"id",
+				"indexOf"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/E/Projects/Tutor-assistant/Frontend/gulpfile.js",
+			"settings":
+			{
+				"buffer_size": 1225,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/python-2.7.10.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/C++/C++ Single File.sublime-build",
+				"Run"
+			]
+		],
+		[
+			[
+				[
+					"Packages/SASS Build/SASS - Compressed.sublime-build",
+					""
+				],
+				[
+					"Packages/SASS Build/SASS.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/SASS Build/SASS - Compressed.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 354.0,
+		"last_filter": "ht",
+		"selected_items":
+		[
+			[
+				"ht",
+				"Snippet: html"
+			],
+			[
+				"sas",
+				"Set Syntax: Sass"
+			],
+			[
+				"ja",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"p",
+				"Set Syntax: Python"
+			],
+			[
+				"py",
+				"Set Syntax: Python"
+			],
+			[
+				"PY",
+				"Set Syntax: Python"
+			],
+			[
+				"c+",
+				"Set Syntax: C++"
+			],
+			[
+				"pyth",
+				"Set Syntax: Python"
+			],
+			[
+				"pyt",
+				"Set Syntax: Python"
+			],
+			[
+				"css",
+				"Set Syntax: CSS3"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"i",
+				"Package Control: Install Package"
+			],
+			[
+				"SAS",
+				"Set Syntax: Sass"
+			],
+			[
+				"sass",
+				"Set Syntax: Sass"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"javas",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 494.0
+	},
+	"console":
+	{
+		"height": 206.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/E/Projects/Tutor-assistant/Frontend/Pages/Login_seva.html",
+		"/E/Projects/Tutor-assistant/Frontend/HTML/test.html",
+		"/C/Users/sevat_000/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/E/Projects/Tutor-assistant/Frontend/Build/test.html",
+		"/E/Projects/Tutor-assistant/Frontend/Как запустить Gulp.txt",
+		"/E/Projects/Tutor-assistant/Frontend/Assets/Images/The good, the great.png",
+		"/E/Program files/Sid Meier's Civilization V Brave New World Gold Edition/steam_api.ini",
+		"/E/Projects/Tutor-assistant/Frontend/Styles/Sass/main.sass",
+		"/E/Projects/Tutor-assistant/Frontend/package.json",
+		"/E/Projects/Tutor-assistant/Frontend/gulpfile.js",
+		"/E/Projects/Tutor-assistant/Frontend/HTML/index.html",
+		"/E/Projects/Tutor-assistant/Frontend/Scripts/Dev/sample.js",
+		"/E/Projects/Tutor-assistant/Frontend/Scripts/Min/sample.js",
+		"/E/Projects/Tutor-assistant/Frontend/Syles/Sass/main.sass",
+		"/C/Users/sevat_000/Olimp school 2015/1.py3",
+		"/C/Users/sevat_000/Olimp school 2015/2.py3",
+		"/C/Users/sevat_000/Olimp school 2015/4.py3",
+		"/C/Users/sevat_000/Olimp school 2015/test.py3",
+		"/E/Projects/Tutor-assistant/Frontend/Screens/Login_seva.html",
+		"/C/Users/sevat_000/OneDrive/Projects/Наработки/match ex.html",
+		"/E/AG/Code/colorhills.py3",
+		"/E/AG/Code/tiling.py3",
+		"/E/AG/Code/def.py3",
+		"/E/AG/Code/Olimp2015/5.py3",
+		"/E/AG/Code/Olimp2015/4.py3",
+		"/E/AG/Code/Olimp2015/3.py3",
+		"/E/AG/Code/Olimp2015/2.py3",
+		"/E/AG/Code/Olimp2015/1.py3",
+		"/E/AG/Code/f.py3",
+		"/C/Users/sevat_000/Downloads/скачанные файлы/скачанные файлы",
+		"/E/AG/Code/def.cpp",
+		"/G/archie/shutdown.sh",
+		"/E/Projects/django-learn/learning/templates/polls/index.html",
+		"/E/Projects/django-learn/learning/templates/polls/results.html",
+		"/E/Projects/django-learn/learning/templates/polls/detail.html",
+		"/E/Projects/django-learn/learning/learning/urls.py",
+		"/E/Projects/django-learn/learning/polls/views.py",
+		"/E/Projects/django-learn/learning/polls/urls.py",
+		"/C/Users/sevat_000/Downloads/wd/wd/ds.css",
+		"/C/Users/sevat_000/Downloads/wd/wd/dz.html",
+		"/E/Projects/django-learn/learning/polls/templates/index.html",
+		"/E/Projects/django-learn/learning/polls/templates/results.html",
+		"/E/Projects/django-learn/learning/polls/templates/detail.html",
+		"/E/Projects/Presentation-engine/index.html",
+		"/E/Projects/Presentation-engine/gulpfile.js",
+		"/E/Projects/Presentation-engine/controls.html",
+		"/E/Projects/Presentation-engine/package.json",
+		"/E/Projects/Presentation-engine/app.js",
+		"/E/Projects/Presentation-engine/css/core.css",
+		"/E/Projects/Presentation-engine/css/styles.css",
+		"/E/Projects/Presentation-engine/sass/styles.sass",
+		"/E/Projects/Presentation-engine/js/engine.js",
+		"/E/Projects/Presentation-engine/js/presentation.js",
+		"/E/Torrents/Empire Earth 2 - The Art of Supremacy/Key.reg",
+		"/E/Projects/django-learn/learning/polls/models.py",
+		"/E/Projects/django-learn/learning/templates/admin/index.html",
+		"/E/Projects/django-learn/learning/templates/admin/base_site.html",
+		"/E/Projects/django-learn/learning/learning/settings.py",
+		"/E/Projects/django-learn/learning/learning/settings.pyc",
+		"/C/Users/sevat_000/Documents/orpth true.js",
+		"/C/Users/sevat_000/Desktop/Chrome app/manifest.json",
+		"/E/Projects/Presentation-engine/css/styles.css.erb",
+		"/E/Projects/C/node_modules/router.js",
+		"/E/Projects/C/app.js",
+		"/E/Projects/Soket Io test/index.html",
+		"/E/Projects/Soket Io test/app.js",
+		"/E/Useful/Frontend/PageTransitions/index.html",
+		"/E/Useful/Frontend/PageTransitions/css/styles.css",
+		"/E/Useful/Frontend/PageTransitions/css/core.css",
+		"/E/Useful/Frontend/PageTransitions/js/presentation.js",
+		"/E/Useful/Frontend/PageTransitions/js/engine.js",
+		"/C/Users/sevat_000/node-js-getting-started/index.js",
+		"/C/Users/sevat_000/node-js-getting-started/package.json",
+		"/C/Users/sevat_000/node-js-getting-started/Node.js",
+		"/E/Useful/Frontend/PageTransitions/css/component.css",
+		"/E/Useful/Frontend/PageTransitions/css/default.css",
+		"/E/Useful/Frontend/PageTransitions/js/jquery.dlmenu.js",
+		"/E/Projects/Presentation engine/CSS/core.css",
+		"/E/Projects/Presentation engine/CSS/styles.css",
+		"/E/Projects/Presentation engine/presentation.html",
+		"/E/Useful/Frontend/PageTransitions/js/pagetransitions.js",
+		"/E/Projects/Presentation engine/JS/transitions.js",
+		"/E/Projects/Presentation engine/JS/presentation.js",
+		"/E/Projects/Presentation engine/JS/core.js",
+		"/E/Projects/Presentation engine/Sass/styles.sass",
+		"/E/Projects/Presentation engine/Sass/core.sass",
+		"/E/Projects/Presentation engine/gulpfile.js",
+		"/E/Projects/Presentation engine/CSS/core.css.map",
+		"/E/Projects/Presentation engine/CSS/styles.sass",
+		"/E/Projects/Presentation engine/CSS/core.sass",
+		"/E/Projects/Presentation engine/CSS/vars.sass",
+		"/E/Projects/Presentation engine/CSS/core.css.erb",
+		"/E/Projects/C/html/docs.html",
+		"/E/Projects/C/html/newdoc.html",
+		"/E/Projects/C/html/work.html",
+		"/E/Projects/C/node_modules/addUser.js",
+		"/E/Projects/C/func/serial.txt",
+		"/E/Projects/C/html/11/info.json",
+		"/E/Projects/C/html/12/info.json",
+		"/E/Projects/C/func/users.json",
+		"/E/Projects/C/func/urlLvL.txt",
+		"/E/Projects/C/html/11/kuorell/issues.txt",
+		"/E/Projects/C/package.json",
+		"/E/Projects/C-frontend/general.sass",
+		"/E/Projects/C-frontend/board.sass",
+		"/E/Projects/C-frontend/work_UI.html",
+		"/E/Projects/C/html/12/kuorell/issues.txt",
+		"/E/Projects/CMW.rar",
+		"/E/Projects/C/router.js"
+	],
+	"find":
+	{
+		"height": 70.0
+	},
+	"find_in_files":
+	{
+		"height": 158.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"  ",
+			"    ",
+			"Y",
+			"x",
+			"1",
+			"by",
+			", ",
+			"  ",
+			"   ",
+			"checkForVertOnly",
+			"()==",
+			".len",
+			"n.",
+			"n[",
+			"char",
+			" is",
+			"X",
+			"int(M",
+			"int",
+			"minor",
+			"M",
+			"main-color",
+			"accent-color",
+			"6",
+			"bd",
+			"\n$(",
+			"console.log",
+			"console",
+			"effect",
+			"  current",
+			"  ",
+			"if",
+			"(-",
+			"pt-page",
+			"fixed",
+			"6",
+			"rectangle",
+			"		",
+			"3",
+			"fade",
+			"  ",
+			"tip",
+			"bg",
+			"  ",
+			"h",
+			".html/",
+			".html",
+			"worknum",
+			"break",
+			"url"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"6",
+			"serial"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/E/Projects/Tutor-assistant/Frontend/gulpfile.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1225,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								277,
+								277
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 120.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 30.0
+	},
+	"input":
+	{
+		"height": 63.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 245.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/User/python-2.7.10.sublime-build",
+	"project": "tutor assistant.sublime-project",
+	"replace":
+	{
+		"height": 56.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 199.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
