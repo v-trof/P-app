@@ -1,0 +1,43 @@
+@import "vars"
+
+//general fix
+input
+	font-size: $font-regular
+	padding: $padding-regular
+	color: $grey-dark
+	&:focus
+		outline: 0
+		box-shadow: 0
+	&:disabled
+		background: $grey-semilight
+		color: $grey-mid
+
+//text inputs
+.input__placeholder-label
+	border: $border-regular solid $grey-semilight
+	background: $white
+	width: 250px
+	//focus indicator
+	&+label:before
+		display: inline-block
+		+small-circle()
+		content: ''
+		vertical-align: top
+		transform: translate(-$size-regular,$size-small*3)
+		opacity: 0
+		background: $blue-bright
+		transition: $time-regular
+	&:focus+label:before
+		opacity: 1
+		transform: translate(-$size-big,$size-small*3)
+
+	
+//buttons
+.button__proceed
+	background: trasparent
+	border: 0
+	color: darken($grey-dark, 0.05)
+	&:disabled
+		background: transparent
+	&>img
+		width: 2em
