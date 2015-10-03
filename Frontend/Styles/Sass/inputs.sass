@@ -18,6 +18,9 @@ input
 	background: $white
 	width: 250px
 	//focus indicator
+	&+label
+		//forces label to leave page flow, but remain on old position
+		position: absolute
 	&+label:before
 		display: inline-block
 		+small-circle()
@@ -34,10 +37,31 @@ input
 	
 //buttons
 .button__proceed
-	background: trasparent
+	background: transparent
 	border: 0
-	color: darken($grey-dark, 0.05)
 	&:disabled
 		background: transparent
-	&>img
-		width: 2em
+		&>svg
+			fill: $grey-mid
+	&>svg
+		display: inline-block
+		vertical-align: middle
+		width: 2rem
+		fill: $grey-dark
+		stroke-width: 2px
+		transform: translateX(-2em)
+		background: linear-gradient(to right, transparent 0%, $grey-semilight 15%)
+		transition: $time-big
+
+	&>span
+		display: inline-block
+		vertical-align: middle
+		font-size: $font-controls
+		transition: $time-big
+		opacity: 0
+		color: darken($grey-dark, 5%)
+	&:enabled:focus,&:enabled:hover
+		&>span
+			opacity: 1
+		&>svg
+			transform: translateX(0)
