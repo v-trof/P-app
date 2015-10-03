@@ -13,7 +13,7 @@
     "gulp-autoprefixer": "^3.0.2",
     "gulp-cleancss": "^0.2.2",
     "gulp-htmlmin": "^1.1.4",
-    "gulp-imagemin": "^2.3.0",
+    // "gulp-imagemin": "^2.3.0",
     "gulp-inline": "0.0.15",
     "gulp-inline-source": "^2.1.0",
     "gulp-sass": "^2.0.4",
