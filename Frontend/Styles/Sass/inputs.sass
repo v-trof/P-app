@@ -11,13 +11,6 @@ input
 	&:disabled
 		background: $grey-semilight
 		color: $grey-mid
-
-//text inputs
-.input__placeholder-label
-	border: $border-regular solid $grey-semilight
-	background: $white
-	width: 250px
-	//focus indicator
 	&+label
 		//forces label to leave page flow, but remain on old position
 		position: absolute
@@ -26,13 +19,29 @@ input
 		+small-circle()
 		content: ''
 		vertical-align: top
+		//sets it to top right corner
 		transform: translate(-$size-regular,$size-small*3)
 		opacity: 0
 		background: $blue-bright
 		transition: $time-regular
+	//is class beacuse isvalid is binar attr and empty input is called valid to
+	&.valid+label:before
+		background: $green-bright
+	&:invalid+label:before
+		background: $red-bright
+
+
 	&:focus+label:before
 		opacity: 1
+		//moves it in field
 		transform: translate(-$size-big,$size-small*3)
+//text inputs
+.input__placeholder-label
+	border: $border-regular solid $grey-semilight
+	background: $white
+	width: 16rem
+	//focus indicator
+	
 
 	
 //buttons
@@ -61,6 +70,7 @@ input
 		opacity: 0
 		color: darken($grey-dark, 5%)
 	&:enabled:focus,&:enabled:hover
+		outline: 0
 		&>span
 			opacity: 1
 		&>svg
