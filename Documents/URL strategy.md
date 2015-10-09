@@ -1,4 +1,4 @@
-#URl types
+#URL types
 	-home
 		-/profile
 			-/settings
