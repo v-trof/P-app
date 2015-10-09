@@ -5,6 +5,8 @@ input
 	font-size: $font-regular
 	padding: $padding-regular
 	color: $grey-dark
+	border: $border-regular solid $grey-semilight
+	background: $white
 	&:focus
 		outline: 0
 		box-shadow: 0
@@ -12,15 +14,16 @@ input
 		background: $grey-semilight
 		color: $grey-mid
 	&+label
-		//forces label to leave page flow, but remain on old position
+		// forces label to leave page flow, but remain on old position
 		position: absolute
+
 	&+label:before
-		display: inline-block
+		display: block
 		+small-circle()
 		content: ''
 		vertical-align: top
 		//sets it to top right corner
-		transform: translate(-$size-regular,$size-small*3)
+		transform: translate(-$size-regular,$size-regular)
 		opacity: 0
 		background: $blue-bright
 		transition: $time-regular
@@ -29,20 +32,28 @@ input
 		background: $green-bright
 	&:invalid+label:before
 		background: $red-bright
-
+	
 
 	&:focus+label:before
 		opacity: 1
 		//moves it in field
-		transform: translate(-$size-big,$size-small*3)
+		transform: translate(-$size-big,$size-regular)
 //text inputs
 .input__placeholder-label
-	border: $border-regular solid $grey-semilight
-	background: $white
 	width: 16rem
-	//focus indicator
 	
-
+.input__inner-label
+	width: 16rem
+	padding-top: $padding-regular*2
+	padding-bottom: $padding-small
+	&+label
+		color: $grey-semidark
+		transform: translateX(-16rem + $padding-regular + $border-regular)
+		font-size: $font-small
+		&:before
+			transform: translate(-$size-regular + 16rem - $padding-regular - $border-regular,$size-regular)
+	&:focus + label:before
+			transform: translate(-$size-big + 16rem - $padding-regular - $border-regular,$size-regular)	
 	
 //buttons
 .button__proceed

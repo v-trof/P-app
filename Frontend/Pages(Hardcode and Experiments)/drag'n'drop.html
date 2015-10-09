@@ -31,10 +31,10 @@
 		        	if($(this).parent().attr('class') == "left-pack"){
 		        		console.log("FUCK FUCK FUCK");
 		        		firstdrag = true;
-		        		$dragging = $(this).clone().appendTo('#buffer');
 		        		$proto = $(this);
+		        		$dragging = $(this).clone().appendTo('#buffer');
 		        	} else {
-		        		console.log("NO FUCK FUCK");
+		        		// console.log("NO FUCK FUCK");
 		        		firstdrag = false;
 		        		$dragging = $(this);
 		        	}

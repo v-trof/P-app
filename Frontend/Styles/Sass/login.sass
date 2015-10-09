@@ -8,6 +8,7 @@ body
 	height: 100vh
 
 .login-box
+	+animation-savestate("fadeFromBottom")
 	display: flex
 	flex-direction: column
 	align-items: center
@@ -21,3 +22,5 @@ body
 	text-align: center
 	&>input, &>button
 		margin-top: $margin-regular
+		&+label
+			margin-top: $margin-regular
