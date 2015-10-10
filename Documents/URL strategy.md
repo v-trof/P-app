@@ -9,7 +9,7 @@
 				* /download
 	* /test/`id`
 	* /panel
-		/user* managing
+		/user-managing
 	* /create
 		* /import
 			* /test
@@ -24,7 +24,7 @@
 			* /token
 	* /login
 		* /sign-up
-	* /search
+	* /recover
 
 |URL|Expected content and actions|Expected user
 |---|---|---|
@@ -39,3 +39,16 @@
 |/course/file/download|Download that file|any|
 |/test|Take a test|student|
 |/test|Results or edit|teacher|
+|/panel|_HELP-me-to-comment-this-properly_|teacher|
+|/panel/user-managing|_HELP-me-to-comment-this-properly_|teacher|
+|/create|list of createble items|teacher|
+|/create/import|import moodle or P file|teacher|
+|/create/`test\course\material`|create something(editor with nothing)|teacher|
+|/create/homework|set a timeout for a tesk, students will be notified|teacher|
+|/create/user|manually sign up new student|teacher|
+|/create/user/bach|_HELP-me-to-comment-this-properly_|teacher|
+|/create/user/token|generate unic registation token, may have pre-filled info|teacher|
+|/login|login screen|any|
+|/sign-up|sign up screen|any|
+|/recover|recover acess to lost accout, recover password\email|any|
+
