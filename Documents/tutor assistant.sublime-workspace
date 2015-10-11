@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"marg",
+				"margin"
+			],
+			[
 				"time",
 				"time-regular"
 			],
@@ -26,10 +30,6 @@
 			[
 				"ma",
 				"margin-regular"
-			],
-			[
-				"marg",
-				"margin-top"
 			],
 			[
 				"border",
@@ -411,7 +411,7 @@
 			"file": "/E/Projects/P-app/Frontend/HTML/login.html",
 			"settings":
 			{
-				"buffer_size": 1120,
+				"buffer_size": 1356,
 				"line_ending": "Windows"
 			}
 		},
@@ -427,23 +427,23 @@
 			"file": "/E/Projects/P-app/Frontend/Assets/Elments/popup.html",
 			"settings":
 			{
-				"buffer_size": 464,
+				"buffer_size": 637,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/C/Users/sevat_000/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+			"file": "/E/Projects/P-app/Frontend/Assets/Icons/ok.svg",
 			"settings":
 			{
-				"buffer_size": 191,
+				"buffer_size": 808,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/E/Projects/P-app/.gitattributes",
+			"file": "URL strategy.md",
 			"settings":
 			{
-				"buffer_size": 378,
+				"buffer_size": 1536,
 				"line_ending": "Windows"
 			}
 		},
@@ -451,7 +451,7 @@
 			"file": "/E/Projects/P-app/Frontend/Scripts/Dev/login-verify.js",
 			"settings":
 			{
-				"buffer_size": 776,
+				"buffer_size": 775,
 				"line_ending": "Windows"
 			}
 		},
@@ -472,18 +472,18 @@
 			}
 		},
 		{
-			"file": "/E/Projects/P-app/Frontend/Styles/Sass/login.sass",
+			"file": "/E/Projects/P-app/Frontend/Styles/Sass/pop-ups.sass",
 			"settings":
 			{
-				"buffer_size": 492,
+				"buffer_size": 310,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/E/Projects/P-app/Frontend/Styles/Sass/pop-ups.sass",
+			"file": "/E/Projects/P-app/Frontend/Styles/Sass/login.sass",
 			"settings":
 			{
-				"buffer_size": 308,
+				"buffer_size": 515,
 				"line_ending": "Windows"
 			}
 		},
@@ -491,7 +491,7 @@
 			"file": "/E/Projects/P-app/Frontend/Styles/Sass/vars.sass",
 			"settings":
 			{
-				"buffer_size": 1181,
+				"buffer_size": 1334,
 				"line_ending": "Windows"
 			}
 		},
@@ -499,7 +499,7 @@
 			"file": "/E/Projects/P-app/Frontend/Styles/Sass/inputs.sass",
 			"settings":
 			{
-				"buffer_size": 2037,
+				"buffer_size": 2046,
 				"line_ending": "Windows"
 			}
 		},
@@ -507,7 +507,7 @@
 			"file": "/E/Projects/P-app/Frontend/Styles/Sass/animations.sass",
 			"settings":
 			{
-				"buffer_size": 142,
+				"buffer_size": 838,
 				"line_ending": "Windows"
 			}
 		},
@@ -516,6 +516,14 @@
 			"settings":
 			{
 				"buffer_size": 296,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/Projects/P-app/Frontend/Styles/Sass/notifications.sass",
+			"settings":
+			{
+				"buffer_size": 867,
 				"line_ending": "Windows"
 			}
 		}
@@ -544,9 +552,17 @@
 	"command_palette":
 	{
 		"height": 354.0,
-		"last_filter": "sas",
+		"last_filter": "sass",
 		"selected_items":
 		[
+			[
+				"sass",
+				"Set Syntax: Sass"
+			],
+			[
+				"ma",
+				"Set Syntax: Markdown"
+			],
 			[
 				"sas",
 				"Set Syntax: Sass"
@@ -562,10 +578,6 @@
 			[
 				"HT",
 				"Set Syntax: HTML"
-			],
-			[
-				"sass",
-				"Set Syntax: Sass"
 			],
 			[
 				"ja",
@@ -630,12 +642,17 @@
 	[
 		"/E/Projects/P-app",
 		"/E/Projects/P-app/Frontend",
-		"/E/Projects/P-app/Frontend/Assets/Elments",
+		"/E/Projects/P-app/Frontend/Assets",
+		"/E/Projects/P-app/Frontend/Assets/Icons",
+		"/E/Projects/P-app/Frontend/Build",
 		"/E/Projects/P-app/Frontend/Styles",
+		"/E/Projects/P-app/Frontend/Styles/CSS",
 		"/E/Projects/P-app/Frontend/Styles/Sass"
 	],
 	"file_history":
 	[
+		"/E/Projects/P-app/.gitattributes",
+		"/C/Users/sevat_000/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/E/Projects/P-app/Frontend/Styles/Sass/main.sass",
 		"/E/Projects/P-app/Frontend/Styles/Sass/grid.sass",
 		"/E/Projects/django-learn/learning/templates/polls/detail.html",
@@ -725,6 +742,13 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"display: inline-block",
+			"*",
+			"-",
+			"#",
+			"@keyframes",
+			"F",
+			"L",
 			"0.",
 			"var ",
 			"this",
@@ -789,15 +813,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1120,
+						"buffer_size": 1356,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1120,
-								1120
+								1162,
+								1162
 							]
 						],
 						"settings":
@@ -806,7 +830,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 38.0,
+						"translation.y": 378.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -837,7 +861,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -846,15 +870,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 464,
+						"buffer_size": 637,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								447,
-								369
+								98,
+								232
 							]
 						],
 						"settings":
@@ -866,63 +890,63 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "/C/Users/sevat_000/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-					"semi_transient": false,
+					"file": "/E/Projects/P-app/Frontend/Assets/Icons/ok.svg",
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 191,
+						"buffer_size": 808,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								173,
-								173
+								808,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage"
+							"syntax": "Packages/XML/XML.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "/E/Projects/P-app/.gitattributes",
-					"semi_transient": true,
+					"file": "URL strategy.md",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 378,
+						"buffer_size": 1536,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								329,
-								329
+								1536,
+								1536
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 678.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 11,
 					"type": "text"
 				}
 			]
@@ -937,15 +961,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 776,
+						"buffer_size": 775,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								776,
-								776
+								771,
+								771
 							]
 						],
 						"settings":
@@ -957,7 +981,7 @@
 						"translation.y": 500.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 12,
 					"type": "text"
 				}
 			]
@@ -993,7 +1017,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 14,
 					"type": "text"
 				},
 				{
@@ -1022,144 +1046,30 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 13,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 3,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 8,
-					"file": "/E/Projects/P-app/Frontend/Styles/Sass/login.sass",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 492,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								423,
-								423
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
 					"file": "/E/Projects/P-app/Frontend/Styles/Sass/pop-ups.sass",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 308,
+						"buffer_size": 310,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								128,
-								129
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "/E/Projects/P-app/Frontend/Styles/Sass/vars.sass",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1181,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1172,
-								1172
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "/E/Projects/P-app/Frontend/Styles/Sass/inputs.sass",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2037,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								846,
-								846
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 720.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 12,
-					"file": "/E/Projects/P-app/Frontend/Styles/Sass/animations.sass",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 142,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								15,
-								15
+								310,
+								310
 							]
 						],
 						"settings":
@@ -1171,6 +1081,120 @@
 						"zoom_level": 1.0
 					},
 					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/E/Projects/P-app/Frontend/Styles/Sass/login.sass",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 515,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								35,
+								15
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "/E/Projects/P-app/Frontend/Styles/Sass/vars.sass",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1334,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								523,
+								523
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 420.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/E/Projects/P-app/Frontend/Styles/Sass/inputs.sass",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2046,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1609,
+								1609
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/E/Projects/P-app/Frontend/Styles/Sass/animations.sass",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 838,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								169,
+								169
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
@@ -1199,7 +1223,35 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/E/Projects/P-app/Frontend/Styles/Sass/notifications.sass",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 867,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								171,
+								171
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
 					"type": "text"
 				}
 			]
@@ -1245,7 +1297,7 @@
 		"cols":
 		[
 			0.0,
-			0.506365740741,
+			0.541087962963,
 			1.0
 		],
 		"rows":
@@ -1257,6 +1309,10 @@
 		]
 	},
 	"menu_visible": true,
+	"output.CppBuilder":
+	{
+		"height": 162.0
+	},
 	"output.exec":
 	{
 		"height": 49.0

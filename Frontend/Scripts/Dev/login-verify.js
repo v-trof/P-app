@@ -31,5 +31,13 @@ $(document).ready(function() {
 		}
 		all_valid();
 	});
-
+});
+$(".button__proceed").click(function(event) {
+	event.preventDefault();
+	button = $(this);
+	button.addClass('in-progress');
+	setTimeout(function(){
+		button.removeClass('in-progress');
+		$("#notification").removeClass('hidden');
+	},2000)
 });

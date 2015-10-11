@@ -59,20 +59,20 @@ input
 .button__proceed
 	background: transparent
 	border: 0
-	&:disabled
-		background: transparent
-		&>svg
-			fill: $grey-mid
 	&>svg
 		display: inline-block
 		vertical-align: middle
-		width: 2rem
+		width: $icon-regular
 		fill: $grey-dark
 		stroke-width: 2px
 		transform: translateX(-2em)
-		background: linear-gradient(to right, transparent 0%, $grey-semilight 15%)
 		transition: $time-big
-
+	//dirty hack as i fucked up by :first-child
+	&>svg:not(.spinner)
+		background: linear-gradient(to right, transparent 0%, $grey-semilight 15%)
+	&>.spinner
+		margin-left: -$icon-regular
+		opacity: 0
 	&>span
 		display: inline-block
 		vertical-align: middle
@@ -80,9 +80,19 @@ input
 		transition: $time-big
 		opacity: 0
 		color: darken($grey-dark, 5%)
+
 	&:enabled:focus,&:enabled:hover
 		outline: 0
 		&>span
 			opacity: 1
 		&>svg
 			transform: translateX(0)
+	&.in-progress
+		&>.spinner
+			opacity: 1
+		&>svg
+			fill: $grey-mid
+	&:disabled
+		background: transparent
+		&>svg
+			fill: $grey-mid

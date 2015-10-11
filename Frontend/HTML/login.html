@@ -5,6 +5,11 @@
 	<title>Вход</title>
 </head>
 <body>
+	<div class="notification__error hidden" id="notification">
+		<img src="../Assets/Icons/cancel.svg" inline>
+		<h3>Network error</h3>
+		<span>Sorry we have no servers at all right now</span>
+	</div>
 	<div class="login-box">
 		<h1>Вход</h1>
 		<form class="login-box--form">
@@ -14,13 +19,14 @@
 
 			<button class="button__proceed" disabled>
 				<span>Далее</span>
-				<img src="../Assets/Icons/chevron_right_round.svg" inline>
+				<img src="../Assets/Icons/chevron_right_round.svg" inline><img class="spinner" src="../Assets/Icons/spinner.svg" inline>
 			</button>
 		</form>
 	</div>
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/login.css" inline>
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/main.css" inline>
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/inputs.css" inline>
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/notifications.css" inline>
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/animations.css" dev>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript" src="../Scripts/Min/login-verify.js" inline></script>
