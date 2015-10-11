@@ -38,6 +38,6 @@ $(".button__proceed").click(function(event) {
 	button.addClass('in-progress');
 	setTimeout(function(){
 		button.removeClass('in-progress');
-		$("#notification").removeClass('hidden');
+		notification.change("error","Network error","Sorry <a href='/home'>we</a> have no servers");
 	},2000)
 });
