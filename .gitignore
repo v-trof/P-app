@@ -44,3 +44,7 @@ Temporary Items
 #-------------------
 #Heavy/too long files/dirs
 Frontend/node_modules
+#-------------------
+#subline files
+*.sublime-project
+*.sublime-workspace

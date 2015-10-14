@@ -1,11 +1,5 @@
 $(document).ready(function() {
-		//prepares all selects for use
-		$(".select").each(function(index, el) {
-				size=$(this).children(".select__mask").children(".select__body").children('.select__option').length;
-				optionHeight=$(this).children(".select__mask").children(".select__body").children('.select__option').innerHeight();	
-				$(this).attr('modifiers',size+','+optionHeight+","+1);	
-		});
-
+		prepare_selects();
 		$(".select__option").click(function(event) {
 			var select = $(this).parent().parent().parent(); // .select>.select__mask>.select__body>select__option
 			var mask = $(this).parent().parent();
@@ -32,4 +26,14 @@ $(document).ready(function() {
 			}
 			
 		});
-	});	
+});	
+
+function prepare_selects(){
+	$(".select").each(function(index, el) {
+		if(!$(this).attr('modifiers')){
+			size=$(this).children(".select__mask").children(".select__body").children('.select__option').length;
+			optionHeight=$(this).children(".select__mask").children(".select__body").children('.select__option').innerHeight();	
+			$(this).attr('modifiers',size+','+optionHeight+","+1);
+		}
+	});
+}
