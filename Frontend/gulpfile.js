@@ -27,8 +27,8 @@ gulp.task('sass_to_css', function () {
 gulp.task('build', function () {
 	//minificates, inlines and removes useless shit
 	gulp.src('HTML/*.html')
-		.pipe(inlineSource())
-		.pipe(remove("[dev]"))		//removes elements with attr dev
+		.pipe(remove("[dev]")) //removes elements with attr dev	
+		.pipe(inlineSource()) 
 		.pipe(htmlmin({collapseWhitespace: true}))
 	 	.pipe(gulp.dest('./Build'));
 });

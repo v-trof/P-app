@@ -4,6 +4,90 @@
 		"selected_items":
 		[
 			[
+				"select",
+				"select	.select()"
+			],
+			[
+				"sele",
+				"select	.select()"
+			],
+			[
+				"part",
+				"parent	.parent()"
+			],
+			[
+				"op",
+				"optionHeight"
+			],
+			[
+				"atr",
+				"attr	.attr() - single"
+			],
+			[
+				"ch",
+				"children	.children()"
+			],
+			[
+				"grey",
+				"grey-dark"
+			],
+			[
+				"line",
+				"line-regular"
+			],
+			[
+				"pad",
+				"padding-small"
+			],
+			[
+				"size",
+				"size-regular"
+			],
+			[
+				"remove",
+				"removeClass	.removeClass()"
+			],
+			[
+				"has",
+				"hasClass	.hasClass()"
+			],
+			[
+				"blue",
+				"blue-bright"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"margin",
+				"margin-top"
+			],
+			[
+				"border",
+				"border-regular"
+			],
+			[
+				"text",
+				"textarea"
+			],
+			[
+				"transpar",
+				"transparent"
+			],
+			[
+				"grey-",
+				"grey-semilight"
+			],
+			[
+				"icon",
+				"icon-small"
+			],
+			[
+				"webkit-text",
+				"webkit-text-fill-color"
+			],
+			[
 				"marg",
 				"margin"
 			],
@@ -24,20 +108,8 @@
 				"translateY"
 			],
 			[
-				"pad",
-				"padding-small"
-			],
-			[
 				"ma",
 				"margin-regular"
-			],
-			[
-				"border",
-				"border-regular"
-			],
-			[
-				"font",
-				"font-regular"
 			],
 			[
 				"c",
@@ -108,10 +180,6 @@
 				"margin-left"
 			],
 			[
-				"remove",
-				"removeAttr	.removeAttr()"
-			],
-			[
 				"input",
 				"inputs_valid"
 			],
@@ -126,10 +194,6 @@
 			[
 				"inline",
 				"inline_svg"
-			],
-			[
-				"grey",
-				"grey-semilight"
 			],
 			[
 				"blu",
@@ -340,10 +404,6 @@
 				"slideToggle	.slideToggle()"
 			],
 			[
-				"op",
-				"op	opacity"
-			],
-			[
 				"bo",
 				"bottom"
 			],
@@ -374,10 +434,6 @@
 			[
 				"re",
 				"ready	$(document).ready"
-			],
-			[
-				"line",
-				"line-wide"
 			],
 			[
 				"f",
@@ -411,7 +467,7 @@
 			"file": "/E/Projects/P-app/Frontend/HTML/login.html",
 			"settings":
 			{
-				"buffer_size": 1356,
+				"buffer_size": 1506,
 				"line_ending": "Windows"
 			}
 		},
@@ -419,7 +475,7 @@
 			"file": "/E/Projects/P-app/Frontend/Assets/Elments/inputs.html",
 			"settings":
 			{
-				"buffer_size": 489,
+				"buffer_size": 2060,
 				"line_ending": "Windows"
 			}
 		},
@@ -427,23 +483,23 @@
 			"file": "/E/Projects/P-app/Frontend/Assets/Elments/popup.html",
 			"settings":
 			{
-				"buffer_size": 637,
+				"buffer_size": 457,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "/E/Projects/P-app/Frontend/Assets/Icons/ok.svg",
+			"file": "/E/Projects/P-app/Frontend/Scripts/Dev/select.js",
 			"settings":
 			{
-				"buffer_size": 808,
-				"line_ending": "Unix"
+				"buffer_size": 1017,
+				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "URL strategy.md",
+			"file": "/E/Projects/P-app/Frontend/Scripts/Dev/notification.js",
 			"settings":
 			{
-				"buffer_size": 1536,
+				"buffer_size": 2060,
 				"line_ending": "Windows"
 			}
 		},
@@ -451,7 +507,7 @@
 			"file": "/E/Projects/P-app/Frontend/Scripts/Dev/login-verify.js",
 			"settings":
 			{
-				"buffer_size": 775,
+				"buffer_size": 1067,
 				"line_ending": "Windows"
 			}
 		},
@@ -467,7 +523,7 @@
 			"file": "/E/Projects/P-app/Frontend/gulpfile.js",
 			"settings":
 			{
-				"buffer_size": 1933,
+				"buffer_size": 1934,
 				"line_ending": "Windows"
 			}
 		},
@@ -491,7 +547,7 @@
 			"file": "/E/Projects/P-app/Frontend/Styles/Sass/vars.sass",
 			"settings":
 			{
-				"buffer_size": 1334,
+				"buffer_size": 1441,
 				"line_ending": "Windows"
 			}
 		},
@@ -499,7 +555,7 @@
 			"file": "/E/Projects/P-app/Frontend/Styles/Sass/inputs.sass",
 			"settings":
 			{
-				"buffer_size": 2046,
+				"buffer_size": 4585,
 				"line_ending": "Windows"
 			}
 		},
@@ -515,7 +571,7 @@
 			"file": "/E/Projects/P-app/Frontend/Styles/Sass/main.sass",
 			"settings":
 			{
-				"buffer_size": 296,
+				"buffer_size": 304,
 				"line_ending": "Windows"
 			}
 		},
@@ -523,7 +579,7 @@
 			"file": "/E/Projects/P-app/Frontend/Styles/Sass/notifications.sass",
 			"settings":
 			{
-				"buffer_size": 867,
+				"buffer_size": 956,
 				"line_ending": "Windows"
 			}
 		}
@@ -551,10 +607,26 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 354.0,
-		"last_filter": "sass",
+		"height": 199.0,
+		"last_filter": "JA",
 		"selected_items":
 		[
+			[
+				"JA",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"ht",
+				"Set Syntax: HTML"
+			],
+			[
+				"c++",
+				"Set Syntax: C++"
+			],
+			[
+				"ja",
+				"Set Syntax: JavaScript"
+			],
 			[
 				"sass",
 				"Set Syntax: Sass"
@@ -568,20 +640,12 @@
 				"Set Syntax: Sass"
 			],
 			[
-				"ht",
-				"Snippet: html"
-			],
-			[
 				"pack",
 				"Package Control: List Packages"
 			],
 			[
 				"HT",
 				"Set Syntax: HTML"
-			],
-			[
-				"ja",
-				"Set Syntax: JavaScript"
 			],
 			[
 				"h",
@@ -643,14 +707,24 @@
 		"/E/Projects/P-app",
 		"/E/Projects/P-app/Frontend",
 		"/E/Projects/P-app/Frontend/Assets",
-		"/E/Projects/P-app/Frontend/Assets/Icons",
 		"/E/Projects/P-app/Frontend/Build",
-		"/E/Projects/P-app/Frontend/Styles",
-		"/E/Projects/P-app/Frontend/Styles/CSS",
-		"/E/Projects/P-app/Frontend/Styles/Sass"
+		"/E/Projects/P-app/Frontend/Scripts",
+		"/E/Projects/P-app/Frontend/Scripts/Dev",
+		"/E/Projects/P-app/Frontend/Scripts/Min",
+		"/E/Projects/P-app/Frontend/Test"
 	],
 	"file_history":
 	[
+		"/E/Projects/C-frontend/appending.js",
+		"/E/Projects/C-frontend/work_UI.html",
+		"/E/Projects/P-app/Frontend/Assets/Icons/spinner.svg",
+		"/E/AG/Code/PMPU.cpp",
+		"/E/Projects/P-app/Frontend/Build/login.html",
+		"/E/Projects/P-app/Frontend/Assets/Icons/info.svg",
+		"/E/Projects/P-app/Documents/URL strategy.md",
+		"/E/Projects/P-app/Frontend/Assets/Elments/popup.html",
+		"/E/Projects/P-app/Frontend/Assets/Elments/inputs.html",
+		"/E/Projects/P-app/Frontend/Assets/Icons/chevron_right_round.svg",
 		"/E/Projects/P-app/.gitattributes",
 		"/C/Users/sevat_000/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/E/Projects/P-app/Frontend/Styles/Sass/main.sass",
@@ -659,7 +733,6 @@
 		"/E/Projects/P-app/Frontend/Assets/Styleguide/main.html",
 		"/E/Projects/P-app/Frontend/Test/login.html",
 		"/E/Projects/django-learn/learning/polls/views.py",
-		"/E/Projects/P-app/Frontend/Build/login.html",
 		"/E/AG/Homework/post-machine-1-2.exe/post-m-1-2/metafile",
 		"/E/Projects/P-app/Frontend/Styles/CSS/inputs.css",
 		"/E/Projects/P-app/Frontend/Pages(Hardcode and Experiments)/Login_seva.html",
@@ -720,7 +793,6 @@
 		"/E/Projects/C/package.json",
 		"/E/Projects/C-frontend/general.sass",
 		"/E/Projects/C-frontend/board.sass",
-		"/E/Projects/C-frontend/work_UI.html",
 		"/E/Projects/C/html/12/kuorell/issues.txt",
 		"/E/Projects/CMW.rar",
 		"/E/Projects/C/router.js"
@@ -804,7 +876,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -813,15 +885,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1356,
+						"buffer_size": 1506,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1162,
-								1162
+								1318,
+								1230
 							]
 						],
 						"settings":
@@ -830,10 +902,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 378.0,
+						"translation.y": 412.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -842,15 +914,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 489,
+						"buffer_size": 2060,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								315,
-								315
+								1370,
+								1370
 							]
 						],
 						"settings":
@@ -861,7 +933,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -870,83 +942,56 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 637,
+						"buffer_size": 457,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								98,
-								232
+								457,
+								457
 							]
 						],
 						"settings":
 						{
-							"auto_name": "",
-							"syntax": "Packages/HTML/HTML.tmLanguage"
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
 					"buffer": 3,
-					"file": "/E/Projects/P-app/Frontend/Assets/Icons/ok.svg",
-					"semi_transient": true,
+					"file": "/E/Projects/P-app/Frontend/Scripts/Dev/select.js",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 808,
+						"buffer_size": 1017,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								808,
-								0
+								1017,
+								1017
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/XML/XML.tmLanguage"
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "URL strategy.md",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1536,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1536,
-								1536
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Markdown/Markdown.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 678.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -956,20 +1001,48 @@
 			"sheets":
 			[
 				{
-					"buffer": 5,
-					"file": "/E/Projects/P-app/Frontend/Scripts/Dev/login-verify.js",
+					"buffer": 4,
+					"file": "/E/Projects/P-app/Frontend/Scripts/Dev/notification.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 775,
+						"buffer_size": 2060,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								771,
-								771
+								1809,
+								1809
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/E/Projects/P-app/Frontend/Scripts/Dev/login-verify.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1067,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1027,
+								1027
 							]
 						],
 						"settings":
@@ -978,10 +1051,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 500.0,
+						"translation.y": 524.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 11,
 					"type": "text"
 				}
 			]
@@ -1017,7 +1090,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 14,
+					"stack_index": 12,
 					"type": "text"
 				},
 				{
@@ -1026,15 +1099,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1933,
+						"buffer_size": 1934,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								769,
-								769
+								1351,
+								1351
 							]
 						],
 						"settings":
@@ -1043,16 +1116,16 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 432.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 13,
+					"stack_index": 10,
 					"type": "text"
 				}
 			]
 		},
 		{
-			"selected": 1,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -1080,7 +1153,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 13,
 					"type": "text"
 				},
 				{
@@ -1096,8 +1169,8 @@
 						"selection":
 						[
 							[
-								35,
-								15
+								127,
+								83
 							]
 						],
 						"settings":
@@ -1109,7 +1182,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -1118,15 +1191,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1334,
+						"buffer_size": 1441,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								523,
-								523
+								1113,
+								1113
 							]
 						],
 						"settings":
@@ -1134,10 +1207,10 @@
 							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 420.0,
+						"translation.y": 676.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -1146,15 +1219,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2046,
+						"buffer_size": 4585,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1609,
-								1609
+								4555,
+								4555
 							]
 						],
 						"settings":
@@ -1163,10 +1236,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 3182.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -1194,7 +1267,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
@@ -1203,15 +1276,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 296,
+						"buffer_size": 304,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								43,
-								43
+								151,
+								151
 							]
 						],
 						"settings":
@@ -1223,7 +1296,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
@@ -1232,15 +1305,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 867,
+						"buffer_size": 956,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								171,
-								171
+								603,
+								603
 							]
 						],
 						"settings":
@@ -1248,10 +1321,10 @@
 							"syntax": "Packages/Sass/Syntaxes/Sass.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 270.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 14,
 					"type": "text"
 				}
 			]
@@ -1259,7 +1332,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 30.0
+		"height": 29.0
 	},
 	"input":
 	{
@@ -1297,13 +1370,13 @@
 		"cols":
 		[
 			0.0,
-			0.541087962963,
+			0.5,
 			1.0
 		],
 		"rows":
 		[
 			0.0,
-			0.309375000001,
+			0.320833333334,
 			0.947916666667,
 			1.0
 		]
@@ -1325,7 +1398,7 @@
 	"project": "tutor assistant.sublime-project",
 	"replace":
 	{
-		"height": 56.0
+		"height": 54.0
 	},
 	"save_all_on_build": true,
 	"select_file":

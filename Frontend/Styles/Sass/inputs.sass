@@ -1,5 +1,8 @@
 @import "vars"
 
+input,button
+	font-family: $Segoe-UI
+
 //general fix
 input
 	font-size: $font-regular
@@ -7,6 +10,11 @@ input
 	color: $grey-dark
 	border: $border-regular solid $grey-semilight
 	background: $white
+	&:-webkit-autofill
+		background: $white
+		-webkit-box-shadow: inset 0 0 0 50px $white
+		-webkit-text-fill-color: $grey-dark !important
+		color: $grey-dark !important
 	&:focus
 		outline: 0
 		box-shadow: 0
@@ -88,6 +96,8 @@ input
 		&>svg
 			transform: translateX(0)
 	&.in-progress
+		&>span
+			color: darken($grey-mid, 5%)
 		&>.spinner
 			opacity: 1
 		&>svg
@@ -96,3 +106,97 @@ input
 		background: transparent
 		&>svg
 			fill: $grey-mid
+
+.button--context
+	border: none
+	height: $icon-regular
+	width: $icon-regular
+	font-size: $font-regular
+	line-height: $icon-regular
+	text-align: center
+	background: $grey-light
+	border-bottom: $border-regular solid $grey-light
+	display: block
+	margin-left: $border-regular
+	transition: $time-regular
+	&:first-child
+		margin-left: 0
+	&:focus
+		outline: 0
+	&:hover
+		border-bottom: $border-regular solid $blue-dark
+	&.toggled
+		border-bottom: $border-regular solid $blue-bright
+		&:hover
+			border-bottom: $border-regular solid $grey-mid
+
+//other inputs
+.textarea
+	width: 16rem
+	border: $border-regular solid $grey-semilight
+	background: $white
+	display: inline-block
+.textarea__text
+	font-size: $font-regular
+	min-height: 9rem
+	padding: $padding-regular
+	padding-top: $padding-big
+	background: $white
+	color: $grey-dark
+	&:focus
+		outline: 0
+	&:before
+		display: block
+		+small-circle()
+		content: ''
+		vertical-align: top
+		//sets it to top right corner
+		transform: translate(-$size-big - $size-regular + 16rem,-$size-big)
+		opacity: 0
+		background: $blue-bright
+		transition: $time-regular
+	&.valid:before
+		background: $green-bright
+	&.invalid:before
+		background: $red-bright
+	&:focus:before
+		opacity: 1
+		//moves it in field
+		transform: translate(-$size-big*2 + 16rem,-$size-big)
+.textarea__controls
+	border-top: $border-regular solid $grey-semilight
+	background: $grey-semilight
+	height: $icon-regular + $border-regular
+	display: flex
+	align-items: center
+	justify-content: flex-start
+.textarea__label
+	color: $grey-semidark
+	position: absolute
+	margin-left: $padding-regular
+	margin-top: $padding-small
+	background: transparent
+	font-size: $font-small
+
+
+//select tag alternative
+.select
+	height: $line-regular+$padding-small*2
+	display: inline-block
+	vertical-align: middle
+	width: 16rem
+.select__mask
+	height: $line-regular+$padding-small*2
+	overflow: hidden
+	background: $grey-light
+	transition: $time-regular
+.select__body
+	transition: $time-regular
+.select__option
+	padding: $padding-small
+	height: $line-regular+$padding-small*2
+	cursor: pointer
+	color: $grey-dark
+	transition: $time-regular
+	&:hover
+		background: $grey-semilight
