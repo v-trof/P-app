@@ -185,11 +185,17 @@ input
 	display: inline-block
 	vertical-align: middle
 	width: 16rem
+	&:focus
+		outline: 0
+	&:focus>.select__mask,&:hover>.select__mask
+		border-color: $blue-bright
+		outline: 0
 .select__mask
 	height: $line-regular+$padding-small*2
 	overflow: hidden
 	background: $grey-light
 	transition: $time-regular
+	border: $border-regular solid $grey-semilight
 .select__body
 	transition: $time-regular
 .select__option
