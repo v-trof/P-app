@@ -35,6 +35,8 @@ $margin-huge: 3rem
 $size-small : .4rem
 $size-regular : .6rem
 $size-big : 1rem
+//layout blocks
+$block-regular: 3.125rem
 //icon size
 $icon-regular: 2rem
 $icon-small: 1.5rem
@@ -75,3 +77,9 @@ $time-big: .5s
 
 =animation($anim-name)
 	animation: $anim-name $time-regular forwards
+
+//media vars
+//should cover everything from iPhone6+ to galaxy S3
+=smartphone()
+	@media only screen and (max-width: 736px)
+		@content

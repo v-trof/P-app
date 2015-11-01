@@ -7,7 +7,8 @@ body
 	align-items: center
 	justify-content: center
 	height: 100vh
-
+	+smartphone
+		background: $grey-semilight
 .login-box
 	+animation-savestate("fade-from-bottom")
 	display: flex
@@ -18,7 +19,9 @@ body
 	height: 18.5rem
 	background: $grey-semilight
 	box-shadow: 0px 12px 50px rgba($black, 0.24)
-
+	+smartphone
+		box-shadow: none
+		background: none
 .login-box--form
 	text-align: center
 	&>input, &>button

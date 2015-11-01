@@ -54,6 +54,17 @@ gulp.task('minjs', function () {
 		.pipe(gulp.dest("./Build/Assets/Images"));
 });*/
 
+//for testing how sass behaves
+gulp.task('sass_test', function () {
+	//converts sass to css, prefixes, and minificates css
+	gulp.src('./Styles/Sass/*.sass')
+		.pipe(sass())
+		.pipe(autoprefixer({
+			browsers: ['> 5%']
+		}))
+		.pipe(gulp.dest('./Styles/CSS/Test'));
+});	
+
 gulp.task('watch', function() {
   gulp.watch("./Scripts/Dev/*.js", ['minjs','test_build']);
   gulp.watch("./Styles/Sass/*.sass", ['sass_to_css','test_build']);
