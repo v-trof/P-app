@@ -5,6 +5,7 @@ function all_valid(){
 			inputs_valid = false;
 		}
 	});
+
 	if(inputs_valid){
 		$(".button__proceed").removeAttr('disabled');
 	} else {
@@ -12,15 +13,30 @@ function all_valid(){
 	}
 }
 
+var email_regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+
+function check_email(e_input) {
+	console.log('checking',e_input);
+	if(email_regex.test(e_input.val())) {
+		e_input.addClass('valid');
+	} else  {
+		e_input.removeClass('valid');
+	}
+	all_valid();
+}
+
 $(document).ready(function() {
-	var email_regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-	$("input[type='email']").keyup(function() {
-		if(email_regex.test($(this).val())) {
-			$(this).addClass('valid');
-		} else {
-			$(this).removeClass('valid');
-		}
-		all_valid();
+	
+	$("input[type='email']").on("blur keyup change click", function(){
+		var input = $(this);
+		check_email(input);
+
+		setTimeout(function(){
+			check_email(input)
+		}, 2000);
+		setTimeout(function() {
+			check_email(input)
+		}, 10000);
 	});
 
 	$("input[type='password']").keyup(function() {
@@ -32,6 +48,7 @@ $(document).ready(function() {
 		all_valid();
 	});
 });
+
 $(".button__proceed").click(function(event) {
 	event.preventDefault();
 	button = $(this);
