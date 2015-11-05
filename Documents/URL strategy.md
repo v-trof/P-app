@@ -1,5 +1,5 @@
 #URL types
-* home
+*/home
 	* /profile
 		* /settings
 	* /course
@@ -24,7 +24,7 @@
 			* /token
 	* /login
 		* /sign-up
-	* /recover
+1	* /recover
 
 |URL|Expected content and actions|Expected user
 |---|---|---|

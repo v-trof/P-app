@@ -29,7 +29,7 @@ gulp.task('build', function () {
 	gulp.src('HTML/*.html')
 		.pipe(remove("[dev]")) //removes elements with attr dev	
 		.pipe(inlineSource()) 
-		.pipe(htmlmin({collapseWhitespace: true}))
+		// .pipe(htmlmin({collapseWhitespace: true}))
 	 	.pipe(gulp.dest('./Build'));
 });
 
