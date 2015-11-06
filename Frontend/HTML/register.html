@@ -3,7 +3,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf8">
-	<title>Вход</title>
+	<title>Регистрация</title>
 </head>
 <body>
 	<div class="notification__error hidden" id="notification">
@@ -13,8 +13,10 @@
 	</div>
 	<div class="content">
 		<div class="login-box">
-			<h1>Вход</h1>
+			<h1>Регистрация</h1>
 			<form class="login-box--form">
+				<input type="Text" name="name_last_name" placeholder="Имя Фамилия" class="input__placeholder-label"><label for="name_last_name"></label><br>
+
 				<input type="email" name="email" placeholder="email@domain.zone" class="input__placeholder-label"><label for="email"></label><br>
 
 				<input type="password" name="password" placeholder="Пароль" class="input__placeholder-label" pattern=".{8,}"><label for="password"></label><br>
@@ -27,7 +29,7 @@
 		</div>
 	</div>
 	<footer class='footer'>
-		<a href="register_student/">Регистрация</a>
+		<a href="login/">Вход</a>
 	</footer>
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/login.css" inline>
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/main.css" inline>

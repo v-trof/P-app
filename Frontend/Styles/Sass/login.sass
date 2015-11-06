@@ -3,12 +3,11 @@
 
 body
 	background: $grey-light
+.content
 	display: flex
 	align-items: center
 	justify-content: center
 	height: 100vh
-	+smartphone
-		background: $grey-light
 .login-box
 	+animation-savestate("fade-from-bottom")
 	display: flex
@@ -28,3 +27,8 @@ body
 		margin-top: $margin-regular
 		&+label
 			margin-top: $margin-regular
+.footer
+	position: absolute
+	bottom: $margin-big
+	width: 100%
+	text-align: center

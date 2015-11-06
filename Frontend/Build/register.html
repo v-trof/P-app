@@ -3,7 +3,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf8">
-	<title>Вход</title>
+	<title>Регистрация</title>
 </head>
 <body>
 	<div class="notification__error hidden" id="notification">
@@ -13,8 +13,10 @@
 	</div>
 	<div class="content">
 		<div class="login-box">
-			<h1>Вход</h1>
+			<h1>Регистрация</h1>
 			<form class="login-box--form">
+				<input type="Text" name="name_last_name" placeholder="Имя Фамилия" class="input__placeholder-label"><label for="name_last_name"></label><br>
+
 				<input type="email" name="email" placeholder="email@domain.zone" class="input__placeholder-label"><label for="email"></label><br>
 
 				<input type="password" name="password" placeholder="Пароль" class="input__placeholder-label" pattern=".{8,}"><label for="password"></label><br>
@@ -27,7 +29,7 @@
 		</div>
 	</div>
 	<footer class="footer">
-		<a href="register_student/">Регистрация</a>
+		<a href="login/">Вход</a>
 	</footer>
 	<style type="text/css">@-webkit-keyframes fade-from-bottom{0%{-webkit-transform:translateY(3rem);transform:translateY(3rem);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@keyframes fade-from-bottom{0%{-webkit-transform:translateY(3rem);transform:translateY(3rem);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes fade-from-top{0%{-webkit-transform:translateY(-3rem);transform:translateY(-3rem);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@keyframes fade-from-top{0%{-webkit-transform:translateY(-3rem);transform:translateY(-3rem);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes fade-from-left{0%{-webkit-transform:translateX(-3rem);transform:translateX(-3rem);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@keyframes fade-from-left{0%{-webkit-transform:translateX(-3rem);transform:translateX(-3rem);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@-webkit-keyframes fade-from-right{0%{-webkit-transform:translateX(3rem);transform:translateX(3rem);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}@keyframes fade-from-right{0%{-webkit-transform:translateX(3rem);transform:translateX(3rem);opacity:0}100%{-webkit-transform:translateY(0);transform:translateY(0);opacity:1}}body{background:#f2f2f2}.content{height:100vh}.content,.login-box{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center}.login-box{-webkit-animation:fade-from-bottom .3s forwards;animation:fade-from-bottom .3s forwards;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;flex-direction:column;width:25rem;height:18.5rem}@media only screen and (max-width:736px){.login-box{box-shadow:none;background:0 0}}.login-box--form{text-align:center}.login-box--form>button,.login-box--form>button+label,.login-box--form>input,.login-box--form>input+label{margin-top:.6rem}.footer{position:absolute;bottom:1.5rem;width:100%;text-align:center}</style>
 	<style type="text/css">body,html{font-size:100%;margin:0;padding:0;font-family:"Segoe UI","Open Sans","San Francisco",Arial,sans-serif;color:#0f0f0f}html{overflow-y:visible;overflow-x:hidden}div,input{box-sizing:border-box}h1{margin:0;padding:0;font-size:2.25rem;font-weight:300;color:#373737}a{color:#315fd8;-webkit-transition:.3s;transition:.3s}a:focus,a:hover{outline:0;box-shadow:none;color:#2e498f}.no-select{-webkit-user-select:none;-ms-user-select:none;user-select:none}</style>

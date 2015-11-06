@@ -19,6 +19,12 @@ h1
 	font-size: $font-huge
 	font-weight: 300
 	color: $grey-dark
-
+a
+	color: darken($blue-bright, 5%)
+	transition: $time-regular
+	&:focus,&:hover
+		outline: 0
+		box-shadow: none
+		color: $blue-dark
 .no-select
 	user-select: none
