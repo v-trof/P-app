@@ -45,7 +45,8 @@ gulp.task('js_to_html', function(){
 gulp.task('build', ['css_to_html'], function () {
 	//removes useless shit from html
 	gulp.src('HTML/*.html')
-		.pipe(remove("[dev]")) //removes elements with attr dev	
+		.pipe(remove("[dev]")) //removes elements with attr dev
+		.pipe(inlineSource())	
 		.pipe(gulp.dest('./Build/HTML'));	
 });
 
