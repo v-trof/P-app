@@ -42,11 +42,12 @@ Network Trash Folder
 Temporary Items
 .apdisk
 #-------------------
-#Heavy/too long files/dirs
+#Heavy/too long files/dirs or experiment not worth syncing
 Frontend/node_modules
 Frontend/Test
+Backend/Dev
 #-------------------
-#subline files
+#sublime files
 *.sublime-project
 *.sublime-workspace
 *.sublime-workspace
