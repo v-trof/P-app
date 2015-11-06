@@ -15,7 +15,9 @@
     "gulp-html-remove": "^0.1.1",
     "gulp-htmlmin": "^1.1.4",
     "gulp-inline-source": "^2.1.0",
+    "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.0.4",
-    "gulp-uglify": "^1.4.1"
+    "gulp-uglify": "^1.4.1",
+    "p-gulp-wrap": "^1.0.0"
   }
 }

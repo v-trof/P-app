@@ -1,0 +1,17 @@
+Remember that you can report errors and get help in https://github.com/NicoSantangelo/sublime-gulp
+
+11-06-2015 18:33:
+C:\Users\sevat_000\AppData\Roaming\Sublime Text 3\Packages\Gulp\write_tasks_to_cache.js:31
+        throw ex;
+              ^
+Error: Cannot find module 'through2'
+    at Function.Module._resolveFilename (module.js:336:15)
+    at Function.Module._load (module.js:278:25)
+    at Module.require (module.js:365:17)
+    at require (module.js:384:17)
+    at Object.<anonymous> (E:\Projects\P-app\Frontend\node_modules\p-gulp-wrap\index.js:2:15)
+    at Module._compile (module.js:460:26)
+    at Object.Module._extensions..js (module.js:478:10)
+    at Module.load (module.js:355:32)
+    at Function.Module._load (module.js:310:12)
+    at Module.require (module.js:365:17)
