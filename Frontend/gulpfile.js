@@ -6,7 +6,8 @@ var	sass = require('gulp-sass'); //compiles sass into css
 var	cleancss = require('gulp-cleancss'); //makes css lighter
 var	autoprefixer = require('gulp-autoprefixer'); //sets vendor prefixes in
 var rename = require("gulp-rename"); //renames a file
-var template = require("p-gulp-wrap"); //wraps file(css/js) in a tag
+var template_css = require("p-gulp-wrap-css"); //wraps file(css) in a tag
+var template_js = require("p-gulp-wrap-js"); //wraps file(js) in a tag
 	//things js needs
 var	uglify = require('gulp-uglify'); //makes js lighter
 	//things html needs
@@ -29,7 +30,7 @@ gulp.task('sass_to_css', function () {
 gulp.task('css_to_html', function(){
 	//converts css into html
 	gulp.src('Styles/CSS/*.css')
-		.pipe(template("style"))
+		.pipe(template_css())
 		.pipe(rename({extname:".html"}))
 		.pipe(gulp.dest('./Build/CSS'));
 });
@@ -37,7 +38,7 @@ gulp.task('css_to_html', function(){
 gulp.task('js_to_html', function(){
 	//converts JS to html
 	gulp.src('Scripts/Min/*.js')
-		.pipe(template("script"))
+		.pipe(template_js())
 		.pipe(rename({extname:".html"}))
 		.pipe(gulp.dest('./Build/JS'));
 });

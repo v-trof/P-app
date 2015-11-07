@@ -51,3 +51,4 @@ Backend/Dev
 *.sublime-project
 *.sublime-workspace
 *.sublime-workspace
+*.chache
