@@ -45,7 +45,6 @@ Temporary Items
 #Heavy/too long files/dirs or experiment not worth syncing
 Frontend/node_modules
 Frontend/Test
-Backend/Dev
 #-------------------
 #sublime files
 *.sublime-project
