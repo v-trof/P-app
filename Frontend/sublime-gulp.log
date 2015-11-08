@@ -15,3 +15,17 @@ Error: Cannot find module 'through2'
     at Module.load (module.js:355:32)
     at Function.Module._load (module.js:310:12)
     at Module.require (module.js:365:17)
+
+
+11-08-2015 11:08:
+E:\Projects\P-app\Frontend\node_modules\p-gulp-template\node_modules\cheerio\lib\parse.js:55
+    var oldParent = node.parent || node.root,
+                        ^
+TypeError: Cannot read property 'parent' of undefined
+    at Function.exports.update (E:\Projects\P-app\Frontend\node_modules\p-gulp-template\node_modules\cheerio\lib\parse.js:55:25)
+    at module.exports (E:\Projects\P-app\Frontend\node_modules\p-gulp-template\node_modules\cheerio\lib\parse.js:17:11)
+    at Function.exports.load (E:\Projects\P-app\Frontend\node_modules\p-gulp-template\node_modules\cheerio\lib\static.js:19:14)
+    at templatize (E:\Projects\P-app\Frontend\node_modules\p-gulp-template\index.js:15:14)
+    at E:\Projects\P-app\Frontend\node_modules\p-gulp-template\index.js:8:2
+    at fs.js:263:20
+    at FSReqWrap.oncomplete (fs.js:95:15)
