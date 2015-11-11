@@ -6,9 +6,14 @@
 	<title>П</title>
 </head>
 <body>
+<link rel="stylesheet" type="text/css" href="../Styles/CSS/main.css">
+<link rel="stylesheet" type="text/css" href="../Styles/CSS/home.css">
+<link rel="stylesheet" type="text/css" href="../Styles/CSS/header.css">
+<link rel="stylesheet" type="text/css" href="../Styles/CSS/cards.css">
 <header class="header">
 	<div class="header__breadcumbs">
-	<span>Главная</span><img src="../Assets/Icons/angle_right.svg" inline><span>Не главная</span>
+	<span>Главная</span>
+	<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
 	</div>
 	<div class="header__search">
 		<img src="../Assets/Icons/search.svg" inline>
@@ -19,9 +24,98 @@
 		<span class="user__name">Всеволод Трофимов</span>
 	</div>
 </header>
-<link rel="stylesheet" type="text/css" href="../Styles/CSS/main.css" >
-<link rel="stylesheet" type="text/css" href="../Styles/CSS/home.css" >
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script type="text/javascript" src="../Scripts/Min/layout.js"></script>
+<div class="content">
+	<section class='courses'>
+		<h2>Курсы</h2>
+		<div class="subject">
+			<h3>Русский язык</h3>
+			<div class="card-course">
+				<div class="icons--warning">
+					<img src="../Assets/Icons/in_process.svg" inline>
+				</div>
+				<div class="icons--neutral">
+					<img src="../Assets/Icons/home.svg" inline>
+				</div>
+				<h4 class="card__heading">Курс а</h4>
+				<div class="card__content">
+					Content
+				</div>
+				<div class="messages">
+					<div class="messages__item--warning">
+						WARNING
+					</div>
+					<div class="messages__item--neutral">
+						Just message
+					</div>
+				</div>
+			</div>
+			<div class="card-course">
+				<div class="icons--warning">
+				</div>
+				<div class="icons--neutal">
+				</div>
+				<h4 class="card__heading">Курс б</h4>
+				<div class="card__content">
+					Content
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class='marks'>
+		<h2>Оценки</h2>
+		<div class="subject">
+			<h3>Русский язык</h3>
+			<div class="card-marks">
+				<h4 class="card-marks__course">Курс а</h4>
+				<span class="card-marks__marks">
+					<button class="mark--good">5</button>
+					<button class="mark--good">5/4</button>
+					<button class="mark--good">4</button>
+					<button class="mark--medium" id="c1m4">3</button>
+					<button class="mark--bad">2</button>
+				</span>
+			</div>
+			<div class="card-marks">
+				<span class="card-marks__course">Курс б</span>
+				<span class="card-marks__marks empty">
+					<span>Оценок нет<span>
+				</span>
+			</div>
+		</div>
+		<div class="marks__tooltip">
+			<h5 class="tooltip__heading">Тест «Палеоназмы»</h5>
+			<div class="tooltip__results">74%<span>(14 из 19)</span></div>
+			<div class="tooltip__date">12 октября 2015</div>
+		</div>
+	</section>
+	<section class='homework'>
+		<h2>Задания</h2>
+		<div class="subject">
+			<h3>Русский язык</h3>
+			<div class="card-homework">
+				<h4 class="card__heading">В курсе а</h4>
+				<div class="card-homework__task done">
+					<span>Task 1</span>
+				</div>
+				<div class="card-homework__task done">
+					<img src="../Assets/Icons/ok.svg" inline>
+					<span>Task 2</span>
+				</div>
+				<div class="card-homework__due-date">
+					До <strong>12 ноября</strong>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+<style dev>
+	*{
+		/*background: rgba(0,255,0,0.1);*/
+	}
+</style>
+<script src="../Scripts/Min/jquery-2.1.4.min.js">
+</script>
+<script src="../Scripts/Min/layout.js"></script>
+<script src="../Scripts/Min/homework-verify.js"></script>
 </body>
 </html>

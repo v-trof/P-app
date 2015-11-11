@@ -36,7 +36,7 @@ gulp.task('build', function () {
 
 gulp.task('test_build',function () {
 	//build with no minification and other user-needs dev-hates stuff
-	gulp.src('HTML/login.html')
+	gulp.src('HTML/*.html')
 		.pipe(inlineSource())
 	 	.pipe(gulp.dest('./Test'));
 });

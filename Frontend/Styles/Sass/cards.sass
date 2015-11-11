@@ -1,0 +1,112 @@
+@import "vars"
+
+.card
+	border: 3px solid $grey-semilight
+	background: $white
+	padding: $padding-regular*1.5
+	margin-bottom: $margin-big
+
+.card__heading
+	font-size: $font-big
+	font-weight: normal
+	margin-top: 0
+
+.card-course
+	@extend .card
+	&>.messages
+		margin-top: $margin-big
+		&>.messages__item--warning
+			color: $red-bright
+		&>.messages__item--neutral
+			color: $blue-dark
+	&>.icons--warning,&>.icons--neutral
+		float: right
+		&>svg
+			width: $icon-small
+			height: $icon-small
+	&>.icons--neutral
+		&>svg
+			fill: $grey-dark
+	&>.icons--warning
+		&>svg
+			fill: $red-bright
+
+.card-homework
+	@extend .card
+	transition: $time-regular border-color
+	&.done
+		border-color: $green-bright
+	&>a.done
+		color: $green-dark
+.card-homework__task
+	line-height: 1.5
+	&>svg
+		transition: $time-regular fill
+		height: $icon-small
+		width: $icon-small
+		fill: $grey-dark
+		vertical-align: middle
+	&.done>svg
+		fill: $green-dark
+	&>span
+		vertical-align: middle
+
+.card-homework__due-date
+	text-align: right
+
+.card-marks
+	@extend .card
+	padding: 0 $padding-regular
+.card-marks__course
+	font-size: $font-regular
+	font-weight: normal
+	margin: 0
+	display: inline-block
+	margin-right: $margin-regular
+.card-marks__marks
+	display: inline-block
+	vertical-align: middle
+	min-height: $icon-regular
+	button
+		transition: $time-regular
+		background: $white
+		height: $icon-regular
+		width: $icon-regular
+		border: 0
+		text-align: center
+		vertical-align: top
+		&.mark--good
+			color: $green-dark
+		&.mark--medium
+			color: $yellow-dark
+		&.mark--bad
+			color: $red-bright
+		&:focus,&:hover
+			outline: none
+			box-shadow: none
+			background: $grey-semilight
+	&.empty
+		color: $grey-mid
+		&>span
+			vertical-align: middle
+			margin-left: $margin-regular
+
+.marks__tooltip
+	transition: $time-regular opacity
+	background: $grey-semilight
+	padding: $padding-regular
+	position: absolute
+	top: -100%
+	left: -100%
+	opacity: 0
+.tooltip__heading
+	font-size: $font-regular
+	font-weight: bold
+	margin: 0
+.tooltip__results>span
+	color: $grey-semidark
+	font-size: $font-small
+	display: inline-block
+	vertical-align: top
+.tooltip__date
+	font-size: $font-small

@@ -13,6 +13,7 @@
 	padding: 0 $padding-regular
 	box-sizing: border-box
 	align-items: center
+	padding: 0 20px
 
 .header__breadcumbs
 	color: $white
@@ -40,8 +41,7 @@
 	white-space: nowrap
 
 .header__search
-	opacity: 0;
-	width: 0%
+	width: 100%
 	max-width: 40vw
 	margin: 0 5vw
 	height: $icon-regular
@@ -50,6 +50,7 @@
 	&>svg
 		position: absolute
 		width: $icon-small
+		height: $icon-small
 		fill: $grey-light
 		margin: ($icon-regular - $icon-small)/2
 	&>input
@@ -73,3 +74,5 @@
 			-webkit-box-shadow: inset 0 0 0 50px lighten($grey-dark, 30%) !important
 			-webkit-text-fill-color: $white !important
 			color: $white !important
+body
+	margin-top: 70px
