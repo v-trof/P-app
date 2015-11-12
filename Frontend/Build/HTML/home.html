@@ -6,22 +6,113 @@
 	<title>&#x41F;</title>
 </head>
 <body>
+<div class="includer">{% include 'CSS/main.html' %}</div>
+<div class="includer">{% include 'CSS/home.html' %}</div>
+<div class="includer">{% include 'CSS/header.html' %}</div>
+<div class="includer">{% include 'CSS/cards.html' %}</div>
 <header class="header">
 	<div class="header__breadcumbs">
-	<span>&#x413;&#x43B;&#x430;&#x432;&#x43D;&#x430;&#x44F;</span><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M12.97 4.28l-1.44 1.44L21.814 16 11.53 26.28l1.44 1.44 11-11 .686-.72-.687-.72-11-11z"/></svg><span>&#x41D;&#x435; &#x433;&#x43B;&#x430;&#x432;&#x43D;&#x430;&#x44F;</span>
+	<span>&#x413;&#x43B;&#x430;&#x432;&#x43D;&#x430;&#x44F;</span>
+	<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
 	</div>
 	<div class="header__search">
 		<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M19.5 3C14.265 3 10 7.265 10 12.5c0 2.25.81 4.307 2.125 5.938L3.28 27.28l1.44 1.44 8.843-8.845C15.192 21.19 17.25 22 19.5 22c5.235 0 9.5-4.265 9.5-9.5S24.735 3 19.5 3zm0 2c4.154 0 7.5 3.346 7.5 7.5S23.654 20 19.5 20 12 16.654 12 12.5 15.346 5 19.5 5z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
-		<input type="text" name="search">
+		<input type="text" name="search" placeholder="&#x418;&#x441;&#x43A;&#x430;&#x442;&#x44C;...">
 	</div>
 	<div class="header__user">
 		<img src="../Assets/Images/avatar.png" class="user__avatar--small">
 		<span class="user__name">&#x412;&#x441;&#x435;&#x432;&#x43E;&#x43B;&#x43E;&#x434; &#x422;&#x440;&#x43E;&#x444;&#x438;&#x43C;&#x43E;&#x432;</span>
 	</div>
 </header>
-<div class="includer">{% include 'CSS/main.html' %}</div>
-<div class="includer">{% include 'CSS/home.html' %}</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<div class="content">
+	<section class="courses">
+		<h2>&#x41A;&#x443;&#x440;&#x441;&#x44B;</h2>
+		<div class="subject">
+			<h3>&#x420;&#x443;&#x441;&#x441;&#x43A;&#x438;&#x439; &#x44F;&#x437;&#x44B;&#x43A;</h3>
+				<div class="card-course" onclick="open_course('kursA')">
+					<div class="icons--warning">
+						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M6 4v20h4v4h16V8h-4V4H6zm2 2h12v16H8V6zm4 2v2h2.563l-3.282 3.28-.686.72.687.72L12.564 16l-2.282 2.28 1.44 1.44 3-3 .686-.72-.687-.72L13.436 14 16 11.437V14h2V8h-6zm10 2h2v16H12v-2h10V10z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
+					</div>
+					<div class="icons--neutral">
+						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M16 2.594l-.72.687-13 13 1.44 1.44L5 16.438V28h9V18h4v10h9V16.437l1.28 1.282 1.44-1.44-13-13-.72-.687zm0 2.844l9 9V26h-5V16h-8v10H7V14.437l9-9z"/></svg>
+					</div>
+					<h4 class="card__heading">&#x41A;&#x443;&#x440;&#x441; &#x430;</h4>
+					<div class="card__content">
+						Content
+					</div>
+					<div class="messages">
+						<div class="messages__item--warning">
+							WARNING
+						</div>
+						<div class="messages__item--neutral">
+							Just message
+						</div>
+					</div>
+				</div>
+				<div class="card-course">
+					<div class="icons--warning">
+					</div>
+					<div class="icons--neutal">
+					</div>
+					<h4 class="card__heading">&#x41A;&#x443;&#x440;&#x441; &#x431;</h4>
+					<div class="card__content">
+						Content
+					</div>
+				</div>
+		</div>
+	</section>
+	<section class="marks">
+		<h2>&#x41E;&#x446;&#x435;&#x43D;&#x43A;&#x438;</h2>
+		<div class="subject">
+			<h3>&#x420;&#x443;&#x441;&#x441;&#x43A;&#x438;&#x439; &#x44F;&#x437;&#x44B;&#x43A;</h3>
+			<div class="card-marks">
+				<h4 class="card-marks__course">&#x41A;&#x443;&#x440;&#x441; &#x430;</h4>
+				<span class="card-marks__marks">
+					<button class="mark--good">5</button>
+					<button class="mark--good">5/4</button>
+					<button class="mark--good">4</button>
+					<button class="mark--medium" id="c_kursA_m4">3</button>
+					<button class="mark--bad" id="c_kursA_m5">2</button>
+				</span>
+			</div>
+			<div class="card-marks">
+				<span class="card-marks__course">&#x41A;&#x443;&#x440;&#x441; &#x431;</span>
+				<span class="card-marks__marks empty">
+					<span>&#x41E;&#x446;&#x435;&#x43D;&#x43E;&#x43A; &#x43D;&#x435;&#x442;<span>
+				</span>
+			</span></span></div>
+		</div>
+		<div class="marks__tooltip">
+			<h5 class="tooltip__heading">hading</h5>
+			<div class="tooltip__results">0%<span>(0 &#x438;&#x437; 0)</span></div>
+			<div class="tooltip__date">date</div>
+		</div>
+	</section>
+	<section class="homework">
+		<h2>&#x417;&#x430;&#x434;&#x430;&#x43D;&#x438;&#x44F;</h2>
+		<div class="subject">
+			<h3>&#x420;&#x443;&#x441;&#x441;&#x43A;&#x438;&#x439; &#x44F;&#x437;&#x44B;&#x43A;</h3>
+			<div class="card-homework">
+				<h4 class="card__heading">&#x412; &#x43A;&#x443;&#x440;&#x441;&#x435; &#x430;</h4>
+				<div class="card-homework__task done">
+					<span><a href="#" class="task__link done">Task 1</a></span>
+				</div>
+				<div class="card-homework__task traditional done">
+					<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13 13-5.832 13-13S23.168 3 16 3zm0 2c6.087 0 11 4.913 11 11s-4.913 11-11 11S5 22.087 5 16 9.913 5 16 5zm6.28 6.28L15 18.564l-4.28-4.282-1.44 1.44 5 5 .72.686.72-.687 8-8-1.44-1.44z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
+					<span>Task 2</span>
+				</div>
+				<div class="card-homework__due-date">
+					&#x414;&#x43E; <strong>12 &#x43D;&#x43E;&#x44F;&#x431;&#x440;&#x44F;</strong>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 <div class="includer">{% include 'JS/layout.html' %}</div>
+<div class="includer">{% include 'JS/humanize.html' %}</div>
+<div class="includer">{% include 'JS/handle-cards.html' %}</div>
+<div class="includer">{% include 'JS/marks-tooltip.html' %}</div>
 </body>
 </html>

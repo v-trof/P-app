@@ -23,8 +23,12 @@ h1,h2,h3,h4
 	flex-direction: row
 	align-items: top
 	justify-content: space-between
-	section
+	&>section
 		width: 100%
 		margin-right: $margin-huge
 		&:last-child
+			margin-right: 0
+	+smartphone
+		flex-direction: column
+		&>section
 			margin-right: 0

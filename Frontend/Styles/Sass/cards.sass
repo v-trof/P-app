@@ -5,6 +5,7 @@
 	background: $white
 	padding: $padding-regular*1.5
 	margin-bottom: $margin-big
+	color: $black
 
 .card__heading
 	font-size: $font-big
@@ -36,8 +37,6 @@
 	transition: $time-regular border-color
 	&.done
 		border-color: $green-bright
-	&>a.done
-		color: $green-dark
 .card-homework__task
 	line-height: 1.5
 	&>svg
@@ -53,6 +52,9 @@
 
 .card-homework__due-date
 	text-align: right
+
+.task__link.done
+	color: $green-dark
 
 .card-marks
 	@extend .card

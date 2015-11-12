@@ -14,6 +14,8 @@
 	box-sizing: border-box
 	align-items: center
 	padding: 0 20px
+	+smartphone
+			justify-content: flex-end
 
 .header__breadcumbs
 	color: $white
@@ -26,6 +28,8 @@
 		margin-bottom: -$size-small/2
 	&>span
 		vertical-align: middle
+	+smartphone
+			display: none
 
 .header__user
 	text-align: right
@@ -47,6 +51,8 @@
 	height: $icon-regular
 	line-height: $icon-regular
 	transition: $time-regular
+	+smartphone
+		display: none
 	&>svg
 		position: absolute
 		width: $icon-small

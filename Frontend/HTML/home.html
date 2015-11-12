@@ -17,7 +17,7 @@
 	</div>
 	<div class="header__search">
 		<img src="../Assets/Icons/search.svg" inline>
-		<input type="text" name="search">
+		<input type="text" name="search" placeholder="Искать...">
 	</div>
 	<div class="header__user">
 		<img src="../Assets/Images/avatar.png" class="user__avatar--small">
@@ -29,36 +29,36 @@
 		<h2>Курсы</h2>
 		<div class="subject">
 			<h3>Русский язык</h3>
-			<div class="card-course">
-				<div class="icons--warning">
-					<img src="../Assets/Icons/in_process.svg" inline>
-				</div>
-				<div class="icons--neutral">
-					<img src="../Assets/Icons/home.svg" inline>
-				</div>
-				<h4 class="card__heading">Курс а</h4>
-				<div class="card__content">
-					Content
-				</div>
-				<div class="messages">
-					<div class="messages__item--warning">
-						WARNING
+				<div class="card-course" onclick="open_course('kursA')">
+					<div class="icons--warning">
+						<img src="../Assets/Icons/in_process.svg" inline>
 					</div>
-					<div class="messages__item--neutral">
-						Just message
+					<div class="icons--neutral">
+						<img src="../Assets/Icons/home.svg" inline>
+					</div>
+					<h4 class="card__heading">Курс а</h4>
+					<div class="card__content">
+						Content
+					</div>
+					<div class="messages">
+						<div class="messages__item--warning">
+							WARNING
+						</div>
+						<div class="messages__item--neutral">
+							Just message
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="card-course">
-				<div class="icons--warning">
+				<div class="card-course">
+					<div class="icons--warning">
+					</div>
+					<div class="icons--neutal">
+					</div>
+					<h4 class="card__heading">Курс б</h4>
+					<div class="card__content">
+						Content
+					</div>
 				</div>
-				<div class="icons--neutal">
-				</div>
-				<h4 class="card__heading">Курс б</h4>
-				<div class="card__content">
-					Content
-				</div>
-			</div>
 		</div>
 	</section>
 	<section class='marks'>
@@ -71,8 +71,8 @@
 					<button class="mark--good">5</button>
 					<button class="mark--good">5/4</button>
 					<button class="mark--good">4</button>
-					<button class="mark--medium" id="c1m4">3</button>
-					<button class="mark--bad">2</button>
+					<button class="mark--medium" id="c_kursA_m4">3</button>
+					<button class="mark--bad" id="c_kursA_m5">2</button>
 				</span>
 			</div>
 			<div class="card-marks">
@@ -83,9 +83,9 @@
 			</div>
 		</div>
 		<div class="marks__tooltip">
-			<h5 class="tooltip__heading">Тест «Палеоназмы»</h5>
-			<div class="tooltip__results">74%<span>(14 из 19)</span></div>
-			<div class="tooltip__date">12 октября 2015</div>
+			<h5 class="tooltip__heading">hading</h5>
+			<div class="tooltip__results">0%<span>(0 из 0)</span></div>
+			<div class="tooltip__date">date</div>
 		</div>
 	</section>
 	<section class='homework'>
@@ -95,9 +95,9 @@
 			<div class="card-homework">
 				<h4 class="card__heading">В курсе а</h4>
 				<div class="card-homework__task done">
-					<span>Task 1</span>
+					<span><a href="#" class="task__link done">Task 1</a></span>
 				</div>
-				<div class="card-homework__task done">
+				<div class="card-homework__task traditional done">
 					<img src="../Assets/Icons/ok.svg" inline>
 					<span>Task 2</span>
 				</div>
@@ -110,12 +110,14 @@
 </div>
 <style dev>
 	*{
-		/*background: rgba(0,255,0,0.1);*/
+		background: rgba(0,255,0,0.1);
 	}
 </style>
 <script src="../Scripts/Min/jquery-2.1.4.min.js">
 </script>
 <script src="../Scripts/Min/layout.js"></script>
-<script src="../Scripts/Min/homework-verify.js"></script>
+<script src="../Scripts/Min/humanize.js"></script>
+<script src="../Scripts/Dev/handle-cards.js"></script>
+<script src="../Scripts/Dev/marks-tooltip.js"></script>
 </body>
 </html>
