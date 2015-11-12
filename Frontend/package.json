@@ -17,10 +17,15 @@
     "gulp-inline-source": "^2.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.0.4",
+<<<<<<< HEAD
     "gulp-uglify": "^1.4.1"
   },
   "dependencies": {
     "p-gulp-wrap-css": "^1.0.5",
     "p-gulp-wrap-js": "^1.0.5"
+=======
+    "gulp-uglify": "^1.4.1",
+    "p-gulp-template": "^1.0.2"
+>>>>>>> refs/remotes/origin/Vsevolod
   }
 }

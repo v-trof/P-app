@@ -13,6 +13,9 @@
 	padding: 0 $padding-regular
 	box-sizing: border-box
 	align-items: center
+	padding: 0 20px
+	+smartphone
+			justify-content: flex-end
 
 .header__breadcumbs
 	color: $white
@@ -25,6 +28,8 @@
 		margin-bottom: -$size-small/2
 	&>span
 		vertical-align: middle
+	+smartphone
+			display: none
 
 .header__user
 	text-align: right
@@ -40,16 +45,18 @@
 	white-space: nowrap
 
 .header__search
-	opacity: 0;
-	width: 0%
+	width: 100%
 	max-width: 40vw
 	margin: 0 5vw
 	height: $icon-regular
 	line-height: $icon-regular
 	transition: $time-regular
+	+smartphone
+		display: none
 	&>svg
 		position: absolute
 		width: $icon-small
+		height: $icon-small
 		fill: $grey-light
 		margin: ($icon-regular - $icon-small)/2
 	&>input
@@ -73,3 +80,5 @@
 			-webkit-box-shadow: inset 0 0 0 50px lighten($grey-dark, 30%) !important
 			-webkit-text-fill-color: $white !important
 			color: $white !important
+body
+	margin-top: 70px
