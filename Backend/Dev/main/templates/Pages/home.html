@@ -1,15 +1,118 @@
-<style type="text/css">body{
-	font-family: "Segoe UI";
-	}</style>
-<style type="text/css">.header{position:fixed;top:0;left:0;width:100%;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-webkit-flex-direction:row;flex-direction:row;background:#373737;height:3.125rem;-webkit-box-pack:justify;-webkit-justify-content:space-between;justify-content:space-between;padding:0 .7rem;box-sizing:border-box;-webkit-box-align:center;-webkit-align-items:center;align-items:center}.header__breadcumbs{color:#fafafa;font-size:1rem;line-height:1.5rem}.header__breadcumbs>svg{fill:gray;width:1rem;vertical-align:middle;margin-bottom:-.2rem}.header__breadcumbs>span{vertical-align:middle}.header__user{text-align:right}.user__avatar--small{width:2rem;height:2rem;border-radius:50%;vertical-align:middle}.user__name{vertical-align:middle;color:#f2f2f2;white-space:nowrap}.header__search{width:100%;max-width:40vw;margin:0 5vw;height:2rem;line-height:2rem;-webkit-transition:.3s;transition:.3s}.header__search>svg{position:absolute;width:1.5rem;fill:#f2f2f2;margin:.25rem}.header__search>input{background:#6a6a6a;display:block;padding-left:2rem;border:none;height:2rem;line-height:2rem;width:100%;-webkit-transition:.3s;transition:.3s;color:#fafafa;font-family:"Segoe UI","Open Sans","San Francisco",Arial,sans-serif;font-size:1rem}.header__search>input:focus,.header__search>input:hover{background:#848484;outline:0;box-shadow:0}.header__search>input:-webkit-autofill{background:#848484!important;-webkit-box-shadow:inset 0 0 0 50px #848484!important;-webkit-text-fill-color:#fafafa!important;color:#fafafa!important}.card{position: absolute;top: 0;left: 0;}.card2{position: absolute;bottom: 0;right: 0;}</style>
-{% include "UI_elements/header.html" with user_name="Всеволод" user_last_name="Трофимов" %}
-{% for i in items100 %}
-	{% include "UI_elements/card.html" %}
-{% endfor %}
-{% for i in items100 %}
-	{% include "UI_elements/card2.html" %}
-{% endfor %}
-{# Backend\Dev\main\templates\UI_elments\header.html #}
-{# Backend/Dev/main/templates/UI_elements/header.html #}
-<div>1</div>
-<div>nfnsnfasn<br>fafsaf</div>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf8">
+	<title>П</title>
+</head>
+<body>
+<div class="includer">{% include 'CSS/main.html' %}</div>
+<div class="includer">{% include 'CSS/home.html' %}</div>
+<div class="includer">{% include 'CSS/header.html' %}</div>
+<div class="includer">{% include 'CSS/cards.html' %}</div>
+<header class="header">
+	<div class="header__breadcumbs">
+	<span>Главная</span>
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M12.97 4.28l-1.44 1.44L21.814 16 11.53 26.28l1.44 1.44 11-11 .686-.72-.687-.72-11-11z"/></svg>
+	</div>
+	<div class="header__search">
+		<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M19.5 3C14.265 3 10 7.265 10 12.5c0 2.25.81 4.307 2.125 5.938L3.28 27.28l1.44 1.44 8.843-8.845C15.192 21.19 17.25 22 19.5 22c5.235 0 9.5-4.265 9.5-9.5S24.735 3 19.5 3zm0 2c4.154 0 7.5 3.346 7.5 7.5S23.654 20 19.5 20 12 16.654 12 12.5 15.346 5 19.5 5z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
+		<input type="text" name="search" placeholder="Искать...">
+	</div>
+	<div class="header__user">
+		<img src="../Assets/Images/avatar.png" class="user__avatar--small">
+		<span class="user__name">Всеволод Трофимов</span>
+	</div>
+</header>
+<div class="content">
+	<section class="courses">
+		<h2>Курсы</h2>
+		<div class="subject">
+			<h3>Русский язык</h3>
+				<div class="card-course" onclick="open_course('kursA')">
+					<div class="icons--warning">
+						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M6 4v20h4v4h16V8h-4V4H6zm2 2h12v16H8V6zm4 2v2h2.563l-3.282 3.28-.686.72.687.72L12.564 16l-2.282 2.28 1.44 1.44 3-3 .686-.72-.687-.72L13.436 14 16 11.437V14h2V8h-6zm10 2h2v16H12v-2h10V10z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
+					</div>
+					<div class="icons--neutral">
+						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M16 2.594l-.72.687-13 13 1.44 1.44L5 16.438V28h9V18h4v10h9V16.437l1.28 1.282 1.44-1.44-13-13-.72-.687zm0 2.844l9 9V26h-5V16h-8v10H7V14.437l9-9z"/></svg>
+					</div>
+					<h4 class="card__heading">Курс а</h4>
+					<div class="card__content">
+						Content
+					</div>
+					<div class="messages">
+						<div class="messages__item--warning">
+							WARNING
+						</div>
+						<div class="messages__item--neutral">
+							Just message
+						</div>
+					</div>
+				</div>
+				<div class="card-course">
+					<div class="icons--warning">
+					</div>
+					<div class="icons--neutal">
+					</div>
+					<h4 class="card__heading">Курс б</h4>
+					<div class="card__content">
+						Content
+					</div>
+				</div>
+		</div>
+	</section>
+	<section class="marks">
+		<h2>Оценки</h2>
+		<div class="subject">
+			<h3>Русский язык</h3>
+			<div class="card-marks">
+				<h4 class="card-marks__course">Курс а</h4>
+				<span class="card-marks__marks">
+					<button class="mark--good">5</button>
+					<button class="mark--good">5/4</button>
+					<button class="mark--good">4</button>
+					<button class="mark--medium" id="c_kursA_m4">3</button>
+					<button class="mark--bad" id="c_kursA_m5">2</button>
+				</span>
+			</div>
+			<div class="card-marks">
+				<span class="card-marks__course">Курс б</span>
+				<span class="card-marks__marks empty">
+					<span>Оценок нет<span>
+				</span>
+			</span></span></div>
+		</div>
+		<div class="marks__tooltip">
+			<h5 class="tooltip__heading">hading</h5>
+			<div class="tooltip__results">0%<span>(0 из 0)</span></div>
+			<div class="tooltip__date">date</div>
+		</div>
+	</section>
+	<section class="homework">
+		<h2>Задания</h2>
+		<div class="subject">
+			<h3>Русский язык</h3>
+			<div class="card-homework">
+				<h4 class="card__heading">В курсе а</h4>
+				<div class="card-homework__task done">
+					<span><a href="#" class="task__link done">Task 1</a></span>
+				</div>
+				<div class="card-homework__task traditional done">
+					<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13 13-5.832 13-13S23.168 3 16 3zm0 2c6.087 0 11 4.913 11 11s-4.913 11-11 11S5 22.087 5 16 9.913 5 16 5zm6.28 6.28L15 18.564l-4.28-4.282-1.44 1.44 5 5 .72.686.72-.687 8-8-1.44-1.44z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
+					<span>Task 2</span>
+				</div>
+				<div class="card-homework__due-date">
+					До <strong>12 ноября</strong>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<div class="includer">{% include 'JS/jquery-2.html' %}</div>
+<div class="includer">{% include 'JS/layout.html' %}</div>
+<div class="includer">{% include 'JS/humanize.html' %}</div>
+<div class="includer">{% include 'JS/handle-cards.html' %}</div>
+<div class="includer">{% include 'JS/marks-tooltip.html' %}</div>
+</body>
+</html>

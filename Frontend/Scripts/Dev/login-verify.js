@@ -1,6 +1,6 @@
 function all_valid(){
 	inputs_valid = true
-	$("input").each(function() {
+	$("input:visible").each(function() {
 		if(!$(this).hasClass('valid')){
 			inputs_valid = false;
 		}
