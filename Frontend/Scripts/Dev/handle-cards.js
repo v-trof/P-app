@@ -27,10 +27,3 @@ $(document).ready(function() {
 	}, 1000);
 	set_traditional_listners();
 });
-
-
-function open_course(url) {
-	url = 'courses/'+url;
-	var win = window.open(url, '_blank');
-	win.focus();
-}

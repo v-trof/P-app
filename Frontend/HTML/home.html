@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href="../Styles/CSS/cards.css">
 <header class="header">
 	<div class="header__breadcumbs">
-	<span>Главная</span>
+	<a href='#'>Главная</a>
 	<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
 	</div>
 	<div class="header__search">
@@ -29,36 +29,40 @@
 		<h2>Курсы</h2>
 		<div class="subject">
 			<h3>Русский язык</h3>
-				<div class="card-course" onclick="open_course('kursA')">
-					<div class="icons--warning">
-						<img src="../Assets/Icons/in_process.svg" inline>
-					</div>
-					<div class="icons--neutral">
-						<img src="../Assets/Icons/home.svg" inline>
-					</div>
-					<h4 class="card__heading">Курс а</h4>
-					<div class="card__content">
-						Content
-					</div>
-					<div class="messages">
-						<div class="messages__item--warning">
-							WARNING
+				<a class="course-link" href="/kursA">
+					<div class="card-course">
+						<div class="icons--warning">
+							<img src="../Assets/Icons/in_process.svg" inline>
 						</div>
-						<div class="messages__item--neutral">
-							Just message
+						<div class="icons--neutral">
+							<img src="../Assets/Icons/home.svg" inline>
+						</div>
+						<h4 class="card__heading">Курс а</h4>
+						<div class="card__content">
+							Content
+						</div>
+						<div class="messages">
+							<div class="messages__item--warning">
+								WARNING
+							</div>
+							<div class="messages__item--neutral">
+								Just message
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="card-course">
-					<div class="icons--warning">
+				</a>
+				<a class="course-link" href="/kursB">
+					<div class="card-course">
+						<div class="icons--warning">
+						</div>
+						<div class="icons--neutal">
+						</div>
+						<h4 class="card__heading">Курс б</h4>
+						<div class="card__content">
+							Content
+						</div>
 					</div>
-					<div class="icons--neutal">
-					</div>
-					<h4 class="card__heading">Курс б</h4>
-					<div class="card__content">
-						Content
-					</div>
-				</div>
+				</a>
 		</div>
 	</section>
 	<section class='marks'>
