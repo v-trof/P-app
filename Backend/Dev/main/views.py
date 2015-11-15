@@ -4,10 +4,10 @@ from django.shortcuts import render
 from django.template import RequestContext
 
 def home(request):
-	return render_to_response('Pages/home.html', context_instance=RequestContext(request))
+	return render('Pages/home.html')
 
 def login(request):
-	return render_to_response('Pages/login.html', context_instance=RequestContext(request))
+	return render('Pages/login.html')
 
 def register_student(request):
-	return render_to_response('Pages/registration.html', context_instance=RequestContext(request))
+	return render('Pages/registration.html')
