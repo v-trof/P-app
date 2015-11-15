@@ -1,0 +1,39 @@
+<a class="course-link" href="{{course.teacher}}/courses/{{course.title_lat}}">
+	<div class="card-course">
+		<div class="icons--warning">
+		</div>
+		<div class="icons--neutral">
+		</div>
+		<h4 class="card__heading">{{course.title}}</h4>
+		<div class="card__content">
+			<span>
+				{% if course.tests.total %}
+					Пройдено <strong>{{course.tests.done}}</strong> тестов из <strong>{{course.tests.total}}</strong>
+				{% else %}
+					Тестов <strong>нет</strong>
+				{% endif %}
+			</span>
+			<br>	
+			<span>
+				{% if course.materials.total %}
+					Просмотрено <strong>{{course.materials.done}}</strong> материалов из <strong>{{course.materials.total}}</strong>
+				{% else %}
+					Материалов <strong>нет</strong>
+				{% endif %}
+			</span>
+		</div>
+		<div class="messages">
+			{% for message in course.messages.warning %}
+				<div class="messages__item--warning">
+					{{message}}
+				</div>
+			{% endfor %}
+
+			{% for message in course.messages.neutral %}
+				<div class="messages__item--neutral">
+					{{message}}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</a>

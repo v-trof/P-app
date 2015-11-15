@@ -12,7 +12,7 @@
 <div class="includer">{% include 'CSS/cards.html' %}</div>
 <header class="header">
 	<div class="header__breadcumbs">
-	<span>Главная</span>
+	<a href="#">Главная</a>
 	<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
 	</div>
 	<div class="header__search">
@@ -29,36 +29,40 @@
 		<h2>Курсы</h2>
 		<div class="subject">
 			<h3>Русский язык</h3>
-				<div class="card-course" onclick="open_course('kursA')">
-					<div class="icons--warning">
-						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M6 4v20h4v4h16V8h-4V4H6zm2 2h12v16H8V6zm4 2v2h2.563l-3.282 3.28-.686.72.687.72L12.564 16l-2.282 2.28 1.44 1.44 3-3 .686-.72-.687-.72L13.436 14 16 11.437V14h2V8h-6zm10 2h2v16H12v-2h10V10z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
-					</div>
-					<div class="icons--neutral">
-						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M16 2.594l-.72.687-13 13 1.44 1.44L5 16.438V28h9V18h4v10h9V16.437l1.28 1.282 1.44-1.44-13-13-.72-.687zm0 2.844l9 9V26h-5V16h-8v10H7V14.437l9-9z"/></svg>
-					</div>
-					<h4 class="card__heading">Курс а</h4>
-					<div class="card__content">
-						Content
-					</div>
-					<div class="messages">
-						<div class="messages__item--warning">
-							WARNING
+				<a class="course-link" href="/kursA">
+					<div class="card-course">
+						<div class="icons--warning">
+							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M6 4v20h4v4h16V8h-4V4H6zm2 2h12v16H8V6zm4 2v2h2.563l-3.282 3.28-.686.72.687.72L12.564 16l-2.282 2.28 1.44 1.44 3-3 .686-.72-.687-.72L13.436 14 16 11.437V14h2V8h-6zm10 2h2v16H12v-2h10V10z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
 						</div>
-						<div class="messages__item--neutral">
-							Just message
+						<div class="icons--neutral">
+							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M16 2.594l-.72.687-13 13 1.44 1.44L5 16.438V28h9V18h4v10h9V16.437l1.28 1.282 1.44-1.44-13-13-.72-.687zm0 2.844l9 9V26h-5V16h-8v10H7V14.437l9-9z"/></svg>
+						</div>
+						<h4 class="card__heading">Курс а</h4>
+						<div class="card__content">
+							Content
+						</div>
+						<div class="messages">
+							<div class="messages__item--warning">
+								WARNING
+							</div>
+							<div class="messages__item--neutral">
+								Just message
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="card-course">
-					<div class="icons--warning">
+				</a>
+				<a class="course-link" href="/kursB">
+					<div class="card-course">
+						<div class="icons--warning">
+						</div>
+						<div class="icons--neutal">
+						</div>
+						<h4 class="card__heading">Курс б</h4>
+						<div class="card__content">
+							Content
+						</div>
 					</div>
-					<div class="icons--neutal">
-					</div>
-					<h4 class="card__heading">Курс б</h4>
-					<div class="card__content">
-						Content
-					</div>
-				</div>
+				</a>
 		</div>
 	</section>
 	<section class="marks">
@@ -83,7 +87,7 @@
 			</span></span></div>
 		</div>
 		<div class="marks__tooltip">
-			<h5 class="tooltip__heading">hading</h5>
+			<h5 class="tooltip__heading">heading</h5>
 			<div class="tooltip__results">0%<span>(0 из 0)</span></div>
 			<div class="tooltip__date">date</div>
 		</div>

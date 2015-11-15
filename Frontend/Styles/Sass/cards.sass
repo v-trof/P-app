@@ -15,10 +15,13 @@
 .card-course
 	@extend .card
 	&>.messages
-		margin-top: $margin-big
 		&>.messages__item--warning
+			&:first-child
+				margin-top: $margin-big
 			color: $red-bright
 		&>.messages__item--neutral
+			&:first-child
+				margin-top: $margin-big
 			color: $blue-dark
 	&>.icons--warning,&>.icons--neutral
 		float: right

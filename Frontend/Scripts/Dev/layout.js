@@ -1,16 +1,16 @@
 "use strict";
 function build_header(){
-	var breadubs_w = $(".header__breadcumbs").innerWidth();
+	var breadcumbs_w = $(".header__breadcumbs").innerWidth();
 	var user_w = $(".header__user").innerWidth();
 	var header_w = $(".header").innerWidth();
-	if(breadubs_w>user_w){
-		$(".header__user").css('width', breadubs_w+"px");
-		$(".header__breadcumbs").css('width', breadubs_w+"px");
-		user_w=breadubs_w;
+	if(breadcumbs_w>user_w){
+		$(".header__user").css('width', breadcumbs_w+10+"px");
+		$(".header__breadcumbs").css('width', breadcumbs_w+10+"px");
+		user_w=breadcumbs_w;
 	} else {
-		$(".header__breadcumbs").css('width', user_w+"px");
-		$(".header__user").css('width', user_w+"px");
-		breadubs_w=user_w;
+		$(".header__breadcumbs").css('width', user_w+10+"px");
+		$(".header__user").css('width', user_w+10+"px");
+		breadcumbs_w=user_w;
 	}
 	
 	$(".header__search").css("width","100%");

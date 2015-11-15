@@ -1,0 +1,43 @@
+<div class="card-homework">
+	<h4 class="card__heading">В курсе {{assignment.course_title}}</h4>
+	{% for task in assignment.tasks %}
+		{% if task.traditional %}
+			{% if task.done %}
+				<div class="card-homework__task traditional done">
+			{% else %}
+				<div class="card-homework__task traditional">
+			{% endif %}
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13 13-5.832 13-13S23.168 3 16 3zm0 2c6.087 0 11 4.913 11 11s-4.913 11-11 11S5 22.087 5 16 9.913 5 16 5zm6.28 6.28L15 18.564l-4.28-4.282-1.44 1.44 5 5 .72.686.72-.687 8-8-1.44-1.44z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
+			<span>{{task.content}}</span>
+		{% else %}
+			{% if task.done %}
+				<div class="card-homework__task done">
+			{% else %}
+				<div class="card-homework__task">
+			{% endif %}
+			{% if task.content.materials|length > 0 %}
+				<span>Материалы для ознакомления:
+				{% for material in task.content.materials %}
+					<a href='{{assignment.teacher}}/{{assignment.course_title_lat}}/{material.link}}' class='task__link 
+					{% if material.done %} done {% endif %}'>
+					{{material.title}}</a>{% if not forloop.last %},{% endif %}
+				{% endfor %}
+				</span>
+				<br>
+			{% endif %}
+			{% if task.content.tests|length > 0 %}
+				<span>Тесты:
+				{% for test in task.content.tests %}
+					<a href='{{assignment.teacher}}/{{assignment.course_title_lat}}/{{test.link}}' class='task__link 
+					{% if test.done %} done {% endif %}'>
+					{{test.title}}</a>{% if not forloop.last %},{% endif %}
+				{% endfor %}
+				</span>
+			{% endif %}
+		{% endif %}
+		</div>
+	{% endfor %}
+	<div class="card-homework__due-date">
+		До <strong>{{assignment.due_date}}</strong>
+	</div>
+</div>
