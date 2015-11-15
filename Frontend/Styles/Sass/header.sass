@@ -18,7 +18,6 @@
 			justify-content: flex-end
 
 .header__breadcumbs
-	color: $white
 	font-size: $font-regular
 	line-height: $line-regular
 	&>svg
@@ -26,8 +25,12 @@
 		width: $icon-tiny
 		vertical-align: middle
 		margin-bottom: -$size-small/2
-	&>span
+	&>a
 		vertical-align: middle
+		color: $white
+		text-decoration: none
+		&:hover
+			color: $blue-dim
 	+smartphone
 			display: none
 

@@ -1,13 +1,14 @@
-from django.http import HttpResponse
-from django.shortcuts import render_to_response
 from django.shortcuts import render
-from django.template import RequestContext
+from django.template import Context
 
 def home(request):
-	return render('Pages/home.html')
+	user = {"name": "Имя", "last_name":"Фамилия"}
+	breadcumbs = [{"href":"av","link":"alalalal"},{"href":"a","link":"b"}]
+	context = Context({"user" : user, "breadcumbs" : breadcumbs})
+	return render(request,'Pages/home.html',context)
 
 def login(request):
-	return render('Pages/login.html')
+	return render(request,'Pages/login.html')
 
 def register_student(request):
-	return render('Pages/registration.html')
+	return render(request,'Pages/registration.html')
