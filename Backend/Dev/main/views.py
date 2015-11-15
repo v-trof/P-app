@@ -1,8 +1,13 @@
+from django.http import HttpResponse
+from django.shortcuts import render_to_response
 from django.shortcuts import render
+from django.template import RequestContext
 
 def home(request):
-	items100 = []
-	for i in range(500):
-		items100.append(i)
-	context = {"items100":items100}
-	return render(request, 'Pages/home.html', context)
+	return render_to_response('HTML/login.html', context_instance=RequestContext(request))
+
+def login(request):
+	return render_to_response('HTML/login.html', context_instance=RequestContext(request))
+
+def register_student(request):
+	return render_to_response('HTML/registration.html', context_instance=RequestContext(request))

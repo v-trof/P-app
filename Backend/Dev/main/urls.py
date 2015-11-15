@@ -16,8 +16,17 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from . import views
+from . import func_views
+
+func_patterns = [
+    url(r'^login/$', func_views.login),
+   	url(r'^reg/$' , func_views.reg),
+]
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-   	url(r'^$' , views.home, name='home' ),
+   	url(r'^$', views.home),
+   	url(r'^login/$', views.login),
+   	url(r'^register_student/$' , views.register_student),
+   	url(r'^func/' , include(func_patterns)),
 ]
