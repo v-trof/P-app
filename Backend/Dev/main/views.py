@@ -28,7 +28,6 @@ def home(request):
 				}
 			]
 		},
-
 	]
 	homework = [
 		{
