@@ -32,3 +32,10 @@ body
 	bottom: $margin-big
 	width: 100%
 	text-align: center
+	transition: $time-regular
+	&>a
+		margin-left: $margin-big
+		&:first-child
+			margin-left: 0
+	+short-screen
+		bottom: -$margin-big

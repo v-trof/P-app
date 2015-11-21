@@ -28,5 +28,6 @@ urlpatterns = [
    	url(r'^$', views.home),
    	url(r'^login/$', views.login),
    	url(r'^register_student/$' , views.register_student),
+    url(r'^forgot_password/$' , views.forgot_password),
    	url(r'^func/' , include(func_patterns)),
 ]
