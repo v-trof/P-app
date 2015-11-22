@@ -1,28 +1,65 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.shortcuts import render
 from django.template import RequestContext
-
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect
+from .models import User, LoginForm, RegForm
+from django.db import models
+from django.shortcuts import redirect
+from django.contrib.auth import authenticate, login as auth
 def login(request):
-        email = request.POST.get('email', False)
-        password = request.POST.get('password', False)
-        from django.contrib.auth import authenticate
-        user = authenticate(username=email, password=password)
-        print(email, password)
-        if user is not None:
-                if user.is_active:
-                        return render(request,'Pages/home.html')
-                else:
-                        print("The password is valid, but the account has been disabled!")
+        def errorHandle(error):
+                form = LoginForm()
+                return render(request,'Pages/login.html', {
+                                'error' : error,
+                                'form' : form,
+                })
+        if request.method == 'POST':
+                form = LoginForm(request.POST)
+                if form.is_valid():
+                        email = request.POST['email']
+                        password = request.POST['password']
+                        user = authenticate(username=email, password=password)
+                        if user is not None:
+                                if user.is_active:
+                                        auth(request, user)
+                                        request.session.set_expiry(0)
+                                        return redirect('/')
+                                else:
+                                        error = u'Аккаунт отключен'
+                                        return errorHandle(error)
+                        else:
+                                error = u'Неверный логин или пароль'
+                                return errorHandle(error)
+                else: 
+                        error = u'Форма незаполнена'
+                        return errorHandle(error)               
         else:
-                print("The username and password were incorrect.")
-                return render(request,'Pages/login.html')
+                form = LoginForm()
+                return render(request,'Pages/login.html', {
+                        'form': form,
+                })
 
 def reg(request):
-        name = request.POST.get('name_last_name', False)
-        email = request.POST.get('email', False)
-        password = request.POST.get('password', False)   
-        from django.contrib.auth.models import User
-        user = User.objects.create_user(name, email, password)
-        user.save()
-        return render(request,'Pages/home.html')
+        if request.method == 'POST':
+                form = RegForm(request.POST)
+                if form.is_valid():
+                        email = request.POST['email']
+                        password = request.POST['password']
+                        user = User.objects.create_user(username=email, email=email, password=password)
+                        if user is not None:
+                                user.save
+                                return redirect('/')
+                        else:
+                                error = u'Неверный логин или пароль'
+                                return errorHandle(error)
+                else: 
+                        error = u'Форма незаполнена'
+                        return errorHandle(error)               
+        else:
+                form = LoginForm()
+                return render_to_response('Pages/login.html', {
+                        'form': form,
+                })

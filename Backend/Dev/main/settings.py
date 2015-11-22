@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'main',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -48,6 +49,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+)
+
+AUTHENTICATION_BACKENDS = (
+    'main.auth_backends.UserModelBackend',
 )
 
 ROOT_URLCONF = 'main.urls'
@@ -70,6 +75,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
+AUTH_USER_MODEL = 'main.User'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -85,7 +92,12 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
+
+LANGUAGES = (
+    ('ru', 'Russian'),
+    ('en', 'English'),
+    )
 
 TIME_ZONE = 'UTC'
 
@@ -100,3 +112,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SESSION_COOKIE_AGE = 60

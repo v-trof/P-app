@@ -26,7 +26,6 @@ func_patterns = [
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
    	url(r'^$', views.home),
-   	url(r'^login/$', views.login),
    	url(r'^register_student/$' , views.register_student),
    	url(r'^func/' , include(func_patterns)),
 ]

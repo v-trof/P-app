@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.template import Context
-
 def home(request):
 	#sample data
 	user = {"name": "Имя", "last_name": "Фамилия"}
@@ -75,8 +75,11 @@ def home(request):
 	context = Context({"user": user, "breadcumbs": breadcumbs, "courses": courses, "homework": homework})
 	return render(request,'Pages/home.html',context)
 
-def login(request):
-	return render(request,'Pages/login.html')
-
 def register_student(request):
 	return render(request,'Pages/registration.html')
+
+def home(request):
+		if request.user.is_authenticated():
+    			return render(request,'Pages/home.html')
+		else:
+				return render(request,'Pages/login.html')

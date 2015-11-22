@@ -14,6 +14,9 @@
 	<div class="content">
 		<div class="login-box">
 			<h1>Регистрация</h1>
+			{% if error %}
+			<script>notification.change('error','Login error','{{ error }}' ); console.log("error");</script>
+			{% endif %}
 			<form class="login-box--form" action="/func/reg/" method="post">
 			{% csrf_token %}
 				<input type="Text" name="name_last_name" placeholder="Имя Фамилия" class="input__placeholder-label"><label for="name_last_name"></label><br>
@@ -32,14 +35,14 @@
 	<footer class='footer'>
 		<a href="../login/">Вход</a>
 	</footer>
-	{%include 'CSS/login.html' %}
-	{%include 'CSS/main.html' %}
-	{%include 'CSS/inputs.html' %}
-	{%include 'CSS/notifications.html' %}
-	{%include 'CSS/animations.html' %}
+	<div class="includer">{% include 'CSS/login.html' %}</div>
+	<div class="includer">{% include 'CSS/main.html' %}</div>
+	<div class="includer">{% include 'CSS/inputs.html' %}</div>
+	<div class="includer">{% include 'CSS/notifications.html' %}</div>
+	<div class="includer">{% include 'CSS/animations.html' %}</div>
 	{%include 'JS/jquery-2.html'%}
-	{%include 'JS/login-verify.html' %}
-	{%include 'JS/notification.html' %}
+	<div class="includer">{% include 'JS/Dev/login-verify.html' %}</div>
+	<div class="includer">{% include 'JS/Dev/notification.html' %}</div>
 	
 </body>
 </html>
