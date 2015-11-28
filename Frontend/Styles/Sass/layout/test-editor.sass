@@ -1,0 +1,39 @@
+@import "../vars"
+body
+	margin: 0 !important
+.editor
+	display: flex
+	flex-direction: row
+	width: 100%
+
+.question-elements,.answer-elements
+	background: $grey-mid
+.question-elements,.answer-elements,.test-preview
+	height: 100vh
+	padding: $block-regular + $padding-big $padding-big $padding-big $padding-big
+
+.question-elements
+	&>div
+		width: 16rem
+
+.test-preview
+	width: 100%
+	background: $white
+	display: flex
+	flex-direction: column
+	justify-content: top
+	align-items: center
+.test__task
+	display: flex
+	flex-direction: row
+	justify-content: center
+.task__number
+	width: 10vw
+	text-align: center
+	font-size: $font-huge
+.task__content
+	width: 40vw
+	margin-right: 10vw 
+.task__answer
+	input
+		width: 100%

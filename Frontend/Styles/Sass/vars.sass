@@ -26,7 +26,7 @@ $blue-dark      : #2e498f
 //paddings
 $padding-small: .4rem
 $padding-regular: .7rem
-$padding-big: 1.5rem
+$padding-big: 1.25rem
 $padding-huge: 2rem
 //margins
 $margin-regular: .6rem
@@ -88,3 +88,11 @@ $time-big: .5s
 =short-screen()
 	@media only screen and (max-height: 350px)
 		@content
+
+
+=card()
+	border: 3px solid $grey-semilight
+	background: $white
+	padding: $padding-regular*1.5
+	margin-bottom: $margin-big
+	color: $black

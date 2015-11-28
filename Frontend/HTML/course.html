@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf8">
+	<title>Курс А</title>
+</head>
+<body>
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/main.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/layout/course.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/header.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/cards.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/notification.css">
+	<div class="notification__error hidden" id="notification">
+		<div class="notification__heading">
+			<img src="../Assets/Icons/info.svg" inline>
+			<h3>s error</h3>
+		</div>
+		<span class="notification__content">s text</span>
+	</div>
+	<header class="header">
+		<div class="header__breadcumbs">
+		<a href='#'>Главная</a>
+		<img src="../Assets/Icons/angle_right.svg" inline>
+		<a href='#'>Курс А</a>
+		<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
+		</div>
+		<div class="header__search">
+			<img src="../Assets/Icons/search.svg" inline>
+			<input type="text" name="search" placeholder="Искать...">
+		</div>
+		<div class="header__user">
+			<img src="../Assets/Images/avatar.png" class="user__avatar--small">
+			<span class="user__name">Всеволод Трофимов</span>
+		</div>
+	</header>
+	
+	<div class="content">
+		<section>
+			<h3>Ким ЕГЭ 2015</h3>
+			<a class="course-element-link--card" href="/kursA">
+				<div class="card-course-element done">
+					<div class="icons--warning">
+						<img src="../Assets/Icons/in_process.svg" inline>
+					</div>
+					<div class="icons--neutral">
+						<img src="../Assets/Icons/home.svg" inline>
+					</div>
+					<h4 class="card__heading">Ким 1</h4>
+					<div class="card__content">
+						Content
+					</div>
+					<div class="messages">
+						<div class="messages__item--warning">
+							WARNING
+						</div>
+						<div class="messages__item--neutral">
+							Just message
+						</div>
+					</div>
+				</div>
+			</a>
+		</section>
+	</div>
+	<style dev>
+		*{
+			/*background: rgba(0,255,0,0.1);*/
+		}
+	</style>
+</body>
+</html>

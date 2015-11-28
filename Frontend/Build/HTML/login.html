@@ -14,9 +14,8 @@
 	<div class="content">
 		<div class="login-box">
 			<h1>Вход</h1>
-			<form class="login-box--form">
+			<form class="login-box--form" action="/func/reg/" method="post">
 				<input type="email" name="email" placeholder="email@domain.zone" class="input__placeholder-label"><label for="email"></label><br>
-
 				<input type="password" name="password" placeholder="Пароль" class="input__placeholder-label" pattern=".{8,}"><label for="password"></label><br>
 
 				<button class="button__proceed" disabled>
@@ -33,7 +32,7 @@
 	<div class="includer">{% include 'CSS/login.html' %}</div>
 	<div class="includer">{% include 'CSS/main.html' %}</div>
 	<div class="includer">{% include 'CSS/inputs.html' %}</div>
-	<div class="includer">{% include 'CSS/notifications.html' %}</div>
+	<div class="includer">{% include 'CSS/notification.html' %}</div>
 	<div class="includer">{% include 'CSS/animations.html' %}</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<div class="includer">{% include 'JS/login-verify.html' %}</div>

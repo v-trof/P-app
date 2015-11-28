@@ -19,6 +19,8 @@ var mark_descriptions = {
 		}
 	}
 }
+
+
 //realcode
 function get_description(mark){
 	console.log(mark_descriptions);

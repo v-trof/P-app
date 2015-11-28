@@ -6,6 +6,11 @@
 	<title>Вход</title>
 </head>
 <body>
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/layout/login.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/main.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/inputs.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/notification.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/animations.css">
 	<div class="notification__error hidden" id="notification">
 		<img src="../Assets/Icons/info.svg" inline>
 		<h3>s error</h3>
@@ -15,8 +20,8 @@
 		<div class="login-box">
 			<h1>Вход</h1>
 			<form class="login-box--form" action="/func/reg/" method="post">
-				<input type="email" name="email" placeholder="email@domain.zone" class="input__placeholder-label"><label for="email"></label><br>
-				<input type="password" name="password" placeholder="Пароль" class="input__placeholder-label" pattern=".{8,}"><label for="password"></label><br>
+				<input type="email" name="email" placeholder="email@domain.zone" class="input__placeholder-label"><label for="email"></label>
+				<input type="password" name="password" placeholder="Пароль" class="input__placeholder-label" pattern=".{8,}"><label for="password"></label>
 
 				<button class="button__proceed" disabled>
 					<span>Далее</span>
@@ -29,13 +34,14 @@
 		<a href="register_student/">Регистрация</a>
 		<a href="forgot_password/">Забыли пароль?</a>
 	</footer>
-	<link rel="stylesheet" type="text/css" href="../Styles/CSS/login.css">
-	<link rel="stylesheet" type="text/css" href="../Styles/CSS/main.css">
-	<link rel="stylesheet" type="text/css" href="../Styles/CSS/inputs.css">
-	<link rel="stylesheet" type="text/css" href="../Styles/CSS/notifications.css">
-	<link rel="stylesheet" type="text/css" href="../Styles/CSS/animations.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="../Scripts/Min/jquery-2.1.4.min.js">
+		</script>
 	<script type="text/javascript" src="../Scripts/Min/login-verify.js"></script>
 	<script type="text/javascript" src="../Scripts/Min/notification.js"></script>
+	<style dev>
+		*{
+			background: rgba(0,255,0,0.1);
+		}
+	</style>
 </body>
 </html>

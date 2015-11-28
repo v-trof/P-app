@@ -1,0 +1,44 @@
+@import "../vars"
+
+=notification($background,$color)
+	background: $background
+	&>h3
+		color: $color
+	&>svg
+		fill : $color
+
+#notification
+	transition: $time-regular
+	position: fixed
+	top: 0
+	left: 0
+	width: 100%
+	display: flex
+	flex-direction: row
+	align-items: center
+	padding: 0 $padding-small
+	height: $block-regular
+	text-align: center
+	&.hidden
+		opacity: 0
+		top: -$margin-huge
+	& a
+		color: inherit
+		&:visited
+			color: inherit
+
+.notification__error
+	+notification($red-dim,$red-dark)
+	color: $white
+
+.notification__warning
+	+notification($yellow-dim,$yellow-dark)
+	color: $black
+
+.notification__success
+	+notification($green-dim,$green-dark)
+	color: $black
+
+.notification__info
+	+notification($blue-dim,$blue-dark)
+	color: $black

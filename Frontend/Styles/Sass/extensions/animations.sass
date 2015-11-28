@@ -1,0 +1,50 @@
+@import "../vars"
+
+@keyframes fade-from-bottom
+	0%
+		transform: translateY($margin-huge)
+		opacity: 0
+	100%
+		transform: translateY(0)
+		opacity: 1
+
+@keyframes fade-from-top
+	0%
+		transform: translateY(-$margin-huge)
+		opacity: 0
+	100%
+		transform: translateY(0)
+		opacity: 1
+
+@keyframes fade-from-left
+	0%
+		transform: translateX(-$margin-huge)
+		opacity: 0
+	100%
+		transform: translateY(0)
+		opacity: 1
+
+@keyframes fade-from-right
+	0%
+		transform: translateX($margin-huge)
+		opacity: 0
+	100%
+		transform: translateY(0)
+		opacity: 1
+
+//semifades
+=semi-fade-to-bottom
+	transform: translateY($margin-huge/2)
+	opacity: 0.5
+
+=semi-fade-to-top
+	transform: translateY(-$margin-huge/2)
+	opacity: 0.5
+
+=semi-fade-to-left
+	transform: translateX(-$margin-huge/2)
+	opacity: 0.5
+
+=semi-fade-to-right
+	transform: translateX($margin-huge/2)
+	opacity: 0.5

@@ -16,8 +16,13 @@ var notification = {
 	},
 	show: function(){
 		$("#notification").removeClass('hidden');
+		$(".header").css("transform","translateY(3.125rem)");
+		$("#notification").click(function(event) {
+			notification.hide();
+		});
 	},
 	hide: function(){
 		$("#notification").addClass('hidden');
+		$(".header").css("transform","");
 	}
 } 
