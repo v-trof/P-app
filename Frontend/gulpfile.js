@@ -25,7 +25,7 @@ gulp.task('sass_to_css', function () {
 		.pipe(cleancss())
 		.pipe(gulp.dest('./Styles/CSS'));
 
-	gulp.src('./Styles/Sass/*.sass')
+	gulp.src('./Styles/Sass/main.sass')
 		.pipe(sass({outputStyle: 'compressed'}))
 		.pipe(autoprefixer({
 			browsers: ['> 5%']
@@ -77,7 +77,7 @@ gulp.task('sass_test', function () {
 gulp.task('watch', function() {
   gulp.watch("./Scripts/Dev/*.js", ['minjs','test_build']);
   gulp.watch("./Styles/Sass/*/*.sass", ['sass_to_css','test_build']);
-  gulp.watch("./Styles/Sass/*.sass", ['sass_to_css','test_build']);
+  gulp.watch("./Styles/Sass/main.sass", ['sass_to_css','test_build']);
   gulp.watch("./HTML/*.html", ['test_build']);
 });
 

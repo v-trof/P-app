@@ -90,9 +90,26 @@ $time-big: .5s
 		@content
 
 
-=card()
+=card()			
+	+animation("fade-from-right")
 	border: 3px solid $grey-semilight
 	background: $white
 	padding: $padding-regular*1.5
 	margin-bottom: $margin-big
 	color: $black
+
+=scrollbar()
+	html
+		::-webkit-scrollbar,::-webkit-scrollbar-track
+			background: transparent
+			width: 5px
+
+		::-webkit-scrollbar-button
+			display: none
+
+		::-webkit-scrollbar-thumb 
+			transition: $time-regular
+			background: rgba($grey-dark, .33)
+			width: 5px
+			&:hover
+				background: rgba($blue-bright, .33)

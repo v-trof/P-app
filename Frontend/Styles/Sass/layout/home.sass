@@ -1,6 +1,8 @@
 @import "../vars"
 @import "../extensions/animations"
 
++scrollbar()
+
 body
 	padding: 0 $padding-big
 
@@ -11,6 +13,7 @@ body
 	align-items: top
 	justify-content: space-between
 	&>section
+		// height: calc(100vh - 70px)
 		width: 100%
 		margin-right: $margin-huge
 		&:last-child

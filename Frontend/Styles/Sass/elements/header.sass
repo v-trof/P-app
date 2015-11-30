@@ -1,10 +1,12 @@
 @import "../vars"
 
 .header
+	// +animation("fade-from-top")
 	position: fixed
 	top: 0
 	left: 0
 	width: 100%
+	z-index: 999
 	display: flex
 	flex-direction: row
 	background: $grey-dark
@@ -50,7 +52,7 @@
 
 .header__search
 	width: 100%
-	max-width: 40vw
+	max-width: 50rem
 	margin: 0 5vw
 	height: $icon-regular
 	line-height: $icon-regular
@@ -84,5 +86,5 @@
 			-webkit-box-shadow: inset 0 0 0 50px lighten($grey-dark, 30%) !important
 			-webkit-text-fill-color: $white !important
 			color: $white !important
-body
-	margin-top: 70px
+.content
+	margin-top: 50px
