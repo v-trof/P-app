@@ -1,29 +1,176 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf8">
 	<title>Styleguide</title>
 </head>
 <body>
-	<h1>Styleguide</h1>
-	<section>
-		<h2>Inputs</h2>
-		<div class="col-50">
-		<input class="input__placeholder-label" placeholder="enabled"><label></label>
-		</div>
-		<div class="col-50">
-		<input class="input__placeholder-label" placeholder="disabled" disabled><label></label>
-		</div>
-	</section>
-
-	<section>
-		<h2>Buttons</h2>
-	</section>
-
-	<section>
-		<h2>Other elements</h2>
-	</section>
-	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/grid.css">
+	<style>
+		.card-course .card__content{
+			display: flex;
+			flex-direction: row;
+			justify-content: left;
+			flex-wrap: nowrap;
+			align-items: center;
+		}
+		.color-preview{
+			height: 5rem;
+			width: 5rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-right: 1rem;
+		}
+	</style>
 	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/main.css">
-	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/inputs.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/layout/home.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/cards.css">
+	<div class="content">
+		<section class='content-colors'>
+			<h2>Colors</h2>
+			<div class="card-course">
+				<h4 class="card__heading">$white</h4>
+				<div class="card__content">
+					<div class="color-preview" style="background:#fafafa">
+						#fafafa
+					</div>
+					<div>
+						Borders of static elements
+						<br>
+						Backgrounds
+					</div>
+				</div>
+			</div>
+			
+			<div class="card-course">
+				<h4 class="card__heading">$grey-light</h4>
+				<div class="card__content">
+					<div class="color-preview" style="background:#f2f2f2">
+						#f2f2f2
+					</div>
+					<div>
+						Text on dark background
+						<br>
+						Background of card-focused page
+					</div>
+				</div>
+			</div>
+
+			<div class="card-course">
+				<h4 class="card__heading">$grey-semilight</h4>
+				<div class="card__content">
+					<div class="color-preview" style="background:#e6e6e6">
+						#e6e6e6
+					</div>
+					<div>
+						Borders of interactive elements
+						<br>
+						Backkgound of elements, that are appering time to time
+					</div>
+				</div>
+			</div>
+
+			<div class="card-course">
+				<h4 class="card__heading">$grey-mid</h4>
+				<div class="card__content">
+					<div class="color-preview" style="background:#cacaca">
+						#cacaca
+					</div>
+					<div>Text and icons of disabled elements</div>
+				</div>
+			</div>
+
+			<div class="card-course">
+				<h4 class="card__heading">$grey-dark</h4>
+				<div class="card__content">
+					<div class="color-preview" style="background:#373737;color:#f2f2f2">
+						#373737
+					</div>
+					<div>Text and icons of interactive elements</div>
+				</div>
+			</div>
+
+			<div class="card-course">
+				<h4 class="card__heading">$black</h4>
+				<div class="card__content">
+					<div class="color-preview" style="background:#0f0f0f;color:#f2f2f2">
+						#0f0f0f
+					</div>
+					<div>Text of static elements</div>
+				</div>
+			</div>
+
+			<div class="card-course">
+				<h4 class="card__heading">$blue-bright</h4>
+				<div class="card__content">
+					<div class="color-preview" style="background:#4670dc;color:#f2f2f2">
+						#4670dc
+					</div>
+					<div>"Interaction is possible" state</div>
+				</div>
+			</div>
+			
+			<div class="card-course">
+				<h4 class="card__heading">$red-bright</h4>
+				<div class="card__content">
+					<div class="color-preview" style="background:#e20e0e;color:#f2f2f2">
+						#e20e0e
+					</div>
+					<div>Warning</div>
+				</div>
+			</div>
+			
+			<div class="card-course">
+				<h4 class="card__heading">$green-bright</h4>
+				<div class="card__content">
+					<div class="color-preview" style="background:#1bbd1b;color:#f2f2f2">
+						#1bbd1b
+					</div>
+					<div>Done, Good, etc</div>
+				</div>
+			</div>
+
+			<div class="card-course">
+				<h4 class="card__heading">$%colorname%-dim</h4>
+				<div class="card__content">
+					<div class="color-preview" style="background:#ffeb3b;color:#373737">
+						#ffeb3b
+					</div>
+					<div class="color-preview" style="background:#6cd96c;color:#373737">
+						#6cd96c
+					</div>
+					<div class="color-preview" style="background:#ec493d;color:#373737">
+						#ec493d
+					</div>
+					<div class="color-preview" style="background:#8eb7fb;color:#373737">
+						#8eb7fb
+					</div>
+					<div>Notification backgrounds</div>
+				</div>
+			</div>
+			
+			<div class="card-course">
+				<h4 class="card__heading">$%colorname%-dark</h4>
+				<div class="card__content">
+					<div class="color-preview" style="background:#975405;color:#f2f2f2">
+						#975405
+					</div>
+					<div class="color-preview" style="background:#1a801a;color:#f2f2f2">
+						#1a801a
+					</div>
+					<div class="color-preview" style="background:#800000;color:#f2f2f2">
+						#800000
+					</div>
+					<div class="color-preview" style="background:#2e498f;color:#f2f2f2">
+						#2e498f
+					</div>
+					<div>Notification text and icons</div>
+				</div>
+			</div>
+
+		</section>
+		<section class='inputs'>
+			<h2>Поля ввода</h2>
+		</section>
 </body>
 </html>

@@ -6,7 +6,7 @@
 	margin-top: 0
 
 
-.course-link--card,.course-element-link--card
+.course-link--card,.course-element-link--card,.group-link--card
 	text-decoration: none
 	color: $black
 
@@ -127,3 +127,54 @@
 	@extend .card-course
 	&.done
 		border-color: $green-bright
+
+
+.card-fab
+	+card()
+	position: fixed
+	right: $margin-huge
+	bottom: $margin-huge
+	margin-bottom: 0
+
+	border-radius: 50%
+	padding: $padding-regular
+
+	height: $icon-regular
+	width: $icon-regular
+
+	box-sizing: content-box
+	transition: $time-regular
+	&>svg
+		transition: $time-regular
+		height: $icon-regular
+		width: $icon-regular
+		fill: $grey-mid
+	&:hover
+		border-color: $blue-bright
+		&>svg
+			fill: $blue-bright
+
+
+
+.card-person
+	+card()
+	display: flex
+	flex-direction: row
+	transition: 0.3s
+	align-items: center
+	&:hover
+		border-color: $blue-bright
+		&>svg
+			fill: $blue-bright
+
+.card-person__avatar
+	height: $icon-big
+	width: $icon-big
+	margin-right: $margin-regular
+	border-radius: 50%
+.card-person__name
+	font-size: $font-regular
+	margin: 0
+	padding: 0
+.card-person__state
+	color: $grey-semidark

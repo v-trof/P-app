@@ -17,6 +17,13 @@ function build_header(){
 	$(".header__search").css('opacity', '1');
 }
 
+
+
 $(document).ready(function() {
 	build_header();
 });
+
+
+/*function fade(){
+	$("h1,h2,h3,h4,h5,h6").css('animante', 'value');
+}*/
