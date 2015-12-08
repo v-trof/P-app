@@ -15,7 +15,7 @@
 }
 
 var email_regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-var name_last_name_regex = /^[^\s]+\s[^\s]+$/;
+var name_regex = /^[^\s]+$/;
 
 function check_email(e_input) {
 	// console.log('checking',e_input);
@@ -54,9 +54,19 @@ $(document).ready(function() {
 	});
 
 	//for registration
-	$("input[name='name_last_name']").on("blur keyup change click",function(){
-		console.log('name_last_name');
-		if(name_last_name_regex.test($(this).val())) {
+	$("input[name='name']").on("blur keyup change click",function(){
+		console.log('name');
+		if(name_regex.test($(this).val())) {
+			$(this).addClass('valid');
+		} else  {
+			$(this).removeClass('valid');
+		}
+	all_valid();
+	});
+
+		$("input[name='last_name']").on("blur keyup change click",function(){
+		console.log('last_name');
+		if(name_regex.test($(this).val())) {
 			$(this).addClass('valid');
 		} else  {
 			$(this).removeClass('valid');

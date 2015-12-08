@@ -48,7 +48,9 @@ def reg(request):
                 if form.is_valid():
                         email = request.POST['email']
                         password = request.POST['password']
-                        user = User.objects.create_user(username=email, email=email, password=password)
+                        name = request.POST['name']
+                        last_name = request.POST['last_name']
+                        user = User.objects.create_user(username=email, email=email, password=password, first_name=name, last_name=last_name)
                         if user is not None:
                                 user.save
                                 return redirect('/')
@@ -63,3 +65,23 @@ def reg(request):
                 return render_to_response('Pages/login.html', {
                         'form': form,
                 })
+
+def new_course(request):
+        if request.method == 'POST':
+                        import sqlite3
+                        db = sqlite3.connect('db.sqlite3')
+                        name = request.POST['name']
+                        cursor = db.cursor()
+                        cursor.execute('''CREATE TABLE '''+name+''' (id INTEGER PRIMARY KEY) ''')
+                        db.commit()
+                        return redirect('/')
+
+def new_test(request):
+        if request.method == 'POST':
+                        import sqlite3
+                        db = sqlite3.connect('db.sqlite3')
+                        name = request.POST['name']
+                        cursor = db.cursor()
+                        cursor.execute('''CREATE TABLE '''+name+''' (id INTEGER PRIMARY KEY) ''')
+                        db.commit()
+                        return redirect('/')
