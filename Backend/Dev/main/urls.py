@@ -20,7 +20,8 @@ from . import func_views
 
 func_patterns = [
     url(r'^login/$', func_views.login),
-   	url(r'^reg/$' , func_views.reg),
+   	url(r'^reg/$', func_views.reg),
+    url(r'^templatetest/$', func_views.test),
 ]
 
 urlpatterns = [

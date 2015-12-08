@@ -63,3 +63,7 @@ def reg(request):
                 return render_to_response('Pages/login.html', {
                         'form': form,
                 })
+
+def test(request):
+        return render(request, "UI_elements/test.html")
+        

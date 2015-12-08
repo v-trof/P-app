@@ -18,7 +18,12 @@ body
 		margin-right: $margin-huge
 		&:last-child
 			margin-right: 0
-	+smartphone
+	+smartphone()
 		flex-direction: column
 		&>section
 			margin-right: 0
+
+.marks
+	+smartphone()
+		order: -1
+
