@@ -1,3 +1,15 @@
 {% load ext_humanize %}
-
-{{ "12.10.2014"|humanize_date }}
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	{{ "12.10.2014"|humanize_date }}
+	{{ 15|of:100|safe}}
+	{{ 1|of:2|safe}}
+	{{ 1|of:6|safe}}
+	{{ 1|of:3|safe}}
+	{{ 67|of:73|safe}}
+</body>
+</html>

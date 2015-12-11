@@ -2,10 +2,6 @@ from django import template
 
 register = template.Library()
 
-def cut(value, arg):
-    """Removes all values of arg from the given string"""
-    return value.replace(arg, '')
-
 def humanize_date(value):
     """Converts date to humanlike format"""
     month_sting = {
@@ -22,10 +18,14 @@ def humanize_date(value):
         11 : "ноября",
         12 : "декабря"
     }
-    day = value.split(".")[0],
-    month = month_sting(int(value.split(".")[1])),
+    day = value.split(".")[0]
+    month = month_sting[int(value.split(".")[1])]
     year = value.split(".")[2]
     return day + " " + month + " " + year
 
-register.filter('cut', cut)
+def of(value, max_value):
+    percent = round((int(value)/max_value)*100)
+    return str(percent)+"%<span>("+str(value)+" из "+str(max_value)+")</span>";
+
+register.filter('of', of)
 register.filter('humanize_date', humanize_date)
