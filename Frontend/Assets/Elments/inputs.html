@@ -5,12 +5,22 @@
 	<title></title>
 </head>
 <body style="padding: 2em">
+	<style>
+		label{
+			width: 16rem !important;
+		}
+		body{
+			background: #fafafa!important;
+		}
+	</style>
 	<h3>Input with placeholder</h3>
-	<input class="input__placeholder-label" name="placeholder-label" placeholder="label"><label for="placeholder-label" ></label>
+	<input type="text" class="input__placeholder-label" name="placeholder-label" placeholder="label"><label for="placeholder-label" ></label>
 	<br><br><br>
+	
 	<h3>Input with inner label</h3>
-	<input class="input__inner-label" name="inner-label" placeholder="Example"><label for="inner-label">Inner Label</label>
+	<input type="text" class="input__inner-label" name="inner-label" placeholder="Example"><label for="inner-label">Inner Label</label>
 	<br><br><br>
+	
 	<h3>Textarea</h3>
 	<div class="textarea">
 		<label class="textarea__label">Inner Label</label>
@@ -25,6 +35,7 @@
 		</div>
 	</div>
 	<br><br><br>
+	
 	<h3>Select</h3>
 	<div class='select' name="sampleSelect" tabindex="0">
 		<div class="select__mask">
@@ -37,6 +48,13 @@
 			</div>
 		</div>
 	</div>
+	<br><br><br>
+	<h3>Checkbox</h3>
+	<input type="checkbox" id="sample_checkbox" name="sample_checkbox"><label for="sample_checkbox">Sample checkbox</label>
+	<br><br><br>
+	<h3>Radio</h3>
+	<input type="radio" id="sample_radio" name="sample_radio"><label for="sample_radio">Sample RADIO</label>
+
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -52,6 +70,6 @@
 	</script>
 	<script type="text/javascript" src='../../Scripts/Dev/select.js'></script>
 	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/main.css">
-	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/inputs.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/inputs.css">
 </body>
 </html>
