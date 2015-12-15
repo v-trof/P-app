@@ -11,7 +11,7 @@ var mark_descriptions = {
 		},
 		m5: {
 			type : "Тест",
-			name : "Палеоназмы",
+			name : "Плеоназмы",
 			percentage : 74,
 			done : 14,
 			total : 19,

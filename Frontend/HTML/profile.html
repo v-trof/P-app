@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/layout/course.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/header.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/cards.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/inputs.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/notification.css">
 	<div class="notification__error hidden" id="notification">
 		<div class="notification__heading">
@@ -20,9 +21,9 @@
 	</div>
 	<header class="header">
 		<div class="header__breadcumbs">
-		<a href='#'>Главная</a>
+		<a href='home.html'>Главная</a>
 		<img src="../Assets/Icons/angle_right.svg" inline>
-		<a href='#'>Курс А</a>
+		<a href='#'>Всеволод Трофимов</a>
 		<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
 		</div>
 		<div class="header__search">
@@ -30,23 +31,55 @@
 			<input type="text" name="search" placeholder="Искать...">
 		</div>
 		<div class="header__user">
-			<img src="../Assets/Images/avatar.png" class="user__avatar--small">
+			<img src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png" class="user__avatar--small">
 			<span class="user__name">Всеволод Трофимов</span>
 		</div>
 	</header>
 	
-
-
 	<div class="content">
 		<section>
-			<div class="card-person">
-				<img class="card-person__avatar" src="https://pp.vk.me/c622121/v622121736/3240e/UQiAvj3JWEs.jpg">
+			<div class="card card-person">
+				<img class="card-person__avatar" src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png">
 				<div class="card-person__info">
 					<h3 class="card-person__name">Всеволод Трофимов</h3>
 					<span class="card-person__state">Ученик</span>
 				</div>
 			</div>
 		</section>
+
+		<section>
+			<div class="card">
+				<h4 class="card__heading">Контакты</h4>
+				<div class="card-contacts__item">
+					<h5>email</h5>
+					seva.trofimov2@gmail.com
+				</div>
+				<div class="card-contacts__item">
+					<h5>skype</h5>
+					seva.trofimov
+				</div>
+				<div class="card-contacts__item">
+					<h5>codeforces</h5>
+					kuorell
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div class="card card-settings">
+				<h4 class="card__heading">Настройки</h4>
+				<a href="/forgot_password">Сменить пароль</a><br>
+				Мои контакты могут просматривать:
+				<form>
+					<input type="radio" id="radio_1" name="contacts_see" checked><label for="radio_1">Все</label>
+					<input type="radio" id="radio_2" name="contacts_see"><label for="radio_2">Только учителя</label>
+					<input type="radio" id="radio_3" name="contacts_see"><label for="radio_3">Только ученики</label>
+					<input type="radio" id="radio_4" name="contacts_see"><label for="radio_4">Только мои учителя и одногруппники</label>
+					<input type="radio" id="radio_5" name="contacts_see"><label for="radio_5">Никто</label>
+				</form>
+			</div>
+		</section>
+
 	</div>
 	<script src="../Scripts/Min/jquery-2.1.4.min.js"></script>
 	<script src="../Scripts/Min/layout.js"></script>

@@ -33,7 +33,7 @@ $margin-regular: .6rem
 $margin-big: 1.5rem
 $margin-huge: 3rem
 //general
-$size-small : .4rem
+$size-small : 6px
 $size-regular : .6rem
 $size-big : 1rem
 //layout blocks
@@ -90,14 +90,6 @@ $time-big: .5s
 	@media only screen and (max-height: 350px)
 		@content
 
-
-=card()			
-	+animation("fade-from-right")
-	border: 3px solid $grey-semilight
-	background: $white
-	padding: $padding-regular*1.5
-	margin-bottom: $margin-big
-	color: $black
 
 =scrollbar()
 	html

@@ -1,17 +1,12 @@
 @import "../vars"
 
-.card__heading
-	font-size: $font-big
-	font-weight: normal
-	margin-top: 0
-
-
-.course-link--card,.course-element-link--card,.group-link--card
-	text-decoration: none
+.card
+	+animation("fade-from-right")
+	border: 3px solid $grey-semilight
+	background: $white
+	padding: $padding-regular*1.5
+	margin-bottom: $margin-big
 	color: $black
-
-.card-course
-	+card()
 	&>.messages
 		&>.messages__item--warning
 			&:first-child
@@ -33,16 +28,26 @@
 		&>svg
 			fill: $red-bright
 	transition: $time-regular
-	&:hover
+	&.done
+		border-color: $green-bright
+
+.card__due-date
+	text-align: right
+
+.card__heading
+	font-size: $font-big
+	font-weight: normal
+	margin-top: 0
+
+.link--card
+	text-decoration: none
+	color: $black
+	&>.card:hover
 		border-color: $blue-bright !important
 
 
 
-.card-homework
-	+card()
-	transition: $time-regular border-color
-	&.done
-		border-color: $green-bright
+//specail purpose cards
 .card-homework__task
 	line-height: 1.5
 	&>svg
@@ -56,23 +61,24 @@
 	&>span
 		vertical-align: middle
 
-.card__due-date
-	text-align: right
-
 .task__link.done
 	color: $green-dark
 
 
 
+
+
+
 .card-marks
-	+card()
 	padding: 0 $padding-regular
+
 .card-marks__course
 	font-size: $font-regular
 	font-weight: normal
 	margin: 0
 	display: inline-block
 	margin-right: $margin-regular
+
 .card-marks__marks
 	display: inline-block
 	vertical-align: middle
@@ -101,6 +107,11 @@
 			vertical-align: middle
 			margin-left: $margin-regular
 
+
+
+
+
+
 .marks__tooltip
 	transition: $time-regular opacity
 	background: $grey-semilight
@@ -123,14 +134,10 @@
 
 
 
-.card-course-element
-	@extend .card-course
-	&.done
-		border-color: $green-bright
+
 
 
 .card-fab
-	+card()
 	position: fixed
 	right: $margin-huge
 	bottom: $margin-huge
@@ -156,25 +163,39 @@
 
   
 
+
+
 .card-person
-	+card()
 	display: flex
 	flex-direction: row 
 	transition: 0.3s
 	align-items: center
-	&:hover
-		border-color: $blue-bright
-		&>svg
-			fill: $blue-bright
 
 .card-person__avatar
 	height: $icon-big
 	width: $icon-big
 	margin-right: $margin-regular
 	border-radius: 50%
+
 .card-person__name
 	font-size: $font-regular
 	margin: 0
 	padding: 0
+
 .card-person__state
 	color: $grey-semidark
+
+
+
+
+
+.card-contacts__item
+	color: $black 
+	&>h5
+		font-size: $font-regular
+		font-weight: normal
+		color: $grey-semidark
+		margin: $margin-regular 0 0 0
+
+.card-settings
+	line-height: $font-big
