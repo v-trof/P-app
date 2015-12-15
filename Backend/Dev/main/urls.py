@@ -20,13 +20,10 @@ from . import func_views
 
 func_patterns = [
     url(r'^login/$', func_views.login),
-<<<<<<< HEAD
    	url(r'^reg/$', func_views.reg),
     url(r'^templatetest/$', func_views.test),
-=======
    	url(r'^reg/$' , func_views.reg),
     url(r'^new_course/$' , func_views.new_course),
->>>>>>> origin/master
 ]
 
 urlpatterns = [

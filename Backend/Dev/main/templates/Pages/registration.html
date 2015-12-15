@@ -19,9 +19,7 @@
 			{% endif %}
 			<form class="login-box--form" action="/func/reg" method="post">
 			{% csrf_token %}
-				<input type="Text" name="name" placeholder="Имя" class="input__placeholder-label"><label for="name"></label><br>
-
-				<input type="Text" name="last_name" placeholder="Фамилия" class="input__placeholder-label"><label for="last_name"></label><br>
+				<input type="Text" name="name" placeholder="Имя Фамилия" class="input__placeholder-label"><label for="name"></label><br>
 
 				<input type="email" name="email" placeholder="email@domain.zone" class="input__placeholder-label"><label for="email"></label><br>
 
@@ -43,8 +41,8 @@
 	<div class="includer">{% include 'CSS/notifications.html' %}</div>
 	<div class="includer">{% include 'CSS/animations.html' %}</div>
 	{%include 'JS/jquery-2.html'%}
-	<div class="includer">{% include 'JS/Dev/login-verify.html' %}</div>
-	<div class="includer">{% include 'JS/Dev/notification.html' %}</div>
+	<div class="includer">{% include 'JS/login-verify.html' %}</div>
+	<div class="includer">{% include 'JS/notification.html' %}</div>
 	
 </body>
 </html>
