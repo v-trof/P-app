@@ -3,16 +3,15 @@
 
 +scrollbar()
 
-body
-	padding: 0 $padding-big
-
 .content
 	width: 100%
 	display: flex
 	flex-direction: row
 	align-items: top
 	justify-content: space-between
-	padding: $margin-big $padding-big $margin-big  $padding-big 
+	height: calc(100vh - 50px)
+	padding: $margin-big 0 $margin-big 16px
+	overflow-y: scroll
 	&>section
 		// height: calc(100vh - 70px)
 		width: 100%
@@ -28,3 +27,6 @@ body
 	+smartphone()
 		order: -1
 
+.homework
+	+smartphone()
+		order: -1

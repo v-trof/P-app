@@ -94,8 +94,8 @@ $time-big: .5s
 =scrollbar()
 	html
 		::-webkit-scrollbar,::-webkit-scrollbar-track
-			background: transparent
-			width: 6px
+			background: $grey-light
+			width: 16px
 
 		::-webkit-scrollbar-button
 			display: none
@@ -103,6 +103,7 @@ $time-big: .5s
 		::-webkit-scrollbar-thumb 
 			transition: $time-regular
 			background: rgba($grey-dark, .33)
-			width: 6px
+			width: 8px
+			border: 4px solid $grey-light
 			&:hover
 				background: rgba($blue-bright, .33)

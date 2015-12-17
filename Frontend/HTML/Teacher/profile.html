@@ -6,28 +6,28 @@
 	<title>Найстройки Профиля</title>
 </head>
 <body>
-	<div class="includer">{% include 'CSS/main.html' %}</div>
-	<div class="includer">{% include 'CSS/course.html' %}</div>
-	<div class="includer">{% include 'CSS/header.html' %}</div>
-	<div class="includer">{% include 'CSS/cards.html' %}</div>
-	<div class="includer">{% include 'CSS/inputs.html' %}</div>
-	<div class="includer">{% include 'CSS/notification.html' %}</div>
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/main.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/layout/course.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/header.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/cards.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/inputs.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/notification.css">
 	<div class="notification__error hidden" id="notification">
 		<div class="notification__heading">
-			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13 13-5.832 13-13S23.168 3 16 3zm0 2c6.087 0 11 4.913 11 11s-4.913 11-11 11S5 22.087 5 16 9.913 5 16 5zm-1 5v2h2v-2h-2zm0 4v8h2v-8h-2z"/></svg>
+			<img src="../../Assets/Icons/info.svg" inline>
 			<h3>s error</h3>
 		</div>
 		<span class="notification__content">s text</span>
 	</div>
 	<header class="header">
 		<div class="header__breadcumbs">
-		<a href="home.html">Главная</a>
-		<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M12.97 4.28l-1.44 1.44L21.814 16 11.53 26.28l1.44 1.44 11-11 .686-.72-.687-.72-11-11z"/></svg>
-		<a href="#">Всеволод Трофимов</a>
-		<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
+		<a href='home.html'>Главная</a>
+		<img src="../../Assets/Icons/angle_right.svg" inline>
+		<a href='#'>Всеволод Трофимов</a>
+		<!-- <img src="../../Assets/Icons/angle_right.svg" inline> -->
 		</div>
 		<div class="header__search">
-			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M19.5 3C14.265 3 10 7.265 10 12.5c0 2.25.81 4.307 2.125 5.938L3.28 27.28l1.44 1.44 8.843-8.845C15.192 21.19 17.25 22 19.5 22c5.235 0 9.5-4.265 9.5-9.5S24.735 3 19.5 3zm0 2c4.154 0 7.5 3.346 7.5 7.5S23.654 20 19.5 20 12 16.654 12 12.5 15.346 5 19.5 5z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
+			<img src="../../Assets/Icons/search.svg" inline>
 			<input type="text" name="search" placeholder="Искать...">
 		</div>
 		<div class="header__user">
@@ -81,9 +81,9 @@
 		</section>
 
 	</div>
-	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
-	<div class="includer">{% include 'JS/layout.html' %}</div>
-	<div class="includer">{% include 'JS/humanize.html' %}</div>
-	<div class="includer">{% include 'JS/notification.html' %}</div>
+	<script src="../../Scripts/Min/jquery-2.1.4.min.js"></script>
+	<script src="../../Scripts/Min/layout.js"></script>
+	<script src="../../Scripts/Min/humanize.js"></script>
+	<script src="../../Scripts/Dev/notification.js"></script>
 </body>
 </html>vv

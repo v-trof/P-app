@@ -1,7 +1,7 @@
 @import "../vars"
 
 .card
-	+animation("fade-from-right")
+	// +animation("fade-from-right")
 	border: 3px solid $grey-semilight
 	background: $white
 	padding: $padding-regular*1.5
@@ -27,7 +27,7 @@
 	&>.icons--warning
 		&>svg
 			fill: $red-bright
-	transition: $time-regular
+	transition: $time-regular border-color
 	&.done
 		border-color: $green-bright
 
@@ -41,7 +41,9 @@
 
 .link--card
 	text-decoration: none
-	color: $black
+	color: $black !important
+	&:hover
+		color: $black !important
 	&>.card:hover
 		border-color: $blue-bright !important
 
@@ -50,6 +52,7 @@
 	padding: $padding-regular
 	width: auto
 	display: inline-block
+	margin: 0 0 $margin-regular $margin-regular
 
 //specail purpose cards
 .card-homework__task
@@ -136,43 +139,13 @@
 .tooltip__date
 	font-size: $font-small
 
-
-
-
-
-
-.card-fab
-	position: fixed
-	right: $margin-huge
-	bottom: $margin-huge
-	margin-bottom: 0
-
-	border-radius: 50%
-	padding: $padding-regular
-
-	height: $icon-regular
-	width: $icon-regular
-
-	box-sizing: content-box
-	transition: $time-regular
-	&>svg
-		transition: $time-regular
-		height: $icon-regular
-		width: $icon-regular
-		fill: $grey-mid
-	&:hover
-		border-color: $blue-bright
-		&>svg
-			fill: $blue-bright
-
-  
+ 
 
 
 
 .card-person
 	display: flex
-	flex-direction: row 
-	transition: 0.3s
+	flex-direction: row
 	align-items: center
 
 .card-person__avatar
@@ -200,6 +173,3 @@
 		font-weight: normal
 		color: $grey-semidark
 		margin: $margin-regular 0 0 0
-
-.card-settings
-	line-height: $font-big

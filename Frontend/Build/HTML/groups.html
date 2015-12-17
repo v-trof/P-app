@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="utf8">
-	<title>Найстройки Профиля</title>
+	<title>Группы в курсе А</title>
 </head>
 <body>
 	<div class="includer">{% include 'CSS/main.html' %}</div>
 	<div class="includer">{% include 'CSS/course.html' %}</div>
 	<div class="includer">{% include 'CSS/header.html' %}</div>
 	<div class="includer">{% include 'CSS/cards.html' %}</div>
-	<div class="includer">{% include 'CSS/inputs.html' %}</div>
 	<div class="includer">{% include 'CSS/notification.html' %}</div>
 	<div class="notification__error hidden" id="notification">
 		<div class="notification__heading">
@@ -21,9 +19,11 @@
 	</div>
 	<header class="header">
 		<div class="header__breadcumbs">
-		<a href="home.html">Главная</a>
+		<a href="#">Главная</a>
 		<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M12.97 4.28l-1.44 1.44L21.814 16 11.53 26.28l1.44 1.44 11-11 .686-.72-.687-.72-11-11z"/></svg>
-		<a href="#">Всеволод Трофимов</a>
+		<a href="course.html">Курс А</a>
+		<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M12.97 4.28l-1.44 1.44L21.814 16 11.53 26.28l1.44 1.44 11-11 .686-.72-.687-.72-11-11z"/></svg>
+		<a href="#">Группы</a>
 		<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
 		</div>
 		<div class="header__search">
@@ -36,54 +36,48 @@
 		</div>
 	</header>
 	
+
+
 	<div class="content">
 		<section>
-			<div class="card card-person">
-				<img class="card-person__avatar" src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png">
-				<div class="card-person__info">
-					<h3 class="card-person__name">Всеволод Трофимов</h3>
-					<span class="card-person__state">Ученик</span>
+			<h2>Учителя</h2>
+			<a class="link--card" href="profile.html">
+				<div class="card card-person">
+					<img class="card-person__avatar" src="http://spb.repetitors.info/prep/TurkoSR_12b07f15.jpg">
+					<div class="card-person__info">
+						<h3 class="card-person__name">Светлана Рудольфовна Турко</h3>
+						<span class="card-person__state">Пеподаватель АГ СПбГУ</span>
+					</div>
 				</div>
-			</div>
+			</a>
 		</section>
-
 		<section>
-			<div class="card">
-				<h4 class="card__heading">Контакты</h4>
-				<div class="card-contacts__item">
-					<h5>email</h5>
-					seva.trofimov2@gmail.com
+			<h2>Ученики</h2>
+			<h3>10И (Ваша группа)</h3>
+			<a class="link--card" href="profile.html">
+				<div class="card card-person">
+					<img class="card-person__avatar" src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png">
+					<div class="card-person__info">
+						<h3 class="card-person__name">Трофимов Всеволод</h3>
+						<span class="card-person__state">Ученик</span>
+					</div>
 				</div>
-				<div class="card-contacts__item">
-					<h5>skype</h5>
-					seva.trofimov
+			</a>
+			<h3>10Б</h3>
+			<a class="link--card" href="profile.html">
+				<div class="card card-person">
+					<img class="card-person__avatar" src="../Assets/Images/avatar.png">
+					<div class="card-person__info">
+						<h3 class="card-person__name">Максим Любарскиий</h3>
+						<span class="card-person__state">Ученик</span>
+					</div>
 				</div>
-				<div class="card-contacts__item">
-					<h5>codeforces</h5>
-					kuorell
-				</div>
-			</div>
+			</a>
 		</section>
-
-		<section>
-			<div class="card card-settings">
-				<h4 class="card__heading">Настройки</h4>
-				<a href="/forgot_password">Сменить пароль</a><br>
-				Мои контакты могут просматривать:
-				<form>
-					<input type="radio" id="radio_1" name="contacts_see" checked><label for="radio_1">Все</label>
-					<input type="radio" id="radio_2" name="contacts_see"><label for="radio_2">Только учителя</label>
-					<input type="radio" id="radio_3" name="contacts_see"><label for="radio_3">Только ученики</label>
-					<input type="radio" id="radio_4" name="contacts_see"><label for="radio_4">Только мои учителя и одногруппники</label>
-					<input type="radio" id="radio_5" name="contacts_see"><label for="radio_5">Никто</label>
-				</form>
-			</div>
-		</section>
-
 	</div>
 	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 	<div class="includer">{% include 'JS/layout.html' %}</div>
 	<div class="includer">{% include 'JS/humanize.html' %}</div>
 	<div class="includer">{% include 'JS/notification.html' %}</div>
 </body>
-</html>vv
+</html>

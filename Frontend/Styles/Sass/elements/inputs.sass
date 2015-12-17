@@ -9,6 +9,7 @@ input,button
 
 //general fix
 .input__placeholder-label,.input__inner-label
+	cursor: normal
 	font-size: $font-regular
 	padding: $padding-regular
 	color: $grey-dark
@@ -64,18 +65,22 @@ input,button
 	width: 16rem
 	&+label
 		transform: translateY(-$padding-regular - $font-big - $border-regular)
-.input__inner-label
+.input__inner-label,
 	width: 16rem
-	padding-top: $padding-regular*2 !important
-	padding-bottom: $padding-small !important
+	padding-top: $padding-regular*2
+	padding-bottom: $padding-small*1.2
 	&+label
 		padding-left: $padding-regular*0.35
+		padding-top: $padding-small*1.5
 		color: $grey-semidark
 		font-size: $font-small
 		//fixes layput breaking
 		margin-top: -$font-regular
 		//mover it up
-		transform: translateY(-$padding-regular - $font-regular - $border-regular)
+		transform: translateY(-$padding-regular - $padding-small*2 - $font-regular - $border-regular)
+		&:before
+			margin-top: $padding-regular
+			margin-right: $padding-small/2
 
 
 
@@ -87,6 +92,7 @@ input[type="checkbox"],input[type="radio"]
 	height: 0
 	width: 0
 	margin: 0
+	visibility: hidden
 	&+label
 		display: flex
 		align-items: center
@@ -99,9 +105,10 @@ input[type="checkbox"],input[type="radio"]
 			content: ''
 			height: $icon-tiny
 			width: $icon-tiny
+			min-width: $icon-tiny
 			border: 1px solid $grey-dark
 			background: $white
-			margin: 0 $margin-big -0.1rem 0-$icon-tiny
+			margin: 0 $margin-regular -0.1rem 0-$icon-tiny
 
 
 input[type="checkbox"]
@@ -130,7 +137,7 @@ input[type="radio"]
 			content: ''
 			border-radius: 50%
 			height: $size-small
-			width: $size-small
+			min-width: $size-small
 			order: -2
 			background: $grey-dark
 			transform: translate($padding-small*0.95, 1px) scale(0)
@@ -222,6 +229,7 @@ input[type="radio"]
 	border: $border-regular solid $grey-semilight
 	background: $white
 	display: inline-block
+		
 .textarea__text
 	font-size: $font-regular
 	min-height: 9rem
@@ -236,11 +244,13 @@ input[type="radio"]
 		+small-circle()
 		content: ''
 		vertical-align: top
+		margin-top: $padding-small
 		//sets it to top right corner
 		transform: translate(-$size-big - $size-regular + 16rem,-$size-big)
 		opacity: 0
 		background: $blue-bright
 		transition: $time-regular
+
 	&.valid:before
 		background: $green-bright
 	&.invalid:before
@@ -259,10 +269,12 @@ input[type="radio"]
 .textarea__label
 	color: $grey-semidark
 	position: absolute
-	margin-left: $padding-regular
-	margin-top: $padding-small
 	background: transparent
 	font-size: $font-small
+	padding-left: $padding-regular*0.35
+	padding-top: $padding-small
+	color: $grey-semidark
+	font-size: $font-small		
 
 
 

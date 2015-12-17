@@ -46,7 +46,10 @@ gulp.task('test_build',function () {
 	//build with no minification and other user-needs dev-hates stuff
 	gulp.src('HTML/*.html')
 		.pipe(inlineSource())
-	 	.pipe(gulp.dest('./Test'));
+		.pipe(gulp.dest('./Test'));
+	gulp.src('HTML/Teacher/*.html')
+		.pipe(inlineSource())
+		.pipe(gulp.dest('./Test/Teacher'));
 });
 
 gulp.task('minjs', function () {
@@ -79,6 +82,7 @@ gulp.task('watch', function() {
   gulp.watch("./Styles/Sass/*/*.sass", ['sass_to_css','test_build']);
   gulp.watch("./Styles/Sass/main.sass", ['sass_to_css','test_build']);
   gulp.watch("./HTML/*.html", ['test_build']);
+  gulp.watch("./HTML/Teacher/*.html", ['test_build']);
 });
 
 gulp.task('default', ['watch']);
