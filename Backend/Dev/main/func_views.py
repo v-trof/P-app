@@ -54,7 +54,7 @@ def reg(request):
             user = User.objects.create_user(username=email, email=email, password=password, first_name=name, last_name=last_name)
             if user is not None:
                 user.save
-                return redirect('/')
+                return redirect('/home/')
             else:
                 error = u'Неверный логин или пароль'
                 return errorHandle(error)

@@ -17,9 +17,11 @@
 			{% if error %}
 			<script>notification.change('error','Login error','{{ error }}' ); console.log("error");</script>
 			{% endif %}
-			<form class="login-box--form" action="/func/new_test/" method="post">
+			<form class="login-box--form" action="/func/reg/" method="post">
 			{% csrf_token %}
-				<input type="Text" name="name" placeholder="Имя Фамилия" class="input__placeholder-label"><label for="name"></label><br>
+				<input type="Text" name="name" placeholder="Имя" class="input__placeholder-label"><label for="name"></label><br>
+
+				<input type="Text" name="last_name" placeholder="Фамилия" class="input__placeholder-label"><label for="name"></label><br>
 
 				<input type="email" name="email" placeholder="email@domain.zone" class="input__placeholder-label"><label for="email"></label><br>
 

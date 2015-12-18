@@ -80,10 +80,7 @@ def register_student(request):
 	return render(request,'Pages/registration.html')
 
 def home(request):
-		if request.user.is_authenticated():
     			return render(request,'Pages/home.html')
-		else:
-				return render(request,'Pages/login.html')
 #login group
 
 def login(request):
