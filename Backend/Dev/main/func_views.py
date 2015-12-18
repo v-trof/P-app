@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from .models import User, LoginForm, RegForm
 from django.db import models
+import sqlite3
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login as auth
 def login(request):
@@ -68,23 +69,34 @@ def reg(request):
 
 def test(request):
     return render(request, "UI_elements/test.html")
-    
+
 def new_course(request):
-    if request.method == 'POST':
-            import sqlite3
-            db = sqlite3.connect('db.sqlite3')
-            name = request.POST['name']
-            cursor = db.cursor()
-            cursor.execute('''CREATE TABLE '''+name+''' (id INTEGER PRIMARY KEY) ''')
-            db.commit()
-            return redirect('/')
+        if request.method == 'POST':
+                db = sqlite3.connect('db.sqlite3')
+                name = request.POST['name']
+                cursor = db.cursor()
+                cursor.execute(''' CREATE TABLE '''+name+''' ( "id" integer PRIMARY KEY NOT NULL,"name" varchar(30) NOT NULL, "type" varchar(30) NOT NULL, "link" varchar(30) NOT NULL)''')
+                db.commit()
+                return redirect('/')
 
 def new_test(request):
-    if request.method == 'POST':
-            import sqlite3
-            db = sqlite3.connect('db.sqlite3')
-            name = request.POST['name']
-            cursor = db.cursor()
-            cursor.execute('''CREATE TABLE '''+name+''' (id INTEGER PRIMARY KEY) ''')
-            db.commit()
-            return redirect('/')
+        if request.method == 'POST':
+                db = sqlite3.connect('db.sqlite3')
+                course_name = request.POST['course_name']
+                test_name = request.POST['test_name']
+                link="link";
+                cursor = db.cursor()
+                cursor.execute('''INSERT INTO '''+course_name+''' (name,type,link) VALUES (' '''+test_name+''' ', 'test', ' '''+link+''' ');''')
+                db.commit()
+                return redirect('/')
+
+def new_material(request):
+        if request.method == 'POST':
+                db = sqlite3.connect('db.sqlite3')
+                course_name = request.POST['course_name']
+                material_name = request.POST['material_name']
+                link="link";
+                cursor = db.cursor()
+                cursor.execute(''' INSERT INTO '''+course_name+''' (name,type,link) VALUES (' '''+material_name+''' ', 'material', ' '''+link+''' ');''')
+                db.commit()
+                return redirect('/')

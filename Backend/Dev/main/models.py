@@ -35,6 +35,12 @@ class LoginForm(forms.Form):
     email = models.EmailField(_('email address'), blank=True)
     password = forms.CharField(widget=forms.PasswordInput(render_value=False),max_length=100)
 
+class Course_element():
+    name = models.CharField(_('name'), max_length=30, blank=True)
+    type = models.CharField(_('type'), max_length=30, blank=True)
+    link = models.CharField(_('link'), max_length=30, blank=True)
+    
+
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(_('username'), max_length=30, unique=True,
     help_text=_('Required. 30 characters or fewer. Letters, digits and \@/./+/-/_ only.'),

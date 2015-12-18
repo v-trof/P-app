@@ -24,6 +24,8 @@ func_patterns = [
     url(r'^templatetest/$', func_views.test),
    	url(r'^reg/$' , func_views.reg),
     url(r'^new_course/$' , func_views.new_course),
+    url(r'^new_test/$' , func_views.new_test),
+    url(r'^new_material/$' , func_views.new_material),
 ]
 
 urlpatterns = [
