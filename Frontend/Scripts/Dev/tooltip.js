@@ -60,10 +60,17 @@ var tooltip = {
 				});
 			}
 		} else {
-			$("#tooltip").css({
-				top: c_rect.top - t_height + 'px',
-				left: c_rect.left + 'px'
-			});
+			if(t_height < c_rect.top){
+				$("#tooltip").css({
+					top: c_rect.top - t_height + 'px',
+					left: c_rect.left + 'px'
+				});
+			} else {
+				$("#tooltip").css({
+					top: c_rect.top + el_height + 'px',
+					left: c_rect.left + 'px'
+				});
+			}
 		}
 
 		$("#tooltip").css('opacity', '1');
