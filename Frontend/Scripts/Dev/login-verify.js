@@ -16,14 +16,12 @@ function all_valid(){
 	} else {
 		$(".button__proceed").attr('disabled', true);
 	}
-	// console.log("ffff");
 }
 
 var email_regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 var name_last_name_regex = /^[^\s]+\s[^\s]+$/;
 
 function check_email(input) {
-	// console.log('checking',e_input);
 	if(email_regex.test($(input).val())) {
 		$(input).addClass('valid');
 		tooltip.hide();
@@ -34,11 +32,9 @@ function check_email(input) {
 		}
 	}
 	all_valid();
-	// console.log("ffsf");
 }
 
 $(document).ready(function() {
-	console.log("ffff");
 	$("input[type='email']").on("blur keyup change click", function(){
 		var input = this;
 		check_email(input);
@@ -66,7 +62,6 @@ $(document).ready(function() {
 
 	//for registration
 	$("input[name='name_last_name']").on("blur keyup change click",function(){
-		// console.log('name_last_name');
 		if(name_last_name_regex.test($(this).val())) {
 			$(this).addClass('valid');
 		} else  {

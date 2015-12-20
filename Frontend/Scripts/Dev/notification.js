@@ -6,13 +6,22 @@ var icon = {
 };
 
 var notification = {
-	change: function(type,heading,text){
-		$("#notification").attr('class', 'hidden');
-		$("#notification").addClass('notification__'+type);
-		$("#notification>svg").html(icon[type]);
-		$("#notification>h3").html(heading);
-		$("#notification>span").html(text);
-		notification.show();
+	is_shown : false,
+	change: function(type, heading, text){
+		if(!notification.is_shown){
+			$("#notification").attr('class', 'hidden');
+			$("#notification").addClass('notification__'+type);
+			$(".notification__bg>svg").html(icon[type]);
+			$(".notification__bg>h3").html(heading);
+			$(".notification__content").html(text);
+			notification.show();
+			notification.is_shown = true;
+		} else {
+			console.log("channging");
+			notification.hide();
+			setTimeout(function(){notification.change(type, heading, text);},300);
+		}
+		
 	},
 	show: function(){
 		$("#notification").removeClass('hidden');
@@ -24,5 +33,6 @@ var notification = {
 	hide: function(){
 		$("#notification").addClass('hidden');
 		$(".header").css("transform","");
+		notification.is_shown = false;
 	}
 } 

@@ -24,6 +24,11 @@ function offset_bottom(el){
 	return $(window).height() - $(el).height() -$(el).offset().top
 }
 
+function offset_right(el){
+	return $(window).width() - $(el).width() -$(el).offset().left
+}
+
+
 var tooltip = {
 	is_shown : false,
 	show : function(el, content, css, callback){
@@ -35,11 +40,11 @@ var tooltip = {
 		t_height = $("#tooltip").outerHeight();
 		c_rect = el.getBoundingClientRect();
 		el_width = c_rect.width;
-		console.log(offset_bottom(el));
 		el_height = c_rect.height;
 		c_rect_bottom = offset_bottom(el);
+		c_rect_right = offset_right(el);
 		//tooltip on the right
-		if(Math.abs(el_height-t_height)<16 && c_rect.right>t_width && t_width<el_width){
+		if(Math.abs(el_height-t_height)<16 && c_rect_right>t_width && t_width<el_width){
 			$("#tooltip").css({
 				height: el_height+'px',
 				top: c_rect.top + 'px',
