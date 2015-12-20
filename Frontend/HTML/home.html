@@ -20,6 +20,7 @@
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/header.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/cards.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/notification.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/tooltip.css">
 	<div class="notification__error hidden" id="notification">
 		<div class="notification__heading">
 			<img src="../Assets/Icons/info.svg" inline>
@@ -103,10 +104,9 @@
 					</span>
 				</div>
 			</div>
-			<div class="marks__tooltip">
-				<h5 class="tooltip__heading">heading</h5>
-				<div class="tooltip__results">0%<span>(0 из 0)</span></div>
-				<div class="tooltip__date">date</div>
+			<div id="tooltip">
+				<div class="tooltip__content">
+				</div>
 			</div>
 		</section>
 		<section class='homework'>
@@ -139,7 +139,41 @@
 	<script src="../Scripts/Min/layout.js"></script>
 	<script src="../Scripts/Min/humanize.js"></script>
 	<script src="../Scripts/Min/handle-cards.js"></script>
-	<script src="../Scripts/Min/marks-tooltip.js"></script>
+	<script src="../Scripts/Dev/tooltip.js"></script>
 	<script src="../Scripts/Min/notification.js"></script>
+	<script type="text/javascript">
+		//realcode
+		function get_description(mark){
+			console.log(mark_descriptions);
+			mark = mark.split("_");
+			console.log(mark_descriptions[mark[1]][mark[2]]);
+			return mark_descriptions[mark[1]][mark[2]];
+		}
+		$(document).ready(function() {
+			$(".card-marks__marks>button").blur(function() {
+					tooltip.hide();
+					$(this).removeClass('open');
+			});
+			$(".card-marks__marks>button").focus(function() {
+				$(".card-marks__marks>button").removeClass('open');
+				/*
+					var left = $(this).offset().left + $(this).outerWidth()/2;
+					var top = $(this).offset().top + $(this).outerWidth();
+					var description = get_description($(this).attr("id"));
+					console.log(description,left,top);
+					$(".tooltip__heading").text(description.type + " «"+description.name+ "»");
+					$(".tooltip__results").html(description.percentage + "%<span>("+description.done + " из " + description.total + ")</span>");
+					$(".tooltip__date").text(humanize.date(description.date));
+					$("#tooltip").css({
+						top: top+'px',
+						left: left-$(".marks__tooltip").outerWidth()/2+'px',
+						opacity: 1
+					});
+				*/
+				tooltip.show(this, "sample", {});
+				$(this).addClass('open');
+			});
+		});
+	</script>
 </body>
 </html>

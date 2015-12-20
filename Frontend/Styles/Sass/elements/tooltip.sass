@@ -1,0 +1,24 @@
+@import "../vars"
+
+#tooltip
+	transition: $time-regular opacity
+	background: $grey-semilight
+	padding: $padding-regular
+	position: absolute
+	display: flex
+	flex-direction: row
+	align-items: center
+	top: -100%
+	left: -100%
+	opacity: 0
+.tooltip__heading
+	font-size: $font-regular
+	font-weight: bold
+	margin: 0
+.tooltip__results--test>span
+	color: $grey-semidark
+	font-size: $font-small
+	display: inline-block
+	vertical-align: top
+.tooltip__date--test
+	font-size: $font-small

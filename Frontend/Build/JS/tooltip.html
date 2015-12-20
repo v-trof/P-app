@@ -1,0 +1,90 @@
+<script>//sample
+var mark_descriptions = {
+	kursA: {
+		m4: {
+			type : "Тест",
+			name : "a",
+			percentage : 1,
+			done : 156,
+			total : 10000,
+			date : "18.10.2015"
+		},
+		m5: {
+			type : "Тест",
+			name : "Плеоназмы",
+			percentage : 74,
+			done : 14,
+			total : 19,
+			date : "12.10.2015"
+		}
+	}
+}
+
+
+var tooltip = {
+	show : function(el, content, css, callback){
+		$("#tooltip").html(content);
+		t_width = $("#tooltip").outerWidth();
+		t_height = $("#tooltip").outerHeight();
+		c_rect = el.getBoundingClientRect();
+		el_width = c_rect.width;
+		el_height = c_rect.height;
+		console.log(c_rect,t_width,t_height)
+		//tooltip on the right
+		if(Math.abs(el_height-t_height)<16 && c_rect.right>t_width && t_width<el_width){
+			$("#tooltip").css({
+				height: el_height+'px',
+				top: c_rect.top + 'px',
+				left: c_rect.left + el_width + 'px',
+			});
+		}
+		$("#tooltip").css('opacity', '1');
+	//bottom centered
+	} else if(t_width>el_width) {
+		if(t_height < c_rect.bottm){
+			$("#tooltip").css({
+				top: c_rect.top + el_height+'px';
+				left: (c_rect.left - t_width/2) + "px"
+			});
+		}
+	}
+}
+
+//realcode
+function get_description(mark){
+	console.log(mark_descriptions);
+	mark = mark.split("_");
+	console.log(mark_descriptions[mark[1]][mark[2]]);
+	return mark_descriptions[mark[1]][mark[2]];
+}
+
+$(document).ready(function() {
+	$(".card-marks__marks>button").blur(function() {
+		$(".marks__tooltip").css({
+				top: "-100%",
+				left: "-100%",
+				opacity: 0
+			});
+			$(this).removeClass('open');
+	});
+	$(".card-marks__marks>button").focus(function() {
+		$(".card-marks__marks>button").removeClass('open');
+		// var left = $(this).offset().left + $(this).outerWidth()/2;
+		// var top = $(this).offset().top + $(this).outerWidth();
+		// var description = get_description($(this).attr("id"));
+		// console.log(description,left,top);
+		// $(".tooltip__heading").text(description.type + " «"+description.name+ "»");
+		// $(".tooltip__results").html(description.percentage + "%<span>("+description.done + " из " + description.total + ")</span>");
+		// $(".tooltip__date").text(humanize.date(description.date));
+		// $("#tooltip").css({
+		// 	top: top+'px',
+		// 	left: left-$(".marks__tooltip").outerWidth()/2+'px',
+		// 	opacity: 1
+		// });
+		tooltip.show(this, "sample", {});
+		$(this).addClass('open');
+	});
+});
+
+
+</script>

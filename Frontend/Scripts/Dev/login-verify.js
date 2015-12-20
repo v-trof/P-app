@@ -1,3 +1,8 @@
+var messages = {
+	email_invalid: "Возможно, тут опечатка",
+	password_invalid: "Минимум 8 символов"
+}
+
 function all_valid(){
 	inputs_valid = true
 	$("input:visible").each(function() {
@@ -11,27 +16,31 @@ function all_valid(){
 	} else {
 		$(".button__proceed").attr('disabled', true);
 	}
-	console.log("ffff");
+	// console.log("ffff");
 }
 
 var email_regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 var name_last_name_regex = /^[^\s]+\s[^\s]+$/;
 
-function check_email(e_input) {
+function check_email(input) {
 	// console.log('checking',e_input);
-	if(email_regex.test(e_input.val())) {
-		e_input.addClass('valid');
+	if(email_regex.test($(input).val())) {
+		$(input).addClass('valid');
+		tooltip.hide();
 	} else  {
-		e_input.removeClass('valid');
+		$(input).removeClass('valid');
+		if(!tooltip.is_shown){
+			tooltip.show(input, messages.email_invalid);
+		}
 	}
 	all_valid();
-	console.log("ffsf");
+	// console.log("ffsf");
 }
 
 $(document).ready(function() {
 	console.log("ffff");
 	$("input[type='email']").on("blur keyup change click", function(){
-		var input = $(this);
+		var input = this;
 		check_email(input);
 
 		setTimeout(function(){
@@ -45,15 +54,19 @@ $(document).ready(function() {
 	$("input[type='password']").keyup(function() {
 		if($(this).val().length >= 8) {
 			$(this).addClass('valid');
+			tooltip.hide();
 		} else {
 			$(this).removeClass('valid');
+			if(!tooltip.is_shown){
+				tooltip.show(this, messages.password_invalid);
+			}
 		}
 		all_valid();
 	});
 
 	//for registration
 	$("input[name='name_last_name']").on("blur keyup change click",function(){
-		console.log('name_last_name');
+		// console.log('name_last_name');
 		if(name_last_name_regex.test($(this).val())) {
 			$(this).addClass('valid');
 		} else  {
@@ -70,5 +83,5 @@ $(".button__proceed").click(function(event) {
 	setTimeout(function(){
 		button.removeClass('in-progress');
 		notification.change("error","Network error","Sorry <a href='/home'>we</a> have no servers");
-	},2000)
+	},2000);
 });
