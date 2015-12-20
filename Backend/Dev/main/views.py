@@ -2,11 +2,12 @@
 from django.shortcuts import render
 from django.template import Context
 
+
 def home(request):
-    #sample data
+    # sample data
     """
         user = {"name": "Имя", "last_name": "Фамилия"}
-        breadcumbs = [{"href": "av","link": "alalalal"},{"href": "a","link": "b"}]
+        breadcumbs = [{"href": "av", "link": "alalalal"}, {"href": "a", "link": "b"}]
         courses = [
             {
                 "name": "Предмет 1",
@@ -25,7 +26,7 @@ def home(request):
                         },
                         "messages": {
                             "warning": [],
-                            "neutral": [] 
+                            "neutral": []
                         }
                     }
                 ]
@@ -63,7 +64,7 @@ def home(request):
                                     }
                                 ]
                             }
-                        },{
+                        }, {
                             "traditional": True,
                             "done": False,
                             "content": "Прочитать книгу Б"
@@ -76,20 +77,25 @@ def home(request):
     """
     # context = Context({"user": user, "breadcumbs": breadcumbs, "courses": courses, "homework": homework})
     context = {}
-    return render(request,'Pages/home.html',context)
+    return render(request, 'Pages/home.html', context)
+
 
 def register_student(request):
-    return render(request,'Pages/registration.html')
+    return render(request, 'Pages/registration.html')
+
 
 def home(request):
-    return render(request,'Pages/home.html')
-#login group
+    return render(request, 'Pages/home.html')
 
+
+# login group
 def login(request):
-    return render(request,'Pages/login.html')
+    return render(request, 'Pages/login.html')
+
 
 def register_student(request):
-    return render(request,'Pages/registration.html')
+    return render(request, 'Pages/registration.html')
+
 
 def forgot_password(request):
-    return render(request,'Pages/forgot_password.html')
+    return render(request, 'Pages/forgot_password.html')

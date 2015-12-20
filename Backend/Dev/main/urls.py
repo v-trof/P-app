@@ -22,16 +22,16 @@ func_patterns = [
     url(r'^login/$', func_views.login),
     url(r'^reg/$', func_views.reg),
     url(r'^templatetest/$', func_views.test),
-    url(r'^reg/$' , func_views.reg),
-    url(r'^new_course/$' , func_views.new_course),
-    url(r'^new_test/$' , func_views.new_test),
-    url(r'^new_material/$' , func_views.new_material),
+    url(r'^reg/$', func_views.reg),
+    url(r'^new_course/$', func_views.new_course),
+    url(r'^new_test/$', func_views.new_test),
+    url(r'^new_material/$', func_views.new_material),
 ]
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.home),
-    url(r'^register_student/$' , views.register_student),
-    url(r'^forgot_password/$' , views.forgot_password),
-    url(r'^func/' , include(func_patterns)),
+    url(r'^register_student/$', views.register_student),
+    url(r'^forgot_password/$', views.forgot_password),
+    url(r'^func/', include(func_patterns)),
 ]
