@@ -23,6 +23,10 @@ body
 		background: none
 .login-box--form
 	text-align: center
+	&>input
+		width: 16rem
+		+smartphone()
+			width: auto
 	&>input, &>button
 		margin-top: $margin-regular
 .footer

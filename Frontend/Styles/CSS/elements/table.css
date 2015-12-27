@@ -1,0 +1,1 @@
+table,tbody,td,th,thead,tr{box-sizing:border-box}td,th{padding:.4rem;line-height:1.5rem;-webkit-transition:.3s;transition:.3s;text-align:left}tr{background:#fafafa}th{font-weight:500}td.mark--good{color:#1bbd1b}td.mark--medium{color:#975405}td.mark--bad{color:#e20e0e}.divider{background:#fafafa!important;color:#6d747a}thead.scrolled{position:fixed;top:3.125rem;z-index:100}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf8">
+	<title>Ким 10(Оценки)</title>
+</head>
+<body>
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/main.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/layout/course.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/layout/marks-test.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/header.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/cards.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/notification.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/table.css">
+	<header class="header">
+		<div class="header__breadcumbs">
+		<a href='#'>Главная</a>
+		<img src="../../Assets/Icons/angle_right.svg" inline>
+		<a href='#'>Курс А</a>
+		<img src="../../Assets/Icons/angle_right.svg" inline>
+		<a href='#'>Ким 10(Оценки)</a>
+		</div>
+		<div class="header__search">
+			<img src="../../Assets/Icons/search.svg" inline>
+			<input type="text" name="search" placeholder="Искать...">
+		</div>
+		<div class="header__user">
+			<img src="../../Assets/Images/avatar.png" class="user__avatar--small">
+			<span class="user__name">Всеволод Трофимов</span>
+		</div>
+	</header>
+
+	<div class="content">
+		<section class="linkbox">
+			<a class="link--card">
+				<div class="card-small">
+				10И
+				</div>
+			</a>
+			<a class="link--card">
+				<div class="card-small">
+				10В
+				</div>
+			</a>
+			<a class="link--card">
+				<div class="card-small">
+				10Д
+				</div>
+			</a>
+			<a class="link--card">
+				<div class="card-small">
+				Нераспределенные
+				</div>
+			</a>
+		</section>
+		<section>
+			<table class="card student-results" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th>Имя и Фамилия</th>
+						<th>Оценка</th>
+						<th>Балл</th>
+						<th>Верно</th>
+						<th>Время выполнения</th>
+					</tr>
+				</thead>
+				<tr class="divider">
+					<td>10И</td>
+				</tr>
+				<tbody>
+					<tr>
+						<td>Всеволод Трофимов</td>
+						<td class="mark--good">5</td>
+						<td>19 из 20</td>
+						<td>95%</td>
+						<td>43 минуты</td>
+					</tr>
+					<tr>
+						<td>Copy Paste</td>
+						<td class="mark--regular">3</td>
+						<td>10 из 20</td>
+						<td>50%</td>
+						<td>23 минуты</td>
+					</tr>
+				</tbody>
+				<tr class="divider">
+						<td>10В</td>
+				</tr>
+				<tbody>
+					<tr>
+						<td>Copy Paste</td>
+						<td class="mark--bad">2</td>
+						<td>1 из 20</td>
+						<td>5%</td>
+						<td>1 час 50 минут</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</div>
+	<script src="../../Scripts/Min/jquery-2.1.4.min.js"></script>
+	<script src="../../Scripts/Min/layout.js"></script>
+	<script src="../../Scripts/Min/humanize.js"></script>
+	<script src="../../Scripts/Dev/tooltip.js"></script>
+	<script src="../../Scripts/Dev/table.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+@import "../vars"
+
+tr,td,th,tbody,table,thead
+	box-sizing: border-box
+
+td, th
+	padding: $padding-small
+	line-height: $font-regular*1.5
+	transition: $time-regular
+	text-align: left
+
+tr
+	background: $white
+
+th
+	font-weight: 500
+
+td
+	&.mark--good
+		color: $green-bright
+	&.mark--medium
+		color: $yellow-dark
+	&.mark--bad
+		color: $red-bright
+
+.divider
+	background: $white !important
+	color: $grey-semidark
+
+thead.scrolled
+	position: fixed
+	top: $block-regular
+	z-index: 100

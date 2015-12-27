@@ -1,0 +1,44 @@
+@import "../vars"
++scrollbar()
+
+@font-face
+	font-family: Segoe Condensed
+	src: url("../../../Assets/Fonts/Segoe_Condensed.ttf")
+
+.content
+	height: calc(100vh - 50px)
+	overflow-y: scroll
+	padding: $margin-big 0 $margin-big 16px
+	display: flex
+	flex-direction: row
+
+tr:nth-child(odd)
+	background: $grey-light
+
+table.student-list
+	position: relative
+	z-index: 10
+	list-style-type: none
+	border-right: none
+	padding: 0
+	margin: 0
+	margin-bottom: $margin-big
+
+table.student-marks
+	padding: 0
+	margin: 0 0 0 -3px
+	box-sizing: border-box
+	td
+		text-align: center
+	&:hover
+		border-color: $blue-bright
+	&.current:hover
+		border-color: $grey-semilight
+section
+	margin-left: $margin-big
+	&:nth-child(2)
+		margin-left: 0
+.student-marks__header
+	// position: fixed
+	// top: $block-regular
+	font-family: "Segoe Condensed", "Segoe UI"

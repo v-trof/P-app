@@ -4,8 +4,8 @@ $white          : #fafafa
 $grey-light     : #f2f2f2
 $grey-semilight : #e6e6e6
 $grey-mid       : #cacaca
-$grey-semidark  : #808080
-$grey-dark      : #373737
+$grey-semidark  : #6d747a
+$grey-dark      : #35383b
 $black          : #0f0f0f
 //dim
 $yellow-dim     : #ffeb3b
@@ -84,6 +84,10 @@ $time-big: .5s
 //should cover everything from iPhone6+ to galaxy S3
 =smartphone()
 	@media only screen and (max-width: 736px)
+		@content
+
+=tablet()
+	@media only screen and (min-width: 737px) and (max-width: 1024px)
 		@content
 
 =short-screen()

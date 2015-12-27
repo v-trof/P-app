@@ -1,24 +1,3 @@
-//sample
-var mark_descriptions = {
-	kursA: {
-		m4: {
-			type : "Тест",
-			name : "a",
-			percentage : 1,
-			done : 156,
-			total : 10000,
-			date : "18.10.2015"
-		},
-		m5: {
-			type : "Тест",
-			name : "Плеоназмы",
-			percentage : 74,
-			done : 14,
-			total : 19,
-			date : "12.10.2015"
-		}
-	}
-}
 
 function offset_bottom(el){
 	return $(window).height() - $(el).height() -$(el).offset().top
@@ -84,6 +63,14 @@ var tooltip = {
 	hide : function(){
 		$("#tooltip").css('opacity', '0');
 		tooltip.is_shown = false;
+	},
+	generate : {
+		mark__tooltip : function(description){
+			var heading = "<h5 class='tooltip__heading'>«" + description.name + "»</h5>";
+			var results = "<div class='.tooltip__results--test'>" +description.percentage + "%<span>("+description.done + " из " + description.total + ")</span></div>";
+			var date = "<div class='.tooltip__date--test'>"+humanize.date(description.date)+"</div>";
+			return heading + results + date;
+		}
 	}
 }
 

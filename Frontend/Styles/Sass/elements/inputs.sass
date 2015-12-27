@@ -48,7 +48,6 @@ input,button
 		background: $green-bright
 	&:invalid+label:before
 		background: $red-bright
-	
 
 	&:focus+label:before
 		opacity: 1
@@ -62,11 +61,11 @@ input,button
 
 //text inputs
 .input__placeholder-label
-	width: 16rem
+	width: 100%
 	&+label
 		transform: translateY(-$padding-regular - $font-big - $border-regular)
-.input__inner-label,
-	width: 16rem
+.input__inner-label
+	width: 100%
 	padding-top: $padding-regular*2
 	padding-bottom: $padding-small*1.2
 	&+label

@@ -2,7 +2,7 @@
 function build_header(){
 	var breadcumbs_w = $(".header__breadcumbs").innerWidth();
 	var user_w = $(".header__user").innerWidth();
-	console.log(user_w,breadcumbs_w);
+	// console.log(user_w,breadcumbs_w);
 	if(breadcumbs_w>user_w){
 		$(".header__user").css('min-width', breadcumbs_w+10+"px");
 		$(".header__breadcumbs").css('min-width', breadcumbs_w+10+"px");
@@ -12,7 +12,7 @@ function build_header(){
 		$(".header__user").css('min-width', user_w+10+"px");
 		breadcumbs_w=user_w;
 	}
-	console.log(user_w,breadcumbs_w);
+	// console.log(user_w,breadcumbs_w);
 	$(".header__search").css("width","100%");
 }
 
