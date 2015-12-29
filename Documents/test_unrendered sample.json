@@ -1,0 +1,93 @@
+{
+	"questions" : [
+		{
+			"question_items" : [
+				{
+					"class" : "{{item class}}",
+					"value" : "{{text or url}}"
+				},
+				{
+					"class" : "{{item class}}",
+					"value" : "{{text or url}}"
+				},
+				{
+					"class" : "{{item class}}",
+					"value" : "{{text or url}}"
+				}
+			],
+
+			"answer_items" : [
+				{
+					"class" : "{{item class}}",
+					"label" : "{{text or none}}"
+				},
+			]
+		},
+
+		{
+			"question_items" : [
+				{
+					"class" : "{{item class}}",
+					"value" : "{{text or url}}"
+				},
+				{
+					"class" : "{{item class}}",
+					"value" : "{{text or url}}"
+				},
+				{
+					"class" : "{{item class}}",
+					"value" : "{{text or url}}"
+				}
+			],
+
+			"answer_items" : [
+				{
+					"class" : "{{item class}}",
+					"label" : "{{text or none}}"
+				},
+			]
+		}
+	]
+}
+
+
+//exaple
+
+{
+	"questions" : [
+		{
+			"question_items" : [
+				{
+					"class" : "text-wrapper",
+					"value" : "Его любимой одеждой был халат, он не вставал с постели"
+				},
+			],
+
+			"answer_items" : [
+				{
+					"class" : "input__inner-label",
+					"label" : "Фамилия этого персонажа"
+				},
+			]
+		},
+		{
+			"question_items" : [
+				{
+					"class" : "image-wrapper",
+					"value" : "http://3.bp.blogspot.com/-Wxp0n8fjsh8/VaTx6fYzE1I/AAAAAAAAHiA/dexZriL-VJ4/s1600/Ju-S-Gershkovich-shhtolc-illjustracija-oblomov.jpg"
+				},
+				{
+					"class" : "text-wrapper",
+					"value" : "Штольц"
+				},
+			],
+
+			"answer_items" : [
+				{
+					"class" : "textarea",
+					"label" : "Чем картинка отличается от описания этого персонажа"
+				},
+			]
+		}
+	]
+}

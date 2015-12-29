@@ -1,6 +1,11 @@
 @import "../vars"
+
 body
 	margin: 0 !important
+
+h1
+	margin-bottom: $margin-big
+
 .editor
 	display: flex
 	flex-direction: row
@@ -13,31 +18,110 @@ body
 	+tablet()
 		min-width: 14.5rem
 		width: 14.5rem
-.question-elements,.answer-elements,.test-preview
+.question-elements,.answer-elements,.test
 	height: 100vh
 	padding: $block-regular + $padding-big $padding-big $padding-big $padding-big
 
-.test-preview
+
+
+
+
+
+.test
 	width: 100%
-	background: $white
 	display: flex
 	flex-direction: column
 	justify-content: top
 	align-items: center
+
+.test__preview
+	width: 100%
+
 .test__task
 	display: flex
 	flex-direction: row
 	justify-content: center
+	width: 100%
 .task__number
-	width: 10rem
+	min-width: 10rem
 	text-align: center
 	font-size: $font-huge
 	+smartphone()
 		display: none
 .task__content
-	max-width: 40rem
-	margin-right: 10vw
+	width: 100%
+	max-width: 50rem
+	margin-right: 10rem
+
 .task__answer
-	input
-		width: 100%
+	transition: $time-regular
+	margin-bottom: -$margin-regular
+	*
 		border-color: $grey-dark
+
+.task__question>*,.task__answer__item
+	z-index: 2
+	transition: $time-regular
+	position: relative
+	&.drop--accept
+		transform: translateY(-$margin-regular)
+
+*[draggable]
+	transition: $time-regular
+	user-select: none
+	cursor: move
+	*
+		cursor: move !important
+	&.moved
+		opacity: 0.5
+		transform: scale(0.9)
+
+.block--empty
+	transition: $time-regular
+	background: $grey-semilight
+	height: $block-regular
+	margin-bottom: $margin-regular
+	display: flex
+	align-items: center
+	justify-content: center
+	border: 3px dashed transparent
+	&.drop--accept
+		opacity: 0.2
+		border-color: $grey-semidark
+		transform: none
+
+
+
+
+#editor__settings
+	position: fixed
+	bottom: $margin-regular
+	margin-bottom: 0
+	left: $margin-regular
+	width: 18.5rem - $margin-regular*2
+	&>h3
+		margin: 0
+#editor__type
+	line-height: $font-regular
+
+
+
+
+
+
+#create
+	margin-top: $margin-huge
+	height: 64px
+	width: 64px
+	transition: $time-regular
+	stroke: $grey-semidark
+	&.drop--accept
+		stroke: $blue-bright
+		transform: scale(1.1)
+
+#indicator
+	position: absolute
+	width: 0
+	height: 0
+	background: rgba($blue-bright, .5)
+	z-index: 1
