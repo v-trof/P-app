@@ -24,19 +24,7 @@ from django import forms
 class RegForm(forms.Form):
     email = models.EmailField(_('email address'), blank=True)
     password = forms.CharField(widget=forms.PasswordInput(render_value=False), max_length=100)
-    username = models.CharField(
-        _('username'), max_length=30, unique=True,
-        help_text=_('Required. 30 characters or fewer. Letters, digits and \@/./+/-/_ only.'),
-        validators=[
-            validators.RegexValidator(
-                r'^[\w.@+-]+$',
-                _('Enter a valid username. This value may contain only letters, numbers and @/./+/-/_ characters.'), 'invalid'),
-        ],
-        error_messages={
-            'unique': _("The username already exists"),
-        }
-    )
-
+    username = models.CharField(_('username'), max_length=30, unique=True)
 
 class LoginForm(forms.Form):
     name = models.EmailField(_('email address'), blank=True)
@@ -46,7 +34,6 @@ class LoginForm(forms.Form):
 
 class Course_element():
     name = models.CharField(_('name'), max_length=30, blank=True)
-    type = models.CharField(_('type'), max_length=30, blank=True)
     link = models.CharField(_('link'), max_length=30, blank=True)
 
 
@@ -66,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
     is_changing = models.BooleanField(default=False)
-    email = models.EmailField(_('email address'), blank=True)
+    email = models.EmailField(_('email address'), blank=True,unique=True)
     is_staff = models.BooleanField(_('staff status'), default=False)
     is_active = models.BooleanField(_('active'), default=True)
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
