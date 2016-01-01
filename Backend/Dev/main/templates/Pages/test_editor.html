@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{% include 'UI_elements/unique/head_info.html' %}
+		<title>{{test.heading}}(Редактирование)</title>
+	</head>
+	<body>
+		<div class="includer">{% include 'CSS/main.html' %}</div>
+		<div class="includer">{% include 'CSS/header.html' %}</div>
+		<div class="includer">{% include 'CSS/inputs.html' %}</div>
+		<div class="includer">{% include 'CSS/cards.html' %}</div>
+		<div class="includer">{% include 'CSS/content-wrappers.html' %}</div>
+		
+		<div class="includer">{% include 'CSS/test-editor.html' %}</div>
+
+		
+
+
+		<div class="editor">
+			
+			{% include 'UI_elements/unique/test_editor_settings.html' %}
+
+			<div class="question-elements">
+				{% include 'UI_elements/content_wrappers/text.html' %}
+			</div>
+
+			
+
+			<div class="test">
+				<h1 class="test__heading" contenteditable>{{test.heading}}</h1>
+				<div class="test__preview">
+				</div>
+				<svg viewbox="0 0 100 100" id="create">
+					<circle cx="50" cy="50" r="48" stroke-width="4" fill="none"/>
+					<line x1="50" x2="50" y1="35" y2="65" stroke-width="4"/>
+					<line x1="35" x2="65" y1="50" y2="50" stroke-width="4"/>
+				</svg>
+			</div>
+
+
+			<div class="answer-elements">
+				{% include 'UI_elements/inputs/text.html' %}
+			</div>
+		</div>
+
+
+		
+
+		<!-- Allows us to show that are is droppable -->
+		<div id="indicator"></div>
+		<div class="includer">{% include 'JS/jquery-2.html' %}</div>
+		<div class="includer">{% include 'JS/layout.html' %}</div>
+		<div class="includer">{% include 'JS/humanize.html' %}</div>
+		<div class="includer">{% include 'JS/drag_and_drop.html' %}</div>
+		<div class="includer">{% include 'JS/create_question.html' %}</div>
+		<div class="includer">{% include 'JS/test_editor_generate.html' %}</div>
+
+		{% include 'UI_elements/unique/header.html' with user=user breadcumbs=breadcumbs %}
+		{% include 'UI_elements/unique/notification.html'%}
+
+	</body>
+</html>

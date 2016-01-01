@@ -99,3 +99,8 @@ def register_student(request):
 
 def forgot_password(request):
     return render(request, 'Pages/forgot_password.html')
+
+def test_editor(request):
+    test = {"heading":"Sample"}
+    context =  Context({"test":test})
+    return render(request, 'Pages/test_editor.html', context)

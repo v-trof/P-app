@@ -1,16 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="utf8">
-	<style id="ff-fix">
-		*{
-			transition: none !important;
-		}
-	</style>
-	<script type="text/javascript">
-		document.getElementById('ff-fix').innerHTML = '';		
-	</script>
+	
 	<title>П</title>
 
 </head>
@@ -21,12 +12,15 @@
 	<div class="includer">{% include 'CSS/cards.html' %}</div>
 	<div class="includer">{% include 'CSS/notification.html' %}</div>
 	<div class="includer">{% include 'CSS/tooltip.html' %}</div>
+	<!-- <link rel="stylesheet" type="text/css" href="../Styles/materialize.css"> -->
 	<div class="notification__error hidden" id="notification">
-		<div class="notification__heading">
-			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13 13-5.832 13-13S23.168 3 16 3zm0 2c6.087 0 11 4.913 11 11s-4.913 11-11 11S5 22.087 5 16 9.913 5 16 5zm-1 5v2h2v-2h-2zm0 4v8h2v-8h-2z"/></svg>
-			<h3>s error</h3>
-		</div>
-		<span class="notification__content">s text</span>
+			<div class="notification__bg">
+				<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13 13-5.832 13-13S23.168 3 16 3zm0 2c6.087 0 11 4.913 11 11s-4.913 11-11 11S5 22.087 5 16 9.913 5 16 5zm-1 5v2h2v-2h-2zm0 4v8h2v-8h-2z"/></svg>
+				<h3>s error</h3>
+			</div>
+			<div class="notification__content--wrap">
+				<div class="notification__content">s text</div>
+			</div>
 	</div>
 	<header class="header">
 		<div class="header__breadcumbs">
@@ -105,9 +99,8 @@
 				</span></span></div>
 			</div>
 			<div id="tooltip">
-				<h5 class="tooltip__heading">heading</h5>
-				<div class="tooltip__results--test">0%<span>(0 из 0)</span></div>
-				<div class="tooltip__date--test">date</div>
+				<div class="tooltip__content">
+				</div>
 			</div>
 		</section>
 		<section class="homework">
@@ -137,5 +130,47 @@
 	<div class="includer">{% include 'JS/handle-cards.html' %}</div>
 	<div class="includer">{% include 'JS/tooltip.html' %}</div>
 	<div class="includer">{% include 'JS/notification.html' %}</div>
+	<script type="text/javascript">
+		//sample
+		var mark_descriptions = {
+			kursA: {
+				m4: {
+					type : "Тест",
+					name : "a",
+					percentage : 1,
+					done : 156,
+					total : 10000,
+					date : "18.10.2015"
+				},
+				m5: {
+					type : "Тест",
+					name : "Плеоназмы",
+					percentage : 74,
+					done : 14,
+					total : 19,
+					date : "12.10.2015"
+				}
+			}
+		}
+
+		//realcode
+		function get_description(mark){
+			mark = mark.split("_");
+			return mark_descriptions[mark[1]][mark[2]];
+		}
+
+		$(document).ready(function() {
+			$(".card-marks__marks>button").blur(function() {
+					tooltip.hide();
+					$(this).removeClass('open');
+			});
+			$(".card-marks__marks>button").focus(function() {
+				$(".card-marks__marks>button").removeClass('open');
+				new_html = tooltip.generate.mark__tooltip(get_description($(this).attr("id")));
+				tooltip.show(this, new_html);
+				$(this).addClass('open');
+			});
+		});
+	</script>
 </body>
 </html>

@@ -35,7 +35,6 @@ gulp.task('sass_to_css', function () {
 });
 
 gulp.task('build', function () {
-	//removes useless shit from html
 	gulp.src('HTML/*.html')
 		.pipe(remove("[dev]")) //removes elements with attr dev
 		.pipe(inlineSource())
