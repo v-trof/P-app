@@ -2,7 +2,8 @@
 
 .card
 	// +animation("fade-from-right")
-	border: 3px solid $grey-semilight
+	border-radius: 2px
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .24)
 	background: $white
 	padding: $padding-regular*1.5
 	margin-bottom: $margin-big
@@ -41,12 +42,10 @@
 
 .link--card
 	cursor: pointer
-	text-decoration: none
+	font-weight: 400
 	color: $black !important
-	&:hover
-		color: $black !important
 	&>.card:hover
-		border-color: $blue-bright !important
+		box-shadow: 0 6px 12px 0 rgba(0, 0, 0, .24)
 
 .card-small
 	@extend .card

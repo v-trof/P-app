@@ -9,7 +9,7 @@
 	z-index: 999
 	display: flex
 	flex-direction: row
-	background: $grey-dark
+	background: $grey-semidark
 	height: $block-regular
 	justify-content: space-between
 	padding: 0 $padding-regular
@@ -17,6 +17,7 @@
 	align-items: center
 	padding: 0 $padding-big
 	transition: $time-regular transform
+	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .24)
 	+smartphone
 			justify-content: flex-end
 
@@ -25,7 +26,7 @@
 	line-height: $line-regular
 	white-space: nowrap
 	&>svg
-		fill: $grey-semidark
+		fill: $grey-dark
 		width: $icon-tiny
 		vertical-align: middle
 		margin-bottom: -$size-small/2
@@ -76,7 +77,7 @@
 		width: 100%
 		transition: $time-regular
 		color: $white
-		font-family: $Segoe-UI
+		font-family: $Roboto
 		font-size: $font-regular
 		&:hover,&:focus
 			background: lighten($grey-dark, 30%)

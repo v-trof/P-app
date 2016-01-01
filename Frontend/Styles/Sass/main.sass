@@ -1,10 +1,11 @@
 @import "vars"
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500,700&subset=latin,cyrillic)
 
 body, html
 	font-size: 100%
 	margin: 0
 	padding: 0
-	font-family: $Segoe-UI
+	font-family: $Roboto
 	color: $black
 	background: $grey-light
 
@@ -28,13 +29,17 @@ h2
 
 h3
 	font-size: $font-regular
-
-h2,h3,h4
+	font-weight: 400
 	margin-bottom: $margin-regular
-	font-weight: normal
+
+h2,h4
+	margin-bottom: $margin-regular
+	font-weight: 300
 a
 	color: darken($blue-bright, 5%)
 	transition: $time-regular
+	text-decoration: none
+	font-weight: 500
 	&:focus,&:hover
 		outline: 0
 		box-shadow: none

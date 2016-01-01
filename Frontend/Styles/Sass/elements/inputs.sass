@@ -1,7 +1,7 @@
 @import "../vars"
 
 input,button
-	font-family: $Segoe-UI
+	font-family: $Roboto
 
 
 
@@ -102,12 +102,11 @@ input[type="checkbox"],input[type="radio"]
 		&:before
 			display: inline-block
 			content: ''
-			height: $icon-tiny
-			width: $icon-tiny
+			min-height: $icon-tiny
 			min-width: $icon-tiny
 			border: 1px solid $grey-dark
 			background: $white
-			margin: 0 $margin-regular -0.1rem 0-$icon-tiny
+			margin-right: $margin-regular
 
 
 input[type="checkbox"]
@@ -135,17 +134,20 @@ input[type="radio"]
 			display: inline-block
 			content: ''
 			border-radius: 50%
-			height: $size-small
-			min-width: $size-small
+			min-height: $icon-tiny
+			min-width: $icon-tiny
+			border: 1px solid $blue-bright
 			order: -2
-			background: $grey-dark
-			transform: translate($padding-small*0.95, 1px) scale(0)
+			background: $blue-bright
+			transform: translateX(2px) scale(0)
 		&:before
 			border-radius: 50%
-			margin-left: -$size-small
+			margin-left: -$icon-tiny
 	&:checked+label
 		&:after
-			transform: translate($padding-small*0.95, 1px) scale(1)
+			transform: translateX(2px) scale(1)
+		&:before
+			border-color: $blue-bright
 
 
 //buttons

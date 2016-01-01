@@ -1,12 +1,7 @@
 @import "../vars"
 
-=notification($background,$color)
+=notification($background)
 	background: $background
-	&>.notification__bg
-		&>h3
-			color: $color
-		&>svg
-			fill : $color
 
 #notification
 	transition: $time-regular
@@ -39,6 +34,7 @@
 		height: $icon-regular
 		width: $icon-regular
 		display: block
+		fill: $white
 	&>h3
 		font-size: $font-controls
 		display: block
@@ -51,17 +47,20 @@
 	z-index: 801
 
 .notification__error
-	+notification($red-dim,$red-dark)
+	+notification($red-bright)
 	color: $white
 
+
 .notification__warning
-	+notification($yellow-dim,$yellow-dark)
+	+notification($yellow-bright)
 	color: $black
+	&>.notification__bg>svg
+		fill: $black
 
 .notification__success
-	+notification($green-dim,$green-dark)
-	color: $black
+	+notification($green-bright)
+	color: $white
 
 .notification__info
-	+notification($blue-dim,$blue-dark)
-	color: $black
+	+notification($blue-bright)
+	color: $white
