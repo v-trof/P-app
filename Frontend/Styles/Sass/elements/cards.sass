@@ -1,9 +1,9 @@
 @import "../vars"
 
 .card
-	// +animation("fade-from-right")
+	z-index: 1
 	border-radius: 2px
-	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .24)
+	+box-shadow(1)
 	background: $white
 	padding: $padding-regular*1.5
 	margin-bottom: $margin-big
@@ -29,8 +29,6 @@
 		&>svg
 			fill: $red-bright
 	transition: $time-regular
-	&.done
-		border-color: $green-bright
 
 .card__due-date
 	text-align: right
@@ -45,7 +43,7 @@
 	font-weight: 400
 	color: $black !important
 	&>.card:hover
-		box-shadow: 0 6px 12px 0 rgba(0, 0, 0, .24)
+		+box-shadow(3)
 
 .card-small
 	@extend .card
@@ -64,12 +62,12 @@
 		fill: $grey-dark
 		vertical-align: middle
 	&.done>svg
-		fill: $green-dark
+		fill: $green-bright
 	&>span
 		vertical-align: middle
 
 .task__link.done
-	color: $green-dark
+	color: $green-bright
 
 
 
@@ -99,7 +97,7 @@
 		text-align: center
 		vertical-align: top
 		&.mark--good
-			color: $green-dark
+			color: $green-bright
 		&.mark--medium
 			color: $yellow-dark
 		&.mark--bad
