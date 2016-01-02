@@ -34,4 +34,7 @@ urlpatterns = [
     url(r'^forgot_password/$', views.forgot_password),
     url(r'^func/', include(func_patterns)),
     url(r'^login/$', views.login),
+    url(r'^profile/$', views.profile),
+    url(r'^course/$', views.course),
+    url(r'^groups/$', views.groups),
 ]

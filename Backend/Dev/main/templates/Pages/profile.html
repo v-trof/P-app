@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf8">
+	<div class="includer">{% include 'CSS/Logo mini.html' %}</div>
+	<title>Найстройки Профиля</title>
+</head>
+<body>
+	<div class="includer">{% include 'CSS/main.html' %}</div>
+	<div class="includer">{% include 'CSS/course.html' %}</div>
+	<div class="includer">{% include 'CSS/header.html' %}</div>
+	<div class="includer">{% include 'CSS/cards.html' %}</div>
+	<div class="includer">{% include 'CSS/inputs.html' %}</div>
+	<div class="includer">{% include 'CSS/notification.html' %}</div>
+	<header class="header">
+		<div class="header__breadcumbs">
+		<a href="home.html">Главная</a>
+		<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M12.97 4.28l-1.44 1.44L21.814 16 11.53 26.28l1.44 1.44 11-11 .686-.72-.687-.72-11-11z"/></svg>
+		<a href="#">Всеволод Трофимов</a>
+		<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
+		</div>
+		<div class="header__search">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M19.5 3C14.265 3 10 7.265 10 12.5c0 2.25.81 4.307 2.125 5.938L3.28 27.28l1.44 1.44 8.843-8.845C15.192 21.19 17.25 22 19.5 22c5.235 0 9.5-4.265 9.5-9.5S24.735 3 19.5 3zm0 2c4.154 0 7.5 3.346 7.5 7.5S23.654 20 19.5 20 12 16.654 12 12.5 15.346 5 19.5 5z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
+			<input type="text" name="search" placeholder="Искать...">
+		</div>
+		<div class="header__user">
+			<img src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png" class="user__avatar--small">
+			<span class="user__name">Всеволод Трофимов</span>
+		</div>
+	</header>
+
+	<div class="content">
+		<section>
+			<div class="card card-person">
+				<img class="card-person__avatar" src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png">
+				<div class="card-person__info">
+					<h3 class="card-person__name">Всеволод Трофимов</h3>
+					<span class="card-person__state">Ученик</span>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div class="card">
+				<h4 class="card__heading">Контакты</h4>
+				<div class="card-contacts__item">
+					<h5>email</h5>
+					seva.trofimov2@gmail.com
+				</div>
+				<div class="card-contacts__item">
+					<h5>skype</h5>
+					seva.trofimov
+				</div>
+				<div class="card-contacts__item">
+					<h5>codeforces</h5>
+					kuorell
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div class="card card-settings">
+				<h4 class="card__heading">Настройки профиля</h4>
+				Мои контакты могут просматривать:
+				<form>
+					<input type="radio" id="radio_1" name="contacts_see" checked><label for="radio_1">Все</label>
+					<input type="radio" id="radio_2" name="contacts_see"><label for="radio_2">Только учителя</label>
+					<input type="radio" id="radio_3" name="contacts_see"><label for="radio_3">Только ученики</label>
+					<input type="radio" id="radio_4" name="contacts_see"><label for="radio_4">Только мои учителя и одногруппники</label>
+					<input type="radio" id="radio_5" name="contacts_see"><label for="radio_5">Никто</label>
+				</form>
+				<br><br>
+				<a href="/forgot_password">Сменить пароль</a>
+			</div>
+		</section>
+
+	</div>
+	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
+	<div class="includer">{% include 'JS/layout.html' %}</div>
+	<div class="includer">{% include 'JS/humanize.html' %}</div>
+	<div class="includer">{% include 'JS/notification.html' %}</div>
+</body>
+</html>

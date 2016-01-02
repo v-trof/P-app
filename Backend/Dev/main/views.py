@@ -79,11 +79,6 @@ def home(request):
     context = {}
     return render(request, 'Pages/home.html', context)
 
-
-def register_student(request):
-    return render(request, 'Pages/registration.html')
-
-
 def home(request):
     return render(request, 'Pages/home.html')
 
@@ -104,3 +99,12 @@ def test_editor(request):
     test = {"heading":"Sample"}
     context =  Context({"test":test})
     return render(request, 'Pages/test_editor.html', context)
+
+def profile(request):
+    return render(request, 'Pages/profile.html')
+
+def course(request):
+    return render(request, 'Pages/course.html')
+
+def groups(request):
+    return render(request, 'Pages/groups.html')

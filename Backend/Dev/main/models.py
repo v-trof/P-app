@@ -32,10 +32,9 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(render_value=False), max_length=100)
 
 
-class Course_element():
+class Course():
     name = models.CharField(_('name'), max_length=30, blank=True)
     link = models.CharField(_('link'), max_length=30, blank=True)
-
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
@@ -50,8 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             'unique': _("The username already exists"),
         }
     )
-    first_name = models.CharField(_('first name'), max_length=30, blank=True)
-    last_name = models.CharField(_('last name'), max_length=30, blank=True)
+    name = models.CharField(_('name'), max_length=30, blank=True)
     is_changing = models.BooleanField(default=False)
     email = models.EmailField(_('email address'), blank=True,unique=True)
     is_staff = models.BooleanField(_('staff status'), default=False)

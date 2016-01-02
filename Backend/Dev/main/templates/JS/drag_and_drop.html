@@ -1,12 +1,13 @@
 <script>var counter = 0;
 var original_el = undefined;
-
-
+var firefox = navigator.userAgent.indexOf("Firefox") != -1;
+console.log( navigator.userAgent);
 var editor = {
 	verify_type : function() {
 		// console.log("verify_type");
 		if($("#move").is(':checked')) {
 			$(".task__answer__item, .task__question>*").attr('draggable', 'true');
+			$(".task__answer__item, .block--empty").removeAttr("draggable");
 			$("[contenteditable]").attr('contenteditable', 'false');
 		} else {
 			$(".test__preview [draggable]").removeAttr("draggable");
@@ -60,9 +61,8 @@ var add_boundary = {
 	question: function(el) {
 		el.bind({
 			dragenter: function(e) {
-				console.log("enter",e ,e.originalEvent.dataTransfer);
 				if( e.originalEvent.dataTransfer.getData("el_type") == "question" ) {
-					console.log(counter, counter == 0);
+					// console.log(counter, counter == 0);
 					if(counter == 0) {
 						this.classList.add('drop--accept');
 						c_rect = this.getBoundingClientRect();
@@ -260,8 +260,9 @@ $(document).ready(function() {
 
 	$(".answer__field").bind({
 		dragstart: function(e) {
-			e.originalEvent.dataTransfer.setData("el_type", "answer");
-			e.originalEvent.dataTransfer.setData("el_class", $(this).children('input').attr("class"));
+			e_data = e.originalEvent.dataTransfer;
+			e_data.setData("el_type", "answer");
+			e_data.setData("el_class", $(this).children('input').attr("class"));
 		},
 
 		dragend: function(e) {
@@ -273,10 +274,11 @@ $(document).ready(function() {
 		}
 	});
 
-	$(".question-elements > *").bind({
+	$(".question-elements>*").bind({
 		dragstart: function(e) {
-			e.originalEvent.dataTransfer.setData("el_type", "question");
-			e.originalEvent.dataTransfer.setData("el_class", $(this).attr("class"));
+			e_data = e.originalEvent.dataTransfer;
+			e_data.setData("el_type", "question");
+			e_data.setData("el_class", $(this).attr("class"));
 		},
 
 		dragend: function(e) {
@@ -296,16 +298,17 @@ $(document).ready(function() {
 		},
 
 		dragenter: function(e) {
-			if(counter==0) {
+			console.log("enter");
+			if(counter==0 || firefox) {
 				this.classList.add('drop--accept');
 			}
 			counter++;
 		},
 
 		dragleave: function(e) {
-			// console.log(counter);
+			console.log(counter);
 			counter--;
-			if(counter==0) {
+			if(counter==0 || firefox) {
 				this.classList.remove('drop--accept');
 			}
 		},
@@ -318,8 +321,6 @@ $(document).ready(function() {
 			create_question(e_data.getData("el_type"), e_data.getData("el_class"), original_el);
 		}
 	});
-
-
 
 	$("#indicator").bind({
 		dragover: function(e) {

@@ -14,12 +14,14 @@ function create_question(el_type, el_class, el) {
 	if(el) {
 		new_question.find(".task__" + el_type).html($(el));
 	} else {
-		new_question.find(".task__" + el_type).html(generate[el_class](1));
-
-		new_question.find(".task__" + el_type).children().each(function() {
-			add_boundary.draggable($(this));
-			add_boundary[el_type]($(this));
-		});
+		new_el = generate[el_class](1);
+		if (new_el){
+			new_question.find(".task__" + el_type).html(new_el);
+			new_question.find(".task__" + el_type).children().each(function() {
+				add_boundary.draggable($(this));
+				add_boundary[el_type]($(this));
+			});
+		}
 	}
 	$(".test__preview").append(new_question);
 	editor.verify_type();

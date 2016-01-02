@@ -1,64 +1,162 @@
 <!DOCTYPE html>
 <html>
 <head>
-	{% include 'UI_elements/unique/head_info.html'%}
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf8">
+	<style id="ff-fix">
+		*{
+			transition: none !important;
+		}
+	</style>
+	<script type="text/javascript">
+		document.getElementById('ff-fix').innerHTML = '';
+	</script>
 	<title>П</title>
+
 </head>
 <body>
-<div class="includer">{% include 'CSS/main.html' %}</div>
-<div class="includer">{% include 'CSS/home.html' %}</div>
-
-<div class="includer">{% include 'CSS/cards.html' %}</div>
-<div class="includer">{% include 'CSS/animations.html' %}</div>
-
-
-
-<div class="content">
-	<section class="courses">
-		<h2>Курсы</h2>
-		{% include "Blocks/courses.html" with courses=courses %}
-	</section>
-	<section class="marks">
-		<h2>Оценки</h2>
-		<div class="subject">
-			<h3>Русский язык</h3>
-			<div class="card-marks">
-				<h4 class="card-marks__course">Курс а</h4>
-				<span class="card-marks__marks">
-					<button class="mark--good">5</button>
-					<button class="mark--good">5/4</button>
-					<button class="mark--good">4</button>
-					<button class="mark--medium" id="c_kursA_m4">3</button>
-					<button class="mark--bad" id="c_kursA_m5">2</button>
-				</span>
+	<div class="includer">{% include 'CSS/main.html' %}</div>
+	<div class="includer">{% include 'CSS/home.html' %}</div>
+	<div class="includer">{% include 'CSS/header.html' %}</div>
+	<div class="includer">{% include 'CSS/cards.html' %}</div>
+	<div class="includer">{% include 'CSS/tooltip.html' %}</div>
+	<!-- <link rel="stylesheet" type="text/css" href="../Styles/Css/extensions/materialize.css"> -->
+	{% include "UI_elements/unique/notification.html" %}
+	{% include "UI_elements/unique/header.html" %}
+	<div class="content">
+		<section class="courses">
+			<h2>Курсы</h2>
+			<div class="subject">
+				<h3>Русский язык</h3>
+					<a class="link--card" href="course.html">
+						<div class="card">
+							<div class="icons--warning">
+								<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M6 4v20h4v4h16V8h-4V4H6zm2 2h12v16H8V6zm4 2v2h2.563l-3.282 3.28-.686.72.687.72L12.564 16l-2.282 2.28 1.44 1.44 3-3 .686-.72-.687-.72L13.436 14 16 11.437V14h2V8h-6zm10 2h2v16H12v-2h10V10z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
+							</div>
+							<div class="icons--neutral">
+								<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M16 2.594l-.72.687-13 13 1.44 1.44L5 16.438V28h9V18h4v10h9V16.437l1.28 1.282 1.44-1.44-13-13-.72-.687zm0 2.844l9 9V26h-5V16h-8v10H7V14.437l9-9z"/></svg>
+							</div>
+							<h4 class="card__heading">Курс а</h4>
+							<div class="card__content">
+								Content
+							</div>
+							<div class="messages">
+								<div class="messages__item--warning">
+									WARNING
+								</div>
+								<div class="messages__item--neutral">
+									Just message
+								</div>
+							</div>
+						</div>
+					</a>
+					<a class="link--card" href="/kursB">
+						<div class="card">
+							<div class="icons--warning">
+							</div>
+							<div class="icons--neutal">
+							</div>
+							<h4 class="card__heading">Курс б</h4>
+							<div class="card__content">
+								Content
+							</div>
+						</div>
+					</a>
 			</div>
-			<div class="card-marks">
-				<span class="card-marks__course">Курс б</span>
-				<span class="card-marks__marks empty">
-					<span>Оценок нет</span>
-				</span>
+		</section>
+		<section class="marks">
+			<h2>Оценки</h2>
+			<div class="subject">
+				<h3>Русский язык</h3>
+				<div class="card card-marks">
+					<h4 class="card-marks__course">Курс а</h4>
+					<span class="card-marks__marks">
+						<button class="mark--good">5</button>
+						<button class="mark--good">5/4</button>
+						<button class="mark--good">4</button>
+						<button class="mark--medium" id="c_kursA_m4">3</button>
+						<button class="mark--bad" id="c_kursA_m5">2</button>
+					</span>
+				</div>
+				<div class="card card-marks">
+					<span class="card-marks__course">Курс б</span>
+					<span class="card-marks__marks empty">
+						<span>Оценок нет<span>
+					</span>
+				</span></span></div>
 			</div>
-		</div>
-		<div class="marks__tooltip">
-			<h5 class="tooltip__heading">heading</h5>
-			<div class="tooltip__results">0%<span>(0 из 0)</span></div>
-			<div class="tooltip__date">date</div>
-		</div>
-	</section>
-	<section class="homework">
-		<h2>Задания</h2>
-		{% include "Blocks/homework.html" with homework=homework %}
-		</div>
-	</section>
-</div>
-<div class="includer">{% include 'JS/jquery-2.html' %}</div>
-<div class="includer">{% include 'JS/humanize.html' %}</div>
-<div class="includer">{% include 'JS/handle-cards.html' %}</div>
-<div class="includer">{% include 'JS/marks-tooltip.html' %}</div>
+			<div id="tooltip">
+				<div class="tooltip__content">
+				</div>
+			</div>
+		</section>
+		<section class="homework">
+			<h2>Задания</h2>
+			<div class="subject">
+				<h3>Русский язык</h3>
+				<div class="card">
+					<h4 class="card__heading">В курсе а</h4>
+					<div class="card-homework__task done">
+						<span><a href="#" class="task__link done">Task 1</a></span>
+					</div>
+					<div class="card-homework__task traditional done">
+						<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13 13-5.832 13-13S23.168 3 16 3zm0 2c6.087 0 11 4.913 11 11s-4.913 11-11 11S5 22.087 5 16 9.913 5 16 5zm6.28 6.28L15 18.564l-4.28-4.282-1.44 1.44 5 5 .72.686.72-.687 8-8-1.44-1.44z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
+						<span>Task 2</span>
+					</div>
+					<div class="card__due-date">
+						До <strong>12 ноября</strong>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	
+	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
+	<div class="includer">{% include 'JS/layout.html' %}</div>
+	<div class="includer">{% include 'JS/humanize.html' %}</div>
+	<div class="includer">{% include 'JS/handle-cards.html' %}</div>
+	<div class="includer">{% include 'JS/tooltip.html' %}</div>
+	<script type="text/javascript">
+		//sample
+		var mark_descriptions = {
+			kursA: {
+				m4: {
+					type : "Тест",
+					name : "a",
+					percentage : 1,
+					done : 156,
+					total : 10000,
+					date : "18.10.2015"
+				},
+				m5: {
+					type : "Тест",
+					name : "Плеоназмы",
+					percentage : 74,
+					done : 14,
+					total : 19,
+					date : "12.10.2015"
+				}
+			}
+		}
 
+		//realcode
+		function get_description(mark){
+			mark = mark.split("_");
+			return mark_descriptions[mark[1]][mark[2]];
+		}
 
-{% include 'UI_elements/unique/header.html' with user=user breadcumbs=breadcumbs %}
-{% include 'UI_elements/unique/notification.html'%}
-
+		$(document).ready(function() {
+			$(".card-marks__marks>button").blur(function() {
+					tooltip.hide();
+					$(this).removeClass('open');
+			});
+			$(".card-marks__marks>button").focus(function() {
+				$(".card-marks__marks>button").removeClass('open');
+				new_html = tooltip.generate.mark__tooltip(get_description($(this).attr("id")));
+				tooltip.show(this, new_html);
+				$(this).addClass('open');
+			});
+		});
+	</script>
 </body>
 </html>

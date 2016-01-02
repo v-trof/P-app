@@ -9,3 +9,6 @@
 		<div class="notification__content">For a reason this was not rendered</div>
 	</div>
 </div>
+{% if error %}
+<script>notification.change('error','Login error','{{ error }}' );</script>
+{% endif %}

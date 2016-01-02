@@ -46,38 +46,35 @@ def login(request):
 
 
 def reg(request):
-    def errorHandle(error,email,password,first_name,last_name):
+    def errorHandle(error,email,password,name_last_name):
         form = RegForm()
         return render(request, 'Pages/registration.html', {
             'error': error,
             'form': form,
             'email': email,
             'password': password,
-            'first_name': first_name,
-            'last_name': last_name,
+            'name_last_name':name_last_name,
         })
     if request.method == 'POST':
         form = RegForm(request.POST)
         email = request.POST['email']
         password = request.POST['password']
-        name = request.POST['name']
-        last_name = request.POST['last_name']
+        name_last_name = request.POST['name_last_name']
         if not User.objects.filter(email=email):
             user = User.objects.create_user(
                 username=email,
                 email=email,
                 password=password,
-                first_name=name,
-                last_name=last_name)
+                name=name_last_name)
         else:
             error = u'Данный email уже зарегистрирован'
-            return errorHandle(error,email,password,name,last_name)
+            return errorHandle(error,email,password,name_last_name)
         if user is not None:
                 user.save
                 return redirect('/')
         else:
             error = u'Неверный логин или пароль'
-            return errorHandle(error,email,password,name,last_name)
+            return errorHandle(error,email,password,name_last_name)
     else:
         form = LoginForm()
         return render_to_response('Pages/login.html', {
