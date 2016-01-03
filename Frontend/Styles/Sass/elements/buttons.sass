@@ -1,0 +1,63 @@
+@import "../vars"
+
+button
+	position: relative
+	overflow: hidden
+	border: 0
+	color: $white
+	background: $color--accent
+	border-radius: 2px
+	padding: $padding-regular $padding-big
+	transition: $time-regular
+	font-weight: 500
+	font-size: $font-regular
+	font-family: $Roboto
+	&:hover
+		+box-shadow(3)
+	&:focus
+		outline: none
+
+.button--raized
+	+box-shadow(2)
+
+.button--ghost
+	background: transparent
+	color: darken($color--accent, 5%)
+	&:hover
+		box-shadow: none
+		color: darken($color--accent, 20%)
+
+.button--small
+	padding: $padding-small
+	vertical-align: middle
+
+.button--icon
+	@extend .button--ghost
+	padding: 0
+	height: $icon-regular
+	width: $icon-regular
+	display: flex
+	margin-top: $margin-regular
+	justify-content: center
+	align-items: center
+	&>svg
+		fill: $color--accent
+		height: $icon-small
+		width: $icon-small
+#fab
+	position: fixed
+	bottom: $margin-big
+	right: $margin-big
+	width: $icon-big
+	height: $icon-big
+	border: none
+	border-radius: 50%
+	padding: ($icon-big - $icon-small)/2
+	+box-shadow(2)
+	
+	&>svg
+		height: $icon-small
+		width: $icon-small
+
+	&:hover
+		+box-shadow(3)

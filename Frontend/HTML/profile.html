@@ -11,8 +11,10 @@
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/layout/course.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/header.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/cards.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/buttons.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/inputs.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/notification.css">
+
 	<header class="header">
 		<div class="header__breadcumbs">
 		<a href='home.html'>Главная</a>
@@ -42,8 +44,13 @@
 		</section>
 
 		<section>
-			<div class="card">
-				<h4 class="card__heading">Контакты</h4>
+			<div class="card" id="contacts">
+				<div>
+					<h4 class="card__heading">
+						Контакты
+					</h4>
+					<button class="button--icon" id="add_contact"><img src="../Assets/Icons/add.svg" inline></button>
+				</div>
 				<div class="card-contacts__item">
 					<h5>email</h5>
 					seva.trofimov2@gmail.com
@@ -57,6 +64,7 @@
 					kuorell
 				</div>
 			</div>
+
 		</section>
 
 		<section>
@@ -71,14 +79,53 @@
 					<input type="radio" id="radio_5" name="contacts_see"><label for="radio_5">Никто</label>
 				</form>
 				<br><br>
-				<a href="/forgot_password">Сменить пароль</a>
+				<button href="/forgot_password">Сменить пароль</button>
+				<button class="button--ghost" href="/logout">Выйти</button>
 			</div>
 		</section>
+
+		<button id="fab">
+			<img src="../Assets/Icons/edit.svg" inline>
+		</button>
+
 	</main>
 
 	<script src="../Scripts/Min/jquery-2.1.4.min.js"></script>
 	<script src="../Scripts/Min/layout.js"></script>
 	<script src="../Scripts/Min/humanize.js"></script>
-	<script src="../Scripts/Dev/notification.js"></script>
+	<script src="../Scripts/Dev/ripple.js"></script>
+	<script>
+			$(document).ready(function() {
+				//for transitions
+				$(".card-contacts__item, .card-person__name").attr("contenteditable", "true").css('border-bottom', '1px dotted transparent');
+
+				var editing = false;
+
+				function toggle_edit() {
+					if(editing) {
+						$("[contenteditable]").attr("contenteditable", "false").css('border-bottom', '1px dotted transparent');
+						$("#contacts").css('height', $("#contacts").outerHeight() - 16*2.6 + "px");
+						$(add_contact).css('transform', 'scale(0)');
+						editing = false;
+					} else {
+						$(".card-contacts__item, .card-person__name").attr("contenteditable", "true").css('border-bottom', '1px dotted #2196F3');
+						editing = true;
+						$("[contenteditable]").bind("blur", function() {
+							//ajax
+						});
+					}
+				}
+
+				$("#fab").click(function(event) {
+					toggle_edit();
+				});
+
+				$('.card-person__avatar').click(function(event) {
+					if(editing) {
+						//change avatar
+					}
+				});
+			});
+	</script>
 </body>
 </html>
