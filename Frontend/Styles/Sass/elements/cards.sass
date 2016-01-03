@@ -1,6 +1,8 @@
 @import "../vars"
 
 .card
+	position: relative
+	overflow: hidden
 	z-index: 1
 	border-radius: 2px
 	+box-shadow(1)
@@ -45,7 +47,7 @@
 	&>.card:hover
 		+box-shadow(3)
 
-.card-small
+.card--small
 	@extend .card
 	padding: $padding-regular
 	width: auto
