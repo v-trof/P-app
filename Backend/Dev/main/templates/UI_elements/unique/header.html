@@ -13,11 +13,15 @@
 		<input type="text" name="search" placeholder="Искать...">
 	</div>
 	<div class="header__user">
-		{% if user_avatar %}
-		<img src="{{user.avatar}}" class="user__avatar--small">
+		{% if request.user.name %}
+		<span class="user__name"><a href="/profile/">{{request.user.name}}</a></span>
+		{% if request.user.avatar %}
+		<img src="{{request.user.avatar}}" class="user__avatar--small">
 		{% else %}
 		<img src="{{Static}}/Images/sample_avatar.png" class="user__avatar--small">
 		{% endif %}
-		<span class="user__name">{{User.name}} {{User.last_name}}</span>
+		{% else %}
+		<a href="/login/">Вход</a>
+		{% endif %}
 	</div>
 </header>

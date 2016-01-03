@@ -27,7 +27,7 @@ def login(request):
             if user is not None:
                 if user.is_active:
                     auth(request, user)
-                    request.session.set_expiry(0)
+                    request.session.set_expiry(360)
                     return redirect('/')
                 else:
                     error = u'Аккаунт отключен'
