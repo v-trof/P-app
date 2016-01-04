@@ -13,8 +13,9 @@
 	{%include 'JS/jquery-2.html'%}
 	<div class="includer">{% include 'JS/login-verify.html' %}</div>
 	<div class="includer">{% include 'JS/tooltip.html' %}</div>
+	{% include "UI_elements/unique/head_info.html" %}
 	{% include "UI_elements/unique/notification.html" %}
-	<div class="content">
+	<main>
 		<div class="login-box">
 			<h1>Регистрация</h1>
 			<form class="login-box--form" action="/func/reg/" method="post">
@@ -28,7 +29,7 @@
 				</button>
 			</form>
 		</div>
-	</div>
+	</main>
 	<footer class='footer'>
 		<a href="/login/">Вход</a>
 	</footer>

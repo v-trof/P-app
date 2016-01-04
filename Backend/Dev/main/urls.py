@@ -24,6 +24,8 @@ func_patterns = [
     url(r'^reg/$', func_views.reg),
     url(r'^new_course/$', func_views.new_course),
     url(r'^new_material/$', func_views.new_material),
+    url(r'^logout/$', func_views.logout_view),
+    url(r'^change_data/$', func_views.change_data),
 ]
 
 urlpatterns = [
@@ -34,7 +36,7 @@ urlpatterns = [
     url(r'^forgot_password/$', views.forgot_password),
     url(r'^func/', include(func_patterns)),
     url(r'^login/$', views.login),
-    url(r'^profile/$', views.profile),
     url(r'^course/$', views.course),
     url(r'^groups/$', views.groups),
+    url(r'^user/(?P<user_id>[0-9]+)/$', views.profile),
 ]

@@ -9,8 +9,9 @@ from django.db import models
 from django.contrib.auth import authenticate, login as auth
 import os
 from .models import User, LoginForm, RegForm
-
-
+from django.contrib.auth import logout
+from django.db.models import get_model
+from django.utils.html import strip_tags
 def login(request):
     def errorHandle(error):
         form = LoginForm()
@@ -44,6 +45,9 @@ def login(request):
             'form': form,
         })
 
+def logout_view(request):
+    logout(request);
+    return redirect('/')
 
 def reg(request):
     def errorHandle(error,email,password,name_last_name):
@@ -71,6 +75,9 @@ def reg(request):
             return errorHandle(error,email,password,name_last_name)
         if user is not None:
                 user.save
+                user = authenticate(username=email, password=password)
+                auth(request, user)
+                request.session.set_expiry(0)
                 return redirect('/')
         else:
             error = u'Неверный логин или пароль'
@@ -118,3 +125,10 @@ def new_material(request):
         material.close()
         f.close()
         return redirect('/')
+
+def change_data(request):
+    if request.method == 'GET':
+        email = request.GET['email']
+        setattr(request.user, 'email', strip_tags(email))
+        request.user.save()
+    return redirect('/')

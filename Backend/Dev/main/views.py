@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.template import Context
-
+from .models import User
 
 def home(request):
     # sample data
@@ -100,8 +100,11 @@ def test_editor(request):
     context =  Context({"test":test})
     return render(request, 'Pages/test_editor.html', context)
 
-def profile(request):
-    return render(request, 'Pages/profile.html')
+def profile(request, user_id):
+    try: 
+        return render(request, 'Pages/profile.html', {"user":User.objects.get(id=user_id)})
+    except:
+        return render(request, 'Pages/page404.html');
 
 def course(request):
     return render(request, 'Pages/course.html')

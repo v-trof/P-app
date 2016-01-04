@@ -14,14 +14,16 @@
 	</div>
 	<div class="header__user">
 		{% if request.user.name %}
-		<span class="user__name"><a href="/profile/">{{request.user.name}}</a></span>
+		<span class="user__name"><a href="/user/{{request.user.id}}/">{{request.user.name}}</a></span>
 		{% if request.user.avatar %}
 		<img src="{{request.user.avatar}}" class="user__avatar--small">
 		{% else %}
 		<img src="{{Static}}/Images/sample_avatar.png" class="user__avatar--small">
 		{% endif %}
+		<a href="/func/logout/">Выйти</a>
 		{% else %}
-		<a href="/login/">Вход</a>
+		<a href="/register_student/">Регистрация</a>
+		<a href="/login/">Войти</a>
 		{% endif %}
 	</div>
 </header>
