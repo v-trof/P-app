@@ -45,7 +45,7 @@
 
 		<section>
 			<div class="card" id="contacts">
-				<div>
+				<div class="header-with-button">
 					<h4 class="card__heading">
 						Контакты
 					</h4>
@@ -104,11 +104,11 @@
 				function toggle_edit() {
 					if(editing) {
 						$("[contenteditable]").attr("contenteditable", "false").css('border-bottom', '1px dotted transparent');
-						$("#contacts").css('height', $("#contacts").outerHeight() - 16*2.6 + "px");
-						$(add_contact).css('transform', 'scale(0)');
+						$("#add_contact").css('transform', 'scale(0)');
 						editing = false;
 					} else {
 						$(".card-contacts__item, .card-person__name").attr("contenteditable", "true").css('border-bottom', '1px dotted #2196F3');
+						$("#add_contact").css('transform', 'scale(1)');
 						editing = true;
 						$("[contenteditable]").bind("blur", function() {
 							//ajax
@@ -120,10 +120,14 @@
 					toggle_edit();
 				});
 
-				$('.card-person__avatar').click(function(event) {
+				$(".card-person__avatar").click(function(event) {
 					if(editing) {
 						//change avatar
 					}
+				});
+				new_contact = '<div class="card-contacts__item"><h5>Сервис</h5>Ваши данные</div>';
+				$("#add_contact").click(function(event) {
+					$("#contacts").append($(new_contact).attr("contenteditable", "true").css('border-bottom', '1px dotted #2196F3'));
 				});
 			});
 	</script>
