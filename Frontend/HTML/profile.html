@@ -28,7 +28,7 @@
 		</div>
 		<div class="header__user">
 			<img src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png" class="user__avatar--small">
-			<span class="user__name">Всеволод Трофимов</span>
+			<span class="user__name">Всев олод Трофимов</span>
 		</div>
 	</header>
 
@@ -53,15 +53,15 @@
 				</div>
 				<div class="card-contacts__item">
 					<h5>email</h5>
-					seva.trofimov2@gmail.com
+					<span>seva.trofimov2@gmail.com</span>
 				</div>
 				<div class="card-contacts__item">
 					<h5>skype</h5>
-					seva.trofimov
+					<span>seva.trofimov</span>
 				</div>
 				<div class="card-contacts__item">
 					<h5>codeforces</h5>
-					kuorell
+					<span>kuorell</span>
 				</div>
 			</div>
 
@@ -79,7 +79,7 @@
 					<input type="radio" id="radio_5" name="contacts_see"><label for="radio_5">Никто</label>
 				</form>
 				<br><br>
-				<button href="/forgot_password">Сменить пароль</button>
+				<button id="change-password">Сменить пароль</button>
 				<button class="button--ghost" href="/logout">Выйти</button>
 			</div>
 		</section>
@@ -94,42 +94,25 @@
 	<script src="../Scripts/Min/layout.js"></script>
 	<script src="../Scripts/Min/humanize.js"></script>
 	<script src="../Scripts/Dev/ripple.js"></script>
-	<script>
-			$(document).ready(function() {
-				//for transitions
-				$(".card-contacts__item, .card-person__name").attr("contenteditable", "true").css('border-bottom', '1px dotted transparent');
+	<script src="../Scripts/Dev/edit_profile.js"></script>
 
-				var editing = false;
+	<!-- unique -->
+	<script src="../Scripts/Dev/tooltip.js"></script>
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/tooltip.css">
+	<div id="tooltip">
+		<div class="tooltip__content">
+		</div>
+	</div>
 
-				function toggle_edit() {
-					if(editing) {
-						$("[contenteditable]").attr("contenteditable", "false").css('border-bottom', '1px dotted transparent');
-						$("#add_contact").css('transform', 'scale(0)');
-						editing = false;
-					} else {
-						$(".card-contacts__item, .card-person__name").attr("contenteditable", "true").css('border-bottom', '1px dotted #2196F3');
-						$("#add_contact").css('transform', 'scale(1)');
-						editing = true;
-						$("[contenteditable]").bind("blur", function() {
-							//ajax
-						});
-					}
-				}
 
-				$("#fab").click(function(event) {
-					toggle_edit();
-				});
-
-				$(".card-person__avatar").click(function(event) {
-					if(editing) {
-						//change avatar
-					}
-				});
-				new_contact = '<div class="card-contacts__item"><h5>Сервис</h5>Ваши данные</div>';
-				$("#add_contact").click(function(event) {
-					$("#contacts").append($(new_contact).attr("contenteditable", "true").css('border-bottom', '1px dotted #2196F3'));
-				});
-			});
-	</script>
+	<script src="../Scripts/Dev/popup.js"></script>
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/popup.css">
+	<div id="overlay">
+		<div id="overlay__bg">
+		</div>
+		<div id="popup">
+		</div>
+	</div>
+	
 </body>
 </html>
