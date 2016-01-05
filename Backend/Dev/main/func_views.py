@@ -28,7 +28,7 @@ def login(request):
             if user is not None:
                 if user.is_active:
                     auth(request, user)
-                    request.session.set_expiry(360)
+                    request.session.set_expiry(36000)
                     return redirect('/')
                 else:
                     error = u'Аккаунт отключен'
@@ -78,7 +78,7 @@ def reg(request):
                 user.save
                 user = authenticate(username=email, password=password)
                 auth(request, user)
-                request.session.set_expiry(0)
+                request.session.set_expiry(36000)
                 return redirect('/')
         else:
             error = u'Неверный логин или пароль'
@@ -144,7 +144,17 @@ def forgot_password(request):
         email = request.POST['email']
         if User.objects.filter(email=email):
             user=User.objects.get(email=email);
-            send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, для окончания операции перейдите по ссылке : 127.0.0.1:8000/change_password/'+str(user.id)+'. Если вы не запрашивали изменения пароля, просто проигнорируйте это письмо.', 'p.application.bot@gmail.com',
+            import os, random, string           
+            import hashlib
+            length = 13
+            chars = string.ascii_letters + string.digits
+            random.seed = (os.urandom(1024))
+            new_pass=''.join(random.choice(chars) for i in range(length))
+            while User.objects.filter(password=new_pass):
+                new_pass=''.join(random.choice(chars) for i in range(length))
+            setattr(user, 'password', strip_tags(new_pass))
+            user.save()
+            send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, ваш временный пароль: '+new_pass+'. Зайдите в личный кабинет для его изменения', 'p.application.bot@gmail.com',
     [email], fail_silently=False)
             return redirect('/')
         else:
