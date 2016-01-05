@@ -8,6 +8,7 @@
 
     function check_email(e) {
         email_regex.test($(e).val()) ? ($(e).addClass("valid"), tooltip.hide()) : ($(e).removeClass("valid"), tooltip.is_shown || tooltip.show(e, messages.email_invalid)), all_valid();
+        $("input[type='password']").val().length >= 8 ? ($("input[type='password']").addClass("valid"), tooltip.hide()) : ($("input[type='password']").removeClass("valid"), tooltip.is_shown || tooltip.show("input[type='password']", messages.password_invalid)), all_valid();
     }
     var messages = {
             email_invalid: "Возможно, тут опечатка",
@@ -19,9 +20,9 @@
         $("input[type='email']").on("blur keyup change click", function() {
             var e = this;
             check_email(e), setTimeout(function() {
-                check_email(e)
+                check_email(e);
             }, 2e3), setTimeout(function() {
-                check_email(e)
+                check_email(e);
             }, 1e4)
         }), $("input[type='password']").keyup(function() {
             $(this).val().length >= 8 ? ($(this).addClass("valid"), tooltip.hide()) : ($(this).removeClass("valid"), tooltip.is_shown || tooltip.show(this, messages.password_invalid)), all_valid();

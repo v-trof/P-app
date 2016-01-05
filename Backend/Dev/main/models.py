@@ -50,6 +50,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         }
     )
     name = models.CharField(_('name'), max_length=30, blank=True)
+    skype = models.CharField(_('skype'), max_length=30, blank=True)
+    codeforces = models.CharField(_('codeforces'), max_length=30, blank=True)
+    avatar = models.CharField(_('avatar'), max_length=128, blank=True)
     is_changing = models.BooleanField(default=False)
     email = models.EmailField(_('email address'), blank=True,unique=True)
     is_staff = models.BooleanField(_('staff status'), default=False)

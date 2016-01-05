@@ -1,5 +1,6 @@
 <div class="includer">{% include 'CSS/header.html' %}</div>
 <div class="includer">{% include 'JS/layout.html' %}</div>
+<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 <header class="header">
 	<div class="header__breadcumbs">
 		<a herf='/fa'>Главная</a>
@@ -15,11 +16,8 @@
 	<div class="header__user">
 		{% if request.user.name %}
 		<span class="user__name"><a href="/user/{{request.user.id}}/">{{request.user.name}}</a></span>
-		{% if request.user.avatar %}
-		<img src="{{request.user.avatar}}" class="user__avatar--small">
-		{% else %}
-		<img src="{{Static}}/Images/sample_avatar.png" class="user__avatar--small">
-		{% endif %}
+		{% load staticfiles %}
+		<img src="{% static request.user.avatar %}" class="user__avatar--small">
 		<a href="/func/logout/">Выйти</a>
 		{% else %}
 		<a href="/register_student/">Регистрация</a>

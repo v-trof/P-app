@@ -69,7 +69,8 @@ def reg(request):
                 username=email,
                 email=email,
                 password=password,
-                name=name_last_name)
+                name=name_last_name,
+                avatar = 'Images/avatar.png')
         else:
             error = u'Данный email уже зарегистрирован'
             return errorHandle(error,email,password,name_last_name)

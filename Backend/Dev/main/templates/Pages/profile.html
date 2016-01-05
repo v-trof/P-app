@@ -24,11 +24,8 @@
 	<main>
 		<section>
 			<div class="card card-person">
-				{% if user.avatar %}
-					<img src="{{user.avatar}}" class="user__avatar--small">
-				{% else %}
-					<img src="{{Static}}/Images/sample_avatar.png" class="user__avatar--small">
-				{% endif %}
+			{% load staticfiles %}
+					<img src="{% static request.user.avatar %}" class="user__avatar--small">
 				<div class="card-person__info">
 					<h3 class="card-person__name">{{ user.name }}</h3>
 					<span class="card-person__state">Ученик</span>
@@ -39,7 +36,7 @@
 		<section>
 			<div class="card">
 				<h4 class="card__heading">Контакты</h4>
-				<button class="button--icon" id="add_contact"><img src="../Assets/Icons/add.svg" inline></button>
+				<button class="button--icon" id="add_contact"><img src="{% static "Icons/add.svg" %}" inline></button>
 				<div class="card-contacts__item" id="email">
 					<h5>email</h5>
 					{{ request.user.email }}

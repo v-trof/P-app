@@ -17,6 +17,9 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from . import views
 from . import func_views
+from django.conf.urls.static import static
+from django.conf import settings
+from django.conf.urls import patterns
 
 func_patterns = [
     url(r'^login/$', func_views.login),

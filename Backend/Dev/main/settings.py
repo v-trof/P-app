@@ -78,7 +78,6 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 AUTH_USER_MODEL = 'main.User'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
@@ -88,7 +87,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -114,4 +112,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-SESSION_COOKIE_AGE = 60
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    '/Static/',
+]
+
+SESSION_COOKIE_AGE = 3600
