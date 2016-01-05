@@ -1,0 +1,1 @@
+$(document).ready(function(){$("#overlay__bg").click(function(o){popup.hide()})});var popup={is_shown:!1,show:function(o,n,e){$("#popup").html(o),$("#overlay").addClass("shown"),console.log(n,e),e()},hide:function(){$("#overlay").removeClass("shown")}};

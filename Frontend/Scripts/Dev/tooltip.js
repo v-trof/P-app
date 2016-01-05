@@ -23,35 +23,37 @@ var tooltip = {
 		c_rect_bottom = offset_bottom(el);
 		c_rect_right = offset_right(el);
 		//tooltip on the right
-		if(Math.abs(el_height-t_height)<16 && c_rect_right>t_width && t_width<el_width){
+		if(Math.abs(el_height-t_height)<16 && c_rect_right>t_width + 8 && t_width<el_width){
 			$("#tooltip").css({
 				height: el_height+'px',
 				top: c_rect.top + 'px',
-				left: c_rect.left + el_width + 'px',
+				left: c_rect.left + el_width + 8 + 'px',
 			});
 		//bottom centered
 		} else if(t_width>el_width) {
-			if(t_height < c_rect_bottom){
+			if(t_height + 8 < c_rect_bottom){
 				$("#tooltip").css({
-					top: c_rect.top + el_height+'px',
+					top: c_rect.top + 8 + el_height + 'px',
 					left: (c_rect.left - t_width/2 + el_width/2) + "px"
 				});
 			//top centered
 			} else {
 				$("#tooltip").css({
-					top: c_rect.top - t_height +'px',
+					top: c_rect.top - t_height - 8 +'px',
 					left: (c_rect.left - t_width/2 + el_width/2) + "px"
 				});
 			}
 		} else {
-			if(t_height < c_rect.top){
+			if(t_height + 8 < c_rect.top){
+				//tooltip on top left
 				$("#tooltip").css({
-					top: c_rect.top - t_height + 'px',
+					top: c_rect.top - t_height - 8 + 'px',
 					left: c_rect.left + 'px'
 				});
 			} else {
+				//tooltip on bottom left
 				$("#tooltip").css({
-					top: c_rect.top + el_height + 'px',
+					top: c_rect.top + el_height + 8 + 'px',
 					left: c_rect.left + 'px'
 				});
 			}
