@@ -28,6 +28,8 @@
             $(this).val().length >= 8 ? ($(this).addClass("valid"), tooltip.hide()) : ($(this).removeClass("valid"), tooltip.is_shown || tooltip.show(this, messages.password_invalid)), all_valid();
         }), $("input[name='name_last_name']").on("blur keyup change click", function() {
             name_last_name_regex.test($(this).val()) ? $(this).addClass("valid") : $(this).removeClass("valid"), all_valid()
-        })
+        }),
+        $(".button__proceed").click(function(e) {
+        button = $(this), button.addClass("in-progress")})
     })
 </script>

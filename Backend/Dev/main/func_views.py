@@ -133,3 +133,28 @@ def change_data(request):
         setattr(request.user, 'email', strip_tags(email))
         request.user.save()
     return redirect('/')
+
+def forgot_password(request):
+    def errorHandle(error,email):
+        return render(request, 'Pages/forgot_password.html', {
+            'error': error,
+            'email': email
+        })
+    if request.method == 'POST':
+        email = request.POST['email']
+        if User.objects.filter(email=email):
+            user=User.objects.get(email=email);
+            send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, для окончания операции перейдите по ссылке : 127.0.0.1:8000/change_password/'+str(user.id)+'. Если вы не запрашивали изменения пароля, просто проигнорируйте это письмо.', 'p.application.bot@gmail.com',
+    [email], fail_silently=False)
+            return redirect('/')
+        else:
+            error = u'Введенный email не существует'
+            return errorHandle(error,email)
+
+def change_password(request):
+    if request.method == 'GET':
+        id = request.GET['id']
+        password = request.GET['password']
+        setattr(User.objects.filter(id=id), 'password', strip_tags(password))
+        User.objects.filter(id=id).save()
+    return redirect('/')
