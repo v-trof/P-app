@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="utf8">
+	{% include "UI_elements/unique/head_info.html" %}
 	<div class="includer">{% include 'CSS/Logo mini.html' %}</div>
 	<title>Настройки Профиля</title>
 </head>
@@ -14,13 +13,6 @@
 	<div class="includer">{% include 'CSS/buttons.html' %}</div>
 	<div class="includer">{% include 'CSS/inputs.html' %}</div>
 	<div class="includer">{% include 'CSS/notification.html' %}</div>
-	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
-	<div class="includer">{% include 'JS/humanize.html' %}</div>
-	<div class="includer">{% include 'JS/layout.html' %}</div>
-	<div class="includer">{% include 'JS/ripple.html' %}</div>
-	{% include "UI_elements/unique/head_info.html" %}
-	{% include "UI_elements/unique/notification.html" %}
-	{% include "UI_elements/unique/header.html" %}
 	<main>
 		<section>
 			<div class="card card-person">
@@ -36,7 +28,7 @@
 		<section>
 			<div class="card">
 				<h4 class="card__heading">Контакты</h4>
-				<button class="button--icon" id="add_contact"><img src="{% static "Icons/add.svg" %}" inline></button>
+				<button class="button--icon" id="add_contact"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg></button>
 				<div class="card-contacts__item" id="email">
 					<h5>email</h5>
 					{{ request.user.email }}
@@ -74,7 +66,16 @@
 		</button>
 		{% endif %}
 	</main>
+
+	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
+	<div class="includer">{% include 'JS/humanize.html' %}</div>
+	<div class="includer">{% include 'JS/layout.html' %}</div>
+	<div class="includer">{% include 'JS/ripple.html' %}</div>
+	{% include "UI_elements/unique/notification.html" %}
+	{% include "UI_elements/unique/header.html" %}
+	
 	{% if request.user.email = user.email %}
+
 		<script>
 			$(document).ready(function() {
 

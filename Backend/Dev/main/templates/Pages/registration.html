@@ -1,20 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="utf8">
+	{% include "UI_elements/unique/head_info.html" %}
 	<title>Регистрация</title>
 </head>
 <body>
-<div class="includer">{% include 'CSS/login.html' %}</div>
+	<div class="includer">{% include 'CSS/login.html' %}</div>
 	<div class="includer">{% include 'CSS/main.html' %}</div>
 	<div class="includer">{% include 'CSS/inputs.html' %}</div>
 	<div class="includer">{% include 'CSS/animations.html' %}</div>
-	{%include 'JS/jquery-2.html'%}
-	<div class="includer">{% include 'JS/login-verify.html' %}</div>
-	<div class="includer">{% include 'JS/tooltip.html' %}</div>
-	{% include "UI_elements/unique/head_info.html" %}
-	{% include "UI_elements/unique/notification.html" %}
 	<main>
 		<div class="login-box">
 			<h1>Регистрация</h1>
@@ -33,5 +27,11 @@
 	<footer class='footer'>
 		<a href="/login/">Вход</a>
 	</footer>
+
+	<div class="includer">{%include 'JS/jquery-2.html'%}</div>
+	<div class="includer">{% include 'JS/login-verify.html' %}</div>
+	<div class="includer">{% include 'JS/tooltip.html' %}</div>
+	{% include "UI_elements/unique/notification.html" %}
+
 </body>
 </html>
