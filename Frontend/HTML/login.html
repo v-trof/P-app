@@ -2,13 +2,14 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="utf8">
+	<meta charset="utf-8">
 	<title>Вход</title>
 </head>
 <body>
-	<link rel="stylesheet" type="text/css" href="../Styles/CSS/layout/login.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/main.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/layout/login.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/inputs.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/buttons.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/notification.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/animations.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/tooltip.css">
@@ -25,8 +26,8 @@
 		<div class="login-box">
 			<h1>Вход</h1>
 			<form class="login-box--form" action="/func/reg/" method="post">
-				<input type="email" name="email" placeholder="email@domain.zone" class="input__placeholder-label"><label for="email"></label>
-				<input type="password" name="password" placeholder="Пароль" class="input__placeholder-label" pattern=".{8,}"><label for="password"></label>
+				<input type="email" name="email" class="input__placeholder-label"><label for="email">Email</label>
+				<input type="password" name="password" class="input__placeholder-label" pattern=".{8,}"><label for="password">Пароль</label>
 
 				<button class="button__proceed" disabled>
 					<span>Далее</span>
@@ -48,6 +49,7 @@
 		</script>
 	<script type="text/javascript" src="../Scripts/Dev/login-verify.js"></script>
 	<script type="text/javascript" src="../Scripts/Min/notification.js"></script>
+	<script src="../Scripts/Dev/layout.js"></script>
 	<script src="../Scripts/Dev/tooltip.js"></script>
 	<style dev>
 		*{

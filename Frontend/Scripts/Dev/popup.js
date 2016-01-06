@@ -9,11 +9,15 @@ var popup = {
 	show: function(content, css, callback) {
 		$("#popup").html(content);
 		$("#overlay").addClass("shown");
-		console.log(css,callback);
+		$('#popup').css(css);
+		$("#popup input").each(function(index, el) {
+			add_emptiness_checker(this);	
+		});
 		callback();
 	},
 
 	hide: function() {
 		$("#overlay").removeClass("shown");
+		$("#popup").attr("style", "");
 	}
 } 

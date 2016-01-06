@@ -27,7 +27,7 @@ function check_email(input) {
 		tooltip.hide();
 	} else  {
 		$(input).removeClass('valid');
-		if(!tooltip.is_shown){
+		if(!tooltip.is_shown && $(input).is(':focus')){
 			tooltip.show(input, messages.email_invalid);
 		}
 	}
@@ -38,7 +38,6 @@ $(document).ready(function() {
 	$("input[type='email']").on("blur keyup change click", function(){
 		var input = this;
 		check_email(input);
-
 		setTimeout(function(){
 			check_email(input)
 		}, 2000);
@@ -58,6 +57,10 @@ $(document).ready(function() {
 			}
 		}
 		all_valid();
+
+		$("input").blur(function(event) {
+			tooltip.hide();
+		});
 	});
 
 	//for registration

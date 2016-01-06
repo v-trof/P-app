@@ -1,4 +1,32 @@
-var new_avatar = $("<input hidden type='file'>"); 
+function change_password(){
+	old_password = $("#old_password").val();
+	new_password = $("#new_password").val();
+	//ajax
+	popup.hide();//on success
+}
+
+
+
+
+
+
+function create_contact() {
+	contact_type = $("#new_contact_type").val();
+	contact_info = $("#new_contact_info").val();
+
+	add_contact("<div class='card-contacts__item'><h5>" + contact_type + "</h5><span>" + contact_info + "</span></div>");
+	popup.hide();
+}
+
+function add_contact(new_contact) {
+	new_contact = $(new_contact);
+	$("#contacts").append($(new_contact));
+	$(new_contact).children("span").attr("contenteditable", "true").css('border-bottom', '1px dashed #2196F3')
+}
+
+
+
+
 
 function upload_avatar(e) {
 	var file = e.target.files[0];
@@ -12,6 +40,10 @@ function upload_avatar(e) {
 	}
 }
 
+
+
+
+
 $(document).ready(function() {
 	//for transitions
 	$(".card-contacts__item>span").css('border-bottom', '1px dashed transparent');
@@ -23,15 +55,13 @@ $(document).ready(function() {
 			$("#add_contact").css('transform', 'scale(0)');
 			$(".card-person__avatar").css('cursor', 'default');
 			editing = false;
+			//ajax
 		} else {
 			$(".card-contacts__item>span").attr("contenteditable", "true").css('border-bottom', '1px dashed #2196F3');
 			$("#add_contact").css('transform', 'scale(1)');
 			$(".card-person__avatar").css('cursor', 'pointer');
 			$(".card-person").append(new_avatar);
 			editing = true;
-			$("[contenteditable]").bind("blur", function() {
-				//ajax
-			});
 		}
 	}
 
@@ -39,12 +69,11 @@ $(document).ready(function() {
 		toggle_edit();
 	});
 
-	$(".card-person__avatar").click(function(e) {
-		if(editing) {
-			console.log("clicked");
-			new_avatar.click();
-		}
-	});
+
+
+
+
+	var new_avatar = $("<input hidden type='file'>"); 
 
 	$(".card-person__avatar").bind({
 		click: function(e) {
@@ -67,22 +96,57 @@ $(document).ready(function() {
 		}
 
 	});
+
 	new_avatar.change(function(e) {
 		upload_avatar(e);
 	});
-	new_contact = '<div class="card-contacts__item"><h5>Сервис</h5>Ваши данные</div>';
+	
+
+
+
+
+
 	$("#add_contact").click(function(e) {
-		$("#contacts").append($(new_contact).attr("contenteditable", "true").css('border-bottom', '1px dashed #2196F3'));
+		function contact_types() {
+			var types = ["Skype", "Codefrces", "VK", "Facebook", "Dnevnik.ru"];
+			var html = "";
+			types.forEach(function(contact_type) {
+				html+= "<option value='" + contact_type + "'>" + contact_type + "</option>";
+			});
+			return html;
+		}
+		popup.show("<select id='new_contact_type'>" + contact_types() + "</select><br><input type='text' id='new_contact_info'><label>Контакная информация</label><br><button class='button--ghost' id='create_contact' onclick='create_contact()' style='float:right'>Добавить</button>",
+			{
+				"padding-bottom": "0.3rem",
+				"width": "20rem"
+			}, 
+			function() {
+				$("#popup").children('select')[0].focus();
+		});
 	});
 
 
-	$("[name='contacts_see']").change(function(e) {
+
+
+
+
+	/*$("[name='contacts_see']").change(function(e) {
 		//ajax
-	});
+	});*/
+
+
+
+
 
 	$("#change-password").click(function(e) {
-		popup.show("Старый пароль<br><input type='password' name='old_password'><br>Новый Пароль<br><input type='password' name='new_password'>", {}, function() {
-			$("#popup").children('input')[0].focus();
+		popup.show("<input type='password' name='old_password' pattern='.{8,}'><label>Старый пароль</label><br><input type='password' name='new_password' pattern='.{8,}'><label>Новый Пароль</label><br><button class='button--ghost' onclick='change_password()' style='float:right'>Сменить</button>",
+			{
+				"padding-top": "0.3rem",
+				"padding-bottom": "0.3rem",
+				"width": "20rem"
+			},
+			function() {
+				$("#popup").children('input')[0].focus();
 		});
 	});
 });

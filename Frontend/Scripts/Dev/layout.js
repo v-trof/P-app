@@ -16,12 +16,29 @@ function build_header(){
 	$(".header__search").css("width","100%");
 }
 
-
+function add_emptiness_checker(input){
+	console.log(input, "_");
+	if($(input).val() == "") {
+		$(input).addClass("empty");
+	}
+	$(input).blur(function(){
+		if($(this).val() == "") {
+			$(this).addClass("empty");
+		} else {
+			$(this).removeClass("empty");
+		}
+	});
+	$(input).focus(function(event) {
+		$(this).removeClass("empty");
+	});
+}
 
 $(document).ready(function() {
 	build_header();
+	$("input").each(function(index, el) {
+		add_emptiness_checker(this);	
+	});
 });
-
 
 /*function fade(){
 	$("h1,h2,h3,h4,h5,h6").css('animante', 'value');
