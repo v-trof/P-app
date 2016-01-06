@@ -10,8 +10,8 @@ from django.contrib.auth import authenticate, login as auth
 import os
 from .models import User, LoginForm, RegForm
 from django.contrib.auth import logout
-from django.db.models import get_model
 from django.utils.html import strip_tags
+
 def login(request):
     def errorHandle(error):
         form = LoginForm()

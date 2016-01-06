@@ -104,7 +104,8 @@ def profile(request, user_id):
     try: 
         return render(request, 'Pages/profile.html', {"user":User.objects.get(id=user_id)})
     except:
-        return render(request, 'Pages/page404.html');
+         
+        return render(request, 'Pages/profile.html', {"user":User.objects.get(id=user_id)})
 
 def course(request):
     return render(request, 'Pages/course.html')

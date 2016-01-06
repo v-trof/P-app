@@ -3,7 +3,11 @@
 <head>
 	{% include "UI_elements/unique/head_info.html" %}
 	<div class="includer">{% include 'CSS/Logo mini.html' %}</div>
-	<title>Настройки Профиля</title>
+	{% if request.user.email = user.email %}
+		<title>Настройки Профиля</title>
+	{% else %}
+		<title>{{user.name}}(Профиль)</title>
+	{% endif %}
 </head>
 <body>
 	<div class="includer">{% include 'CSS/main.html' %}</div>
@@ -15,23 +19,18 @@
 	<div class="includer">{% include 'CSS/notification.html' %}</div>
 	<main>
 		<section>
-			<div class="card card-person">
-			{% load staticfiles %}
-					<img src="{% static request.user.avatar %}" class="card-person__avatar">
-				<div class="card-person__info">
-					<h3 class="card-person__name">{{ user.name }}</h3>
-					<span class="card-person__state">Ученик</span>
-				</div>
-			</div>
+			{% include 'UI_elements/cards/person.html' with user=user %}
 		</section>
 
 		<section>
 			<div class="card">
 				<h4 class="card__heading">Контакты</h4>
-				<button class="button--icon" id="add_contact"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg></button>
+				<button class="button--icon" id="add_contact">
+					{% include 'UI_elements/Icons/add.svg' with id='fuck' %}
+				</button>
 				<div class="card-contacts__item" id="email">
 					<h5>email</h5>
-					{{ request.user.email }}
+					{{ user.email }}
 				</div>
 				<div class="card-contacts__item" id="skype">
 					<h5>skype</h5>
@@ -44,25 +43,25 @@
 			</div>
 		</section>
 		{% if request.user.email = user.email %}
-		<section>
-			<div class="card card-settings">
-				<h4 class="card__heading">Настройки профиля</h4>
-				Мои контакты могут просматривать:
-				<form>
-					<input type="radio" id="radio_1" name="contacts_see" checked><label for="radio_1">Все</label>
-					<input type="radio" id="radio_2" name="contacts_see"><label for="radio_2">Только учителя</label>
-					<input type="radio" id="radio_3" name="contacts_see"><label for="radio_3">Только ученики</label>
-					<input type="radio" id="radio_4" name="contacts_see"><label for="radio_4">Только мои учителя и одногруппники</label>
-					<input type="radio" id="radio_5" name="contacts_see"><label for="radio_5">Никто</label>
-				</form>
-				<br><br>
-				<a href="/forgot_password/">Сменить пароль</a>
-				<button class="button--ghost" href="/logout/"></button>
-			</div>
-		</section>
-		<button id="fab">
-			<svg fill="#FFF" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-		</button>
+			<section>
+				<div class="card card-settings">
+					<h4 class="card__heading">Настройки профиля</h4>
+					Мои контакты могут просматривать:
+					<form>
+						<input type="radio" id="radio_1" name="contacts_see" checked><label for="radio_1">Все</label>
+						<input type="radio" id="radio_2" name="contacts_see"><label for="radio_2">Только учителя</label>
+						<input type="radio" id="radio_3" name="contacts_see"><label for="radio_3">Только ученики</label>
+						<input type="radio" id="radio_4" name="contacts_see"><label for="radio_4">Только мои учителя и одногруппники</label>
+						<input type="radio" id="radio_5" name="contacts_see"><label for="radio_5">Никто</label>
+					</form>
+					<br><br>
+					<a href="/forgot_password/">Сменить пароль</a>
+					<button class="button--ghost" href="/logout/"></button>
+				</div>
+			</section>
+			<button id="fab">
+				{% include 'UI_elements/Icons/edit.svg' with id='fab-ico'%}
+			</button>
 		{% endif %}
 	</main>
 
@@ -74,7 +73,6 @@
 	{% include "UI_elements/unique/header.html" %}
 	
 	{% if request.user.email = user.email %}
-
 		<script>
 			$(document).ready(function() {
 

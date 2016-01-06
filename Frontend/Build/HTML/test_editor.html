@@ -3,7 +3,7 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="utf8">
-		<title>&#x41C;&#x435;&#x440;&#x442;&#x432;&#x44B;&#x435; &#x434;&#x443;&#x448;&#x438;(&#x420;&#x435;&#x434;&#x430;&#x43A;&#x442;&#x438;&#x440;&#x43E;&#x432;&#x430;&#x43D;&#x438;&#x435;)</title>
+		<title>Мертвые души(Редактирование)</title>
 	</head>
 	<body>
 		<div class="includer">{% include 'CSS/main.html' %}</div>
@@ -16,20 +16,20 @@
 
 		<header class="header">
 			<div class="header__breadcumbs">
-			<a href="#">&#x413;&#x43B;&#x430;&#x432;&#x43D;&#x430;&#x44F;</a>
+			<a href="#">Главная</a>
 			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M12.97 4.28l-1.44 1.44L21.814 16 11.53 26.28l1.44 1.44 11-11 .686-.72-.687-.72-11-11z"/></svg>
 
-			<a href="#">&#x41A;&#x443;&#x440;&#x441; &#x410;</a>
+			<a href="#">Курс А</a>
 			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M12.97 4.28l-1.44 1.44L21.814 16 11.53 26.28l1.44 1.44 11-11 .686-.72-.687-.72-11-11z"/></svg>
-			<a href="#">&#x422;&#x435;&#x441;&#x442; 1 (&#x440;&#x435;&#x434;&#x430;&#x43A;&#x442;&#x43E;&#x440;)</a>
+			<a href="#">Тест 1 (редактор)</a>
 			</div>
 			<div class="header__search">
-				<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path style="text-indent:0;text-align:start;line-height:normal;text-transform:none;block-progression:tb;-inkscape-font-specification:Bitstream Vera Sans" d="M19.5 3C14.265 3 10 7.265 10 12.5c0 2.25.81 4.307 2.125 5.938L3.28 27.28l1.44 1.44 8.843-8.845C15.192 21.19 17.25 22 19.5 22c5.235 0 9.5-4.265 9.5-9.5S24.735 3 19.5 3zm0 2c4.154 0 7.5 3.346 7.5 7.5S23.654 20 19.5 20 12 16.654 12 12.5 15.346 5 19.5 5z" color="#000" overflow="visible" font-family="Bitstream Vera Sans"/></svg>
-				<input type="text" name="search" placeholder="&#x418;&#x441;&#x43A;&#x430;&#x442;&#x44C;...">
+				<svg fill="#FFF" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+				<input type="text" name="search" placeholder="Искать...">
 			</div>
 			<div class="header__user">
 				<img src="../Assets/Images/avatar.png" class="user__avatar--small">
-				<span class="user__name">&#x412;&#x441;&#x435;&#x432;&#x43E;&#x43B;&#x43E;&#x434; &#x422;&#x440;&#x43E;&#x444;&#x438;&#x43C;&#x43E;&#x432;</span>
+				<span class="user__name">Всеволод Трофимов</span>
 			</div>
 		</header>
 
@@ -42,10 +42,10 @@
 			</div>
 \
 			<div id="editor__settings" class="card">
-				<h3>&#x41D;&#x430;&#x441;&#x442;&#x440;&#x43E;&#x439;&#x43A;&#x438; &#x440;&#x435;&#x434;&#x430;&#x43A;&#x442;&#x43E;&#x440;&#x430;</h3>
+				<h3>Настройки редактора</h3>
 				<div id="editor__type">
-					<input type="radio" id="move" name="editor_type" checked><label for="move">&#x41F;&#x435;&#x440;&#x435;&#x43C;&#x435;&#x449;&#x435;&#x43D;&#x438;&#x435;</label>
-					<input type="radio" id="edit" name="editor_type"><label for="edit">&#x420;&#x435;&#x434;&#x430;&#x43A;&#x442;&#x438;&#x440;&#x43E;&#x432;&#x430;&#x43D;&#x438;&#x435; &#x441;&#x43E;&#x434;&#x435;&#x440;&#x436;&#x438;&#x43C;&#x43E;&#x433;&#x43E;</label>
+					<input type="radio" id="move" name="editor_type" checked><label for="move">Перемещение</label>
+					<input type="radio" id="edit" name="editor_type"><label for="edit">Редактирование содержимого</label>
 				</div>
 			</div>
 
@@ -63,7 +63,7 @@
 
 			<div class="answer-elements">
 				<div class="answer__field" draggable="true">
-					<input type="text" name="text_question" placeholder="" class="input__inner-label"><label for="text_question">&#x41E;&#x442;&#x432;&#x435;&#x442; &#x442;&#x435;&#x43A;&#x441;&#x442;&#x43E;&#x43C;</label>
+					<input type="text" name="text_question" placeholder="" class="input__inner-label"><label for="text_question">Ответ текстом</label>
 				</div>
 			</div>
 		</div>

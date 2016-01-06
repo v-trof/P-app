@@ -36,13 +36,20 @@
 		text-decoration: none
 		font-weight: 400
 		&:hover
-			color: darken($color--accent, 5%)
+			color: lighten($color--accent, 20%)
 	+smartphone
 			display: none
 
 .header__user
 	text-align: right
 	white-space: nowrap
+	&>a
+		vertical-align: middle
+		color: $white
+		text-decoration: none
+		font-weight: 400
+		&:hover
+			color: lighten($color--accent, 20%)
 
 .user__avatar--small
 	width: $icon-regular
