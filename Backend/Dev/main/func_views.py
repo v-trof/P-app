@@ -11,13 +11,7 @@ import os
 from .models import User, LoginForm, RegForm
 from django.contrib.auth import logout
 from django.utils.html import strip_tags
-from passlib.hash import django_pbkdf2_sha256 as handler
-from passlib.hash import *
-from passlib.context import CryptContext
-from passlib.utils import Base64Engine, h64
-from base64 import b64decode
 from binascii import hexlify
-from passlib.ext.django.models import password_context
 from django.contrib.auth.hashers import make_password, check_password
 
 def login(request):

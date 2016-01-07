@@ -17,7 +17,7 @@ function build_header(){
 }
 
 function add_emptiness_checker(input){
-	console.log(input, "_");
+	// console.log(input, "_");
 	if($(input).val() == "") {
 		$(input).addClass("empty");
 	}

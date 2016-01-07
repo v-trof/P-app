@@ -4,22 +4,37 @@ var messages = {
 }
 
 function all_valid(){
-	inputs_valid = true
+	var inputs_valid = true;
 	$("input:visible").each(function() {
 		if(!$(this).hasClass('valid')){
 			inputs_valid = false;
+			console.log(this);
 		}
 	});
 
 	if(inputs_valid){
-		$(".button__proceed").removeAttr('disabled');
+		$(".button--proceed").removeAttr('disabled');
 	} else {
-		$(".button__proceed").attr('disabled', true);
+		$(".button--proceed").attr('disabled', true);
 	}
 }
 
 var email_regex = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 var name_last_name_regex = /^[^\s]+\s[^\s]+$/;
+
+
+function check_password(input){
+	if($(input).val().length >= 8) {
+		$(input).addClass('valid');
+		tooltip.hide();
+	} else {
+		$(input).removeClass('valid');
+		if(!tooltip.is_shown){
+			tooltip.show(input, messages.password_invalid);
+		}
+	}
+	all_valid();
+}
 
 function check_email(input) {
 	if(email_regex.test($(input).val())) {
@@ -31,12 +46,11 @@ function check_email(input) {
 			tooltip.show(input, messages.email_invalid);
 		}
 	}
-	$("input[type='password']").val().length >= 8 ? ($("input[type='password']").addClass("valid"), tooltip.hide()) : ($("input[type='password']").removeClass("valid"), tooltip.is_shown || tooltip.show("input[type='password']", messages.password_invalid)), all_valid();
-	all_valid();
+	check_password($("input[type='password']").find(0));
 }
 
 $(document).ready(function() {
-	$("input[type='email']").on("blur keyup change click", function(){
+	$("input[type='email']").on("blur keyup change click", function() {
 		var input = this;
 		check_email(input);
 		setTimeout(function(){
@@ -48,20 +62,11 @@ $(document).ready(function() {
 	});
 
 	$("input[type='password']").keyup(function() {
-		if($(this).val().length >= 8) {
-			$(this).addClass('valid');
-			tooltip.hide();
-		} else {
-			$(this).removeClass('valid');
-			if(!tooltip.is_shown){
-				tooltip.show(this, messages.password_invalid);
-			}
-		}
-		all_valid();
+		check_password(this);		
+	});
 
-		$("input").blur(function(event) {
-			tooltip.hide();
-		});
+	$("input").blur(function(event) {
+		tooltip.hide();
 	});
 
 	//for registration
@@ -73,10 +78,9 @@ $(document).ready(function() {
 		}
 	all_valid();
 	});
-});
 
-$(".button__proceed").click(function(event) {
-	event.preventDefault();
-	button = $(this);
-	button.addClass('in-progress');
+	$(".button--proceed").click(function(event) {
+		button = $(this);
+		button.addClass('in-progress');
+	});
 });

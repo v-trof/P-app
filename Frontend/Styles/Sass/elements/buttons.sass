@@ -98,13 +98,16 @@ button
 		opacity: 0
 		color: darken($grey-dark, 5%)
 
-	&:focus,&:enabled:hover
+	&:focus, &:hover
 		outline: 0
 		box-shadow: none
+	&:focus,&:enabled:hover
 		&>span
 			opacity: 1
 		&>svg
 			transform: translateX(0)
+
+
 	&.in-progress
 		&>span
 			color: darken($grey-mid, 5%)
@@ -116,8 +119,6 @@ button
 		background: transparent
 		&>svg
 			fill: $grey-mid
-		&:hover
-			box-shadow:none
 
 
 
