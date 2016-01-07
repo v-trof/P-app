@@ -10,5 +10,8 @@
 	</div>
 </div>
 {% if error %}
-<script>notification.change('error','Login error','{{ error }}' );</script>
+<script>notification.change('error','Ошибка авторизации','{{ error }}' );</script>
+{% endif %}
+{% if success_message %}
+<script>notification.change('success','Успешно','{{ success_message }}' );</script>
 {% endif %}

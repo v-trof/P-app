@@ -29,7 +29,9 @@ func_patterns = [
     url(r'^new_material/$', func_views.new_material),
     url(r'^logout/$', func_views.logout_view),
     url(r'^change_data/$', func_views.change_data),
-    url(r'^forgot_password/$', func_views.forgot_password),
+    url(r'^reset_password/$', func_views.reset_password),
+    url(r'^change_password/$', func_views.change_password),
+    url(r'^create_contact/$', func_views.create_contact),
 ]
 
 urlpatterns = [

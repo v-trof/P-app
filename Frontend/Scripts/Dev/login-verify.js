@@ -31,6 +31,7 @@ function check_email(input) {
 			tooltip.show(input, messages.email_invalid);
 		}
 	}
+	$("input[type='password']").val().length >= 8 ? ($("input[type='password']").addClass("valid"), tooltip.hide()) : ($("input[type='password']").removeClass("valid"), tooltip.is_shown || tooltip.show("input[type='password']", messages.password_invalid)), all_valid();
 	all_valid();
 }
 
@@ -78,8 +79,4 @@ $(".button__proceed").click(function(event) {
 	event.preventDefault();
 	button = $(this);
 	button.addClass('in-progress');
-	setTimeout(function(){
-		button.removeClass('in-progress');
-		notification.change("error","Network error","Sorry <a href='/home'>we</a> have no servers");
-	},2000);
 });

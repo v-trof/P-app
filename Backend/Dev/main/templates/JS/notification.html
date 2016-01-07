@@ -15,8 +15,9 @@
             show: function() {
                 $("#notification").removeClass("hidden"), $(".header").css("transform", "translateY(3.125rem)"), $("#notification").click(function(i) {
                     notification.hide()
-                })
+            })
             },
+
             hide: function() {
                 $("#notification").addClass("hidden"), $(".header").css("transform", ""), notification.is_shown = !1
             }

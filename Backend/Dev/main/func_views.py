@@ -11,6 +11,14 @@ import os
 from .models import User, LoginForm, RegForm
 from django.contrib.auth import logout
 from django.utils.html import strip_tags
+from passlib.hash import django_pbkdf2_sha256 as handler
+from passlib.hash import *
+from passlib.context import CryptContext
+from passlib.utils import Base64Engine, h64
+from base64 import b64decode
+from binascii import hexlify
+from passlib.ext.django.models import password_context
+from django.contrib.auth.hashers import make_password, check_password
 
 def login(request):
     def errorHandle(error):
@@ -134,7 +142,15 @@ def change_data(request):
         request.user.save()
     return redirect('/')
 
-def forgot_password(request):
+def create_contact(request):
+    if request.method == 'GET':
+        contact_type = request.GET['contact_type']
+        contact_info = request.GET['contact_info']
+        setattr(request.user, contact_type, strip_tags(contact_info))
+        request.user.save()
+    return redirect('/')
+
+def reset_password(request):
     def errorHandle(error,email):
         return render(request, 'Pages/forgot_password.html', {
             'error': error,
@@ -142,8 +158,8 @@ def forgot_password(request):
         })
     if request.method == 'POST':
         email = request.POST['email']
-        if User.objects.filter(email=email):
-            user=User.objects.get(email=email);
+        if User.objects.filter(username=email):
+            user=User.objects.get(username=email);
             import os, random, string           
             import hashlib
             length = 13
@@ -152,19 +168,28 @@ def forgot_password(request):
             new_pass=''.join(random.choice(chars) for i in range(length))
             while User.objects.filter(password=new_pass):
                 new_pass=''.join(random.choice(chars) for i in range(length))
-            setattr(user, 'password', strip_tags(new_pass))
+            setattr(user, 'password', strip_tags(make_password(new_pass)))
             user.save()
             send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, ваш временный пароль: '+new_pass+'. Зайдите в личный кабинет для его изменения', 'p.application.bot@gmail.com',
     [email], fail_silently=False)
             return redirect('/')
         else:
             error = u'Введенный email не существует'
-            return errorHandle(error,email)
+            return render(request, 'Pages/forgot_password.html', {
+            'success_message': 'Временный пароль был отправлен вам на почту',
+        })
 
 def change_password(request):
     if request.method == 'GET':
-        id = request.GET['id']
-        password = request.GET['password']
-        setattr(User.objects.filter(id=id), 'password', strip_tags(password))
-        User.objects.filter(id=id).save()
-    return redirect('/')
+        old_password = request.GET['old_password']
+        new_password = make_password(request.GET['new_password'])
+        if request.user.check_password(old_password):
+            setattr(request.user, 'password', strip_tags(new_password))
+            request.user.save()
+            return render(request, 'Pages/profile.html', {
+            'success_message': 'Пароль успешно изменен',
+            })
+        else: 
+            return render(request, 'Pages/profile.html', {
+            'error': 'Неверный пароль',
+            })

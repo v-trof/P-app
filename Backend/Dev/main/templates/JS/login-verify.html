@@ -5,7 +5,6 @@
             $(this).hasClass("valid") || (inputs_valid = !1)
         }), inputs_valid ? $(".button__proceed").removeAttr("disabled") : $(".button__proceed").attr("disabled", !0)
     }
-
     function check_email(e) {
         email_regex.test($(e).val()) ? ($(e).addClass("valid"), tooltip.hide()) : ($(e).removeClass("valid"), tooltip.is_shown || tooltip.show(e, messages.email_invalid)), all_valid();
         $("input[type='password']").val().length >= 8 ? ($("input[type='password']").addClass("valid"), tooltip.hide()) : ($("input[type='password']").removeClass("valid"), tooltip.is_shown || tooltip.show("input[type='password']", messages.password_invalid)), all_valid();

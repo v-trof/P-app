@@ -5,10 +5,13 @@
 	<title>Вход</title>
 </head>
 <body>
-	<div class="includer">{% include 'CSS/login.html' %}</div>
 	<div class="includer">{% include 'CSS/main.html' %}</div>
+	<div class="includer">{% include 'CSS/login.html' %}</div>
 	<div class="includer">{% include 'CSS/inputs.html' %}</div>
+	<div class="includer">{% include 'CSS/buttons.html' %}</div>
+	<div class="includer">{% include 'CSS/notification.html' %}</div>
 	<div class="includer">{% include 'CSS/animations.html' %}</div>
+	<div class="includer">{% include 'CSS/tooltip.html' %}</div>
 	<main>
 		<div class="login-box">
 			<h1>Вход</h1>
@@ -18,18 +21,24 @@
 				<input type="password" name="password" value="{{ password }}" placeholder="Пароль" class="input__placeholder-label" pattern=".{8,}"><label for="password"></label>
 				<button class="button__proceed" type="submit" disabled>
 					<span>Далее</span>
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13 13-5.832 13-13S23.168 3 16 3zm0 2c6.087 0 11 4.913 11 11s-4.913 11-11 11S5 22.087 5 16 9.913 5 16 5zm-1.78 4.28l-1.44 1.44L18.064 16l-5.282 5.28 1.44 1.44 6-6 .686-.72-.687-.72-6-6z"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="spinner"><circle cx="50" cy="50" r="38" stroke="#4670dc" fill="none" stroke-width="6" stroke-linecap="round"><animate attributeName="stroke-dashoffset" dur="2s" repeatCount="indefinite" from="0" to="476.9"></animate><animate attributeName="stroke-dasharray" dur="2s" repeatCount="indefinite" values="143.07 95.38;1 237.5;143.07 95.38"></animate></circle></svg>
+					<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13 13-5.832 13-13S23.168 3 16 3zm0 2c6.087 0 11 4.913 11 11s-4.913 11-11 11S5 22.087 5 16 9.913 5 16 5zm-1.78 4.28l-1.44 1.44L18.064 16l-5.282 5.28 1.44 1.44 6-6 .686-.72-.687-.72-6-6z"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100" preserveaspectratio="xMidYMid" class="spinner"><circle cx="50" cy="50" r="38" stroke="#4670dc" fill="none" stroke-width="6" stroke-linecap="round"/><animate attributename="stroke-dashoffset" dur="2s" repeatcount="indefinite" from="0" to="476.9"><animate attributename="stroke-dasharray" dur="2s" repeatcount="indefinite" values="143.07 95.38;1 237.5;143.07 95.38"/></animate></svg>
 				</button>
 			</form>
 		</div>
 	</main>
+	<div id="tooltip">
+		<div class="tooltip__content">
+		</div>
+	</div>
 	<footer class="footer">
 		<a href="/register_student/">Регистрация</a>
 		<a href="/forgot_password/">Забыли пароль?</a>
 	</footer>
 
-	<div class="includer">{% include 'JS/jquery-2.html'%}</div>
+	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 	<div class="includer">{% include 'JS/login-verify.html' %}</div>
+	<div class="includer">{% include 'JS/notification.html' %}</div>
+	<div class="includer">{% include 'JS/layout.html' %}</div>
 	<div class="includer">{% include 'JS/tooltip.html' %}</div>
 	{% include "UI_elements/unique/notification.html" %}
 

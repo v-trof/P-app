@@ -55,7 +55,16 @@ $(document).ready(function() {
 			$("#add_contact").css('transform', 'scale(0)');
 			$(".card-person__avatar").css('cursor', 'default');
 			editing = false;
-			//ajax
+									$.ajax({
+				                 type:"GET",
+				                 url:"/func/change_data/",
+				                 data: {
+				                        'email': $('#email').html()
+				                        },
+				                 success: function(){
+				                     notification.change('success','Успешно','Данные были успешно изменены' );
+				                 }
+				            });
 		} else {
 			$(".card-contacts__item>span").attr("contenteditable", "true").css('border-bottom', '1px dashed #2196F3');
 			$("#add_contact").css('transform', 'scale(1)');
