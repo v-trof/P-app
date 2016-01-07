@@ -58,6 +58,7 @@ button
 	&>svg
 		height: $icon-small
 		width: $icon-small
+		fill: $white
 
 	&:hover,&:focus
 		+box-shadow(3)
@@ -72,7 +73,7 @@ button
 	&>button
 		transform: scale(0)
 
-.button__proceed
+.button--proceed
 	background: transparent
 	border: 0
 	&>svg
@@ -115,6 +116,8 @@ button
 		background: transparent
 		&>svg
 			fill: $grey-mid
+		&:hover
+			box-shadow:none
 
 
 
