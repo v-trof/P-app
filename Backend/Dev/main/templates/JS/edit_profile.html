@@ -36,7 +36,7 @@ function create_contact() {
 				  notification.change('success','Успешно','Контакт добавлен' );
 				               }
 			});
-	add_contact("<div class='card-contacts__item'><h5>" + contact_type + "</h5><span>" + contact_info + "</span></div>");
+	add_contact("<div class='card-contacts__item'><h5>" + contact_type + "</h5><span id='"+contact_type+"'>" + contact_info + "</span></div>");
 	popup.hide();
 }
 
@@ -58,7 +58,8 @@ function upload_avatar(e) {
 	reader.onload = function(e) {
 		var result = e.target.result;
 		console.log(result);
-		$.post('УРЛ ЗАГРУЗКИ', {file: result});
+		$.post('/func/upload_avatar/', {file: result}
+		);
 	}
 }
 
@@ -76,12 +77,40 @@ $(document).ready(function() {
 			$("[contenteditable]").attr("contenteditable", "false").css('border-bottom', '1px dashed transparent');
 			$("#add_contact").css('transform', 'scale(0)');
 			$(".card-person__avatar").css('cursor', 'default');
+			if ($('#email').html())
+				email=$('#email').html();
+			else email=null;
+
+			if ($('#Skype').html())
+				Skype=$('#Skype').html();
+			else Skype=null;
+
+			if ($('#VK').html())
+				VK=$('#VK').html();
+			else VK=null;
+
+			if ($('#Facebook').html())
+				Facebook=$('#Facebook').html();
+			else Facebook=null;
+
+			if ($('#Dnevnik').html())
+				Dnevnik=$('#Dnevnik').html();
+			else Dnevnik=null;
+
+			if ($('#Codeforces').html())
+				Codeforces=$('#Codeforces').html();
+			else Codeforces=null;
 			editing = false;
 						$.ajax({
 				                 type:"GET",
 				                 url:"/func/change_data/",
 				                 data: {
-				                        'email': $('#email').html()
+				                        'email': email,
+				                        'Skype': Skype,
+				                        'VK': VK,
+				                        'Facebook': Facebook,
+				                        'Dnevnik': Dnevnik,
+				                        'Codeforces': Codeforces
 				                        },
 				                 success: function(){
 				                     notification.change('success','Успешно','Данные были успешно изменены' );
@@ -139,7 +168,7 @@ $(document).ready(function() {
 
 	$("#add_contact").click(function(e) {
 		function contact_types() {
-			var types = ["skype", "codeforces", "VK", "Facebook", "Dnevnik.ru"];
+			var types = ["Skype", "Codeforces", "VK", "Facebook", "Dnevnik"];
 			var html = "";
 			types.forEach(function(contact_type) {
 				html+= "<option value='" + contact_type + "'>" + contact_type + "</option>";

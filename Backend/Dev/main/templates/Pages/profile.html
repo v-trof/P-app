@@ -34,16 +34,34 @@
 					<h5>email</h5>
 					<span id="email">{{ user.email }}</span>
 				</div>
-				{% if user.skype %}
+				{% if user.Skype %}
 				<div class="card-contacts__item">
-					<h5>skype</h5>
-					<span id="skype">{{ user.skype }}</span>
+					<h5>Skype</h5>
+					<span id="Skype">{{ user.Skype }}</span>
 				</div>
 				{% endif %}
-				{% if user.codeforces %}
+				{% if user.Codeforces %}
 				<div class="card-contacts__item">
-					<h5>codeforces</h5>
-					<span id="cf">{{ user.codeforces }}</span>
+					<h5>Codeforces</h5>
+					<span id="Codeforces">{{ user.Codeforces }}</span>
+				</div>
+				{% endif %}
+				{% if user.VK %}
+				<div class="card-contacts__item">
+					<h5>Вконтакте</h5>
+					<span id="VK">{{ user.VK }}</span>
+				</div>
+				{% endif %}
+				{% if user.Facebook %}
+				<div class="card-contacts__item">
+					<h5>Facebook</h5>
+					<span id="Facebook">{{ user.Facebook }}</span>
+				</div>
+				{% endif %}
+				{% if user.Dnevnik %}
+				<div class="card-contacts__item" style="display:none">
+					<h5>Дневник.ру</h5>
+					<span id="Dnevnik">{{ user.Dnevnik }}</span>
 				</div>
 				{% endif %}
 			</div>

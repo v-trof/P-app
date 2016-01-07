@@ -31,6 +31,11 @@ class LoginForm(forms.Form):
     email = models.EmailField(_('email address'), blank=True)
     password = forms.CharField(widget=forms.PasswordInput(render_value=False), max_length=100)
 
+class FileForm(forms.Form):
+    file = forms.FileField(
+        label='Select a file',
+        help_text='max. 42 megabytes'
+    )
 
 class Course():
     name = models.CharField(_('name'), max_length=30, blank=True)
@@ -50,9 +55,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         }
     )
     name = models.CharField(_('name'), max_length=30, blank=True)
-    skype = models.CharField(_('skype'), max_length=30, blank=True)
-    codeforces = models.CharField(_('codeforces'), max_length=30, blank=True)
-    avatar = models.CharField(_('avatar'), max_length=128, blank=True)
+    Skype = models.CharField(_('skype'), max_length=30, blank=True)
+    Codeforces = models.CharField(_('codeforces'), max_length=30, blank=True)
+    VK = models.CharField(_('vk'), max_length=30, blank=True)
+    Facebook = models.CharField(_('facebook'), max_length=30, blank=True)
+    Dnevnik = models.CharField(_('dnevnik'), max_length=30, blank=True)
+    avatar = models.ImageField(upload_to="/Static/Images/")
     is_changing = models.BooleanField(default=False)
     email = models.EmailField(_('email address'), blank=True,unique=True)
     is_staff = models.BooleanField(_('staff status'), default=False)

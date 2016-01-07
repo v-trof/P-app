@@ -8,7 +8,7 @@ from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth import authenticate, login as auth
 import os
-from .models import User, LoginForm, RegForm
+from .models import User, LoginForm, RegForm, FileForm
 from django.contrib.auth import logout
 from django.utils.html import strip_tags
 from binascii import hexlify
@@ -133,6 +133,21 @@ def change_data(request):
     if request.method == 'GET':
         email = request.GET['email']
         setattr(request.user, 'email', strip_tags(email))
+        if request.GET['Skype']:
+            Skype = request.GET['Skype']
+            setattr(request.user, 'Skype', strip_tags(Skype))
+        if request.GET['VK']:
+            VK = request.GET['VK']
+            setattr(request.user, 'VK', strip_tags(VK))
+        if  request.GET['Facebook']:
+            Facebook = request.GET['Facebook']
+            setattr(request.user, 'Facebook', strip_tags(Facebook))
+        if request.GET['Dnevnik']:
+            Dnevnik = request.GET['Dnevnik']
+            setattr(request.user, 'Dnevnik', strip_tags(Dnevnik))
+        if request.GET['Codeforces']:
+            Codeforces = request.GET['Codeforces']
+            setattr(request.user, 'Codeforces', strip_tags(Codeforces))
         request.user.save()
     return redirect('/')
 
@@ -187,3 +202,17 @@ def change_password(request):
             return render(request, 'Pages/profile.html', {
             'error': 'Неверный пароль',
             })
+
+def upload_avatar(request):
+    request.user.avatar.save('1.jpg',File(handle_upload_file(request.FILES['file'])))
+    return render(request, 'Pages/profile.html', {
+            'error': 'Неверный пароль',
+            })
+
+from django.core.files.temp import NamedTemporaryFile
+def handle_upload_file(f):
+        img_temp = NamedTemporaryFile()
+        for chunk in f.chunks():
+                img_temp.write(chunk)
+        img_temp.flush()
+        return img_temp
