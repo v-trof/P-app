@@ -8,7 +8,7 @@ function all_valid(){
 	$("input:visible").each(function() {
 		if(!$(this).hasClass('valid')){
 			inputs_valid = false;
-			console.log(this);
+			// console.log(this);
 		}
 	});
 

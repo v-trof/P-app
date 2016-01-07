@@ -67,7 +67,7 @@ input[type="password"],input[type="text"]:not([name="search"]),input[type="email
 
 
 //checkbox & radio buttons
-input[type="checkbox"],input[type="radio"]
+input[type="checkbox"], input[type="radio"]
 	height: 0
 	width: 0
 	margin: 0
@@ -87,25 +87,31 @@ input[type="checkbox"],input[type="radio"]
 			border: 1px solid $grey-dark
 			background: $white
 			margin-right: $margin-regular
-
+			transition: $time-short
 
 input[type="checkbox"]
 	&+label:after
 		display: inline-block
 		content: ''
-		border: 2px solid $green-bright
+		border: 2px solid $white
 		border-top: 0
 		border-right: 0
-		height: $icon-tiny/2*0.8
-		width: $icon-tiny*0.8
+		height: $icon-tiny*0.3
+		width: $icon-tiny*0.6
 		order: -2
 		//transiotion
 		opacity: 0
 		transform: rotate(-45deg)
+	&+label:before
+		border-radius: 2px
+		margin-left: -$icon-tiny*0.6
 	&:checked+label
+		&:before
+			background: $color--accent
+			border-color: $color--accent
 		&:after
 			opacity: 1
-			transform: translate($padding-small/2,-$padding-small/2) rotate(-45deg)
+			transform: translate($icon-tiny/3,-$padding-small/3) rotate(-45deg)
 
 
 input[type="radio"]
