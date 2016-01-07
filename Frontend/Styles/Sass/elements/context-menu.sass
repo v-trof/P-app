@@ -1,0 +1,21 @@
+@import "../vars"
+
+#context-menu
+	z-index: 10
+	background: $white
+	position: absolute
+	transition: $time-regular opacity
+	border-radius: 2px
+	+box-shadow(3)
+	opacity: 0
+
+.context-menu__option
+	padding: $padding_regular
+	&:hover
+		background: $grey-light
+	&:first-child
+		border-radius: 2px 2px 0 0
+	&:last-child
+		border-radius: 0 0 2px 2px
+	&.default
+		border-bottom: 2px solid $grey-light

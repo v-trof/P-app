@@ -34,16 +34,12 @@
 	<br><br><br>
 	
 	<h3>Select</h3>
-	<div class='select' name="sampleSelect" tabindex="0">
-		<div class="select__mask">
-			<div class='select__body'>
-				<div class="select__option" value="1">Option 1</div>
-				<div class="select__option" value="2">Option 2</div>
-				<div class="select__option" value="3">Option 3</div>
-				<div class="select__option" value="4">Option 4</div>
-				<div class="select__option" value="5">Option 5</div>
-			</div>
-		</div>
+	<select name="sampleSelect">
+		<option value="1">Option 1</option>
+		<option value="2">Option 2</option>
+		<option value="3">Option 3</option>
+		<option value="4">Option 4</option>
+		<option value="5">Option 5</option>
 	</div>
 	<br><br><br>
 	<h3>Checkbox</h3>
@@ -66,8 +62,11 @@
 			});
 		});
 	</script>
-	<script type="text/javascript" src='../../Scripts/Dev/select.js'></script>
+	<div id="context-menu">
+	</div>
+	<script type="text/javascript" src='../../Scripts/Dev/context_menu.js'></script>
 	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/main.css">
 	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/inputs.css">
+	<link rel="stylesheet" type="text/css" href="../../Styles/CSS/elements/context-menu.css">
 </body>
 </html>

@@ -4,7 +4,6 @@ ripple.dissolve = function (){
 	ripple.css({
 		"transform": "scale(0)",
 		"opacity": 0,
-		"transition-duration": "0"
 	});
 }
 
@@ -14,8 +13,6 @@ $(document).ready(function() {
 			$(this).prepend(ripple);
 			var c_rect = this.getBoundingClientRect();
 			var scale = (c_rect.width/5)*1.4;
-			// console.log(scale);
-			var time = scale * 12;
 			// console.log(this.getBoundingClientRect(), e, $("main").scrollTop());
 			var pos = {
 				x: e.clientX - c_rect.left,
@@ -26,7 +23,6 @@ $(document).ready(function() {
 				"top": pos.y + "px",
 				"left": pos.x + "px",
 				"transform": "scale(" + scale + ")",
-				"transition-duration": time + "ms",
 				"opacity": 1
 			});
 		},

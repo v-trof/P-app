@@ -38,6 +38,10 @@ $(document).ready(function() {
 	$("input").each(function(index, el) {
 		add_emptiness_checker(this);	
 	});
+	$("main").scroll(function(event) {
+		tooltip.hide();
+		context_menu.hide();
+	});
 });
 
 /*function fade(){

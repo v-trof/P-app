@@ -84,7 +84,7 @@ input[type="checkbox"], input[type="radio"]
 			content: ''
 			min-height: $icon-tiny
 			min-width: $icon-tiny
-			border: 1px solid $grey-dark
+			border: 2px solid lighten($black, 20%)
 			background: $white
 			margin-right: $margin-regular
 			transition: $time-short
@@ -111,7 +111,7 @@ input[type="checkbox"]
 			border-color: $color--accent
 		&:after
 			opacity: 1
-			transform: translate($icon-tiny/3,-$padding-small/3) rotate(-45deg)
+			transform: translate($icon-tiny*0.4,-$icon-tiny*0.1) rotate(-45deg)
 
 
 input[type="radio"]
@@ -122,16 +122,16 @@ input[type="radio"]
 			border-radius: 50%
 			min-height: $icon-tiny
 			min-width: $icon-tiny
-			border: 1px solid $blue-bright
+			border: 2px solid $blue-bright
 			order: -2
 			background: $blue-bright
-			transform: translateX(2px) scale(0)
+			transform: translateX(4px) scale(0)
 		&:before
 			border-radius: 50%
 			margin-left: -$icon-tiny
 	&:checked+label
 		&:after
-			transform: translateX(2px) scale(1)
+			transform: translateX(4px) scale(1)
 		&:before
 			border-color: $blue-bright
 
@@ -197,35 +197,9 @@ input[type="radio"]
 
 
 
-
-
-
-//select tag alternative
-.select
-	position: relative
-	z-index: 50
-	height: $line-regular+$padding-small*2
-	display: inline-block
-	vertical-align: middle
-	width: 16rem
-	&:focus
-		outline: 0
-	&:focus>.select__mask,&:hover>.select__mask
-		border-color: $blue-bright
-		outline: 0
-.select__mask
-	height: $line-regular+$padding-small*2
-	overflow: hidden
-	background: $white
-	transition: $time-regular
-	border: $border-regular solid $grey-semilight
-.select__body
-	transition: $time-regular
-.select__option
-	padding: $padding-small
-	height: $line-regular+$padding-small*2
-	cursor: pointer
-	color: $grey-dark
-	transition: $time-regular
-	&:hover
-		background: $grey-semilight
+//select default
+select
+	padding: $padding-regular
+	background: transparent
+	border: 0
+	font-size: $font-regular
