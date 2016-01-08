@@ -204,15 +204,17 @@ def change_password(request):
             })
 
 def upload_avatar(request):
-    request.user.avatar.save('1.jpg',File(handle_upload_file(request.FILES['file'])))
-    return render(request, 'Pages/profile.html', {
-            'error': 'Неверный пароль',
-            })
+    print("X")
+
+    request.user.avatar.save("1.jpg", File(handle_upload_file(request.FILES['new_avatar'])))
+    print("I")
+    return HttpResponse("ok")
 
 from django.core.files.temp import NamedTemporaryFile
+
 def handle_upload_file(f):
-        img_temp = NamedTemporaryFile()
-        for chunk in f.chunks():
-                img_temp.write(chunk)
-        img_temp.flush()
-        return img_temp
+    print("Y")
+    destination = open('1.jpg', 'wb+')
+    destination.write(f.read())
+    print("Y")
+    return destination

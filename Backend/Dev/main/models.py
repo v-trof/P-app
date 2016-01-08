@@ -60,7 +60,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     VK = models.CharField(_('vk'), max_length=30, blank=True)
     Facebook = models.CharField(_('facebook'), max_length=30, blank=True)
     Dnevnik = models.CharField(_('dnevnik'), max_length=30, blank=True)
-    avatar = models.ImageField(upload_to="/Static/Images/")
+    avatar = models.ImageField(upload_to="main/Static/Images")
     is_changing = models.BooleanField(default=False)
     email = models.EmailField(_('email address'), blank=True,unique=True)
     is_staff = models.BooleanField(_('staff status'), default=False)
