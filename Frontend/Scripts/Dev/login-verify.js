@@ -1,5 +1,5 @@
 var messages = {
-	email_invalid: "Возможно, тут опечатка",
+	email_invalid: "example_email@service.domain",
 	password_invalid: "Минимум 8 символов"
 }
 

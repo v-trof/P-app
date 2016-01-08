@@ -39,21 +39,21 @@ context_menu = {
 		});
 		$(".context-menu__option").click(function(event) {
 			context_menu.hide();
-			$(el).val($(this).attr('value'));
-			console.log(el,$(this).attr('value'));
+			$(el).children('.value').val($(this).attr('value'));
+
+			$(el).children('.display').text($(this).text());
 		});
 	},
 
 }
 
 function add_menu_caller(select) {
-
 	$(select).click(function(e) {
-		var select = this;
 		var options = [];
 		var checked = {};
-		$(select).children('option').each(function(index, el) {
-			if($(this).attr("value") != $(select).val()){
+		var current_value = $(this).children('.value').val();
+		$(this).children('option').each(function(index, el) {
+			if($(this).attr("value") != current_value){
 				options.push({
 					text : $(this).text(),
 					value: $(this).attr("value")
@@ -65,20 +65,12 @@ function add_menu_caller(select) {
 				}
 			}
 		});
-		console.log(this);
 		context_menu.show(this, options, checked);
-	});
-	//for spped
-	select.addEventListener("click", function(e) {
-		e.preventDefault();
-		var elem = this;
-		elem.style.visibiliy = "hidden";
-		setTimeout(function() { elem.disabled = false; }, 0);
 	});
 }
 
 $(document).ready(function() {
-	$("select").each(function(index, el) {
+	$(".select").each(function(index, el) {
 		add_menu_caller(this);
 	});
 });

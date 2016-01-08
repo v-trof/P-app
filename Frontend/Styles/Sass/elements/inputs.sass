@@ -203,8 +203,27 @@ input[type="radio"]
 
 
 //select default
-select
+.select
 	padding: $padding-regular
 	background: transparent
 	border: 0
 	font-size: $font-regular
+	display: flex
+	flex-direction: row
+	align-items: center
+	cursor: pointer
+	//for width != 100%
+	position: absolute
+	&>option
+		display: none
+	&>.display
+		margin-right: $margin-regular
+	&>input
+		background: transparent
+		border: 0
+		font-size: $font-regular
+		max-width: 10rem
+	&>svg
+		display: block
+		height: $icon-tiny
+		width: $icon-tiny

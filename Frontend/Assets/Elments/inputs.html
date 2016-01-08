@@ -28,20 +28,23 @@
 			<button class="button--context" tabindex="-1"><u>П</u></button>
 			<!-- Select tag -->
 			<button class="button--context" tabindex="-1"><img src="../Icons/list.svg" style="width: 1.5rem;margin-top:0.2rem;"></button>
-			<img src="">
 		</div>
 	</div>
 	<br><br><br>
 	
 	<h3>Select</h3>
-	<div class="select-wrapper">
-		<select name="sampleSelect">
-			<option value="1">Option 1</option>
-			<option value="2">Option 2</option>
-			<option value="3">Option 3</option>
-			<option value="4">Option 4</option>
-			<option value="5">Option 5</option>
-		</select>
+	<div class="select">
+		<input type="hidden" class="value" value="1">
+		<div class="display">Option 1</div>
+		<svg class="{{ class }}" id="{{id}}" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
+			<path d="M7 10l5 5 5-5z"/>
+			<path d="M0 0h24v24H0z" fill="none"/>
+		</svg>
+		<option value="1">Option 1</option>
+		<option value="2">Option 2</option>
+		<option value="3">Option 3</option>
+		<option value="4">Option 4</option>
+		<option value="5">Option 5</option>
 	</div>
 	<br><br><br>
 	<h3>Checkbox</h3>
