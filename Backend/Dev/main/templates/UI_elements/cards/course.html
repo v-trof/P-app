@@ -1,8 +1,19 @@
-<a class="course-link" href="{{course.teacher}}/courses/{{course.title_lat}}">
-	<div class="card-course">
+<a class="link--card" href="{{course.teacher}}/courses/{{course.title_lat}}">
+	<div class="card">
 		<div class="icons--warning">
+			{% for message in course.messages.warning %}
+				{% include "UI_elements/Icons/"|add:message.icon|add:".svg" %}
+			{% endfor %}
 		</div>
 		<div class="icons--neutral">
+			{% for message in course.messages.neutral %}
+				{% include "UI_elements/Icons/"|add:message.icon|add:".svg" %}
+			{% endfor %}
+		</div>
+		<div class="icons--positive">
+			{% for message in course.messages.positive %}
+				{% include "UI_elements/Icons/"|add:message.icon|add:".svg" %}
+			{% endfor %}
 		</div>
 		<h4 class="card__heading">{{course.title}}</h4>
 		<div class="card__content">
@@ -25,13 +36,18 @@
 		<div class="messages">
 			{% for message in course.messages.warning %}
 				<div class="messages__item--warning">
-					{{message}}
+					{{message.text}}
 				</div>
 			{% endfor %}
 
 			{% for message in course.messages.neutral %}
 				<div class="messages__item--neutral">
-					{{message}}
+					{{message.text}}
+				</div>
+			{% endfor %}
+			{% for message in course.messages.positive %}
+				<div class="messages__item--neutral">
+					{{message.text}}
 				</div>
 			{% endfor %}
 		</div>

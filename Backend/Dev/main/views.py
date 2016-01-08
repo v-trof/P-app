@@ -5,83 +5,86 @@ from .models import User
 
 def home(request):
     # sample data
-    """
-        user = {"name": "Имя", "last_name": "Фамилия"}
-        breadcumbs = [{"href": "av", "link": "alalalal"}, {"href": "a", "link": "b"}]
-        courses = [
-            {
-                "name": "Предмет 1",
-                "courses": [
-                    {
-                        "title": "Курс А",
-                        "title_lat": "kurs-a",
-                        "teacher": "smb",
-                        "tests":{
-                            "done": 4,
-                            "total": 10
-                        },
-                        "materials":{
-                            "done": 2,
-                            "total": 4
-                        },
-                        "messages": {
-                            "warning": [],
-                            "neutral": []
-                        }
-                    }
-                ]
-            },
-        ]
-        homework = [
-            {
-                "name": "Предмет 1",
-                "assignments": [
-                    {
-                        "course_title": "Курс А",
-                        "course_title_lat": "kurs-a",
-                        "course_teacher": "smb",
-                        "tasks": [{
-                            "traditional": False,
-                            "done": False,
-                            "content": {
-                                "tests": [
-                                    {
-                                        "title": "Test 1",
-                                        "link": "test-1",
-                                        "done": True
-                                    },
-                                    {
-                                        "title": "Test 2",
-                                        "link": "test-2",
-                                        "done": False
-                                    }
-                                ],
-                                "materials": [
-                                    {
-                                        "title": "Material 1",
-                                        "link": "material-1",
-                                        "done": True
-                                    }
-                                ]
+    # """
+    breadcrumbs = request.path
+    print(breadcrumbs)
+    courses = [
+        {
+            "name": "Предмет 1",
+            "courses": [
+                {
+                    "title": "Курс А",
+                    "title_lat": "kurs-a",
+                    "teacher": "smb",
+                    "tests":{
+                        "done": 4,
+                        "total": 10
+                    },
+                    "materials":{
+                        "done": 2,
+                        "total": 4
+                    },
+                    "messages": {
+                        "warning": [
+                            {
+                                "icon": "in_progress",
+                                "text": "Вы начали проходить тест и не закончили попытку!"
                             }
-                        }, {
-                            "traditional": True,
-                            "done": False,
-                            "content": "Прочитать книгу Б"
-                        }],
-                        "due_date": "12 ноября"
+                        ],
+                        "neutral": [],
+                        "positive": []
                     }
-                ]
-            }
-        ]
-    """
-    # context = Context({"user": user, "breadcumbs": breadcumbs, "courses": courses, "homework": homework})
-    context = {}
+                }
+            ]
+        },
+    ]
+    homework = [
+        {
+            "name": "Предмет 1",
+            "assignments": [
+                {
+                    "course_title": "Курс А",
+                    "course_title_lat": "kurs-a",
+                    "course_teacher": "smb",
+                    "tasks": [{
+                        "traditional": False,
+                        "done": False,
+                        "content": {
+                            "tests": [
+                                {
+                                    "title": "Test 1",
+                                    "link": "test-1",
+                                    "done": True
+                                },
+                                {
+                                    "title": "Test 2",
+                                    "link": "test-2",
+                                    "done": False
+                                }
+                            ],
+                            "materials": [
+                                {
+                                    "title": "Material 1",
+                                    "link": "material-1",
+                                    "done": True
+                                }
+                            ]
+                        }
+                    }, {
+                        "traditional": True,
+                        "done": False,
+                        "content": "Прочитать книгу Б"
+                    }],
+                    "due_date": "12 ноября"
+                }
+            ]
+        }
+    ]
+    # """
+    context = Context({"breadcrumbs": breadcrumbs, "courses": courses, "homework": homework})
+    # context = {}
+    # print(context)
     return render(request, 'Pages/home.html', context)
-
-def home(request):
-    return render(request, 'Pages/home.html')
-
 
 # login group
 def login(request):
