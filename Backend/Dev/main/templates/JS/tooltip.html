@@ -63,6 +63,7 @@ var tooltip = {
 		tooltip.is_shown = true;
 	},
 	hide : function(){
+		$("#tooltip").attr('style', '');
 		$("#tooltip").css('opacity', '0');
 		tooltip.is_shown = false;
 	},
