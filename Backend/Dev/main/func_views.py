@@ -204,17 +204,17 @@ def change_password(request):
             })
 
 def upload_avatar(request):
-    print("X")
-
-    request.user.avatar.save("1.jpg", File(handle_upload_file(request.FILES['new_avatar'])))
+    print(request.user.id)
+    dirr="Images/"+str(request.user.id)+".jpg"
+    print(dirr)
+    request.user.avatar.save("Images/"+str(request.user.id)+".jpg", File(handle_upload_file(request,request.FILES['new_avatar'])))
     print("I")
     return HttpResponse("ok")
 
-from django.core.files.temp import NamedTemporaryFile
 
-def handle_upload_file(f):
-    print("Y")
-    destination = open('1.jpg', 'wb+')
+def handle_upload_file(request,f):
+    print("dd")
+    destination = open('main/Static/Images/'+str(request.user.id)+'.jpg', 'wb+')
     destination.write(f.read())
     print("Y")
     return destination

@@ -16,7 +16,7 @@
 		{% if request.user.name %}
 		<a href="/user/{{request.user.id}}/"><span class="user__name">{{request.user.name}}</span></a>
 		{% load staticfiles %}
-		<img src="/{{request.user.avatar}}" class="user__avatar--small">
+		<img src="{% static request.user.avatar %}" class="user__avatar--small">
 		{% else %}
 		<a href="/register_student/" style="margin-right: 0.7rem">Регистрация</a>
 		<a href="/login/">Войти</a>
