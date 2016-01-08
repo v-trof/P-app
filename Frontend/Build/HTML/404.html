@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf8">
+	<title>Страница не найдена</title>
+</head>
+<body>
+	<div class="includer">{% include 'CSS/main.html' %}</div>
+	<div class="includer">{% include 'CSS/course.html' %}</div>
+	<div class="includer">{% include 'CSS/header.html' %}</div>
+	<div class="includer">{% include 'CSS/cards.html' %}</div>
+	<header class="header">
+		<div class="header__breadcumbs">
+		<a href="home.html">Главная</a>
+		<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M12.97 4.28l-1.44 1.44L21.814 16 11.53 26.28l1.44 1.44 11-11 .686-.72-.687-.72-11-11z"/></svg>
+		<a href="#">404</a>
+		<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
+		</div>
+		<div class="header__search">
+			<svg fill="#FFF" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+			<input type="text" name="search" placeholder="Искать...">
+		</div>
+		<div class="header__user">
+			<img src="../Assets/Images/avatar.png" class="user__avatar--small">
+			<span class="user__name">Всеволод Трофимов</span>
+		</div>
+	</header>
+
+	<main>
+		<section>
+			<div class="card" style="text-align:center">
+				<h1 style="font-size:10rem">404</h1>
+				<p>Страница не найдена. Мы обязательно это исправим, а пока вы можете вернуться на <a href="home.html">главную</a>.</p>
+			</div>
+		</section>
+	</main>
+	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
+	<div class="includer">{% include 'JS/layout.html' %}</div>
+</body>
+</html>
