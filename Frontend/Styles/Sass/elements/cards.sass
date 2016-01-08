@@ -19,8 +19,13 @@
 			&:first-child
 				margin-top: $margin-big
 			color: $blue-dark
-	&>.icons--warning,&>.icons--neutral
+		&>.messages__item--positive
+			&:first-child
+				margin-top: $margin-big
+			color: $green-bright
+	&>.icons--warning,&>.icons--neutral,&>.icons--positive
 		float: right
+		transition: $time-regular
 		&>svg
 			width: $icon-small
 			height: $icon-small
@@ -30,6 +35,9 @@
 	&>.icons--warning
 		&>svg
 			fill: $red-bright
+	&>.icons--positive
+		&>svg
+			fill: $green-bright
 	transition: $time-regular
 
 .card__due-date
@@ -57,14 +65,6 @@
 //specail purpose cards
 .card-homework__task
 	line-height: 1.5
-	&>svg
-		transition: $time-regular fill
-		height: $icon-small
-		width: $icon-small
-		fill: $grey-dark
-		vertical-align: middle
-	&.done>svg
-		fill: $green-bright
 	&>span
 		vertical-align: middle
 
@@ -78,17 +78,9 @@
 
 .card-marks
 	padding: 0 $padding-regular
-
-.card-marks__course
-	font-size: $font-regular
-	font-weight: normal
-	margin: 0
-	display: inline-block
-	margin-right: $margin-regular
-
-.card-marks__marks
-	display: inline-block
-	vertical-align: middle
+	display: flex
+	flex-direction: row
+	align-items: center
 	min-height: $icon-regular
 	button
 		transition: $time-regular
@@ -108,11 +100,15 @@
 			outline: none
 			box-shadow: none
 			background: $grey-semilight
-	&.empty
+	&>div
 		color: $grey-mid
-		&>span
-			vertical-align: middle
-			margin-left: $margin-regular
+
+.card-marks__course
+	font-size: $font-regular
+	font-weight: normal
+	margin: 0
+	margin-right: $margin-regular
+	
 
 
 

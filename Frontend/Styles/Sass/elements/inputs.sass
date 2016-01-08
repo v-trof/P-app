@@ -4,7 +4,7 @@ input, button
 	font-family: $Roboto
 	position: relative
 	z-index: 2
-
+	display: inline-block
 svg
 	z-index: 3
 
@@ -13,7 +13,8 @@ label
 	z-index: 1
 
 
-
+input[hidden]
+	display: none
 
 
 //general fix
@@ -90,6 +91,10 @@ input[type="checkbox"], input[type="radio"]
 			transition: $time-short
 
 input[type="checkbox"]
+	display: none
+	&.green:checked+label:before
+		background: $green-bright
+		border-color: $green-bright
 	&+label:after
 		display: inline-block
 		content: ''

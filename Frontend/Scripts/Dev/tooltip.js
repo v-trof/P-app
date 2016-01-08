@@ -63,11 +63,9 @@ var tooltip = {
 		tooltip.is_shown = true;
 	},
 	hide : function(){
+		$("#tooltip").attr('style', '');
 		$("#tooltip").css('opacity', '0');
 		tooltip.is_shown = false;
-		setTimeout(function(){
-			$("#tooltip").css('top', '-100%');
-		},300);
 	},
 	generate : {
 		mark__tooltip : function(description){

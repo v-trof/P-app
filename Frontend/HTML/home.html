@@ -21,6 +21,7 @@
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/cards.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/notification.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/tooltip.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/inputs.css">
 	<!-- <link rel="stylesheet" type="text/css" href="../Styles/Css/extensions/materialize.css"> -->
 	<div class="notification__error hidden" id="notification">
 			<div class="notification__bg">
@@ -92,19 +93,17 @@
 				<h3>Русский язык</h3>
 				<div class="card card-marks">
 					<h4 class="card-marks__course">Курс а</h4>
-					<span class="card-marks__marks">
 						<button class="mark--good">5</button>
 						<button class="mark--good">5/4</button>
 						<button class="mark--good">4</button>
 						<button class="mark--medium" id="c_kursA_m4">3</button>
 						<button class="mark--bad" id="c_kursA_m5">2</button>
-					</span>
 				</div>
-				<div class="card card-marks">
-					<span class="card-marks__course">Курс б</span>
-					<span class="card-marks__marks empty">
-						<span>Оценок нет<span>
-					</span>
+				<div class="card card-marks empty">
+					<h4 class="card-marks__course">Курс б</h4>
+					<div>
+						Оценок нет
+					</div>
 				</div>
 			</div>
 			<div id="tooltip">
@@ -117,13 +116,15 @@
 			<div class="subject">
 				<h3>Русский язык</h3>
 				<div class="card">
+					<div class="icons--positive">
+						<img src="../Assets/Icons/done.svg" inline>
+					</div>
 					<h4 class="card__heading">В курсе а</h4>
 					<div class="card-homework__task done">
 						<span><a href="#" class="task__link done">Task 1</a></span>
 					</div>
 					<div class="card-homework__task traditional done">
-						<img src="../Assets/Icons/done.svg" inline>
-						<span>Task 2</span>
+						<input type="checkbox" class="green" id="task_1_1" checked><label for="task_1_1">Task 2</label>
 					</div>
 					<div class="card__due-date">
 						До <strong>12 ноября</strong>
@@ -176,13 +177,14 @@
 		}
 
 		$(document).ready(function() {
-			$(".card-marks__marks>button").blur(function() {
+			$(".card-marks>button").blur(function() {
 					tooltip.hide();
 					$(this).removeClass('open');
 			});
-			$(".card-marks__marks>button").focus(function() {
-				$(".card-marks__marks>button").removeClass('open');
+			$(".card-marks>button").focus(function() {
+				$(".card-marks>button").removeClass('open');
 				new_html = tooltip.generate.mark__tooltip(get_description($(this).attr("id")));
+				console.log("open");
 				tooltip.show(this, new_html);
 				$(this).addClass('open');
 			});
