@@ -3,6 +3,8 @@ var messages = {
 	password_invalid: "Минимум 8 символов"
 }
 
+var password_field = {}; 
+
 function all_valid(){
 	var inputs_valid = true;
 	$("input:visible").each(function() {
@@ -24,6 +26,7 @@ var name_last_name_regex = /^[^\s]+\s[^\s]+$/;
 
 
 function check_password(input){
+	console.log(input);
 	if($(input).val().length >= 8) {
 		$(input).addClass('valid');
 		tooltip.hide();
@@ -46,10 +49,11 @@ function check_email(input) {
 			tooltip.show(input, messages.email_invalid);
 		}
 	}
-	check_password($("input[type='password']").find(0));
+	check_password(password_field);
 }
 
 $(document).ready(function() {
+	password_field = $("input[type='password']").get(0);
 	$("input[type='email']").on("blur keyup change click", function() {
 		var input = this;
 		check_email(input);
