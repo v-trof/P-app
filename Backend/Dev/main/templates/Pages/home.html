@@ -20,24 +20,7 @@
 		</section>
 		<section class="marks">
 			<h2>Оценки</h2>
-			<!-- <div class="subject">
-				<h3>Русский язык</h3>
-				<div class="card card-marks">
-					<h4 class="card-marks__course">Курс а</h4>
-					<span class="card-marks__marks">
-						<button class="mark--good">5</button>
-						<button class="mark--good">5/4</button>
-						<button class="mark--good">4</button>
-						<button class="mark--medium" id="c_kursA_m4">3</button>
-						<button class="mark--bad" id="c_kursA_m5">2</button>
-					</span>
-				</div>
-				<div class="card card-marks">
-					<span class="card-marks__course">Курс б</span>
-					<span class="card-marks__marks empty">
-						<span>Оценок нет<span>
-					</span>
-				</div> -->
+			{% include 'Blocks/marks.html' with marks=marks %}
 			</div>
 			<div id="tooltip">
 				<div class="tooltip__content">

@@ -1,0 +1,8 @@
+{% for subject in marks %}
+	<div class="subject">
+		<h3>{{subject.name}}</h3>
+		{% for course in subject.courses %}
+			{% include 'UI_elements/cards/marks.html' with course=course %}
+		{% endfor %}
+	</div>
+{% endfor %}

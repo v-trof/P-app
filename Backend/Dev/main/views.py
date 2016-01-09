@@ -80,8 +80,26 @@ def home(request):
             ]
         }
     ]
+    marks = [
+        {
+            "name": "Предмет 1",
+            "courses": [
+                {
+                    "title": "Курс А",
+                    "title_lat": "kurs-a",
+                    "marks": [
+                        {
+                        #good, medium, bad
+                            "quality": "good",
+                            "value": 5
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
     # """
-    context = Context({"breadcrumbs": breadcrumbs, "courses": courses, "homework": homework})
+    context = {"breadcrumbs": breadcrumbs, "courses": courses, "homework": homework, "marks": marks}
     # context = {}
     # print(context)
     return render(request, 'Pages/home.html', context)
