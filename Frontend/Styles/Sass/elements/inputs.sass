@@ -25,7 +25,6 @@ input:-webkit-autofill
 
 input[type="password"],input[type="text"]:not([name="search"]),input[type="email"]
 	font-size: $font-regular
-	padding: $padding-regular
 	margin-top: $margin-big
 	padding-left: 0
 	width: 100%
@@ -46,6 +45,7 @@ input[type="password"],input[type="text"]:not([name="search"]),input[type="email
 			color: $green-bright
 	&:invalid
 		border-bottom-color: $red-bright
+		box-shadow: none
 		&+label
 			color: $red-bright
 	&.empty
