@@ -28,7 +28,7 @@ input[type="password"],input[type="text"]:not([name="search"]),input[type="email
 	margin-top: $margin-big
 	padding-left: 0
 	width: 100%
-	height: $line-regular
+	height: $line-big
 	border: none
 	background: transparent
 	border-bottom: 2px solid $grey-semilight
@@ -50,7 +50,7 @@ input[type="password"],input[type="text"]:not([name="search"]),input[type="email
 			color: $red-bright
 	&.empty
 		&+label
-			transform: translateY($padding-regular + $font-small)
+			transform: translateY($line-regular)
 			font-size: $font-regular
 	&+label
 		float: left
@@ -58,7 +58,7 @@ input[type="password"],input[type="text"]:not([name="search"]),input[type="email
 		color: $grey-mid
 		width: 100%
 		transition: $time-regular
-		margin-top: $line-regular - $font-small 
+		margin-top: - $line-big - $padding-regular
 		font-size: $font-small
 
 
