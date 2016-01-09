@@ -64,6 +64,7 @@ def reg(request):
     if request.method == 'POST':
         form = RegForm(request.POST)
         email = request.POST['email']
+        is_teacher = request.POST['is_teacher']
         password = request.POST['password']
         name_last_name = request.POST['name_last_name']
         if not User.objects.filter(email=email):
@@ -72,6 +73,7 @@ def reg(request):
                 email=email,
                 password=password,
                 name=name_last_name,
+                is_teacher=is_teacher,
                 avatar = 'Images/avatar.png')
         else:
             error = u'Данный email уже зарегистрирован'
@@ -204,17 +206,8 @@ def change_password(request):
             })
 
 def upload_avatar(request):
-    print(request.user.id)
-    dirr="Images/"+str(request.user.id)+".jpg"
-    print(dirr)
-    request.user.avatar.save("Images/"+str(request.user.id)+".jpg", File(handle_upload_file(request,request.FILES['new_avatar'])))
-    print("I")
-    return HttpResponse("ok")
-
-
-def handle_upload_file(request,f):
-    print("dd")
     destination = open('main/Static/Images/'+str(request.user.id)+'.jpg', 'wb+')
-    destination.write(f.read())
-    print("Y")
-    return destination
+    destination.write(request.FILES['new_avatar'].read())
+    setattr(request.user, avatar, strip_tags('Images/'+str(request.user.id)+'.jpg'))
+    request.user.save()
+    return HttpResponse("ok")

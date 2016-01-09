@@ -1,0 +1,18 @@
+<section class="courses">
+			<h2>Курсы</h2>
+				{% include 'Blocks/courses.html' with courses=courses %}
+		</section>
+		<section class="marks">
+			<h2>Оценки</h2>
+			{% include 'Blocks/marks.html' with marks=marks %}
+			</div>
+			<div id="tooltip">
+				<div class="tooltip__content">
+				</div>
+			</div>
+		</section>
+		<section class="homework">
+			<h2>Задания</h2>
+			{% include 'Blocks/homework.html' with homework=homework %}
+			</div>
+		</section>
