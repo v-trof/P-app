@@ -53,7 +53,6 @@ input[type="password"],input[type="text"]:not([name="search"]),input[type="email
 			transform: translateY($line-regular)
 			font-size: $font-regular
 	&+label
-		position: absolute
 		float: left
 		text-align: left
 		color: $grey-mid
@@ -213,8 +212,8 @@ input[type="radio"]
 	flex-direction: row
 	align-items: center
 	cursor: pointer
-	//for width != 100%
-	position: absolute
+	float: left
+	clear: left
 	&>option
 		display: none
 	&>.display
