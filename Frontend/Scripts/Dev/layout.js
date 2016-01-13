@@ -1,18 +1,18 @@
 "use strict";
 function build_header(){
-	var breadcumbs_w = $(".header__breadcumbs").innerWidth();
+	var breadcrumbs_w = $(".header__breadcrumbs").innerWidth();
 	var user_w = $(".header__user").innerWidth();
-	// console.log(user_w,breadcumbs_w);
-	if(breadcumbs_w>user_w){
-		$(".header__user").css('min-width', breadcumbs_w+10+"px");
-		$(".header__breadcumbs").css('min-width', breadcumbs_w+10+"px");
-		user_w=breadcumbs_w;
+	// console.log(user_w,breadcrumbs_w);
+	if(breadcrumbs_w>user_w){
+		$(".header__user").css('min-width', breadcrumbs_w+10+"px");
+		$(".header__breadcrumbs").css('min-width', breadcrumbs_w+10+"px");
+		user_w=breadcrumbs_w;
 	} else {
-		$(".header__breadcumbs").css('min-width', user_w+10+"px");
+		$(".header__breadcrumbs").css('min-width', user_w+10+"px");
 		$(".header__user").css('min-width', user_w+10+"px");
-		breadcumbs_w=user_w;
+		breadcrumbs_w=user_w;
 	}
-	// console.log(user_w,breadcumbs_w);
+	// console.log(user_w,breadcrumbs_w);
 	$(".header__search").css("width","100%");
 }
 
