@@ -32,7 +32,7 @@ function check_password(input){
 		tooltip.hide();
 	} else {
 		$(input).removeClass('valid');
-		if(!tooltip.is_shown){
+		if(!tooltip.is_shown&& $(input).is(':focus')){
 			tooltip.show(input, messages.password_invalid);
 		}
 	}
@@ -87,4 +87,6 @@ $(document).ready(function() {
 		button = $(this);
 		button.addClass('in-progress');
 	});
+
+	check_email();
 });

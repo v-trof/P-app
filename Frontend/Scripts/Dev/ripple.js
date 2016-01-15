@@ -9,17 +9,17 @@ ripple.dissolve = function (){
 }
 
 ripple.force_show = function(e, el, special_class) {
-	console.log(el);
+	// console.log(el);
 	$(el).prepend(ripple);
 	var c_rect = el.getBoundingClientRect();
 	var scale = (c_rect.width/5)*2.14;
-	console.log(el.getBoundingClientRect(), e);
+	// console.log(el.getBoundingClientRect(), e);
 	var pos = {
 		x: e.clientX - c_rect.left,
 		y: e.clientY - c_rect.top,
 	}
 	ripple.addClass(special_class);
-	console.log(pos);
+	// console.log(pos);
 	ripple.css({
 		"top": pos.y + "px",
 		"left": pos.x + "px",

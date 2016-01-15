@@ -3,7 +3,7 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="utf8">
-		<title>Мертвые души(Редактирование)</title>
+		<title>Test heading(Редактирование)</title>
 	</head>
 	<body>
 		<link rel="stylesheet" type="text/css" href="../Styles/CSS/main.css">
@@ -40,7 +40,7 @@
 					Sample text
 				</div>
 			</div>
-\
+
 			<div id="editor__settings" class="card">
 				<h3>Настройки редактора</h3>
 				<div id="editor__type">
@@ -50,20 +50,17 @@
 			</div>
 
 			<div class="test">
+				<div class="test__bg"></div>
 				<h1 class="test__heading" contenteditable>Test heading</h1>
 				<div class="test__preview">
 				</div>
-				<svg viewBox="0 0 100 100" id="create">
-					<circle cx="50" cy="50" r="48" stroke-width="4" fill="none" />
-					<line x1="50" x2="50" y1="35" y2="65" stroke-width="4" />
-					<line x1="35" x2="65" y1="50" y2="50" stroke-width="4" />
-				</svg>
+				<img src="../Assets/Icons/add.svg" inline>
 			</div>
 
 
 			<div class="answer-elements">
-				<div class="answer__field" draggable="true">
-					<input type="text" name="text_question" placeholder="" class="input__inner-label"><label for="text_question">Ответ текстом</label>
+				<div class="answer__field card" draggable="true">
+					<input type="text" name="text_question" placeholder="" class="input__inner-label"><label for="text_question" disabled>Ответ текстом</label>
 				</div>
 			</div>
 		</div>
@@ -75,7 +72,7 @@
 			}
 		</style>
 
-		<!-- Allows us to show that are is droppable -->
+		<!-- Allows us to show that are droppable -->
 		<div id="indicator"></div>
 		<script src="../Scripts/Min/jquery-2.1.4.min.js">
 		</script>
@@ -84,5 +81,6 @@
 		<script src="../Scripts/Dev/drag_and_drop.js"></script>
 		<script src="../Scripts/Dev/create_question.js"></script>
 		<script src="../Scripts/Dev/test_editor_generate.js"></script>
+		<script src="../Scripts/Dev/ripple.js"></script>
 	</body>
 </html>

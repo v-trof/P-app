@@ -13,12 +13,13 @@ var generate  = {
 		return content;
 	},
 	"input__inner-label": function(pos, value) {
-		var content = $(generate.answer_template).html("<input type='text' name='text_question' placeholder='Ответ' class='input__inner-label'><label for='text_question'></label>");
+		var content = $(generate.answer_template).html("<input type='text' name='text_question' placeholder='Ответ' disabled><label for='text_question'></label>");
 		if(!value){
 			value = prompt("Question angain pls", "");
 		}
+		console.log(content);
 		content.find("label").text(value);
-		content.find("task__answer__item").attr("pos", pos);
+		content.attr("pos", pos);
 		return content;
 	}
 }
