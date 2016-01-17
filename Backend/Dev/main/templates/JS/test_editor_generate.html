@@ -9,16 +9,17 @@
 				return undefined;
 			}
 		}
-		var content = quesiton_template.addClass('text-wrapper').text(value).attr("pos", pos).attr("contenteditable", "false");
+		var content = quesiton_template.addClass('text-wrapper').html(value).attr("pos", pos).attr("contenteditable", "false");
 		return content;
 	},
 	"input__inner-label": function(pos, value) {
-		var content = $(generate.answer_template).html("<input type='text' name='text_question' placeholder='Ответ' class='input__inner-label'><label for='text_question'></label>");
+		var content = $(generate.answer_template).html("<input type='text' name='text_question' placeholder='Ответ' disabled><label for='text_question'></label>");
 		if(!value){
 			value = prompt("Question angain pls", "");
 		}
-		content.find("label").text(value);
-		content.find("task__answer__item").attr("pos", pos);
+		console.log(content);
+		content.find("label").html(value);
+		content.attr("pos", pos);
 		return content;
 	}
 }</script>

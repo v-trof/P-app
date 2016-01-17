@@ -8,7 +8,7 @@ from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth import authenticate, login as auth
 import os
-from .models import User, LoginForm, RegForm, FileForm
+from .models import User, LoginForm, RegForm, FileForm, Course
 from django.contrib.auth import logout
 from django.utils.html import strip_tags
 from binascii import hexlify
@@ -80,10 +80,12 @@ def reg(request):
             error = u'Данный email уже зарегистрирован'
             return errorHandle(error,email,password,name_last_name)
         if user is not None:
-                user.save
+                user.save()
                 user = authenticate(username=email, password=password)
                 auth(request, user)
                 request.session.set_expiry(36000)
+                if course_id and request.POST['course_reg']:
+                    course_reg(request, course_id)
                 return redirect('/')
         else:
             error = u'Неверный логин или пароль'
@@ -103,7 +105,9 @@ def create_course(request):
     if request.method == 'POST':
         db = sqlite3.connect('db.sqlite3')
         name = request.POST['course_name']
-        is_closed = request.POST['is_closed']
+       # if not Course.objects.filter(name=name):
+      #      course = Course.objects.save_course(name=name)
+     #   course.save()
         subject = request.POST['subject']
         cursor = db.cursor()
         cursor.execute(
@@ -111,7 +115,14 @@ def create_course(request):
             ''' ( "id" integer PRIMARY KEY NOT NULL,"name" varchar(30)
                 NOT NULL,"link" varchar(30) NOT NULL)''')
         db.commit()
-    return HttpResponseRedirect(reverse('/course/', kwargs={'success_message': 'Курс был успешно создан'}))
+        if not os.path.exists('json/'):
+            os.makedirs('json/')
+        f = open('json/'+name+'.json', 'a')
+        material = File(f)
+        material.write('{"users:[]"}')
+        material.close()
+        f.close()
+    return HttpResponseRedirect('/groups/')
 
 def new_material(request):
     if request.method == 'POST':
@@ -213,4 +224,30 @@ def upload_avatar(request):
     destination.write(request.FILES['new_avatar'].read())
     setattr(request.user, avatar, strip_tags('Images/'+str(request.user.id)+'.jpg'))
     request.user.save()
+    return HttpResponse("ok")
+
+def invite_students(request):
+    email_list = request.POST.getlist('email_list')
+    course_name="ff"
+    name=request.user.name
+    print request.user.name
+    for email in email_list:
+        if User.objects.filter(email=email):
+            print '1'
+            send_mail('Приглашение на курс', 'Вам поступило приглашение на курс '+course_name+' от dg . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+course_name, 'p.application.bot@gmail.com',
+            [email], fail_silently=False)
+        else: 
+            send_mail('Приглашение на курс', 'Вам поступило приглашение на курс '+course_name+' от dg . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+course_name, 'p.application.bot@gmail.com',
+            [email], fail_silently=False)
+            print '2'
+    return HttpResponse("ok")
+
+def course_reg(request, course_id):
+    if not request.user.name:
+        return redirect('/login/')
+    course=Course.objects.get(id=course_id)
+    f = open('json/'+course.name+'.json', 'a')
+    material = File(f)
+    material.write(request.user.name)
+    material.close()
     return HttpResponse("ok")

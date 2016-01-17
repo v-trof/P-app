@@ -36,10 +36,15 @@ class FileForm(forms.Form):
         label='Select a file',
         help_text='max. 42 megabytes'
     )
+class CourseManager(AbstractBaseUser):
+    def save_course():
+        return request.user.name
 
-class Course():
+class Course(models.Model):
     name = models.CharField(_('name'), max_length=30, blank=True)
-    link = models.CharField(_('link'), max_length=30, blank=True)
+    objects = CourseManager()
+    def save_course(name):
+        return name
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(

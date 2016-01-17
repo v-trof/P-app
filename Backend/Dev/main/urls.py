@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """main URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -33,13 +34,16 @@ func_patterns = [
     url(r'^change_password/$', func_views.change_password),
     url(r'^create_contact/$', func_views.create_contact),
     url(r'^upload_avatar/$', func_views.upload_avatar),
+    url(r'^invite_students/$', func_views.invite_students),
+    url(r'^course_reg/$', func_views.course_reg),
 ]
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.home),
     url(r'^test_editor/$', views.test_editor),
-    url(r'^register_student/$', views.register_student),
+    url(r'^register/$', views.register),
+    url(r'^register/(?P<course_id>[а-яА-ЯёЁa-zA-Z0-9]+)/$', views.register),
     url(r'^forgot_password/$', views.forgot_password),
     url(r'^func/', include(func_patterns)),
     url(r'^login/$', views.login),

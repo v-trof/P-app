@@ -11,6 +11,8 @@
 	<div class="includer">{% include 'CSS/header.html' %}</div>
 	<div class="includer">{% include 'CSS/cards.html' %}</div>
 	<div class="includer">{% include 'CSS/notification.html' %}</div>
+	<div class="includer">{% include 'CSS/buttons.html' %}</div>
+	<div class="includer">{% include 'CSS/inputs.html' %}</div>
 	<header class="header">
 		<div class="header__breadcrumbs">
 		<a href="#">Главная</a>
@@ -31,15 +33,32 @@
 	</header>
 
 	<main>
+		<section class="linkbox">
+			<a class="link--card" id="invite_students">
+				<div class="card--small">
+				Пригласить учеников
+				</div>
+			</a>
+			<a class="link--card" id="invite_teacher">
+				<div class="card--small">
+				Пригласить преподавателя
+				</div>
+			</a>
+			<a class="link--card" id="edit">
+				<div class="card--small">
+					Редактировать
+				</div>
+			</a>
+		</section>
 		<section>
 			<h2>Преподаватели</h2>
 			<a class="link--card" href="profile.html">
 				<div class="card card-person">
 					<img class="card-person__avatar" src="http://spb.repetitors.info/prep/TurkoSR_12b07f15.jpg">
 					<div class="card-person__info">
-						<h3 class="card-person__name">Светлана Рудольфовна Турко</h3>
+						<h4 class="card-person__name">Светлана Рудольфовна Турко
 						<span class="card-person__state">Пеподаватель в АГ СПбГУ</span>
-					</div>
+					</h4></div>
 				</div>
 			</a>
 		</section>
@@ -50,9 +69,9 @@
 				<div class="card card-person">
 					<img class="card-person__avatar" src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png">
 					<div class="card-person__info">
-						<h3 class="card-person__name">Трофимов Всеволод</h3>
+						<h4 class="card-person__name">Трофимов Всеволод
 						<span class="card-person__state">Ученик</span>
-					</div>
+					</h4></div>
 				</div>
 			</a>
 			<h3>10Б</h3>
@@ -60,17 +79,42 @@
 				<div class="card card-person">
 					<img class="card-person__avatar" src="../Assets/Images/avatar.png">
 					<div class="card-person__info">
-						<h3 class="card-person__name">Максим Любарскиий</h3>
+						<h4 class="card-person__name">Максим Любарскиий
 						<span class="card-person__state">Ученик</span>
-					</div>
+					</h4></div>
 				</div>
 			</a>
 		</section>
 	</main>
+
 	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 	<div class="includer">{% include 'JS/layout.html' %}</div>
 	<div class="includer">{% include 'JS/humanize.html' %}</div>
+	<div class="includer">{% include 'JS/ripple.html' %}</div>
 	<div class="includer">{% include 'JS/notification.html' %}</div>
+	<div class="includer">{% include 'JS/edit_groups.html' %}</div>
+	<!-- unique -->
+	<div class="includer">{% include 'JS/context_menu.html' %}</div>
+	<div class="includer">{% include 'CSS/context-menu.html' %}</div>
+	<div id="context-menu"></div>
 	
+
+
+	<div class="includer">{% include 'JS/tooltip.html' %}</div>
+	<div class="includer">{% include 'CSS/tooltip.html' %}</div>
+	<div id="tooltip">
+		<div class="tooltip__content">
+		</div>
+	</div>
+
+
+	<div class="includer">{% include 'JS/popup.html' %}</div>
+	<div class="includer">{% include 'CSS/popup.html' %}</div>
+	<div id="overlay">
+		<div id="overlay__bg">
+		</div>
+		<div id="popup">
+		</div>
+	</div>
 </body>
 </html>

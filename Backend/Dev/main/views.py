@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.template import Context
-from .models import User
+from .models import User, Course
+import func_views
 
 def home(request):
     # sample data
@@ -109,8 +110,11 @@ def login(request):
     return render(request, 'Pages/login.html')
 
 
-def register_student(request):
-    return render(request, 'Pages/registration.html')
+def register(request, course_id):
+    if course_id:
+            return render(request, 'Pages/registration.html', {"course":Course.objects.get(id=course_id)})
+    else:
+        return render(request, 'Pages/registration.html')
 
 
 def forgot_password(request):
