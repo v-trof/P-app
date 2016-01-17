@@ -13,7 +13,6 @@
 		$("#context-menu").css({
 			"top": c_rect.top + "px",
 			"left": c_rect.left + "px",
-			"width": c_rect.width + "px",
 			"opacity": 1
 		});
 	},
@@ -33,14 +32,13 @@
 	},
 	build_select: function(el, options, checked) {
 		$("#context-menu").html("");
-		$("#context-menu").append("<div class='context-menu__option default' onclick='" + checked.value + "()'>" + checked.text + "</div>")
+		$("#context-menu").append("<div class='context-menu__option default' value='" + checked.value + "'>" + checked.text + "</div>")
 		options.forEach(function(option){
 			$("#context-menu").append("<div class='context-menu__option' value='" + option.value + "'>" + option.text + "</div>");
 		});
 		$(".context-menu__option").click(function(event) {
 			context_menu.hide();
-			$(el).children('.value').val($(this).attr('value'));
-
+			$(el).children('input').val($(this).attr('value'));
 			$(el).children('.display').text($(this).text());
 		});
 	},
@@ -48,10 +46,14 @@
 }
 
 function add_menu_caller(select) {
+	var first_option = $(select).children('option').get(0);
+	first_option = $(first_option);
+	$(select).children('input').val(first_option.attr("value"));
+	$(select).children(".display").text(first_option.text());
 	$(select).click(function(e) {
 		var options = [];
 		var checked = {};
-		var current_value = $(this).children('.value').val();
+		var current_value = $(this).children('input').val();
 		$(this).children('option').each(function(index, el) {
 			if($(this).attr("value") != current_value){
 				options.push({

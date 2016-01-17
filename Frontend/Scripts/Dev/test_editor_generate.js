@@ -9,7 +9,7 @@ var generate  = {
 				return undefined;
 			}
 		}
-		var content = quesiton_template.addClass('text-wrapper').text(value).attr("pos", pos).attr("contenteditable", "false");
+		var content = quesiton_template.addClass('text-wrapper').html(value).attr("pos", pos).attr("contenteditable", "false");
 		return content;
 	},
 	"input__inner-label": function(pos, value) {
@@ -18,7 +18,7 @@ var generate  = {
 			value = prompt("Question angain pls", "");
 		}
 		console.log(content);
-		content.find("label").text(value);
+		content.find("label").html(value);
 		content.attr("pos", pos);
 		return content;
 	}

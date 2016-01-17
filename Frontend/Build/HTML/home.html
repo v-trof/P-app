@@ -22,7 +22,7 @@
 	<div class="includer">{% include 'CSS/notification.html' %}</div>
 	<div class="includer">{% include 'CSS/tooltip.html' %}</div>
 	<div class="includer">{% include 'CSS/inputs.html' %}</div>
-	<!-- <link rel="stylesheet" type="text/css" href="../Styles/Css/extensions/materialize.css"> -->
+	<div class="includer">{% include 'CSS/buttons.html' %}</div>
 	<div class="notification__error hidden" id="notification">
 			<div class="notification__bg">
 				<svg class="{{ class }}" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/></svg>
@@ -86,6 +86,13 @@
 						</div>
 					</a>
 			</div>
+			<div class="linkbox">
+				<a class="link--card" id="create_course">
+					<div class="card--small">
+						Создать курс
+					</div>
+				</a>
+			</div>
 		</section>
 		<section class="marks">
 			<h2>Оценки</h2>
@@ -142,6 +149,7 @@
 	<div class="includer">{% include 'JS/tooltip.html' %}</div>
 	<div class="includer">{% include 'JS/notification.html' %}</div>
 	<div class="includer">{% include 'JS/ripple.html' %}</div>
+	<div class="includer">{% include 'JS/create_course.html' %}</div>
 	<script type="text/javascript">
 		//sample
 		var mark_descriptions = {
@@ -185,5 +193,17 @@
 			});
 		});
 	</script>
+	<!-- unique -->
+	<div class="includer">{% include 'JS/popup.html' %}</div>
+	<div class="includer">{% include 'CSS/popup.html' %}</div>
+	<div id="overlay">
+		<div id="overlay__bg">
+		</div>
+		<div id="popup">
+		</div>
+	</div>
+	<div class="includer">{% include 'JS/context_menu.html' %}</div>
+	<div class="includer">{% include 'CSS/context-menu.html' %}</div>
+	<div id="context-menu"></div>
 </body>
 </html>

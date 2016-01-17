@@ -1,8 +1,13 @@
 <section>
 	</section>
+		<h2>Курсы</h2>
+		{% include 'Blocks/courses.html' with courses=your_courses %}
 	<section>
+		<h2>Обновления</h2>
+		{% include 'Blocks/updates.html' with updates=updates %}
 	</section>
+		{{ your updates}}
 	<section>
-		{% include 'Blocks/home.html' %}
+		{% include 'Blocks/home.html' with courses=courses marks=marks homework=homework %}
 	</section>
 </section>

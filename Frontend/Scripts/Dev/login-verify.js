@@ -26,7 +26,7 @@ var name_last_name_regex = /^[^\s]+\s[^\s]+$/;
 
 
 function check_password(input){
-	console.log(input);
+	// console.log(input);
 	if($(input).val().length >= 8) {
 		$(input).addClass('valid');
 		tooltip.hide();
@@ -86,7 +86,6 @@ $(document).ready(function() {
 	$(".button--proceed").click(function(event) {
 		button = $(this);
 		button.addClass('in-progress');
-	});
-
-	check_email();
+	})
+	check_email($("input[type='email']")[0]);
 });
