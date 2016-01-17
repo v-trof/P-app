@@ -40,15 +40,6 @@
 					Sample text
 				</div>
 			</div>
-
-			<div id="editor__settings" class="card">
-				<h3>Настройки редактора</h3>
-				<div id="editor__type">
-					<input type="radio" id="move" name="editor_type" checked><label for="move">Перемещение</label>
-					<input type="radio" id="edit" name="editor_type"><label for="edit">Редактирование содержимого</label>
-				</div>
-			</div>
-
 			<div class="test">
 				<div class="test__bg"></div>
 				<h1 class="test__heading" contenteditable>Test heading</h1>
@@ -66,6 +57,16 @@
 		</div>
 
 
+		<div id="editor__settings" class="card">
+			<h3>Настройки редактора</h3>
+			<div id="editor__type">
+				<input type="radio" id="move" name="editor_type" checked><label for="move">Перемещение</label>
+				<input type="radio" id="edit" name="editor_type"><label for="edit">Редактирование содержимого</label>
+			</div>
+			<div class="action">
+		</div>
+
+
 		<style dev>
 			*{
 				/*box-shadow: inset 0 0 0 100vmax rgba(0, 0, 255, 0.2);*/
@@ -73,7 +74,7 @@
 		</style>
 
 		<!-- Allows us to show that are droppable -->
-		<div id="indicator"></div>
+		<!-- <div id="indicator"></div> -->
 		<script src="../Scripts/Min/jquery-2.1.4.min.js">
 		</script>
 		<script src="../Scripts/Min/layout.js"></script>

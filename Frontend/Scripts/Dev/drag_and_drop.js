@@ -1,5 +1,6 @@
 var counter = 0;
 var original_el = undefined;
+var drop_el = undefined;
 var firefox = navigator.userAgent.indexOf("Firefox") != -1;
 // console.log( navigator.userAgent);
 
@@ -58,7 +59,7 @@ var indicator = {
 }
 
 function drag_over(e) {
-	console.log("over");
+	// console.log("over");
 	if (e.preventDefault) {
 		e.preventDefault(); // Necessary. Allows us to drop.
 		e.stopPropagation();
@@ -113,6 +114,8 @@ var add_boundary = {
 
 			dragstart: function(e) {
 				this.classList.add('moved');
+				//ff fix
+				e.originalEvent.dataTransfer.setData('useless', 'stupid firefox');
 			},
 
 			dragend: function(e) {
@@ -192,7 +195,6 @@ var add_boundary = {
 
 				e_data.setData("el_type", "answer");
 				e_data.setData("el_class", $(this).children('input').attr("class"));
-				//e.dataTrnfer cant save this big object
 				original_el = this;
 			},
 
@@ -268,7 +270,8 @@ var add_boundary = {
 			},
 
 			dragenter: function(e) {
-				// console.log("in");
+				console.log(this);
+				console.log("in", counter);
 				if(counter==0) {
 					ripple.force_show(e.originalEvent, test_bg, "accent");
 					$(".test>svg").css({
@@ -280,7 +283,7 @@ var add_boundary = {
 			},
 
 			dragleave: function(e) {
-				// console.log("out");
+				console.log("out", counter);
 				counter--;
 				if(counter==0) {
 					ripple.dissolve();
@@ -292,12 +295,13 @@ var add_boundary = {
 			},
 
 			drop: function(e) {
-				console.log("drop");
+				console.log("drop", counter);
 				if (e.stopPropagation) {
 					e.stopPropagation(); // stops the browser from redirecting.
 				}
-
-				create_question(e_data.getData("el_type"), e_data.getData("el_class"), original_el);
+				if(counter > 0){
+					create_question(e_data.getData("el_type"), e_data.getData("el_class"), original_el);
+				}
 			}
 		});
 	},
@@ -318,6 +322,8 @@ $(document).ready(function() {
 		dragstart: function(e) {
 			e_data.setData("el_type", "answer");
 			e_data.setData("el_class", $(this).children('input').attr("class").split(" ")[0]);
+			//ff fix
+			e.originalEvent.dataTransfer.setData('useless', 'stupid firefox');
 		},
 
 		dragend: function(e) {
@@ -327,13 +333,15 @@ $(document).ready(function() {
 
 	$(".question-elements>*").bind({
 		dragstart: function(e) {
-			console.log("start");
+			// console.log("start");
 			e_data.setData("el_type", "question");
 			e_data.setData("el_class", $(this).attr("class"));
+			//ff fix
+			e.originalEvent.dataTransfer.setData('useless', 'stupid firefox');
 		},
 
 		dragend: function(e) {
-			console.log("end");
+			// console.log("end");
 			drag_reset();
 		}
 	});
