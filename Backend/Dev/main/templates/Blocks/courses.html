@@ -10,5 +10,7 @@
 {% endfor %}
 {% if request.user.is_teacher %} 
 {% else %}
+<br>
+<br>
 	{% include 'UI_elements/cards/create_course.html' %}
 {% endif %}
