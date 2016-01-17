@@ -22,7 +22,7 @@
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/notification.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/tooltip.css">
 	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/inputs.css">
-	<!-- <link rel="stylesheet" type="text/css" href="../Styles/Css/extensions/materialize.css"> -->
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/buttons.css">
 	<div class="notification__error hidden" id="notification">
 			<div class="notification__bg">
 				<img src="../Assets/Icons/info.svg" inline>
@@ -86,6 +86,13 @@
 						</div>
 					</a>
 			</div>
+			<div class="linkbox">
+				<a class="link--card" id="create_course">
+					<div class="card--small">
+						Создать курс
+					</div>
+				</a>
+			</div>
 		</section>
 		<section class='marks'>
 			<h2>Оценки</h2>
@@ -147,6 +154,7 @@
 	<script src="../Scripts/Dev/tooltip.js"></script>
 	<script src="../Scripts/Min/notification.js"></script>
 	<script src="../Scripts/Dev/ripple.js"></script>
+	<script src="../Scripts/Dev/create_course.js"></script>
 	<script type="text/javascript">
 		//sample
 		var mark_descriptions = {
@@ -190,5 +198,17 @@
 			});
 		});
 	</script>
+	<!-- unique -->
+	<script src="../Scripts/Dev/popup.js"></script>
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/popup.css">
+	<div id="overlay">
+		<div id="overlay__bg">
+		</div>
+		<div id="popup">
+		</div>
+	</div>
+	<script type="text/javascript" src='../Scripts/Dev/context_menu.js'></script>
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/context-menu.css">
+	<div id="context-menu"></div>
 </body>
 </html>
