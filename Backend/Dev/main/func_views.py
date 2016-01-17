@@ -64,7 +64,7 @@ def reg(request):
     if request.method == 'POST':
         form = RegForm(request.POST)
         email = request.POST['email']
-        is_teacher = request.POST.get('is_teacher', False)
+        is_teacher = request.POST['is_teacher']
         password = request.POST['password']
         name_last_name = request.POST['name_last_name']
         if not User.objects.filter(email=email):
