@@ -13,6 +13,7 @@ from django.contrib.auth import logout
 from django.utils.html import strip_tags
 from binascii import hexlify
 from django.contrib.auth.hashers import make_password, check_password
+from django.core.urlresolvers import reverse
 
 def login(request):
     def errorHandle(error):
@@ -64,7 +65,7 @@ def reg(request):
     if request.method == 'POST':
         form = RegForm(request.POST)
         email = request.POST['email']
-        is_teacher = request.POST['is_teacher']
+        is_teacher = request.POST.get('is_teacher', False)
         password = request.POST['password']
         name_last_name = request.POST['name_last_name']
         if not User.objects.filter(email=email):
@@ -98,17 +99,19 @@ def test(request):
     return render(request, "UI_elements/test.html")
 
 
-def new_course(request):
+def create_course(request):
     if request.method == 'POST':
         db = sqlite3.connect('db.sqlite3')
-        name = request.POST['name']
+        name = request.POST['course_name']
+        is_closed = request.POST['is_closed']
+        subject = request.POST['subject']
         cursor = db.cursor()
         cursor.execute(
             ''' CREATE TABLE ''' + name +
             ''' ( "id" integer PRIMARY KEY NOT NULL,"name" varchar(30)
                 NOT NULL,"link" varchar(30) NOT NULL)''')
         db.commit()
-        return redirect('/')
+    return HttpResponseRedirect(reverse('/course/', kwargs={'success_message': 'Курс был успешно создан'}))
 
 def new_material(request):
     if request.method == 'POST':
@@ -151,7 +154,7 @@ def change_data(request):
             Codeforces = request.GET['Codeforces']
             setattr(request.user, 'Codeforces', strip_tags(Codeforces))
         request.user.save()
-    return redirect('/')
+    return HttpResponse("ok")
 
 def create_contact(request):
     if request.method == 'GET':
@@ -159,7 +162,7 @@ def create_contact(request):
         contact_info = request.GET['contact_info']
         setattr(request.user, contact_type, strip_tags(contact_info))
         request.user.save()
-    return redirect('/')
+    return HttpResponse("ok")
 
 def reset_password(request):
     def errorHandle(error,email):
