@@ -32,14 +32,13 @@
 	},
 	build_select: function(el, options, checked) {
 		$("#context-menu").html("");
-		$("#context-menu").append("<div class='context-menu__option default' onclick='" + checked.value + "()'>" + checked.text + "</div>")
+		$("#context-menu").append("<div class='context-menu__option default' value='" + checked.value + "'>" + checked.text + "</div>")
 		options.forEach(function(option){
 			$("#context-menu").append("<div class='context-menu__option' value='" + option.value + "'>" + option.text + "</div>");
 		});
 		$(".context-menu__option").click(function(event) {
 			context_menu.hide();
 			$(el).children('input').val($(this).attr('value'));
-
 			$(el).children('.display').text($(this).text());
 		});
 	},

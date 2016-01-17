@@ -5,13 +5,13 @@
 	<title>Главная</title>
 </head>
 <body>
-	<!-- <link rel="stylesheet" type="text/css" href="../Styles/Css/extensions/materialize.css"> -->
 	<div class="includer">{% include 'CSS/main.html' %}</div>
 	<div class="includer">{% include 'CSS/home.html' %}</div>
 	<div class="includer">{% include 'CSS/cards.html' %}</div>
 	<div class="includer">{% include 'CSS/notification.html' %}</div>
 	<div class="includer">{% include 'CSS/tooltip.html' %}</div>
 	<div class="includer">{% include 'CSS/inputs.html' %}</div>
+	<div class="includer">{% include 'CSS/buttons.html' %}</div>
 	
 	<main>
 	{% if request.user.is_teacher %}
@@ -25,10 +25,13 @@
 	<div class="includer">{% include 'JS/layout.html' %}</div>
 	<div class="includer">{% include 'JS/humanize.html' %}</div>
 	<div class="includer">{% include 'JS/handle-cards.html' %}</div>
-	<div class="includer">{% include 'JS/tooltip.html' %}</div>
+	<div class="includer">{% include 'JS/create_course.html' %}</div>
+
 	{% include "UI_elements/unique/notification.html" %}
 	{% include "UI_elements/unique/header.html" %}
-
+	{% include "UI_elements/unique/context_menu.html" %}
+	{% include "UI_elements/unique/popup.html" %}
+	{% include 'UI_elements/unique/tooltip.html' %}
 	<script type="text/javascript">
 		//realcode
 		function get_description(mark){
