@@ -10,11 +10,11 @@ var popup = {
 		$("#popup").html(content);
 		$("#overlay").addClass("shown");
 		$('#popup').css(css);
+		callback();
 		$("#popup input").each(function(index, el) {
 			add_emptiness_checker(this);	
 		});
 		$("#popup input").first().focus();
-		callback();
 	},
 
 	hide: function() {

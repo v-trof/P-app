@@ -43,6 +43,7 @@ var test = {
 		});
 		console.log(testfile);
 		var json = JSON.stringify(testfile);
+		console.log(json);
 	}
 }
 
