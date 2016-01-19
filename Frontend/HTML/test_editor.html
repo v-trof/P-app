@@ -9,6 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="../Styles/CSS/main.css">
 		<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/header.css">
 		<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/inputs.css">
+		<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/buttons.css">
 		<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/cards.css">
 		<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/content-wrappers.css">
 		<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/notification.css">
@@ -42,6 +43,9 @@
 			</div>
 			<div class="test">
 				<div class="test__bg"></div>
+				<div id="delete">
+					<img src="../Assets/Icons/delete.svg" inline>
+				</div>
 				<h1 class="test__heading" contenteditable>Test heading</h1>
 				<div class="test__preview">
 				</div>
@@ -50,8 +54,8 @@
 
 
 			<div class="answer-elements">
-				<div class="answer__field card" draggable="true">
-					<input type="text" name="text_question" placeholder="" class="input__inner-label"><label for="text_question" disabled>Ответ текстом</label>
+				<div class="text-answer answer__field card" draggable="true">
+					<input type="text" name="text_question" placeholder=""><label for="text_question" disabled>Ответ текстом</label>
 				</div>
 			</div>
 		</div>
@@ -63,7 +67,12 @@
 				<input type="radio" id="move" name="editor_type" checked><label for="move">Перемещение</label>
 				<input type="radio" id="edit" name="editor_type"><label for="edit">Редактирование содержимого</label>
 			</div>
-			<div class="action">
+			<div class="actionbox">
+				<button class="button--icon" id="test_save"><img src="../Assets/Icons/save.svg" inline></button>
+				<button class="button--icon" id="test_delete"><img src="../Assets/Icons/delete.svg" inline></button>
+				<!-- 	<button class="button--icon" id="publish"><img src="../Assets/Icons/publish.svg" inline></button>
+				<button class="button--icon" id="share"><img src="../Assets/Icons/share.svg" inline></button> -->
+			</div>
 		</div>
 
 
@@ -82,6 +91,31 @@
 		<script src="../Scripts/Dev/drag_and_drop.js"></script>
 		<script src="../Scripts/Dev/create_question.js"></script>
 		<script src="../Scripts/Dev/test_editor_generate.js"></script>
+		<script src="../Scripts/Dev/test_manager.js"></script>
 		<script src="../Scripts/Dev/ripple.js"></script>
+
+		<!-- unique -->
+		<script type="text/javascript" src='../Scripts/Dev/context_menu.js'></script>
+		<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/context-menu.css">
+		<div id="context-menu"></div>
+		
+
+
+		<script src="../Scripts/Dev/tooltip.js"></script>
+		<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/tooltip.css">
+		<div id="tooltip">
+			<div class="tooltip__content">
+			</div>
+		</div>
+
+
+		<script src="../Scripts/Dev/popup.js"></script>
+		<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/popup.css">
+		<div id="overlay">
+			<div id="overlay__bg">
+			</div>
+			<div id="popup">
+			</div>
+		</div>
 	</body>
 </html>

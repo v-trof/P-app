@@ -33,6 +33,8 @@ function drag_reset() {
 		'transform': '',
 		'opacity': 0
 	});
+	editor.check_for_emptiness();
+	editor.hide_delete();
 }
 
 
@@ -76,16 +78,18 @@ function drag_over(e) {
 
 
 var editor = {
+	editing: false,
 	verify_type : function() {
 		// console.log("verify_type");
 		if($("#move").is(':checked')) {
 			$(".task__answer__item, .task__question>*").attr('draggable', 'true');
-			$(".block--empty").removeAttr("draggable");
-			$("[contenteditable]").attr('contenteditable', 'false');
+			$(".task__answer__item, .task__answer__item *, .task__question>*").css('cursor', 'move');
+			// $(".block--empty").removeAttr("draggable");
+			editor.editing = false;
 		} else {
 			$(".test__preview [draggable]").removeAttr("draggable");
-			$("[contenteditable]").attr('contenteditable', 'true');
-			$(".task__answer__item *").css('cursor', 'pointer');
+			$(".task__answer__item, .task__answer__item *, .task__question>*").css('cursor', 'pointer');
+			editor.editing = true;
 		}
 	},
 	check_for_emptiness : function()  {
@@ -102,7 +106,13 @@ var editor = {
 				add_boundary.block_empty($(this).children('.block--empty'));
 			}
 		});
-	}
+	},
+	show_delete : function(){
+		$("#delete").addClass('shown');
+	},
+	hide_delete : function(){
+		$("#delete").removeClass('shown');
+	},
 }
 
 var add_boundary = {
@@ -154,9 +164,9 @@ var add_boundary = {
 			},
 
 			dragstart: function(e) {
-
-				 e_data.setData("el_type", "question");
-				 e_data.setData("el_class", $(this).attr("class").split(" ")[0]);
+				editor.show_delete();
+				e_data.setData("el_type", "question");
+				e_data.setData("el_class", $(this).attr("class").split(" ")[0]);
 				original_el = this;
 			},
 
@@ -164,11 +174,17 @@ var add_boundary = {
 				// console.log(e, e_backup, e_backup.e);
 				if("question" == e_data.getData("el_type")) {
 					if(original_el) {
-						$(this).after($(original_el).attr('pos', parseInt($(this).attr("pos"))+1));
+						$(this).after($(original_el));
 						editor.check_for_emptiness();
 					} else {
 						append_test_item($(this), e_data.getData("el_class"), e_data.getData("el_type"));
 					}
+				}
+			},
+			click : function(e) {
+				if(editor.editing){
+					el = generate[this.classList[0]](undefined, $(this));
+					$(this).replaceWith(el);
 				}
 			}
 		});
@@ -192,7 +208,7 @@ var add_boundary = {
 			},
 
 			dragstart: function(e) {
-
+				editor.show_delete();
 				e_data.setData("el_type", "answer");
 				e_data.setData("el_class", $(this).children('input').attr("class"));
 				original_el = this;
@@ -210,11 +226,17 @@ var add_boundary = {
 			drop: function(e) {
 				if("answer" == e_data.getData("el_type")) {
 					if(original_el) {
-						$(this).after($(original_el).attr('pos', parseInt($(this).attr("pos"))+1));
+						$(this).after($(original_el));
 						editor.check_for_emptiness();
 					} else {
 						append_test_item($(this), e_data.getData("el_class"),e_data.getData("el_type"));
 					}
+				}
+			},
+			click : function(e) {
+				if(editor.editing){
+					el = generate[this.classList[0]](undefined, undefined, $(this));
+					$(this).replaceWith(el);
 				}
 			}
 		});
@@ -230,6 +252,7 @@ var add_boundary = {
 			},
 
 			dragenter: function(e) {
+				// console.log($(this).parent().attr('class').split(" ")[0].split("__")[1],e_data.getData("el_type"));
 				if($(this).parent().attr('class').split(" ")[0].split("__")[1] == e_data.getData("el_type")) {
 					this.classList.add('drop--accept');
 				}
@@ -247,10 +270,10 @@ var add_boundary = {
 
 				if(parent.attr('class').split(" ")[0].split("__")[1] == e_data.getData("el_type")) {
 					if(original_el) {
-						$(this).replaceWith($(original_el).attr('pos', '1'));
+						$(this).replaceWith($(original_el));
 						editor.check_for_emptiness();
 					} else {
-						$(this).replaceWith(generate[e_data.getData("el_class")](1));
+						$(this).replaceWith(generate[e_data.getData("el_class")]());
 						new_el = $(parent.children()[0]);
 
 						// console.log(new_el);
@@ -270,8 +293,8 @@ var add_boundary = {
 			},
 
 			dragenter: function(e) {
-				console.log(this);
-				console.log("in", counter);
+				// console.log(this);
+				// console.log("in", counter);
 				if(counter==0) {
 					ripple.force_show(e.originalEvent, test_bg, "accent");
 					$(".test>svg").css({
@@ -283,7 +306,7 @@ var add_boundary = {
 			},
 
 			dragleave: function(e) {
-				console.log("out", counter);
+				// console.log("out", counter);
 				counter--;
 				if(counter==0) {
 					ripple.dissolve();
@@ -295,7 +318,7 @@ var add_boundary = {
 			},
 
 			drop: function(e) {
-				console.log("drop", counter);
+				// console.log("drop", counter);
 				if (e.stopPropagation) {
 					e.stopPropagation(); // stops the browser from redirecting.
 				}
@@ -321,13 +344,14 @@ $(document).ready(function() {
 	$(".answer__field").bind({
 		dragstart: function(e) {
 			e_data.setData("el_type", "answer");
-			e_data.setData("el_class", $(this).children('input').attr("class").split(" ")[0]);
+			e_data.setData("el_class", this.classList[0]);
 			//ff fix
 			e.originalEvent.dataTransfer.setData('useless', 'stupid firefox');
 		},
 
 		dragend: function(e) {
 			drag_reset();
+
 		}
 	});
 
@@ -378,5 +402,18 @@ $(document).ready(function() {
 			}
 			$(indicator.original_el).trigger("drop", [{e:e}]);
 		}
-	})
+	});
+	$("#delete").bind({
+		dragover: function(e) {
+			drag_over(e);
+		},
+		drop: function(e) {
+			if (e.stopPropagation) {
+				e.stopPropagation(); // stops the browser from redirecting
+				$(original_el).remove();
+				drag_reset();
+			}
+			
+		}
+	});
 });

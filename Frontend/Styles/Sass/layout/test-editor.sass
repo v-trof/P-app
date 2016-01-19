@@ -78,6 +78,7 @@ div.answer__field
 	max-width: 50rem
 	margin-left: 10rem
 	transform: translateX(8px)
+
 .test__task
 	display: flex
 	flex-direction: row
@@ -153,9 +154,35 @@ div.answer__field
 #editor__type
 	line-height: $font-regular
 
+.actionbox
+	display: flex
+	flex-direction: row
+
 #indicator
 	position: absolute
 	width: 0
 	height: 0
 	background: rgba($blue-bright, .5)
 	z-index: 1
+
+
+#delete
+	transition: 0.3s
+	display: flex
+	flex-direction: row
+	justify-content: center
+	align-items: center
+	background: rgba($red-bright, 0.5)
+	position: absolute
+	width: 100%
+	height: $margin-huge+$padding-big*2
+	z-index: 2
+	overflow: hidden
+	top: -$block-regular
+	left: 0
+	&.shown
+		transform: translateY($block-regular*2)
+	&>svg
+		height: $icon-big
+		width: $icon-big
+		fill: $red-bright

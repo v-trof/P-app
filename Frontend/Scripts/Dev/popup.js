@@ -13,6 +13,7 @@ var popup = {
 		$("#popup input").each(function(index, el) {
 			add_emptiness_checker(this);	
 		});
+		$("#popup input").first().focus();
 		callback();
 	},
 

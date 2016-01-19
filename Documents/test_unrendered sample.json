@@ -1,5 +1,5 @@
 {
-	"questions" : [
+	"tasks" : [
 		{
 			"question_items" : [
 				{
@@ -19,7 +19,8 @@
 			"answer_items" : [
 				{
 					"class" : "{{item class}}",
-					"label" : "{{text or none}}"
+					"label" : "{{text or none}}",
+					"answer": "{{right_answer}}"
 				},
 			]
 		},
@@ -54,7 +55,7 @@
 //exaple
 
 {
-	"questions" : [
+	"tasks" : [
 		{
 			"question_items" : [
 				{
