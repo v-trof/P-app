@@ -25,7 +25,7 @@ $(document).ready(function() {
 			$("#invite_teacher_button").click(function(event) {
 				var formData = new FormData();
 				formData.append('email', $("#email").val());
-				formData.append('course', "{{course.title_lat}}");
+				formData.append('course', "{{course_name}}");
 				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 				$.ajax({
 					type:"POST",
@@ -65,9 +65,10 @@ $(document).ready(function() {
 				$("#popup .student__email").each(function(index, el) {
 					email_list.push($(this).val());
 				});
+				console.log("{{course.id}}");
 				console.log(email_list.join(","), email_list);
 				formData.append('email_list', email_list.join(","));
-				formData.append('course', "{{course.title_lat}}");
+				formData.append('course_id', "{{course.id}}");
 				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 				$.ajax({
 					type:"POST",

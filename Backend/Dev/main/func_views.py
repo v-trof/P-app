@@ -8,12 +8,16 @@ from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth import authenticate, login as auth
 import os
+import io
 from .models import User, LoginForm, RegForm, FileForm, Course
 from django.contrib.auth import logout
 from django.utils.html import strip_tags
 from binascii import hexlify
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.urlresolvers import reverse
+from django.core.mail import EmailMultiAlternatives
+import json
+import pdb
 
 def login(request):
     def errorHandle(error):
@@ -64,6 +68,7 @@ def reg(request):
         })
     if request.method == 'POST':
         form = RegForm(request.POST)
+        course_id = request.POST.get('course_id', False)
         email = request.POST['email']
         is_teacher = request.POST.get('is_teacher', False)
         password = request.POST['password']
@@ -84,7 +89,7 @@ def reg(request):
                 user = authenticate(username=email, password=password)
                 auth(request, user)
                 request.session.set_expiry(36000)
-                if course_id and request.POST['course_reg']:
+                if course_id:
                     course_reg(request, course_id)
                 return redirect('/')
         else:
@@ -105,24 +110,25 @@ def create_course(request):
     if request.method == 'POST':
         db = sqlite3.connect('db.sqlite3')
         name = request.POST['course_name']
-       # if not Course.objects.filter(name=name):
-      #      course = Course.objects.save_course(name=name)
-     #   course.save()
+        course=Course.objects.create_course(name=name)
+        course.save()
         subject = request.POST['subject']
         cursor = db.cursor()
         cursor.execute(
-            ''' CREATE TABLE ''' + name +
-            ''' ( "id" integer PRIMARY KEY NOT NULL,"name" varchar(30)
-                NOT NULL,"link" varchar(30) NOT NULL)''')
+            ''' CREATE TABLE "''' + name +
+            ''' " ( "id" integer PRIMARY KEY NOT NULL,"name" varchar(30))''')
         db.commit()
+
         if not os.path.exists('json/'):
             os.makedirs('json/')
         f = open('json/'+name+'.json', 'a')
         material = File(f)
-        material.write('{"users:[]"}')
+        material.write('{"users":[]}')
         material.close()
         f.close()
-    return HttpResponseRedirect('/groups/')
+        return redirect('/groups/'+str(course.id)+'/', course_name=name)
+
+
 
 def new_material(request):
     if request.method == 'POST':
@@ -228,26 +234,28 @@ def upload_avatar(request):
 
 def invite_students(request):
     email_list = request.POST.getlist('email_list')
-    course_name="ff"
-    name=request.user.name
-    print request.user.name
+    course=Course.objects.get(id=request.POST.get('course_id'))
+    subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
+    text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
+    text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
     for email in email_list:
         if User.objects.filter(email=email):
-            print '1'
-            send_mail('Приглашение на курс', 'Вам поступило приглашение на курс '+course_name+' от dg . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+course_name, 'p.application.bot@gmail.com',
-            [email], fail_silently=False)
+            msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
+            msg.send()
         else: 
-            send_mail('Приглашение на курс', 'Вам поступило приглашение на курс '+course_name+' от dg . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+course_name, 'p.application.bot@gmail.com',
-            [email], fail_silently=False)
-            print '2'
+            msg = EmailMultiAlternatives(subject, text_content_nonreg, from_email, [email])
+            msg.send()
     return HttpResponse("ok")
 
 def course_reg(request, course_id):
     if not request.user.name:
         return redirect('/login/')
     course=Course.objects.get(id=course_id)
-    f = open('json/'+course.name+'.json', 'a')
-    material = File(f)
-    material.write(request.user.name)
-    material.close()
-    return HttpResponse("ok")
+    with open('json/'+course.name+'.json',"r") as data_file:
+        data = json.load(data_file)
+        data["users"].append({'Имя':request.user.name})
+    with io.open('json/'+course.name+'.json', 'w', encoding='utf8') as json_file:
+        saving_data = json.dumps(data, ensure_ascii=False)
+        json_file.write(unicode(saving_data))
+    print data
+    return redirect('/groups/'+str(course_id)+'/')

@@ -1,5 +1,5 @@
 from django.db import models
-
+import sqlite3
 from django.contrib.auth.models import (
     AbstractBaseUser, PermissionsMixin, UserManager
 )
@@ -36,15 +36,14 @@ class FileForm(forms.Form):
         label='Select a file',
         help_text='max. 42 megabytes'
     )
-class CourseManager(AbstractBaseUser):
-    def save_course():
-        return request.user.name
+class CourseManager(models.Manager):
+    def create_course(self,name):
+        course = self.create(name=name)
+        return course
 
 class Course(models.Model):
-    name = models.CharField(_('name'), max_length=30, blank=True)
+    name = models.CharField(_('name'), max_length=30)
     objects = CourseManager()
-    def save_course(name):
-        return name
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(

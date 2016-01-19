@@ -21,7 +21,9 @@ from . import func_views
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import patterns
-
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 func_patterns = [
     url(r'^login/$', func_views.login),
     url(r'^templatetest/$', func_views.test),
@@ -35,7 +37,7 @@ func_patterns = [
     url(r'^create_contact/$', func_views.create_contact),
     url(r'^upload_avatar/$', func_views.upload_avatar),
     url(r'^invite_students/$', func_views.invite_students),
-    url(r'^course_reg/$', func_views.course_reg),
+    url(r'^course_reg/(?P<course_id>[0-9]+)/$', func_views.course_reg),
 ]
 
 urlpatterns = [
@@ -43,11 +45,12 @@ urlpatterns = [
     url(r'^$', views.home),
     url(r'^test_editor/$', views.test_editor),
     url(r'^register/$', views.register),
-    url(r'^register/(?P<course_id>[а-яА-ЯёЁa-zA-Z0-9]+)/$', views.register),
+    url(r'^register/(?P<course_id>[0-9]+)/$', views.register),
     url(r'^forgot_password/$', views.forgot_password),
     url(r'^func/', include(func_patterns)),
     url(r'^login/$', views.login),
     url(r'^course/$', views.course),
     url(r'^groups/$', views.groups),
+    url(r'^groups/(?P<course_id>[0-9]+)/$', views.groups),
     url(r'^user/(?P<user_id>[0-9]+)/$', views.profile),
 ]

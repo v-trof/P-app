@@ -110,8 +110,8 @@ def login(request):
     return render(request, 'Pages/login.html')
 
 
-def register(request, course_id):
-    if course_id:
+def register(request, course_id=None):
+    if course_id is not None:
             return render(request, 'Pages/registration.html', {"course":Course.objects.get(id=course_id)})
     else:
         return render(request, 'Pages/registration.html')
@@ -134,5 +134,8 @@ def profile(request, user_id):
 def course(request):
     return render(request, 'Pages/course.html')
 
-def groups(request):
-    return render(request, 'Pages/groups.html')
+def groups(request, course_id):
+    if course_id:
+            return render(request, 'Pages/groups.html', {"course":Course.objects.get(id=course_id)})
+    else:
+        return render(request, 'Pages/groups.html')
