@@ -1,15 +1,23 @@
+var firefox = navigator.userAgent.indexOf("Firefox") != -1;
 var ripple = $("<div class='ripple'></div>");
 
 ripple.dissolve = function (){
 	ripple.css({
-		"transform": "scale(0)",
 		"opacity": 0,
 	});
-	ripple.attr("class", "ripple");
+	
+	setTimeout(function(){
+		ripple.css({
+			"transform": "scale(0)",
+		});
+		ripple.hide();
+		ripple.attr("class", "ripple");
+	}, 150);
 }
 
 ripple.force_show = function(e, el, special_class) {
 	// console.log(el);
+	ripple.show();
 	$(el).prepend(ripple);
 	var c_rect = el.getBoundingClientRect();
 	var scale = (c_rect.width/5)*2.14;
@@ -31,6 +39,8 @@ ripple.force_show = function(e, el, special_class) {
 $(document).ready(function() {
 	$(".link--card>.card, .link--card>.card--small, button").bind({
 		mousedown: function(e) {
+			console.log("md");
+			ripple.show();
 			$(this).prepend(ripple);
 			var c_rect = this.getBoundingClientRect();
 			var scale = (c_rect.width/5)*1.4;
@@ -49,10 +59,18 @@ $(document).ready(function() {
 		},
 
 		mouseup: function() {
+			console.log("mu/click");
 			ripple.dissolve();
 		},
 		mouseleave: function() {
 			ripple.dissolve();
 		},
 	});
+});
+//one more ff fix
+$("a, button").mouseup(function(e) {
+	console.log("reclick", this);
+	if(firefox){
+		this.click();
+	}
 });

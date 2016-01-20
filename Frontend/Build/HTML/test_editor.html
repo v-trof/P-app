@@ -9,6 +9,7 @@
 		<div class="includer">{% include 'CSS/main.html' %}</div>
 		<div class="includer">{% include 'CSS/header.html' %}</div>
 		<div class="includer">{% include 'CSS/inputs.html' %}</div>
+		<div class="includer">{% include 'CSS/buttons.html' %}</div>
 		<div class="includer">{% include 'CSS/cards.html' %}</div>
 		<div class="includer">{% include 'CSS/content-wrappers.html' %}</div>
 		<div class="includer">{% include 'CSS/notification.html' %}</div>
@@ -42,6 +43,9 @@
 			</div>
 			<div class="test">
 				<div class="test__bg"></div>
+				<div id="delete">
+					<svg class="{{ class }}" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+				</div>
 				<h1 class="test__heading" contenteditable="">Test heading</h1>
 				<div class="test__preview">
 				</div>
@@ -50,8 +54,8 @@
 
 
 			<div class="answer-elements">
-				<div class="answer__field card" draggable="true">
-					<input type="text" name="text_question" placeholder="" class="input__inner-label"><label for="text_question" disabled>Ответ текстом</label>
+				<div class="text-answer answer__field card" draggable="true">
+					<input type="text" name="text_question" placeholder=""><label for="text_question" disabled>Ответ текстом</label>
 				</div>
 			</div>
 		</div>
@@ -63,7 +67,12 @@
 				<input type="radio" id="move" name="editor_type" checked><label for="move">Перемещение</label>
 				<input type="radio" id="edit" name="editor_type"><label for="edit">Редактирование содержимого</label>
 			</div>
-			<div class="action">
+			<div class="actionbox">
+				<button class="button--icon" id="test_save"><svg class="{{ class }}" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg></button>
+				<button class="button--icon" id="test_delete"><svg class="{{ class }}" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/><path d="M0 0h24v24H0z" fill="none"/></svg></button>
+				<!-- 	<button class="button--icon" id="publish"><img src="../Assets/Icons/publish.svg" inline></button>
+				<button class="button--icon" id="share"><img src="../Assets/Icons/share.svg" inline></button> -->
+			</div>
 		</div>
 
 
@@ -77,6 +86,31 @@
 		<div class="includer">{% include 'JS/drag_and_drop.html' %}</div>
 		<div class="includer">{% include 'JS/create_question.html' %}</div>
 		<div class="includer">{% include 'JS/test_editor_generate.html' %}</div>
+		<div class="includer">{% include 'JS/test_manager.html' %}</div>
 		<div class="includer">{% include 'JS/ripple.html' %}</div>
-	</div></body>
+
+		<!-- unique -->
+		<div class="includer">{% include 'JS/context_menu.html' %}</div>
+		<div class="includer">{% include 'CSS/context-menu.html' %}</div>
+		<div id="context-menu"></div>
+		
+
+
+		<div class="includer">{% include 'JS/tooltip.html' %}</div>
+		<div class="includer">{% include 'CSS/tooltip.html' %}</div>
+		<div id="tooltip">
+			<div class="tooltip__content">
+			</div>
+		</div>
+
+
+		<div class="includer">{% include 'JS/popup.html' %}</div>
+		<div class="includer">{% include 'CSS/popup.html' %}</div>
+		<div id="overlay">
+			<div id="overlay__bg">
+			</div>
+			<div id="popup">
+			</div>
+		</div>
+	</body>
 </html>

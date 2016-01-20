@@ -1,7 +1,6 @@
 var counter = 0;
 var original_el = undefined;
 var drop_el = undefined;
-var firefox = navigator.userAgent.indexOf("Firefox") != -1;
 // console.log( navigator.userAgent);
 
 function check_bg_height() {
@@ -414,6 +413,20 @@ $(document).ready(function() {
 				drag_reset();
 			}
 			
-		}
+		},
+		dragenter: function(e) {
+			if(counter==0) {
+				this.classList.add("delete");
+			}
+			counter++;
+		},
+
+		dragleave: function(e) {
+			counter--;
+			if(counter==0) {
+				this.classList.add("delete");
+			}
+		},
+
 	});
 });

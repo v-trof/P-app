@@ -182,7 +182,10 @@ div.answer__field
 	left: 0
 	&.shown
 		transform: translateY($block-regular*2)
+	&.dropping>svg
+		transform: scale(1.2)
 	&>svg
+		transition: $time-regular
 		height: $icon-big
 		width: $icon-big
 		fill: $red-bright
