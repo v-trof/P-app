@@ -53,5 +53,51 @@ var generate  = {
 			var content = $(generate.answer_template("text-answer")).attr("answer", answer).html("<input type='text' placeholder='Ответ' disabled><label>"+value+"</label>");
 		}
 		return content;
+	},
+	task: function(task_data){
+		var new_task = $(task_template);
+		new_task.find(".task__number").text(tasks + ".");
+		add_boundary.new_task(new_task.find(".task__number"));
+		new_task.find(".block--empty").each(function(index, el) {
+			add_boundary.block_empty($(this));
+		});
+
+		$(".test__preview").append(new_task);
+
+		new_task.find(".task__question").html("");
+		new_task.find(".task__answer").html("");
+		task_data.answer_items.forEach(function(element) {
+			console.log(element["class"]);
+			if(element["class"] == "block--empty") {
+				var new_element = $("<div class='block--empty'>Добавьте сюда поле ответа</div>");
+				new_task.append();
+				add_boundary.block_empty(new_element);
+			} else {
+				var new_element = generate[element["class"]](element["label"],element["answer"]);
+				new_task.find(".task__answer").append(new_element);
+				add_boundary.draggable(new_element);
+				add_boundary["answer"](new_element);
+			}
+		});
+		task_data.question_items.forEach(function(element) {
+			console.log(element["class"]);
+			if(element["class"] == "block--empty") {
+				var new_element = $("<div class='block--empty'>Добавьте сюда вопрос</div>");
+				new_task.append();
+				add_boundary.block_empty(new_element);
+			} else {
+				var new_element = generate[element["class"]](element["value"]);
+				console.log(new_element, new_task.find(".task__question"));
+				new_task.find(".task__question").append(new_element);
+				console.log(new_task.find(".task__question"));
+				add_boundary.draggable(new_element);
+				add_boundary["question"](new_element);
+			}
+			
+		});
+		
+		editor.verify_type();
+		editor.check_for_emptiness();
+		check_bg_height();
 	}
 }

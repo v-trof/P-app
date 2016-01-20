@@ -8,7 +8,7 @@ var pack_input = {
 	},
 	"text-answer" : function(el){
 		return {
-			"class": "text",
+			"class": "text-answer",
 			"label": $(el).children('label').text(),
 			"answer": $(el).attr('answer')
 		}
@@ -44,6 +44,13 @@ var test = {
 		console.log(testfile);
 		var json = JSON.stringify(testfile);
 		console.log(json);
+	},
+	unpack: function(json_file) {
+		console.log(json_file);
+		var testfile = JSON.parse(json_file);
+		testfile.tasks.forEach(function(task_data){
+			generate.task(task_data);
+		});
 	}
 }
 

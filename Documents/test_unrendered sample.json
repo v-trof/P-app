@@ -1,3 +1,5 @@
+{"title":"Test heading","author":"{{teachername}}","tasks":[{"question_items":[{"class":"text-wrapper","value":"a"}],"answer_items":[{"class":"text-answer","label":"b","answer":"c"}]},{"question_items":[{"class":"text-wrapper","value":"DD"}],"answer_items":[{"class":"text-answer","label":"E","answer":"FUCKING \"\"@@\"@\"@\"@"}]},{"question_items":[{"class":"block--empty","value":"Добавьте сюда вопрос"}],"answer_items":[{"class":"block--empty","label":"none","answer":"none"}]},{"question_items":[{"class":"text-wrapper","value":"Sampe actually"}],"answer_items":[{"class":"block--empty","label":"none","answer":"none"}]}]}
+
 {
 	"tasks" : [
 		{
