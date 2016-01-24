@@ -285,7 +285,7 @@ var add_boundary = {
 		});
 	},
 
-	new_question : function(el) {
+	new_task : function(el) {
 		el.bind({
 			dragover: function(e) {
 				drag_over(e);
@@ -322,7 +322,7 @@ var add_boundary = {
 					e.stopPropagation(); // stops the browser from redirecting.
 				}
 				if(counter > 0){
-					create_question(e_data.getData("el_type"), e_data.getData("el_class"), original_el);
+					create_task(e_data.getData("el_type"), e_data.getData("el_class"), original_el);
 				}
 			}
 		});
@@ -372,7 +372,7 @@ $(document).ready(function() {
 	test_bg = $(".test__bg").get(0);
 
 	$(".test__bg, .test>svg").each(function(index, el) {
-		add_boundary.new_question($(this));
+		add_boundary.new_task($(this));
 	});
 	$("#indicator").bind({
 		dragover: function(e) {
