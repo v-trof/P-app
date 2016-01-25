@@ -2,13 +2,13 @@
 from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
-import func_views
+# import func_views
 
 def home(request):
     # sample data
     # """
     breadcrumbs = request.path
-    print(breadcrumbs)
+    # print(breadcrumbs)
     courses = [
         {
             "name": "Предмет 1",

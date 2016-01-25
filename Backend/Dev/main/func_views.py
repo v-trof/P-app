@@ -257,5 +257,4 @@ def course_reg(request, course_id):
     with io.open('json/'+course.name+'.json', 'w', encoding='utf8') as json_file:
         saving_data = json.dumps(data, ensure_ascii=False)
         json_file.write(unicode(saving_data))
-    print data
     return redirect('/groups/'+str(course_id)+'/')

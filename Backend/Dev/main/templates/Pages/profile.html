@@ -18,10 +18,30 @@
 	<div class="includer">{% include 'CSS/inputs.html' %}</div>
 	<div class="includer">{% include 'CSS/notification.html' %}</div>
 	<main>
+		{% if request.user.id = user.id %}
+			<section class="linkbox">
+				<a class="link--card" id="change_avatar">
+					<div class="card--small">
+						Сменить изображение профиля
+					</div>
+				</a>
+				
+				<a class="link--card" id="edit">
+					<div class="card--small">
+						Редактировать
+					</div>
+				</a>
+				
+				<a class="link--card" href="#" id="do_not_save" style="display:none;opacity:0">
+					<div class="card--small">
+						Отменить изменения
+					</div>
+				</a>
+			</section>
+		{% endif %}
 		<section>
 			{% include 'UI_elements/cards/person.html' with user=user %}
 		</section>
-
 		<section>
 			<div class="card" id="contacts">
 				<div class="header-with-button">
@@ -66,7 +86,7 @@
 				{% endif %}
 			</div>
 		</section>
-		{% if request.user.email = user.email %}
+		{% if request.user.id = user.id %}
 			<section>
 				<div class="card card-settings">
 					<h4 class="card__heading">Настройки профиля</h4>
@@ -87,9 +107,6 @@
 					</a>
 				</div>
 			</section>
-			<button id="fab">
-				{% include 'UI_elements/Icons/edit.svg' with id='fab-ico'%}
-			</button>
 		{% endif %}
 	</main>
 	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
@@ -98,7 +115,7 @@
 	<div class="includer">{% include 'JS/ripple.html' %}</div>
 	<div class="includer">{% include 'JS/tooltip.html' %}</div>
 	<div class="includer">{% include 'CSS/tooltip.html' %}</div>
-		{% if request.user.email = user.email %}
+		{% if request.user.id = user.id %}
 	<div class="includer">{% include 'JS/edit_profile.html' %}</div>
 	{% endif %}
 	{% include "UI_elements/unique/tooltip.html" %}

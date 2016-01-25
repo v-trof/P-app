@@ -22,8 +22,9 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import patterns
 import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
+
+# reload(sys)
+# sys.setdefaultencoding("utf-8")
 func_patterns = [
     url(r'^login/$', func_views.login),
     url(r'^templatetest/$', func_views.test),
@@ -42,7 +43,7 @@ func_patterns = [
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.home),
+    url(r'^$', views.home, name='home'),
     url(r'^test_editor/$', views.test_editor),
     url(r'^register/$', views.register),
     url(r'^register/(?P<course_id>[0-9]+)/$', views.register),
