@@ -33,6 +33,26 @@
 	</header>
 
 	<main>
+		<section class="linkbox">
+			<a class="link--card" id="change_avatar">
+				<div class="card--small">
+					Сменить изображение профиля
+				</div>
+			</a>
+			
+			<a class="link--card" id="edit">
+				<div class="card--small">
+					Редактировать
+				</div>
+			</a>
+			
+			<a class="link--card" href="#" id="do_not_save" style="display:none;opacity:0">
+				<div class="card--small">
+					Отменить изменения
+				</div>
+			</a>
+		</section>
+
 		<section>
 			<div class="card card-person">
 				<img class="card-person__avatar" src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png">
@@ -83,10 +103,6 @@
 				<button class="button--ghost" href="/logout">Выйти</button>
 			</div>
 		</section>
-
-		<button id="fab">
-			<img src="../Assets/Icons/edit.svg" inline>
-		</button>
 	</main>
 	
 	<script src="../Scripts/Min/jquery-2.1.4.min.js"></script>
@@ -116,10 +132,6 @@
 		<div id="overlay__bg">
 		</div>
 		<div id="popup">
-			<button class="button--icon" id="popup__close">
-				<img src="../Assets/Icons/cancel.svg" inline>
-			</button>
-			<div id="popup__content"></div>
 			<button class="button--icon" id="popup__close">
 				<img src="../Assets/Icons/cancel.svg" inline>
 			</button>

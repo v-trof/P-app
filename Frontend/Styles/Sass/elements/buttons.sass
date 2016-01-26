@@ -12,10 +12,12 @@ button
 	font-weight: 500
 	font-size: $font-regular
 	font-family: $Sans
-	&:hover,&:focus
+	&:hover
 		+box-shadow(3)
+	
 	&:focus
 		outline: none
+		background: darken($color--accent, 20%)
 
 .button--raized
 	+box-shadow(2)
@@ -24,6 +26,7 @@ button
 	background: transparent
 	color: darken($color--accent, 5%)
 	&:hover,&:focus
+		background: transparent
 		box-shadow: none
 		color: darken($color--accent, 20%)
 
@@ -63,7 +66,7 @@ button
 		width: $icon-small
 		fill: $white
 
-	&:hover,&:focus
+	&:hover
 		+box-shadow(3)
 
 .header-with-button

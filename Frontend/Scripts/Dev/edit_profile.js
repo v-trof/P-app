@@ -61,7 +61,7 @@ function upload_avatar(e) {
         url:"/func/upload_avatar/",
         data: formData,
         processData: false,
-		contentType: false,
+        contentType: false,
         success: function(){
             notification.change('success','Успешно','Данные были успешно изменены' );
         }
@@ -75,91 +75,95 @@ function upload_avatar(e) {
 $(document).ready(function() {
     //for transitions
     $(".card-contacts__item>span").css('border-bottom', '1px dashed transparent');
+    $("#do_not_save").hide();
+    
+    $("body").append(new_avatar);
+
     var editing = false;
 
     function toggle_edit() {
         if(editing) {
+            $("#do_not_save").css('opacity', '0');
+            setTimeout(function(){
+                $("#do_not_save").hide();
+            },300);
+            
+            $("#edit>.card--small").text("Редактировать");
+            
             $("[contenteditable]").attr("contenteditable", "false").css('border-bottom', '1px dashed transparent');
             $("#add_contact").css('transform', 'scale(0)');
-            $(".card-person__avatar").css('cursor', 'default');
-            if ($('#email').html())
-                email=$('#email').html();
-            else email=null;
 
-            if ($('#Skype').html())
-                Skype=$('#Skype').html();
-            else Skype=null;
-
-            if ($('#VK').html())
-                VK=$('#VK').html();
-            else VK=null;
-
-            if ($('#Facebook').html())
-                Facebook=$('#Facebook').html();
-            else Facebook=null;
-
-            if ($('#Dnevnik').html())
-                Dnevnik=$('#Dnevnik').html();
-            else Dnevnik=null;
-
-            if ($('#Codeforces').html())
-                Codeforces=$('#Codeforces').html();
-            else Codeforces=null;
             editing = false;
-                        $.ajax({
-                                 type:"GET",
-                                 url:"/func/change_data/",
-                                 data: {
-                                        'email': email,
-                                        'Skype': Skype,
-                                        'VK': VK,
-                                        'Facebook': Facebook,
-                                        'Dnevnik': Dnevnik,
-                                        'Codeforces': Codeforces
-                                        },
-                                 success: function(){
-                                     notification.change('success','Успешно','Данные были успешно изменены' );
-                                 }
-                            });
         } else {
+            $("#do_not_save").show();
+            $("#do_not_save").css('opacity', '1');
+            
+            $("#edit>.card--small").text("Сохранить изменения");
+            
             $(".card-contacts__item>span").attr("contenteditable", "true").css('border-bottom', '1px dashed #2196F3');
             $("#add_contact").css('transform', 'scale(1)');
-            $(".card-person__avatar").css('cursor', 'pointer');
-            $(".card-person").append(new_avatar);
             editing = true;
         }
     }
 
-    $("#fab").click(function(e) {
+    function save_changes(){
+        if ($('#email').html())
+            email=$('#email').html();
+        else email=null;
+
+        if ($('#Skype').html())
+            Skype=$('#Skype').html();
+        else Skype=null;
+
+        if ($('#VK').html())
+            VK=$('#VK').html();
+        else VK=null;
+
+        if ($('#Facebook').html())
+            Facebook=$('#Facebook').html();
+        else Facebook=null;
+
+        if ($('#Dnevnik').html())
+            Dnevnik=$('#Dnevnik').html();
+        else Dnevnik=null;
+
+        if ($('#Codeforces').html())
+            Codeforces=$('#Codeforces').html();
+        else Codeforces=null;
+        $.ajax({
+             type:"GET",
+             url:"/func/change_data/",
+             data: {
+                    'email': email,
+                    'Skype': Skype,
+                    'VK': VK,
+                    'Facebook': Facebook,
+                    'Dnevnik': Dnevnik,
+                    'Codeforces': Codeforces
+                    },
+             success: function(){
+                 notification.change('success','Успешно','Данные были успешно изменены' );
+             }
+        });
+    }
+
+    $("#edit").click(function(e) {
+        if(editing){
+            save_changes();
+        }
         toggle_edit();
     });
 
 
-
+    $("#do_not_save").click(function(e) {
+        toggle_edit();
+    });
 
 
     var new_avatar = $("<input hidden type='file'>"); 
 
-    $(".card-person__avatar").bind({
-        click: function(e) {
-            if(editing) {
-                console.log("clicked");
-                new_avatar.click();
-            }
-        },
-
-        mouseenter: function(e) {
-            if(editing) {
-                tooltip.show(this, "Изменить");
-            }
-        },
-
-        mouseleave: function(e) {
-            if(editing) {
-                tooltip.hide();
-            }
-        }
-
+    $("#change_avatar").click(function(e) {
+        new_avatar.click();
     });
 
     new_avatar.change(function(e) {
