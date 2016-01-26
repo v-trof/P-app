@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$("#overlay__bg").click(function(e) {
+	$("#popup__close").click(function(e) {
 		popup.hide();
 	});
 });
@@ -7,7 +7,7 @@ $(document).ready(function() {
 var popup = {
 	is_shown : false,
 	show: function(content, css, callback) {
-		$("#popup").html(content);
+		$("#popup__content").html(content);
 		$("#overlay").addClass("shown");
 		$('#popup').css(css);
 		callback();
