@@ -15,14 +15,14 @@
 
 
 	<main>
-		{% if request.user.id in course.moderators or request.user.id in course.administrators %}
+		{% if course_data.user_status == "moderator" or course_data.user_status == "administrator" or course_data.user_status == "teacher" %}
 			<section class="linkbox">
 				<a class="link--card" id="invite_students">
 					<div class="card--small">
 					Пригласить учеников
 					</div>
 				</a>
-				{% if request.user.id in course.administrators %}
+				{% if course_data.user_status == "administrator" %}
 					<a class="link--card" id="invite_teacher">
 						<div class="card--small">
 						Пригласить преподавателя
@@ -38,13 +38,7 @@
 		{% endif %}
 		<section>
 			<h2>Преподаватели</h2>
-			{% for teacher in course.administrators %}
-				<a class="link--card" href="user/{{teacher.id}}.html">
-					{% include "UI_elements/cards/person.html" with user=teacher %}
-				</a>
-			{% endfor %}
-			
-			{% for teacher in course.moderators %}
+			{% for teacher in course_data.teachers %}
 				<a class="link--card" href="user/{{teacher.id}}.html">
 					{% include "UI_elements/cards/person.html" with user=teacher %}
 				</a>
@@ -52,7 +46,7 @@
 		</section>
 		<section>
 			<h2>Ученики</h2>
-			{% for group in course.students.groups %}
+			{% for group in course_data.groups %}
 				{% include 'Blocks/group.html' with group=group %}
 			{% empty %}
 				Сейчас никто не проходит этот курс
@@ -65,10 +59,12 @@
 	<div class="includer">{% include 'JS/humanize.html' %}</div>
 	<div class="includer">{% include 'JS/ripple.html' %}</div>
 	<div class="includer">{% include 'JS/edit_groups.html' %}</div>
+	<div class="includer">{% include 'JS/context_menu.html' %}</div>
 
 	{% include "UI_elements/unique/tooltip.html" %}
 	{% include "UI_elements/unique/popup.html" %}
 	{% include "UI_elements/unique/header.html" %}
 	{% include "UI_elements/unique/notification.html" %}
+	{% include "UI_elements/unique/context_menu.html" %}
 </body>
 </html>

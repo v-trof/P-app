@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
-# import func_views
+from func_views import course_getdata
 
 def home(request):
     # sample data
@@ -136,6 +136,7 @@ def course(request):
 
 def groups(request, course_id):
     if course_id:
-            return render(request, 'Pages/groups.html', {"course":Course.objects.get(id=course_id)})
+            course=Course.objects.get(id=course_id)
+            return render(request, 'Pages/groups.html', {"course":course, "course_data":course_getdata(request,course)})
     else:
         return render(request, 'Pages/groups.html')

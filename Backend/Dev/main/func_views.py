@@ -18,6 +18,7 @@ from django.core.urlresolvers import reverse
 from django.core.mail import EmailMultiAlternatives
 import json
 import pdb
+from django.core import serializers
 
 def login(request):
     def errorHandle(error):
@@ -108,25 +109,27 @@ def test(request):
 
 def create_course(request):
     if request.method == 'POST':
+        print "1"
         db = sqlite3.connect('db.sqlite3')
         name = request.POST['course_name']
         course=Course.objects.create_course(name=name)
         course.save()
         subject = request.POST['subject']
-        cursor = db.cursor()
-        cursor.execute(
-            ''' CREATE TABLE "''' + name +
-            ''' " ( "id" integer PRIMARY KEY NOT NULL,"name" varchar(30))''')
+     #   cursor = db.cursor()
+     #   cursor.execute(
+     #       ''' CREATE TABLE "''' + name +
+     #        ''' " ( "id" integer PRIMARY KEY NOT NULL,"name" varchar(30))''')
         db.commit()
-
+        print "2"
         if not os.path.exists('json/'):
             os.makedirs('json/')
         f = open('json/'+name+'.json', 'a')
         material = File(f)
-        material.write('{"users":[]}')
+        material.write('{"administrators":['+str(request.user.id)+'], "moderators":[], "teachers":[], "spectators":[], "users":[]}')
         material.close()
+        print "3"
         f.close()
-        return redirect('/groups/'+str(course.id)+'/', course_name=name)
+        return redirect('/course/'+str(course.id)+'/groups/')
 
 
 
@@ -236,8 +239,9 @@ def invite_students(request):
     email_list = request.POST.getlist('email_list')
     course=Course.objects.get(id=request.POST.get('course_id'))
     subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
-    text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
-    text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
+    text_content_nonreg='Вам поступило приглашение на курс '+str(course.name)+' от '+str(request.user.name)+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
+    text_content='Вам поступило приглашение на курс '+str(course.name)+' от '+str(request.user.name)+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
+    print "ffff"
     for email in email_list:
         if User.objects.filter(email=email):
             msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
@@ -258,3 +262,26 @@ def course_reg(request, course_id):
         saving_data = json.dumps(data, ensure_ascii=False)
         json_file.write(unicode(saving_data))
     return redirect('/groups/'+str(course_id)+'/')
+
+class Struct(object):
+        def __init__(self, **entries):
+            self.__dict__.update(entries)
+
+def course_getdata(request, course):
+    with open('json/'+course.name+'.json',"r") as data_file:
+        data = json.load(data_file)
+        print "1"
+        course_data=Struct(**data)
+        print course_data.teachers
+        if request.user.id in data["administrators"]:
+            course_data.user_status="administrator"
+        elif request.user.id in data["teachers"]:
+            course_data.user_status="teacher"
+        elif request.user.id in data["moderators"]:
+            course_data.user_status="moderator"
+        elif request.user.id in data["spectators"]:
+            course_data.user_status="spectator"
+        elif request.user.name in data["users"]:
+            course_data.user_status="user"
+        else: course_data.user_status="guest"
+        return course_data

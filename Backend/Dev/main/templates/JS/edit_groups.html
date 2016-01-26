@@ -10,7 +10,6 @@ function toggle_edit(){
 		editing = true;
 	}
 }
-
 $(document).ready(function() {
 	$("h3").css('border-bottom', '1px dashed transparent');
 	$("#edit").click(function(event) {
@@ -29,7 +28,7 @@ $(document).ready(function() {
 				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 				$.ajax({
 					type:"POST",
-					url:"/func/invite_teacher/",
+					url:"/func/invite_students/",
 					data: formData,
 					processData: false,
 					contentType: false,
@@ -70,6 +69,7 @@ $(document).ready(function() {
 				formData.append('email_list', email_list.join(","));
 				formData.append('course_id', "{{course.id}}");
 				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+				$("#invite_students_button").prop("disabled", true);
 				$.ajax({
 					type:"POST",
 					url:"/func/invite_students/",

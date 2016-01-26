@@ -41,6 +41,10 @@ func_patterns = [
     url(r'^course_reg/(?P<course_id>[0-9]+)/$', func_views.course_reg),
 ]
 
+course_patterns = [
+    url(r'^(?P<course_id>[0-9]+)/groups/$', views.groups),
+]
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.home, name='home'),
@@ -50,8 +54,6 @@ urlpatterns = [
     url(r'^forgot_password/$', views.forgot_password),
     url(r'^func/', include(func_patterns)),
     url(r'^login/$', views.login),
-    url(r'^course/$', views.course),
-    url(r'^groups/$', views.groups),
-    url(r'^groups/(?P<course_id>[0-9]+)/$', views.groups),
+    url(r'^course/', include(course_patterns)),
     url(r'^user/(?P<user_id>[0-9]+)/$', views.profile),
 ]
