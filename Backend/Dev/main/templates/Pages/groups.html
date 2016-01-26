@@ -38,7 +38,13 @@
 		{% endif %}
 		<section>
 			<h2>Преподаватели</h2>
-			{% for teacher in course.teachers %}
+			{% for teacher in course.administrators %}
+				<a class="link--card" href="user/{{teacher.id}}.html">
+					{% include "UI_elements/cards/person.html" with user=teacher %}
+				</a>
+			{% endfor %}
+			
+			{% for teacher in course.moderators %}
 				<a class="link--card" href="user/{{teacher.id}}.html">
 					{% include "UI_elements/cards/person.html" with user=teacher %}
 				</a>

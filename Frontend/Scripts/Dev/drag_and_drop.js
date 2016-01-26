@@ -281,6 +281,7 @@ var add_boundary = {
 						add_boundary[e_data.getData("el_type")](new_el);
 					}
 				}
+				editor.verify_type();
 			}
 		});
 	},
