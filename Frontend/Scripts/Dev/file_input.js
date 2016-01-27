@@ -4,7 +4,7 @@ function add_file_boundary(el){
 	});
 
 	$(el).children("input").change(function(e) {
-		$(el).children('span').text($(this).val().replace("C:\\fakepath\\",""));
+		$(el).children('span').text($(this).val());
 	});
 }
 

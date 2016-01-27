@@ -9,7 +9,6 @@ var create_course_html = "<form action='func/create_course/' method='post'>{% cs
 
 $(document).ready(function() {
 	$("#create_course").click(function() {
-		popup.show(create_course_html,
-		{},
+		popup.show(create_course_html);
 	});
 });
