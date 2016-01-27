@@ -1,0 +1,1 @@
+function add_file_boundary(n){n.click(function(n){$(this).children("input").click()}),n.on("change","input",function(n){$(this).children("span").text($(this).children("input").val())})}$(document).ready(function(){$(".file").each(function(n,i){add_file_boundary(this)})});

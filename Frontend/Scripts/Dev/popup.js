@@ -15,6 +15,12 @@ var popup = {
 			add_emptiness_checker(this);	
 		});
 		$("#popup input").first().focus();
+		$("#popup .file").each(function(index, el) {
+			add_file_boundary(this);
+		});
+		$("#popup .select").each(function(index, el) {
+			add_menu_caller(this);
+		});
 	},
 
 	hide: function() {

@@ -6,7 +6,7 @@ var generate  = {
 	},
 	"texts" : {
 		"text-wrapper": "<input type='text' id='new_el_value'><label>Текст вопроса</label><br><br><button id='add_el'>Добавить</button>",
-		"image-wrapper": "<input type='text' id='new_el_value'><label>URL артинки</label><br><br><div class='input--file'><button>Выбрать</button> Файл не выбран</div><br><button id='add_el'>Добавить</button>",
+		"image-wrapper": "<input type='text' id='new_el_value'><label>URL артинки</label><br><br><div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file'></div><br><br><button id='add_el'>Добавить</button>",
 		"text-answer": "<input type='text' id='new_el_value'><label>Вопрос</label><br><br><input type='text' id='new_el_answer'><label>Верный ответ</label><br><br><button id='add_el'>Добавить</button>"
 	},
 	"text-wrapper" : function(value, original) {

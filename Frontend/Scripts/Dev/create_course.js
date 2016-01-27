@@ -11,9 +11,5 @@ $(document).ready(function() {
 	$("#create_course").click(function() {
 		popup.show(create_course_html,
 		{},
-		function() {
-			add_menu_caller($("#popup .select").get(0));
-			$("#popup input")[0].focus();
-		});
 	});
 });

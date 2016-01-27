@@ -187,11 +187,7 @@ $(document).ready(function() {
         popup.show("<div class='select'><div class='display'>Skype</div><input type='hidden' id='new_contact_type'><svg class='{{ class }}' id='{{id}}' viewBox='0 0 24 24'  xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>" + contact_types() + "</div><br><input type='text' id='new_contact_info'><label for='new_contact_info'>Контакная информация</label><br><button class='button--ghost' id='create_contact' onclick='create_contact()' style='float:right'>Добавить</button>",
             {
                 "padding-bottom": "0.3rem",
-                "width": "20rem"
             }, 
-            function() {
-               add_menu_caller($("#popup").children('.select').get(0));
-        });
     });
 
 
