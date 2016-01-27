@@ -6,7 +6,8 @@ var generate  = {
 	},
 	"texts" : {
 		"text-wrapper": "<input type='text' id='new_el_value'><label>Текст вопроса</label><br><br><button id='add_el'>Добавить</button>",
-		"text-answer": "<input type='text' id='new_el_value'><label>Формат ответа</label><br><br><input type='text' id='new_el_answer'><label>Верный ответ</label><br><br><button id='add_el'>Добавить</button>"
+		"image-wrapper": "<input type='text' id='new_el_value'><label>URL артинки</label><br><br><div class='input--file'><button>Выбрать</button> Файл не выбран</div><br><button id='add_el'>Добавить</button>",
+		"text-answer": "<input type='text' id='new_el_value'><label>Вопрос</label><br><br><input type='text' id='new_el_answer'><label>Верный ответ</label><br><br><button id='add_el'>Добавить</button>"
 	},
 	"text-wrapper" : function(value, original) {
 		var quesiton_template = $(generate.quesiton_template); //lets us modfy freely
@@ -27,6 +28,31 @@ var generate  = {
 			var content = generate.queued_el;
 		} else {
 			var content = quesiton_template.addClass("text-wrapper").html(value);
+		}
+		console.log(content);
+		return content;
+	},
+	"image-wrapper" : function(value, original) {
+		var quesiton_template = $(generate.quesiton_template); //lets us modfy freely
+		if(!value) {
+			var prefill;
+			popup.show(generate.texts["image-wrapper"],{}, function() {
+				if(original) {
+					$("#new_el_value").val(original.find("img").attr("src"));
+				}
+				$("#add_el, #overlay__bg").click(function(event) {
+					popup.hide();
+					if($("#new_el_value").val()!=""){
+						c_element = generate["image-wrapper"]($("#new_el_value").val());
+						generate.queued_el.replaceWith(c_element);
+						add_boundary.draggable(c_element);
+						add_boundary.question(c_element);
+					}
+				});
+			});
+			var content = generate.queued_el;
+		} else {
+			var content = quesiton_template.addClass("image-wrapper").append("<img src="+value+">");
 		}
 		console.log(content);
 		return content;
