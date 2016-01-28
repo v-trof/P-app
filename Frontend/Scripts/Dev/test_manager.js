@@ -15,6 +15,21 @@ var pack_input = {
 	}
 }
 
+var pack_question = {
+	"text-wrapper" : function(el){
+		return {
+			"class": "text-wrapper",
+			"value": $(el).html(),
+		}
+	},
+	"image-wrapper" : function(el){
+		return {
+			"class": "image-wrapper",
+			"value": $(el).children('img').attr("src"),
+		}
+	},
+}
+
 var test = {
 	pack: function(){
 		var testfile = {
@@ -28,11 +43,9 @@ var test = {
 				"answer_items" : []
 			};
 			$(this).children('.task__question').children().each(function(index, el) {
-				// console.log(this);
-				c_task.question_items.push({
-					"class" : this.classList[0],
-					"value" : this.innerHTML					
-				});
+				var c_class = this.classList[0];
+				// console.log(c_class)
+				c_task.question_items.push(pack_question[c_class](this));
 			});
 			//answer shit need coplete revision
 			$(this).children('.task__answer').children().each(function(index, el) {

@@ -9,12 +9,26 @@ var popup = {
 	show: function(content, css, callback) {
 		$("#popup__content").html(content);
 		$("#overlay").addClass("shown");
-		$('#popup').css(css);
-		callback();
+		if(css){
+			$('#popup').css(css);
+		}
+		if(callback){
+			callback();
+		}
 		$("#popup input").each(function(index, el) {
 			add_emptiness_checker(this);	
 		});
 		$("#popup input").first().focus();
+
+		$("#popup .file").each(function(index, el) {
+			console.log(this);
+			add_file_boundary(this);
+		});
+
+		$("#popup .select").each(function(index, el) {
+			console.log(this);
+			add_menu_caller(this);
+		});
 	},
 
 	hide: function() {

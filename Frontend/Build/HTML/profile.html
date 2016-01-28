@@ -33,6 +33,26 @@
 	</header>
 
 	<main>
+		<section class="linkbox">
+			<a class="link--card" id="change_avatar">
+				<div class="card--small">
+					Сменить изображение профиля
+				</div>
+			</a>
+			
+			<a class="link--card" id="edit">
+				<div class="card--small">
+					Редактировать
+				</div>
+			</a>
+			
+			<a class="link--card" href="#" id="do_not_save" style="display:none;opacity:0">
+				<div class="card--small">
+					Отменить изменения
+				</div>
+			</a>
+		</section>
+
 		<section>
 			<div class="card card-person">
 				<img class="card-person__avatar" src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png">
@@ -83,10 +103,6 @@
 				<button class="button--ghost" href="/logout">Выйти</button>
 			</div>
 		</section>
-
-		<button id="fab">
-			<svg class="{{ class }}" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-		</button>
 	</main>
 	
 	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
