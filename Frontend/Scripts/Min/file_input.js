@@ -1,1 +1,1 @@
-function add_file_boundary(n){$(n).click(function(n){$(this).children("input")[0].click()}),$(n).children("input").change(function(i){$(n).children("span").text($(this).val().replace("C:\\fakepath\\",""))})}$(document).ready(function(){$(".file").each(function(n,i){add_file_boundary(this)})});
+function add_file_boundary(n){$(n).click(function(n){$(this).children("input")[0].click()}),$(n).children("input").change(function(i){$(n).children("span").text($(this).val())})}$(document).ready(function(){$(".file").each(function(n,i){add_file_boundary(this)})});

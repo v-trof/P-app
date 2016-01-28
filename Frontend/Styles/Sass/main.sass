@@ -68,3 +68,27 @@ img
 
 [contenteditable]
 	transition: $time-regular
+
+#delete
+	transition: $time-regular
+	display: flex
+	flex-direction: row
+	justify-content: center
+	align-items: center
+	background: rgba($red-bright, 0.5)
+	position: absolute
+	width: 100%
+	height: $margin-huge+$padding-big*2
+	z-index: 2
+	overflow: hidden
+	top: -$block-regular
+	left: 0
+	&.shown
+		transform: translateY($block-regular*2)
+	&.dropping>svg
+		transform: scale(1.2)
+	&>svg
+		transition: $time-regular
+		height: $icon-big
+		width: $icon-big
+		fill: $red-bright
