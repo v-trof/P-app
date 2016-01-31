@@ -22,3 +22,18 @@ main
 	position: absolute
 	top: -$margin-regular
 	right: 0
+	opacity: 0
+	transition: $time-regular
+
+
+.group
+	position: relative
+	margin-bottom: $margin-big
+	&>h3
+		margin-top: 0
+		display: inline-block
+		min-width: 4rem
+	&:hover
+		&>.button_remove
+			opacity: 1
+		
