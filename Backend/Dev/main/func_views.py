@@ -248,7 +248,7 @@ def invite_students(request):
             data = json.load(data_file)
             data["pending_users"].append({'email':email, 'group':group})
         with io.open('courses/'+course.name+'/json/'+course.name+'.json', 'w', encoding='utf8') as json_file:
-            print "ffff"
+            # print "ffff"
             saving_data = json.dumps(data, ensure_ascii=False)
             json_file.write(unicode(saving_data))
         if User.objects.filter(email=email):
@@ -260,10 +260,10 @@ def invite_students(request):
     return HttpResponse("ok")
 
 def course_reg(request, course_id):
-    print "chut_bolee_chem_ok"
+    # print "chut_bolee_chem_ok"
     if not request.user.name:
         return redirect('/login/')
-    print "sovsem_ok"
+    # print "sovsem_ok"
     course=Course.objects.get(id=course_id)
     with open('courses/'+course.name+'/json/'+course.name+'.json',"r") as data_file:
         data = json.load(data_file)
@@ -283,9 +283,9 @@ class Struct(object):
 def course_getdata(request, course):
     with open('courses/'+course.name+'/json/'+course.name+'.json',"r") as data_file:
         data = json.load(data_file)
-        print "1"
+        # print "1"
         course_data=Struct(**data)
-        print course_data.teachers
+        # print course_data.teachers
         if request.user.id in data["administrators"]:
             course_data.user_status="administrator"
         elif request.user.id in data["teachers"]:

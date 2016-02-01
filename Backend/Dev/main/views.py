@@ -2,11 +2,11 @@
 from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
-from func_views import course_getdata
+from main.func_views import course_getdata
 
 def home(request):
     # sample data
-    # """
+    """
     breadcrumbs = request.path
     # print(breadcrumbs)
     courses = [
@@ -99,9 +99,9 @@ def home(request):
             ]
         }
     ]
-    # """
-    context = {"breadcrumbs": breadcrumbs, "courses": courses, "homework": homework, "marks": marks}
-    # context = {}
+    """
+    # context = {"breadcrumbs": breadcrumbs, "courses": courses, "homework": homework, "marks": marks}
+    context = {}
     # print(context)
     return render(request, 'Pages/home.html', context)
 

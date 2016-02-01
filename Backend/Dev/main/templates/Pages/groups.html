@@ -33,10 +33,15 @@
 							Редактировать
 						</div>
 					</a>
+					<a class="link--card" id="create_group" style="display:none">
+						<div class="card--small">
+							Создать новую группу
+						</div>
+					</a>
 				{% endif %}
 			</section>
 		{% endif %}
-		<section>
+		<section class="teachers">
 			<h2>Преподаватели</h2>
 			{% for teacher in course_data.teachers %}
 				<a class="link--card" href="user/{{teacher.id}}.html">
@@ -44,12 +49,10 @@
 				</a>
 			{% endfor %}
 		</section>
-		<section>
+		<section class="students">
 			<h2>Ученики</h2>
 			{% for group in course_data.groups %}
 				{% include 'Blocks/group.html' with group=group %}
-			{% empty %}
-				Сейчас никто не проходит этот курс
 			{% endfor %}
 		</section>
 	</main>
