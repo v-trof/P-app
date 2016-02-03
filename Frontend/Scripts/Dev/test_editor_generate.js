@@ -141,6 +141,7 @@ var generate  = {
 		return content;
 	},
 	task: function(task_data){
+		console.log(tasks);
 		var new_task = $(task_template);
 		new_task.find(".task__number").text(tasks + ".");
 		add_boundary.new_task(new_task.find(".task__number"));
@@ -159,7 +160,7 @@ var generate  = {
 				new_task.append();
 				add_boundary.block_empty(new_element);
 			} else {
-				var new_element = generate[element["class"]](element["label"],element["answer"]);
+				var new_element = generate[element["class"]](element["value"], element["answer"]);
 				new_task.find(".task__answer").append(new_element);
 				add_boundary.draggable(new_element);
 				add_boundary["answer"](new_element);
@@ -185,5 +186,7 @@ var generate  = {
 		editor.verify_type();
 		editor.check_for_emptiness();
 		check_bg_height();
+
+		tasks++;
 	}
 }

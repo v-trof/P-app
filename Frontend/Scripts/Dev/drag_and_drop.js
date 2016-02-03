@@ -140,26 +140,19 @@ var add_boundary = {
 		el.bind({
 			dragenter: function(e) {
 				if( e_data.getData("el_type") == "question" ) {
-					// console.log(counter, counter == 0);
-					if(counter == 0) {
-						this.classList.add('drop--accept');
-						c_rect = this.getBoundingClientRect();
-						indicator.original_el = this;
-						indicator.show(c_rect);
-					}
-					counter++;
-					// console.log(counter);
+					$(this).find("*").css('pointer-events', 'none');
+					this.classList.add('drop--accept');
+					c_rect = this.getBoundingClientRect();
+					indicator.original_el = this;
+					indicator.show(c_rect);
 				}
 			},
 
 			dragleave: function(e) {
-				counter--;
-				// console.log("OUT",counter);
-				if(counter<=0) {
-					counter = 0;
-					this.classList.remove('drop--accept');
-					indicator.hide();
-				}
+				this.classList.remove('drop--accept');
+				indicator.hide();
+				$(this).find("*").css('pointer-events', 'all');
+				console.log("leave");
 			},
 
 			dragstart: function(e) {
@@ -196,13 +189,11 @@ var add_boundary = {
 		el.bind({
 			dragenter: function(e) {
 				if( e_data.getData("el_type") == "answer" ) {
-					if(counter == 0) {
-						this.classList.add('drop--accept');
-						c_rect = this.getBoundingClientRect();
-						indicator.original_el = this;
-						indicator.show(c_rect);
-					}
-					counter++;
+					this.classList.add('drop--accept');
+					c_rect = this.getBoundingClientRect();
+					indicator.original_el = this;
+					indicator.show(c_rect);
+					$(this).find("*").css('pointer-events', 'none');
 				}
 			},
 
@@ -214,11 +205,11 @@ var add_boundary = {
 			},
 
 			dragleave: function(e) {
-				counter--;
-				if(counter<=0) {
-					counter = 0;
+				if( e_data.getData("el_type") == "answer" ) {
+					console.log("leave");
 					this.classList.remove('drop--accept');
 					indicator.hide();
+					// $(this).find("*").css('pointer-events', 'all');
 				}
 			},
 
@@ -295,36 +286,30 @@ var add_boundary = {
 			dragenter: function(e) {
 				// console.log(this);
 				// console.log("in", counter);
-				if(counter==0) {
-					ripple.force_show(e.originalEvent, test_bg, "accent");
-					$(".test>svg").css({
-						'transform': 'translateY(-50px)',
-						'opacity': 1,
-					});
-				}
-				counter++;
+				ripple.force_show(e.originalEvent, test_bg, "accent");
+				$(".test>svg").css({
+					'transform': 'translateY(-50px)',
+					'opacity': 1,
+				});
+				$(this).find("*").css('pointer-events', 'none');
 			},
 
 			dragleave: function(e) {
 				// console.log("out", counter);
-				counter--;
-				if(counter==0) {
-					ripple.dissolve();
-					$(".test>svg").css({
-						'transform': '',
-						'opacity': 0
-					});
-				}
+				ripple.dissolve();
+				$(".test>svg").css({
+					'transform': '',
+					'opacity': 0
+				});
+				$(this).find("*").css('pointer-events', 'all');
 			},
 
 			drop: function(e) {
-				// console.log("drop", counter);
+				console.log("drop", counter);
 				if (e.stopPropagation) {
 					e.stopPropagation(); // stops the browser from redirecting.
 				}
-				if(counter > 0){
-					create_task(e_data.getData("el_type"), e_data.getData("el_class"), original_el);
-				}
+				create_task(e_data.getData("el_type"), e_data.getData("el_class"), original_el);
 			}
 		});
 	},
@@ -381,19 +366,12 @@ $(document).ready(function() {
 		},
 
 		dragenter: function(e) {
-			counter++;
 			indicator.original_el.classList.add('drop--accept');
-			indicator.show(original_el.c_rect);
-			// console.log(counter);
 		},
 
 		dragleave: function(e) {
-			counter--;
-			if(counter<=0) {
-				indicator.original_el.classList.remove('drop--accept');
-				indicator.hide();
-				counter = 0;
-			}
+			indicator.original_el.classList.remove('drop--accept');
+			indicator.hide();
 		},
 
 		drop: function(e) {
@@ -416,17 +394,13 @@ $(document).ready(function() {
 			
 		},
 		dragenter: function(e) {
-			if(counter==0) {
-				this.classList.add("delete");
-			}
-			counter++;
+			$(this).find("*").css('pointer-events', 'none');
+			this.classList.add("delete");
 		},
 
 		dragleave: function(e) {
-			counter--;
-			if(counter==0) {
-				this.classList.add("delete");
-			}
+			this.classList.remove("delete");
+			$(this).find("*").css('pointer-events', 'all');
 		},
 
 	});
