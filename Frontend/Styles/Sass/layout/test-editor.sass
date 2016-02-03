@@ -31,7 +31,14 @@ h1
 //increase specifity
 div.answer__field
 	box-shadow: none
-	padding-top: 0
+	&.text-answer
+		padding-top: 0
+	&.file-answer
+		padding: $padding-regular
+		padding-left: 0
+
+		&>.file
+			transform: scale(0.9)
 .answer__field,.question-elements>*
 	border: 2px solid $grey-light
 	margin-top: $margin-regular
@@ -98,17 +105,18 @@ div.answer__field
 .task__content
 	width: 100%
 .task__answer
+	margin-top: $margin-regular
 	transition: $time-regular
-	*
-		border-color: $grey-dark
 
 .task__question>*,.task__answer__item
 	transition: $time-regular
 	position: relative
+	margin-bottom: $margin-regular
 	z-index: 2
+	&:last-child
+		margin-bottom: 0
 	&.drop--accept
 		transform: translateY(-$margin-regular)
-
 *[draggable='true']
 	transition: $time-regular
 	user-select: none
@@ -167,3 +175,16 @@ div.answer__field
 	z-index: 1
 
 
+//popup assistance
+.select-option-list
+	list-style: none
+	padding: 0
+	margin: 0
+	&>li
+		position: relative
+		width: 100%
+		display: flex
+		flex-direction: row
+		&>input[type='radio']~label
+			transform: scale(0.8)
+			margin-top: $padding-big

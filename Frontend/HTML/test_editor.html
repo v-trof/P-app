@@ -56,12 +56,41 @@
 			</div>
 
 
+
 			<div class="answer-elements">
 				<div class="text-answer answer__field card" draggable="true">
 					<input type="text" name="text_question" placeholder=""><label for="text_question" disabled>Ответ текстом</label>
 				</div>
+
+				<div class="file-answer answer__field card" draggable="true">
+					<div class='file'>
+						<button>Выбрать</button>
+						<span>Файл не выбран</span>
+						<input type='file'>
+					</div>
+				</div>
+
+				<div class="select-answer answer__field card" draggable="true">
+					<div class="select">
+						<input type="hidden" class="value" value="1">
+						<div class="display">Option 1</div>
+						<svg class="{{ class }}" id="{{id}}" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg">
+							<path d="M7 10l5 5 5-5z"/>
+							<path d="M0 0h24v24H0z" fill="none"/>
+						</svg>
+						<option value="1">Вариант 1</option>
+						<option value="2">Вариант 2</option>
+						<option value="3">Вариант 3</option>
+						<option value="4">Вариант 4</option>
+						<option value="5">Вариант 5</option>
+					</div>
+				</div>
 			</div>
 		</div>
+
+
+
+
 
 
 		<div id="editor__settings" class="card">
