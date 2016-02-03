@@ -2,14 +2,14 @@
 	"block--empty" : function(){
 		return {
 			"class": "block--empty",
-			"label": "none",
+			"value": "none",
 			"answer": "none"
 		}	
 	},
 	"text-answer" : function(el){
 		return {
 			"class": "text-answer",
-			"label": $(el).children('label').text(),
+			"value": $(el).children('label').text(),
 			"answer": $(el).attr('answer')
 		}
 	},
@@ -17,9 +17,16 @@
 		return {"class": "file-answer"}
 	},
 	"select-answer": function(el){
-
+		var values = [];
+		$(el).find("option").each(function(index, el) {
+			values.push($(this).text());
+		});
+		return {
+			"class": "select-answer",
+			"value": values,
+			"answer": $(el).attr('answer')
+		}
 	}
-
 }
 
 var pack_question = {
