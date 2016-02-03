@@ -21,6 +21,7 @@ from . import func_views
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import patterns
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 import sys
 
 # reload(sys)
@@ -57,3 +58,6 @@ urlpatterns = [
     url(r'^course/', include(course_patterns)),
     url(r'^user/(?P<user_id>[0-9]+)/$', views.profile),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += staticfiles_urlpatterns()

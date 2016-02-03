@@ -19,7 +19,10 @@ from django.utils.crypto import get_random_string, salted_hmac
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django import forms
+from django.forms.models import modelform_factory
 
+class MediaModel(models.Model):
+    media_file = models.FileField(upload_to='media')
 
 class RegForm(forms.Form):
     email = models.EmailField(_('email address'), blank=True)
@@ -65,7 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     VK = models.CharField(_('vk'), max_length=30, blank=True)
     Facebook = models.CharField(_('facebook'), max_length=30, blank=True)
     Dnevnik = models.CharField(_('dnevnik'), max_length=30, blank=True)
-    avatar = models.CharField(_('dnevnik'), max_length=120, blank=True)
+    avatar = models.ImageField(_('avatar'), max_length=120, blank=True)
     is_changing = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
     email = models.EmailField(_('email address'), blank=True,unique=True)
