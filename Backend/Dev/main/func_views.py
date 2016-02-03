@@ -81,7 +81,7 @@ def reg(request):
                 password=password,
                 name=name_last_name,
                 is_teacher=is_teacher,
-                avatar = 'Images/avatar.png')
+                avatar = 'avatar.png')
         else:
             error = u'Данный email уже зарегистрирован'
             return errorHandle(error,email,password,name_last_name)
@@ -230,9 +230,7 @@ def change_password(request):
             })
 
 def upload_avatar(request):
-    destination = open('main/Static/Images/'+str(request.user.id)+'.jpg', 'wb+')
-    destination.write(request.FILES['new_avatar'].read())
-    setattr(request.user, avatar, strip_tags('Images/'+str(request.user.id)+'.jpg'))
+    setattr(request.user, 'avatar', request.FILES['new_avatar'])
     request.user.save()
     return HttpResponse("ok")
 

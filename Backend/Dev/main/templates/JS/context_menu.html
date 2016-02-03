@@ -48,6 +48,15 @@
 function add_menu_caller(select) {
 	var first_option = $(select).children('option').get(0);
 	first_option = $(first_option);
+	
+	setTimeout(function(){
+		var max_w = 0;
+		$(select).children('option').each(function(index, el){
+			max_w = Math.max($(this).outerWidth(), max_w);
+		});
+		$(select).children('.display').css('min-width', max_w+"px");
+	},300);
+	
 	$(select).children('input').val(first_option.attr("value"));
 	$(select).children(".display").text(first_option.text());
 	$(select).click(function(e) {

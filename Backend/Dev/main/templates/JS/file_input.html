@@ -4,7 +4,7 @@
 	});
 
 	$(el).children("input").change(function(e) {
-		$(el).children('span').text($(this).val());
+		$(el).children('span').text($(this).val().replace("C:\\fakepath\\",""));
 	});
 }
 
