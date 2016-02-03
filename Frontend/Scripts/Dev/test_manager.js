@@ -12,7 +12,14 @@ var pack_input = {
 			"label": $(el).children('label').text(),
 			"answer": $(el).attr('answer')
 		}
+	},
+	"file-answer" : function(el){
+		return {"class": "file-answer"}
+	},
+	"select-answer": function(el){
+
 	}
+
 }
 
 var pack_question = {
