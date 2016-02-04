@@ -26,11 +26,11 @@ function fix_table(){
 
 
 $(document).ready(function() {
-	fix_table()
+	fix_table();
 	st_pos = $("thead").offset().top;
 	th_height = $("thead").height();
-	$(".content").scroll(function(event) {
-		scroll_pos = $(".content").scrollTop();
+	$("main").scroll(function(event) {
+		scroll_pos = $("main").scrollTop();
 
 		if(scroll_pos + 36 > st_pos){
 			$("thead").addClass('scrolled');

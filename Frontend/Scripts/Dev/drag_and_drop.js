@@ -110,7 +110,7 @@ var editor = {
 		$("#delete").addClass('shown');
 	},
 	hide_delete : function(){
-		$("#delete").removeClass('shown');
+		$("#delete").removeClass('shown').removeClass('delete');
 	},
 }
 

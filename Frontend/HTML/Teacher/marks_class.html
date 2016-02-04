@@ -34,7 +34,11 @@
 		<section>
 		<h3>&nbsp;</h3>
 		<table class="card student-list" cellspacing="0" cellpadding="0">
-			<tr><td>10И</td></tr>
+			<thead>
+				<tr>
+					<th>10И</th>
+				</tr>
+			</thead>
 			<tr><td>studentname 1</td></tr>
 			<tr><td>studentname 2</td></tr>
 			<tr><td>studentname 3</td></tr>
@@ -61,15 +65,18 @@
 			<tr><td>studentname 4+20</td></tr>
 			<tr><td>studentname 5+20</td></tr>
 		</table>
+		<div class="shadow" id="student_list shadow"></div>
 		</section>
 		<section>
 			<h3>Мертвые Души</h3>
 			<table class="card current	 student-marks" cellspacing="0" cellpadding="0">
+			<thead>
 				<tr class="student-marks__header">
-					<td>Знание текста 1</td>
-					<td>Знание текста 2</td>
-					<td>Детали-двойники</td>
+					<th>Знание текста 1</th>
+					<th>Знание текста 2</th>
+					<th>Детали-двойники</th>
 				</tr>
+			</thead>
 				<tr>
 					<td>5</td>
 					<td>3</td>
@@ -201,11 +208,13 @@
 		<section>
 			<h3>Обломов</h3>
 			<table class="card student-marks" cellspacing="0" cellpadding="0">
+			<thead>
 				<tr class="student-marks__header">
-					<td>Знание текста 1</td>
-					<td>Знание текста 2</td>
-					<td>Детали-двойники</td>
+					<th>Знание текста 1</th>
+					<th>Знание текста 2</th>
+					<th>Детали-двойники</th>
 				</tr>
+			</thead>
 				<tr>
 					<td>5</td>
 					<td>3</td>
@@ -334,10 +343,15 @@
 			</table>
 		</section>
 	</main>
+	<style>
+		*{background: rgba(255,0,0, 0.1);}
+	</style>
 	
 	<script src="../../Scripts/Min/jquery-2.1.4.min.js"></script>
 	<script src="../../Scripts/Min/layout.js"></script>
 	<script src="../../Scripts/Min/humanize.js"></script>
 	<script src="../../Scripts/Dev/tooltip.js"></script>
-</body>
+	<script src="../../Scripts/Dev/table.js"></script>
+	<script src="../../Scripts/Dev/context_menu.js"></script>
+	</body>
 </html>

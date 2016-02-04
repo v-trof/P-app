@@ -12,7 +12,7 @@ main
 	display: flex
 	flex-direction: row
 
-tr:nth-child(odd)
+tr:nth-child(even)
 	background: $grey-light
 
 table.student-list
@@ -23,8 +23,19 @@ table.student-list
 	padding: 0
 	margin: 0
 	margin-bottom: $margin-big
-
+	box-shadow: none
+.shadow
+	display: table-row
+	position: absolute
+	z-index: 0
+	top: 45px
+	left: 0
+	height: 936px
+	width: 100%
+	border-radius: 2px
+	+box-shadow(1)
 table.student-marks
+	z-index: 1
 	padding: 0
 	margin: 0 0 0 -3px
 	box-sizing: border-box
@@ -35,6 +46,7 @@ table.student-marks
 	&.current:hover
 		border-color: $grey-semilight
 section
+	position: relative
 	margin-left: $margin-big
 	&:nth-child(2)
 		margin-left: 0
