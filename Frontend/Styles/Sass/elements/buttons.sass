@@ -1,6 +1,7 @@
 @import "../vars"
 
 button
+	vertical-align: middle
 	position: relative
 	overflow: hidden
 	border: 0
@@ -12,9 +13,9 @@ button
 	font-weight: 500
 	font-size: $font-regular
 	font-family: $Sans
-	&:hover
+	&:enabled:hover
 		+box-shadow(3)
-	&:focus
+	&:enabled:focus
 		outline: none
 		+box-shadow(3)
 
@@ -24,7 +25,7 @@ button
 .button--ghost
 	background: transparent
 	color: darken($color--accent, 5%)
-	&:hover,&:focus
+	&:enabled:hover,&:enabled:focus
 		background: transparent
 		box-shadow: none
 		color: darken($color--accent, 20%)
@@ -47,7 +48,7 @@ button
 		height: $icon-small
 		width: $icon-small
 		transition: $time-short
-	&:hover>svg
+	&:enabled:hover>svg
 		fill: darken($color--accent, 20%)
 #fab
 	position: fixed
@@ -65,7 +66,7 @@ button
 		width: $icon-small
 		fill: $white
 
-	&:hover
+	&:enabled:hover
 		+box-shadow(3)
 
 .header-with-button
@@ -103,10 +104,10 @@ button
 		opacity: 0
 		color: darken($grey-dark, 5%)
 
-	&:focus, &:hover
+	&:enabled:focus, &:enabled:hover
 		outline: 0
 		box-shadow: none
-	&:focus,&:enabled:hover
+	&:enabled:focus,&:enabled:hover
 		&>span
 			opacity: 1
 		&>svg
@@ -141,11 +142,11 @@ button
 	transition: $time-regular
 	&:first-child
 		margin-left: 0
-	&:focus
+	&:enabled:focus
 		outline: 0
-	&:hover
+	&:enabled:hover
 		border-bottom: $border-regular solid $blue-dark
 	&.toggled
 		border-bottom: $border-regular solid $blue-bright
-		&:hover
+		&:enabled:hover
 			border-bottom: $border-regular solid $grey-mid

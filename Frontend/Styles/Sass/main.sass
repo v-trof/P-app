@@ -69,29 +69,8 @@ img
 [contenteditable]
 	transition: $time-regular
 
-#delete
-	transition: $time-regular
-	display: flex
-	flex-direction: row
-	justify-content: center
-	align-items: center
-	background: $white
-	position: fixed
-	width: $icon-big*1.5
-	height: $icon-big*1.5
-	z-index: 2
-	overflow: hidden
-	top: -$block-regular
-	left: 50%
-	margin-left: -$icon-big
-	+box-shadow(2)
-	border-radius: 50%
-	&.shown
-		transform: translateY($block-regular*3)
-	&.delete
-		background: $red-dim
-	&>svg
-		transition: $time-regular
-		height: $icon-regular
-		width: $icon-regular
-		fill: $red-bright
+.free_spinner
+	height: $icon-regular
+	width: $icon-regular
+	&.white>circle
+		stroke: $white !important

@@ -60,6 +60,9 @@ function add_menu_caller(select) {
 	$(select).children('input').val(first_option.attr("value"));
 	$(select).children(".display").text(first_option.text());
 	$(select).click(function(e) {
+		if($(this).attr('disabled') == "false"){
+			e.preventDefault();
+		}
 		var options = [];
 		var checked = {};
 		var current_value = $(this).children('input').val();
