@@ -24,8 +24,6 @@ from django.conf.urls import patterns
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 import sys
 
-# reload(sys)
-# sys.setdefaultencoding("utf-8")
 func_patterns = [
     url(r'^login/$', func_views.login),
     url(r'^templatetest/$', func_views.test),
@@ -39,6 +37,7 @@ func_patterns = [
     url(r'^create_contact/$', func_views.create_contact),
     url(r'^upload_avatar/$', func_views.upload_avatar),
     url(r'^invite_students/$', func_views.invite_students),
+    url(r'^invite_teacher/$', func_views.invite_teacher),
     url(r'^course_reg/(?P<course_id>[0-9]+)/$', func_views.course_reg),
 ]
 

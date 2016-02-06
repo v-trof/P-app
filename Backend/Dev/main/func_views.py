@@ -239,14 +239,13 @@ def invite_students(request):
     group = request.POST.get('group')
     course=Course.objects.get(id=request.POST.get('course_id'))
     subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
-    text_content_nonreg='Вам поступило приглашение на курс '+str(course.name)+' от '+str(request.user.name)+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
-    text_content='Вам поступило приглашение на курс '+str(course.name)+' от '+str(request.user.name)+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
+    text_content_nonreg='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
+    text_content='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
     for email in email_list:
         with open('courses/'+str(course.name)+'/json/'+str(course.name)+'.json',"r") as data_file:
             data = json.load(data_file)
             data["pending_users"].append({'email':email, 'group':group})
         with io.open('courses/'+course.name+'/json/'+course.name+'.json', 'w', encoding='utf8') as json_file:
-            # print "ffff"
             saving_data = json.dumps(data, ensure_ascii=False)
             json_file.write(unicode(saving_data))
         if User.objects.filter(email=email):
@@ -255,6 +254,28 @@ def invite_students(request):
         else: 
             msg = EmailMultiAlternatives(subject, text_content_nonreg, from_email, [email])
             msg.send()
+    return HttpResponse("ok")
+
+def invite_teacher(request):
+    email = request.POST.get('email')
+    course=Course.objects.get(id=request.POST.get('course_id'))
+    subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
+    print (request.user.name)
+    text_content_nonreg='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
+    text_content='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
+    with open('courses/'+str(course.name)+'/json/'+str(course.name)+'.json',"r") as data_file:
+        data = json.load(data_file)
+        data["pending_users"].append({'email':email, 'group':'teachers'})
+    print ("ffff")
+    with io.open('courses/'+course.name+'/json/'+course.name+'.json', 'w', encoding='utf8') as json_file:
+        saving_data = json.dumps(data, ensure_ascii=False)
+        json_file.write(unicode(saving_data))
+    if User.objects.filter(email=email):
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
+        msg.send()
+    else: 
+        msg = EmailMultiAlternatives(subject, text_content_nonreg, from_email, [email])
+        msg.send()
     return HttpResponse("ok")
 
 def course_reg(request, course_id):

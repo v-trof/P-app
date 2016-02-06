@@ -171,11 +171,11 @@ $(document).ready(function() {
 				formData.append('email', $("#email").val());
 				formData.append('course_id', "{{course.id}}");
 				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-				formData.append('group', $(".group").children("h3").text());
-				$("#invite_students_button").prop("disabled", true);
+				$("#invite_teacher_button").prop("disabled", true);
+				processing.button.start($("#invite_students_button"));
 				$.ajax({
 					type:"POST",
-					url:"/func/invite_students/",
+					url:"/func/invite_teacher/",
 					data: formData,
 					processData: false,
 					contentType: false,
@@ -217,7 +217,9 @@ $(document).ready(function() {
 				formData.append('course_id', "{{course.id}}");
 				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 				formData.append('group', $(".group").children("h3").text());
+				console.log(formData);
 				$("#invite_students_button").prop("disabled", true);
+				processing.button.start($("#invite_students_button"));
 				$.ajax({
 					type:"POST",
 					url:"/func/invite_students/",
