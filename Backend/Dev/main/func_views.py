@@ -270,6 +270,7 @@ def course_reg(request, course_id):
         else: group="unordered"
         data["users"].append({'Имя':request.user.name, 'Группа':group})
     with io.open('courses/'+course.name+'/json/'+course.name+'.json', 'w', encoding='utf8') as json_file:
+        print(data)
         saving_data = json.dumps(data, ensure_ascii=False)
         json_file.write(unicode(saving_data))
     return redirect('/groups/'+str(course_id)+'/')

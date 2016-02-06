@@ -8,4 +8,6 @@
 	{% empty %}
 	Вы ещё не присоеденились ни к одному курсу, найдите то что вас интересует через поиск.
 {% endfor %}
+{% if not teacher %}
 	{% include 'UI_elements/cards/create_course.html' %}
+{% endif %}
