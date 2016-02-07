@@ -1,7 +1,12 @@
-def edit(request):
-    test = {"heading":"Sample"}
-    context =  Context({"test":test})
-    return render(request, 'Pages/test_editor.html', context)
+def create(request):
+	#creates new test
+	pass
+
+def delete(request):
+	#deletes test file
+	pass
+
+
 
 def save(request):
 	#saves test file
@@ -15,11 +20,11 @@ def save(request):
 
 def load(request):
 	#loads test file
-	pass
+	test = {"heading":"Sample"}
+	context =  Context({"test":test})
+	return render(request, 'Pages/test_editor.html', context)
 
-def delete(request):
-	#deletes test file
-	pass
+
 
 def publish(request):
 	#make test visible in course
@@ -33,14 +38,16 @@ def share(request):
 	#make test avalible in package_catalog
 	pass
 
+
+
 def attempt(request):
 	#creates or continues attempt
 	pass
 
-def save_attempt(request):
+def attempt_save(request):
 	#saves attempt data
 	pass
 
-def check(request):
+def attempt_check(request):
 	#checks attempts
 	pass

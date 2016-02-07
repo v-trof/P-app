@@ -18,11 +18,28 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from . import views
 from . import func_views
+from . import test_views
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import patterns
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 import sys
+
+test_patterns = [
+    url(r'^create/$', test_views.create),
+    url(r'^delete/$', test_views.delete),
+
+    url(r'^save/$', test_views.save),
+    url(r'^load/$', test_views.save),
+   
+    url(r'^publish/$', test_views.publish),
+    url(r'^unpublish/$', test_views.unpublish),
+    url(r'^share/$', test_views.share),
+
+    url(r'^attempt/$', test_views.attempt),
+    url(r'^attempt_save/$', test_views.attempt_save),
+    url(r'^attempt_check/$', test_views.attempt_check),
+]
 
 func_patterns = [
     url(r'^login/$', func_views.login),
@@ -46,14 +63,16 @@ course_patterns = [
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', views.home, name='home'),
-    url(r'^test_editor/$', views.test_editor),
+    url(r'^course/', include(course_patterns)),
+    url(r'^func/', include(func_patterns)),
+    url(r'^test/', include(test_patterns)),
+
+    url(r'^login/$', views.login),
     url(r'^register/$', views.register),
     url(r'^register/(?P<course_id>[0-9]+)/$', views.register),
     url(r'^forgot_password/$', views.forgot_password),
-    url(r'^func/', include(func_patterns)),
-    url(r'^login/$', views.login),
-    url(r'^course/', include(course_patterns)),
+
+    url(r'^$', views.home, name='home'),
     url(r'^user/(?P<user_id>[0-9]+)/$', views.profile),
 ]
 
