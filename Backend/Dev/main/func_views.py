@@ -112,48 +112,20 @@ def create_course(request):
         db = sqlite3.connect('db.sqlite3')
         name = request.POST['course_name']
         subject = request.POST['subject']
-         #   cursor = db.cursor()
-         #   cursor.execute(
-         #       ''' CREATE TABLE "''' + name +
-         #        ''' " ( "id" integer PRIMARY KEY NOT NULL,"name" varchar(30))''')
-        if not os.path.exists('/'+name+'/'):
-            course=Course.objects.create_course(name=name, subject=subject)
-            course.save()
-            db.commit()
-            os.makedirs('courses/'+name+'/json/')
-            f = open('courses/'+name+'/json/'+name+'.json', 'a')
-        else: 
-            course=Course.objects.create_course(name=name+' #'+request.user.id, subject=subject)
-            course.save()
-            db.commit()
-            os.makedirs('courses/'+name+' #'+request.user.id+'/json/')
-            f = open('courses/'+name+' #'+request.user.id+'/json/'+name+'.json', 'a')
+        #   cursor = db.cursor()
+        #   cursor.execute(
+        #       ''' CREATE TABLE "''' + name +
+        #        ''' " ( "id" integer PRIMARY KEY NOT NULL,"name" varchar(30))''')
+        course=Course.objects.create_course(name=name, subject=subject)
+        course.save()
+        db.commit()
+        os.makedirs('courses/'+str(course.id)+'/Tests/')
+        f = open('courses/'+str(course.id)+'/info.json', 'a')
         material = File(f)
         material.write('{"administrators":['+str(request.user.id)+'], "moderators":[], "teachers":[], "spectators":[], "users":[], "pending_users":[]}')
         material.close()
         f.close()
         return redirect('/course/'+str(course.id)+'/groups/')
-
-def new_material(request):
-    if request.method == 'POST':
-        db = sqlite3.connect('db.sqlite3')
-        course_name = request.POST['course_name']
-        material_name = request.POST['material_name']
-        link = course_name+'/'+material_name+'.json'
-        cursor = db.cursor()
-        cursor.execute(
-            ''' INSERT INTO ''' + course_name +
-            ''' (name,link) VALUES (' ''' + material_name +
-            ''' ', ' ''' + link + ''' ');''')
-        db.commit()
-        if not os.path.exists('json/'+course_name+'/'):
-            os.makedirs('json/'+course_name+'/')
-        f = open('json/'+course_name+'/'+material_name+'.json', 'a')
-        material = File(f)
-        material.write('Hello World')
-        material.close()
-        f.close()
-        return redirect('/')
 
 def change_data(request):
     if request.method == 'GET':
@@ -242,10 +214,10 @@ def invite_students(request):
     text_content_nonreg='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
     text_content='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
     for email in email_list:
-        with open('courses/'+str(course.name)+'/json/'+str(course.name)+'.json',"r") as data_file:
+        with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
             data = json.load(data_file)
             data["pending_users"].append({'email':email, 'group':group})
-        with io.open('courses/'+course.name+'/json/'+course.name+'.json', 'w', encoding='utf8') as json_file:
+        with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
             saving_data = json.dumps(data, ensure_ascii=False)
             json_file.write(unicode(saving_data))
         if User.objects.filter(email=email):
@@ -263,11 +235,11 @@ def invite_teacher(request):
     print (request.user.name)
     text_content_nonreg='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
     text_content='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
-    with open('courses/'+str(course.name)+'/json/'+str(course.name)+'.json',"r") as data_file:
+    with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
         data = json.load(data_file)
         data["pending_users"].append({'email':email, 'group':'teachers'})
     print ("ffff")
-    with io.open('courses/'+course.name+'/json/'+course.name+'.json', 'w', encoding='utf8') as json_file:
+    with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
         saving_data = json.dumps(data, ensure_ascii=False)
         json_file.write(unicode(saving_data))
     if User.objects.filter(email=email):
@@ -284,13 +256,13 @@ def course_reg(request, course_id):
         return redirect('/login/')
     # print "sovsem_ok"
     course=Course.objects.get(id=course_id)
-    with open('courses/'+course.name+'/json/'+course.name+'.json',"r") as data_file:
+    with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
         data = json.load(data_file)
         if request.user.email in data["pending_users"]:
             group="user"
         else: group="unordered"
         data["users"].append({'Имя':request.user.name, 'Группа':group})
-    with io.open('courses/'+course.name+'/json/'+course.name+'.json', 'w', encoding='utf8') as json_file:
+    with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
         print(data)
         saving_data = json.dumps(data, ensure_ascii=False)
         json_file.write(unicode(saving_data))
@@ -301,7 +273,7 @@ class Struct(object):
             self.__dict__.update(entries)
 
 def course_getdata(request, course):
-    with open('courses/'+course.name+'/json/'+course.name+'.json',"r") as data_file:
+    with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
         data = json.load(data_file)
         # print "1"
         course_data=Struct(**data)

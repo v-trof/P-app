@@ -29,7 +29,6 @@ func_patterns = [
     url(r'^templatetest/$', func_views.test),
     url(r'^reg/$', func_views.reg),
     url(r'^create_course/$', func_views.create_course),
-    url(r'^new_material/$', func_views.new_material),
     url(r'^logout/$', func_views.logout_view),
     url(r'^change_data/$', func_views.change_data),
     url(r'^reset_password/$', func_views.reset_password),
