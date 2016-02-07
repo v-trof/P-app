@@ -128,15 +128,15 @@ def create_course(request):
         return redirect('/course/'+str(course.id)+'/groups/')
 
 def create_group(request, course):
-	name = request.POST.get('subject')
-	with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
-		data = json.load(data_file)
+    name = request.POST.get('subject')
+    with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
+        data = json.load(data_file)
         data["groups"].append({name})
-    	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
-	        print(data)
-	        saving_data = json.dumps(data, ensure_ascii=False)
-	        json_file.write(unicode(saving_data))
-    	return HttpResponse("ok")
+        with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
+            print(data)
+            saving_data = json.dumps(data, ensure_ascii=False)
+            json_file.write(unicode(saving_data))
+        return HttpResponse("ok")
 
 def change_data(request):
     if request.method == 'GET':

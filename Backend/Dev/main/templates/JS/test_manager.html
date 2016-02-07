@@ -73,9 +73,9 @@ var test = {
 		var formData = new FormData();
 		formData.append("json_file", JSON.stringify(testfile));
 		formData.append("course_id", "{{course.id}}");
-		formData.append("course_id", "{{test.id}}");
+		formData.append("test_id", "{{test.id}}");
 		csrf_token = '{{csrf_token}}';
-		console.log(csrf_token);
+		console.log(csrf_token, "{{test.id}}", "{{course.id}}");
 		formData.append('csrfmiddlewaretoken', csrf_token);
 		console.log(formData);
 		$.ajax({
@@ -84,8 +84,8 @@ var test = {
 			data: formData,
 			processData: false,
 			contentType: false,
-			success: function(){
-				notification.change('success','Сохранено');
+			done: function(data){
+				notification.change('success', data);
 			}
 		});
 	},

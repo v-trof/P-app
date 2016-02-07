@@ -19,7 +19,7 @@ def save(request):
 		json_file = request.POST["json_file"]
 		course_id = request.POST["course_id"]
 		test_id = request.POST["test_id"]
-		print(json_file,course_id,test_id)
+		print(json_file, course_id, test_id)
 		test_file = open('courses/'+course_id+'/Tests/'+test_id+'.json', 'w')
 		test_file.write(json_file)
 
@@ -27,9 +27,9 @@ def save(request):
 
 def load(request):
 	#loads test file
-	test = {"heading": "Sample"}
+	test = {"heading": "Sample", "id": "1"}
 	course = {"id": "24"}
-	context =  {"test":test, "course":"course"}
+	context =  {"test": test, "course": course}
 	return render(request, 'Pages/test_editor.html', context)
 
 
