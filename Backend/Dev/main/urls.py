@@ -26,12 +26,12 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 import sys
 
 test_patterns = [
-    url(r'^create/$', test_views.create),
+    url(r'^edit/$', test_views.edit),
+
     url(r'^delete/$', test_views.delete),
 
     url(r'^save/$', test_views.save),
-    url(r'^load/$', test_views.load),
-   
+
     url(r'^publish/$', test_views.publish),
     url(r'^unpublish/$', test_views.unpublish),
     url(r'^share/$', test_views.share),

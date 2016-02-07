@@ -2,10 +2,21 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
+import html
+
+def edit(request):
+	print(request.GET["test_id"])
+	if request.GET["test_id"]:
+		return load(request)
+	else:
+		return create(request)
+
+
+
 
 def create(request):
 	#creates new test
-	pass
+	return HttpResponse("sample")
 
 def delete(request):
 	#deletes test file
@@ -27,8 +38,12 @@ def save(request):
 
 def load(request):
 	#loads test file
-	test = {"heading": "Sample", "id": "1"}
-	course = {"id": "24"}
+	course_id =request.GET["course_id"]
+	test_id =  request.GET["test_id"]
+	json_file = open('courses/'+course_id+'/Tests/'+test_id+'.json', 'r')
+	json_file = json_file.read()
+	course = {"id": course_id}
+	test = {"id": test_id, "loaded": 1, "json": json_file}
 	context =  {"test": test, "course": course}
 	return render(request, 'Pages/test_editor.html', context)
 

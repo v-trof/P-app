@@ -1,4 +1,10 @@
-<script>var pack_input = {
+<script>
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+var pack_input = {
 	"block--empty" : function(){
 		return {
 			"class": "block--empty",
@@ -89,9 +95,9 @@ var test = {
 			}
 		});
 	},
-	unpack: function(json_file) {
-		console.log(json_file);
-		var testfile = JSON.parse(json_file);
+	unpack: function(testfile) {
+		testfile = JSON.parse(testfile.replaceAll('&quot;', '"'));
+		$(".test__heading, title").text(testfile.title);
 		testfile.tasks.forEach(function(task_data){
 			generate.task(task_data);
 		});
@@ -102,4 +108,7 @@ $(document).ready(function() {
 	$("#test_save").click(function(event) {
 		test.pack();
 	});
+	{% if test.loaded %}
+		test.unpack('{{test.json}}');
+	{% endif %}
 });</script>
