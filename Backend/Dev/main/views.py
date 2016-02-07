@@ -120,11 +120,6 @@ def register(request, course_id=None):
 def forgot_password(request):
     return render(request, 'Pages/forgot_password.html')
 
-def test_editor(request):
-    test = {"heading":"Sample"}
-    context =  Context({"test":test})
-    return render(request, 'Pages/test_editor.html', context)
-
 def profile(request, user_id):
     try: 
         return render(request, 'Pages/profile.html', {"user":User.objects.get(id=user_id)})

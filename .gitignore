@@ -51,3 +51,4 @@ Frontend/Test
 *.sublime-workspace
 *.sublime-workspace
 *.chache
+*.pyc

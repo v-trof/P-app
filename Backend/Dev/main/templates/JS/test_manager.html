@@ -70,8 +70,20 @@ var test = {
 			testfile.tasks.push(c_task);
 		});
 		console.log(testfile);
-		var json = JSON.stringify(testfile);
-		console.log(json);
+		var formData = new FormData();
+		formData.append("json_file", JSON.stringify(testfile));
+		formData.append("course_id", "{{course.id}}");
+		formData.append("course_id", "{{test.id}}");
+		formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+		$.ajax({
+			type:"POST",
+			url:"/test/save/",
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function(){
+				notification.change('success','Сохранено');
+		});
 	},
 	unpack: function(json_file) {
 		console.log(json_file);
