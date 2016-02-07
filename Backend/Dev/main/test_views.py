@@ -29,7 +29,7 @@ def load(request):
 	#loads test file
 	test = {"heading": "Sample"}
 	course = {"id": "24"}
-	context =  Context({"test":test, "course":"course"})
+	context =  {"test":test, "course":"course"}
 	return render(request, 'Pages/test_editor.html', context)
 
 

@@ -122,10 +122,21 @@ def create_course(request):
         os.makedirs('courses/'+str(course.id)+'/Tests/')
         f = open('courses/'+str(course.id)+'/info.json', 'a')
         material = File(f)
-        material.write('{"administrators":['+str(request.user.id)+'], "moderators":[], "teachers":[], "spectators":[], "users":[], "pending_users":[]}')
+        material.write('{"groups":["unordered"], "administrators":['+str(request.user.id)+'], "moderators":[], "teachers":['+str(request.user.id)+'], "spectators":[], "users":[], "pending_users":[]}')
         material.close()
         f.close()
         return redirect('/course/'+str(course.id)+'/groups/')
+
+def create_group(request, course):
+	name = request.POST.get('subject')
+	with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
+		data = json.load(data_file)
+        data["groups"].append({name})
+    	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
+	        print(data)
+	        saving_data = json.dumps(data, ensure_ascii=False)
+	        json_file.write(unicode(saving_data))
+    	return HttpResponse("ok")
 
 def change_data(request):
     if request.method == 'GET':
@@ -211,8 +222,9 @@ def invite_students(request):
     group = request.POST.get('group')
     course=Course.objects.get(id=request.POST.get('course_id'))
     subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
-    text_content_nonreg='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
-    text_content='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
+    text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
+    text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
+    print(group)
     for email in email_list:
         with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
             data = json.load(data_file)
@@ -233,8 +245,8 @@ def invite_teacher(request):
     course=Course.objects.get(id=request.POST.get('course_id'))
     subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
     print (request.user.name)
-    text_content_nonreg='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
-    text_content='Вам поступило приглашение на курс '+str(course.name)+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
+    text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
+    text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
     with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
         data = json.load(data_file)
         data["pending_users"].append({'email':email, 'group':'teachers'})
@@ -266,7 +278,7 @@ def course_reg(request, course_id):
         print(data)
         saving_data = json.dumps(data, ensure_ascii=False)
         json_file.write(unicode(saving_data))
-    return redirect('/groups/'+str(course_id)+'/')
+    return redirect('/course/'+str(course_id)+'/groups/')
 
 class Struct(object):
         def __init__(self, **entries):
@@ -278,6 +290,7 @@ def course_getdata(request, course):
         # print "1"
         course_data=Struct(**data)
         # print course_data.teachers
+        course_data.groups=data["groups"]
         if request.user.id in data["administrators"]:
             course_data.user_status="administrator"
         elif request.user.id in data["teachers"]:
