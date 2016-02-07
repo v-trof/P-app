@@ -88,8 +88,6 @@ function toggle_edit(){
 			$(this).attr('style', '');
 			$(this).replaceTag("<a>", true);
 		});
-		$("#create_group").hide();
-
 		editing = false;
 	} else {
 		$("h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
@@ -119,7 +117,6 @@ function toggle_edit(){
 		unordered.children("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
 
 		add_boundary.button_remove($(".button_remove"));
-		$("#create_group").show();
 
 		editing = true;
 	}
