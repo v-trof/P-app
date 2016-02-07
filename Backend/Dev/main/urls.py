@@ -30,7 +30,7 @@ test_patterns = [
     url(r'^delete/$', test_views.delete),
 
     url(r'^save/$', test_views.save),
-    url(r'^load/$', test_views.save),
+    url(r'^load/$', test_views.load),
    
     url(r'^publish/$', test_views.publish),
     url(r'^unpublish/$', test_views.unpublish),

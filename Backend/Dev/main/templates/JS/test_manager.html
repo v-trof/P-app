@@ -74,7 +74,10 @@ var test = {
 		formData.append("json_file", JSON.stringify(testfile));
 		formData.append("course_id", "{{course.id}}");
 		formData.append("course_id", "{{test.id}}");
-		formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+		csrf_token = '{{csrf_token}}';
+		console.log(csrf_token);
+		formData.append('csrfmiddlewaretoken', csrf_token);
+		console.log(formData);
 		$.ajax({
 			type:"POST",
 			url:"/test/save/",
@@ -83,6 +86,7 @@ var test = {
 			contentType: false,
 			success: function(){
 				notification.change('success','Сохранено');
+			}
 		});
 	},
 	unpack: function(json_file) {
