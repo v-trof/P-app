@@ -1,5 +1,5 @@
 <div class="group">
-<h3>{{group.name}}</h3>
+<h3>{{group}}</h3>
 {% for member in group.members %}
 	<a class="link--card" href="user/{{member.id}}.html">
 		{% include "UI_elements/cards/person.html" with user=member %}

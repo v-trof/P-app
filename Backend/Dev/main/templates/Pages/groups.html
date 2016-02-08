@@ -44,7 +44,7 @@
 		<section class="teachers">
 			<h2>Преподаватели</h2>
 			{% for teacher in course_data.teachers %}
-				<a class="link--card" href="user/{{teacher.id}}.html">
+				<a class="link--card" href="/user/{{teacher.id}}/">
 					{% include "UI_elements/cards/person.html" with user=teacher %}
 				</a>
 			{% endfor %}
@@ -52,9 +52,7 @@
 		<section class="students">
 			<h2>Ученики</h2>
 			{% for group in course_data.groups %}
-				{% if group %}
 				{% include 'Blocks/group.html' with group=group %}
-				{% endif %}
 			{% endfor %}
 		</section>
 	</main>
