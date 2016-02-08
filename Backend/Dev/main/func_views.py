@@ -19,6 +19,7 @@ from django.core.urlresolvers import reverse
 from django.core.mail import EmailMultiAlternatives
 import json
 import pdb
+import unicodedata
 from django.core import serializers
 def login(request):
 	def errorHandle(error):
@@ -131,7 +132,7 @@ def create_course(request):
 			data["administrators"]=[str(request.user.id)]
 			data["teachers"]=[str(request.user.id)]
 			saving_data = json.dumps(data, ensure_ascii=False)
-			json_file.write(unicode(saving_data))
+			json_file.write(saving_data)
 		return redirect('/course/'+str(course.id)+'/groups/')
 
 def create_group(request, course):
@@ -142,7 +143,7 @@ def create_group(request, course):
 		with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 			print(data)
 			saving_data = json.dumps(data, ensure_ascii=False)
-			json_file.write(unicode(saving_data))
+			json_file.write(saving_data)
 		return HttpResponse("ok")
 
 def change_data(request):
@@ -238,7 +239,7 @@ def invite_students(request):
 			data["pending_users"].append({'email':email, 'group':group})
 		with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
-			json_file.write(unicode(saving_data))
+			json_file.write(saving_data)
 		if User.objects.filter(email=email):
 			msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
 			msg.send()
@@ -260,7 +261,7 @@ def invite_teacher(request):
 	print ("ffff")
 	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 		saving_data = json.dumps(data, ensure_ascii=False)
-		json_file.write(unicode(saving_data))
+		json_file.write(saving_data)
 	if User.objects.filter(email=email):
 		msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
 		msg.send()
@@ -284,7 +285,7 @@ def course_reg(request, course_id):
 	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 		print(data)
 		saving_data = json.dumps(data, ensure_ascii=False)
-		json_file.write(unicode(saving_data))
+		json_file.write(saving_data)
 	return redirect('/course/'+str(course_id)+'/groups/')
 
 class Struct(object):
@@ -305,7 +306,7 @@ def course_getdata(request, course):
 		for teacher_id in data["teachers"]:
 			course_data["teachers"].append(User.objects.get(id=teacher_id))
 		#for user in data["users"]:
-		#	group=unicode(user["Группа"])
+		#	group=user["Группа"]
 		#	if course_data[group]:
 		#		course_data[group].append(User.objects.get(name=user["Имя"]))
 		#	else: 

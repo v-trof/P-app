@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
-import html
 
 def edit(request):
 	print(request.GET["test_id"])
