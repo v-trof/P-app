@@ -1,1 +1,1 @@
-{"groups": ["Нераспределенные"], "teachers": ["1"], "users": [], "administrators": ["1"], "tests": {"amount": null, "active": []}, "pending_users": []}
+{"tests": {"amount": 10, "active": []}, "teachers": ["1"], "administrators": ["1"], "pending_users": [], "users": [], "groups": ["Нераспределенные"]}
