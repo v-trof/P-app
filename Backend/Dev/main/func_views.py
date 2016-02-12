@@ -1,26 +1,29 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import sqlite3
+import json
+import pdb
+import unicodedata
+import os
+import io
+import random, string           
+import hashlib
+from django.core import serializers
 from django.core.files import File
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.core.mail import send_mail
 from django.db import models
-from django.contrib.auth import authenticate, login as auth
-import os
-import io
-from .models import User, LoginForm, RegForm, FileForm, Course
 from django.contrib.auth import logout
 from django.utils.html import strip_tags
-from binascii import hexlify
+from django.contrib.auth import authenticate, login as auth
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.urlresolvers import reverse
 from django.core.mail import EmailMultiAlternatives
-import json
-import pdb
-import unicodedata
-from django.core import serializers
+from .models import User, LoginForm, RegForm, FileForm, Course
+from binascii import hexlify
+
 def login(request):
 	def errorHandle(error):
 		form = LoginForm()
@@ -113,10 +116,6 @@ def create_course(request):
 		db = sqlite3.connect('db.sqlite3')
 		name = request.POST['course_name']
 		subject = request.POST['subject']
-		#   cursor = db.cursor()
-		#   cursor.execute(
-		#       ''' CREATE TABLE "''' + name +
-		#        ''' " ( "id" integer PRIMARY KEY NOT NULL,"name" varchar(30))''')
 		course=Course.objects.create_course(name=name, subject=subject)
 		course.save()
 		db.commit()
@@ -127,8 +126,8 @@ def create_course(request):
 			data["groups"]=["Нераспределенные"]
 			data["users"]=[]
 			data["tests"]={}
-			data["tests"]["amount"]=0;
-			data["tests"]["active"]=[];
+			data["tests"]["amount"]=0
+			data["tests"]["active"]=[]
 			data["administrators"]=[str(request.user.id)]
 			data["teachers"]=[str(request.user.id)]
 			saving_data = json.dumps(data, ensure_ascii=False)
@@ -137,11 +136,10 @@ def create_course(request):
 
 def create_group(request, course):
 	name = request.POST.get('subject')
-	with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
+	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
 		data["groups"].append({name})
 		with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
-			print(data)
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return HttpResponse("ok")
@@ -186,8 +184,6 @@ def reset_password(request):
 		email = request.POST['email']
 		if User.objects.filter(username=email):
 			user=User.objects.get(username=email);
-			import os, random, string           
-			import hashlib
 			length = 13
 			chars = string.ascii_letters + string.digits
 			random.seed = (os.urandom(1024))
@@ -232,9 +228,8 @@ def invite_students(request):
 	subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
 	text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
 	text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
-	print(group)
 	for email in email_list:
-		with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
+		with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
 			data["pending_users"].append({'email':email, 'group':group})
 		with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
@@ -255,10 +250,9 @@ def invite_teacher(request):
 	print (request.user.name)
 	text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
 	text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
-	with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
+	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
 		data["pending_users"].append({'email':email, 'group':'teachers'})
-	print ("ffff")
 	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 		saving_data = json.dumps(data, ensure_ascii=False)
 		json_file.write(saving_data)
@@ -271,15 +265,14 @@ def invite_teacher(request):
 	return HttpResponse("ok")
 
 def course_reg(request, course_id):
-	# print "chut_bolee_chem_ok"
 	if not request.user.name:
 		return redirect('/login/')
-	# print "sovsem_ok"
 	course=Course.objects.get(id=course_id)
-	with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
+	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
 		if request.user.email in data["pending_users"]:
-			group="Нераспределенные"
+			user=User.objects.get(email=request.user.email)
+			group=data["pending_users"]["group"]
 		else: group="Нераспределенные"
 		data["users"].append({'Имя':request.user.name, 'Группа':group})
 	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
@@ -288,14 +281,9 @@ def course_reg(request, course_id):
 		json_file.write(saving_data)
 	return redirect('/course/'+str(course_id)+'/groups/')
 
-class Struct(object):
-		def __init__(self, **entries):
-			self.__dict__.update(entries)
-
 def course_getdata(request, course):
-	with open('courses/'+str(course.id)+'/info.json',"r") as data_file:
+	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
-		# print "1"
 		course_data={}
 		course_data["groups"]=data["groups"]
 		course_data["teachers"]=[]

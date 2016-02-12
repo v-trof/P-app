@@ -171,7 +171,7 @@ $(document).ready(function() {
 				formData.append('course_id', "{{course.id}}");
 				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 				$("#invite_teacher_button").prop("disabled", true);
-				processing.button.start($("#invite_students_button"));
+				processing.button.start($("#invite_teacher_button"));
 				$.ajax({
 					type:"POST",
 					url:"/func/invite_teacher/",
