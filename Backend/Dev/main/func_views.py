@@ -127,7 +127,7 @@ def create_course(request):
 			data["groups"]=["Нераспределенные"]
 			data["users"]=[]
 			data["tests"]={}
-			data["tests"]["amount"]=None;
+			data["tests"]["amount"]=0;
 			data["tests"]["active"]=[];
 			data["administrators"]=[str(request.user.id)]
 			data["teachers"]=[str(request.user.id)]
