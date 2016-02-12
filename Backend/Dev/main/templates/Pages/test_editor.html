@@ -26,7 +26,7 @@
 			<div class="test">
 				<div class="test__bg"></div>
 				<div id="delete">
-					<svg class="{{ class }}" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+					{% include 'UI_elements/Icons/delete.svg' %}
 				</div>
 				<h1 class="test__heading" contenteditable="">Новый Тест</h1>
 				<div class="test__preview">
@@ -76,10 +76,19 @@
 				<input type="radio" id="edit" name="editor_type"><label for="edit">Редактирование содержимого</label>
 			</div>
 			<div class="actionbox">
-				<button class="button--icon" id="test_save">
+				<button class="button--icon" id="test_save" tip="сохранить">
 					{% include "UI_elements/Icons/save.svg" %}
 				</button>
-				<button class="button--icon" id="test_delete">
+				{% if not test.loaded or not test.published %}
+					<button class="button--icon" id="test_publish" tip="Сделать доступным для прохождения">
+						{% include "UI_elements/Icons/visibility.svg" %}
+					</button>
+				{% else %}
+					<button class="button--icon" id="test_unpublish"  tip="Сделать недоступным для прохождения">
+						{% include "UI_elements/Icons/visibility_off.svg" %}
+					</button>
+				{% endif %}
+				<button class="button--icon" id="test_delete"  tip="Удалить">
 					{% include "UI_elements/Icons/delete.svg" %}
 				</button>
 			</div>

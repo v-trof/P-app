@@ -6,6 +6,7 @@ import os
 import json
 
 def edit(request):
+	#switch for create\load test, lauches test editor anyway
 	if "test_id" in request.GET:
 		return load(request)
 	else:
@@ -15,6 +16,7 @@ def edit(request):
 
 
 def create(request):
+	#creates test environment (no test exists as file untill saved)
 	course_id =request.GET["course_id"]
 	
 	info_file = open('courses/'+course_id+'/info.json', 'r')
@@ -29,8 +31,23 @@ def create(request):
 	return render(request, 'Pages/test_editor.html', context)
 
 def delete(request):
-	#deletes test file
-	pass
+	#moves test to trash bin
+	course_id =request.GET["course_id"]
+	test_id =request.GET["test_id"]
+	info_file = open('courses/'+course_id+'/info.json', 'r')
+	course_info = json.loads(info_file.read())
+	info_file.close()
+
+	if test_id in course_info['tests']['published']:
+		course_info['tests']['published'].remove(test_id)
+
+	if test_id in course_info['tests']['unpublished']:
+		course_info['tests']['unpublished'].remove(test_id)
+
+	info_file = open('courses/'+course_id+'/info.json', 'w+')
+	info_file.write(json.dumps(course_info, ensure_ascii=False))
+	info_file.close()
+	return HttpResponse("ok")
 
 
 
@@ -45,6 +62,7 @@ def save(request):
 			info_file = open('courses/'+course_id+'/info.json', 'r')
 			course_info = json.loads(info_file.read())
 			course_info['tests']['amount']+=1
+			course_info['tests']['inactive'].append(test_id)
 			test_id = str(course_info['tests']['amount'])
 			info_file.close()
 
@@ -61,20 +79,57 @@ def load(request):
 	test_id =  request.GET["test_id"]
 	json_file = open('courses/'+course_id+'/Tests/'+test_id+'.json', 'r')
 	json_file = json_file.read()
+
+	info_file = open('courses/'+course_id+'/info.json', 'r')
+	course_info = json.loads(info_file.read())
+	info_file.close()
+
 	course = {"id": course_id}
-	test = {"id": test_id, "loaded": 1, "json": json_file}
+	test = {
+		"id": test_id,
+		"loaded": 1,
+		"json": json_file,
+		"published" : test_id in course_info["tests"]["published"]
+	}
+
 	context =  {"test": test, "course": course}
 	return render(request, 'Pages/test_editor.html', context)
 
 
 
 def publish(request):
-	#make test visible in course
-	pass
+	#makes test visible in course screen
+	course_id =request.GET["course_id"]
+	test_id =request.GET["test_id"]
+	info_file = open('courses/'+course_id+'/info.json', 'r')
+	course_info = json.loads(info_file.read())
+	info_file.close()
+
+	course_info['tests']['unpublished'].remove(test_id)
+
+	course_info['tests']['published'].append(test_id)
+
+	info_file = open('courses/'+course_id+'/info.json', 'w+')
+	info_file.write(json.dumps(course_info, ensure_ascii=False))
+	info_file.close()
+	return HttpResponse("ok")
 
 def unpublish(request):
-	#makes test invisible in test
-	pass
+	#makes test invisible in course screen
+	course_id =request.GET["course_id"]
+	test_id =request.GET["test_id"]
+	info_file = open('courses/'+course_id+'/info.json', 'r')
+	course_info = json.loads(info_file.read())
+	info_file.close()
+
+	course_info['tests']['published'].remove(test_id)
+
+	course_info['tests']['unpublished'].append(test_id)
+
+	info_file = open('courses/'+course_id+'/info.json', 'w+')
+	info_file.write(json.dumps(course_info, ensure_ascii=False))
+	info_file.close()
+	return HttpResponse("ok")
 
 def share(request):
 	#make test avalible in package_catalog
