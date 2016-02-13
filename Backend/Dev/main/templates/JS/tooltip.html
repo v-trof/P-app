@@ -58,7 +58,10 @@ var tooltip = {
 				});
 			}
 		}
-
+		console.log($('#tooltip').css('left'));
+		if( $('#tooltip').css('left')[0]=="-"){
+			$('#tooltip').css('left', "0");
+		}
 		$("#tooltip").css('opacity', '1');
 		tooltip.is_shown = true;
 	},
@@ -73,10 +76,22 @@ var tooltip = {
 			var results = "<div class='.tooltip__results--test'>" +description.percentage + "%<span>("+description.done + " из " + description.total + ")</span></div>";
 			var date = "<div class='.tooltip__date--test'>"+humanize.date(description.date)+"</div>";
 			return heading + results + date;
+		},
+		tip_based: function(el){
+			var tip = $(el).attr("tip"); 
+			$(el).hover(function() {
+				tooltip.show(el, tip);
+			}, function() {
+				tooltip.hide();
+			});
 		}
 	}
 }
-
+$(document).ready(function() {
+	$("[tip]").each(function() {
+		tooltip.generate.tip_based(this);
+	});
+});
 
 
 
