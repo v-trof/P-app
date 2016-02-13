@@ -32,8 +32,8 @@ def create(request):
 
 def delete(request):
 	#moves test to trash bin
-	course_id =request.GET["course_id"]
-	test_id =request.GET["test_id"]
+	course_id =request.POST["course_id"]
+	test_id =request.POST["test_id"]
 	info_file = open('courses/'+course_id+'/info.json', 'r')
 	course_info = json.loads(info_file.read())
 	info_file.close()
@@ -47,7 +47,7 @@ def delete(request):
 	info_file = open('courses/'+course_id+'/info.json', 'w+')
 	info_file.write(json.dumps(course_info, ensure_ascii=False))
 	info_file.close()
-	return HttpResponse("ok")
+	return HttpResponse("Тест удален")
 
 
 
@@ -62,7 +62,7 @@ def save(request):
 			info_file = open('courses/'+course_id+'/info.json', 'r')
 			course_info = json.loads(info_file.read())
 			course_info['tests']['amount']+=1
-			course_info['tests']['inactive'].append(test_id)
+			course_info['tests']['unpublished'].append(test_id)
 			test_id = str(course_info['tests']['amount'])
 			info_file.close()
 
@@ -71,7 +71,7 @@ def save(request):
 			info_file.close()
 		test_file = open(json_file_path, 'w')
 		test_file.write(json_file)
-	return HttpResponse("ok")
+	return HttpResponse("Тест сохранен")
 
 def load(request):
 	#loads test file
@@ -99,37 +99,38 @@ def load(request):
 
 def publish(request):
 	#makes test visible in course screen
-	course_id =request.GET["course_id"]
-	test_id =request.GET["test_id"]
+	course_id =request.POST["course_id"]
+	test_id =request.POST["test_id"]
 	info_file = open('courses/'+course_id+'/info.json', 'r')
 	course_info = json.loads(info_file.read())
 	info_file.close()
-
-	course_info['tests']['unpublished'].remove(test_id)
+	if test_id in course_info['tests']['unpublished']:
+		course_info['tests']['unpublished'].remove(test_id)
 
 	course_info['tests']['published'].append(test_id)
 
 	info_file = open('courses/'+course_id+'/info.json', 'w+')
 	info_file.write(json.dumps(course_info, ensure_ascii=False))
 	info_file.close()
-	return HttpResponse("ok")
+
+	return HttpResponse("Тест опубликован")
 
 def unpublish(request):
 	#makes test invisible in course screen
-	course_id =request.GET["course_id"]
-	test_id =request.GET["test_id"]
+	course_id =request.POST["course_id"]
+	test_id =request.POST["test_id"]
 	info_file = open('courses/'+course_id+'/info.json', 'r')
 	course_info = json.loads(info_file.read())
 	info_file.close()
-
-	course_info['tests']['published'].remove(test_id)
+	if test_id in course_info['tests']['published']:
+		course_info['tests']['published'].remove(test_id)
 
 	course_info['tests']['unpublished'].append(test_id)
 
 	info_file = open('courses/'+course_id+'/info.json', 'w+')
 	info_file.write(json.dumps(course_info, ensure_ascii=False))
 	info_file.close()
-	return HttpResponse("ok")
+	return HttpResponse("Тест скрыт")
 
 def share(request):
 	#make test avalible in package_catalog

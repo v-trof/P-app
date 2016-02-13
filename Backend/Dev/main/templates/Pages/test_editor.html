@@ -83,8 +83,15 @@
 					<button class="button--icon" id="test_publish" tip="Сделать доступным для прохождения">
 						{% include "UI_elements/Icons/visibility.svg" %}
 					</button>
+					<button class="button--icon" id="test_unpublish"  tip="Сделать недоступным для прохождения" style="display:none">
+						{% include "UI_elements/Icons/visibility_off.svg" %}
+					</button>
+
 				{% else %}
-					<button class="button--icon" id="test_unpublish"  tip="Сделать недоступным для прохождения">
+					<button class="button--icon" id="test_publish" tip="Сделать доступным для прохождения" style="display:none">
+						{% include "UI_elements/Icons/visibility.svg" %}
+					</button>
+					<button class="button--icon" id="test_unpublish"  tip="Сделать недоступным для прохождения" >
 						{% include "UI_elements/Icons/visibility_off.svg" %}
 					</button>
 				{% endif %}
@@ -109,5 +116,6 @@
 	{% include 'UI_elements/unique/context_menu.html' %}
 	{% include 'UI_elements/unique/popup.html' %}
 	{% include 'UI_elements/unique/tooltip.html' %}
+	{% include 'UI_elements/unique/notification.html' %}
 	</body>
 </html>
