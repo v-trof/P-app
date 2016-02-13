@@ -130,6 +130,7 @@ def create_course(request):
 			data["tests"]={}
 			data["tests"]["amount"]=0
 			data["tests"]["published"]=[]
+			data["tests"]["deleted"]=[]
 			data["administrators"]=[str(request.user.id)]
 			data["teachers"]=[str(request.user.id)]
 			saving_data = json.dumps(data, ensure_ascii=False)
