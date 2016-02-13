@@ -50,17 +50,10 @@ var pack_question = {
 			"value": $(el).children('img').attr("src"),
 		}
 	},
-	"block--empty" : function(){
-		return {
-			"class": "block--empty",
-			"value": "none",
-			"answer": "none"
-		}	
-	},
 }
 
 var test = {
-	pack: function(nosend){
+	pack: function(){
 		var testfile = {
 			"title" : $(".test__heading").text(),
 			"author": "{{teachername}}",
@@ -85,28 +78,23 @@ var test = {
 			testfile.tasks.push(c_task);
 		});
 		console.log(testfile);
-		if(nosend){
-			return JSON.stringify(testfile);
-		} else {
-			var formData = new FormData();
-			formData.append("json_file", JSON.stringify(testfile));
-			formData.append("course_id", "{{course.id}}");
-			formData.append("test_id", "{{test.id}}");
-			console.log(csrf_token, "{{test.id}}", "{{course.id}}");
-			formData.append('csrfmiddlewaretoken', csrf_token);
-			console.log(formData);
-			$.ajax({
-				type:"POST",
-				url:"/test/save/",
-				data: formData,
-				processData: false,
-				contentType: false,
-				success: function(data){
-					notification.change('success', 'success', data);
-				}
-			});
-		}
-		
+		var formData = new FormData();
+		formData.append("json_file", JSON.stringify(testfile));
+		formData.append("course_id", "{{course.id}}");
+		formData.append("test_id", "{{test.id}}");
+		console.log(csrf_token, "{{test.id}}", "{{course.id}}");
+		formData.append('csrfmiddlewaretoken', csrf_token);
+		console.log(formData);
+		$.ajax({
+			type:"POST",
+			url:"/test/save/",
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function(data){
+				notification.change('success', 'success', data);
+			}
+		});
 	},
 	unpack: function(testfile) {
 		testfile = JSON.parse(testfile.replaceAll('&quot;', '"'));
@@ -123,10 +111,10 @@ $(document).ready(function() {
 	});
 
 	$("#test_publish").click(function(event) {
+		test.pack();
 		var formData = new FormData();
 		formData.append("course_id", "{{course.id}}");
 		formData.append("test_id", "{{test.id}}");
-		formData.append("json_file", test.pack(true));
 		formData.append('csrfmiddlewaretoken', csrf_token);
 		$.ajax({
 			type:"POST",
@@ -143,6 +131,7 @@ $(document).ready(function() {
 	});
 
 	$("#test_unpublish").click(function(event) {
+		test.pack();
 		var formData = new FormData();
 		formData.append("course_id", "{{course.id}}");
 		formData.append("test_id", "{{test.id}}");
