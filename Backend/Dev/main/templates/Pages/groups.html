@@ -51,8 +51,8 @@
 		</section>
 		<section class="students">
 			<h2>Ученики</h2>
-			{% for group in course_data.groups %}
-				{% include 'Blocks/group.html' with group=group %}
+			{% for group, members in course_data.groups.items %}
+				{% include 'Blocks/group.html' with group=group members=members %}
 			{% endfor %}
 		</section>
 	</main>

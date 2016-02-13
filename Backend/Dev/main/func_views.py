@@ -122,8 +122,10 @@ def create_course(request):
 		os.makedirs('courses/'+str(course.id)+'/Tests/')
 		with io.open('courses/'+str(course.id)+'/info.json', 'a', encoding='utf8') as json_file:
 			data={}
-			data["pending_users"]=[]
-			data["groups"]=["Нераспределенные"]
+			data["pending_users"]={}
+			data["groups"]={}
+			data["groups"]["Нераспределенные"]=[]
+			data["pending_users"]["Нераспределенные"]=[]
 			data["users"]=[]
 			data["tests"]={}
 			data["tests"]["amount"]=0
@@ -228,18 +230,19 @@ def invite_students(request):
 	subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
 	text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
 	text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
-	for email in email_list:
+	for value in email_list:
+		print (value)
 		with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
-			data["pending_users"].append({'email':email, 'group':group})
+			data["pending_users"][group].append(value)
 		with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-		if User.objects.filter(email=email):
-			msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
+		if User.objects.filter(email=value):
+			msg = EmailMultiAlternatives(subject, text_content, from_email, [value])
 			msg.send()
 		else: 
-			msg = EmailMultiAlternatives(subject, text_content_nonreg, from_email, [email])
+			msg = EmailMultiAlternatives(subject, text_content_nonreg, from_email, [value])
 			msg.send()
 	return HttpResponse("ok")
 
@@ -265,16 +268,22 @@ def invite_teacher(request):
 	return HttpResponse("ok")
 
 def course_reg(request, course_id):
-	if not request.user.name:
+	if request.user.is_anonymous():
 		return redirect('/login/')
 	course=Course.objects.get(id=course_id)
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
 		if request.user.email in data["pending_users"]:
-			user=User.objects.get(email=request.user.email)
-			group=data["pending_users"]["group"]
+			for def_group in data["pending_users"]:
+				if request.user.email in data["pending_users"][def_group]:
+					group=data["pending_users"]["group"]
+					if request.user.id in data["groups"][group]:
+						return redirect('/')
+					user=User.objects.get(email=request.user.email)
+					del data["pending_users"][group][request.user.name]
 		else: group="Нераспределенные"
-		data["users"].append({'Имя':request.user.name, 'Группа':group})
+		data["users"].append({'Имя':request.user.name})
+		data["groups"][group].append(request.user.id)
 	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 		print(data)
 		saving_data = json.dumps(data, ensure_ascii=False)
@@ -285,29 +294,26 @@ def course_getdata(request, course):
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
 		course_data={}
-		course_data["groups"]=data["groups"]
+		course_data["groups"]={}
 		course_data["teachers"]=[]
 		course_data["users"]=[]
-		course_data["groups"]=[]
 		course_data["user_status"]=[]
-		print(course_data["user_status"])
 		for teacher_id in data["teachers"]:
 			course_data["teachers"].append(User.objects.get(id=teacher_id))
-		#for user in data["users"]:
-		#	group=user["Группа"]
-		#	if course_data[group]:
-		#		course_data[group].append(User.objects.get(name=user["Имя"]))
-		#	else: 
-		#		course_data[group]={}
+		for group in data["groups"]:
+			course_data["groups"][group]=[]
+			for user_id in data["groups"][group]:
+				course_data["groups"][group].append(User.objects.get(id=user_id))
 		if str(request.user.id) in data["administrators"]:
 			course_data["user_status"]="administrator"
 		elif str(request.user.id) in data["teachers"]:
 			course_data["user_status"]="teacher"
-		elif str(request.user.id) in data["moderators"]:
-			course_data["user_status"]="moderator"
-		elif str(request.user.id) in data["spectators"]:
-			course_data["user_status"]="spectator"
+		#elif str(request.user.id) in data["moderators"]:
+		#	course_data["user_status"]="moderator"
+		#elif str(request.user.id) in data["spectators"]:
+		#	course_data["user_status"]="spectator"
 		elif str(request.user.name) in data["users"]:
 			course_data["user_status"]="user"
 		else: course_data["user_status"]="guest"
+		print(course_data["groups"])
 		return course_data

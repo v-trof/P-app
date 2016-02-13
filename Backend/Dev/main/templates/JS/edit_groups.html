@@ -125,8 +125,6 @@ function toggle_edit(){
 }
 
 $(document).ready(function() {
-	$(".students").append(unordered);
-	add_boundary.group(unordered);
 	check_for_emptiness();
 
 
@@ -212,12 +210,11 @@ $(document).ready(function() {
 					email_list.push($(this).val());
 				});
 				console.log(email_list.join(","), email_list);
-				formData.append('email_list', email_list.join(","));
+				formData.append('email_list', email_list);
 				formData.append('course_id', "{{course.id}}");
 				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 				formData.append('group', $(".group").children("h3").text());
-				console.log(formData);
-				$("#invite_students_button").prop("disabled", true);
+				console.log($(".group").children("h3").text());
 				processing.button.start($("#invite_students_button"));
 				$.ajax({
 					type:"POST",
