@@ -1,0 +1,45 @@
+<script>
+	var user_ids = "{% for user in pending_users %}{{user.id}},{% endfor %}".split(',');
+		
+
+	var button_accept = $("<button class='button--icon'></button>");
+		button_accept.append('<svg class="{{ class }}" id="{{id}}" viewBox="0 0 24 24"  xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>')
+			.css('margin-left', 'auto');
+
+	var button_reject = $("<button class='button--icon'></button>");
+		button_reject.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13 13-5.832 13-13S23.168 3 16 3zm0 2c6.087 0 11 4.913 11 11s-4.913 11-11 11S5 22.087 5 16 9.913 5 16 5zm-3.78 5.78l-1.44 1.44L14.564 16l-3.782 3.78 1.44 1.44L16 17.437l3.78 3.78 1.44-1.437L17.437 16l3.78-3.78-1.437-1.44L16 14.564l-3.78-3.782z"/></svg>');
+
+	$(document).ready(function() {
+		$(".card-person").hover(function() {
+			$(this).append(button_accept)
+				.append(button_reject);
+			button_accept.css('opacity', '1');
+			button_reject.css('opacity', '1');
+		}, function() {
+			button_accept.css('opacity', '0');
+			button_reject.css('opacity', '0');
+		});
+
+		$(".card-person").each(function(index, el) {
+			$(this).attr('index', index);
+		});
+
+		button_accept.click(function(event) {
+			var person = button_accept.parent();
+			var user_id = user_ids[person.attr('index')];
+			/* ajax accept */
+			$("#hideout").append(button_accept)
+				.append(button_reject);
+			person.remove();
+		});
+
+		button_reject.click(function(event) {
+			var person = button_reject.parent();
+			var user_id = user_ids[person.attr('index')];
+			/* ajax reject */
+			$("#hideout").append(button_accept)
+				.append(button_reject);
+			person.remove();
+		});
+	});
+</script>

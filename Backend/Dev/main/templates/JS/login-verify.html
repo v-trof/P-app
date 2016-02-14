@@ -27,13 +27,15 @@ var name_last_name_regex = /^[^\s]+\s[^\s]+$/;
 
 function check_password(input){
 	// console.log(input);
-	if($(input).val().length >= 8) {
-		$(input).addClass('valid');
-		tooltip.hide();
-	} else {
-		$(input).removeClass('valid');
-		if(!tooltip.is_shown&& $(input).is(':focus')){
-			tooltip.show(input, messages.password_invalid);
+	if(input){
+		if($(input).val().length >= 8) {
+			$(input).addClass('valid');
+			tooltip.hide();
+		} else {
+			$(input).removeClass('valid');
+			if(!tooltip.is_shown&& $(input).is(':focus')){
+				tooltip.show(input, messages.password_invalid);
+			}
 		}
 	}
 	all_valid();

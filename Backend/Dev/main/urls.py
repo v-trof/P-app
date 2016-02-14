@@ -59,6 +59,7 @@ func_patterns = [
 
 course_patterns = [
     url(r'^(?P<course_id>[0-9]+)/groups/$', views.groups),
+    url(r'^(?P<course_id>[0-9]+)/requests/$', views.course_requests),
 ]
 
 urlpatterns = [

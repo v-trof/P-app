@@ -129,6 +129,9 @@ def profile(request, user_id):
 def course(request):
     return render(request, 'Pages/course.html')
 
+def course_requests(request, course_id):
+    return render(request, 'Pages/course_requests.html', {"pending_users": [{"id":1},{"id":32},{"id":3}]})
+
 def groups(request, course_id):
     if course_id:
             course=Course.objects.get(id=course_id)
