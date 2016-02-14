@@ -27,7 +27,20 @@
 		button_accept.click(function(event) {
 			var person = button_accept.parent();
 			var user_id = user_ids[person.attr('index')];
-			/* ajax accept */
+			console.log(user_id)
+			$.ajax({
+            type:"POST",
+            url:"/func/accept_request/",
+            data: {
+                   'user_id': user_id,
+                   'course_id': {{course_id}},
+                   'csrfmiddlewaretoken': '{{ csrf_token }}',
+                  },
+            success: function(){
+                  popup.hide();
+                  notification.change('success','Успешно','Заявка одобрена' );
+                               }
+            });
 			$("#hideout").append(button_accept)
 				.append(button_reject);
 			person.remove();
@@ -36,7 +49,20 @@
 		button_reject.click(function(event) {
 			var person = button_reject.parent();
 			var user_id = user_ids[person.attr('index')];
-			/* ajax reject */
+			console.log(user_id)
+			$.ajax({
+            type:"POST",
+            url:"/func/decline_request/",
+            data: {
+                   'user_id': user_id,
+                   'course_id': {{course_id}},
+                   'csrfmiddlewaretoken': '{{ csrf_token }}',
+                  },
+            success: function(){
+                  popup.hide();
+                  notification.change('success','Успешно','Заявка отклонена' );
+                               }
+            });
 			$("#hideout").append(button_accept)
 				.append(button_reject);
 			person.remove();

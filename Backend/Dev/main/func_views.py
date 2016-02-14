@@ -126,17 +126,16 @@ def create_course(request):
 			data["groups"]={}
 			data["groups"]["Нераспределенные"]=[]
 			data["pending_users"]["Нераспределенные"]=[]
-			data["users"]=[str(request.user.id)]
+			data["users"]=[request.user.id]
 			data["tests"]={}
 			data["tests"]["amount"]=0
 			data["tests"]["published"]=[]
 			data["tests"]["deleted"]=[]
-			data["administrators"]=[str(request.user.id)]
-			data["teachers"]=[str(request.user.id)]
+			data["administrators"]=[request.user.id]
+			data["teachers"]=[request.user.id]
 			if request.POST.get('is_closed', False):
 				data["status"]="closed"
 				data["pending_users"]["Заявки"]=[]
-			else: data["status"]="public"
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return redirect('/course/'+str(course.id)+'/groups/')
@@ -145,7 +144,7 @@ def create_group(request, course):
 	name = request.POST.get('subject')
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
-		data["groups"].append({name})
+		data["groups"][name]=[]
 		with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -288,12 +287,13 @@ def course_reg(request, course_id):
 						if request.user.id in data["groups"][group]:
 							return redirect('/')
 						user=User.objects.get(email=request.user.email)
-						del data["pending_users"][group][request.user.name]
-			elif str(data["status"]) is not str("closed"): 
+						del data["pending_users"][group][request.user.email]
+			elif not data["status"]: 
+				print("dfggfgdf")
 				group="Нераспределенные"
 				data["users"].append(request.user.id)
 				data["groups"][group].append(request.user.id)
-			else: data["pending_users"]["Заявки"].append(request.user.email)
+			else: data["pending_users"]["Заявки"].append(request.user.id)
 	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 		print(data)
 		saving_data = json.dumps(data, ensure_ascii=False)
@@ -304,6 +304,7 @@ def course_getdata(request, course):
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
 		course_data={}
+		course_data["course_id"]=course.id
 		course_data["groups"]={}
 		course_data["teachers"]=[]
 		course_data["users"]=[]
@@ -314,9 +315,9 @@ def course_getdata(request, course):
 			course_data["groups"][group]=[]
 			for user_id in data["groups"][group]:
 				course_data["groups"][group].append(User.objects.get(id=user_id))
-		if str(request.user.id) in data["administrators"]:
+		if request.user.id in data["administrators"]:
 			course_data["user_status"]="administrator"
-		elif str(request.user.id) in data["teachers"]:
+		elif request.user.id in data["teachers"]:
 			course_data["user_status"]="teacher"
 		#elif str(request.user.id) in data["moderators"]:
 		#	course_data["user_status"]="moderator"
@@ -327,3 +328,40 @@ def course_getdata(request, course):
 		else: course_data["user_status"]="guest"
 		print(course_data["groups"])
 		return course_data
+
+def get_users_info(request, user_ids):
+	users=[]
+	for user_id in user_ids:
+		users.append(User.objects.get(id=user_id))
+	print (users)
+	return users
+
+def accept_request(request):
+	print (request.POST.get('user_id'))
+	user_id=request.POST.get('user_id')
+	user=User.objects.get(id=user_id)
+	course_id=request.POST.get('course_id')
+	with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
+		data = json.load(data_file)
+		for pending_user in data["pending_users"]["Заявки"]:
+			if pending_user==user.id:
+				data["pending_users"]["Заявки"].remove(pending_user)
+		group="Нераспределенные"
+		data["users"].append(user.id)
+		data["groups"][group].append(user.id)
+	with io.open('courses/'+str(course_id)+'/info.json', 'w', encoding='utf8') as json_file:
+		saving_data = json.dumps(data, ensure_ascii=False)
+		json_file.write(saving_data)
+	return HttpResponse("ok")
+
+def decline_request(request):
+	user_id=request.POST.get('user_id')
+	user=User.objects.get(id=user_id)
+	course_id=request.POST.get('course_id')
+	with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
+		data = json.load(data_file)
+		del data["pending_users"]["Заявки"][user.id]
+	with io.open('courses/'+str(course_id)+'/info.json', 'w', encoding='utf8') as json_file:
+		saving_data = json.dumps(data, ensure_ascii=False)
+		json_file.write(saving_data)
+	return HttpResponse("ok")

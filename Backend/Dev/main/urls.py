@@ -54,6 +54,8 @@ func_patterns = [
     url(r'^upload_avatar/$', func_views.upload_avatar),
     url(r'^invite_students/$', func_views.invite_students),
     url(r'^invite_teacher/$', func_views.invite_teacher),
+    url(r'^accept_request/$', func_views.accept_request),
+    url(r'^decline_request/$', func_views.decline_request),
     url(r'^course_reg/(?P<course_id>[0-9]+)/$', func_views.course_reg),
 ]
 

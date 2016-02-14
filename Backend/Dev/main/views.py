@@ -3,6 +3,9 @@ from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
 from main.func_views import course_getdata
+from main.func_views import get_users_info
+import io
+import json
 
 def home(request):
     # sample data
@@ -130,7 +133,10 @@ def course(request):
     return render(request, 'Pages/course.html')
 
 def course_requests(request, course_id):
-    return render(request, 'Pages/course_requests.html', {"pending_users": [{"id":1},{"id":32},{"id":3}]})
+    with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
+        data = json.load(data_file)
+        pending_users=data["pending_users"]["Заявки"]
+    return render(request, 'Pages/course_requests.html', {"course_id":course_id, "pending_users":get_users_info(request,pending_users)})
 
 def groups(request, course_id):
     if course_id:
