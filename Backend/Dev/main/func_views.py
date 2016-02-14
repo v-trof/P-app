@@ -126,13 +126,17 @@ def create_course(request):
 			data["groups"]={}
 			data["groups"]["Нераспределенные"]=[]
 			data["pending_users"]["Нераспределенные"]=[]
-			data["users"]=[]
+			data["users"]=[str(request.user.id)]
 			data["tests"]={}
 			data["tests"]["amount"]=0
 			data["tests"]["published"]=[]
 			data["tests"]["deleted"]=[]
 			data["administrators"]=[str(request.user.id)]
 			data["teachers"]=[str(request.user.id)]
+			if request.POST.get('is_closed', False):
+				data["status"]="closed"
+				data["pending_users"]["Заявки"]=[]
+			else: data["status"]="public"
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return redirect('/course/'+str(course.id)+'/groups/')
@@ -226,7 +230,8 @@ def upload_avatar(request):
 
 def invite_students(request):
 	email_list = request.POST.getlist('email_list')
-	group = request.POST.get('group')
+	group = request.POST['group']
+	print(request.POST['group'])
 	course=Course.objects.get(id=request.POST.get('course_id'))
 	subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
 	text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
@@ -274,17 +279,21 @@ def course_reg(request, course_id):
 	course=Course.objects.get(id=course_id)
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
-		if request.user.email in data["pending_users"]:
-			for def_group in data["pending_users"]:
-				if request.user.email in data["pending_users"][def_group]:
-					group=data["pending_users"]["group"]
-					if request.user.id in data["groups"][group]:
-						return redirect('/')
-					user=User.objects.get(email=request.user.email)
-					del data["pending_users"][group][request.user.name]
-		else: group="Нераспределенные"
-		data["users"].append({'Имя':request.user.name})
-		data["groups"][group].append(request.user.id)
+		print(request.user.name)
+		if request.user.id not in data["users"]:
+			if request.user.email in data["pending_users"] and request.user.email not in data["pending_users"]["Заявки"]:
+				for def_group in data["pending_users"]:
+					if request.user.email in data["pending_users"][def_group]:
+						group=data["pending_users"]["group"]
+						if request.user.id in data["groups"][group]:
+							return redirect('/')
+						user=User.objects.get(email=request.user.email)
+						del data["pending_users"][group][request.user.name]
+			elif str(data["status"]) is not str("closed"): 
+				group="Нераспределенные"
+				data["users"].append(request.user.id)
+				data["groups"][group].append(request.user.id)
+			else: data["pending_users"]["Заявки"].append(request.user.email)
 	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 		print(data)
 		saving_data = json.dumps(data, ensure_ascii=False)

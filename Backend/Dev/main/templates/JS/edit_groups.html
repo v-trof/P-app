@@ -168,7 +168,6 @@ $(document).ready(function() {
 				formData.append('email', $("#email").val());
 				formData.append('course_id', "{{course.id}}");
 				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-				$("#invite_teacher_button").prop("disabled", true);
 				processing.button.start($("#invite_teacher_button"));
 				$.ajax({
 					type:"POST",
@@ -213,8 +212,8 @@ $(document).ready(function() {
 				formData.append('email_list', email_list);
 				formData.append('course_id', "{{course.id}}");
 				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-				formData.append('group', $(".group").children("h3").text());
-				console.log($(".group").children("h3").text());
+				formData.append('group', $(".group.select").children("div").text());
+				console.log($(".group.select").children("div").text());
 				processing.button.start($("#invite_students_button"));
 				$.ajax({
 					type:"POST",
