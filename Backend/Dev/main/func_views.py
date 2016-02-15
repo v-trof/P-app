@@ -228,9 +228,12 @@ def upload_avatar(request):
 	return HttpResponse("ok")
 
 def invite_students(request):
-	email_list = request.POST.getlist('email_list')
+	print("---------------------")
+	print(request.POST["email_list"])
+	print("---------------------")
+	email_list = json.loads(request.POST["email_list"])
 	group = request.POST['group']
-	print(request.POST['group'])
+	print(email_list)
 	course=Course.objects.get(id=request.POST.get('course_id'))
 	subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
 	text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
