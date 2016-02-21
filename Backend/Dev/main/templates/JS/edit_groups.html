@@ -18,7 +18,7 @@ function drag_reset(){
 
 function check_for_emptiness() {
 	$(".group").each(function(index, el) {
-		console.log($(this).children(".link--card").length, $(this).children("h3").text());
+	//	console.log($(this).children(".link--card").length, $(this).children("h3").text());
 		
 		if($(this).children(".link--card").length == 0){
 			if($(this).children(".empty").length == 0){
@@ -64,7 +64,7 @@ var add_boundary = {
 			if($(this).parent(".card").length){
 				$(this).parent(".card").parent().remove();
 			} else {
-				unordered.append($(this).parent(".group").children('.link--card'));
+	//			unordered.append($(this).parent(".group").children('.link--card'));
 				$(this).parent(".group").remove();
 			}
 			check_for_emptiness();
@@ -74,12 +74,11 @@ var add_boundary = {
 
 var button_remove = '<button class="button--icon button_remove">{% include "UI_elements/Icons/cancel.svg" %}</button>';
 
-var unordered = $("<div class='group'><h3>Нераспределенные</h3></div>");
-
 var icon_add = "<div class='icon_add--wrapper'><svg  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg></div>";
 
 function toggle_edit(){
 	if(editing){
+		var headings=[];
 		$("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
 		$(".button_remove").remove();
 		$(".students .link--card").attr("draggable", "false");
@@ -89,8 +88,27 @@ function toggle_edit(){
 			$(this).attr('draggable', 'false');
 			$(this).replaceTag("<a>", true);
 		});
+		$(".students .group h3").each(function(index, el) {
+			console.log($(this).html());
+			headings.push($(this).html());
+		});
+		console.log(headings);
+		$.ajax({
+            type:"POST",
+            url:"/func/create_group/",
+            data: {
+                   'headings':JSON.stringify(headings),
+                   'csrfmiddlewaretoken': '{{ csrf_token }}',
+                   'course_id': "{{course.id}}",
+                  },
+            success: function(){
+                  notification.change('success','Успешно','Группы изменены' );
+                   }
+            });
+		$("#create_group").hide();
 		editing = false;
 	} else {
+
 		$("h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
 		$(".students .link--card").attr("draggable", "true");
 		//disabling links
@@ -115,11 +133,11 @@ function toggle_edit(){
 		$(".group").prepend(button_remove);
 
 
-		unordered.children('.button_remove').remove();
-		unordered.children("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
+	//	unordered.children('.button_remove').remove();
+	//	unordered.children("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
 
 		add_boundary.button_remove($(".button_remove"));
-
+		$("#create_group").show();
 		editing = true;
 	}
 }
@@ -131,12 +149,12 @@ $(document).ready(function() {
 	$("h3").css('border-bottom', '1px dashed transparent');
 	$(".students .link--card").attr("draggable", "false");
 
-	$(".group").each(function(index, el) {
-		if($(this).children('h3').text() == "Нераспределенные"){
-			unordered.html($(this).html());
-			$(this).replaceWith(unordered);
-		}
-	});
+//	$(".group").each(function(index, el) {
+//		if($(this).children('h3').text() == "Нераспределенные"){
+//			unordered.html($(this).html());
+//			$(this).replaceWith(unordered);
+//		}
+//	});
 
 	$("#edit").click(function(event) {
 		toggle_edit();
@@ -184,17 +202,23 @@ $(document).ready(function() {
 		});
 	});
 	$("#invite_students").click(function(event) {
-		popup.show("<input type='email' class='student__email'>" +
+		group_list=[];
+		{% for group, members in course_data.groups.items %}
+				group_list.push("{{group}}");
+		{% endfor %}
+		console.log(group_list);
+		popup_data="<input type='email' class='student__email'>" +
 			"<label for='email'>Email</label><br>" +
 			"<button class='button--icon' id='add_student'><svg  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button>" +
 			"<div class='group select'><div class='display'>Нераспределенные</div>" +
 			"<svg class='{{ class }}' id='{{id}}' viewBox='0 0 24 24'  xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>" +
-			"<input type='hidden' name='group' class='value'>" +
-			"<option value='unordered'>Нераспределенные</option>" +
-			"<option value='10I'>10И</option>" +
-			"<option value='10D'>10Б</option></div>" +
-			"<br><br><br><button id='invite_students_button'>Пригласить</button>",
-		{"width":"20rem"},
+			"<input type='hidden' name='group' class='value'>";
+		$.each(group_list, function(key,value) {
+				popup_data+="<option value='"+value+"'>"+value+"</option>";
+		});
+		popup_data+="</div>" +
+			"<br><br><br><button id='invite_students_button'>Пригласить</button>";
+		popup.show(popup_data,{"width":"20rem"},
 		function(){
 			add_menu_caller($("#popup .select").get(0));
 			$("#popup input")[0].focus();
@@ -209,12 +233,12 @@ $(document).ready(function() {
 					email_list.push($(this).val());
 				});
 				//email_list='"'+email_list.join('","')+'"';
-				console.log(JSON.stringify(email_list))
+				//console.log(JSON.stringify(email_list))
 				formData.append('email_list', JSON.stringify(email_list));
 				formData.append('course_id', "{{course.id}}");
 				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 				formData.append('group', $(".group.select").children("div").text());
-				console.log($(".group.select").children("div").text());
+				//console.log($(".group.select").children("div").text());
 				processing.button.start($("#invite_students_button"));
 				$.ajax({
 					type:"POST",

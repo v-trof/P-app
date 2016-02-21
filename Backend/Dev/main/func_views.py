@@ -140,11 +140,17 @@ def create_course(request):
 			json_file.write(saving_data)
 		return redirect('/course/'+str(course.id)+'/groups/')
 
-def create_group(request, course):
-	name = request.POST.get('subject')
+def create_group(request):
+	headings=[]
+	headings = json.loads(request.POST["headings"])
+	course=Course.objects.get(id=request.POST["course_id"])
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
-		data["groups"][name]=[]
+		for heading in headings:
+			print(heading)
+			if heading not in data["groups"]:
+				data["groups"][heading]=[]
+				data["pending_users"][heading]=[]
 		with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -228,9 +234,6 @@ def upload_avatar(request):
 	return HttpResponse("ok")
 
 def invite_students(request):
-	print("---------------------")
-	print(request.POST["email_list"])
-	print("---------------------")
 	email_list = json.loads(request.POST["email_list"])
 	group = request.POST['group']
 	print(email_list)

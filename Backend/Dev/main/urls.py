@@ -50,6 +50,7 @@ func_patterns = [
     url(r'^change_data/$', func_views.change_data),
     url(r'^reset_password/$', func_views.reset_password),
     url(r'^change_password/$', func_views.change_password),
+    url(r'^create_group/$', func_views.create_group),
     url(r'^create_contact/$', func_views.create_contact),
     url(r'^upload_avatar/$', func_views.upload_avatar),
     url(r'^invite_students/$', func_views.invite_students),
