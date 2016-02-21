@@ -133,28 +133,32 @@ def create_course(request):
 			data["tests"]["deleted"]=[]
 			data["administrators"]=[request.user.id]
 			data["teachers"]=[request.user.id]
+			data["pending_users"]["Заявки"]=[]
+			data["status"]="public"
 			if request.POST.get('is_closed', False):
 				data["status"]="closed"
-				data["pending_users"]["Заявки"]=[]
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return redirect('/course/'+str(course.id)+'/groups/')
 
-def create_group(request):
-	headings=[]
-	headings = json.loads(request.POST["headings"])
-	course=Course.objects.get(id=request.POST["course_id"])
+def edit_groups(request):
+	groups_data={}
+	groups_data = json.loads(request.POST["new_groups"])
+	course=Course.objects.get(id=request.POST["course_id"])	
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
-		for heading in headings:
-			print(heading)
-			if heading not in data["groups"]:
-				data["groups"][heading]=[]
+		data["groups"]=groups_data
+		for heading in data["groups"]:
+			for key, value in enumerate(data["groups"][heading]):
+				user=User.objects.get(name=value)
+				print (user.id)
+				data["groups"][heading][key]=user.id
+			if heading not in data["pending_users"]:
 				data["pending_users"][heading]=[]
-		with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
-			saving_data = json.dumps(data, ensure_ascii=False)
-			json_file.write(saving_data)
-		return HttpResponse("ok")
+	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
+		saving_data = json.dumps(data, ensure_ascii=False)
+		json_file.write(saving_data)
+	return redirect('/')
 
 def change_data(request):
 	if request.method == 'GET':
@@ -286,24 +290,28 @@ def course_reg(request, course_id):
 		data = json.load(data_file)
 		print(request.user.name)
 		if request.user.id not in data["users"]:
-			if request.user.email in data["pending_users"] and request.user.email not in data["pending_users"]["Заявки"]:
+			if request.user.email not in data["pending_users"]["Заявки"]:
+				print("its ok")
+				checker=0
 				for def_group in data["pending_users"]:
 					if request.user.email in data["pending_users"][def_group]:
-						group=data["pending_users"]["group"]
+						group=def_group
+						checker=1
 						if request.user.id in data["groups"][group]:
 							return redirect('/')
-						user=User.objects.get(email=request.user.email)
-						del data["pending_users"][group][request.user.email]
-			elif not data["status"]: 
-				print("dfggfgdf")
-				group="Нераспределенные"
-				data["users"].append(request.user.id)
-				data["groups"][group].append(request.user.id)
-			else: data["pending_users"]["Заявки"].append(request.user.id)
-	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
-		print(data)
-		saving_data = json.dumps(data, ensure_ascii=False)
-		json_file.write(saving_data)
+						data["users"].append(request.user.id)
+						data["groups"][group].append(request.user.id)
+						data["pending_users"][group].remove(request.user.email)
+				if not data["status"]=="closed" and not checker:
+					print("dfggfgdf")
+					group="Нераспределенные"
+					data["users"].append(request.user.id)
+					data["groups"][group].append(request.user.id)
+				elif data["status"]=="closed": data["pending_users"]["Заявки"].append(request.user.id)
+			with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
+				print(data)
+				saving_data = json.dumps(data, ensure_ascii=False)
+				json_file.write(saving_data)
 	return redirect('/course/'+str(course_id)+'/groups/')
 
 def course_getdata(request, course):

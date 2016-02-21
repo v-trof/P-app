@@ -75,10 +75,8 @@ var add_boundary = {
 var button_remove = '<button class="button--icon button_remove">{% include "UI_elements/Icons/cancel.svg" %}</button>';
 
 var icon_add = "<div class='icon_add--wrapper'><svg  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg></div>";
-
 function toggle_edit(){
 	if(editing){
-		var headings=[];
 		$("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
 		$(".button_remove").remove();
 		$(".students .link--card").attr("draggable", "false");
@@ -88,27 +86,40 @@ function toggle_edit(){
 			$(this).attr('draggable', 'false');
 			$(this).replaceTag("<a>", true);
 		});
-		$(".students .group h3").each(function(index, el) {
-			console.log($(this).html());
-			headings.push($(this).html());
+		var groups={};
+		$(".group").each(function(index, el) {
+			group=$(this).children('h3').html();
+			groups[group]=[];
+			$(this).find('.card-person__name').each(function() {
+						console.log("found!");
+						groups[group].push($(this).html());
+					});
+			//$(".students .group").each(function(index, el) {
+			//	if (upper_index==index)
+			//	{
+				//	$(this+" .card-person__name h3").each(function(index, el) {
+					//	groups[index]["name"].append($(this).html());
+			//		});
+			//	}
+			//});
 		});
-		console.log(headings);
+		console.log(groups);
 		$.ajax({
             type:"POST",
-            url:"/func/create_group/",
+            url:"/func/edit_groups/",
             data: {
-                   'headings':JSON.stringify(headings),
+                   'new_groups': JSON.stringify(groups),
                    'csrfmiddlewaretoken': '{{ csrf_token }}',
                    'course_id': "{{course.id}}",
                   },
             success: function(){
+                  //location.reload(true);
                   notification.change('success','Успешно','Группы изменены' );
                    }
             });
 		$("#create_group").hide();
 		editing = false;
 	} else {
-
 		$("h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
 		$(".students .link--card").attr("draggable", "true");
 		//disabling links

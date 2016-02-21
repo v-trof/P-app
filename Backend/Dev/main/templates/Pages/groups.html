@@ -38,17 +38,19 @@
 							Создать новую группу
 						</div>
 					</a>
-					<a class="link--card" href="/course/{{course_data.course_id}}/requests/">
-						<div class="card--small">
-							Заявки на курс
-						</div>
-					</a>
+					{% if course_data.status == "closed" %}
+						<a class="link--card" href="/course/{{course_data.course_id}}/requests/">
+							<div class="card--small">
+								Заявки на курс
+							</div>
+						</a>
+					{% endif %}
 				{% endif %}
 			</section>
 		{% endif %}
 		<section class="teachers">
 			<h2>Преподаватели</h2>
-			{% for teacher in course_data.teachers %}
+			{% for teacher in course_data.teachers reversed %}
 				<a class="link--card" href="/user/{{teacher.id}}/">
 					{% include "UI_elements/cards/person.html" with user=teacher %}
 				</a>
@@ -56,9 +58,9 @@
 		</section>
 		<section class="students">
 			<h2>Ученики</h2>
-			{% for group, members in course_data.groups.items %}
-				{% include 'Blocks/group.html' with group=group members=members %}
-			{% endfor %}
+				{% for group, members in course_data.groups.items %}
+					{% include 'Blocks/group.html' with group=group members=members %}
+				{% endfor %}
 		</section>
 	</main>
 
