@@ -18,19 +18,19 @@ var	remove = require('gulp-html-remove'); //removes things you don't want from h
 gulp.task('sass_to_css', function () {
 	//converts sass to css, prefixes, and minificates css
 	gulp.src('./Styles/Sass/*/*.sass')
-		.pipe(sass({outputStyle: 'compressed'}))
+		.pipe(sass())
 		.pipe(autoprefixer({
 			browsers: ['> 5%']
 		}))
-		.pipe(cleancss())
+//		.pipe(cleancss())
 		.pipe(gulp.dest('./Styles/CSS'));
 
 	gulp.src('./Styles/Sass/main.sass')
-		.pipe(sass({outputStyle: 'compressed'}))
+		.pipe(sass())
 		.pipe(autoprefixer({
 			browsers: ['> 5%']
 		}))
-		.pipe(cleancss())
+//		.pipe(cleancss())
 		.pipe(gulp.dest('./Styles/CSS'));
 });
 
@@ -54,7 +54,7 @@ gulp.task('test_build',function () {
 gulp.task('minjs', function () {
 	//minifcates js
 	gulp.src('./Scripts/Dev/*.js')
-		.pipe(uglify())
+//		.pipe(uglify())
 		.pipe(gulp.dest('./Scripts/Min/'));
 });
 
