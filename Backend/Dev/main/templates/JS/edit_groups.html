@@ -89,6 +89,7 @@ function toggle_edit(){
 	if(editing){
 		$("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
 		$(".button_remove").remove();
+		$(".button_remove_all").remove();
 		$(".students .link--card").attr("draggable", "false");
 		//enabling links
 		$(".students .link--card").each(function(index, el) {
@@ -122,9 +123,7 @@ function toggle_edit(){
 		$("#create_group").hide();
 		editing = false;
 	} else {
-		$("h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
-
-		$(".link--card h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
+		$(".group>h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
 
 		$(".students .link--card").attr("draggable", "true");
 		//disabling links
@@ -145,7 +144,7 @@ function toggle_edit(){
 			}
 		});
 		
-		$(".card-person").prepend(button_remove);
+		$(".students .card-person").prepend(button_remove);
 		$(".group").prepend(button_remove);
 		$(".group").prepend(button_remove_all);
 
@@ -206,11 +205,11 @@ $(document).ready(function() {
 		tooltip.generate.tip_based(new_group.find(".button_remove")[0]);
 
 		add_boundary.button_remove_all(new_group.find(".button_remove_all"));
-		new_group.find(".button_remove_all").attr('tip', 'Удалить группу b учеников')		
+		new_group.find(".button_remove_all").attr('tip', 'Удалить группу и учеников')		
 		tooltip.generate.tip_based(new_group.find(".button_remove_all")[0]);
 
 		check_for_emptiness();
-		$("h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
+		new_group.find("h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
 		$(".students").append(unordered);
 	});
 	
