@@ -6,15 +6,18 @@
 </head>
 <body>
 	<div class="includer">{% include 'CSS/main.html' %}</div>
+	<div class="includer">{% include 'CSS/cards.html' %}</div>
 	<div class="includer">{% include 'CSS/login.html' %}</div>
 	<div class="includer">{% include 'CSS/inputs.html' %}</div>
 	<div class="includer">{% include 'CSS/buttons.html' %}</div>
 	<div class="includer">{% include 'CSS/notification.html' %}</div>
 	<div class="includer">{% include 'CSS/tooltip.html' %}</div>
 	<main>
+	{% if request.user.is_anonymous %}
 		<div class="login-box">
 			<h1>Вход</h1>
-			<form class="login-box--form" action="/func/login/" method="post">
+			{% if course.id %}<form class="login-box--form" action="/func/login/{{course.id}}/" method="post">
+			{% else %}<form class="login-box--form" action="/func/login/" method="post">{% endif %}
 				{% csrf_token %}
 			<div>
 				<input type="email" name="email" value="{{ email }}" class="input__placeholder-label"><label for="email">Email</label>
@@ -35,7 +38,18 @@
 		<a href="/register/">Регистрация</a>
 		<a href="/forgot_password/">Забыли пароль?</a>
 	</footer>
-
+	{% else %}
+		<div>
+		<h1>Ваш аккаунт</h1>
+		<br> </br>
+		{% include "UI_elements/cards/person.html" with user=request.user %}
+		<a href="/change_user/" style="display: block; text-align:center">Сменить пользователя</a>
+		</div>
+		</main>
+		<footer class="footer">
+			<a href="/register/">Регистрация</a>
+		</footer>
+	{% endif %}
 	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 	<div class="includer">{% include 'JS/login-verify.html' %}</div>
 	<div class="includer">{% include 'JS/notification.html' %}</div>

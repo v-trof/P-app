@@ -57,6 +57,12 @@ def login(request):
 			'form': form,
 		})
 
+def login_with_reg(request,course_id):
+	print("ok")
+	login(request)
+	course_reg(request, course_id)
+	return redirect('/course/'+course_id+'/groups/')
+
 def logout_view(request):
 	logout(request);
 	return redirect('/')
@@ -96,6 +102,7 @@ def reg(request):
 				request.session.set_expiry(36000)
 				if course_id and request.POST.get('course_reg', False):
 					course_reg(request, course_id)
+					return redirect('/course/'+course_id+'/groups/')
 				return redirect('/')
 		else:
 			error = u'Неверный логин или пароль'
@@ -161,31 +168,17 @@ def edit_groups(request):
 	return redirect('/')
 
 def change_data(request):
-	if request.method == 'GET':
-		email = request.GET['email']
-		setattr(request.user, 'email', strip_tags(email))
-		if request.GET['Skype']:
-			Skype = request.GET['Skype']
-			setattr(request.user, 'Skype', strip_tags(Skype))
-		if request.GET['VK']:
-			VK = request.GET['VK']
-			setattr(request.user, 'VK', strip_tags(VK))
-		if  request.GET['Facebook']:
-			Facebook = request.GET['Facebook']
-			setattr(request.user, 'Facebook', strip_tags(Facebook))
-		if request.GET['Dnevnik']:
-			Dnevnik = request.GET['Dnevnik']
-			setattr(request.user, 'Dnevnik', strip_tags(Dnevnik))
-		if request.GET['Codeforces']:
-			Codeforces = request.GET['Codeforces']
-			setattr(request.user, 'Codeforces', strip_tags(Codeforces))
+	if request.method == 'POST':
+		data_list = json.loads(request.POST["data_list"])
+		for data_name in data_list:
+			setattr(request.user, data_name, strip_tags(data_list[data_name]))
 		request.user.save()
 	return HttpResponse("ok")
 
 def create_contact(request):
-	if request.method == 'GET':
-		contact_type = request.GET['contact_type']
-		contact_info = request.GET['contact_info']
+	if request.method == 'POST':
+		contact_type = request.POST['contact_type']
+		contact_info = request.POST['contact_info']
 		setattr(request.user, contact_type, strip_tags(contact_info))
 		request.user.save()
 	return HttpResponse("ok")
@@ -218,12 +211,18 @@ def reset_password(request):
 		})
 
 def change_password(request):
-	if request.method == 'GET':
-		old_password = request.GET['old_password']
-		new_password = make_password(request.GET['new_password'])
+	if request.method == 'POST':
+		old_password = request.POST['old_password']
+		new_password = make_password(request.POST['new_password'])
+		print("0")
 		if request.user.check_password(old_password):
 			setattr(request.user, 'password', strip_tags(new_password))
+			user=User.objects.get(id=request.user.id)
+			print("1")
 			request.user.save()
+			auth(request, user)
+			print("2")
+			request.session.set_expiry(36000)
 			return render(request, 'Pages/profile.html', {
 			'success_message': 'Пароль успешно изменен',
 			})
@@ -284,7 +283,7 @@ def invite_teacher(request):
 
 def course_reg(request, course_id):
 	if request.user.is_anonymous():
-		return redirect('/login/')
+		return redirect('/login/'+course_id)
 	course=Course.objects.get(id=course_id)
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
@@ -329,7 +328,9 @@ def course_getdata(request, course):
 			course_data["groups"][group]=[]
 			for user_id in data["groups"][group]:
 				course_data["groups"][group].append(User.objects.get(id=user_id))
-		if request.user.id in data["administrators"]:
+		if request.user.is_anonymous():
+			course_data["user_status"]="guest"
+		elif request.user.id in data["administrators"]:
 			course_data["user_status"]="administrator"
 		elif request.user.id in data["teachers"]:
 			course_data["user_status"]="teacher"

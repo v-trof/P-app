@@ -4,6 +4,7 @@ from django.template import Context
 from .models import User, Course
 from main.func_views import course_getdata
 from main.func_views import get_users_info
+from main.func_views import logout_view
 import io
 import json
 
@@ -112,6 +113,12 @@ def home(request):
 def login(request):
     return render(request, 'Pages/login.html')
 
+def login_with_reg(request, course_id=None):
+    return render(request, 'Pages/login.html', {"course":Course.objects.get(id=course_id)})
+
+def change_user(request):
+    logout_view(request)
+    return render(request, 'Pages/login.html')
 
 def register(request, course_id=None):
     if course_id is not None:

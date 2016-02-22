@@ -43,6 +43,7 @@ test_patterns = [
 
 func_patterns = [
     url(r'^login/$', func_views.login),
+    url(r'^login/(?P<course_id>[0-9]+)/$', func_views.login_with_reg),
     url(r'^templatetest/$', func_views.test),
     url(r'^reg/$', func_views.reg),
     url(r'^create_course/$', func_views.create_course),
@@ -72,6 +73,8 @@ urlpatterns = [
     url(r'^test/', include(test_patterns)),
 
     url(r'^login/$', views.login),
+    url(r'^login/(?P<course_id>[0-9]+)/$', views.login_with_reg),
+    url(r'^change_user/$', views.change_user),
     url(r'^register/$', views.register),
     url(r'^register/(?P<course_id>[0-9]+)/$', views.register),
     url(r'^forgot_password/$', views.forgot_password),

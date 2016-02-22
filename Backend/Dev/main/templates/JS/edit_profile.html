@@ -2,10 +2,11 @@
     old_password = $("#old_password").val();
     new_password = $("#new_password").val();
     $.ajax({
-            type:"GET",
+            type:"POST",
             url:"/func/change_password/",
             data: {
                    'old_password': old_password,
+                   'csrfmiddlewaretoken': '{{ csrf_token }}',
                    'new_password': new_password
                   },
             success: function(){
@@ -25,10 +26,11 @@ function create_contact() {
     contact_info = $("#new_contact_info").val();
     console.log("create_contact");
     $.ajax({
-            type:"GET",
+            type:"POST",
             url:"/func/create_contact/",
             data: {
                    'contact_type': contact_type,
+                   'csrfmiddlewaretoken': '{{ csrf_token }}',
                    'contact_info': contact_info
                   },
             success: function(){
@@ -79,10 +81,11 @@ $(document).ready(function() {
     
     $("body").append(new_avatar);
 
-    var editing = false;
+    var editing = false, data_list={},data_list_old={};
 
     function toggle_edit() {
         if(editing) {
+
             $("#do_not_save").css('opacity', '0');
             setTimeout(function(){
                 $("#do_not_save").hide();
@@ -95,6 +98,10 @@ $(document).ready(function() {
 
             editing = false;
         } else {
+            $( "#contacts span" ).each(function( index ) {
+                id=$(this).attr('id');
+                data_list_old[id]=$(this).html();
+            });
             $("#do_not_save").show();
             $("#do_not_save").css('opacity', '1');
             
@@ -107,44 +114,23 @@ $(document).ready(function() {
     }
 
     function save_changes(){
-        if ($('#email').html())
-            email=$('#email').html();
-        else email=null;
-
-        if ($('#Skype').html())
-            Skype=$('#Skype').html();
-        else Skype=null;
-
-        if ($('#VK').html())
-            VK=$('#VK').html();
-        else VK=null;
-
-        if ($('#Facebook').html())
-            Facebook=$('#Facebook').html();
-        else Facebook=null;
-
-        if ($('#Dnevnik').html())
-            Dnevnik=$('#Dnevnik').html();
-        else Dnevnik=null;
-
-        if ($('#Codeforces').html())
-            Codeforces=$('#Codeforces').html();
-        else Codeforces=null;
+        $( "#contacts span" ).each(function( index ) {
+            id=$(this).attr('id');
+            data_list[id]=$(this).html();
+        });
+        console.log(data_list_old,data_list);
+        if (data_list!=data_list_old){
         $.ajax({
-             type:"GET",
+             type:"POST",
              url:"/func/change_data/",
-             data: {
-                    'email': email,
-                    'Skype': Skype,
-                    'VK': VK,
-                    'Facebook': Facebook,
-                    'Dnevnik': Dnevnik,
-                    'Codeforces': Codeforces
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}',
+             'data_list': JSON.stringify(data_list)
                     },
              success: function(){
                  notification.change('success','Успешно','Данные были успешно изменены' );
              }
         });
+    }
     }
 
     $("#edit").click(function(e) {
