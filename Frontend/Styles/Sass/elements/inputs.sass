@@ -25,7 +25,7 @@ input:-webkit-autofill
 	-webkit-box-shadow: 0 0 0 1000px $white inset;
 	color: $black !important
 
-input[type="password"],input[type="text"]:not([name="search"]),input[type="email"]
+input[type="password"],input[type="text"]:not([name="search"]),input[type="email"], textarea
 	font-size: $font-regular
 	margin-top: $margin-big
 	padding-left: 0
@@ -88,7 +88,7 @@ input[type="checkbox"], input[type="radio"]
 			min-height: $icon-tiny
 			min-width: $icon-tiny
 			border: 2px solid lighten($black, 20%)
-			background: $white
+			background: transparent
 			margin-right: $margin-regular
 			transition: $time-short
 
@@ -151,58 +151,45 @@ input[type="radio"]
 
 //other inputs
 .textarea
-	width: 16rem
-	border: $border-regular solid $grey-semilight
-	background: $white
+	min-width: 16rem
 	display: inline-block
-		
-.textarea__text
-	font-size: $font-regular
-	min-height: 9rem
-	padding: $padding-regular
-	padding-top: $padding-big
-	background: $white
-	color: $grey-dark
-	&:focus
-		outline: 0
-	&:before
-		display: block
-		+small-circle()
-		content: ''
-		vertical-align: top
-		margin-top: $padding-small
-		//sets it to top right corner
-		transform: translate(-$size-big - $size-regular + 16rem,-$size-big)
-		opacity: 0
-		background: $blue-bright
-		transition: $time-regular
-
-	&.valid:before
-		background: $green-bright
-	&.invalid:before
-		background: $red-bright
-	&:focus:before
-		opacity: 1
-		//moves it in field
-		transform: translate(-$size-big*2 + 16rem,-$size-big)
-.textarea__controls
-	border-top: $border-regular solid $grey-semilight
-	background: $grey-semilight
-	height: $icon-regular + $border-regular
-	display: flex
-	align-items: center
-	justify-content: flex-start
-.textarea__label
-	color: $grey-semidark
-	position: absolute
-	background: transparent
-	font-size: $font-small
-	padding-left: $padding-regular*0.35
-	padding-top: $padding-small
-	color: $grey-semidark
-	font-size: $font-small		
-
-
+	width: 100%
+	color: $black
+	position: relative
+	&>.textarea__value
+		display: none
+	&>.textarea__text
+		min-height: $line-regular*2
+		line-height: $line-regular
+		margin-top: $font-regular
+		border-bottom: 2px solid $grey-semilight
+		&:focus
+			outline: 0
+			border-bottom-color: $color--accent
+			&+label
+				color: $color--accent
+		&.valid
+			border-bottom-color: $green-bright
+			&+label
+				color: $green-bright
+		&:invalid
+			border-bottom-color: $red-bright
+			box-shadow: none
+			&+label
+				color: $red-bright
+		&.empty
+			&+label
+				transform: translateY($line-regular)
+				font-size: $font-regular
+		&+label
+			position: absolute
+			top: 0
+			left: 0
+			color: $grey-mid
+			width: 100%
+			transition: $time-regular
+			font-size: $font-small
+	
 
 //select default
 .select

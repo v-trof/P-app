@@ -22,7 +22,7 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #fafafa inset;
   color: #212121 !important; }
 
-input[type="password"], input[type="text"]:not([name="search"]), input[type="email"] {
+input[type="password"], input[type="text"]:not([name="search"]), input[type="email"], textarea {
   font-size: 1rem;
   margin-top: 1.5rem;
   padding-left: 0;
@@ -34,25 +34,25 @@ input[type="password"], input[type="text"]:not([name="search"]), input[type="ema
   -webkit-transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
   transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
   color: #212121; }
-  input[type="password"]:focus, input[type="text"]:not([name="search"]):focus, input[type="email"]:focus {
+  input[type="password"]:focus, input[type="text"]:not([name="search"]):focus, input[type="email"]:focus, textarea:focus {
     outline: 0;
     border-bottom-color: #2196F3; }
-    input[type="password"]:focus + label, input[type="text"]:not([name="search"]):focus + label, input[type="email"]:focus + label {
+    input[type="password"]:focus + label, input[type="text"]:not([name="search"]):focus + label, input[type="email"]:focus + label, textarea:focus + label {
       color: #2196F3; }
-  input[type="password"].valid, input[type="text"]:not([name="search"]).valid, input[type="email"].valid {
+  input[type="password"].valid, input[type="text"]:not([name="search"]).valid, input[type="email"].valid, textarea.valid {
     border-bottom-color: #4CAF50; }
-    input[type="password"].valid + label, input[type="text"]:not([name="search"]).valid + label, input[type="email"].valid + label {
+    input[type="password"].valid + label, input[type="text"]:not([name="search"]).valid + label, input[type="email"].valid + label, textarea.valid + label {
       color: #4CAF50; }
-  input[type="password"]:invalid, input[type="text"]:not([name="search"]):invalid, input[type="email"]:invalid {
+  input[type="password"]:invalid, input[type="text"]:not([name="search"]):invalid, input[type="email"]:invalid, textarea:invalid {
     border-bottom-color: #F44336;
     box-shadow: none; }
-    input[type="password"]:invalid + label, input[type="text"]:not([name="search"]):invalid + label, input[type="email"]:invalid + label {
+    input[type="password"]:invalid + label, input[type="text"]:not([name="search"]):invalid + label, input[type="email"]:invalid + label, textarea:invalid + label {
       color: #F44336; }
-  input[type="password"].empty + label, input[type="text"]:not([name="search"]).empty + label, input[type="email"].empty + label {
+  input[type="password"].empty + label, input[type="text"]:not([name="search"]).empty + label, input[type="email"].empty + label, textarea.empty + label {
     -webkit-transform: translateY(1.5rem);
             transform: translateY(1.5rem);
     font-size: 1rem; }
-  input[type="password"] + label, input[type="text"]:not([name="search"]) + label, input[type="email"] + label {
+  input[type="password"] + label, input[type="text"]:not([name="search"]) + label, input[type="email"] + label, textarea + label {
     float: left;
     text-align: left;
     color: #90A4AE;
@@ -84,7 +84,7 @@ input[type="checkbox"], input[type="radio"] {
       min-height: 1rem;
       min-width: 1rem;
       border: 2px solid #545454;
-      background: #fafafa;
+      background: transparent;
       margin-right: 0.6rem;
       -webkit-transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1);
       transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1); }
@@ -143,63 +143,45 @@ input[type="radio"]:checked + label:before {
   border-color: #2196F3; }
 
 .textarea {
-  width: 16rem;
-  border: 0.2rem solid #CFD8DC;
-  background: #fafafa;
-  display: inline-block; }
-
-.textarea__text {
-  font-size: 1rem;
-  min-height: 9rem;
-  padding: 0.7rem;
-  padding-top: 1.25rem;
-  background: #fafafa;
-  color: #263238; }
-  .textarea__text:focus {
-    outline: 0; }
-  .textarea__text:before {
-    display: block;
-    border-radius: 50%;
-    height: 6px;
-    width: 6px;
-    content: '';
-    vertical-align: top;
-    margin-top: 0.4rem;
-    -webkit-transform: translate(14.4rem, -1rem);
-            transform: translate(14.4rem, -1rem);
-    opacity: 0;
-    background: #2196F3;
-    -webkit-transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
-    transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1); }
-  .textarea__text.valid:before {
-    background: #4CAF50; }
-  .textarea__text.invalid:before {
-    background: #F44336; }
-  .textarea__text:focus:before {
-    opacity: 1;
-    -webkit-transform: translate(14rem, -1rem);
-            transform: translate(14rem, -1rem); }
-
-.textarea__controls {
-  border-top: 0.2rem solid #CFD8DC;
-  background: #CFD8DC;
-  height: 2.2rem;
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-          justify-content: flex-start; }
-
-.textarea__label {
-  color: #607D8B;
-  position: absolute;
-  background: transparent;
-  font-size: 0.75rem;
-  padding-left: 0.245rem;
-  padding-top: 0.4rem;
-  color: #607D8B;
-  font-size: 0.75rem; }
+  min-width: 16rem;
+  display: inline-block;
+  width: 100%;
+  color: #212121;
+  position: relative; }
+  .textarea > .textarea__value {
+    display: none; }
+  .textarea > .textarea__text {
+    min-height: 3rem;
+    line-height: 1.5rem;
+    margin-top: 1rem;
+    border-bottom: 2px solid #CFD8DC; }
+    .textarea > .textarea__text:focus {
+      outline: 0;
+      border-bottom-color: #2196F3; }
+      .textarea > .textarea__text:focus + label {
+        color: #2196F3; }
+    .textarea > .textarea__text.valid {
+      border-bottom-color: #4CAF50; }
+      .textarea > .textarea__text.valid + label {
+        color: #4CAF50; }
+    .textarea > .textarea__text:invalid {
+      border-bottom-color: #F44336;
+      box-shadow: none; }
+      .textarea > .textarea__text:invalid + label {
+        color: #F44336; }
+    .textarea > .textarea__text.empty + label {
+      -webkit-transform: translateY(1.5rem);
+              transform: translateY(1.5rem);
+      font-size: 1rem; }
+    .textarea > .textarea__text + label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: #90A4AE;
+      width: 100%;
+      -webkit-transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
+      transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
+      font-size: 0.75rem; }
 
 .select {
   padding: 0.7rem;

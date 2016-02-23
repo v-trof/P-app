@@ -143,7 +143,7 @@ def create_course(request):
 			data["tests"]={}
 			data["tests"]["amount"]=0
 			data["tests"]["published"]=[]
-			data["tests"]["deleted"]=[]
+			data["tests"]["unpublished"]=[]
 			data["administrators"]=[request.user.id]
 			data["teachers"]=[request.user.id]
 			data["pending_users"]["Заявки"]=[]

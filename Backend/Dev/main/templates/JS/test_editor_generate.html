@@ -8,7 +8,8 @@
 		"text-wrapper": "<input type='text' id='new_el_value'><label>Текст вопроса</label><br><br><button id='add_el'>Добавить</button>",
 		"image-wrapper": "<input type='text' id='new_el_value'><label>URL артинки</label><br><br><div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file'></div><br><br><button id='add_el'>Добавить</button>",
 		"text-answer": "<input type='text' id='new_el_value'><label>Вопрос</label><br><br><input type='text' id='new_el_answer'><label>Верный ответ</label><br><br><button id='add_el'>Добавить</button>",
-		"select-answer": "<ul class='select-option-list'><li><input type='radio' name='right_answer' checked id='option_1'><label for='option_1'></label><div><input type='text'><label>Вариант ответа</label></div></li></ul><button class='button--icon' id='add_option'><svg  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><br><button id='add_el'>Добавить</button>"
+		"select-answer": "<ul class='select-option-list'><li><input type='radio' name='right_answer' checked id='option_1'><label for='option_1'></label><div><input type='text'><label>Вариант ответа</label></div></li></ul><button class='button--icon' id='add_option'><svg  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><br><button id='add_el'>Добавить</button>",
+		"textarea": "<input type='text' id='new_el_value'><label>Вопрос</label><br><br><button id='add_el'>Добавить</button>",
 	},
 	"text-wrapper" : function(value, original) {
 		var quesiton_template = $(generate.quesiton_template); //lets us modfy freely
@@ -64,7 +65,6 @@
 			popup.show(generate.texts["text-answer"],{}, function() {
 				if(original) {
 					$("#new_el_value").val(original.find("label").text());
-					$("#new_el_answer").val(original.attr("answer"));
 				}
 				$("#add_el, #popup__close").click(function(event) {
 					popup.hide();
@@ -77,7 +77,30 @@
 			});
 			var content = generate.queued_el;
 		} else {
-			var content = $(generate.answer_template("text-answer")).attr("answer", answer).html("<input type='text' placeholder='Ответ' disabled><label>"+value+"</label>");
+			var content = $(generate.answer_template("text-answer")).html("<input type='text' placeholder='Ответ' disabled><label>"+value+"</label>");
+		}
+		return content;
+	},
+	"textarea": function(value, answer, original) {
+		if(!value) {
+			var prefill;
+			popup.show(generate.texts["textarea"],{}, function() {
+				if(original) {
+					$("#new_el_value").val(original.find("label").text());
+					$("#new_el_answer").text(original.attr("answer"));
+				}
+				$("#add_el, #popup__close").click(function(event) {
+					popup.hide();
+					console.log("add");
+					c_element = generate["textarea"]($("#new_el_value").val(), $("#new_el_answer").val());
+					generate.queued_el.replaceWith(c_element);
+					add_boundary.draggable(c_element);
+					add_boundary.answer(c_element);
+				});
+			});
+			var content = generate.queued_el;
+		} else {
+			var content = $(generate.answer_template("textarea")).attr("answer", answer).html("<div class='textarea'>		<div class='textarea__text' contenteditable></div><label>"+value+"</label></div>");
 		}
 		return content;
 	},

@@ -21,6 +21,13 @@ var pack_input = {
 			"answer": $(el).attr('answer')
 		}
 	},
+	"textarea" : function(el){
+		return {
+			"class": "textarea",
+			"value": $(el).children('.textarea').children('label').text(),
+			"answer": ""
+		}
+	},
 	"file-answer" : function(el){
 		return {"class": "file-answer"}
 	},
