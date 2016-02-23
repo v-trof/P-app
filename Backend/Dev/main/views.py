@@ -107,11 +107,15 @@ def home(request):
     # context = {"breadcrumbs": breadcrumbs, "courses": courses, "homework": homework, "marks": marks}
     context = {}
     # print(context)
+    if request.user.is_anonymous():
+        return render(request, 'Pages/home.html', context)
     if request.user.is_teacher:
         courses=[]
-        courses=request.user.courses.split(" ")
-        for i,course in enumerate(courses):
-            courses[i]=Course.objects.get(id=course)
+        if request.user.courses:
+            courses=request.user.courses.split(" ")
+            for i,course in enumerate(courses):
+                print (courses[i])
+                courses[i]=Course.objects.get(id=int(course))
         return render(request, 'Pages/home.html', {"courses":courses})
     else: return render(request, 'Pages/home.html', context)
 
