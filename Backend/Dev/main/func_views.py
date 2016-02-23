@@ -122,9 +122,15 @@ def create_course(request):
 	if request.method == 'POST':
 		db = sqlite3.connect('db.sqlite3')
 		name = request.POST['course_name']
+		request.user.save()
 		subject = request.POST['subject']
-		course=Course.objects.create_course(name=name, subject=subject)
+		creator=request.user.id
+		course=Course.objects.create_course(name=name, subject=subject, creator=creator)
 		course.save()
+		if request.user.courses:
+			setattr(request.user, 'courses', request.user.courses+" "+str(course.id))
+		else: setattr(request.user, 'courses', str(course.id))
+		request.user.save()
 		db.commit()
 		os.makedirs('courses/'+str(course.id)+'/Tests/')
 		with io.open('courses/'+str(course.id)+'/info.json', 'a', encoding='utf8') as json_file:

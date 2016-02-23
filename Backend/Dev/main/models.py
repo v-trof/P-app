@@ -40,13 +40,14 @@ class FileForm(forms.Form):
         help_text='max. 42 megabytes'
     )
 class CourseManager(models.Manager):
-    def create_course(self,name,subject):
-        course = self.create(name=name, subject=subject)
+    def create_course(self,name,subject,creator):
+        course = self.create(name=name, subject=subject, creator=creator)
         return course
 
 class Course(models.Model):
     name = models.CharField(_('name'), max_length=30)
     subject = models.CharField(_('subject'), max_length=30)
+    creator = models.CharField(_('creator'), max_length=30)
     objects = CourseManager()
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -64,6 +65,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     name = models.CharField(_('name'), max_length=30, blank=True)
     Skype = models.CharField(_('skype'), max_length=30, blank=True)
+    courses=models.CharField(_('courses'), max_length=300, blank=True)
     Codeforces = models.CharField(_('codeforces'), max_length=30, blank=True)
     VK = models.CharField(_('vk'), max_length=30, blank=True)
     Facebook = models.CharField(_('facebook'), max_length=30, blank=True)

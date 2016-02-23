@@ -107,7 +107,13 @@ def home(request):
     # context = {"breadcrumbs": breadcrumbs, "courses": courses, "homework": homework, "marks": marks}
     context = {}
     # print(context)
-    return render(request, 'Pages/home.html', context)
+    if request.user.is_teacher:
+        courses=[]
+        courses=request.user.courses.split(" ")
+        for i,course in enumerate(courses):
+            courses[i]=Course.objects.get(id=course)
+        return render(request, 'Pages/home.html', {"courses":courses})
+    else: return render(request, 'Pages/home.html', context)
 
 # login group
 def login(request):
@@ -126,7 +132,6 @@ def register(request, course_id=None):
     else:
         return render(request, 'Pages/registration.html')
 
-
 def forgot_password(request):
     return render(request, 'Pages/forgot_password.html')
 
@@ -136,8 +141,8 @@ def profile(request, user_id):
     except:
         return render(request, 'Pages/404.html')
 
-def course(request):
-    return render(request, 'Pages/course.html')
+def course(request, course_id):
+    return render(request, 'Pages/course.html',{"course":Course.objects.get(id=course_id)})
 
 def course_requests(request, course_id):
     with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
