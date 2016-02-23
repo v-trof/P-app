@@ -127,7 +127,7 @@ function toggle_edit(){
 
 		$(".students .link--card").attr("draggable", "true");
 		//disabling links
-		$(".students .link--card,.teachers .link--card").each(function(index, el) {
+		$(".students .link--card").each(function(index, el) {
 			$(this).css('cursor', 'move');
 			$(this).attr('draggable', 'true');
 			$(this).replaceTag("<div>", true);
