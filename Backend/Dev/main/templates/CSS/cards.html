@@ -45,12 +45,15 @@
   margin-top: 0; }
 
 .linkbox {
+  display: flex;
+  flex-direction: row;
   margin-bottom: 0.6rem;
   margin-left: -0.6rem; }
   .linkbox>.link--card{
-    display: inline-block;
-    margin: 0 0 0.6rem 0.6rem;
-  }
+    display: block;
+    margin: 0 0 0.6rem 0.6rem; }
+    .linkbox>.link--card>.card--small{
+    display: block; }
 
 .link--card {
   cursor: pointer;
