@@ -152,6 +152,10 @@ def create_course(request):
 				data["status"]="closed"
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
+		with io.open('courses/'+str(course.id)+'/assignments.json', 'a', encoding='utf8') as json_file:
+			data={}
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
 		return redirect('/course/'+str(course.id)+'/groups/')
 
 def edit_groups(request):
@@ -323,17 +327,17 @@ def course_getdata(request, course):
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
 		course_data={}
+		course_data=data
 		course_data["course_id"]=course.id
-		course_data["groups"]={}
 		course_data["teachers"]=[]
-		course_data["users"]=[]
+		#course_data["users"]=[]
 		course_data["user_status"]=[]
-		for teacher_id in data["teachers"]:
-			course_data["teachers"].append(User.objects.get(id=teacher_id))
-		for group in data["groups"]:
-			course_data["groups"][group]=[]
-			for user_id in data["groups"][group]:
-				course_data["groups"][group].append(User.objects.get(id=user_id))
+		#for teacher_id in data["teachers"]:
+		#	course_data["teachers"].append(User.objects.get(id=teacher_id))
+		#for group in data["groups"]:
+		#	course_data["groups"][group]=[]
+		#	for user_id in data["groups"][group]:
+		#		course_data["groups"][group].append(User.objects.get(id=user_id))
 		if request.user.is_anonymous():
 			course_data["user_status"]="guest"
 		elif request.user.id in data["administrators"]:
@@ -349,6 +353,13 @@ def course_getdata(request, course):
 		else: course_data["user_status"]="guest"
 		print(course_data["groups"])
 		return course_data
+
+def course_get_assignments(request, course):
+	with io.open('courses/'+str(course.id)+'/assignments.json', 'r', encoding='utf8') as data_file:
+		data = json.load(data_file)
+		assignments={}
+		assignments=data
+		return assignments
 
 def get_users_info(request, user_ids):
 	users=[]

@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
-from main.func_views import course_getdata
+from main.func_views import course_getdata,course_get_assignments
 from main.func_views import get_users_info
 from main.func_views import logout_view
 import io
@@ -146,7 +146,8 @@ def profile(request, user_id):
         return render(request, 'Pages/404.html')
 
 def course(request, course_id):
-    return render(request, 'Pages/course.html',{"course":Course.objects.get(id=course_id)})
+    course=Course.objects.get(id=course_id)
+    return render(request, 'Pages/course.html',{"course":course, "course_data":course_getdata(request,course), "assignments":course_get_assignments(request,course)})
 
 def course_requests(request, course_id):
     with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:

@@ -6,7 +6,7 @@
 	<div class="icons--positive">
 		{% include "UI_elements/Icons/done.svg" %}
 	</div>
-	<h4 class="card__heading">В курсе {{assignment.course_title}}</h4>
+	<h4 class="card__heading">В курсе {{course.name}}</h4>
 	{% for task in assignment.tasks %}
 
 		{% with forloop.counter as upperloop_counter %}

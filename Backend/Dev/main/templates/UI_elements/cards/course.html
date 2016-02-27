@@ -1,51 +1,51 @@
 <a class="link--card" href="/course/{{course.id}}/">
 	<div class="card">
 		<div class="icons--warning">
-			{% for message in course.messages.warning %}
+			{% for message in course_data.messages.warning %}
 				{% include "UI_elements/Icons/"|add:message.icon|add:".svg" %}
 			{% endfor %}
 		</div>
 		<div class="icons--neutral">
-			{% for message in course.messages.neutral %}
+			{% for message in course_data.messages.neutral %}
 				{% include "UI_elements/Icons/"|add:message.icon|add:".svg" %}
 			{% endfor %}
 		</div>
 		<div class="icons--positive">
-			{% for message in course.messages.positive %}
+			{% for message in course_data.messages.positive %}
 				{% include "UI_elements/Icons/"|add:message.icon|add:".svg" %}
 			{% endfor %}
 		</div>
 		<h4 class="card__heading">{{course.name}}</h4>
 		<div class="card__content">
 			<span>
-				{% if course.tests.total %}
-					Пройдено <strong>{{course.tests.done}}</strong> тестов из <strong>{{course.tests.total}}</strong>
+				{% if course_data.tests.total %}
+					Пройдено <strong>{{course_data.tests.done}}</strong> тестов из <strong>{{course_data.tests.total}}</strong>
 				{% else %}
 					Тестов <strong>нет</strong>
 				{% endif %}
 			</span>
 			<br>	
 			<span>
-				{% if course.materials.total %}
-					Просмотрено <strong>{{course.materials.done}}</strong> материалов из <strong>{{course.materials.total}}</strong>
+				{% if course_data.materials.total %}
+					Просмотрено <strong>{{course_data.materials.done}}</strong> материалов из <strong>{{course_data.materials.total}}</strong>
 				{% else %}
 					Материалов <strong>нет</strong>
 				{% endif %}
 			</span>
 		</div>
 		<div class="messages">
-			{% for message in course.messages.warning %}
+			{% for message in course_data.messages.warning %}
 				<div class="messages__item--warning">
 					{{message.text}}
 				</div>
 			{% endfor %}
 
-			{% for message in course.messages.neutral %}
+			{% for message in course_data.messages.neutral %}
 				<div class="messages__item--neutral">
 					{{message.text}}
 				</div>
 			{% endfor %}
-			{% for message in course.messages.positive %}
+			{% for message in course_data.messages.positive %}
 				<div class="messages__item--neutral">
 					{{message.text}}
 				</div>
