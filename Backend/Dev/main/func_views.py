@@ -158,6 +158,7 @@ def create_course(request):
 			json_file.write(saving_data)
 		return redirect('/course/'+str(course.id)+'/groups/')
 
+
 def edit_groups(request):
 	groups_data={}
 	groups_data = json.loads(request.POST["new_groups"])

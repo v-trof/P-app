@@ -36,7 +36,7 @@
 			{% if task.content.materials|length > 0 %}
 				<span>Материалы для ознакомления:
 				{% for material in task.content.materials %}
-					<a href='{{assignment.teacher}}/{{assignment.course_title_lat}}/{material.link}}' class='task__link 
+					<a href='{{course.creator}}/{{course.id}}/{material.link}}' class='task__link 
 					{% if material.done %} done {% endif %}'>
 					{{material.title}}</a>{% if not forloop.last %},{% endif %}
 				
@@ -49,7 +49,7 @@
 			{% if task.content.tests|length > 0 %}
 				<span>Тесты:
 				{% for test in task.content.tests %}
-					<a href='{{assignment.teacher}}/{{assignment.course_title_lat}}/{{test.link}}' class='task__link 
+					<a href='{{course.creator}}/{{course.id}}/{{test.link}}' class='task__link 
 					{% if test.done %} done {% endif %}'>
 					{{test.title}}</a>{% if not forloop.last %},{% endif %}
 				

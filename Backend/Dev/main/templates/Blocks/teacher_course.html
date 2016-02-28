@@ -1,0 +1,50 @@
+<section class="linkbox">
+			<a class="link--card" href="groups/">
+				<div class="card--small">
+				Ученики
+				</div>
+			</a>
+			<a class="link--card" href="marks/">
+				<div class="card--small">
+				Оценки
+				</div>
+			</a>
+			<a class="link--card" href="tasks/">
+				<div class="card--small">
+				Дать задание
+				</div>
+			</a>
+			<a class="link--card" href="tasks/">
+				<div class="card--small">
+				Дать объявление
+				</div>
+			</a>
+			<a class="link--card" href="tasks/">
+				<div class="card--small">
+				Провести урок дистанционно
+				</div>
+			</a>
+			<a class="link--card" href="tasks/">
+				<div class="card--small">
+				Добавить тест
+				</div>
+			</a>
+			<a class="link--card" href="tasks/">
+				<div class="card--small">
+				Добавить материал
+				</div>
+			</a>
+			<a class="link--card" href="tasks/">
+				<div class="card--small">
+				Редактировать
+				</div>
+			</a>
+		</section>
+		<section>
+			<h2>Ким ЕГЭ 2015</h2>
+			{% for assignment in assignments %}
+			<a class="link--card" href="//">
+				{% include "UI_elements/cards/assignment.html" with assignment=assignment course=course%}
+			</a>
+			{% endfor %}
+</section>

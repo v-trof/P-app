@@ -1,1 +1,68 @@
-{}
+[
+	{"tasks":[
+      {
+         "traditional":false,
+         "done":false,
+         "content":{
+            "tests":[
+               {
+                  "title":"Test 1",
+                  "link":"test-1",
+                  "done":true
+               },
+               {
+                  "title":"Test 2",
+                  "link":"test-2",
+                  "done":false
+               }
+            ],
+            "materials":[
+               {
+                  "title":"Material 1",
+                  "link":"material-1",
+                  "done":true
+               }
+            ]
+         }
+      },
+      {
+         "traditional":true,
+         "done":false,
+         "content":"Прочитать книгу Б"
+      }
+   ],
+   "due_date":"12 ноября"},
+   	{"tasks":[
+      {
+         "traditional":false,
+         "done":false,
+         "content":{
+            "tests":[
+               {
+                  "title":"Test 1",
+                  "link":"test-1",
+                  "done":true
+               },
+               {
+                  "title":"Test 2",
+                  "link":"test-2",
+                  "done":false
+               }
+            ],
+            "materials":[
+               {
+                  "title":"Material 1",
+                  "link":"material-1",
+                  "done":true
+               }
+            ]
+         }
+      },
+      {
+         "traditional":true,
+         "done":false,
+         "content":"Прочитать книгу Б"
+      }
+   ],
+   "due_date":"12 ноября"}
+]
