@@ -1,1 +1,89 @@
-var pack_input={"block--empty":function(){return{"class":"block--empty",value:"none",answer:"none"}},"text-answer":function(t){return{"class":"text-answer",value:$(t).children("label").text(),answer:$(t).attr("answer")}},"file-answer":function(t){return{"class":"file-answer"}},"select-answer":function(t){var e=[];return $(t).find("option").each(function(t,n){e.push($(this).text())}),{"class":"select-answer",value:e,answer:$(t).attr("answer")}}},pack_question={"text-wrapper":function(t){return{"class":"text-wrapper",value:$(t).html()}},"image-wrapper":function(t){return{"class":"image-wrapper",value:$(t).children("img").attr("src")}}},test={pack:function(){var t={title:$(".test__heading").text(),author:"{{teachername}}",tasks:[]};$(".task__content").each(function(e,n){var s={question_items:[],answer_items:[]};$(this).children(".task__question").children().each(function(t,e){var n=this.classList[0];s.question_items.push(pack_question[n](this))}),$(this).children(".task__answer").children().each(function(t,e){var n=this.classList[0];s.answer_items.push(pack_input[n](this))}),t.tasks.push(s)}),console.log(t);var e=JSON.stringify(t);console.log(e)},unpack:function(t){console.log(t);var e=JSON.parse(t);e.tasks.forEach(function(t){generate.task(t)})}};$(document).ready(function(){$("#test_save").click(function(t){test.pack()})});
+var pack_input = {
+	"block--empty" : function(){
+		return {
+			"class": "block--empty",
+			"value": "none",
+			"answer": "none"
+		}	
+	},
+	"text-answer" : function(el){
+		return {
+			"class": "text-answer",
+			"value": $(el).children('label').text(),
+			"answer": $(el).attr('answer')
+		}
+	},
+	"file-answer" : function(el){
+		return {"class": "file-answer"}
+	},
+	"select-answer": function(el){
+		var values = [];
+		$(el).find("option").each(function(index, el) {
+			values.push($(this).text());
+		});
+		return {
+			"class": "select-answer",
+			"value": values,
+			"answer": $(el).attr('answer')
+		}
+	}
+}
+
+var pack_question = {
+	"text-wrapper" : function(el){
+		return {
+			"class": "text-wrapper",
+			"value": $(el).html(),
+		}
+	},
+	"image-wrapper" : function(el){
+		return {
+			"class": "image-wrapper",
+			"value": $(el).children('img').attr("src"),
+		}
+	},
+}
+
+var test = {
+	pack: function(){
+		var testfile = {
+			"title" : $(".test__heading").text(),
+			"author": "{{teachername}}",
+			"tasks" : []
+		};
+		$(".task__content").each(function(index, el) {
+			var c_task = {
+				"question_items": [],
+				"answer_items" : []
+			};
+			$(this).children('.task__question').children().each(function(index, el) {
+				var c_class = this.classList[0];
+				// console.log(c_class)
+				c_task.question_items.push(pack_question[c_class](this));
+			});
+			//answer shit need coplete revision
+			$(this).children('.task__answer').children().each(function(index, el) {
+				var c_class = this.classList[0];
+				// console.log(c_class)
+				c_task.answer_items.push(pack_input[c_class](this));
+			});
+			testfile.tasks.push(c_task);
+		});
+		console.log(testfile);
+		var json = JSON.stringify(testfile);
+		console.log(json);
+	},
+	unpack: function(json_file) {
+		console.log(json_file);
+		var testfile = JSON.parse(json_file);
+		testfile.tasks.forEach(function(task_data){
+			generate.task(task_data);
+		});
+	}
+}
+
+$(document).ready(function() {
+	$("#test_save").click(function(event) {
+		test.pack();
+	});
+});

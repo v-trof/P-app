@@ -43,7 +43,73 @@
 				<div class="image-wrapper" draggable="true">
 					<img src="../Assets/Images/Yosemite.jpg">
 				</div>
+				<div class="audio-wrapper" draggable="true" disabled>
+					<audio src="../Assets/Sound/rain.mp3" role="media"></audio>
+					<div class="wrapper__controls">
+						<button class="button--icon" role="play">
+							<svg class="{{ class }}" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+						</button>
+						<button class="button--icon" style="display: none" role="pause">
+							<svg class="{{ class }}" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+						</button>
+						<div class="slider" role="time">
+							<div class="slider__track--inactive">
+							</div>
+							<div class="slider__track--active">
+							</div>
+							<button class="slider__thumb"></button>
+						</div>
+
+						<button class="button--icon">
+							<svg class="{{ class }}" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+						</button>
+						<div class="slider slider--volume" role="volume">
+							<div class="slider__track--inactive">
+							</div>
+							<div class="slider__track--active">
+							</div>
+							<button class="slider__thumb"></button>
+						</div>
+					</div>
+				</div>
+
+				<!-- <div class="video-wrapper" draggable="true">
+					<video src="http://r5---sn-5hne6n7k.googlevideo.com/videoplayback?ipbits=0&sparams=dur,expire,id,initcwndbps,ip,ipbits,itag,lmt,mime,mm,mn,ms,mv,nh,pl,ratebypass,source,upn&mime=video%2Fmp4&fexp=9416126%2C9418201%2C9420452%2C9422596%2C9423661%2C9423662%2C9424091%2C9425740%2C9426415%2C9427322%2C9427698%2C9427773%2C9427888%2C9429151%2C9429237%2C9429261&key=cms1&dur=824.749&source=youtube&lmt=1434365559233150&ratebypass=yes&itag=18&expire=1456443474&upn=PBCY5ANPLDM&sver=3&id=o-AMqVXpeqjc5EyjGcPb-1dhw_MMjP-XmoJy5SZYGwlkbq&ip=195.19.236.112&pl=22&signature=4BEE60F10229A647A74783BC594794F2F662B4A1.54C27B5AD566B011FDA0D8A662453135D87146CA&title=J%C3%B3hann+J%C3%B3hannsson+--++Fordl%C3%A2ndia+(HD)&req_id=45879a41df95a3ee&redirect_counter=2&cms_redirect=yes&mm=34&mn=sn-5hne6n7k&ms=ltu&mt=1456421146&mv=u&nh=IgpwcjA0LmFtczE1KgkxMjcuMC4wLjE" role="media"></video>
+					<div class="wrapper__controls">
+						<button class="button--icon" role="play">
+							<img src="../Assets/Icons/play.svg" inline>
+						</button>
+						<button class="button--icon" style="display: none" role="pause">
+							<img src="../Assets/Icons/pause.svg" inline>
+						</button>
+						<div class="slider" role="time">
+							<div class="slider__track--inactive">
+							</div>
+							<div class="slider__track--active">
+							</div>
+							<button class="slider__thumb"></button>
+						</div>
+
+						<button class="button--icon">
+							<img src="../Assets/Icons/volume_high.svg" inline>
+						</button>
+						<div class="slider slider--volume" role="volume">
+							<div class="slider__track--inactive">
+							</div>
+							<div class="slider__track--active">
+							</div>
+							<button class="slider__thumb"></button>
+						</div>
+						<button class="button--icon">
+							<img src="../Assets/Icons/fullscreen.svg" inline>
+						</button>
+						<button class="button--icon" style="display: none" role="pause">
+							<img src="../Assets/Icons/fullscreen_exit.svg" inline>
+						</button>
+					</div>
+				</div> -->
 			</div>
+
 			<div class="test">
 				<div class="test__bg"></div>
 				<div id="delete">
@@ -121,7 +187,7 @@
 		<div class="includer">{% include 'JS/test_manager.html' %}</div>
 		<div class="includer">{% include 'JS/ripple.html' %}</div>
 		<div class="includer">{% include 'JS/file_input.html' %}</div>
-
+		<div class="includer">{% include 'JS/players.html' %}</div>
 		<!-- unique -->
 		<div class="includer">{% include 'JS/context_menu.html' %}</div>
 		<div class="includer">{% include 'CSS/context-menu.html' %}</div>

@@ -1,1 +1,76 @@
-var firefox=-1!=navigator.userAgent.indexOf("Firefox"),ripple=$("<div class='ripple'></div>");ripple.dissolve=function(){ripple.css({opacity:0}),setTimeout(function(){ripple.css({transform:"scale(0)"}),ripple.hide(),ripple.attr("class","ripple")},150)},ripple.force_show=function(e,i,p){ripple.show(),$(i).prepend(ripple);var l=i.getBoundingClientRect(),o=l.width/5*2.14,t={x:e.clientX-l.left,y:e.clientY-l.top};ripple.addClass(p),ripple.css({top:t.y+"px",left:t.x+"px",transform:"scale("+o+")",opacity:1})},$(document).ready(function(){$(".link--card>.card, .link--card>.card--small, button").bind({mousedown:function(e){console.log("md"),ripple.show(),$(this).prepend(ripple);var i=this.getBoundingClientRect(),p=i.width/5*1.4,l={x:e.clientX-i.left,y:e.clientY-i.top-$("main").scrollTop()};ripple.css({top:l.y+"px",left:l.x+"px",transform:"scale("+p+")",opacity:1})},mouseup:function(){console.log("mu/click"),ripple.dissolve()},mouseleave:function(){ripple.dissolve()}})}),$("a, button").mouseup(function(e){console.log("reclick",this),firefox&&this.click()});
+var firefox = navigator.userAgent.indexOf("Firefox") != -1;
+var ripple = $("<div class='ripple'></div>");
+
+ripple.dissolve = function (){
+	ripple.css({
+		"opacity": 0,
+	});
+	
+	setTimeout(function(){
+		ripple.css({
+			"transform": "scale(0)",
+		});
+		ripple.hide();
+		ripple.attr("class", "ripple");
+	}, 150);
+}
+
+ripple.force_show = function(e, el, special_class) {
+	// console.log(el);
+	ripple.show();
+	$(el).prepend(ripple);
+	var c_rect = el.getBoundingClientRect();
+	var scale = (c_rect.width/5)*2.14;
+	// console.log(el.getBoundingClientRect(), e);
+	var pos = {
+		x: e.clientX - c_rect.left,
+		y: e.clientY - c_rect.top,
+	}
+	ripple.addClass(special_class);
+	// console.log(pos);
+	ripple.css({
+		"top": pos.y + "px",
+		"left": pos.x + "px",
+		"transform": "scale(" + scale + ")",
+		"opacity": 1
+	});
+}
+
+$(document).ready(function() {
+	$(".link--card>.card, .link--card>.card--small, button").bind({
+		mousedown: function(e) {
+			console.log("md");
+			ripple.show();
+			$(this).prepend(ripple);
+			var c_rect = this.getBoundingClientRect();
+			var scale = (c_rect.width/5)*1.4;
+			// console.log(this.getBoundingClientRect(), e, $("main").scrollTop());
+			var pos = {
+				x: e.clientX - c_rect.left,
+				y: e.clientY - c_rect.top - $("main").scrollTop()
+			}
+			// console.log(pos);
+			ripple.css({
+				"top": pos.y + "px",
+				"left": pos.x + "px",
+				"transform": "scale(" + scale + ")",
+				"opacity": 1
+			});
+		},
+
+		mouseup: function() {
+			console.log("mu/click");
+			ripple.dissolve();
+		},
+		mouseleave: function() {
+			ripple.dissolve();
+		},
+	});
+});
+//one more ff fix
+$("a, button").mouseup(function(e) {
+	console.log("reclick", this);
+	if(firefox){
+		this.click();
+	}
+});

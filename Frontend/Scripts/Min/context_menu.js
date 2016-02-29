@@ -1,1 +1,90 @@
-function add_menu_caller(t){var e=$(t).children("option").get(0);e=$(e),setTimeout(function(){var e=0;$(t).children("option").each(function(t,n){e=Math.max($(this).outerWidth(),e)}),$(t).children(".display").css("min-width",e+"px")},300),$(t).children("input").val(e.attr("value")),$(t).children(".display").text(e.text()),$(t).click(function(t){"false"==$(this).attr("disabled")&&t.preventDefault();var e=[],n={},c=$(this).children("input").val();$(this).children("option").each(function(t,i){$(this).attr("value")!=c?e.push({text:$(this).text(),value:$(this).attr("value")}):n={text:$(this).text(),value:$(this).attr("value")}}),context_menu.show(this,e,n)})}context_menu={show:function(t,e,n){context_menu.is_shown&&context_menu.hide(),c_rect=t.getBoundingClientRect(),n?context_menu.build_select(t,e,n):context_menu.build(e),$("#context-menu").css({top:c_rect.top+"px",left:c_rect.left+"px",opacity:1})},hide:function(){$("#context-menu").css("opacity","0"),setTimeout(function(){$("#context-menu").css("top","-100%")},300)},build:function(t){$("#context-menu").html(""),t.forEach(function(t){$("#context-menu").append("<div class='context-menu__option' onclick='"+t.func+"()'>"+t.text+"</div>")})},build_select:function(t,e,n){$("#context-menu").html(""),$("#context-menu").append("<div class='context-menu__option default' value='"+n.value+"'>"+n.text+"</div>"),e.forEach(function(t){$("#context-menu").append("<div class='context-menu__option' value='"+t.value+"'>"+t.text+"</div>")}),$(".context-menu__option").click(function(e){context_menu.hide(),$(t).children("input").val($(this).attr("value")),$(t).children(".display").text($(this).text())})}},$(document).ready(function(){$(".select").each(function(t,e){add_menu_caller(this)})});
+context_menu = {
+	show: function(el, options, checked) {
+		if(context_menu.is_shown){
+			context_menu.hide();
+		}
+		c_rect = el.getBoundingClientRect();
+
+		if(checked){
+			context_menu.build_select(el, options, checked);
+		} else {
+			context_menu.build(options);
+		}
+		$("#context-menu").css({
+			"top": c_rect.top + "px",
+			"left": c_rect.left + "px",
+			"opacity": 1
+		});
+	},
+
+	hide: function() {
+		$("#context-menu").css('opacity', '0');
+		setTimeout(function(){
+			$("#context-menu").css('top', '-100%');
+		},300);
+	},
+
+	build: function(options) {
+		$("#context-menu").html("");
+		options.forEach(function(option) {
+			$("#context-menu").append("<div class='context-menu__option' onclick='" + option.func + "()'>" + option.text + "</div>");
+		});
+	},
+	build_select: function(el, options, checked) {
+		$("#context-menu").html("");
+		$("#context-menu").append("<div class='context-menu__option default' value='" + checked.value + "'>" + checked.text + "</div>")
+		options.forEach(function(option){
+			$("#context-menu").append("<div class='context-menu__option' value='" + option.value + "'>" + option.text + "</div>");
+		});
+		$(".context-menu__option").click(function(event) {
+			context_menu.hide();
+			$(el).children('input').val($(this).attr('value'));
+			$(el).children('.display').text($(this).text());
+		});
+	},
+
+}
+
+function add_menu_caller(select) {
+	var first_option = $(select).children('option').get(0);
+	first_option = $(first_option);
+	
+	setTimeout(function(){
+		var max_w = 0;
+		$(select).children('option').each(function(index, el){
+			max_w = Math.max($(this).outerWidth(), max_w);
+		});
+		$(select).children('.display').css('min-width', max_w+"px");
+	},300);
+	
+	$(select).children('input').val(first_option.attr("value"));
+	$(select).children(".display").text(first_option.text());
+	$(select).click(function(e) {
+		if($(this).attr('disabled') == "false"){
+			e.preventDefault();
+		}
+		var options = [];
+		var checked = {};
+		var current_value = $(this).children('input').val();
+		$(this).children('option').each(function(index, el) {
+			if($(this).attr("value") != current_value){
+				options.push({
+					text : $(this).text(),
+					value: $(this).attr("value")
+				})
+			} else {
+				checked = {
+					text : $(this).text(),
+					value: $(this).attr("value")
+				}
+			}
+		});
+		context_menu.show(this, options, checked);
+	});
+}
+
+$(document).ready(function() {
+	$(".select").each(function(index, el) {
+		add_menu_caller(this);
+	});
+});

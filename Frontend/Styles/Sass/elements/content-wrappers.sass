@@ -20,3 +20,71 @@
 		max-width: 100%
 	.task__question>&
 		border: 0
+
+.audio-wrapper //,.video-wrapper
+	width: 100%
+	min-height: $block-regular
+	border-radius: 2px
+	padding: 0
+	transition: $time-regular
+	&>video
+		width: 100%
+	&[disabled]
+		*
+			pointer-events: none
+	&>.wrapper__controls
+		display: flex
+		flex-direction: row
+		align-items: center
+		height: $block-regular
+		&>*:last-child
+			margin-right: $padding-regular
+		&>button
+			margin: 0 $padding-small
+			min-width: $icon-small
+		&>.slider
+			width: 100%
+			position: relative
+			&>.slider__track
+				position: absolute
+				top: 50%
+				margin-top: -$size-small/2
+				width: 100%
+				height: $size-small
+				border-radius: $size-small/2
+				
+			&>.slider__track--inactive
+				@extend .slider__track;
+				background: $grey-semilight
+				z-index: 1
+			&>.slider__track--active
+				@extend .slider__track;
+				background: $color--accent
+				z-index: 2
+				width: 0
+
+			&>.slider__thumb
+				height: $size-regular
+				width: $size-regular
+				padding: 0
+				border-radius: 50%
+				position: absolute
+				top: 50%
+				left: 0
+				margin-top: -$size-regular/2
+				margin-left: -$size-regular/2
+				z-index: 3
+				transition: none
+				&:focus
+					box-shadow: none
+				&:hover
+					box-shadow: none
+					&:after
+						content: ''
+						display: block
+						height: $size-big
+						width: $size-big
+						border-radius: 50%
+						background: rgba($color--accent, 0.3)
+.slider--volume
+	width: 30% !important

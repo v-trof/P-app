@@ -15,31 +15,29 @@
 		{% if request.user.id == course.creator %}
 			{% include 'Blocks/teacher_course.html' %}
 		{% else %}
-		<section class="linkbox">
-			<a class="link--card" href="groups/">
-				<div class="card-small">
-				Группы и учителя
-				</div>
-			</a>
-			<a class="link--card" href="marks/">
-				<div class="card-small">
-				Мои оценки
-				</div>
-			</a>
-			<a class="link--card" href="tasks/">
-				<div class="card-small">
-				Задания
-				</div>
-			</a>
-		</section>
-		<section>
-			<h2>Ким ЕГЭ 2015</h2>
-			{% for assignment in assignments %}
-			<a class="link--card" href="//">
-				{% include "UI_elements/cards/assignment.html" with assignment=assignment course=course%}
-			</a>
-			{% endfor %}
-		</section>
+			<section class="linkbox">
+				<a class="link--card" href="groups/">
+					<div class="card--small">
+					Группы и учителя
+					</div>
+				</a>
+				<a class="link--card" href="marks/">
+					<div class="card--small">
+					Мои оценки
+					</div>
+				</a>
+				<a class="link--card" href="tasks/">
+					<div class="card--small">
+					Задания
+					</div>
+				</a>
+			</section>
+			<section class="homework">
+				<h2>Ким ЕГЭ 2015</h2>
+				{% for assignment in assignments %}
+					{% include "UI_elements/cards/assignment.html" %}
+				{% endfor %}
+			</section>
 		{% endif %}
 	</main>
 	<!-- <a class="link--card" href="groups.html">
@@ -49,8 +47,11 @@
 	</a> -->
 	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 	<div class="includer">{% include 'JS/layout.html' %}</div>
+	<div class="includer">{% include 'JS/handle-cards.html' %}</div>
 	
 	{% include "UI_elements/unique/notification.html" %}
 	{% include "UI_elements/unique/header.html" %}
+	{% include "UI_elements/unique/tooltip.html" %}
+	{% include "UI_elements/unique/context_menu.html" %}
 </body>
 </html>

@@ -8,7 +8,6 @@
 	</div>
 	<h4 class="card__heading">В курсе {{course.name}}</h4>
 	{% for task in assignment.tasks %}
-
 		{% with forloop.counter as upperloop_counter %}
 		{% if task.traditional %}
 			{% if task.done %}

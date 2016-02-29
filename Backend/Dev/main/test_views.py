@@ -149,3 +149,19 @@ def attempt_save(request):
 def attempt_check(request):
 	#checks attempts
 	pass
+
+
+def upload_asset(request):
+	if request.method == 'POST':
+		asset = request.FILES["asset"]
+		course_id = request.POST["course_id"]
+		test_id = request.POST["test_id"]
+		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
+		
+		if not os.path.exists(path):
+		    os.makedirs(path)
+		
+		with open(path+asset.name, 'wb+') as destination:
+			for chunk in asset.chunks():
+				destination.write(chunk)
+	return HttpResponse("ok")

@@ -22,6 +22,30 @@
 				<div class="image-wrapper" draggable="true">
 					<img src="http://s3.amazonaws.com/sitebuilderreport-assets/stock_photos/files/000/016/033/small/IMG_4360.jpg?1456172789">
 				</div>
+				<div class="audio-wrapper" draggable="true" disabled>
+					<audio src="../Assets/Sound/rain.mp3" role="media"></audio>
+					<div class='wrapper__controls'>
+						<button class='button--icon' role='play'>
+							{% include 'UI_elements/Icons/play.svg' %}
+						</button>
+						<button class='button--icon' style='display: none' role='pause'>
+							{% include 'UI_elements/Icons/pause.svg' %}
+						</button>
+						<div class='slider' role='time'>
+							<div class='slider__track--inactive'></div>
+							<div class='slider__track--active'></div>
+							<button class='slider__thumb'></button>
+						</div>
+						<button class='button--icon'>
+							{% include 'UI_elements/Icons/volume_high.svg' %}
+						</button>
+						<div class='slider slider--volume' role='volume'>
+							<div class='slider__track--inactive'></div>
+							<div class='slider__track--active'></div>
+							<button class='slider__thumb'></button>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="test">
 				<div class="test__bg"></div>
@@ -110,6 +134,7 @@
 
 		<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 		<div class="includer">{% include 'JS/layout.html' %}</div>
+		<div class="includer">{% include 'JS/players.html' %}</div>
 		<div class="includer">{% include 'JS/drag_and_drop.html' %}</div>
 		<div class="includer">{% include 'JS/create_question.html' %}</div>
 		<div class="includer">{% include 'JS/test_editor_generate.html' %}</div>

@@ -6,9 +6,10 @@
 	},
 	"texts" : {
 		"text-wrapper": "<input type='text' id='new_el_value'><label>Текст вопроса</label><br><br><button id='add_el'>Добавить</button>",
-		"image-wrapper": "<input type='text' id='new_el_value'><label>URL артинки</label><br><br><div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file'></div><br><br><button id='add_el'>Добавить</button>",
+		"image-wrapper": "<input type='text' id='new_el_value'><label>URL артинки</label><br><br><div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file' id='new_el_file'></div><br><br><button id='add_el'>Добавить</button>",
+		"audio-wrapper": "<div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file' id='new_el_value'></div><br><br><button id='add_el'>Добавить</button>",
 		"text-answer": "<input type='text' id='new_el_value'><label>Вопрос</label><br><br><input type='text' id='new_el_answer'><label>Верный ответ</label><br><br><button id='add_el'>Добавить</button>",
-		"select-answer": "<ul class='select-option-list'><li><input type='radio' name='right_answer' checked id='option_1'><label for='option_1'></label><div><input type='text'><label>Вариант ответа</label></div></li></ul><button class='button--icon' id='add_option'><svg  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><br><button id='add_el'>Добавить</button>",
+		"select-answer": '<ul class="select-option-list"><li><input type="radio" name="right_answer" checked id="option_1"><label for="option_1"></label><div><input type="text"><label>Вариант ответа</label></div></li></ul><button class="button--icon" id="add_option">{% include "UI_elements/Icons/more_vertical.svg" %}</button><br><button id="add_el">Добавить</button>',
 		"textarea": "<input type='text' id='new_el_value'><label>Вопрос</label><br><br><button id='add_el'>Добавить</button>",
 	},
 	"text-wrapper" : function(value, original) {
@@ -42,19 +43,97 @@
 				if(original) {
 					$("#new_el_value").val(original.find("img").attr("src"));
 				}
+				$("#new_el_file").change(function(e){
+					image_file = e.target.files[0];
+				});
 				$("#add_el, #popup__close").click(function(event) {
 					popup.hide();
-					if($("#new_el_value").val()!=""){
+					if($("#new_el_value").val() !="" ){
 						c_element = generate["image-wrapper"]($("#new_el_value").val());
 						generate.queued_el.replaceWith(c_element);
 						add_boundary.draggable(c_element);
 						add_boundary.question(c_element);
+					} else if($("#new_el_file") != "" ){
+						var filename = $("#new_el_file").val().replace("C:\\fakepath\\","");
+						var formData = new FormData();
+					    formData.append('asset', image_file);
+					    formData.append("course_id", "{{course.id}}");
+						formData.append("test_id", "{{test.id}}");
+					    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+					    file_path = "/media/courses/{{course.id}}/assets/{{test.id}}/";
+					    // console.log(formData);
+					    $.ajax({
+					        type:"POST",
+					        url:"/test/upload/",
+					        data: formData,
+					        processData: false,
+					        contentType: false,
+					        success: function(){
+					            notification.change('success','Загружен',filename +" был успешно загружен на сервер");
+					            c_element = generate["image-wrapper"](file_path +filename);
+								generate.queued_el.replaceWith(c_element);
+								add_boundary.draggable(c_element);
+								add_boundary.question(c_element);
+					        }
+					    });
+
+						
 					}
 				});
 			});
 			var content = generate.queued_el;
 		} else {
 			var content = quesiton_template.addClass("image-wrapper").append("<img src="+value+">");
+		}
+		console.log(content);
+		return content;
+	},
+	"audio-wrapper" : function(value, original) {
+		var quesiton_template = $(generate.quesiton_template); //lets us modfy freely
+		if(!value) {
+			popup.show(generate.texts["audio-wrapper"],{}, function() {
+				var audio_file
+				$("#new_el_value").change(function(e){
+					audio_file = e.target.files[0];
+				});
+				$("#add_el, #popup__close").click(function(event) {
+					popup.hide();
+					if($("#new_el_value").val()!=""){
+						var formData = new FormData();
+					    formData.append('asset', audio_file);
+					    formData.append("course_id", "{{course.id}}");
+						formData.append("test_id", "{{test.id}}");
+					    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+					    // console.log(formData);
+					    $.ajax({
+					        type:"POST",
+					        url:"/test/upload/",
+					        data: formData,
+					        processData: false,
+					        contentType: false,
+					        success: function(){
+					            notification.change('success','Загружен',$("#new_el_value").val().replace("C:\\fakepath\\","")+" был успешно загружен на сервер");
+					             filename = ($("#new_el_value").val().replace("C:\\fakepath\\",""));
+							    file_path = "/media/courses/{{course.id}}/assets/{{test.id}}/";
+								c_element = generate["audio-wrapper"](file_path + filename);
+								generate.queued_el.replaceWith(c_element);
+								add_boundary.draggable(c_element);
+								add_boundary.question(c_element);
+								media_player.bind_controls(c_element);
+					        }
+					    });
+					   
+					}
+				});
+			});
+			var content = generate.queued_el;
+		} else {
+			tag_str = "<audio src='"+value+"' role='media'>Обновите браузер</audio>";
+			/*ext = value.split(".")[value.split(".").length-1];
+			if(ext=="mp4" && ext=="webm" && ext=="ogg"){
+				tag_str = "<video src="+value+" role='audio'>Обновите браузер</video>";
+			}	*/
+			var content = quesiton_template.addClass("audio-wrapper").append(tag_str+'<div class="wrapper__controls"><button class="button--icon" role="play">{% include "UI_elements/Icons/play.svg" %}</button><button class="button--icon" style="display: none" role="pause">{% include "UI_elements/Icons/pause.svg" %}</button><div class="slider" role="time"><div class="slider__track--inactive"></div><div class="slider__track--active"></div><button class="slider__thumb"></button></div><button class="button--icon">{% include "UI_elements/Icons/volume_high.svg" %}</button><div class="slider slider--volume" role="volume"><div class="slider__track--inactive"></div><div class="slider__track--active"></div><button class="slider__thumb"></button></div></div>');
 		}
 		console.log(content);
 		return content;
@@ -77,7 +156,7 @@
 			});
 			var content = generate.queued_el;
 		} else {
-			var content = $(generate.answer_template("text-answer")).html("<input type='text' placeholder='Ответ' disabled><label>"+value+"</label>");
+			var content = $(generate.answer_template("text-answer")).html("<input type='text' disabled><label>"+value+"</label>");
 		}
 		return content;
 	},
@@ -212,4 +291,5 @@
 
 		tasks++;
 	}
+
 }	</script>

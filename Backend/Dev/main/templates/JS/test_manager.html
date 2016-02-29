@@ -57,6 +57,12 @@ var pack_question = {
 			"value": $(el).children('img').attr("src"),
 		}
 	},
+	"audio-wrapper" : function(el){
+		return {
+			"class": "audio-wrapper",
+			"value": $(el).children('audio').attr("src"),
+		}
+	},
 }
 
 var test = {
@@ -89,9 +95,9 @@ var test = {
 		formData.append("json_file", JSON.stringify(testfile));
 		formData.append("course_id", "{{course.id}}");
 		formData.append("test_id", "{{test.id}}");
-		console.log(csrf_token, "{{test.id}}", "{{course.id}}");
+		// console.log(csrf_token, "{{test.id}}", "{{course.id}}");
 		formData.append('csrfmiddlewaretoken', csrf_token);
-		console.log(formData);
+		// console.log(formData);
 		$.ajax({
 			type:"POST",
 			url:"/test/save/",
@@ -109,6 +115,12 @@ var test = {
 		testfile.tasks.forEach(function(task_data){
 			generate.task(task_data);
 		});
+		$("input").each(function(index, el) {
+			add_emptiness_checker(this);
+		});
+		$(".audio-wrapper").each(function(index, el) {
+	        media_player.bind_controls(this);
+	    });
 	}
 }
 

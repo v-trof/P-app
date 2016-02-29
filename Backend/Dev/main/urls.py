@@ -37,8 +37,10 @@ test_patterns = [
     url(r'^share/$', test_views.share),
 
     url(r'^attempt/$', test_views.attempt),
-    url(r'^attempt_save/$', test_views.attempt_save),
-    url(r'^attempt_check/$', test_views.attempt_check),
+    url(r'^attempt/save/$', test_views.attempt_save),
+    url(r'^attempt/check/$', test_views.attempt_check),
+
+    url(r'^upload/$', test_views.upload_asset),
 ]
 
 func_patterns = [

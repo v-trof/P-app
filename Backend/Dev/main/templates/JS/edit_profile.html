@@ -57,7 +57,7 @@ function upload_avatar(e) {
     var formData = new FormData();
     formData.append('new_avatar', file);
     formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-    console.log(formData);
+    // console.log(formData);
     $.ajax({
         type:"POST",
         url:"/func/upload_avatar/",

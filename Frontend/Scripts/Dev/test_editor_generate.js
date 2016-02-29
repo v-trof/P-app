@@ -7,6 +7,7 @@ var generate  = {
 	"texts" : {
 		"text-wrapper": "<input type='text' id='new_el_value'><label>Текст вопроса</label><br><br><button id='add_el'>Добавить</button>",
 		"image-wrapper": "<input type='text' id='new_el_value'><label>URL артинки</label><br><br><div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file'></div><br><br><button id='add_el'>Добавить</button>",
+		"audio-wrapper": "<div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file' id='new_el_value'></div><br><br><button id='add_el'>Добавить</button>",
 		"text-answer": "<input type='text' id='new_el_value'><label>Вопрос</label><br><br><input type='text' id='new_el_answer'><label>Верный ответ</label><br><br><button id='add_el'>Добавить</button>",
 		"select-answer": "<ul class='select-option-list'><li><input type='radio' name='right_answer' checked id='option_1'><label for='option_1'></label><div><input type='text'><label>Вариант ответа</label></div></li></ul><button class='button--icon' id='add_option'><svg  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><br><button id='add_el'>Добавить</button>"
 	},
@@ -58,6 +59,37 @@ var generate  = {
 		console.log(content);
 		return content;
 	},
+	"audio-wrapper" : function(value, original) {
+		var quesiton_template = $(generate.quesiton_template); //lets us modfy freely
+		if(!value) {
+			var prefill;
+			popup.show(generate.texts["audio-wrapper"],{}, function() {
+				if(original) {
+					// $("#new_el_value").val(original.find("[role='media']").attr("src"));
+				}
+				$("#add_el, #popup__close").click(function(event) {
+					popup.hide();
+					if($("#new_el_value").val()!=""){
+						c_element = generate["audio-wrapper"]($("#new_el_value").val());
+						generate.queued_el.replaceWith(c_element);
+						add_boundary.draggable(c_element);
+						add_boundary.question(c_element);
+						media_player.bind_controls(c_element);
+					}
+				});
+			});
+			var content = generate.queued_el;
+		} else {
+			tag_str = "<audio src='../Assets/Sound/"+value.replace("C:\\fakepath\\","")+"' role='media'>Обновите браузер</audio>";
+			/*ext = value.split(".")[value.split(".").length-1];
+			if(ext=="mp4" && ext=="webm" && ext=="ogg"){
+				tag_str = "<video src="+value+" role='audio'>Обновите браузер</video>";
+			}	*/
+			var content = quesiton_template.addClass("audio-wrapper").append(tag_str+"<div class='wrapper__controls'><button class='button--icon' role='play'><svg class='{{ class }}' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M8 5v14l11-7z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><button class='button--icon' style='display: none' role='pause'><svg class='{{ class }}' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><div class='slider' role='time'><div class='slider__track--inactive'></div><div class='slider__track--active'></div><button class='slider__thumb'></button></div><button class='button--icon'><svg class='{{ class }}' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><div class='slider slider--volume' role='volume'><div class='slider__track--inactive'></div><div class='slider__track--active'></div><button class='slider__thumb'></button></div></div>");
+		}
+		console.log(content);
+		return content;
+	},
 	"text-answer": function(value, answer, original) {
 		if(!value) {
 			var prefill;
@@ -77,7 +109,7 @@ var generate  = {
 			});
 			var content = generate.queued_el;
 		} else {
-			var content = $(generate.answer_template("text-answer")).attr("answer", answer).html("<input type='text' placeholder='Ответ' disabled><label>"+value+"</label>");
+			var content = $(generate.answer_template("text-answer")).attr("answer", answer).html("<input type='text' disabled><label>"+value+"</label>");
 		}
 		return content;
 	},
@@ -85,7 +117,6 @@ var generate  = {
 		var content = $(generate.answer_template("file-answer")).html("<div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file'></div></div>");
 		add_boundary.draggable(content);
 		add_boundary.answer(content);
-
 		return content;
 	},
 	"select-answer": function(value, answer, original) {
@@ -110,7 +141,6 @@ var generate  = {
 					console.log("add");
 					var values = [];
 					var answer = "";
-
 					$("#popup li").each(function(index, el) {
 						var text = $(this).find("input[type='text']").val();
 						if($(this).children("input[type='radio']").is(":checked")){
@@ -148,9 +178,7 @@ var generate  = {
 		new_task.find(".block--empty").each(function(index, el) {
 			add_boundary.block_empty($(this));
 		});
-
 		$(".test__preview").append(new_task);
-
 		new_task.find(".task__question").html("");
 		new_task.find(".task__answer").html("");
 		task_data.answer_items.forEach(function(element) {
@@ -186,7 +214,9 @@ var generate  = {
 		editor.verify_type();
 		editor.check_for_emptiness();
 		check_bg_height();
-
+		$("input, .textarea__text").each(function(index, el) {
+			add_emptiness_checker(this);
+		});
 		tasks++;
 	}
 }	

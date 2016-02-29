@@ -1,1 +1,15 @@
-function add_file_boundary(n){$(n).click(function(n){$(this).children("input")[0].click()}),$(n).children("input").change(function(i){$(n).children("span").text($(this).val().replace("C:\\fakepath\\",""))})}$(document).ready(function(){$(".file").each(function(n,i){add_file_boundary(this)})});
+function add_file_boundary(el){
+	$(el).click(function(e) {
+		$(this).children('input')[0].click();
+	});
+
+	$(el).children("input").change(function(e) {
+		$(el).children('span').text($(this).val().replace("C:\\fakepath\\",""));
+	});
+}
+
+$(document).ready(function() {
+	$(".file").each(function(index, el) {
+		add_file_boundary(this);
+	});
+});

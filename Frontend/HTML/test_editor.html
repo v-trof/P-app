@@ -43,7 +43,73 @@
 				<div class="image-wrapper" draggable="true">
 					<img src="../Assets/Images/Yosemite.jpg">
 				</div>
+				<div class="audio-wrapper" draggable="true" disabled>
+					<audio src="../Assets/Sound/rain.mp3" role="media"></audio>
+					<div class="wrapper__controls">
+						<button class="button--icon" role="play">
+							<img src="../Assets/Icons/play.svg" inline>
+						</button>
+						<button class="button--icon" style="display: none" role="pause">
+							<img src="../Assets/Icons/pause.svg" inline>
+						</button>
+						<div class="slider" role="time">
+							<div class="slider__track--inactive">
+							</div>
+							<div class="slider__track--active">
+							</div>
+							<button class="slider__thumb"></button>
+						</div>
+
+						<button class="button--icon">
+							<img src="../Assets/Icons/volume_high.svg" inline>
+						</button>
+						<div class="slider slider--volume" role="volume">
+							<div class="slider__track--inactive">
+							</div>
+							<div class="slider__track--active">
+							</div>
+							<button class="slider__thumb"></button>
+						</div>
+					</div>
+				</div>
+
+				<!-- <div class="video-wrapper" draggable="true">
+					<video src="http://r5---sn-5hne6n7k.googlevideo.com/videoplayback?ipbits=0&sparams=dur,expire,id,initcwndbps,ip,ipbits,itag,lmt,mime,mm,mn,ms,mv,nh,pl,ratebypass,source,upn&mime=video%2Fmp4&fexp=9416126%2C9418201%2C9420452%2C9422596%2C9423661%2C9423662%2C9424091%2C9425740%2C9426415%2C9427322%2C9427698%2C9427773%2C9427888%2C9429151%2C9429237%2C9429261&key=cms1&dur=824.749&source=youtube&lmt=1434365559233150&ratebypass=yes&itag=18&expire=1456443474&upn=PBCY5ANPLDM&sver=3&id=o-AMqVXpeqjc5EyjGcPb-1dhw_MMjP-XmoJy5SZYGwlkbq&ip=195.19.236.112&pl=22&signature=4BEE60F10229A647A74783BC594794F2F662B4A1.54C27B5AD566B011FDA0D8A662453135D87146CA&title=J%C3%B3hann+J%C3%B3hannsson+--++Fordl%C3%A2ndia+(HD)&req_id=45879a41df95a3ee&redirect_counter=2&cms_redirect=yes&mm=34&mn=sn-5hne6n7k&ms=ltu&mt=1456421146&mv=u&nh=IgpwcjA0LmFtczE1KgkxMjcuMC4wLjE" role="media"></video>
+					<div class="wrapper__controls">
+						<button class="button--icon" role="play">
+							<img src="../Assets/Icons/play.svg" inline>
+						</button>
+						<button class="button--icon" style="display: none" role="pause">
+							<img src="../Assets/Icons/pause.svg" inline>
+						</button>
+						<div class="slider" role="time">
+							<div class="slider__track--inactive">
+							</div>
+							<div class="slider__track--active">
+							</div>
+							<button class="slider__thumb"></button>
+						</div>
+
+						<button class="button--icon">
+							<img src="../Assets/Icons/volume_high.svg" inline>
+						</button>
+						<div class="slider slider--volume" role="volume">
+							<div class="slider__track--inactive">
+							</div>
+							<div class="slider__track--active">
+							</div>
+							<button class="slider__thumb"></button>
+						</div>
+						<button class="button--icon">
+							<img src="../Assets/Icons/fullscreen.svg" inline>
+						</button>
+						<button class="button--icon" style="display: none" role="pause">
+							<img src="../Assets/Icons/fullscreen_exit.svg" inline>
+						</button>
+					</div>
+				</div> -->
 			</div>
+
 			<div class="test">
 				<div class="test__bg"></div>
 				<div id="delete">
@@ -126,7 +192,7 @@
 		<script src="../Scripts/Dev/test_manager.js"></script>
 		<script src="../Scripts/Dev/ripple.js"></script>
 		<script src="../Scripts/Dev/file_input.js"></script>
-
+		<script src="../Scripts/Dev/players.js"></script>
 		<!-- unique -->
 		<script type="text/javascript" src='../Scripts/Dev/context_menu.js'></script>
 		<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/context-menu.css">

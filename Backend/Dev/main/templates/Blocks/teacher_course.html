@@ -40,11 +40,9 @@
 				</div>
 			</a>
 		</section>
-		<section>
+		<section class="homework">
 			<h2>Ким ЕГЭ 2015</h2>
 			{% for assignment in assignments %}
-			<a class="link--card" href="//">
 				{% include "UI_elements/cards/assignment.html" with assignment=assignment course=course%}
-			</a>
 			{% endfor %}
 </section>

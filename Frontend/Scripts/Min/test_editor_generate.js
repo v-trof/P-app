@@ -1,1 +1,222 @@
-var generate={queued_el:$("<div>Ждем-с</div>"),quesiton_template:"<div draggable='true'></div>",answer_template:function(e){return"<div class='"+e+" task__answer__item' draggable='true'></div>"},texts:{"text-wrapper":"<input type='text' id='new_el_value'><label>Текст вопроса</label><br><br><button id='add_el'>Добавить</button>","image-wrapper":"<input type='text' id='new_el_value'><label>URL артинки</label><br><br><div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file'></div><br><br><button id='add_el'>Добавить</button>","text-answer":"<input type='text' id='new_el_value'><label>Вопрос</label><br><br><input type='text' id='new_el_answer'><label>Верный ответ</label><br><br><button id='add_el'>Добавить</button>","select-answer":"<ul class='select-option-list'><li><input type='radio' name='right_answer' checked id='option_1'><label for='option_1'></label><div><input type='text'><label>Вариант ответа</label></div></li></ul><button class='button--icon' id='add_option'><svg  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><br><button id='add_el'>Добавить</button>"},"text-wrapper":function(e,t){var a=$(generate.quesiton_template);if(e)var n=a.addClass("text-wrapper").html(e);else{popup.show(generate.texts["text-wrapper"],{},function(){t&&$("#new_el_value").val(t.text()),$("#add_el, #popup__close").click(function(e){popup.hide(),c_element=generate["text-wrapper"]($("#new_el_value").val()),generate.queued_el.replaceWith(c_element),add_boundary.draggable(c_element),add_boundary.question(c_element)})});var n=generate.queued_el}return console.log(n),n},"image-wrapper":function(e,t){var a=$(generate.quesiton_template);if(e)var n=a.addClass("image-wrapper").append("<img src="+e+">");else{popup.show(generate.texts["image-wrapper"],{},function(){t&&$("#new_el_value").val(t.find("img").attr("src")),$("#add_el, #popup__close").click(function(e){popup.hide(),""!=$("#new_el_value").val()&&(c_element=generate["image-wrapper"]($("#new_el_value").val()),generate.queued_el.replaceWith(c_element),add_boundary.draggable(c_element),add_boundary.question(c_element))})});var n=generate.queued_el}return console.log(n),n},"text-answer":function(e,t,a){if(e)var n=$(generate.answer_template("text-answer")).attr("answer",t).html("<input type='text' placeholder='Ответ' disabled><label>"+e+"</label>");else{popup.show(generate.texts["text-answer"],{},function(){a&&($("#new_el_value").val(a.find("label").text()),$("#new_el_answer").val(a.attr("answer"))),$("#add_el, #popup__close").click(function(e){popup.hide(),console.log("add"),c_element=generate["text-answer"]($("#new_el_value").val(),$("#new_el_answer").val()),generate.queued_el.replaceWith(c_element),add_boundary.draggable(c_element),add_boundary.answer(c_element)})});var n=generate.queued_el}return n},"file-answer":function(){var e=$(generate.answer_template("file-answer")).html("<div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file'></div></div>");return add_boundary.draggable(e),add_boundary.answer(e),e},"select-answer":function(e,t,a){if(e){var n=$(generate.answer_template("select-answer")).html("<div class='select'><input type='hidden' class='value' value='1'><div class='display'>"+e[0]+"</div><svg class='{{ class }}' id='{{id}}' viewBox='0 0 24 24'  xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>"),l=$(n).find(".select"),i=1;e.forEach(function(e){l.append("<option value='"+i+"'>"+e+"</option>"),i++}),n.attr("answer",t),add_menu_caller(l)}else{popup.show(generate.texts["select-answer"],{width:"21rem"},function(){a&&(console.log(a),$(".select-option-list").html(""),a.find("option").each(function(e,t){$(".select-option-list").append("<li><input type='radio' name='right_answer' id='option_"+e+"'><label for='option_"+e+"'></label><div><input type='text'><label>Вариант ответа</label></div></li>").children("li").last().find("input[type='text']").val($(this).text())}),$("#option_"+$(a).attr("answer")).attr("checked",""));var e=0;$("#add_option").click(function(t){e++,$(".select-option-list").append("<li><input type='radio' name='right_answer' id='option_"+e+"'><label for='option_"+e+"'></label><div><input type='text'><label>Вариант ответа</label></div></li>")}),$("#add_el, #popup__close").click(function(e){popup.hide(),console.log("add");var t=[],a="";$("#popup li").each(function(e,n){var l=$(this).find("input[type='text']").val();$(this).children("input[type='radio']").is(":checked")&&(a=e),t.push(l)}),console.log(t),c_element=generate["select-answer"](t,a),generate.queued_el.replaceWith(c_element),add_boundary.draggable(c_element),add_boundary.answer(c_element)})});var n=generate.queued_el}return n},task:function(e){console.log(tasks);var t=$(task_template);t.find(".task__number").text(tasks+"."),add_boundary.new_task(t.find(".task__number")),t.find(".block--empty").each(function(e,t){add_boundary.block_empty($(this))}),$(".test__preview").append(t),t.find(".task__question").html(""),t.find(".task__answer").html(""),e.answer_items.forEach(function(e){if(console.log(e["class"]),"block--empty"==e["class"]){var a=$("<div class='block--empty'>Добавьте сюда поле ответа</div>");t.append(),add_boundary.block_empty(a)}else{var a=generate[e["class"]](e.value,e.answer);t.find(".task__answer").append(a),add_boundary.draggable(a),add_boundary.answer(a)}}),e.question_items.forEach(function(e){if(console.log(e["class"]),"block--empty"==e["class"]){var a=$("<div class='block--empty'>Добавьте сюда вопрос</div>");t.append(),add_boundary.block_empty(a)}else{var a=generate[e["class"]](e.value);console.log(a,t.find(".task__question")),t.find(".task__question").append(a),console.log(t.find(".task__question")),add_boundary.draggable(a),add_boundary.question(a)}}),editor.verify_type(),editor.check_for_emptiness(),check_bg_height(),tasks++}};
+var generate  = {
+	queued_el: $("<div>Ждем-с</div>"),
+	quesiton_template : "<div draggable='true'></div>",
+	answer_template : function(el_class) {
+		return "<div class='"+el_class+" task__answer__item' draggable='true'></div>"
+	},
+	"texts" : {
+		"text-wrapper": "<input type='text' id='new_el_value'><label>Текст вопроса</label><br><br><button id='add_el'>Добавить</button>",
+		"image-wrapper": "<input type='text' id='new_el_value'><label>URL артинки</label><br><br><div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file'></div><br><br><button id='add_el'>Добавить</button>",
+		"audio-wrapper": "<div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file' id='new_el_value'></div><br><br><button id='add_el'>Добавить</button>",
+		"text-answer": "<input type='text' id='new_el_value'><label>Вопрос</label><br><br><input type='text' id='new_el_answer'><label>Верный ответ</label><br><br><button id='add_el'>Добавить</button>",
+		"select-answer": "<ul class='select-option-list'><li><input type='radio' name='right_answer' checked id='option_1'><label for='option_1'></label><div><input type='text'><label>Вариант ответа</label></div></li></ul><button class='button--icon' id='add_option'><svg  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><br><button id='add_el'>Добавить</button>"
+	},
+	"text-wrapper" : function(value, original) {
+		var quesiton_template = $(generate.quesiton_template); //lets us modfy freely
+		if(!value) {
+			var prefill;
+			popup.show(generate.texts["text-wrapper"],{}, function() {
+				if(original) {
+					$("#new_el_value").val(original.text());
+				}
+				$("#add_el, #popup__close").click(function(event) {
+					popup.hide();
+					c_element = generate["text-wrapper"]($("#new_el_value").val());
+					generate.queued_el.replaceWith(c_element);
+					add_boundary.draggable(c_element);
+					add_boundary.question(c_element);
+				});
+			});
+			var content = generate.queued_el;
+		} else {
+			var content = quesiton_template.addClass("text-wrapper").html(value);
+		}
+		console.log(content);
+		return content;
+	},
+	"image-wrapper" : function(value, original) {
+		var quesiton_template = $(generate.quesiton_template); //lets us modfy freely
+		if(!value) {
+			var prefill;
+			popup.show(generate.texts["image-wrapper"],{}, function() {
+				if(original) {
+					$("#new_el_value").val(original.find("img").attr("src"));
+				}
+				$("#add_el, #popup__close").click(function(event) {
+					popup.hide();
+					if($("#new_el_value").val()!=""){
+						c_element = generate["image-wrapper"]($("#new_el_value").val());
+						generate.queued_el.replaceWith(c_element);
+						add_boundary.draggable(c_element);
+						add_boundary.question(c_element);
+					}
+				});
+			});
+			var content = generate.queued_el;
+		} else {
+			var content = quesiton_template.addClass("image-wrapper").append("<img src="+value+">");
+		}
+		console.log(content);
+		return content;
+	},
+	"audio-wrapper" : function(value, original) {
+		var quesiton_template = $(generate.quesiton_template); //lets us modfy freely
+		if(!value) {
+			var prefill;
+			popup.show(generate.texts["audio-wrapper"],{}, function() {
+				if(original) {
+					// $("#new_el_value").val(original.find("[role='media']").attr("src"));
+				}
+				$("#add_el, #popup__close").click(function(event) {
+					popup.hide();
+					if($("#new_el_value").val()!=""){
+						c_element = generate["audio-wrapper"]($("#new_el_value").val());
+						generate.queued_el.replaceWith(c_element);
+						add_boundary.draggable(c_element);
+						add_boundary.question(c_element);
+						media_player.bind_controls(c_element);
+					}
+				});
+			});
+			var content = generate.queued_el;
+		} else {
+			tag_str = "<audio src='../Assets/Sound/"+value.replace("C:\\fakepath\\","")+"' role='media'>Обновите браузер</audio>";
+			/*ext = value.split(".")[value.split(".").length-1];
+			if(ext=="mp4" && ext=="webm" && ext=="ogg"){
+				tag_str = "<video src="+value+" role='audio'>Обновите браузер</video>";
+			}	*/
+			var content = quesiton_template.addClass("audio-wrapper").append(tag_str+"<div class='wrapper__controls'><button class='button--icon' role='play'><svg class='{{ class }}' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M8 5v14l11-7z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><button class='button--icon' style='display: none' role='pause'><svg class='{{ class }}' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><div class='slider' role='time'><div class='slider__track--inactive'></div><div class='slider__track--active'></div><button class='slider__thumb'></button></div><button class='button--icon'><svg class='{{ class }}' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button><div class='slider slider--volume' role='volume'><div class='slider__track--inactive'></div><div class='slider__track--active'></div><button class='slider__thumb'></button></div></div>");
+		}
+		console.log(content);
+		return content;
+	},
+	"text-answer": function(value, answer, original) {
+		if(!value) {
+			var prefill;
+			popup.show(generate.texts["text-answer"],{}, function() {
+				if(original) {
+					$("#new_el_value").val(original.find("label").text());
+					$("#new_el_answer").val(original.attr("answer"));
+				}
+				$("#add_el, #popup__close").click(function(event) {
+					popup.hide();
+					console.log("add");
+					c_element = generate["text-answer"]($("#new_el_value").val(), $("#new_el_answer").val());
+					generate.queued_el.replaceWith(c_element);
+					add_boundary.draggable(c_element);
+					add_boundary.answer(c_element);
+				});
+			});
+			var content = generate.queued_el;
+		} else {
+			var content = $(generate.answer_template("text-answer")).attr("answer", answer).html("<input type='text' disabled><label>"+value+"</label>");
+		}
+		return content;
+	},
+	"file-answer": function() {
+		var content = $(generate.answer_template("file-answer")).html("<div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file'></div></div>");
+		add_boundary.draggable(content);
+		add_boundary.answer(content);
+		return content;
+	},
+	"select-answer": function(value, answer, original) {
+		if(!value) {
+			var prefill;
+			popup.show(generate.texts["select-answer"],{"width":"21rem"}, function() {
+				if(original) {
+					console.log(original);
+					$(".select-option-list").html("");
+					original.find('option').each(function(index, el) {
+					$(".select-option-list").append("<li><input type='radio' name='right_answer' id='option_"+index+"'><label for='option_"+index+"'></label><div><input type='text'><label>Вариант ответа</label></div></li>").children('li').last().find("input[type='text']").val($(this).text());
+					});
+					$("#option_"+$(original).attr("answer")).attr('checked', "");
+				}
+				var option_counter = 0;
+				$("#add_option").click(function(event) {
+					option_counter++;
+					$(".select-option-list").append("<li><input type='radio' name='right_answer' id='option_"+option_counter+"'><label for='option_"+option_counter+"'></label><div><input type='text'><label>Вариант ответа</label></div></li>");
+				});
+				$("#add_el, #popup__close").click(function(event) {
+					popup.hide();
+					console.log("add");
+					var values = [];
+					var answer = "";
+					$("#popup li").each(function(index, el) {
+						var text = $(this).find("input[type='text']").val();
+						if($(this).children("input[type='radio']").is(":checked")){
+							answer = index;
+						}
+						values.push(text);
+					});
+					console.log(values);
+					c_element = generate["select-answer"](values, answer);
+					generate.queued_el.replaceWith(c_element);
+					add_boundary.draggable(c_element);
+					add_boundary.answer(c_element);
+				});
+			});
+			var content = generate.queued_el;
+		} else {
+			var content = $(generate.answer_template("select-answer")).html("<div class='select'><input type='hidden' class='value' value='1'><div class='display'>"+value[0]+"</div><svg class='{{ class }}' id='{{id}}' viewBox='0 0 24 24'  xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+			var select = $(content).find(".select");
+			var counter=1;
+			var answer_found = false;
+			value.forEach(function(text){
+				select.append("<option value='"+counter+"'>"+text+"</option>");
+				counter++;
+			});
+			content.attr("answer", answer);
+			add_menu_caller(select);
+		}
+		return content;
+	},
+	task: function(task_data){
+		console.log(tasks);
+		var new_task = $(task_template);
+		new_task.find(".task__number").text(tasks + ".");
+		add_boundary.new_task(new_task.find(".task__number"));
+		new_task.find(".block--empty").each(function(index, el) {
+			add_boundary.block_empty($(this));
+		});
+		$(".test__preview").append(new_task);
+		new_task.find(".task__question").html("");
+		new_task.find(".task__answer").html("");
+		task_data.answer_items.forEach(function(element) {
+			console.log(element["class"]);
+			if(element["class"] == "block--empty") {
+				var new_element = $("<div class='block--empty'>Добавьте сюда поле ответа</div>");
+				new_task.append();
+				add_boundary.block_empty(new_element);
+			} else {
+				var new_element = generate[element["class"]](element["value"], element["answer"]);
+				new_task.find(".task__answer").append(new_element);
+				add_boundary.draggable(new_element);
+				add_boundary["answer"](new_element);
+			}
+		});
+		task_data.question_items.forEach(function(element) {
+			console.log(element["class"]);
+			if(element["class"] == "block--empty") {
+				var new_element = $("<div class='block--empty'>Добавьте сюда вопрос</div>");
+				new_task.append();
+				add_boundary.block_empty(new_element);
+			} else {
+				var new_element = generate[element["class"]](element["value"]);
+				console.log(new_element, new_task.find(".task__question"));
+				new_task.find(".task__question").append(new_element);
+				console.log(new_task.find(".task__question"));
+				add_boundary.draggable(new_element);
+				add_boundary["question"](new_element);
+			}
+			
+		});
+		
+		editor.verify_type();
+		editor.check_for_emptiness();
+		check_bg_height();
+		$("input, .textarea__text").each(function(index, el) {
+			add_emptiness_checker(this);
+		});
+		tasks++;
+	}
+}	
