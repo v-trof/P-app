@@ -132,7 +132,8 @@ def create_course(request):
 		else: setattr(request.user, 'courses', str(course.id))
 		request.user.save()
 		db.commit()
-		os.makedirs('courses/'+str(course.id)+'/Tests/')
+		os.makedirs('courses/'+str(course.id)+'/tests/')
+		os.makedirs('main/files/media/courses/'+str(course.id)+'/assets/')
 		with io.open('courses/'+str(course.id)+'/info.json', 'a', encoding='utf8') as json_file:
 			data={}
 			data["pending_users"]={}
@@ -155,7 +156,7 @@ def create_course(request):
 		with io.open('courses/'+str(course.id)+'/assignments.json', 'a', encoding='utf8') as json_file:
 			data={}
 			saving_data = json.dumps(data, ensure_ascii=False)
-			json_file.write(saving_data)
+			json_file.write('[{"tasks":[{"traditional":false,"done":false,"content":{"tests":[{"title":"Test 1","link":"test-1","done":true},{"title":"Test 2","link":"test-2","done":false}],"materials":[{"title":"Material 1","link":"material-1","done":true}]}},{"traditional":true,"done":false,"content":"Прочитать книгу Б"}],"due_date":"12 ноября"}]')
 		return redirect('/course/'+str(course.id)+'/groups/')
 
 
