@@ -1,12 +1,12 @@
 <section>
 	{% for course in courses %}
 				<a class="link--card" href="/course/{{course.id}}/">
-					{% include "UI_elements/cards/course.html" with course=course %}
+					{% include "UI_elements/cards/course.html" %}
 				</a>
 	{% endfor %}
 	{% include 'UI_elements/cards/create_course.html' %}
 </section>
-	{% include "UI_elements/unique/notification.html" with course=course %}
+	{% include "UI_elements/unique/notification.html"  %}
 <section>
 	
 </section>

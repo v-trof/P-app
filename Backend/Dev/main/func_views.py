@@ -329,17 +329,17 @@ def course_getdata(request, course):
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
 		course_data={}
-		course_data=data
 		course_data["course_id"]=course.id
 		course_data["teachers"]=[]
-		#course_data["users"]=[]
+		course_data["users"]=[]
+		course_data["groups"]={}
 		course_data["user_status"]=[]
-		#for teacher_id in data["teachers"]:
-		#	course_data["teachers"].append(User.objects.get(id=teacher_id))
-		#for group in data["groups"]:
-		#	course_data["groups"][group]=[]
-		#	for user_id in data["groups"][group]:
-		#		course_data["groups"][group].append(User.objects.get(id=user_id))
+		for teacher_id in data["teachers"]:
+			course_data["teachers"].append(User.objects.get(id=teacher_id))
+		for group in data["groups"]:
+			course_data["groups"][group]=[]
+			for user_id in data["groups"][group]:
+				course_data["groups"][group].append(User.objects.get(id=user_id))
 		if request.user.is_anonymous():
 			course_data["user_status"]="guest"
 		elif request.user.id in data["administrators"]:

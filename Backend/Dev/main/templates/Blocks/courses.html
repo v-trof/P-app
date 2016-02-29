@@ -1,4 +1,4 @@
-{% for subject in courses %}
+{% for subject in request.user.courses %}
 	<div class="subject">
 		<h3>{{subject.name}}</h3>
 		{% for course in subject.courses %}
