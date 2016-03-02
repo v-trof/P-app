@@ -121,7 +121,7 @@
 
 
 
-.card-person
+.card-person, .card-person__user-data
 	display: flex
 	flex-direction: row
 	align-items: center
@@ -150,3 +150,10 @@
 		font-weight: normal
 		color: $grey-semidark
 		margin: $margin-regular 0 0 0
+
+.card-person--extended
+	@media (min-width: 570px)
+		&>div
+			width: 50%
+	@media (max-width: 569px)
+		flex-wrap: wrap

@@ -112,7 +112,7 @@
   margin: 0;
   margin-right: 0.6rem; }
 
-.card-person {
+.card-person, .card-person__user-data {
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: horizontal;
@@ -120,7 +120,7 @@
           flex-direction: row;
   -webkit-box-align: center;
           align-items: center; }
-  .card-person:hover .button_remove {
+  .card-person:hover .button_remove, .card-person__user-data:hover .button_remove {
     opacity: 1; }
 
 .card-person__avatar {
@@ -144,3 +144,11 @@
     font-weight: normal;
     color: #607D8B;
     margin: 0.6rem 0 0 0; }
+
+@media (min-width: 570px) {
+  .card-person--extended > div {
+    width: 50%; } }
+
+@media (max-width: 569px) {
+  .card-person--extended {
+    flex-wrap: wrap; } }
