@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% include "UI_elements/unique/head_info.html" %}
+	<title>{{course.name}}(Обновления)</title>
+</head>
+<body>
+	<div class="includer">{% include 'CSS/main.html' %}</div>
+	<div class="includer">{% include 'CSS/course.html' %}</div>
+	<div class="includer">{% include 'CSS/cards.html' %}</div>
+	<div class="includer">{% include 'CSS/inputs.html' %}</div>
+	<div class="includer">{% include 'CSS/buttons.html' %}</div>
+
+	<main>
+		<section>
+			<h2>Новые оценки</h2>
+			{% for mark in couse.updates.new_marks %}
+				<a class="link--card" href="/test/attempt/{{mark.attempt.id}}/">
+					{% include "UI_elements/cards/person_extended/new_mark.html" with user=mark.student attempt=mark.attempt %}
+				</a>
+			{% endfor %}
+		</section>
+		<section>
+			{% if (course.new_students.length>0) %}
+				<h2>Присоеденились</h2>
+				{% for user in course.new_students %}
+					<a class="link--card" href="/user/{{member.id}}/">
+						{% include "UI_elements/cards/person.html" %}
+					</a>
+				{% endfor %}
+			{% endif %}
+			{% if course.is_closed %}
+				{% include "Blocks/course_requests.html" %}
+			{% endif %}
+			</div>
+		</section>
+	</main>
+	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
+	<div class="includer">{% include 'JS/layout.html' %}</div>
+	<div class="includer">{% include 'JS/handle-cards.html' %}</div>
+	
+	{% include "UI_elements/unique/notification.html" %}
+	{% include "UI_elements/unique/header.html" %}
+	{% include "UI_elements/unique/tooltip.html" %}
+	{% include "UI_elements/unique/context_menu.html" %}
+</body>
+</html>

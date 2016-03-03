@@ -1,0 +1,17 @@
+{% if course.has_updates %}
+<a class="link--card" href="/course/{{course.id}}/updates">
+	<div class="card">
+		<h4  class="card__heading">В курсе {{course.name}}</h4>
+		{% if course.updates.new_students|length > 0 %}
+			<div class="marks"><b>{{ course.updates.new_marks|length }}</b> новых оценок</div>
+		{% endif %}
+		{% if course.updates.new_students|length > 0 %}
+			<div class="joined"><b>{{course.updates.new_students|length}}</b> 
+			учеников присоеденились</div>
+		{% endif %}
+		{% if course.status == "closed" and course.pending_users|length > 0 %}
+			<div class="joined"><b>{{course.pending_users|length}}</b> учеников подали заявки</div>
+		{% endif %}
+	</div>
+</a>
+{% endif %}

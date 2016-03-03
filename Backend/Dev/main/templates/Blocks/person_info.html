@@ -1,0 +1,12 @@
+{% load staticfiles %}
+<img src="{{ user.avatar.url }}" class="card-person__avatar">
+<div class="card-person__info">
+	<h3 class="card-person__name">{{ user.name }}</h3>
+<span class="card-person__state">
+	{% if user.is_teacher %}
+		Преподаватель
+	{% else %}
+		Ученик
+	{% endif %}
+</span>
+</div>

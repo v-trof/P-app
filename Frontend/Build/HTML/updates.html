@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf8">
+	<title>Оповещения(Курс А)</title>
+</head>
+<body>
+	<div class="includer">{% include 'CSS/main.html' %}</div>
+	<div class="includer">{% include 'CSS/course.html' %}</div>
+	<div class="includer">{% include 'CSS/header.html' %}</div>
+	<div class="includer">{% include 'CSS/cards.html' %}</div>
+	<div class="includer">{% include 'CSS/tooltip.html' %}</div>
+	<header class="header">
+		<div class="header__breadcrumbs">
+		<a href="#">Главная</a>
+		<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M12.97 4.28l-1.44 1.44L21.814 16 11.53 26.28l1.44 1.44 11-11 .686-.72-.687-.72-11-11z"/></svg>
+		<a href="#">Курс А</a>
+		<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
+		</div>
+		<div class="header__search">
+			<svg fill="#FFF" height="24" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+			<input type="text" name="search" placeholder="Искать...">
+		</div>
+		<div class="header__user">
+			<img src="../Assets/Images/avatar.png" class="user__avatar--small">
+			<span class="user__name">Всеволод Трофимов</span>
+		</div>
+	</header>
+
+	<main>
+		<section>
+			<h2>Новые оценки</h2>
+			<div class="card card-person card-person--extended">
+				<div class="card-person__user-data">
+					<img class="card-person__avatar" src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png">
+					<div>
+						<h3 class="card-person__name">Всеволод Трофимов</h3>
+						<span class="card-person__state">Ученик</span>
+					</div>
+				</div>
+				<div class="card-person__extension">
+					Завершил тест <a href="#">«Стилистика деепричастий. 
+					Тест 2. Контроль».</a> Оценка : 5 <span class="test__results--percentage">(96%, 24 из 25)</span>
+				</div>
+			</div>
+		</section>
+		<section>
+			<!-- {% if cousre.is_open %} -->
+			<h2>Присоеденились</h2>
+			<div class="card card-person">
+					<img class="card-person__avatar" src="https://cdn-images-1.medium.com/fit/c/120/120/1*-XUs4lJqErIQLXqhW22INw.png">
+					<div>
+						<h3 class="card-person__name">Всеволод Трофимов</h3>
+						<span class="card-person__state">Ученик</span>
+					</div>
+			</div>
+			<!-- {% else %} 
+			<h2>Новые заявки</h2>
+			{% include Blocks/couse.requestes %}-->
+			
+		</section>
+	</main>
+
+	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
+	<div class="includer">{% include 'JS/layout.html' %}</div>
+	<div class="includer">{% include 'JS/humanize.html' %}</div>
+	<div class="includer">{% include 'JS/notification.html' %}</div>
+	<div class="includer">{% include 'JS/ripple.html' %}</div>
+</body>
+</html>

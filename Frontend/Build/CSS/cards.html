@@ -45,13 +45,24 @@
   margin-top: 0; }
 
 .linkbox {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+  flex-wrap: wrap;
   margin-bottom: 0.6rem;
   margin-left: -0.6rem; }
+  .linkbox > .link--card {
+    margin: 0 0 0.6rem 0.6rem; }
+    .linkbox > .link--card > .card--small {
+      display: block; }
 
 .link--card {
   cursor: pointer;
   font-weight: 400;
-  color: #212121 !important; }
+  color: #212121 !important;
+  display: block; }
   .link--card > .card:hover, .link--card > .card--small:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }
 
@@ -59,7 +70,7 @@
   padding: 0.7rem;
   width: auto;
   display: inline-block;
-  margin: 0 0 0.6rem 0.6rem; }
+  margin: 0; }
 
 .card-homework__task {
   line-height: 1.5; }
@@ -112,7 +123,7 @@
   margin: 0;
   margin-right: 0.6rem; }
 
-.card-person {
+.card-person, .card-person__user-data {
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: horizontal;
@@ -120,7 +131,7 @@
           flex-direction: row;
   -webkit-box-align: center;
           align-items: center; }
-  .card-person:hover .button_remove {
+  .card-person:hover .button_remove, .card-person__user-data:hover .button_remove {
     opacity: 1; }
 
 .card-person__avatar {
@@ -144,4 +155,12 @@
     font-weight: normal;
     color: #607D8B;
     margin: 0.6rem 0 0 0; }
+
+@media (min-width: 570px) {
+  .card-person--extended > div {
+    width: 50%; } }
+
+@media (max-width: 569px) {
+  .card-person--extended {
+    flex-wrap: wrap; } }
 </style>

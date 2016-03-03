@@ -14,19 +14,14 @@
 
 	<main>
 		<section>
-		<h2>Запросы доступа к курсу</h2>
-			{% for user in pending_users %}
-				{% include "UI_elements/cards/person.html" with user=user %}
-			{% empty %}
-				Новых заявок пока нет
-			{% endfor %}
+			{% include "Blocks/course_requests.html" %}
 		</section>
 	</main>
 	<div id="hideout" style="display:none"></div>
 	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 	<div class="includer">{% include 'JS/layout.html' %}</div>
 	<div class="includer">{% include 'JS/ripple.html' %}</div>
-	<div class="includer">{% include 'JS/course_requests.html' %}</div>
+	
 
 	{% include "UI_elements/unique/tooltip.html" %}
 	{% include "UI_elements/unique/popup.html" %}

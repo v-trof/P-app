@@ -1,14 +1,17 @@
 <section>
+	<h2>Ваши курсы</h2>
 	{% for course in courses %}
-				<a class="link--card" href="/course/{{course.id}}/">
-					{% include "UI_elements/cards/course.html" %}
-				</a>
+		<a class="link--card" href="/course/{{course.id}}/">
+			{% include "UI_elements/cards/course.html" %}
+		</a>
 	{% endfor %}
 	{% include 'UI_elements/cards/create_course.html' %}
 </section>
-	{% include "UI_elements/unique/notification.html"  %}
 <section>
-	
+	<h2>Оповещения</h2>
+	{% for course in courses %}
+		{% include "UI_elements/cards/update.html" %}
+	{% endfor %}
 </section>
 
 <section>

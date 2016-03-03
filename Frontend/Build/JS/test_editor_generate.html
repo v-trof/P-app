@@ -109,7 +109,7 @@
 			});
 			var content = generate.queued_el;
 		} else {
-			var content = $(generate.answer_template("text-answer")).attr("answer", answer).html("<input type='text' placeholder='Ответ' disabled><label>"+value+"</label>");
+			var content = $(generate.answer_template("text-answer")).attr("answer", answer).html("<input type='text' disabled><label>"+value+"</label>");
 		}
 		return content;
 	},
@@ -214,6 +214,9 @@
 		editor.verify_type();
 		editor.check_for_emptiness();
 		check_bg_height();
+		$("input, .textarea__text").each(function(index, el) {
+			add_emptiness_checker(this);
+		});
 		tasks++;
 	}
 }	</script>

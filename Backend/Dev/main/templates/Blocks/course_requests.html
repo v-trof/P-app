@@ -1,0 +1,8 @@
+{% for user in course.pending_users %}
+	<a class="link--card" href="/user/{{member.id}}/">
+		{% include "UI_elements/cards/person.html" %}
+	</a>
+{% empty %}
+	Новых заявок пока нет
+{% endfor %}
+<div class="includer">{% include 'JS/course_requests.html' %}</div>
