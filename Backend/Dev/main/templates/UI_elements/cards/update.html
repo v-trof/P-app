@@ -1,16 +1,16 @@
-{% if course.has_updates %}
-<a class="link--card" href="/course/{{course.id}}/updates">
+{% if cur_course.updates %}
+<a class="link--card" href="/course/{{cur_course.object.id}}/updates">
 	<div class="card">
-		<h4  class="card__heading">В курсе {{course.name}}</h4>
-		{% if course.updates.new_students|length > 0 %}
-			<div class="marks"><b>{{ course.updates.new_marks|length }}</b> новых оценок</div>
+		<h4  class="card__heading">В курсе {{cur_course.object.name}}</h4>
+		{% if cur_course.updates.new_students|length > 0 %}
+			<div class="marks"><b>{{ cur_course.updates.new_marks|length }}</b> новых оценок</div>
 		{% endif %}
-		{% if course.updates.new_students|length > 0 %}
-			<div class="joined"><b>{{course.updates.new_students|length}}</b> 
+		{% if cur_course.updates.new_students|length > 0 %}
+			<div class="joined"><b>{{cur_course.updates.new_students|length}}</b> 
 			учеников присоеденились</div>
 		{% endif %}
-		{% if course.status == "closed" and course.pending_users|length > 0 %}
-			<div class="joined"><b>{{course.pending_users|length}}</b> учеников подали заявки</div>
+		{% if cur_course.status == "closed" and cur_course.updates.requesting_users|length > 0 %}
+			<div class="joined"><b>{{cur_course.updates.requesting_users|length}}</b> учеников подали заявки</div>
 		{% endif %}
 	</div>
 </a>

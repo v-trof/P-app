@@ -331,6 +331,9 @@ def course_getdata(request, course):
 		course_data={}
 		course_data["course_id"]=course.id
 		course_data["teachers"]=[]
+		course_data["status"]=data["status"]
+		course_data["updates"]={}
+		course_data["updates"]["new_students"]=[]
 		course_data["users"]=[]
 		course_data["groups"]={}
 		course_data["user_status"]=[]
@@ -355,6 +358,22 @@ def course_getdata(request, course):
 		else: course_data["user_status"]="guest"
 		print(course_data["groups"])
 		return course_data
+def user_getdata(request,user):
+	user_data={}
+	for course in user.courses:
+		course=Course.objects.get(id=course)
+		user_data["course_list"]=[]
+		user_data["course_list"].append(course)
+		user_data[course.id]={}
+		with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			user_data[course.id]["updates"]={}
+			user_data[course.id]["object"]=course
+			user_data[course.id]["status"]=data["status"]
+			if user_data[course.id]["status"]=="closed":
+				user_data[course.id]["updates"]["requesting_users"]=data["pending_users"]["Заявки"]
+	print (user_data[course.id]["updates"]["requesting_users"])
+	return user_data
 
 def course_get_assignments(request, course):
 	with io.open('courses/'+str(course.id)+'/assignments.json', 'r', encoding='utf8') as data_file:

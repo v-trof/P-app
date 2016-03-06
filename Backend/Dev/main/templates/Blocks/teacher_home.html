@@ -1,7 +1,7 @@
 <section>
 	<h2>Ваши курсы</h2>
-	{% for course in courses %}
-		<a class="link--card" href="/course/{{course.id}}/">
+	{% for course in user_data.course_list %}
+		<a class="link--card" href="/course/{{course}}/">
 			{% include "UI_elements/cards/course.html" %}
 		</a>
 	{% endfor %}
@@ -9,7 +9,7 @@
 </section>
 <section>
 	<h2>Оповещения</h2>
-	{% for course in courses %}
+	{% for cur_course in user_data.values %}
 		{% include "UI_elements/cards/update.html" %}
 	{% endfor %}
 </section>

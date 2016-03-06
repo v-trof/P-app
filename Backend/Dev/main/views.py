@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
-from main.func_views import course_getdata,course_get_assignments
+from main.func_views import course_getdata,course_get_assignments,user_getdata
 from main.func_views import get_users_info
 from main.func_views import logout_view
 import io
@@ -110,13 +110,7 @@ def home(request):
     if request.user.is_anonymous():
         return render(request, 'Pages/home.html', context)
     if request.user.is_teacher:
-        courses=[]
-        if request.user.courses:
-            courses=request.user.courses.split(" ")
-            for i,course in enumerate(courses):
-                print (courses[i])
-                courses[i]=Course.objects.get(id=int(course))
-        return render(request, 'Pages/home.html', {"courses":courses})
+        return render(request, 'Pages/home.html', {"user_data":user_getdata(request,request.user)})
     else: return render(request, 'Pages/home.html', context)
 
 # login group
