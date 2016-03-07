@@ -93,14 +93,13 @@ var test = {
 		console.log(testfile);
 		var formData = new FormData();
 		formData.append("json_file", JSON.stringify(testfile));
-		formData.append("course_id", "{{course.id}}");
 		formData.append("test_id", "{{test.id}}");
 		// console.log(csrf_token, "{{test.id}}", "{{course.id}}");
 		formData.append('csrfmiddlewaretoken', csrf_token);
 		// console.log(formData);
 		$.ajax({
 			type:"POST",
-			url:"/test/save/",
+			url:"../save/",
 			data: formData,
 			processData: false,
 			contentType: false,
@@ -132,12 +131,11 @@ $(document).ready(function() {
 	$("#test_publish").click(function(event) {
 		test.pack();
 		var formData = new FormData();
-		formData.append("course_id", "{{course.id}}");
 		formData.append("test_id", "{{test.id}}");
 		formData.append('csrfmiddlewaretoken', csrf_token);
 		$.ajax({
 			type:"POST",
-			url:"/test/publish/",
+			url:"../publish/",
 			data: formData,
 			processData: false,
 			contentType: false,
@@ -152,12 +150,11 @@ $(document).ready(function() {
 	$("#test_unpublish").click(function(event) {
 		test.pack();
 		var formData = new FormData();
-		formData.append("course_id", "{{course.id}}");
 		formData.append("test_id", "{{test.id}}");
 		formData.append('csrfmiddlewaretoken', csrf_token);
 		$.ajax({
 			type:"POST",
-			url:"/test/unpublish/",
+			url:"../unpublish/",
 			data: formData,
 			processData: false,
 			contentType: false,

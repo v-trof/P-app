@@ -117,6 +117,9 @@ def home(request):
 def login(request):
     return render(request, 'Pages/login.html')
 
+def updates(request, course_id):
+    return render(request, 'Pages/updates.html', {"course":Course.objects.get(id=course_id),"user_data":user_getdata(request,request.user)})
+
 def login_with_reg(request, course_id=None):
     return render(request, 'Pages/login.html', {"course":Course.objects.get(id=course_id)})
 

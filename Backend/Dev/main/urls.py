@@ -67,13 +67,14 @@ course_patterns = [
     url(r'^(?P<course_id>[0-9]+)/groups/$', views.groups),
     url(r'^(?P<course_id>[0-9]+)/requests/$', views.course_requests),
     url(r'^(?P<course_id>[0-9]+)/$', views.course),
+    url(r'^(?P<course_id>[0-9]+)/updates/$', views.updates),
+    url(r'^(?P<course_id>[0-9]+)/test/', include(test_patterns)),
 ]
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^course/', include(course_patterns)),
     url(r'^func/', include(func_patterns)),
-    url(r'^test/', include(test_patterns)),
 
     url(r'^login/$', views.login),
     url(r'^login/(?P<course_id>[0-9]+)/$', views.login_with_reg),

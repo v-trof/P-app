@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context
@@ -5,20 +6,19 @@ from .models import User, Course
 import os
 import json
 
-def edit(request):
+def edit(request, course_id):
+	print(course_id)
 	#switch for create\load test, lauches test editor anyway
 	if "test_id" in request.GET:
-		return load(request)
+		return load(request, course_id)
 	else:
-		return create(request)
+		return create(request, course_id)
 
 
 
 
-def create(request):
+def create(request, course_id):
 	#creates test environment (no test exists as file untill saved)
-	course_id =request.GET["course_id"]
-	
 	info_file = open('courses/'+course_id+'/info.json', 'r')
 	course_info = json.loads(info_file.read())
 	test_id = str(course_info['tests']['amount']+1)
@@ -30,9 +30,8 @@ def create(request):
 
 	return render(request, 'Pages/test_editor.html', context)
 
-def delete(request):
+def delete(request, course_id):
 	#moves test to trash bin
-	course_id =request.POST["course_id"]
 	test_id =request.POST["test_id"]
 	info_file = open('courses/'+course_id+'/info.json', 'r')
 	course_info = json.loads(info_file.read())
@@ -51,11 +50,11 @@ def delete(request):
 
 
 
-def save(request):
+def save(request, course_id):
 	#saves test file
 	if request.method == 'POST':
+		print("df")
 		json_file = request.POST["json_file"]
-		course_id = request.POST["course_id"]
 		test_id = request.POST["test_id"]
 		json_file_path = 'courses/'+course_id+'/Tests/'+test_id+'.json'
 		if not os.path.isfile(json_file_path):
@@ -73,9 +72,8 @@ def save(request):
 		test_file.write(json_file)
 	return HttpResponse("Тест сохранен")
 
-def load(request):
+def load(request, course_id):
 	#loads test file
-	course_id =request.GET["course_id"]
 	test_id =  request.GET["test_id"]
 	json_file = open('courses/'+course_id+'/Tests/'+test_id+'.json', 'r')
 	json_file = json_file.read()
@@ -97,9 +95,8 @@ def load(request):
 
 
 
-def publish(request):
+def publish(request, course_id):
 	#makes test visible in course screen
-	course_id =request.POST["course_id"]
 	test_id =request.POST["test_id"]
 	info_file = open('courses/'+course_id+'/info.json', 'r')
 	course_info = json.loads(info_file.read())
@@ -115,9 +112,8 @@ def publish(request):
 
 	return HttpResponse("Тест опубликован")
 
-def unpublish(request):
+def unpublish(request, course_id):
 	#makes test invisible in course screen
-	course_id =request.POST["course_id"]
 	test_id =request.POST["test_id"]
 	info_file = open('courses/'+course_id+'/info.json', 'r')
 	course_info = json.loads(info_file.read())
@@ -132,29 +128,28 @@ def unpublish(request):
 	info_file.close()
 	return HttpResponse("Тест скрыт")
 
-def share(request):
+def share(request, course_id):
 	#make test avalible in package_catalog
 	pass
 
 
 
-def attempt(request):
+def attempt(request, course_id):
 	#creates or continues attempt
 	pass
 
-def attempt_save(request):
+def attempt_save(request, course_id):
 	#saves attempt data
 	pass
 
-def attempt_check(request):
+def attempt_check(request, course_id):
 	#checks attempts
 	pass
 
 
-def upload_asset(request):
+def upload_asset(request, course_id):
 	if request.method == 'POST':
 		asset = request.FILES["asset"]
-		course_id = request.POST["course_id"]
 		test_id = request.POST["test_id"]
 		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
 		
