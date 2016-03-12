@@ -360,9 +360,15 @@ def course_getdata(request, course):
 		return course_data
 def user_getdata(request,user):
 	user_data={}
-	for course in user.courses:
-		course=Course.objects.get(id=course)
+	if user.courses:
 		user_data["course_list"]=[]
+	for course in user.courses.split(' '):
+		course=Course.objects.get(id=course)
+		print(course)
+		print(course)
+		print(course)
+		print(course)
+		print(course)
 		user_data["course_list"].append(course)
 		user_data[course.id]={}
 		with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
@@ -372,7 +378,6 @@ def user_getdata(request,user):
 			user_data[course.id]["status"]=data["status"]
 			if user_data[course.id]["status"]=="closed":
 				user_data[course.id]["updates"]["requesting_users"]=data["pending_users"]["Заявки"]
-	print (user_data[course.id]["updates"]["requesting_users"])
 	return user_data
 
 def course_get_assignments(request, course):
