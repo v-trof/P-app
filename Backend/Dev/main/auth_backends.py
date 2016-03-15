@@ -18,8 +18,8 @@ class UserModelBackend(object):
             if user.check_password(password):
                 return user
         except UserModel.DoesNotExist:
-        # Run the default password hasher once to reduce the timing
-        # difference between an existing and a non-existing user (#20760).
+            # Run the default password hasher once to reduce the timing
+            # difference between an existing and a non-existing user (#20760).
             UserModel().set_password(password)
 
     def _get_user_permissions(self, user_obj):
@@ -44,11 +44,12 @@ class UserModelBackend(object):
             if user_obj.is_superuser:
                 perms = Permission.objects.all()
             else:
-                perms = getattr(self, '_get_%s_permissions' % from_name)(user_obj)
-                perms = perms.values_list('content_type__app_label', \
-                    'codename').order_by()
-            setattr(user_obj, perm_cache_name, set("%s.%s" % (ct, name) \
-                for ct, name in perms))
+                perms = getattr(self, '_get_%s_permissions' %
+                                from_name)(user_obj)
+                perms = perms.values_list('content_type__app_label',
+                                          'codename').order_by()
+            setattr(user_obj, perm_cache_name, set("%s.%s" % (ct, name)
+                                                   for ct, name in perms))
         return getattr(user_obj, perm_cache_name)
 
     def get_user_permissions(self, user_obj, obj=None):
@@ -125,7 +126,7 @@ class RemoteUserBackend(UserModelBackend):
         # built-in safeguards for multiple threads.
         if self.create_unknown_user:
             user, created = UserModel._default_manager.get_or_create(**{
-            UserModel.USERNAME_FIELD: username
+                UserModel.USERNAME_FIELD: username
             })
             if created:
                 user = self.configure_user(user)

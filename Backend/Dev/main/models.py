@@ -21,28 +21,38 @@ from django.utils.translation import ugettext_lazy as _
 from django import forms
 from django.forms.models import modelform_factory
 
+
 class MediaModel(models.Model):
     media_file = models.FileField(upload_to='media')
 
+
 class RegForm(forms.Form):
     email = models.EmailField(_('email address'), blank=True)
-    password = forms.CharField(widget=forms.PasswordInput(render_value=False), max_length=100)
+    password = forms.CharField(widget=forms.PasswordInput(
+        render_value=False), max_length=100)
     username = models.CharField(_('username'), max_length=30, unique=True)
+
 
 class LoginForm(forms.Form):
     name = models.EmailField(_('email address'), blank=True)
     email = models.EmailField(_('email address'), blank=True)
-    password = forms.CharField(widget=forms.PasswordInput(render_value=False), max_length=100)
+    password = forms.CharField(widget=forms.PasswordInput(
+        render_value=False), max_length=100)
+
 
 class FileForm(forms.Form):
     file = forms.FileField(
         label='Select a file',
         help_text='max. 42 megabytes'
     )
+
+
 class CourseManager(models.Manager):
-    def create_course(self,name,subject,creator):
+
+    def create_course(self, name, subject, creator):
         course = self.create(name=name, subject=subject, creator=creator)
         return course
+
 
 class Course(models.Model):
     name = models.CharField(_('name'), max_length=30)
@@ -50,10 +60,12 @@ class Course(models.Model):
     creator = models.CharField(_('creator'), max_length=30)
     objects = CourseManager()
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(
         _('username'), max_length=30, unique=True,
-        help_text=_('Required. 30 characters or fewer. Letters, digits and \@/./+/-/_ only.'),
+        help_text=_(
+            'Required. 30 characters or fewer. Letters, digits and \@/./+/-/_ only.'),
         validators=[
             validators.RegexValidator(
                 r'^[\w.@+-]+$',
@@ -65,7 +77,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     name = models.CharField(_('name'), max_length=30, blank=True)
     Skype = models.CharField(_('skype'), max_length=30, blank=True)
-    courses=models.CharField(_('courses'), max_length=300, blank=True)
+    courses = models.CharField(_('courses'), max_length=300, blank=True)
     Codeforces = models.CharField(_('codeforces'), max_length=30, blank=True)
     VK = models.CharField(_('vk'), max_length=30, blank=True)
     Facebook = models.CharField(_('facebook'), max_length=30, blank=True)
@@ -73,7 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     avatar = models.ImageField(_('avatar'), max_length=120, blank=True)
     is_changing = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
-    email = models.EmailField(_('email address'), blank=True,unique=True)
+    email = models.EmailField(_('email address'), blank=True, unique=True)
     is_staff = models.BooleanField(_('staff status'), default=False)
     is_active = models.BooleanField(_('active'), default=True)
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)

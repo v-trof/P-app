@@ -109,7 +109,7 @@ LANGUAGE_CODE = 'ru'
 LANGUAGES = (
     ('ru', 'Russian'),
     ('en', 'English'),
-    )
+)
 
 TIME_ZONE = 'UTC'
 
@@ -136,5 +136,5 @@ STATICFILES_DIRS = [
     '/main/Static/',
 ]
 
-USER_IMAGE_PATH =  STATICFILES_DIRS
+USER_IMAGE_PATH = STATICFILES_DIRS
 SESSION_COOKIE_AGE = 36000
