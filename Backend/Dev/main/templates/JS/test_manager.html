@@ -156,6 +156,7 @@ var test = {
 			contentType: false,
 			success: function(data){
 				notification.change('success', 'success', data);
+				window.history.pushState('Test {{test.id}}', 'Test {{test.id}}', '/course_id={{course.id}}&test_id={{test.id}}');
 			}
 		});
 	},
