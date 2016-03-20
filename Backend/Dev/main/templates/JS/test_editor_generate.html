@@ -7,7 +7,8 @@ var counter = {
 }
 var generate = {
 	shared : {
-		upload_asset: function(filename) {
+		upload_done: true,
+		upload_asset: function(filename, el_data) {
 			var filename = filename.replace("C:\\fakepath\\","")
 			var formData = new FormData()
 		    formData.append('asset', generate.file)
@@ -15,6 +16,7 @@ var generate = {
 			formData.append("test_id", "{{test.id}}")
 		    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}')
 		    file_path = "/media/courses/{{course.id}}/assets/{{test.id}}/"
+		    upload_done = false
 		    // console.log(file_path)
 		    $.ajax({
 		        type:"POST",
@@ -23,8 +25,11 @@ var generate = {
 		        processData: false,
 		        contentType: false,
 		        success: function() {
-		            notification.change('success','Загружен',filename +" был успешно загружен на сервер")
-		           	// console.log(file_path + filename)
+		            notification.change('success', filename +" был успешно загружен на сервер")
+		        },
+		        complete: function(){
+		        	upload_done = true
+		        	console.log("done");
 		        }
 		    })
 			return file_path+filename
@@ -112,7 +117,15 @@ var generate = {
 	el: function(class_name, value, original, value_used) {
 		el_data = generate.get_data(class_name).el
 		popup_data = generate.get_data(class_name).popup
-		
+		function el_build_finish(){
+			popup.hide()
+			if(original) {
+				original.replaceWith(el_data.build(popup_data.parse()))
+			} else {
+				generate.queued_el.replaceWith(el_data.build(popup_data.parse()))
+			}
+			editor.verify_type()
+		}
 		if(value) {
 			console.log(class_name, el_data)
 			return el_data.build(value)				
@@ -124,13 +137,7 @@ var generate = {
 				}
 				$("#add_el").click(function(event) {
 					// console.log(el_data)
-					popup.hide()
-					if(original) {
-						original.replaceWith(el_data.build(popup_data.parse()))
-					} else {
-						generate.queued_el.replaceWith(el_data.build(popup_data.parse()))
-					}
-					editor.verify_type()
+					el_build_finish()
 				})
 				$("#popup__close").click(function(event) {
 					generate.queued_el.remove()

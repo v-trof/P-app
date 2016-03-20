@@ -11,7 +11,7 @@
                   },
             success: function(){
                   popup.hide();
-                  notification.change('success','Успешно','Пароль изменен' );
+                  notification.change('success','Пароль изменен' );
                }
             });
 }
@@ -35,7 +35,7 @@ function create_contact() {
                   },
             success: function(){
                   popup.hide();
-                  notification.change('success','Успешно','Контакт добавлен' );
+                  notification.change('success','Контакт добавлен' );
                                }
             });
     add_contact("<div class='card-contacts__item'><h5>" + contact_type + "</h5><span id='"+contact_type+"'>" + contact_info + "</span></div>");
@@ -65,7 +65,7 @@ function upload_avatar(e) {
         processData: false,
         contentType: false,
         success: function(){
-            notification.change('success','Успешно','Данные были успешно изменены' );
+            notification.change('success','Данные были успешно изменены' );
         }
     });
 }
@@ -127,7 +127,7 @@ $(document).ready(function() {
              'data_list': JSON.stringify(data_list)
                     },
              success: function(){
-                 notification.change('success','Успешно','Данные были успешно изменены' );
+                 notification.change('success','Данные были успешно изменены' );
              }
         });
     }

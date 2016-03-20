@@ -155,8 +155,8 @@ var test = {
 			processData: false,
 			contentType: false,
 			success: function(data){
-				notification.change('success', 'success', data);
-				window.history.pushState('Test {{test.id}}', 'Test {{test.id}}', '/course_id={{course.id}}&test_id={{test.id}}');
+				notification.change('success', data);
+				window.history.pushState('Test {{test.id}}', 'Test {{test.id}}', '/test/edit/?course_id={{course.id}}&test_id={{test.id}}');
 			}
 		});
 	},
@@ -192,7 +192,7 @@ $(document).ready(function() {
 			processData: false,
 			contentType: false,
 			success: function(data){
-				notification.change('success','success', data);
+				notification.change('success', data);
 			}
 		});
 		$("#test_publish").hide();
@@ -212,7 +212,7 @@ $(document).ready(function() {
 			processData: false,
 			contentType: false,
 			success: function(data){
-				notification.change('success','success', data);
+				notification.change('success', data);
 			}
 		});
 		$("#test_publish").show();
