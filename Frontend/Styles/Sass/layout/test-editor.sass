@@ -12,6 +12,7 @@ h1
 	width: 100%
 
 .question-elements,.answer-elements
+	overflow-y: scroll
 	position: relative
 	z-index: 1
 	background: $white
@@ -108,6 +109,9 @@ div.answer__field
 	margin-top: $margin-regular
 	transition: $time-regular
 
+.task__question>.block--empty
+	margin-bottom: $margin-regular
+
 .task__question>*,.task__answer__item
 	transition: $time-regular
 	position: relative
@@ -131,7 +135,6 @@ div.answer__field
 	transition: $time-regular
 	background: $grey-light
 	height: $block-regular
-	margin-bottom: $margin-regular
 	display: flex
 	align-items: center
 	justify-content: center

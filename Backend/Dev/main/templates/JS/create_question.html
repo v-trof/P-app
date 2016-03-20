@@ -26,14 +26,7 @@ function create_task(el_type, el_class, el) {
 }
 
 function append_test_item(el, el_class, el_type) {
-	var new_item = generate[el_class]();
-
-	el.after(new_item);
-	add_boundary.draggable(new_item);
-	add_boundary[el_type](new_item);
-	
-	// console.log($(new_item));
-	
+	el.after(generate.el(el_class));
 	editor.verify_type();
 	check_bg_height();
 }</script>

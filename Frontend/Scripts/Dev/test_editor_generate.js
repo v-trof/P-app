@@ -5,7 +5,7 @@ var generate  = {
 		return "<div class='"+el_class+" task__answer__item' draggable='true'></div>"
 	},
 	"texts" : {
-		"text-wrapper": "<input type='text' id='new_el_value'><label>Текст вопроса</label><br><br><button id='add_el'>Добавить</button>",
+		"text-wrapper": "<div class='textarea'><div class='textarea__text' contenteditable id='new_el_value'></div><label class='textarea__label'>Отображаемый текст</label></div><br><br><button id='add_el'>Добавить</button>",
 		"image-wrapper": "<input type='text' id='new_el_value'><label>URL артинки</label><br><br><div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file'></div><br><br><button id='add_el'>Добавить</button>",
 		"audio-wrapper": "<div class='file'><button>Выбрать</button><span>Файл не выбран</span><input type='file' id='new_el_value'></div><br><br><button id='add_el'>Добавить</button>",
 		"text-answer": "<input type='text' id='new_el_value'><label>Вопрос</label><br><br><input type='text' id='new_el_answer'><label>Верный ответ</label><br><br><button id='add_el'>Добавить</button>",
@@ -17,11 +17,11 @@ var generate  = {
 			var prefill;
 			popup.show(generate.texts["text-wrapper"],{}, function() {
 				if(original) {
-					$("#new_el_value").val(original.text());
+					$("#new_el_value").html(original.text());
 				}
 				$("#add_el, #popup__close").click(function(event) {
 					popup.hide();
-					c_element = generate["text-wrapper"]($("#new_el_value").val());
+					c_element = generate["text-wrapper"]($("#new_el_value").html());
 					generate.queued_el.replaceWith(c_element);
 					add_boundary.draggable(c_element);
 					add_boundary.question(c_element);

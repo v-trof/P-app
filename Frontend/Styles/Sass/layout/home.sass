@@ -27,6 +27,16 @@ main
 	+smartphone()
 		order: -1
 
-.homework
+
+
+.homework,
 	+smartphone()
+		order: -2
+
+.learning
+	display: flex
+	flex-direction: column
+	&>.homework
+		order: -2
+	&>.marks
 		order: -1

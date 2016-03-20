@@ -29,6 +29,7 @@ h1 {
   width: 100%; }
 
 .question-elements, .answer-elements {
+  overflow-y: scroll;
   position: relative;
   z-index: 1;
   background: #fafafa;
@@ -139,6 +140,9 @@ div.answer__field {
   -webkit-transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
   transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1); }
 
+.task__question > .block--empty {
+  margin-bottom: 0.6rem; }
+
 .task__question > *, .task__answer__item {
   -webkit-transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
   transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
@@ -170,7 +174,6 @@ div.answer__field {
   transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
   background: #ECEFF1;
   height: 3.125rem;
-  margin-bottom: 0.6rem;
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;

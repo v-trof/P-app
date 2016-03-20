@@ -10,7 +10,7 @@
 	<div class="includer">{% include 'CSS/header.html' %}</div>
 	<div class="includer">{% include 'CSS/cards.html' %}</div>
 	<div class="includer">{% include 'CSS/inputs.html' %}</div>
-
+	<div class="includer">{% include 'CSS/buttons.html' %}</div>
 	<main>
 		{% if request.user.id == course.creator %}
 			{% include 'Blocks/teacher_course.html' %}
@@ -47,7 +47,9 @@
 	</a> -->
 	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 	<div class="includer">{% include 'JS/layout.html' %}</div>
+	<div class="includer">{% include 'JS/ripple.html' %}</div>
 	<div class="includer">{% include 'JS/handle-cards.html' %}</div>
+	<div class="includer">{% include 'JS/assignment_create.html' %}</div>
 	
 	{% include "UI_elements/unique/notification.html" %}
 	{% include "UI_elements/unique/header.html" %}

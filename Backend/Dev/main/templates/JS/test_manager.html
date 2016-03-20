@@ -10,26 +10,30 @@ var pack_input = {
 	"block--empty" : function(){
 		return {
 			"class": "block--empty",
-			"value": "none",
-			"answer": "none"
 		}	
 	},
 	"text-answer" : function(el){
 		return {
 			"class": "text-answer",
-			"value": $(el).children('label').text(),
-			"answer": $(el).attr('answer')
+			"value":  {
+				"label":$(el).children('label').text(),
+				"answer": $(el).attr('answer')
+			}
 		}
 	},
 	"textarea" : function(el){
 		return {
 			"class": "textarea",
-			"value": $(el).children('.textarea').children('label').text(),
-			"answer": ""
+			"value": {
+				"label": $(el).children('.textarea').children('label').text()
+			}
 		}
 	},
 	"file-answer" : function(el){
-		return {"class": "file-answer"}
+		return {
+			"class": "file-answer",
+			"value": false
+		}
 	},
 	"select-answer": function(el){
 		var values = [];
@@ -38,13 +42,46 @@ var pack_input = {
 		});
 		return {
 			"class": "select-answer",
-			"value": values,
-			"answer": $(el).attr('answer')
+			"value": {
+				"values": values,
+				"answer": $(el).attr('answer')
+			}
+		}
+	},
+	"radio-answer": function(el){
+		var values = [];
+		$(el).find("label").each(function(index, el) {
+			values.push($(this).text());
+		});
+		return {
+			"class": "radio-answer",
+			"value": {
+				"values": values,
+				"answer": $(el).attr('answer')
+			}
+		}
+	},
+	"checkbox-answer": function(el){
+		var values = [];
+		$(el).find("label").each(function(index, el) {
+			values.push($(this).text());
+		});
+		return {
+			"class": "checkbox-answer",
+			"value": {
+				"values": values,
+				"answers": $(el).attr('answer')
+			}
 		}
 	}
 }
 
 var pack_question = {
+	"block--empty" : function(){
+		return {
+			"class": "block--empty",
+		}	
+	},
 	"text-wrapper" : function(el){
 		return {
 			"class": "text-wrapper",
@@ -63,6 +100,18 @@ var pack_question = {
 			"value": $(el).children('audio').attr("src"),
 		}
 	},
+	"code-wrapper" : function(el){
+		return {
+			"class": "code-wrapper",
+			"value": $(el).attr("src"),
+		}
+	},
+	"attachment-wrapper" : function(el){
+		return {
+			"class": "attachment-wrapper",
+			"value": $(el).attr("href"),
+		}
+	},
 }
 
 var test = {
@@ -79,27 +128,29 @@ var test = {
 			};
 			$(this).children('.task__question').children().each(function(index, el) {
 				var c_class = this.classList[0];
-				// console.log(c_class)
+				console.log(c_class)
 				c_task.question_items.push(pack_question[c_class](this));
 			});
 			//answer shit need coplete revision
 			$(this).children('.task__answer').children().each(function(index, el) {
 				var c_class = this.classList[0];
-				// console.log(c_class)
+				console.log(c_class)
 				c_task.answer_items.push(pack_input[c_class](this));
 			});
 			testfile.tasks.push(c_task);
 		});
 		console.log(testfile);
+
 		var formData = new FormData();
 		formData.append("json_file", JSON.stringify(testfile));
+		formData.append("course_id", "{{course.id}}");
 		formData.append("test_id", "{{test.id}}");
 		// console.log(csrf_token, "{{test.id}}", "{{course.id}}");
 		formData.append('csrfmiddlewaretoken', csrf_token);
 		// console.log(formData);
 		$.ajax({
 			type:"POST",
-			url:"../save/",
+			url:"/test/save/",
 			data: formData,
 			processData: false,
 			contentType: false,
@@ -108,18 +159,17 @@ var test = {
 			}
 		});
 	},
-	unpack: function(testfile) {
-		testfile = JSON.parse(testfile.replaceAll('&quot;', '"'));
+	unpack: function() {
+		{% if test.json %}
+			testfile = {{test.json|safe}};
+		{% endif %}
 		$(".test__heading, title").text(testfile.title);
 		testfile.tasks.forEach(function(task_data){
-			generate.task(task_data);
+			generate.task(false, false, false, task_data);
 		});
-		$("input").each(function(index, el) {
-			add_emptiness_checker(this);
-		});
-		$(".audio-wrapper").each(function(index, el) {
-	        media_player.bind_controls(this);
-	    });
+		setTimeout(function(){
+			editor.full_check()
+		}, 1000)
 	}
 }
 
@@ -131,11 +181,12 @@ $(document).ready(function() {
 	$("#test_publish").click(function(event) {
 		test.pack();
 		var formData = new FormData();
+		formData.append("course_id", "{{course.id}}");
 		formData.append("test_id", "{{test.id}}");
 		formData.append('csrfmiddlewaretoken', csrf_token);
 		$.ajax({
 			type:"POST",
-			url:"../publish/",
+			url:"/test/publish/",
 			data: formData,
 			processData: false,
 			contentType: false,
@@ -150,11 +201,12 @@ $(document).ready(function() {
 	$("#test_unpublish").click(function(event) {
 		test.pack();
 		var formData = new FormData();
+		formData.append("course_id", "{{course.id}}");
 		formData.append("test_id", "{{test.id}}");
 		formData.append('csrfmiddlewaretoken', csrf_token);
 		$.ajax({
 			type:"POST",
-			url:"../unpublish/",
+			url:"/test/unpublish/",
 			data: formData,
 			processData: false,
 			contentType: false,
@@ -167,6 +219,6 @@ $(document).ready(function() {
 	});
 
 	{% if test.loaded %}
-		test.unpack('{{test.json}}');
+		test.unpack();
 	{% endif %}
 });</script>

@@ -15,9 +15,7 @@ var popup = {
 		if(callback){
 			callback();
 		}
-		$("#popup input").each(function(index, el) {
-			add_emptiness_checker(this);	
-		});
+		add_emptiness_checker($("#popup input"));
 		$("#popup input").first().focus();
 
 		$("#popup .file").each(function(index, el) {

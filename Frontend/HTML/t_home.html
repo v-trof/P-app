@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<style id="ff-fix">
+		*{
+			transition: none !important;
+		}
+	</style>
+	<script type="text/javascript">
+		document.getElementById('ff-fix').innerHTML = '';
+	</script>
+	<title>Pi</title>
+
+</head>
+<body>
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/main.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/layout/home.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/header.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/cards.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/notification.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/tooltip.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/inputs.css">
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/buttons.css">
+	<div class="notification__error hidden" id="notification">
+			<div class="notification__bg">
+				<img src="../Assets/Icons/info.svg" inline>
+				<h3>s error</h3>
+			</div>
+			<div class="notification__content--wrap">
+				<div class="notification__content">s text</div>
+			</div>
+	</div>
+	<header class="header">
+		<div class="header__breadcrumbs">
+		<a href='#'>Главная</a>
+		<!-- <img src="../Assets/Icons/angle_right.svg" inline> -->
+		</div>
+		<div class="header__search">
+			<img src="../Assets/Icons/search.svg" inline>
+			<input type="text" name="search" placeholder="Искать...">
+		</div>
+		<div class="header__user">
+			<span class="user__name">Владимир Бородин</span>
+			<img src="../Assets/Images/avatar.png" class="user__avatar--small">
+		</div>
+	</header>
+	<main>
+		<section class='courses'>
+			<h2>Ваши Курсы</h2>
+				<div class="subject">
+					<h3>Русский язык</h3>
+						<a class="link--card" href="course.html">
+							<div class="card">
+								<h4 class="card__heading">Ким ЕГЭ 2016</h4>
+								<div class="card__content">
+									<b>10</b> тестов
+								</div>
+							</div>
+						</a>
+						<a class="link--card" href="/kursB">
+							<div class="card">
+								<div class="icons--warning">
+								</div>
+								<div class="icons--neutal">
+								</div>
+								<h4 class="card__heading">9 класс</h4>
+								<div class="card__content">
+									<b>13</b> материалов<br>
+									<b>22</b> теста
+								</div>
+							</div>
+						</a>
+				</div>
+			<div class="linkbox">
+				<a class="link--card" id="create_course">
+					<div class="card--small">
+						Создать курс
+					</div>
+				</a>
+			</div>
+		</section>
+		<section class='updates'>
+			<h2>Оповещения</h2>
+			<div class="subject">
+				<h3>Русский язык</h3>
+				<a class="link--card">
+					<div class="card">
+						<h4  class="card__heading">В курсе КИМ ЕГЭ 2016</h4>
+						<div class="marks"><b>5</b> новых оценок</div>
+					</div>
+				</a>
+				<a class="link--card">
+					<div class="card">
+						<h4  class="card__heading">В курсе 9 класс</h4>
+						<div class="marks"><b>3</b> новые оценки</div>
+						<div class="joined"><b>15</b> учеников присоеденились</div>
+					</div>
+				</a>
+			</div>
+		</section>
+		<section class='learning'>
+			<section class='courses'>
+				<h2>Курсы</h2>
+				<div class="subject">
+					<h3>Испанский язык</h3>
+					<a class="link--card" href="course.html">
+						<div class="card">
+							<div class="icons--warning">
+								<img src="../Assets/Icons/in_progress.svg" inline>
+							</div>
+							<h4 class="card__heading">Времена</h4>
+							<div class="card__content">
+								<div>
+									<b>15</b> материалов
+								</div>
+								<div>
+									<b>8</b> тестов
+								</div>
+							</div>
+							<div class="messages">
+								<div class="messages__item--warning">
+									Вы начали тест и не закончили попытку
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</section>
+			<section class='marks'>
+				<h2>Оценки</h2>
+				<div class="subject">
+					<h3>Испанский язык</h3>
+					<div class="card card-marks">
+						<h4 class="card-marks__course">Времена</h4>
+							<button class="mark--medium" id="c_kursA_m4">3</button>
+							<button class="mark--good">5</button>
+							<button class="mark--good">4</button>
+							<button class="mark--good">4</button>
+					</div>
+				</div>
+				<div id="tooltip">
+					<div class="tooltip__content">
+					</div>
+				</div>
+			</section>
+			<section class='homework'>
+				<h2>Задания</h2>
+				<div class="subject">
+					<h3>Испанский язык</h3>
+					<div class="card">
+						<div class="icons--positive">
+							<img src="../Assets/Icons/done.svg" inline>
+						</div>
+						<h4 class="card__heading">В курсе А</h4>
+						<div class="card-homework__task done">
+							<span>Пройти тесты: <a href="#" class="task__link done">Subjuntivo</a></span>
+						</div>
+						<div class="card-homework__task traditional done">
+							<input type="checkbox" class="green" id="task_1_1" checked><label for="task_1_1">Прочитать 12 главу "Cien años de soledad"</label>
+						</div>
+						<div class="card__due-date">
+							До <strong>12 апреля</strong>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</main>
+
+	<style dev>
+		*{
+			/*background: rgba(0,255,0,0.1);*/
+		}
+	</style>
+	<script src="../Scripts/Min/jquery-2.1.4.min.js">
+	</script>
+	<script src="../Scripts/Min/layout.js"></script>
+	<script src="../Scripts/Min/humanize.js"></script>
+	<script src="../Scripts/Min/handle-cards.js"></script>
+	<script src="../Scripts/Dev/tooltip.js"></script>
+	<script src="../Scripts/Min/notification.js"></script>
+	<script src="../Scripts/Dev/ripple.js"></script>
+	<script src="../Scripts/Dev/create_course.js"></script>
+	<script type="text/javascript">
+		//sample
+		var mark_descriptions = {
+			kursA: {
+				m4: {
+					type : "Тест",
+					name : "a",
+					percentage : 1,
+					done : 156,
+					total : 10000,
+					date : "18.10.2015"
+				},
+				m5: {
+					type : "Тест",
+					name : "Плеоназмы",
+					percentage : 74,
+					done : 14,
+					total : 19,
+					date : "12.10.2015"
+				}
+			}
+		}
+
+		//realcode
+		function get_description(mark){
+			mark = mark.split("_");
+			return mark_descriptions[mark[1]][mark[2]];
+		}
+
+		$(document).ready(function() {
+			$(".card-marks>button").blur(function() {
+					tooltip.hide();
+					$(this).removeClass('open');
+			});
+			$(".card-marks>button").focus(function() {
+				$(".card-marks>button").removeClass('open');
+				new_html = tooltip.generate.mark__tooltip(get_description($(this).attr("id")));
+				console.log("open");
+				tooltip.show(this, new_html);
+				$(this).addClass('open');
+			});
+		});
+	</script>
+	<!-- unique -->
+	<script src="../Scripts/Dev/popup.js"></script>
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/popup.css">
+	<div id="overlay">
+		<div id="overlay__bg">
+		</div>
+		<div id="popup">
+			<button class="button--icon" id="popup__close">
+				<img src="../Assets/Icons/cancel.svg" inline>
+			</button>
+			<div id="popup__content"></div>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src='../Scripts/Dev/context_menu.js'></script>
+	<link rel="stylesheet" type="text/css" href="../Styles/CSS/elements/context-menu.css">
+	<div id="context-menu"></div>
+</body>
+</html>

@@ -28,7 +28,7 @@
 						<button class='button--icon' role='play'>
 							{% include 'UI_elements/Icons/play.svg' %}
 						</button>
-						<button class='button--icon' style='display: none' role='pause'>
+						<button class='button--icon' style='display: none' role='pause'>7
 							{% include 'UI_elements/Icons/pause.svg' %}
 						</button>
 						<div class='slider' role='time'>
@@ -45,6 +45,12 @@
 							<button class='slider__thumb'></button>
 						</div>
 					</div>
+				</div>
+				<div class="code-wrapper" draggable="true">
+					{% include 'UI_elements/Icons/code.svg' %}
+				</div>
+				<div class="attachment-wrapper" draggable="true">
+					{% include 'UI_elements/Icons/attachment.svg' %}
 				</div>
 			</div>
 			<div class="test">
@@ -84,13 +90,23 @@
 					<div class="select">
 						<input type="hidden" class="value" value="1">
 						<div class="display">Option 1</div>
-						{% include "UI_elements/Icons/more_vertical.svg" %}
+						{% include "UI_elements/Icons/dropdown.svg" %}
 						<option value="1">Вариант 1</option>
 						<option value="2">Вариант 2</option>
 						<option value="3">Вариант 3</option>
 						<option value="4">Вариант 4</option>
 						<option value="5">Вариант 5</option>
 					</div>
+				</div>
+				<div class="checkbox-answer answer__field card" draggable="true">
+					<input type="checkbox" id="ans_c_1" name="check_pre"><label for="ans_c_1">Вариант 1</label><br>
+					<input type="checkbox" id="ans_c_2" name="check_pre"><label for="ans_c_2">Вариант 2</label><br>
+					<input type="checkbox" id="ans_c_3" name="check_pre"><label for="ans_c_3">Вариант 3</label>
+				</div>
+				<div class="radio-answer answer__field card" draggable="true">
+					<input type="radio" id="ans_r_1" name="radio_pre"><label for="ans_r_1">Вариант 1</label><br>
+					<input type="radio" id="ans_r_2" name="radio_pre"><label for="ans_r_2">Вариант 2</label><br>
+					<input type="radio" id="ans_r_3" name="radio_pre"><label for="ans_r_3">Вариант 3</label>
 				</div>
 			</div>
 		</div>
@@ -103,7 +119,8 @@
 		<div id="editor__settings" class="card">
 			<h3>Настройки редактора</h3>
 			<div id="editor__type">
-				<input type="radio" id="move" name="editor_type" checked><label for="move">Перемещение</label>
+				<br>
+				<input type="radio" id="move" name="editor_type" checked><label for="move">Перемещение</label><br>
 				<input type="radio" id="edit" name="editor_type"><label for="edit">Редактирование содержимого</label>
 			</div>
 			<div class="actionbox">
@@ -136,11 +153,11 @@
 		<div class="includer">{% include 'JS/layout.html' %}</div>
 		<div class="includer">{% include 'JS/players.html' %}</div>
 		<div class="includer">{% include 'JS/drag_and_drop.html' %}</div>
+		<div class="includer">{% include 'JS/file_input.html' %}</div>
 		<div class="includer">{% include 'JS/create_question.html' %}</div>
 		<div class="includer">{% include 'JS/test_editor_generate.html' %}</div>
 		<div class="includer">{% include 'JS/test_manager.html' %}</div>
 		<div class="includer">{% include 'JS/ripple.html' %}</div>
-		<div class="includer">{% include 'JS/file_input.html' %}</div>
 
 	</div>
 	{% include 'UI_elements/unique/header.html' %}

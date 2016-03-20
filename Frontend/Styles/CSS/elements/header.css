@@ -96,7 +96,8 @@
     transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
     color: #fafafa;
     font-family: "Roboto", sans-serif;
-    font-size: 1rem; }
+    font-size: 1rem;
+    border-radius: 2px; }
     .header__search > input:hover, .header__search > input:focus {
       background: #8591d5;
       outline: 0;

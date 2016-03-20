@@ -1,6 +1,6 @@
 <style>html ::-webkit-scrollbar, html ::-webkit-scrollbar-track {
-  background: #ECEFF1;
-  width: 16px; }
+  background: rgba(0, 0, 0, 0);
+  width: 8px; }
 
 html ::-webkit-scrollbar-button {
   display: none; }
@@ -10,7 +10,7 @@ html ::-webkit-scrollbar-thumb {
   transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
   background: rgba(38, 50, 56, 0.33);
   width: 8px;
-  border: 4px solid #ECEFF1; }
+  border: 4px solid rgba(0, 0, 0, 0); }
   html ::-webkit-scrollbar-thumb:hover {
     background: rgba(33, 150, 243, 0.33); }
 
@@ -29,6 +29,7 @@ h1 {
   width: 100%; }
 
 .question-elements, .answer-elements {
+  overflow-y: scroll;
   position: relative;
   z-index: 1;
   background: #fafafa;
@@ -122,14 +123,10 @@ div.answer__field {
   width: 100%; }
 
 .task__number {
-  min-width: 10rem;
-  margin-left: -10rem;
   text-align: center;
-  font-size: 2.25rem;
-  font-weight: 300; }
-  @media only screen and (max-width: 736px) {
-    .task__number {
-      display: none; } }
+  margin: 0;
+  font-size: 1.5rem;
+}
 
 .task__content {
   width: 100%; }
@@ -139,10 +136,14 @@ div.answer__field {
   -webkit-transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
   transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1); }
 
+.task__question > .block--empty {
+  margin-bottom: 0.6rem; }
+
 .task__question > *, .task__answer__item {
   -webkit-transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
   transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
   position: relative;
+  margin-bottom: 0.6rem;
   z-index: 2; }
   .task__question > *:last-child, .task__answer__item:last-child {
     margin-bottom: 0; }
@@ -169,7 +170,6 @@ div.answer__field {
   transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
   background: #ECEFF1;
   height: 3.125rem;
-  margin-bottom: 0.6rem;
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
@@ -268,4 +268,10 @@ div.answer__field {
     height: 2rem;
     width: 2rem;
     fill: #F44336; }
+  .button_remove, .button_remove>svg{
+    float: right;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin: 0;
+  }
 </style>

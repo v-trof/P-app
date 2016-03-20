@@ -1,1 +1,1 @@
-{"administrators": [1], "status": "closed", "tests": {"amount": 2, "unpublished": ["1", "1"], "published": ["1", "1"]}, "users": [1], "teachers": [1], "groups": {"Нераспределенные": []}, "pending_users": {"Заявки": [2], "Нераспределенные": []}}
+{"tests": {"published": [], "amount": 0, "unpublished": []}, "groups": {"Нераспределенные": []}, "pending_users": {"Нераспределенные": [], "Заявки": [2]}, "administrators": [1], "status": "closed", "teachers": [1], "users": [1]}

@@ -111,11 +111,12 @@
 			color: $yellow-dark
 		&.mark--bad
 			color: $red-bright
-		&:focus,&:hover
+		&:enabled:focus,&:enabled:hover
 			background: transparent
 			outline: none
 			box-shadow: none
 			transform: scale(1.5)
+
 	&>div
 		color: $grey-mid
 
@@ -159,7 +160,11 @@
 		color: $grey-semidark
 		margin: $margin-regular 0 0 0
 
-.card-person--extended
+.card-person--extended, .card--extended
+	display: flex
+	flex-direction: row
+	justify-content: left
+	align-items: center
 	@media (min-width: 570px)
 		&>div
 			width: 50%

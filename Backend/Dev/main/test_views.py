@@ -1,24 +1,25 @@
-# -*- coding: utf-8 -*-
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
+# from django.core.servers.basehttp import FileWrapper
 import os
 import json
 
-def edit(request, course_id):
-	print(course_id)
+def edit(request):
 	#switch for create\load test, lauches test editor anyway
 	if "test_id" in request.GET:
-		return load(request, course_id)
+		return load(request)
 	else:
-		return create(request, course_id)
+		return create(request)
 
 
 
 
-def create(request, course_id):
+def create(request):
 	#creates test environment (no test exists as file untill saved)
+	course_id =request.GET["course_id"]
+	
 	info_file = open('courses/'+course_id+'/info.json', 'r')
 	course_info = json.loads(info_file.read())
 	test_id = str(course_info['tests']['amount']+1)
@@ -30,8 +31,9 @@ def create(request, course_id):
 
 	return render(request, 'Pages/test_editor.html', context)
 
-def delete(request, course_id):
+def delete(request):
 	#moves test to trash bin
+	course_id =request.POST["course_id"]
 	test_id =request.POST["test_id"]
 	info_file = open('courses/'+course_id+'/info.json', 'r')
 	course_info = json.loads(info_file.read())
@@ -50,11 +52,11 @@ def delete(request, course_id):
 
 
 
-def save(request, course_id):
+def save(request):
 	#saves test file
 	if request.method == 'POST':
-		print("df")
 		json_file = request.POST["json_file"]
+		course_id = request.POST["course_id"]
 		test_id = request.POST["test_id"]
 		json_file_path = 'courses/'+course_id+'/Tests/'+test_id+'.json'
 		if not os.path.isfile(json_file_path):
@@ -72,8 +74,9 @@ def save(request, course_id):
 		test_file.write(json_file)
 	return HttpResponse("Тест сохранен")
 
-def load(request, course_id):
+def load(request):
 	#loads test file
+	course_id =request.GET["course_id"]
 	test_id =  request.GET["test_id"]
 	json_file = open('courses/'+course_id+'/Tests/'+test_id+'.json', 'r')
 	json_file = json_file.read()
@@ -95,8 +98,9 @@ def load(request, course_id):
 
 
 
-def publish(request, course_id):
+def publish(request):
 	#makes test visible in course screen
+	course_id =request.POST["course_id"]
 	test_id =request.POST["test_id"]
 	info_file = open('courses/'+course_id+'/info.json', 'r')
 	course_info = json.loads(info_file.read())
@@ -112,8 +116,9 @@ def publish(request, course_id):
 
 	return HttpResponse("Тест опубликован")
 
-def unpublish(request, course_id):
+def unpublish(request):
 	#makes test invisible in course screen
+	course_id =request.POST["course_id"]
 	test_id =request.POST["test_id"]
 	info_file = open('courses/'+course_id+'/info.json', 'r')
 	course_info = json.loads(info_file.read())
@@ -128,28 +133,27 @@ def unpublish(request, course_id):
 	info_file.close()
 	return HttpResponse("Тест скрыт")
 
-def share(request, course_id):
+def share(request):
 	#make test avalible in package_catalog
 	pass
 
-
-
-def attempt(request, course_id):
+def attempt(request):
 	#creates or continues attempt
 	pass
 
-def attempt_save(request, course_id):
+def attempt_save(request):
 	#saves attempt data
 	pass
 
-def attempt_check(request, course_id):
+def attempt_check(request):
 	#checks attempts
 	pass
 
 
-def upload_asset(request, course_id):
+def upload_asset(request):
 	if request.method == 'POST':
 		asset = request.FILES["asset"]
+		course_id = request.POST["course_id"]
 		test_id = request.POST["test_id"]
 		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
 		
@@ -160,3 +164,57 @@ def upload_asset(request, course_id):
 			for chunk in asset.chunks():
 				destination.write(chunk)
 	return HttpResponse("ok")
+
+def upload_downloadable(request):
+	if request.method == 'POST':
+		asset = request.FILES["asset"]
+		course_id = request.POST["course_id"]
+		test_id = request.POST["test_id"]
+		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
+		
+		if not os.path.exists(path):
+		    os.makedirs(path)
+		
+		with open(path+asset.name, 'wb+') as destination:
+			for chunk in asset.chunks():
+				destination.write(chunk)
+	return HttpResponse("ok")
+
+#embmend
+def uplaod_embmend(request):
+	if request.method == 'POST':
+		asset = request.POST["code"]
+		course_id = request.POST["course_id"]
+		test_id = request.POST["test_id"]
+		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
+		
+		if not os.path.exists(path):
+		    os.makedirs(path)
+
+		asset_id=1
+		list_dir = os.listdir(path)
+		for file in list_dir:
+			if file.endswith(".html"):
+				asset_id += 1
+
+		with open(path+asset_id+".html", 'wb+') as destination:
+			for chunk in asset.chunks():
+				destination.write(chunk)
+	return HttpResponse(asset_id)
+
+def load_embmend(request):
+	course_id =request.GET["course_id"]
+	test_id =request.GET["test_id"]
+	asset_id =request.GET["asset_id"]
+	path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
+	f = open(path+asset_id+".html", 'r')
+	asset = f.read()
+	return HttpResponse(asset)
+
+def load_asset_file(request, course_id, test_id, asset_name):
+	path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
+	f = open(path+asset_name, 'r')
+	asset = f.read()
+	response = HttpResponse(FileWrapper(asset.getvalue()), content_type='application/zip')
+	response['Content-Disposition'] = 'attachment; filename=myfile.zip'
+	return response

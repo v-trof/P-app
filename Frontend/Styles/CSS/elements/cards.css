@@ -108,7 +108,7 @@
       color: #FF6F00; }
     .card-marks button.mark--bad {
       color: #F44336; }
-    .card-marks button:focus, .card-marks button:hover {
+    .card-marks button:enabled:focus, .card-marks button:enabled:hover {
       background: transparent;
       outline: none;
       box-shadow: none;
@@ -156,10 +156,19 @@
     color: #607D8B;
     margin: 0.6rem 0 0 0; }
 
-@media (min-width: 570px) {
-  .card-person--extended > div {
-    width: 50%; } }
-
-@media (max-width: 569px) {
-  .card-person--extended {
-    flex-wrap: wrap; } }
+.card-person--extended, .card--extended {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+  -webkit-box-pack: left;
+          justify-content: left;
+  -webkit-box-align: center;
+          align-items: center; }
+  @media (min-width: 570px) {
+    .card-person--extended > div, .card--extended > div {
+      width: 50%; } }
+  @media (max-width: 569px) {
+    .card-person--extended, .card--extended {
+      flex-wrap: wrap; } }

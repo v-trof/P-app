@@ -1,0 +1,114 @@
+<script>
+	var as_g = {}
+	as_g.current_type = ""
+	as_g.panel = $(".panel--list")
+	as_g.panel_actions = $(".panel--actions")
+	as_g.cancel = $("#cancel")
+	as_g.delete = $("#delete")
+	as_g.original = $()
+
+	as_g.card_template = function(el){ 
+		console.log(el)
+		return '<a class="link--card"><div class="card--small" href="'+el.href+'">'+el.title+'</div></a>'
+	}
+	
+	as_g.material_list = {{course_data.material_list|safe}}
+	as_g.test_list = {{course_data.test_list|safe}}
+
+	console.log(as_g.material_list, as_g.test_list)
+	as_g.show_list = function(content_type, original){
+		var list = as_g[content_type+"_list"]
+		as_g.current_type = content_type
+		as_g.original = original
+
+		console.log(list)
+
+		as_g.panel.html("")
+
+		list.forEach(function(el){
+			as_g.panel.append(as_g.card_template(el))
+		})
+
+		if(original){
+			as_g.delete.show()
+		} else {
+			as_g.delete.hide()
+		}
+
+		as_g.panel.css('transform', 'none');
+		as_g.panel_actions.css('transform', 'none');
+	}
+
+	as_g.hide_list = function(content_type){
+		as_g.panel.css('transform', 'translateX(18.5rem)');
+		as_g.panel_actions.css('transform', 'translateX(18.5rem)');
+	}
+
+	$(document).ready(function() {
+		$("#assignment--new__add_test").click(function(event) {
+			as_g.show_list("test");
+		});
+		$("#assignment--new__add_material").click(function(event) {
+			as_g.show_list("material");
+		});
+
+		$(".panel--list, .panel--actions").click(function(event) {
+			as_g.hide_list()
+		});
+
+		$(".panel--list").on("click", ".link--card", function(event) {
+			if(as_g.original){
+				as_g.original.replaceWith($(this))
+			} else {
+				$("#assignment--new__add_"+as_g.current_type).before($(this))
+			}
+			
+		});
+
+		$("#assignment--new__materials").on("click", ".link--card", function(event) {
+				as_g.show_list("material", $(this))
+		});
+
+		$("#assignment--new__tests").on("click", ".link--card", function(event) {
+				as_g.show_list("test", $(this))
+		});
+
+		$("#delete").click(function(event) {
+			as_g.original.remove()
+		});
+	});
+	$("#assignment--new__add_traditional").click(function(event) {
+		popup.show("<div class='textarea'><div class='textarea__text' contenteditable id='new_el_value'></div><label class='textarea__label'>Отображаемый текст</label></div><br><br><button id='add_el'>Добавить</button>", {}, function(){
+			$("#add_el").click(function(event) {
+				// console.log(el_data)
+				popup.hide()
+				$("#assignment--new__add_traditional").before(as_g.card_template(
+						{"title": $("#new_el_value").html()}
+					))
+			})
+			$("#popup__close").click(function(event) {
+				popup.hide()
+			})
+		})
+	});
+	$("#assignment--new__traditional").on("click", ".link--card", function(event) {
+			as_g.original = $(this)
+			popup.show("<div class='textarea'><div class='textarea__text' contenteditable id='new_el_value'></div><label class='textarea__label'>Отображаемый текст</label></div><br><br><button id='add_el'>Добавить</button> <button id='delete_el' class='button--ghost'>Удалить</button>", {}, function(){
+				$("#new_el_value").text(as_g.original.text())
+				$("#add_el").click(function(event) {
+					// console.log(el_data)
+					popup.hide()
+					as_g.original.replaceWith(as_g.card_template(
+							{"title": $("#new_el_value").text()}
+						))
+				})
+				$("#delete_el").click(function(event) {
+					popup.hide()
+					$("#delete").click()
+				});
+				$("#popup__close").click(function(event) {
+					popup.hide()
+				})
+		})
+		});
+</script>

@@ -1,1 +1,1 @@
-{"groups": {"Нераспределенные": []}, "teachers": [9], "status": "public", "administrators": [9], "pending_users": {"Заявки": [], "Нераспределенные": ["gollut9@gmail.com"]}, "users": [9, 2], "tests": {"amount": 0, "published": [], "unpublished": []}}
+{"status": "public", "administrators": [6], "pending_users": {"Нераспределенные": [], "Заявки": []}, "users": [6], "groups": {"Нераспределенные": []}, "tests": {"published": [], "unpublished": ["1", "2"], "amount": 2}, "teachers": [6]}
