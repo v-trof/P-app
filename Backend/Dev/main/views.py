@@ -153,7 +153,6 @@ def groups(request, course_id):
     if course_id:
         course=Course.objects.get(id=course_id)
         context = {"course":course, "course_data":course_getdata(request,course)}
-        context.c
         return render(request, 'Pages/groups.html', context)
     else:
         return render(request, 'Pages/groups.html')

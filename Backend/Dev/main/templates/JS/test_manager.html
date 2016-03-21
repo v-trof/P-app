@@ -1,4 +1,19 @@
 <script>
+
+var make_attempt = function(){
+	console.log(editor.editing)
+	editor.editing = false
+	$(".test__preview [answer]").each(function(index, el) {
+		$(this).removeAttr('answer');
+	});
+	$(".test__preview [disabled]").each(function(index, el) {
+		$(this).removeAttr('disabled');
+	});
+	$(".test__preview [style]").each(function(index, el) {
+		$(this).removeAttr('style');
+	});
+	$(".button_remove").remove()
+}
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.replace(new RegExp(search, 'g'), replacement);
@@ -165,12 +180,19 @@ var test = {
 			testfile = {{test.json|safe}};
 		{% endif %}
 		$(".test__heading, title").text(testfile.title);
-		testfile.tasks.forEach(function(task_data){
-			generate.task(false, false, false, task_data);
-		});
-		setTimeout(function(){
-			editor.full_check()
-		}, 1000)
+			testfile.tasks.forEach(function(task_data){
+				generate.task(false, false, false, task_data);
+			});
+			setTimeout(function(){
+				editor.full_check()
+				{% if attempt %}
+					$(".test__preview").append('<button class="button--raized" id="btn_send">Отправить тест на проверку</button>')
+				{% endif %}
+			}, 1000)
+			{% if attempt %}
+				make_attempt()
+				setInterval(function(){make_attempt()}, 500)
+			{% endif %}
 	}
 }
 

@@ -111,4 +111,22 @@
 				})
 		})
 		});
+
+	$("#give_task").click(function(e) {
+		console.log(as_g.test_list);
+        $.ajax({
+            type:"POST",
+            url:"/func/create_assignment/",
+            data: {
+                   'csrfmiddlewaretoken': '{{ csrf_token }}',
+                   'material_list': JSON.stringify(as_g.material_list),
+                   'test_list': JSON.stringify(as_g.test_list),
+                   'course_id': '{{ course.id }}'
+                  },
+            success: function(){
+                  notification.change('success','Задание создано' );
+                               }
+            });
+    });
+
 </script>

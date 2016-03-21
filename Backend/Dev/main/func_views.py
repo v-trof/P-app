@@ -360,9 +360,9 @@ def course_getdata(request, course):
 		return course_data
 def user_getdata(request,user):
 	user_data={}
-	for course in user.courses:
+	user_data["course_list"]=[]
+	for course in user.courses.split(' '):
 		course=Course.objects.get(id=course)
-		user_data["course_list"]=[]
 		user_data["course_list"].append(course)
 		user_data[course.id]={}
 		with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
@@ -370,9 +370,10 @@ def user_getdata(request,user):
 			user_data[course.id]["updates"]={}
 			user_data[course.id]["object"]=course
 			user_data[course.id]["status"]=data["status"]
-			if user_data[course.id]["status"]=="closed":
+			if data["status"]=="closed":
 				user_data[course.id]["updates"]["requesting_users"]=data["pending_users"]["Заявки"]
 	# print (user_data[course.id]["updates"]["requesting_users"])
+	print (user_data["course_list"])
 	return user_data
 
 def course_get_assignments(request, course):
@@ -380,6 +381,7 @@ def course_get_assignments(request, course):
 		data = json.load(data_file)
 		assignments={}
 		assignments=data
+		print(assignments)
 		return assignments
 
 def get_users_info(request, user_ids):
@@ -417,4 +419,20 @@ def decline_request(request):
 	with io.open('courses/'+str(course_id)+'/info.json', 'w', encoding='utf8') as json_file:
 		saving_data = json.dumps(data, ensure_ascii=False)
 		json_file.write(saving_data)
+	return HttpResponse("ok")
+
+def create_assignment(request):
+	task={}
+	task["test_list"]={}
+	task["material_list"]={}
+	course_id=request.POST.get('course_id')
+	task["test_list"]=json.loads(request.POST.get('test_list'))
+	task["material_list"]=json.loads(request.POST.get('material_list'))
+	with io.open('courses/'+str(course_id)+'/assignments.json', 'r', encoding='utf8') as data_file:
+		data = json.load(data_file)
+		data.append(task)
+	with io.open('courses/'+str(course_id)+'/assignments.json', 'w', encoding='utf8') as json_file:
+		saving_data = json.dumps(data, ensure_ascii=False)
+		json_file.write(saving_data)
+
 	return HttpResponse("ok")
