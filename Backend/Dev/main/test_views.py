@@ -27,6 +27,13 @@ def create(request):
 	course = {"id": course_id}
 	test = {"id": test_id, "loaded": 0}
 	context =  {"test": test, "course": course}
+	context["breadcrumbs"] =[{
+            "href" : "/course/"+str(course_id),
+            "link" : Course.objects.get(id=course_id).name
+        },{
+            "href" : "#",
+            "link" : "Новый тест"
+        }]
 
 	return render(request, 'Pages/test_editor.html', context)
 
@@ -90,7 +97,14 @@ def load(request):
 			"published" : test_id in course_info["tests"]["published"]
 		}
 	context =  {"test": test, "course": course}
-	return render(request, 'Pages/test_attempt.html', context)
+	context["breadcrumbs"] =[{
+            "href" : "/course/"+str(course_id),
+            "link" : Course.objects.get(id=course_id).name
+        },{
+            "href" : "#",
+            "link" : test["json"]["title"]
+        }]
+	return render(request, 'Pages/test_editor.html', context)
 
 
 

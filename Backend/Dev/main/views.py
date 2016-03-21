@@ -135,24 +135,52 @@ def forgot_password(request):
 
 def profile(request, user_id):
     try: 
-        return render(request, 'Pages/profile.html', {"user":User.objects.get(id=user_id)})
+        return render(request, 'Pages/profile.html', {
+            "user":User.objects.get(id=user_id),
+            "breadcrumbs" : [{
+                "href" : "#",
+                "link" : "Профиль"
+                }
+            ]
+            })
     except:
         return render(request, 'Pages/404.html')
 
 def course(request, course_id):
     course=Course.objects.get(id=course_id)
-    return render(request, 'Pages/course.html',{"course":course, "course_data":course_getdata(request,course), "assignments":course_get_assignments(request,course)})
+    course_data = course_getdata(request,course)
+    return render(request, 'Pages/course.html',{"course":course, "course_data":course_data, "assignments":course_get_assignments(request,course),
+            "breadcrumbs" : [{
+                "href" : "#",
+                "link" : course.name
+            }
+            ]})
 
 def course_requests(request, course_id):
     with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
         data = json.load(data_file)
         pending_users=data["pending_users"]["Заявки"]
-    return render(request, 'Pages/course_requests.html', {"course_id":course_id, "pending_users":get_users_info(request,pending_users)})
+    return render(request, 'Pages/course_requests.html', {"course_id":course_id, "pending_users":get_users_info(request,pending_users),
+        "breadcrumbs" : [{
+            "href" : "/course/"+str(course.id),
+            "link" : course.name
+        },{
+            "href" : "#",
+            "link" : "Заявки"
+        }]
+        })
 
 def groups(request, course_id):
     if course_id:
         course=Course.objects.get(id=course_id)
-        context = {"course":course, "course_data":course_getdata(request,course)}
+        context = {"course":course, "course_data":course_getdata(request,course),
+        "breadcrumbs" : [{
+            "href" : "/course/"+str(course.id),
+            "link" : course.name
+        },{
+            "href" : "#",
+            "link" : "Группы"
+        }]}
         return render(request, 'Pages/groups.html', context)
     else:
         return render(request, 'Pages/groups.html')
@@ -176,6 +204,13 @@ def give_task(request, course_id):
                 "title": "!How to make bugs!",
                 "href": "/1"
             }]
+        context["breadcrumbs"] =[{
+            "href" : "/course/"+str(course.id),
+            "link" : course.name
+        },{
+            "href" : "#",
+            "link" : "Выдать задание"
+        }]
         return render(request, 'Pages/give_task.html', context)
     else:
         return render(request, 'Pages/give_task.html')
