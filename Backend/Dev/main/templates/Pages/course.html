@@ -14,7 +14,6 @@
 	<main>
 		{% if request.user.id == course.creator %}
 			{% include 'Blocks/teacher_course.html' %}
-		{% else %}
 			<section class="linkbox">
 				<a class="link--card" href="groups/">
 					<div class="card--small">
