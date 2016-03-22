@@ -14,6 +14,7 @@
 	<main>
 		{% if request.user.id == course.creator %}
 			{% include 'Blocks/teacher_course.html' %}
+		{% else %}
 			<section class="linkbox">
 				<a class="link--card" href="groups/">
 					<div class="card--small">
@@ -31,13 +32,12 @@
 					</div>
 				</a>
 			</section>
+		{% endif %}
 			<section class="homework">
-				<h2>Ким ЕГЭ 2015</h2>
 				{% for assignment in assignments %}
 					{% include "UI_elements/cards/assignment.html" %}
 				{% endfor %}
 			</section>
-		{% endif %}
 	</main>
 	<!-- <a class="link--card" href="groups.html">
 		<div class="card card-fab">

@@ -227,7 +227,6 @@ def change_password(request):
 	if request.method == 'POST':
 		old_password = request.POST['old_password']
 		new_password = make_password(request.POST['new_password'])
-		print("0")
 		if request.user.check_password(old_password):
 			setattr(request.user, 'password', strip_tags(new_password))
 			user=User.objects.get(id=request.user.id)
@@ -277,7 +276,6 @@ def invite_teacher(request):
 	email = request.POST.get('email')
 	course=Course.objects.get(id=request.POST.get('course_id'))
 	subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
-	print (request.user.name)
 	text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
 	text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
@@ -373,17 +371,18 @@ def course_getdata(request, course):
 def user_getdata(request,user):
 	user_data={}
 	user_data["course_list"]=[]
-	for course in user.courses.split(' '):
-		course=Course.objects.get(id=course)
-		user_data["course_list"].append(course)
-		user_data[course.id]={}
-		with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
-			data = json.load(data_file)
-			user_data[course.id]["updates"]={}
-			user_data[course.id]["object"]=course
-			user_data[course.id]["status"]=data["status"]
-			if data["status"]=="closed":
-				user_data[course.id]["updates"]["requesting_users"]=data["pending_users"]["Заявки"]
+	if user.courses:
+		for course in user.courses.split(' '):
+			course=Course.objects.get(id=course)
+			user_data["course_list"].append(course)
+			user_data[course.id]={}
+			with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
+				data = json.load(data_file)
+				user_data[course.id]["updates"]={}
+				user_data[course.id]["object"]=course
+				user_data[course.id]["status"]=data["status"]
+				if data["status"]=="closed":
+					user_data[course.id]["updates"]["requesting_users"]=data["pending_users"]["Заявки"]
 	# print (user_data[course.id]["updates"]["requesting_users"])
 	print (user_data["course_list"])
 	return user_data
