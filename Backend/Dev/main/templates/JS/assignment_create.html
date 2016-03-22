@@ -5,7 +5,7 @@
 
 	as_g.card_template = function(el){ 
 		console.log(el)
-		return '<a class="link--card"><div class="card--small" href="'+el.href+'">'+el.title+'</div></a>'
+		return '<a class="link--card"><div class="card--small" href="'+el.link+'">'+el.title+'</div></a>'
 	}
 	
 	as_g.material_list = {{course_data.material_list|safe}}
@@ -119,13 +119,39 @@
 
 	$("#give_task").click(function(e) {
 		console.log(as_g.test_list);
+		var res_material_list=[];
+		var res_test_list=[];
+		var traditionals_list=[];
+		var material={};
+		var due_date="";
+		$("#assignment--new__materials .link--card .card--small").each(function(index, el) {
+			material.link=$(this).attr('href');
+			material.title=$(this).html();
+			material.done=false;
+			res_material_list.push(material);
+		});
+		$("#assignment--new__tests .link--card .card--small").each(function(index, el) {
+			material.link=$(this).attr('href');
+			material.title=$(this).html();
+			material.done=false;
+			res_test_list.push(material);
+		});
+		var material={};
+		$("#assignment--new__traditional .link--card .card--small").each(function(index, el) {
+			traditionals_list.push($(this).html());
+		});
+		due_date+=$("#day").val()+" ";
+		due_date+=$("#month").val();
+		console.log("dfgdfgdf",res_material_list);
         $.ajax({
             type:"POST",
             url:"/func/create_assignment/",
             data: {
                    'csrfmiddlewaretoken': '{{ csrf_token }}',
-                   'material_list': JSON.stringify(as_g.material_list),
-                   'test_list': JSON.stringify(as_g.test_list),
+                   'material_list': JSON.stringify(res_material_list),
+                   'test_list': JSON.stringify(res_test_list),
+                   'traditionals_list': JSON.stringify(traditionals_list),
+                   'due_date': due_date,
                    'course_id': '{{ course.id }}'
                   },
             success: function(){

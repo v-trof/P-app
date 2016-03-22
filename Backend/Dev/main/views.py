@@ -189,16 +189,6 @@ def give_task(request, course_id):
     if course_id:
         course=Course.objects.get(id=course_id)
         context = {"course":course, "course_data":course_getdata(request,course)}
-        context["course_data"]["test_list"] = [
-            {
-                "title": "A",
-                "href": "/1"
-            },
-            {
-                "title": "A--b",
-                "href": "/2"
-            },
-        ]
         context["course_data"]["material_list"] = [
             {
                 "title": "!How to make bugs!",

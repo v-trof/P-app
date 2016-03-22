@@ -23,6 +23,7 @@ from django.core.urlresolvers import reverse
 from django.core.mail import EmailMultiAlternatives
 from .models import User, LoginForm, RegForm, FileForm, Course
 from binascii import hexlify
+import glob
 
 def login(request):
 	def errorHandle(error):
@@ -356,7 +357,18 @@ def course_getdata(request, course):
 		elif str(request.user.name) in data["users"]:
 			course_data["user_status"]="user"
 		else: course_data["user_status"]="guest"
-		print(course_data["groups"])
+		course_data["material_list"]=[]
+		course_data["test_list"]=[]
+		it=0
+		for test in glob.glob('courses/'+str(course.id)+'/tests/*.json'):
+			it=it+1
+			with io.open(test, 'r', encoding='utf8') as data_file:
+				data=json.load(data_file)
+				test_d={}
+				test_d["title"]=data["title"]
+				test_d["link"]='?course_id='+str(course.id)+'&test_id='+str(it)
+				course_data["test_list"].append(test_d)
+				print(test_d["link"])
 		return course_data
 def user_getdata(request,user):
 	user_data={}
@@ -422,15 +434,30 @@ def decline_request(request):
 	return HttpResponse("ok")
 
 def create_assignment(request):
-	task={}
-	task["test_list"]={}
-	task["material_list"]={}
+	assignment={}
+	print(json.loads(request.POST.get('test_list')))
+	assignment["due_date"]=request.POST.get('due_date')
+	assignment["tasks"]=[]
+	non_traditional_task={}
+	non_traditional_task["traditional"]=False
+	non_traditional_task["done"]=False
+	non_traditional_task["content"]={}
+	non_traditional_task["content"]["tests"]=[]
+	non_traditional_task["content"]["materials"]=[]
 	course_id=request.POST.get('course_id')
-	task["test_list"]=json.loads(request.POST.get('test_list'))
-	task["material_list"]=json.loads(request.POST.get('material_list'))
+	non_traditional_task["content"]["tests"]=json.loads(request.POST.get('test_list'))
+	non_traditional_task["content"]["materials"]=json.loads(request.POST.get('material_list'))
+	assignment["tasks"].append(non_traditional_task)
+	if json.loads(request.POST.get('traditionals_list')):
+		for traditional in json.loads(request.POST.get('traditionals_list')):
+			traditional_task={}
+			traditional_task["traditional"]=True
+			traditional_task["done"]=False
+			traditional_task["content"]=traditional
+			assignment["tasks"].append(traditional_task)
 	with io.open('courses/'+str(course_id)+'/assignments.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
-		data.append(task)
+		data.append(assignment)
 	with io.open('courses/'+str(course_id)+'/assignments.json', 'w', encoding='utf8') as json_file:
 		saving_data = json.dumps(data, ensure_ascii=False)
 		json_file.write(saving_data)
