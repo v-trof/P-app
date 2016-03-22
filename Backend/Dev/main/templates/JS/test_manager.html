@@ -1,13 +1,36 @@
 <script>
-
+function resize_view(){
+	$(".header__search").css('margin-left', '-12rem');
+	var rem_size = parseFloat($("body").css("font-size"))
+	rem_test = $(".test").width()/rem_size
+	if ($(".test").width() > 600){
+		rem_view = $(".test__preview").width()/rem_size
+		var space_aside = rem_test - rem_view;
+		console.log(space_aside)
+		if(space_aside < 21.5 ){
+			console.log((rem_test - 21.5)* rem_size)
+			$(".test__preview").css("max-width", (rem_test - 21.5)* rem_size + "px")
+		} else {
+			$(".test__preview").css("max-width", "50rem")
+		}
+	} else {
+		$("#panel").css('transform', 'translateX(18.5rem)');
+		$("#panel--actions").css('width', '100%');
+		$(".test").css('margin', '0');
+		$(".test").css('margin-bottom', '5rem');
+		$(".test>*").css('margin', '0');
+	}
+	
+}
 var make_attempt = function(){
-	console.log(editor.editing)
-	editor.editing = false
 	$(".test__preview [answer]").each(function(index, el) {
 		$(this).removeAttr('answer');
 	});
 	$(".test__preview [disabled]").each(function(index, el) {
 		$(this).removeAttr('disabled');
+	});
+	$(".test__preview [draggable]").each(function(index, el) {
+		$(this).removeAttr('draggable');
 	});
 	$(".test__preview [style]").each(function(index, el) {
 		$(this).removeAttr('style');
@@ -130,6 +153,7 @@ var pack_question = {
 }
 
 var test = {
+	{% if not attempt %}
 	pack: function(){
 		var testfile = {
 			"title" : $(".test__heading").text(),
@@ -175,6 +199,7 @@ var test = {
 			}
 		});
 	},
+	{%endif%}
 	unpack: function() {
 		{% if test.json %}
 			testfile = {{test.json|safe}};
@@ -184,18 +209,33 @@ var test = {
 				generate.task(false, false, false, task_data);
 			});
 			setTimeout(function(){
-				editor.full_check()
 				{% if attempt %}
-					$(".test__preview").append('<button class="button--raized" id="btn_send">Отправить тест на проверку</button>')
+					panel.show("")
+					$(".task__answer__item").each(function(index, el) {
+						$("#panel").append("<a class='link--card'><div index='"+index+"' class='card--small'>" + index+": Пусто</div></a><br>")
+						$(this).attr('index', index);
+					});
+					$("#panel .card--small").css('width', '100%');
+					$(".task__answer__item input").blur(function(event) {
+						console.log(blur)
+						var index = $(this).parent().attr("index");
+						$("#panel [index='"+index+"']").html(index + ": "+ $(this).val())
+					});
+				{% else %}
+					editor.full_check()
 				{% endif %}
 			}, 1000)
 			{% if attempt %}
+				$("#panel--actions").html('<button class="button--ghost" id="cancel" style="width: 100%">Отправить</button>');
+				resize_view()
 				make_attempt()
 				setInterval(function(){make_attempt()}, 500)
 			{% endif %}
 	}
 }
-
+$(window).resize(function(event) {
+	resize_view()
+});
 $(document).ready(function() {
 	$("#test_save").click(function(event) {
 		test.pack();

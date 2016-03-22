@@ -1,7 +1,7 @@
 <div class="includer">{% include 'CSS/notification.html' %}</div>
 <div class="includer">{% include 'JS/notification.html' %}</div>
 {% if error %}
-<script>notification.change('error','Ошибка авторизации','{{ error }}' );</script>
+<script>notification.change('error', '{{ error }}' );</script>
 {% endif %}
 {% if success_message %}
 <script>notification.change('success','{{ success_message }}' );</script>

@@ -15,21 +15,16 @@
 		<div class="includer">{% include 'CSS/notification.html' %}</div>
 		<div class="includer">{% include 'CSS/test-editor.html' %}</div>
 
-			<div class="test">
-				<div class="test__bg"></div>
-				<div id="delete">
-					{% include 'UI_elements/Icons/delete.svg' %}
+			<div class="test" style="margin-left: -18.5rem;">
+				<h1 class="test__heading"  contenteditable="" style="margin-left:18.5rem;">Новый Тест</h1>
+				<div class="test__preview" style="margin-left:28.5rem;">
 				</div>
-				<h1 class="test__heading" contenteditable="">Новый Тест</h1>
-				<div class="test__preview">
-				</div>
-				<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
 			</div>
 
 		<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 		<div class="includer">{% include 'JS/layout.html' %}</div>
 		<div class="includer">{% include 'JS/players.html' %}</div>
-		<div class="includer">{% include 'JS/drag_and_drop.html' %}</div>
+		<!-- <div class="includer">{% include 'JS/drag_and_drop.html' %}</div> -->
 		<div class="includer">{% include 'JS/file_input.html' %}</div>
 		<div class="includer">{% include 'JS/create_question.html' %}</div>
 		<div class="includer">{% include 'JS/test_editor_generate.html' %}</div>
@@ -42,6 +37,7 @@
 	{% include 'UI_elements/unique/popup.html' %}
 	{% include 'UI_elements/unique/tooltip.html' %}
 	{% include 'UI_elements/unique/notification.html' %}
+	{% include 'UI_elements/unique/panel.html' %}
 	</body>
 	{% endwith %}
 </html>

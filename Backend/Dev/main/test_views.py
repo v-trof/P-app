@@ -168,7 +168,7 @@ def attempt(request):
 					"href" : "#",
 					"link" : test["json"]["title"]
 				}]
-	return render(request, 'Pages/attempt.html', context)
+	return render(request, 'Pages/test_attempt.html', context)
 
 def attempt_save(request):
 	#saves attempt data

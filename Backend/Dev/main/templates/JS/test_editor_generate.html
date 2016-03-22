@@ -101,12 +101,13 @@ var generate = {
 		}
 		el_data.build = function(value) {
 			new_element = el_data.o_build(value)
-				
-			add_boundary.draggable(new_element)
-			add_boundary[el_data.type](new_element)
-			el_data.boundaries.forEach(function(boundary_name) {
-				boundary_name(new_element)
-			})
+			{% if not attempt %}
+				add_boundary.draggable(new_element)
+				add_boundary[el_data.type](new_element)
+				el_data.boundaries.forEach(function(boundary_name) {
+					boundary_name(new_element)
+				})
+			{% endif %}
 			return new_element
 		}
 		return {
@@ -149,7 +150,9 @@ var generate = {
 				}
 			})
 		}
-		editor.full_check()
+		{% if not attempt %}
+			editor.full_check()
+		{% endif %}
 		if( ! original ){
 			return  generate.queued_el
 		}
@@ -159,10 +162,10 @@ var generate = {
 
 		var new_task = $(generate.template.task)
 		$(".test__preview").append(new_task)
-		
-		add_boundary.block_empty(new_task.find(".block--empty"))
-		add_boundary.button_remove(new_task.find(".button_remove"))
-
+		{% if not attempt %}
+			add_boundary.block_empty(new_task.find(".block--empty"))
+			add_boundary.button_remove(new_task.find(".button_remove"))
+		{% endif %}
 		new_task.find(".task__number").text(counter.tasks)
 		if(original) {
 			//after drag from other place of test
@@ -177,7 +180,9 @@ var generate = {
 
 			new_task = generate.shared.task_section_unpack("answer", new_task, task_data) 
 		}
-		editor.full_check()
+		{% if not attempt %}
+			editor.full_check()
+		{% endif %}
 	},
 }
 //for scope and destruction of rest
@@ -314,11 +319,11 @@ function finish_generate() {
 						console.log(value)
 						var el = $(generate.template.answer("select-answer")).html("<div class='select'><input type='hidden' class='value' value='1'><div class='display'>"+value.values[0]+'</div>{% include "UI_elements/Icons/dropdown.svg" %}')
 						var select = el.find(".select")
-						var local_counter=2
+						var local_counter=1
 						var answer_found = false
 						value.values.forEach(function(text) {
-							select.append("<option value='"+counter+"'>"+text+"</option>")
-							counter++
+							select.append("<option value='"+local_counter+"'>"+text+"</option>")
+							local_counter++
 						})
 						el.attr("answer", value.answer)
 						return el
