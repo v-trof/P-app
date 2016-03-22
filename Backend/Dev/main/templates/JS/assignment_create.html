@@ -1,10 +1,6 @@
 <script>
 	var as_g = {}
 	as_g.current_type = ""
-	as_g.panel = $(".panel--list")
-	as_g.panel_actions = $(".panel--actions")
-	as_g.cancel = $("#cancel")
-	as_g.delete = $("#delete")
 	as_g.original = $()
 
 	as_g.card_template = function(el){ 
@@ -45,6 +41,12 @@
 	}
 
 	$(document).ready(function() {
+		as_g.panel = $("#panel")
+		as_g.panel_actions = $("#panel--actions")
+
+		$("#panel--actions").html('<button class="button--ghost" id="cancel">Отмена</button><button class="button--ghost" id="delete">Удалить</button>');
+
+
 		$("#assignment--new__add_test").click(function(event) {
 			as_g.show_list("test");
 		});
@@ -52,7 +54,7 @@
 			as_g.show_list("material");
 		});
 
-		$(".panel--list, .panel--actions").click(function(event) {
+		$(".panel--list, #panel--actions").click(function(event) {
 			as_g.hide_list()
 		});
 
@@ -72,10 +74,13 @@
 		$("#assignment--new__tests").on("click", ".link--card", function(event) {
 				as_g.show_list("test", $(this))
 		});
-
-		$("#delete").click(function(event) {
-			as_g.original.remove()
-		});
+		setTimeout(function(){
+			as_g.cancel = $("#cancel")
+			as_g.delete = $("#delete")
+			$("#delete").click(function(event) {
+				as_g.original.remove()
+			});
+		}, 100)
 	});
 	$("#assignment--new__add_traditional").click(function(event) {
 		popup.show("<div class='textarea'><div class='textarea__text' contenteditable id='new_el_value'></div><label class='textarea__label'>Отображаемый текст</label></div><br><br><button id='add_el'>Добавить</button>", {}, function(){

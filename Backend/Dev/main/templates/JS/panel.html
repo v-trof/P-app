@@ -1,0 +1,25 @@
+<script>
+var panel = {
+	show: function(content, css, callback) {
+		$("#panel").html(content)
+		if(css) {
+			$('#panel').css(css)
+		}
+		if(callback) {
+			callback()
+		}
+		$("#panel").css('transform', 'none')
+		$("#panel--actions").css('transform', 'none')
+	},
+	hide: function() {
+		$("#panel").css('transform', 'translateX(18.5rem)')
+		$("#panel--actions").css('transform', 'translateX(18.5rem)')
+	},
+	change_actions: function(actions, callback) {
+		$("#panel--actions").html(actions)
+		if(callback) {
+			callback()
+		}
+	}
+}
+</script>

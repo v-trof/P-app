@@ -28,12 +28,12 @@ def create(request):
 	test = {"id": test_id, "loaded": 0}
 	context =  {"test": test, "course": course}
 	context["breadcrumbs"] =[{
-            "href" : "/course/"+str(course_id),
-            "link" : Course.objects.get(id=course_id).name
-        },{
-            "href" : "#",
-            "link" : "Новый тест"
-        }]
+			"href" : "/course/"+str(course_id),
+			"link" : Course.objects.get(id=course_id).name
+		},{
+			"href" : "#",
+			"link" : "Новый тест"
+		}]
 
 	return render(request, 'Pages/test_editor.html', context)
 
@@ -98,12 +98,12 @@ def load(request):
 		}
 	context =  {"test": test, "course": course}
 	context["breadcrumbs"] =[{
-            "href" : "/course/"+str(course_id),
-            "link" : Course.objects.get(id=course_id).name
-        },{
-            "href" : "#",
-            "link" : test["json"]["title"]
-        }]
+			"href" : "/course/"+str(course_id),
+			"link" : Course.objects.get(id=course_id).name
+		},{
+			"href" : "#",
+			"link" : test["json"]["title"]
+		}]
 	return render(request, 'Pages/test_editor.html', context)
 
 
@@ -147,7 +147,28 @@ def share(request):
 
 def attempt(request):
 	#creates or continues attempt
-	pass
+	#loads test file
+	course_id =request.GET["course_id"]
+	test_id =  request.GET["test_id"]
+	with io.open('courses/'+course_id+'/Tests/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+		with io.open('courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
+			course_info = json.load(info_file)
+			course = {"id": course_id}
+			test = {
+				"id": test_id,
+				"loaded": 1,
+				"json": json.load(json_file),
+				"published" : test_id in course_info["tests"]["published"]
+			}
+			context =  {"test": test, "course": course}
+			context["breadcrumbs"] =[{
+					"href" : "/course/"+str(course_id),
+					"link" : Course.objects.get(id=course_id).name
+				},{
+					"href" : "#",
+					"link" : test["json"]["title"]
+				}]
+	return render(request, 'Pages/attempt.html', context)
 
 def attempt_save(request):
 	#saves attempt data
@@ -166,7 +187,7 @@ def upload_asset(request):
 		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
 		
 		if not os.path.exists(path):
-		    os.makedirs(path)
+			os.makedirs(path)
 		
 		with open(path+asset.name, 'wb+') as destination:
 			for chunk in asset.chunks():
@@ -181,7 +202,7 @@ def upload_downloadable(request):
 		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
 		
 		if not os.path.exists(path):
-		    os.makedirs(path)
+			os.makedirs(path)
 		
 		with open(path+asset.name, 'wb+') as destination:
 			for chunk in asset.chunks():
@@ -197,7 +218,7 @@ def upload_embmend(request):
 		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
 		
 		if not os.path.exists(path):
-		    os.makedirs(path)
+			os.makedirs(path)
 
 		asset_id=1
 		list_dir = os.listdir(path)
