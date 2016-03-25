@@ -9,11 +9,79 @@
 </section>
 <section>
 	<h2>Оповещения</h2>
+	Ничего нового
 	{% for course in user_data.values %}
 		{% include "UI_elements/cards/update.html" %}
+	{% empty %}
+	Ничего нового
 	{% endfor %}
 </section>
 
-<section>
-	{% include 'Blocks/home.html' with teacher=True %}
+<section class="learning">
+	<!-- {% include 'Blocks/home.html' with teacher=True %} -->
+	<section class='courses'>
+				<h2>Курсы</h2>
+				<div class="subject">
+					<h3>Испанский язык</h3>
+					<a class="link--card" href="course.html">
+						<div class="card">
+							<div class="icons--warning">
+								{% include "UI_elements/Icons/in_progress.svg" %}
+							</div>
+							<h4 class="card__heading">Времена</h4>
+							<div class="card__content">
+								<div>
+									<b>15</b> материалов
+								</div>
+								<div>
+									<b>8</b> тестов
+								</div>
+							</div>
+							<div class="messages">
+								<div class="messages__item--warning">
+									Вы начали проходить тест и не закончили попытку
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</section>
+			<section class='marks'>
+				<h2>Оценки</h2>
+				<div class="subject">
+					<h3>Испанский язык</h3>
+					<div class="card card-marks">
+						<h4 class="card-marks__course">Времена</h4>
+							<button class="mark--medium" id="c_kursA_m4">3</button>
+							<button class="mark--good">5</button>
+							<button class="mark--good">4</button>
+							<button class="mark--good">4</button>
+					</div>
+				</div>
+				<div id="tooltip">
+					<div class="tooltip__content">
+					</div>
+				</div>
+			</section>
+			<section class='homework'>
+				<h2>Задания</h2>
+				<div class="subject">
+					<h3>Испанский язык</h3>
+					<div class="card">
+						<div class="icons--positive">
+							{% include "UI_elements/Icons/done.svg" %}
+						</div>
+						<h4 class="card__heading">В курсе Времена</h4>
+						<div class="card-homework__task done">
+							<span>Пройти тесты: <a href="#" class="task__link done">Subjuntivo</a></span>
+						</div>
+						<div class="card-homework__task traditional">
+							<input type="checkbox" class="green" id="task_1_1"><label for="task_1_1">Прочитать 12 главу "Cien años de soledad"</label>
+						</div>
+						<div class="card__due-date">
+							До <strong>12 апреля</strong>
+						</div>
+					</div>
+				</div>
+			</section>
 </section>

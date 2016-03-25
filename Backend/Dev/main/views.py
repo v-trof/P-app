@@ -10,102 +10,127 @@ import json
 
 def home(request):
     # sample data
-    """
-    breadcrumbs = request.path
+    # """
+    # breadcrumbs = request.path
     # print(breadcrumbs)
     courses = [
         {
-            "name": "Предмет 1",
+            "name": "История",
             "courses": [
                 {
-                    "title": "Курс А",
-                    "title_lat": "kurs-a",
+                    "name": "Зарубежная история",
+                    "id": "3",
                     "teacher": "smb",
                     "tests":{
-                        "done": 4,
-                        "total": 10
+                        "done": 0,
+                        "total": 3
                     },
                     "materials":{
-                        "done": 2,
-                        "total": 4
+                        "done": 1,
+                        "total": 9
                     },
-                    "messages": {
-                        "warning": [
-                            {
-                                "icon": "in_progress",
-                                "text": "Вы начали проходить тест и не закончили попытку!"
-                            }
-                        ],
-                        "neutral": [],
-                        "positive": []
-                    }
+                },
+                {
+                    "name": "История России",
+                    "id": "4",
+                    "teacher": "smb",
+                    "tests":{
+                        "done": 14,
+                        "total": 16
+                    },
+                    "materials":{
+                        "done": 37,
+                        "total": 37
+                    },
                 }
             ]
         },
+
     ]
     homework = [
         {
-            "name": "Предмет 1",
-            "assignments": [
+            "name": "История",
+            "courses": [
                 {
-                    "course_title": "Курс А",
+                    "name": "Зарубежная история",
                     "course_title_lat": "kurs-a",
                     "course_teacher": "smb",
-                    "tasks": [{
+                    "tasks": [{"tasks": [{
                         "traditional": False,
-                        "done": False,
                         "content": {
-                            "tests": [
-                                {
-                                    "title": "Test 1",
-                                    "link": "test-1",
-                                    "done": True
-                                },
-                                {
-                                    "title": "Test 2",
-                                    "link": "test-2",
-                                    "done": False
-                                }
-                            ],
-                            "materials": [
-                                {
-                                    "title": "Material 1",
-                                    "link": "material-1",
-                                    "done": True
-                                }
-                            ]
-                        }
-                    }, {
-                        "traditional": True,
-                        "done": False,
-                        "content": "Прочитать книгу Б"
-                    }],
-                    "due_date": "12 ноября"
+                            "tests": [{
+                                "done": False,
+                                "title": "Короли Швеции",
+                                "link": "?course_id=3&test_id=3"
+                            }],
+                            "materials": []
+                        },
+                        "done": False
+                    }], "due_date": "10 апреля"}]
                 }
             ]
         }
     ]
     marks = [
         {
-            "name": "Предмет 1",
+            "name": "История",
             "courses": [
                 {
-                    "title": "Курс А",
-                    "title_lat": "kurs-a",
+                    "name": "Зарубжная история",
+                    "id": "3",
                     "marks": [
+                        # {
+                        # #good, medium, bad
+                        #     "quality": "good",
+                        #     "value": 5
+                        # }
+                    ]
+                },
+                 {
+                    "name": "История России",
+                    "id": "4",
+                    "marks": [
+                            #good, medium, bad
                         {
-                        #good, medium, bad
                             "quality": "good",
                             "value": 5
+                        },
+                        {
+                            "quality": "good",
+                            "value": 5
+                        },
+                        {
+                           "quality": "good",
+                            "value": 4
+                        },
+                        {
+                            "quality": "good",
+                            "value": 5
+                        },
+                        {
+                            "quality": "medium",
+                            "value": 3
+                        },
+                        {
+                            "quality": "bad",
+                            "value": 2
+                        },
+                        {
+                           "quality": "good",
+                            "value": 4
+                        },
+                        {
+                            "quality": "good",
+                            "value": 4
                         }
                     ]
                 }
             ]
         }
     ]
-    """
-    # context = {"breadcrumbs": breadcrumbs, "courses": courses, "homework": homework, "marks": marks}
-    context = {}
+    # """
+    context = {"courses": courses, "homework": homework, "marks":marks}
+    # context = {}
     # print(context)
     if request.user.is_anonymous():
         return render(request, 'Pages/home.html', context)
@@ -204,3 +229,7 @@ def give_task(request, course_id):
         return render(request, 'Pages/give_task.html', context)
     else:
         return render(request, 'Pages/give_task.html')
+
+
+def fake(request):
+    return render(request, 'Pages/fake_res.html')

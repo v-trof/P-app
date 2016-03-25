@@ -1,8 +1,10 @@
 {% for subject in homework %}
 	<div class="subject">
 		<h3>{{subject.name}}</h3>
-		{% for assignment in subject.assignments %}
-			{% include 'UI_elements/cards/assignment.html' with assignment=assignment %}
+		{% for course in subject.courses %}
+			{% for assignment in course.tasks %}
+				{% include 'UI_elements/cards/assignment.html' %}
+			{% endfor %}
 		{% endfor %}
 	</div>
 	{% empty %}

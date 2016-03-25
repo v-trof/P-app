@@ -265,10 +265,9 @@ function finish_generate() {
 						el.find("label").text(value.label)
 						return el 
 					},
-					boundaries: [add_emptiness_checker]
 				},
 				popup: {
-					text:  "<input type='text' id='new_el_value'><label>Вопрос</label><br><br><input type='text' id='new_el_answer'><label>Верный ответ</label><br><br><button id='add_el'>Добавить</button>",
+					text:  "<input type='text' id='new_el_value'><label>Формат ответа</label><br><br><input type='text' id='new_el_answer'><label>Верный ответ</label><br><br><button id='add_el'>Добавить</button>",
 					parse: function() {
 						var label = $("#new_el_value").val()
 						var answer = $("#new_el_answer").val()
@@ -328,7 +327,6 @@ function finish_generate() {
 						el.attr("answer", value.answer)
 						return el
 					},
-					boundaries: [add_menu_caller]
 				},
 				popup: {
 					text: generate.shared.popup_list.text("radio"),
@@ -377,7 +375,6 @@ function finish_generate() {
 						el.attr("answer", value.answer)
 						return el
 					},
-					boundaries: [add_menu_caller]
 				},
 				popup: {
 					text: generate.shared.popup_list.text("radio"),
@@ -429,7 +426,6 @@ function finish_generate() {
 						el.attr("answer", value.answers)
 						return el
 					},
-					boundaries: [add_menu_caller]
 				},
 				popup: {
 					text: generate.shared.popup_list.text("checkbox"),

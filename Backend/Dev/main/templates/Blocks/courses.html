@@ -1,8 +1,8 @@
-{% for subject in request.user.courses %}
+{% for subject in courses %}
 	<div class="subject">
 		<h3>{{subject.name}}</h3>
 		{% for course in subject.courses %}
-			{% include 'UI_elements/cards/course.html' with course=course %}
+			{% include 'UI_elements/cards/course.html' %}
 		{% endfor %}
 	</div>
 	{% empty %}

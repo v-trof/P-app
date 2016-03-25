@@ -88,12 +88,14 @@ var tooltip = {
 	}
 }
 $(document).ready(function() {
-	$("[tip]").each(function() {
-		tooltip.generate.tip_based(this);
-	});
+	$("body").on({
+		mouseenter: function() {
+			tooltip.show(this,  $(this).attr("tip"));
+		},
+		mouseleave: function() {
+			tooltip.hide();
+		}
+	}, "[tip]");
 });
-
-
-
 
 </script>

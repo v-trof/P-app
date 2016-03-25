@@ -2,7 +2,7 @@
 	<div class="subject">
 		<h3>{{subject.name}}</h3>
 		{% for course in subject.courses %}
-			{% include 'UI_elements/cards/marks.html' with course=course %}
+			{% include 'UI_elements/cards/marks.html' with course_data=course %}
 		{% endfor %}
 	</div>
 {% endfor %}

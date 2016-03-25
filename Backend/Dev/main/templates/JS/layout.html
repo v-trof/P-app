@@ -32,48 +32,6 @@ function add_emptiness_checker(inputs){
 		$(this).removeClass("empty");
 	});
 }
-function add_menu_caller(select) {
-	if(! $(select).hasClass('select')){
-		select = select.find(".select");
-	}
-	var first_option = $(select).children('option').get(0);
-	first_option = $(first_option);
-	
-	setTimeout(function(){
-		var max_w = 0;
-		$(select).children('option').each(function(index, el){
-			max_w = Math.max($(this).outerWidth(), max_w);
-		});
-		$(select).children('.display').css('min-width', max_w+"px");
-	},300);
-	
-	$(select).children('input').val(first_option.attr("value"));
-	$(select).children(".display").text(first_option.text());
-	$(select).click(function(e) {
-		if($(this).attr('disabled') == "false"){
-			e.preventDefault();
-		}
-		var options = [];
-		var checked = {};
-		var current_value = $(this).children('input').val();
-		$(this).children('option').each(function(index, el) {
-			console.log(index);
-			if($(this).attr("value") != current_value){
-				options.push({
-					text : $(this).text(),
-					value: $(this).attr("value")
-				})
-			} else {
-				checked = {
-					text : $(this).text(),
-					value: $(this).attr("value")
-				}
-			}
-		});
-		console.log($(this).children('option'), options, checked);
-		context_menu.show(this, options, checked);
-	});
-}
 var processing = {
 	spinner : "<svg class='free_spinner white' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid' class='spinner'><circle cx='50' cy='50' r='38' stroke='#4670dc' fill='none' stroke-width='6' stroke-linecap='round'><animate attributeName='stroke-dashoffset' dur='2s' repeatCount='indefinite' from='0' to='476.9'></animate><animate attributeName='stroke-dasharray' dur='2s' repeatCount='indefinite' values='143.07 95.38;1 237.5;143.07 95.38'></animate></circle></svg>",
 	button : {
@@ -110,23 +68,53 @@ var processing = {
 	}
 }
 
-$(document).ready(function() {
+$(window).resize(function(event) {
 	build_header();
+	tooltip.hide();
+	context_menu.hide();
+});
+
+$(document).ready(function() {
 	$("input").each(function(index, el) {
 		add_emptiness_checker(this);	
 	});
-	$("main").scroll(function(event) {
-		tooltip.hide();
-		context_menu.hide();
-	});
-
-	/*
-	!!! How to use button process
-	setTimeout(function(){
-		processing.button.start($("#change-password"));
-	},1000);
-	setTimeout(function(){
-		processing.button.stop($("#change-password"));
-	},5000);*/
+	$("body").on("click", ".select", function(){
+		var first_option = $(this).children('option').first();
+		
+		setTimeout(function(){
+			var max_w = 0;
+			$(this).children('option').each(function(index, el){
+				max_w = Math.max($(this).outerWidth(), max_w);
+			});
+			$(this).children('.display').css('min-width', max_w+"px");
+		},300);
+		
+		$(this).children('input').val(first_option.attr("value"));
+		$(this).children(".display").text(first_option.text());
+		$(this).click(function(e) {
+			if($(this).attr('disabled') == "false"){
+				e.preventDefault();
+			}
+			var options = [];
+			var checked = {};
+			var current_value = $(this).children('input').val();
+			$(this).children('option').each(function(index, el) {
+				console.log(index);
+				if($(this).attr("value") != current_value){
+					options.push({
+						text : $(this).text(),
+						value: $(this).attr("value")
+					})
+				} else {
+					checked = {
+						text : $(this).text(),
+						value: $(this).attr("value")
+					}
+				}
+			});
+			console.log($(this).children('option'), options, checked);
+			context_menu.show(this, options, checked);
+		});
+	})
 });
 </script>

@@ -86,6 +86,10 @@ urlpatterns = [
 
     url(r'^$', views.home, name='home'),
     url(r'^user/(?P<user_id>[0-9]+)/$', views.profile),
+
+
+    #fake
+    url(r'^results/$', views.fake),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

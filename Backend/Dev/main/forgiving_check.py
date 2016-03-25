@@ -1,6 +1,15 @@
 import html
 import re
 
+def intToRoman(integer):
+    rlist = romanList = [(1000, "M"),(900, "CM"),(500, "D"),(400, "CD"),(100, "C"),(90, "XC"),(50, "L"),(40, "XL"),(10, "X"),(9, "IX"),(5, "V"),(4, "IV"),(1, "I")]
+    romanResult = ""
+    for wholeNumber in rlist:
+            while integer >= wholeNumber[0]:
+                    integer -= wholeNumber[0]
+                    romanResult += wholeNumber[1]
+    return romanResult
+
 def check(answer, answer_right, allowed):
 	if answer == answer_right:
 		return True
@@ -27,6 +36,12 @@ def check(answer, answer_right, allowed):
 
 def spaces(answer):
 	answer = answer.replace(" ", "")
+	return answer
+
+def roman_nums(answer):
+	# answer_map = ""
+	# 	chunk = intToRoman(chunk)
+	# answer
 	return answer
 
 def punctuation(answer):
@@ -66,8 +81,8 @@ forgiving = {
 	"html_specialchars": html_specialchars,
 }
 
-print(check("a&nbsp;3", "a 3", {
-	"easy": ["caps", "letters_alike", "html_specialchars"],
+print(check("Генрих 13", "a 3", {
+	"easy": ["roman_nums","caps", "letters_alike", "html_specialchars"],
 	"advanced": ["replacements"],
 	"breakpoints": ["punctuation", "spaces"]
 	}))

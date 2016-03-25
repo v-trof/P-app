@@ -1,6 +1,6 @@
 <script>
 function resize_view(){
-	$(".header__search").css('margin-left', '-12rem');
+	$(".header__search").css('display', 'none');
 	var rem_size = parseFloat($("body").css("font-size"))
 	rem_test = $(".test").width()/rem_size
 	if ($(".test").width() > 600){
@@ -9,9 +9,9 @@ function resize_view(){
 		console.log(space_aside)
 		if(space_aside < 21.5 ){
 			console.log((rem_test - 21.5)* rem_size)
-			$(".test__preview").css("max-width", (rem_test - 21.5)* rem_size + "px")
+			$(".test__preview").css("width", (rem_test - 21.5)* rem_size + "px")
 		} else {
-			$(".test__preview").css("max-width", "50rem")
+			$(".test__preview").css("width", "50rem")
 		}
 	} else {
 		$("#panel").css('transform', 'translateX(18.5rem)');
@@ -212,11 +212,16 @@ var test = {
 				{% if attempt %}
 					panel.show("")
 					$(".task__answer__item").each(function(index, el) {
-						$("#panel").append("<a class='link--card'><div index='"+index+"' class='card--small'>" + index+": Пусто</div></a><br>")
+						$("#panel").append("<a class='link--card'><div index='"+index+"' class='card--small'>" + (index+1) +": Пусто</div></a><br>")
 						$(this).attr('index', index);
 					});
 					$("#panel .card--small").css('width', '100%');
 					$(".task__answer__item input").blur(function(event) {
+						console.log(blur)
+						var index = parseInt($(this).parent().attr("index"));
+						$("#panel [index='"+index+"']").html((1+index) + ": "+ $(this).val())
+					});
+					$(".task__answer__item [type='radio']").click(function(event) {
 						console.log(blur)
 						var index = $(this).parent().attr("index");
 						$("#panel [index='"+index+"']").html(index + ": "+ $(this).val())
@@ -224,41 +229,51 @@ var test = {
 				{% else %}
 					editor.full_check()
 				{% endif %}
-			}, 1000)
+			}, 100)
 			{% if attempt %}
-				$("#panel--actions").html('<button class="button--ghost" id="cancel" style="width: 100%">Отправить</button>');
+				$("#panel--actions").html('<button class="button--ghost" id="cancel" style="width: 100%" onclick="finish()">Отправить</button>');
 				resize_view()
 				make_attempt()
 				setInterval(function(){make_attempt()}, 500)
 			{% endif %}
 	}
 }
+{% if attempt %}
 $(window).resize(function(event) {
 	resize_view()
 });
+function finish(){
+	window.location = "/results";
+}
+{% endif %}
 $(document).ready(function() {
 	$("#test_save").click(function(event) {
 		test.pack();
 	});
 
 	$("#test_publish").click(function(event) {
-		test.pack();
-		var formData = new FormData();
-		formData.append("course_id", "{{course.id}}");
-		formData.append("test_id", "{{test.id}}");
-		formData.append('csrfmiddlewaretoken', csrf_token);
-		$.ajax({
-			type:"POST",
-			url:"/test/publish/",
-			data: formData,
-			processData: false,
-			contentType: false,
-			success: function(data){
-				notification.change('success', data);
-			}
-		});
-		$("#test_publish").hide();
-		$("#test_unpublish").show();
+		popup.show("<div>Автоисправление недочететов учеников:<br><br><input type='checkbox' id='c1'><label for='c1' tip='a b c = abc'>Лишние\\Недостающие пробелы</label><br><input type='checkbox' id='c2'><label for='c2' tip='Василий 3 = Василий III'>Замена арабских цифр на римские</label><br><input type='checkbox' id='c3'><label for='c3' tip='клен = клён'>е\\ё</label><br><input type='checkbox' id='c4'><label for='c4' tip='1.25 = 1,25'>Неправильный выбор знака пунктуации</label><br><input type='checkbox' id='c5'><label for='c5' tip='хорошо качественно = качественно хорошо'>Порядок слов отличающийся от верного ответа</label><br><input type='checkbox' id='c6'><label for='c6' tip='Слово = слово'>Строчные\\Заглавные буквы</label><br><input type='checkbox' id='c7'><label for='c7' tip='Картофель = кратофель'>Опечатки</label><br><br><button id='publish'>Сделать доступным для порохождения</button>", {}, function(){
+			$("#publish").click(function(){
+				test.pack();
+				var formData = new FormData();
+				formData.append("course_id", "{{course.id}}");
+				formData.append("test_id", "{{test.id}}");
+				formData.append('csrfmiddlewaretoken', csrf_token);
+				$.ajax({
+					type:"POST",
+					url:"/test/publish/",
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function(data){
+						notification.change('success', data);
+					}
+				});
+				$("#test_publish").hide();
+				$("#test_unpublish").show();
+				popup.hide()
+			})
+		})
 	});
 
 	$("#test_unpublish").click(function(event) {

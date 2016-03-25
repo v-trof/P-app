@@ -37,7 +37,7 @@ ripple.force_show = function(e, el, special_class) {
 }
 
 $(document).ready(function() {
-	$(".link--card>.card, .link--card>.card--small, button").bind({
+	$("body").on({
 		mousedown: function(e) {
 			console.log("md");
 			ripple.show();
@@ -65,12 +65,16 @@ $(document).ready(function() {
 		mouseleave: function() {
 			ripple.dissolve();
 		},
-	});
+	}, ".link--card>.card, .link--card>.card--small, button");
 });
 //one more ff fix
-$("a, button").mouseup(function(e) {
-	console.log("reclick", this);
-	if(firefox){
-		this.click();
-	}
-});</script>
+	$("body").on({
+		mouseup : function(e) {
+			console.log("reclick", this);
+			if(firefox){
+				this.click();
+			}
+		}
+}, ".link--card>.card, .link--card>.card--small");
+
+</script>
