@@ -50,7 +50,7 @@
 		{% endif %}
 		<section class="teachers">
 			<h2>Преподаватели</h2>
-			{% for teacher in course_data.teachers reversed %}
+			{% for teacher in course_data.teachers %}
 				<a class="link--card" href="/user/{{teacher.id}}/">
 					{% include "UI_elements/cards/person.html" with user=teacher %}
 				</a>

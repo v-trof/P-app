@@ -168,6 +168,29 @@ def attempt(request):
 					"href" : "#",
 					"link" : test["json"]["title"]
 				}]
+	with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests.json', 'r', encoding='utf8') as json_file:
+		data=json.load(json_file)
+
+	with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests.json', 'w', encoding='utf8') as json_file:
+		test={}
+		test["id"]=test_id
+		test["questions"]=[]
+		with io.open('courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+			test_info=json.load(info_file)
+			print("1")
+			for question in test_info["tasks"]:
+				user_question=[]
+				for item in question["answer_items"]:
+					value={}
+					value["label"] = item["value"]["label"]
+					value["answer"] = item["value"]["answer"]
+					value["user_answer"] = None
+					user_question.append(value)
+				test["questions"].append(user_question)
+		print("2")
+		data.append(test)
+		saving_data = json.dumps(data, ensure_ascii=False)
+		json_file.write(saving_data)
 	return render(request, 'Pages/test_attempt.html', context)
 
 def attempt_save(request):

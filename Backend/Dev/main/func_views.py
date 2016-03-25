@@ -59,7 +59,6 @@ def login(request):
 		})
 
 def login_with_reg(request,course_id):
-	print("ok")
 	login(request)
 	course_reg(request, course_id)
 	return redirect('/course/'+course_id+'/groups/')
@@ -155,10 +154,11 @@ def create_course(request):
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		with io.open('courses/'+str(course.id)+'/assignments.json', 'a', encoding='utf8') as json_file:
-			data={}
+			data=[]
 			saving_data = json.dumps(data, ensure_ascii=False)
-			json_file.write('[{"tasks":[{"traditional":false,"done":false,"content":{"tests":[{"title":"Test 1","link":"test-1","done":true},{"title":"Test 2","link":"test-2","done":false}],"materials":[{"title":"Material 1","link":"material-1","done":true}]}},{"traditional":true,"done":false,"content":"Прочитать книгу Б"}],"due_date":"12 ноября"}]')
-		return redirect('/course/'+str(course.id)+'/groups/')
+			json_file.write(saving_data)
+
+			return redirect('/course/'+str(course.id)+'/groups/')
 
 
 def edit_groups(request):
@@ -216,11 +216,11 @@ def reset_password(request):
 			user.save()
 			send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, ваш временный пароль: '+new_pass+'. Зайдите в личный кабинет для его изменения', 'p.application.bot@gmail.com',
 	[email], fail_silently=False)
-			return redirect('/')
+			return redirect('/login/')
 		else:
 			error = u'Введенный email не существует'
 			return render(request, 'Pages/forgot_password.html', {
-			'success_message': 'Временный пароль был отправлен вам на почту',
+			'error': 'Введенный email не существует',
 		})
 
 def change_password(request):
@@ -228,13 +228,11 @@ def change_password(request):
 		old_password = request.POST['old_password']
 		new_password = make_password(request.POST['new_password'])
 		if request.user.check_password(old_password):
+			print(old_password)
 			setattr(request.user, 'password', strip_tags(new_password))
 			user=User.objects.get(id=request.user.id)
-			print("1")
 			request.user.save()
-			auth(request, user)
-			print("2")
-			request.session.set_expiry(36000)
+			login(request)
 			return render(request, 'Pages/profile.html', {
 			'success_message': 'Пароль успешно изменен',
 			})
@@ -251,13 +249,11 @@ def upload_avatar(request):
 def invite_students(request):
 	email_list = json.loads(request.POST["email_list"])
 	group = request.POST['group']
-	print(email_list)
 	course=Course.objects.get(id=request.POST.get('course_id'))
 	subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
 	text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
 	text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
 	for value in email_list:
-		print (value)
 		with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
 			data["pending_users"][group].append(value)
@@ -265,11 +261,9 @@ def invite_students(request):
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		if User.objects.filter(email=value):
-			msg = EmailMultiAlternatives(subject, text_content, from_email, [value])
-			msg.send()
-		else: 
-			msg = EmailMultiAlternatives(subject, text_content_nonreg, from_email, [value])
-			msg.send()
+			send_mail(subject, text_content, from_email,[value], fail_silently=False)
+		else:
+			send_mail(subject, text_content_nonreg, from_email,[value], fail_silently=False)
 	return HttpResponse("ok")
 
 def invite_teacher(request):
@@ -280,16 +274,18 @@ def invite_teacher(request):
 	text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
-		data["pending_users"].append({'email':email, 'group':'teachers'})
+		if "teachers" in data["pending_users"].keys():
+			data["pending_users"]["teachers"].append(email)
+		else:
+			data["pending_users"]["teachers"]=[]
+			data["pending_users"]["teachers"].append(email)
 	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 		saving_data = json.dumps(data, ensure_ascii=False)
 		json_file.write(saving_data)
 	if User.objects.filter(email=email):
-		msg = EmailMultiAlternatives(subject, text_content, from_email, [email])
-		msg.send()
-	else: 
-		msg = EmailMultiAlternatives(subject, text_content_nonreg, from_email, [email])
-		msg.send()
+		send_mail(subject, text_content, from_email,[email], fail_silently=False)
+	else:
+		send_mail(subject, text_content_nonreg, from_email,[email], fail_silently=False)
 	return HttpResponse("ok")
 
 def course_reg(request, course_id):
@@ -298,28 +294,33 @@ def course_reg(request, course_id):
 	course=Course.objects.get(id=course_id)
 	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 		data = json.load(data_file)
-		print(request.user.name)
 		if request.user.id not in data["users"]:
 			if request.user.email not in data["pending_users"]["Заявки"]:
-				print("its ok")
 				checker=0
-				for def_group in data["pending_users"]:
-					if request.user.email in data["pending_users"][def_group]:
-						group=def_group
+				for group in data["pending_users"]:
+					if request.user.email in data["pending_users"][group]:
 						checker=1
-						if request.user.id in data["groups"][group]:
-							return redirect('/')
-						data["users"].append(request.user.id)
-						data["groups"][group].append(request.user.id)
-						data["pending_users"][group].remove(request.user.email)
+						if group=="teachers":
+							if request.user.id in data["teachers"]:
+								return redirect('/login/')
+							data["teachers"].append(request.user.id)
+							data["pending_users"]["teachers"].remove(request.user.email)
+						else:
+							if request.user.id in data["groups"][group]:
+								return redirect('/login/')
+							data["users"].append(request.user.id)
+							data["groups"][group].append(request.user.id)
+							data["pending_users"][group].remove(request.user.email)
 				if not data["status"]=="closed" and not checker:
-					print("dfggfgdf")
 					group="Нераспределенные"
 					data["users"].append(request.user.id)
-					data["groups"][group].append(request.user.id)
 				elif data["status"]=="closed": data["pending_users"]["Заявки"].append(request.user.id)
 			with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
-				print(data)
+				saving_data = json.dumps(data, ensure_ascii=False)
+				json_file.write(saving_data)
+			os.makedirs('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/')
+			with io.open('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/tests.json', 'a', encoding='utf8') as json_file:
+				data=[]
 				saving_data = json.dumps(data, ensure_ascii=False)
 				json_file.write(saving_data)
 	return redirect('/course/'+str(course_id)+'/groups/')
@@ -366,8 +367,8 @@ def course_getdata(request, course):
 				test_d["title"]=data["title"]
 				test_d["link"]='?course_id='+str(course.id)+'&test_id='+str(it)
 				course_data["test_list"].append(test_d)
-				print(test_d["link"])
 		return course_data
+
 def user_getdata(request,user):
 	user_data={}
 	user_data["course_list"]=[]
@@ -383,8 +384,6 @@ def user_getdata(request,user):
 				user_data[course.id]["status"]=data["status"]
 				if data["status"]=="closed":
 					user_data[course.id]["updates"]["requesting_users"]=data["pending_users"]["Заявки"]
-	# print (user_data[course.id]["updates"]["requesting_users"])
-	print (user_data["course_list"])
 	return user_data
 
 def course_get_assignments(request, course):
@@ -392,18 +391,15 @@ def course_get_assignments(request, course):
 		data = json.load(data_file)
 		assignments={}
 		assignments=data
-		print(assignments)
 		return assignments
 
 def get_users_info(request, user_ids):
 	users=[]
 	for user_id in user_ids:
 		users.append(User.objects.get(id=user_id))
-	print (users)
 	return users
 
 def accept_request(request):
-	print (request.POST.get('user_id'))
 	user_id=request.POST.get('user_id')
 	user=User.objects.get(id=user_id)
 	course_id=request.POST.get('course_id')
@@ -434,7 +430,6 @@ def decline_request(request):
 
 def create_assignment(request):
 	assignment={}
-	print(json.loads(request.POST.get('test_list')))
 	assignment["due_date"]=request.POST.get('due_date')
 	assignment["tasks"]=[]
 	non_traditional_task={}
@@ -460,5 +455,4 @@ def create_assignment(request):
 	with io.open('courses/'+str(course_id)+'/assignments.json', 'w', encoding='utf8') as json_file:
 		saving_data = json.dumps(data, ensure_ascii=False)
 		json_file.write(saving_data)
-
 	return HttpResponse("ok")
