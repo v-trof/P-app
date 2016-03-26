@@ -361,12 +361,13 @@ def course_getdata(request, course):
 		it=0
 		for test in glob.glob('courses/'+str(course.id)+'/tests/*.json'):
 			it=it+1
-			with io.open(test, 'r', encoding='utf8') as data_file:
-				data=json.load(data_file)
-				test_d={}
-				test_d["title"]=data["title"]
-				test_d["link"]='?course_id='+str(course.id)+'&test_id='+str(it)
-				course_data["test_list"].append(test_d)
+			if str(it) in data["tests"]["published"]:
+				with io.open(test, 'r', encoding='utf8') as data_file:
+					data=json.load(data_file)
+					test_d={}
+					test_d["title"]=data["title"]
+					test_d["link"]='?course_id='+str(course.id)+'&test_id='+str(it)
+					course_data["test_list"].append(test_d)
 		return course_data
 
 def user_getdata(request,user):

@@ -187,8 +187,8 @@ def course_requests(request, course_id):
         pending_users=data["pending_users"]["Заявки"]
     return render(request, 'Pages/course_requests.html', {"course_id":course_id, "pending_users":get_users_info(request,pending_users),
         "breadcrumbs" : [{
-            "href" : "/course/"+str(course.id),
-            "link" : course.name
+            "href" : "/course/"+str(course_id),
+            "link" : Course.objects.get(id=course_id).name
         },{
             "href" : "#",
             "link" : "Заявки"
