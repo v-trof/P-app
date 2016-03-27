@@ -38,8 +38,9 @@ def form_for_num(num, forms):
 
     form = ""
     if num == 0:
-        return many+" нет"
-    elif num < 10 or str(num)[-2] != "1":
+        num = "Нет"
+        form = many
+    elif num%100 - num%10 != 10:
         if num%10 == 0:
             form = many
         elif num%10 == 1:
