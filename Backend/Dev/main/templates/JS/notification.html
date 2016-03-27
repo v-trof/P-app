@@ -21,12 +21,15 @@ var notification = {
 		$("body").append(c_notification);
 		setTimeout(function(){
 			c_notification.removeClass('hidden');
-			c_notification.css('margin-left', -(c_notification.outerWidth()/2) + 'px');
+			// c_notification.css('margin-left', -(c_notification.outerWidth()/2) + 'px');
 		}, 10)
 		c_notification.click(function() {
 			notification.hide(c_notification)
 		});
 		notification.reposition();
+		setTimeout(function(){
+			notification.hide(c_notification)
+		}, 10000)
 	},
 	hide: function(c_notification){
 		c_notification.addClass('hidden');
