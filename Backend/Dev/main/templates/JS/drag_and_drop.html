@@ -305,12 +305,12 @@ var add_boundary = {
 			},
 
 			dragenter: function(e) {
+				$(this).find("*").css('pointer-events', 'none');
 				ripple.force_show(e.originalEvent, test_bg, "accent");
 				$(".test>svg").css({
 					'transform': 'translateY(-50px)',
 					'opacity': 1,
 				});
-				$(this).find("*").css('pointer-events', 'none');
 			},
 
 			dragleave: function(e) {

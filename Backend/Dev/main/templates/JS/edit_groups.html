@@ -90,6 +90,7 @@ function toggle_edit(){
 		$("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
 		$(".button_remove").remove();
 		$(".button_remove_all").remove();
+		$("#edit>.card--small").text("Редактировать");
 		$(".students .link--card").attr("draggable", "false");
 		//enabling links
 		$(".students .link--card").each(function(index, el) {
@@ -124,7 +125,7 @@ function toggle_edit(){
 		editing = false;
 	} else {
 		$(".group>h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
-
+		$("#edit>.card--small").text("Сохранить изменения");
 		$(".students .link--card").attr("draggable", "true");
 		//disabling links
 		$(".students .link--card").each(function(index, el) {

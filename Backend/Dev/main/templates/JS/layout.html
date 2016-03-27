@@ -75,6 +75,7 @@ $(window).resize(function(event) {
 });
 
 $(document).ready(function() {
+	build_header()
 	$("input").each(function(index, el) {
 		add_emptiness_checker(this);	
 	});

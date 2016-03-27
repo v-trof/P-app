@@ -16,6 +16,7 @@
 
 	<main>
 		{% if course_data.user_status == "moderator" or course_data.user_status == "administrator" or course_data.user_status == "teacher" %}
+			<section>
 			<section class="linkbox">
 				<a class="link--card" id="invite_students">
 					<div class="card--small">
@@ -46,6 +47,7 @@
 						</a>
 					{% endif %}
 				{% endif %}
+			</section>
 			</section>
 		{% endif %}
 		<section class="teachers">

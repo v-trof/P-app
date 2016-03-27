@@ -9,7 +9,11 @@
 }
 
 $(document).ready(function() {
-	$(".file").each(function(index, el) {
-		add_file_boundary(this);
+	$("body").on(".file>button", "click", function(){
+		$(this).parent().find('input')[0].click();
+	});
+	
+	$("body").on(".file>input", "change", function(){
+		$(this).parent().find('span').text($(this).val().replace("C:\\fakepath\\",""));
 	});
 });</script>
