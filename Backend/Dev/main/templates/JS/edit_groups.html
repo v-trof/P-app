@@ -41,24 +41,21 @@ var add_boundary = {
 				drag_over(e);
 			},
 			dragenter: function(e) {
-
+				$(this).find("*").css('pointer-events', 'none');
 				if(e_data.last_el != this){
 					drag_reset();
 				}
-				if(counter==0) {
-					tooltip.show(this, "Переместить ученика");
-				}
-				counter++;
+				tooltip.show(this, "Переместить ученика");
 				e_data.last_el = this;
 			},
 			dragleave: function(e) {
-				counter--;
-				if(counter==0) {
-					tooltip.hide();
-				}
+				$(this).find("*").css('pointer-events', 'all');
+				tooltip.hide();
 			},
 			drop: function(e) {
 				$(this).append(e_data.original_el);
+				$(this).find("*").css('pointer-events', 'all');
+				tooltip.hide();
 			}
 		});
 	},
