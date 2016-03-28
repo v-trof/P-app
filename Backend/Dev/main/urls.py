@@ -61,6 +61,7 @@ func_patterns = [
     url(r'^accept_request/$', func_views.accept_request),
     url(r'^decline_request/$', func_views.decline_request),
     url(r'^create_assignment/$', func_views.create_assignment),
+    url(r'^change_permission_level/$', func_views.change_permission_level),
     url(r'^course_reg/(?P<course_id>[0-9]+)/$', func_views.course_reg),
 ]
 

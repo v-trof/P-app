@@ -41,12 +41,15 @@
 			{% include 'UI_elements/cards/person.html' with user=user %}
 		</section>
 		<section>
+		{% if contacts_view_allowed %}
 			<div class="card" id="contacts">
 				<div class="header-with-button">
 					<h4 class="card__heading">Контакты</h4>
+					{% if request.user.id = user.id %}
 					<button class="button--icon" id="add_contact">
 						{% include 'UI_elements/Icons/add.svg' %}
 					</button>
+					{% endif %}
 				</div>
 				<div class="card-contacts__item">
 					<h5>email</h5>
@@ -83,6 +86,7 @@
 				</div>
 				{% endif %}
 			</div>
+		{% endif %}
 		</section>
 		{% if request.user.id = user.id %}
 			<section>

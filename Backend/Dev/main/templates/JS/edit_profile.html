@@ -72,10 +72,13 @@ function upload_avatar(e) {
 
 
 
-
-
+var lastSelected={{request.user.permission_level}}+1;
 $(document).ready(function() {
     //for transitions
+    $( "#radio_"+lastSelected ).prop( "checked", true );
+    console.log(lastSelected);
+    lastSelected = $('[name="contacts_see"]:checked').val();
+    console.log(lastSelected);
     $(".card-contacts__item>span").css('border-bottom', '1px dashed transparent');
     $("#do_not_save").hide();
     
@@ -176,19 +179,6 @@ $(document).ready(function() {
             });
     });
 
-
-
-
-
-
-    /*$("[name='contacts_see']").change(function(e) {
-        //ajax
-    });*/
-
-
-
-
-
     $("#change-password").click(function(e) {
         popup.show("<input type='password' value='' id='old_password' pattern='.{8,}'><label>Старый пароль</label><br><input type='password' id='new_password' pattern='.{8,}'><label>Новый Пароль</label><br><button class='button--ghost' onclick='change_password()' style='float:right'>Сменить</button>",
             {
@@ -198,6 +188,20 @@ $(document).ready(function() {
             },
             function() {
                 $("#popup").children('input')[0].focus();
+        });
+    });
+    $(document).on('click', '[name="contacts_see"]', function () {
+        lastSelected = $(this).val();
+        console.log(this.id.substr(this.id.length - 1));
+        $.ajax({
+             type:"POST",
+             url:"/func/change_permission_level/",
+             data: {'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'permission_level':this.id.substr(this.id.length - 1)-1,
+                    },
+             success: function(){
+                 notification.change('success','Разрешения были успешно изменены' );
+             }
         });
     });
 });</script>

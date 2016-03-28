@@ -1,12 +1,12 @@
-{% for subject in courses %}
+{% for subject,value in courses.items %}
 	<div class="subject">
-		<h3>{{subject.name}}</h3>
-		{% for course in subject.courses %}
+		<h3>{{subject}}</h3>
+		{% for course in value %}
 			{% include 'UI_elements/cards/course.html' %}
 		{% endfor %}
 	</div>
 	{% empty %}
-	Вы ещё не присоеденились ни к одному курсу, найдите то что вас интересует через поиск.
+	Вы ещё не присоединились ни к одному курсу, найдите, то что вас интересует через поиск.
 {% endfor %}
 {% if not teacher %}
 	{% include 'UI_elements/cards/create_course.html' %}

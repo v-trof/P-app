@@ -5,6 +5,7 @@ from .models import User, Course
 from main.func_views import course_getdata,course_get_assignments,user_getdata
 from main.func_views import get_users_info
 from main.func_views import logout_view
+from main.func_views import *
 import io
 import json
 
@@ -13,9 +14,9 @@ def home(request):
     # """
     # breadcrumbs = request.path
     # print(breadcrumbs)
-    courses = [
+    """ courses = [
         {
-            "name": "История",
+            "subject": "История",
             "courses": [
                 {
                     "name": "Зарубежная история",
@@ -46,7 +47,7 @@ def home(request):
             ]
         },
 
-    ]
+    ]"""
     homework = [
         {
             "name": "История",
@@ -128,12 +129,14 @@ def home(request):
             ]
         }
     ]
-    # """
+    if request.user.is_anonymous():
+        return render(request, 'Pages/home.html')
+    courses=[]
+    if request.user.participation_list:
+        courses=load_courses(request)
     context = {"courses": courses, "homework": homework, "marks":marks}
     # context = {}
     # print(context)
-    if request.user.is_anonymous():
-        return render(request, 'Pages/home.html', context)
     if request.user.is_teacher:
         return render(request, 'Pages/home.html', {"user_data":user_getdata(request,request.user)})
     else: return render(request, 'Pages/home.html', context)
@@ -159,14 +162,22 @@ def forgot_password(request):
     return render(request, 'Pages/forgot_password.html')
 
 def profile(request, user_id):
-    try: 
+    user=User.objects.get(id=user_id)
+    if user.participation_list and request.user.participation_list:
+        classmates=any(i in user.participation_list.split(' ') for i in request.user.participation_list.split(' '))
+    else: classmates=False
+    if request.user.id == user.id or (user.permission_level == '0') or (user.permission_level == '1' and request.user.is_teacher) or (user.permission_level == '2' and not request.user.is_teacher) or (user.permission_level == '3' and classmates):
+        contacts_view_allowed=True
+    else: contacts_view_allowed=False
+    try:
         return render(request, 'Pages/profile.html', {
-            "user":User.objects.get(id=user_id),
+            "user":user,
             "breadcrumbs" : [{
                 "href" : "#",
                 "link" : "Профиль"
                 }
-            ]
+            ],
+            "contacts_view_allowed":contacts_view_allowed,
             })
     except:
         return render(request, 'Pages/404.html')

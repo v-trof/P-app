@@ -91,7 +91,8 @@ def reg(request):
 				password=password,
 				name=name_last_name,
 				is_teacher=is_teacher,
-				avatar = 'avatar.png')
+				avatar = 'avatar.png',
+				permission_level = "0")
 		else:
 			error = u'Данный email уже зарегистрирован'
 			return errorHandle(error,email,password,name_last_name)
@@ -130,6 +131,9 @@ def create_course(request):
 		if request.user.courses:
 			setattr(request.user, 'courses', request.user.courses+" "+str(course.id))
 		else: setattr(request.user, 'courses', str(course.id))
+		if request.user.participation_list:
+			setattr(request.user, 'participation_list', request.user.participation_list+" "+str(course.id))
+		else: setattr(request.user, 'participation_list', str(course.id))
 		request.user.save()
 		db.commit()
 		os.makedirs('courses/'+str(course.id)+'/tests/')
@@ -157,27 +161,28 @@ def create_course(request):
 			data=[]
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-
-			return redirect('/course/'+str(course.id)+'/groups/')
+		redirect_url='/course/'+str(course.id)+'/'
+		print(redirect_url)
+		return HttpResponse(redirect_url)
 
 
 def edit_groups(request):
-	groups_data={}
-	groups_data = json.loads(request.POST["new_groups"])
-	course=Course.objects.get(id=request.POST["course_id"])	
-	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
-		data = json.load(data_file)
-		data["groups"]=groups_data
-		for heading in data["groups"]:
-			for key, value in enumerate(data["groups"][heading]):
-				user=User.objects.get(name=value)
-				print (user.id)
-				data["groups"][heading][key]=user.id
-			if heading not in data["pending_users"]:
-				data["pending_users"][heading]=[]
-	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
-		saving_data = json.dumps(data, ensure_ascii=False)
-		json_file.write(saving_data)
+	if request.method == 'POST':
+		groups_data={}
+		groups_data = json.loads(request.POST["new_groups"])
+		course=Course.objects.get(id=request.POST["course_id"])	
+		with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			data["groups"]=groups_data
+			for heading in data["groups"]:
+				for key, value in enumerate(data["groups"][heading]):
+					user=User.objects.get(name=value)
+					data["groups"][heading][key]=user.id
+				if heading not in data["pending_users"]:
+					data["pending_users"][heading]=[]
+		with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
 	return redirect('/')
 
 def change_data(request):
@@ -247,45 +252,47 @@ def upload_avatar(request):
 	return HttpResponse("ok")
 
 def invite_students(request):
-	email_list = json.loads(request.POST["email_list"])
-	group = request.POST['group']
-	course=Course.objects.get(id=request.POST.get('course_id'))
-	subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
-	text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
-	text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
-	for value in email_list:
+	if request.method == 'POST':
+		email_list = json.loads(request.POST["email_list"])
+		group = request.POST['group']
+		course=Course.objects.get(id=request.POST.get('course_id'))
+		subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
+		text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
+		text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
+		for value in email_list:
+			with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
+				data = json.load(data_file)
+				data["pending_users"][group].append(value)
+			with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
+				saving_data = json.dumps(data, ensure_ascii=False)
+				json_file.write(saving_data)
+			if User.objects.filter(email=value):
+				send_mail(subject, text_content, from_email,[value], fail_silently=False)
+			else:
+				send_mail(subject, text_content_nonreg, from_email,[value], fail_silently=False)
+		return HttpResponse("ok")
+
+def invite_teacher(request):
+	if request.method == 'POST':
+		email = request.POST.get('email')
+		course=Course.objects.get(id=request.POST.get('course_id'))
+		subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
+		text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
+		text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
 		with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
-			data["pending_users"][group].append(value)
+			if "teachers" in data["pending_users"].keys():
+				data["pending_users"]["teachers"].append(email)
+			else:
+				data["pending_users"]["teachers"]=[]
+				data["pending_users"]["teachers"].append(email)
 		with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-		if User.objects.filter(email=value):
-			send_mail(subject, text_content, from_email,[value], fail_silently=False)
+		if User.objects.filter(email=email):
+			send_mail(subject, text_content, from_email,[email], fail_silently=False)
 		else:
-			send_mail(subject, text_content_nonreg, from_email,[value], fail_silently=False)
-	return HttpResponse("ok")
-
-def invite_teacher(request):
-	email = request.POST.get('email')
-	course=Course.objects.get(id=request.POST.get('course_id'))
-	subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
-	text_content_nonreg='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)
-	text_content='Вам поступило приглашение на курс '+course.name+' от '+request.user.name+' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)
-	with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
-		data = json.load(data_file)
-		if "teachers" in data["pending_users"].keys():
-			data["pending_users"]["teachers"].append(email)
-		else:
-			data["pending_users"]["teachers"]=[]
-			data["pending_users"]["teachers"].append(email)
-	with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
-		saving_data = json.dumps(data, ensure_ascii=False)
-		json_file.write(saving_data)
-	if User.objects.filter(email=email):
-		send_mail(subject, text_content, from_email,[email], fail_silently=False)
-	else:
-		send_mail(subject, text_content_nonreg, from_email,[email], fail_silently=False)
+			send_mail(subject, text_content_nonreg, from_email,[email], fail_silently=False)
 	return HttpResponse("ok")
 
 def course_reg(request, course_id):
@@ -314,6 +321,10 @@ def course_reg(request, course_id):
 				if not data["status"]=="closed" and not checker:
 					group="Нераспределенные"
 					data["users"].append(request.user.id)
+					if request.user.participation_list:
+						setattr(request.user, 'participation_list', request.user.participation_list+" "+str(course.id))
+					else: setattr(request.user, 'participation_list', str(course.id))
+					request.user.save()
 				elif data["status"]=="closed": data["pending_users"]["Заявки"].append(request.user.id)
 			with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 				saving_data = json.dumps(data, ensure_ascii=False)
@@ -401,59 +412,88 @@ def get_users_info(request, user_ids):
 	return users
 
 def accept_request(request):
-	user_id=request.POST.get('user_id')
-	user=User.objects.get(id=user_id)
-	course_id=request.POST.get('course_id')
-	with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
-		data = json.load(data_file)
-		for pending_user in data["pending_users"]["Заявки"]:
-			if pending_user==user.id:
-				data["pending_users"]["Заявки"].remove(pending_user)
-		group="Нераспределенные"
-		data["users"].append(user.id)
-		data["groups"][group].append(user.id)
-	with io.open('courses/'+str(course_id)+'/info.json', 'w', encoding='utf8') as json_file:
-		saving_data = json.dumps(data, ensure_ascii=False)
-		json_file.write(saving_data)
+	if request.method == 'POST':
+		user_id=request.POST.get('user_id')
+		user=User.objects.get(id=user_id)
+		course_id=request.POST.get('course_id')
+		with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			for pending_user in data["pending_users"]["Заявки"]:
+				if pending_user==user.id:
+					data["pending_users"]["Заявки"].remove(pending_user)
+			group="Нераспределенные"
+			data["users"].append(user.id)
+			data["groups"][group].append(user.id)
+			if user.participation_list:
+				setattr(user, 'participation_list', user.participation_list+" "+str(course.id))
+			else: setattr(user, 'participation_list', str(course.id))
+			user.save()
+		with io.open('courses/'+str(course_id)+'/info.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
 	return HttpResponse("ok")
 
 def decline_request(request):
-	user_id=request.POST.get('user_id')
-	user=User.objects.get(id=user_id)
-	course_id=request.POST.get('course_id')
-	with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
-		data = json.load(data_file)
-		del data["pending_users"]["Заявки"][user.id]
-	with io.open('courses/'+str(course_id)+'/info.json', 'w', encoding='utf8') as json_file:
-		saving_data = json.dumps(data, ensure_ascii=False)
-		json_file.write(saving_data)
+	if request.method == 'POST':
+		user_id=request.POST.get('user_id')
+		user=User.objects.get(id=user_id)
+		course_id=request.POST.get('course_id')
+		with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			del data["pending_users"]["Заявки"][user.id]
+		with io.open('courses/'+str(course_id)+'/info.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
 	return HttpResponse("ok")
 
 def create_assignment(request):
-	assignment={}
-	assignment["due_date"]=request.POST.get('due_date')
-	assignment["tasks"]=[]
-	non_traditional_task={}
-	non_traditional_task["traditional"]=False
-	non_traditional_task["done"]=False
-	non_traditional_task["content"]={}
-	non_traditional_task["content"]["tests"]=[]
-	non_traditional_task["content"]["materials"]=[]
-	course_id=request.POST.get('course_id')
-	non_traditional_task["content"]["tests"]=json.loads(request.POST.get('test_list'))
-	non_traditional_task["content"]["materials"]=json.loads(request.POST.get('material_list'))
-	assignment["tasks"].append(non_traditional_task)
-	if json.loads(request.POST.get('traditionals_list')):
-		for traditional in json.loads(request.POST.get('traditionals_list')):
-			traditional_task={}
-			traditional_task["traditional"]=True
-			traditional_task["done"]=False
-			traditional_task["content"]=traditional
-			assignment["tasks"].append(traditional_task)
-	with io.open('courses/'+str(course_id)+'/assignments.json', 'r', encoding='utf8') as data_file:
-		data = json.load(data_file)
-		data.append(assignment)
-	with io.open('courses/'+str(course_id)+'/assignments.json', 'w', encoding='utf8') as json_file:
-		saving_data = json.dumps(data, ensure_ascii=False)
-		json_file.write(saving_data)
+	if request.method == 'POST':
+		assignment={}
+		assignment["due_date"]=request.POST.get('due_date')
+		assignment["tasks"]=[]
+		non_traditional_task={}
+		non_traditional_task["traditional"]=False
+		non_traditional_task["done"]=False
+		non_traditional_task["content"]={}
+		non_traditional_task["content"]["tests"]=[]
+		non_traditional_task["content"]["materials"]=[]
+		course_id=request.POST.get('course_id')
+		non_traditional_task["content"]["tests"]=json.loads(request.POST.get('test_list'))
+		non_traditional_task["content"]["materials"]=json.loads(request.POST.get('material_list'))
+		assignment["tasks"].append(non_traditional_task)
+		if json.loads(request.POST.get('traditionals_list')):
+			for traditional in json.loads(request.POST.get('traditionals_list')):
+				traditional_task={}
+				traditional_task["traditional"]=True
+				traditional_task["done"]=False
+				traditional_task["content"]=traditional
+				assignment["tasks"].append(traditional_task)
+		with io.open('courses/'+str(course_id)+'/assignments.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			data.append(assignment)
+		with io.open('courses/'+str(course_id)+'/assignments.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
 	return HttpResponse("ok")
+
+def change_permission_level(request):
+	if request.method == 'POST':
+		setattr(request.user, 'permission_level', request.POST["permission_level"])
+		request.user.save()
+	return HttpResponse("ok")
+
+def load_courses(request):
+	courses={}
+	course_list=request.user.participation_list.split(" ")
+	for course_id in course_list:
+		course=Course.objects.get(id=course_id)
+		courses[course.subject]=[]
+	for course_id in course_list:
+		course_data={}
+		course_data["object"]=course;
+		course=Course.objects.get(id=course_id)
+		with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
+				data = json.load(data_file)
+		course_data["data"]=data;
+		courses[course.subject].append(course_data)
+	return courses

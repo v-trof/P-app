@@ -1,50 +1,50 @@
-<a class="link--card" href="/course/{{course.id}}/">
+<a class="link--card" href="/course/{{course.object.id}}/">
 	<div class="card">
 		<div class="icons--warning">
-			{% for message in course.messages.warning %}
+			{% for message in course.data.messages.warning %}
 				{% include "UI_elements/Icons/"|add:message.icon|add:".svg" %}
 			{% endfor %}
 		</div>
 		<div class="icons--neutral">
-			{% for message in course.messages.neutral %}
+			{% for message in course.data.messages.neutral %}
 				{% include "UI_elements/Icons/"|add:message.icon|add:".svg" %}
 			{% endfor %}
 		</div>
 		<div class="icons--positive">
-			{% for message in course.messages.positive %}
+			{% for message in course.data.messages.positive %}
 				{% include "UI_elements/Icons/"|add:message.icon|add:".svg" %}
 			{% endfor %}
 		</div>
-		<h4 class="card__heading">{{course.name}}</h4>
+		<h4 class="card__heading">{{course.object.name}}</h4>
 		<div class="card__content">
 			<div>
-				{% if course.materials.total %}
-					<strong>{{course.materials.total}}</strong> материалов
+				{% if course.data.materials.amount %}
+					<strong>{{course.data.materials.amount}}</strong> материалов
 				{% else %}
 					Материалов <strong>нет</strong>
 				{% endif %}
 			</div>
 			<div>
-				{% if course.tests.total %}
-					<strong>{{course.tests.total}}</strong> тестов
+				{% if course.data.tests.amount %}
+					<strong>{{course.data.tests.amount}}</strong> тестов
 				{% else %}
 					Тестов <strong>нет</strong>
 				{% endif %}
 			</div>
 		</div>
 		<div class="messages">
-			{% for message in course.messages.warning %}
+			{% for message in course.data.messages.warning %}
 				<div class="messages__item--warning">
 					{{message.text}}
 				</div>
 			{% endfor %}
 
-			{% for message in course.messages.neutral %}
+			{% for message in course.data.messages.neutral %}
 				<div class="messages__item--neutral">
 					{{message.text}}
 				</div>
 			{% endfor %}
-			{% for message in course.messages.positive %}
+			{% for message in course.data.messages.positive %}
 				<div class="messages__item--neutral">
 					{{message.text}}
 				</div>
