@@ -83,7 +83,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     VK = models.CharField(_('vk'), max_length=30, blank=True)
     Facebook = models.CharField(_('facebook'), max_length=30, blank=True)
     Dnevnik = models.CharField(_('dnevnik'), max_length=30, blank=True)
-    avatar = models.ImageField(_('avatar'), max_length=120, blank=True)
+    avatar = models.ImageField(_('avatar'), upload_to='Avatars/', max_length=120, blank=True)
     permission_level = models.CharField(_('permission_level'), max_length=120, default="0")
     is_changing = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)

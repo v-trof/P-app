@@ -61,7 +61,7 @@
 		<section class="students">
 			<h2>Ученики</h2>
 				{% for group, members in course_data.groups.items %}
-					{% include 'Blocks/group.html' with group=group members=members %}
+					{% include 'Blocks/group.html'%}
 				{% endfor %}
 		</section>
 	</main>

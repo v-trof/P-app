@@ -15,7 +15,7 @@
 		<section><!--strange fix -->
 		{% if request.user.id == course.creator %}
 			{% include 'Blocks/teacher_course.html' %}
-		{% else %}
+		{% elif is_participant %}
 			<section class="linkbox">
 				<a class="link--card" href="groups/">
 					<div class="card--small">
@@ -33,6 +33,22 @@
 					</div>
 				</a>
 			</section>
+			</section>
+		{% elif course.is_closed %}
+			<section class="linkbox">
+				<a class="link--card" href="/func/course_reg/{{course.id}}/">
+					<div class="card--small">
+					Подать заявку
+					</div>
+				</a>
+			</section>
+		{% else %}
+			<section class="linkbox">
+				<a class="link--card" href="/func/course_reg/{{course.id}}/">
+					<div class="card--small">
+					Присоединиться
+					</div>
+				</a>
 			</section>
 		{% endif %}
 			<section class="homework">

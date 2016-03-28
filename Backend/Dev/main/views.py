@@ -185,7 +185,13 @@ def profile(request, user_id):
 def course(request, course_id):
     course=Course.objects.get(id=course_id)
     course_data = course_getdata(request,course)
-    return render(request, 'Pages/course.html',{"course":course, "course_data":course_data, "assignments":course_get_assignments(request,course),
+    if request.user.participation_list:
+        if str(course.id) in request.user.participation_list.split(' '):
+            is_participant=True
+        else: is_participant = False
+    else: is_participant=False
+    print(is_participant)
+    return render(request, 'Pages/course.html',{"is_participant":is_participant, "course":course, "course_data":course_data, "assignments":course_get_assignments(request,course),
             "breadcrumbs" : [{
                 "href" : "#",
                 "link" : course.name

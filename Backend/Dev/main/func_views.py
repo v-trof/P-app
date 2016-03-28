@@ -8,6 +8,7 @@ import os
 import io
 import random, string           
 import hashlib
+from django.conf import settings
 from django.core import serializers
 from django.core.files import File
 from django.http import HttpResponse, HttpResponseRedirect
@@ -162,7 +163,6 @@ def create_course(request):
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		redirect_url='/course/'+str(course.id)+'/'
-		print(redirect_url)
 		return HttpResponse(redirect_url)
 
 
@@ -247,9 +247,10 @@ def change_password(request):
 			})
 
 def upload_avatar(request):
+	os.remove(request.user.avatar.path)
 	setattr(request.user, 'avatar', request.FILES['new_avatar'])
 	request.user.save()
-	return HttpResponse("ok")
+	return HttpResponse(request.user.avatar.path)
 
 def invite_students(request):
 	if request.method == 'POST':
@@ -320,6 +321,7 @@ def course_reg(request, course_id):
 							data["pending_users"][group].remove(request.user.email)
 				if not data["status"]=="closed" and not checker:
 					group="Нераспределенные"
+					data["groups"][group].append(request.user.id)
 					data["users"].append(request.user.id)
 					if request.user.participation_list:
 						setattr(request.user, 'participation_list', request.user.participation_list+" "+str(course.id))
