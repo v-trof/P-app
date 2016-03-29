@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
+from . import transliterate
 # from django.core.servers.basehttp import FileWrapper
 import os
 import json
@@ -211,11 +212,11 @@ def upload_asset(request):
 		
 		if not os.path.exists(path):
 			os.makedirs(path)
-		
-		with open(path+asset.name, 'wb+') as destination:
+		filename = transliterate.ru_en(asset.name)
+		with open(path+filename, 'wb+') as destination:
 			for chunk in asset.chunks():
 				destination.write(chunk)
-	return HttpResponse("ok")
+	return HttpResponse(filename)
 
 def upload_downloadable(request):
 	if request.method == 'POST':

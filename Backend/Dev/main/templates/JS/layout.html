@@ -1,5 +1,7 @@
 <script>"use strict";
 function build_header(){
+	$(".header__breadcrumbs").removeAttr('style');
+	$(".header__user").removeAttr('style');
 	var breadcrumbs_w = $(".header__breadcrumbs").innerWidth();
 	var user_w = $(".header__user").innerWidth();
 	// console.log(user_w,breadcrumbs_w);

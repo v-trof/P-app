@@ -8,7 +8,9 @@ var counter = {
 var generate = {
 	shared : {
 		upload_done: true,
+		filename: 0,
 		upload_asset: function(filename, el_data) {
+			generate.shared.upload_done = false
 			var filename = filename.replace("C:\\fakepath\\","")
 			var formData = new FormData()
 		    formData.append('asset', generate.file)
@@ -16,7 +18,6 @@ var generate = {
 			formData.append("test_id", "{{test.id}}")
 		    formData.append('csrfmiddlewaretoken', '{{ csrf_token }}')
 		    file_path = "/media/courses/{{course.id}}/assets/{{test.id}}/"
-		    upload_done = false
 		    // console.log(file_path)
 		    $.ajax({
 		        type:"POST",
@@ -24,15 +25,17 @@ var generate = {
 		        data: formData,
 		        processData: false,
 		        contentType: false,
-		        success: function() {
+		        success: function(data) {
 		            notification.change('success', filename +" был успешно загружен на сервер")
+		            console.log(data)
+		            generate.shared.filename = data
 		        },
 		        complete: function(){
-		        	upload_done = true
+		        	generate.shared.upload_done = true
 		        	console.log("done");
 		        }
 		    })
-			return file_path+filename
+			return file_path
 		},
 		catch_asset_file: function() {
 			$("#new_el_file").change(function(e) {
@@ -118,17 +121,30 @@ var generate = {
 	el: function(class_name, value, original, value_used) {
 		el_data = generate.get_data(class_name).el
 		popup_data = generate.get_data(class_name).popup
+		
 		function el_build_finish(){
 			popup.hide()
 			if(original) {
 				original.replaceWith(el_data.build(popup_data.parse()))
 			} else {
-				generate.queued_el.replaceWith(el_data.build(popup_data.parse()))
+				value = popup_data.parse()	
+				function check_for_upload(){
+					if(generate.shared.upload_done){
+						generate.queued_el.replaceWith(el_data.build(value))
+					} else {
+						console.log("trying over")
+						setTimeout(function(){
+							check_for_upload()
+						}, 10)
+					}
+				}
+				check_for_upload()
+			
 			}
 			editor.verify_type()
 		}
+		
 		if(value) {
-			console.log(class_name, el_data)
 			return el_data.build(value)				
 		} else {
 			popup.show(popup_data.text, {}, function() {
@@ -137,8 +153,7 @@ var generate = {
 					el_data.parse(original)
 				}
 				$("#add_el").click(function(event) {
-					// console.log(el_data)
-					el_build_finish()
+					el_build_finish();
 				})
 				$("#popup__close").click(function(event) {
 					generate.queued_el.remove()
@@ -214,7 +229,14 @@ function finish_generate() {
 						$("#new_el_value").val(original.find("img").attr("src"))
 					},
 					build: function(value) {
-						return $(generate.template.question("image-wrapper")).append("<img src="+value+">")
+						if(value.indexOf(".")>-1){
+							filename = value;
+							// console.log("valueok", value)
+						} else {
+							filename = value+generate.shared.filename;
+							// console.log("value+"+generate.shared.filename);
+						}
+						return $(generate.template.question("image-wrapper")).append("<img src="+filename+">")
 					},
 				},
 				popup: {
@@ -236,7 +258,14 @@ function finish_generate() {
 						$("#new_el_value").val(original.find("audio").attr("src"))
 					},
 					build: function(value) {
-						var tag_str = "<audio src='"+value+"' role='media'>Обновите браузер</audio>"
+						if(value.indexOf(".")>-1){
+							filename = value;
+							// console.log("valueok", value)
+						} else {
+							filename = value+generate.shared.filename;
+							// console.log("value+"+generate.shared.filename);
+						}
+						var tag_str = "<audio src='"+filename+"' role='media'>Обновите браузер</audio>"
 						// console.log(generate.template.question("D"))
 						return $(generate.template.question("audio-wrapper")).append(tag_str+'<div class="wrapper__controls"><button class="button--icon" role="play">{% include "UI_elements/Icons/play.svg" %}</button><button class="button--icon" style="display: none" role="pause">{% include "UI_elements/Icons/pause.svg" %}</button><div class="slider" role="time"><div class="slider__track--inactive"></div><div class="slider__track--active"></div><button class="slider__thumb"></button></div><button class="button--icon">{% include "UI_elements/Icons/volume_high.svg" %}</button><div class="slider slider--volume" role="volume"><div class="slider__track--inactive"></div><div class="slider__track--active"></div><button class="slider__thumb"></button></div></div>')
 					},
