@@ -67,7 +67,9 @@ func_patterns = [
 
 course_patterns = [
     url(r'^(?P<course_id>[0-9]+)/groups/$', views.groups),
+    url(r'^(?P<course_id>[0-9]+)/groups_content/$', views.groups_content),
     url(r'^(?P<course_id>[0-9]+)/give_task/$', views.give_task),
+    url(r'^(?P<course_id>[0-9]+)/groups/func/get_group_list/$', func_views.get_group_list),
     url(r'^(?P<course_id>[0-9]+)/requests/$', views.course_requests),
     url(r'^(?P<course_id>[0-9]+)/$', views.course),
 ]
@@ -77,7 +79,6 @@ urlpatterns = [
     url(r'^course/', include(course_patterns)),
     url(r'^func/', include(func_patterns)),
     url(r'^test/', include(test_patterns)),
-
     url(r'^login/$', views.login),
     url(r'^login/(?P<course_id>[0-9]+)/$', views.login_with_reg),
     url(r'^change_user/$', views.change_user),

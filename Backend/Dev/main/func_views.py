@@ -183,7 +183,7 @@ def edit_groups(request):
 		with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-	return redirect('/')
+		return HttpResponse('ok')
 
 def change_data(request):
 	if request.method == 'POST':
@@ -381,6 +381,8 @@ def course_getdata(request, course):
 					test_d["title"]=data["title"]
 					test_d["link"]='?course_id='+str(course.id)+'&test_id='+str(it)
 					course_data["test_list"].append(test_d)
+		print("DO:")
+		print(course_data)
 		return course_data
 
 def user_getdata(request,user):
@@ -499,3 +501,30 @@ def load_courses(request):
 		course_data["data"]=data;
 		courses[course.subject].append(course_data)
 	return courses
+
+def load_user_courses(request):
+	user_courses={}
+	course_list=request.user.courses.split(" ")
+	for course_id in course_list:
+		course=Course.objects.get(id=course_id)
+		user_courses[course.subject]=[]
+	for course_id in course_list:
+		course_data={}
+		course_data["object"]=course;
+		course=Course.objects.get(id=course_id)
+		with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
+				data = json.load(data_file)
+		course_data["data"]=data;
+		user_courses[course.subject].append(course_data)
+	print(user_courses)
+	return user_courses
+
+def get_group_list(request,course_id=None):
+	if request.method:
+		course=Course.objects.get(id=course_id)
+		with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			course_groups=[]
+			for group in data["groups"]:
+				course_groups.append(group)
+		return HttpResponse(json.dumps(course_groups, ensure_ascii=False))

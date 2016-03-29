@@ -4,5 +4,7 @@
 	<a class="link--card" href="/user/{{member.id}}/">
 		{% include "UI_elements/cards/person.html" with user=member %}
 	</a>
+{% empty %}
+<div class="empty">Пустая группа</div>
 {% endfor %}
 </div>

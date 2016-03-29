@@ -50,20 +50,9 @@
 			</section>
 			</section>
 		{% endif %}
-		<section class="teachers">
-			<h2>Преподаватели</h2>
-			{% for teacher in course_data.teachers %}
-				<a class="link--card" href="/user/{{teacher.id}}/">
-					{% include "UI_elements/cards/person.html" with user=teacher %}
-				</a>
-			{% endfor %}
-		</section>
-		<section class="students">
-			<h2>Ученики</h2>
-				{% for group, members in course_data.groups.items %}
-					{% include 'Blocks/group.html'%}
-				{% endfor %}
-		</section>
+		<section id="groups_content">
+        {% include 'Blocks/groups_content.html' %}
+        </section>
 	</main>
 
 	<div class="includer">{% include 'JS/jquery-2.html' %}</div>

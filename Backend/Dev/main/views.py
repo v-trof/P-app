@@ -134,12 +134,16 @@ def home(request):
     courses=[]
     if request.user.participation_list:
         courses=load_courses(request)
-    context = {"courses": courses, "homework": homework, "marks":marks}
+    if request.user.participation_list:
+        user_courses=load_user_courses(request)
     # context = {}
     # print(context)
     if request.user.is_teacher:
-        return render(request, 'Pages/home.html', {"user_data":user_getdata(request,request.user)})
-    else: return render(request, 'Pages/home.html', context)
+        context = {"courses": courses, "homework": homework, "marks":marks, "user_courses": user_courses, "user_data":user_getdata(request,request.user)}
+        return render(request, 'Pages/home.html', context)
+    else:
+        context = {"courses": courses, "homework": homework, "marks":marks}
+        return render(request, 'Pages/home.html', context)
 
 # login group
 def login(request):
@@ -226,6 +230,14 @@ def groups(request, course_id):
         return render(request, 'Pages/groups.html', context)
     else:
         return render(request, 'Pages/groups.html')
+
+def groups_content(request, course_id):
+    if course_id:
+        course=Course.objects.get(id=course_id)
+        context = {"course":course, "course_data":course_getdata(request,course)}
+        return render(request, 'Blocks/groups_content.html', context)
+    else:
+        return render(request, 'Blocks/groups_content.html')
 
 def give_task(request, course_id):
     if course_id:

@@ -1,9 +1,12 @@
 <section>
 	<h2>Ваши курсы</h2>
-	{% for course in user_data.course_list %}
-		<a class="link--card" href="/course/{{course}}/">
-			{% include "UI_elements/cards/course.html" %}
-		</a>
+	{% for subject,value in user_courses.items %}
+	<div class="subject">
+		<h3>{{subject}}</h3>
+		{% for course in value %}
+			{% include 'UI_elements/cards/course.html' %}
+		{% endfor %}
+	</div>
 	{% endfor %}
 	{% include 'UI_elements/cards/create_course.html' %}
 </section>
