@@ -1,8 +1,4 @@
-<script>var messages = {
-	email_invalid: "example_email@service.domain",
-	password_invalid: "Минимум 8 символов"
-}
-
+<script>
 var password_field = {}; 
 
 function all_valid(){
@@ -30,12 +26,8 @@ function check_password(input){
 	if(input){
 		if($(input).val().length >= 8) {
 			$(input).addClass('valid');
-			tooltip.hide();
 		} else {
 			$(input).removeClass('valid');
-			if(!tooltip.is_shown&& $(input).is(':focus')){
-				tooltip.show(input, messages.password_invalid);
-			}
 		}
 	}
 	all_valid();
@@ -44,12 +36,8 @@ function check_password(input){
 function check_email(input) {
 	if(email_regex.test($(input).val())) {
 		$(input).addClass('valid');
-		tooltip.hide();
 	} else  {
 		$(input).removeClass('valid');
-		if(!tooltip.is_shown && $(input).is(':focus')) {
-			tooltip.show(input, messages.email_invalid);
-		}
 	}
 	check_password(password_field);
 }
@@ -71,9 +59,6 @@ $(document).ready(function() {
 		check_password(this);		
 	});
 
-	$("input").blur(function(event) {
-		tooltip.hide();
-	});
 
 	//for registration
 	$("input[name='name_last_name']").on("blur keyup change click",function(){

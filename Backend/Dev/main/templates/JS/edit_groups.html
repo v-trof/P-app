@@ -34,6 +34,25 @@ function check_for_emptiness() {
 }
 
 
+function sort_group(group){
+	//better redo it after
+	user2names = []
+	$(group).find(".card-person").each(function(index, el) {
+		user2names.push($(this).find(".card-person__name").text().split(" ")[0])
+	});
+	
+	user2names.sort()
+
+	while(user2names.length > 0){
+		$(group).find(".card-person").each(function(index, el) {
+			if($(this).find(".card-person__name").text().split(" ")[0] == user2names[0]){
+				$(group).append($(this).parent())
+				user2names.splice(0,1)
+			}
+		});
+	}
+}
+
 var add_boundary = {
 	group: function(el){
 		el.bind({
@@ -183,7 +202,11 @@ $(document).ready(function() {
 	$(".group").each(function(index, el) {
 		if($(this).children('h3').text() == "Нераспределенные"){
 			unordered = $(this);
-			$(".students").append(unordered);
+			if(unordered.find(".card-person").length==0){
+				$(".students").append(unordered);
+			} else {
+				$(".students>h2").after(unordered);
+			}
 		}
 	});
 

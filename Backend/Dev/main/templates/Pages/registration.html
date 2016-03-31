@@ -17,9 +17,9 @@
 			<form class="login-box--form" action="/func/reg/" method="post">
 				{% csrf_token %}
 				<div>
-				<input type="Text" name="name_last_name" value="{{ name_last_name }}" class="input__placeholder-label"><label for="name">Имя и Фамилия</label>
+				<input type="Text" name="name_last_name" value="{{ name_last_name }}" class="input__placeholder-label" tip="Например: Пётр Попов"><label for="name">Фамилия Имя</label>
 				<input type="email" name="email" value="{{ email }}" class="input__placeholder-label"><label for="email">Email</label>
-				<input type="password" name="password" value="{{ password }}" class="input__placeholder-label" pattern=".{8,}"><label for="password">Пароль</label>
+				<input type="password" name="password" value="{{ password }}" class="input__placeholder-label" pattern=".{8,}"><label for="password" tip="Минимум 8 символов">Пароль</label>
 				</div>
 				<div><input type="checkbox" id="is_teacher" name="is_teacher" value="0"> <label for="is_teacher" style="padding-top:10px">Учитель</label></div>
 				{% if course %}<input type="hidden" name="course_id" value="{{course.id}}"><div><input type="checkbox" id="course_reg" name="course_reg" checked value="1"> <label for="course_reg" style="padding-top:10px">С регистрацией на курс {{course.name}}</label></div>{% endif %}
@@ -36,9 +36,9 @@
 
 	<div class="includer">{% include 'JS/jquery-2.html' %}</div>
 	<div class="includer">{% include 'JS/login-verify.html' %}</div>
-	<div class="includer">{% include 'JS/notification.html' %}</div>
 	<div class="includer">{% include 'JS/layout.html' %}</div>
-	<div class="includer">{% include 'JS/tooltip.html' %}</div>
+	{% include "UI_elements/unique/notification.html" %}
+	{% include "UI_elements/unique/tooltip.html" %}
 	{% include "UI_elements/unique/notification.html" %}
 
 </body>
