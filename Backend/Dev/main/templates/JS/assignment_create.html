@@ -118,7 +118,6 @@
 		});
 
 	$("#give_task").click(function(e) {
-		console.log(as_g.test_list);
 		var res_material_list=[];
 		var res_test_list=[];
 		var traditionals_list=[];
@@ -140,8 +139,7 @@
 		$("#assignment--new__traditional .link--card .card--small").each(function(index, el) {
 			traditionals_list.push($(this).html());
 		});
-		due_date+=$("#day").val()+" ";
-		due_date+=$("#month").val();
+		due_date=$("#due_date").val();
 		console.log("dfgdfgdf",res_material_list);
         $.ajax({
             type:"POST",

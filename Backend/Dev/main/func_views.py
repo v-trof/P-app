@@ -132,9 +132,6 @@ def create_course(request):
 		if request.user.courses:
 			setattr(request.user, 'courses', request.user.courses+" "+str(course.id))
 		else: setattr(request.user, 'courses', str(course.id))
-		if request.user.participation_list:
-			setattr(request.user, 'participation_list', request.user.participation_list+" "+str(course.id))
-		else: setattr(request.user, 'participation_list', str(course.id))
 		request.user.save()
 		db.commit()
 		os.makedirs('courses/'+str(course.id)+'/tests/')
@@ -336,6 +333,10 @@ def course_reg(request, course_id):
 				data=[]
 				saving_data = json.dumps(data, ensure_ascii=False)
 				json_file.write(saving_data)
+			with io.open('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/tests_results.json', 'a', encoding='utf8') as json_file:
+				data=[]
+				saving_data = json.dumps(data, ensure_ascii=False)
+				json_file.write(saving_data)
 	return redirect('/course/'+str(course_id)+'/groups/')
 
 def course_getdata(request, course):
@@ -374,11 +375,12 @@ def course_getdata(request, course):
 		it=0
 		for test in glob.glob('courses/'+str(course.id)+'/tests/*.json'):
 			it=it+1
+			print(data["tests"]["published"])
 			if str(it) in data["tests"]["published"]:
 				with io.open(test, 'r', encoding='utf8') as data_file:
-					data=json.load(data_file)
+					test_data=json.load(data_file)
 					test_d={}
-					test_d["title"]=data["title"]
+					test_d["title"]=test_data["title"]
 					test_d["link"]='?course_id='+str(course.id)+'&test_id='+str(it)
 					course_data["test_list"].append(test_d)
 		print("DO:")
@@ -454,6 +456,7 @@ def create_assignment(request):
 	if request.method == 'POST':
 		assignment={}
 		assignment["due_date"]=request.POST.get('due_date')
+		print(assignment["due_date"])
 		assignment["tasks"]=[]
 		non_traditional_task={}
 		non_traditional_task["traditional"]=False
@@ -486,9 +489,9 @@ def change_permission_level(request):
 		request.user.save()
 	return HttpResponse("ok")
 
-def load_courses(request):
+def load_courses(request, user):
 	courses={}
-	course_list=request.user.participation_list.split(" ")
+	course_list=user.participation_list.split(" ")
 	for course_id in course_list:
 		course=Course.objects.get(id=course_id)
 		courses[course.subject]=[]
@@ -496,27 +499,39 @@ def load_courses(request):
 		course_data={}
 		course_data["object"]=course;
 		course=Course.objects.get(id=course_id)
+		homework=course_get_assignments(request,course)
 		with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
 		course_data["data"]=data;
+		marks=[]
+		with io.open('courses/'+str(course.id)+'/users/'+str(user.id)+'/tests_results.json', 'r', encoding='utf8') as data_file:
+			data=json.load(data_file)
+			for test in data:
+				mark={}
+				mark["test_id"]=test["test_id"]
+				mark["value"]=test["mark"]
+				mark["quality"]=test["mark_quality"]
+				marks.append(mark)
+		course_data["marks"]=marks
+		course_data["tasks"]=homework
 		courses[course.subject].append(course_data)
 	return courses
 
-def load_user_courses(request):
+def load_user_courses(request, user):
 	user_courses={}
-	course_list=request.user.courses.split(" ")
-	for course_id in course_list:
-		course=Course.objects.get(id=course_id)
-		user_courses[course.subject]=[]
-	for course_id in course_list:
-		course_data={}
-		course_data["object"]=course;
-		course=Course.objects.get(id=course_id)
-		with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
+	if user.courses:
+		course_list=request.user.courses.split(" ")
+		for course_id in course_list:
+			course=Course.objects.get(id=course_id)
+			user_courses[course.subject]=[]
+		for course_id in course_list:
+			course_data={}
+			course_data["object"]=course
+			course=Course.objects.get(id=course_id)
+			with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
-		course_data["data"]=data;
-		user_courses[course.subject].append(course_data)
-	print(user_courses)
+			course_data["data"]=data
+			user_courses[course.subject].append(course_data)
 	return user_courses
 
 def get_group_list(request,course_id=None):

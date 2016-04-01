@@ -1,12 +1,12 @@
-{% for subject in homework %}
+{% for subject,value in courses.items %}
 	<div class="subject">
-		<h3>{{subject.name}}</h3>
-		{% for course in subject.courses %}
+		<h3>{{subject}}</h3>
+		{% for course in value %}
 			{% for assignment in course.tasks %}
-				{% include 'UI_elements/cards/assignment.html' %}
+				{% include 'UI_elements/cards/assignment.html' with course=course.object %}
 			{% endfor %}
 		{% endfor %}
 	</div>
-	{% empty %}
-	Ура! Все задания выполенены.
+		{% empty %}
+	Ура! Все задания выполнены.
 {% endfor %}

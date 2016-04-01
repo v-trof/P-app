@@ -23,7 +23,6 @@ def create(request):
 	course_id =request.GET["course_id"]
 	with io.open('courses/'+course_id+'/info.json', 'r', encoding='utf8') as data_file:
 		course_info = json.load(data_file)
-		print("1234")
 		test_id = str(course_info['tests']['amount']+1)
 	course = {"id": course_id}
 	test = {"id": test_id, "loaded": 0}
@@ -85,7 +84,7 @@ def load(request):
 	#loads test file
 	course_id =request.GET["course_id"]
 	test_id =  request.GET["test_id"]
-	with io.open('courses/'+course_id+'/Tests/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+	with io.open('courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 
 		with io.open('courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
@@ -151,7 +150,7 @@ def attempt(request):
 	#loads test file
 	course_id =request.GET["course_id"]
 	test_id =  request.GET["test_id"]
-	with io.open('courses/'+course_id+'/Tests/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+	with io.open('courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 		with io.open('courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 			course = {"id": course_id}
@@ -169,39 +168,105 @@ def attempt(request):
 					"href" : "#",
 					"link" : test["json"]["title"]
 				}]
-	with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests.json', 'r', encoding='utf8') as json_file:
-		data=json.load(json_file)
-
-	with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests.json', 'w', encoding='utf8') as json_file:
+	if not os.path.exists('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'):
+		os.makedirs('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/')
+	if os.path.exists('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json'):
+		with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+			data=json.load(json_file)
+	with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'a', encoding='utf8') as json_file:
 		test={}
-		test["id"]=test_id
-		test["questions"]=[]
+		test["tasks"]=[]
 		with io.open('courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 			test_info=json.load(info_file)
-			print("1")
 			for question in test_info["tasks"]:
 				user_question=[]
 				for item in question["answer_items"]:
 					value={}
 					value["label"] = item["value"]["label"]
 					value["answer"] = item["value"]["answer"]
+					#обработать все типы вопросов
 					value["user_answer"] = None
 					user_question.append(value)
-				test["questions"].append(user_question)
-		print("2")
-		data.append(test)
-		saving_data = json.dumps(data, ensure_ascii=False)
-		json_file.write(saving_data)
+				test["tasks"].append(user_question)
+		data = json.dumps(test, ensure_ascii=False)
+		json_file.write(data)
+
 	return render(request, 'Pages/test_attempt.html', context)
 
 def attempt_save(request):
-	#saves attempt data
-	pass
+	if request.method == 'POST':
+		test_id=request.POST.get("test_id")
+		question_id=int(request.POST.get("question"))
+		task_id=int(request.POST.get("task_number"))-1
+		course_id=request.POST.get("course_id")
+		answer=request.POST.get("answer",None)
+		with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+			data=json.load(json_file)
+
+		with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'w', encoding='utf8') as json_file:
+			data["tasks"][task_id][question_id]["user_answer"]=answer
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
+		return HttpResponse("ok")
 
 def attempt_check(request):
-	#checks attempts
-	pass
+	if request.method == 'POST':
+		right=0
+		mistakes=0
+		missed=0
+		print("opened")
+		test_id=request.POST.get("test_id")
+		course_id=request.POST.get("course_id")
+		with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+			data=json.load(json_file)
+			for task in data["tasks"]:
+				for question in task:
+					if question["user_answer"] == None:
+						missed+=1
+					elif check_correctness(question["user_answer"],question["answer"]):
+						right+=1
+					else: mistakes+=1
+		test_results={}
+		test_results["test_id"]=test_id
+		test_results["right"]=right
+		test_results["mistakes"]=mistakes
+		test_results["missed"]=missed
+		test_results["mark"]=give_mark(request,right/(right+mistakes+missed)*100, course_id, test_id)
+		test_results["mark_quality"]=set_mark_quality(test_results["mark"])
 
+		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/tests_results.json', 'r', encoding='utf8') as json_file:
+			data=json.load(json_file)
+		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/tests_results.json', 'w', encoding='utf8') as json_file:
+			data.append(test_results)
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
+
+		return HttpResponse("ok")
+
+def give_mark(request, percentage, course_id, test_id):
+	with io.open('courses/'+str(course_id)+'/tests/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
+		test_info=json.load(info_file)
+	if percentage>=test_info["mark_setting"]["5"]:
+		mark="5"
+	elif percentage >=test_info["mark_setting"]["4"]:
+		mark="4"
+	elif percentage >=test_info["mark_setting"]["3"]:
+		mark="3"
+	else:mark="2"
+	return mark
+
+def set_mark_quality(mark):
+	if mark == "4" or mark=="5":
+		return "good"
+	elif mark == "3":
+		return "medium"
+	else: return "bad"
+	return mark_quality
+
+def check_correctness(user_version, ideal_version):
+	if user_version == ideal_version:
+		return True
+	else: return False
 
 def upload_asset(request):
 	if request.method == 'POST':

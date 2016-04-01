@@ -1,9 +1,9 @@
 <div class="card card-marks">
 	<h4 class="card-marks__course">{{course.name}}</h4>
-	{% for mark in course_data.marks %}
+	{% for mark in marks %}
 		<button 
 			class="mark--{{mark.quality}}"
-			id="c_{{course.title_lat}}_m{{ forloop.counter }}"
+			id="c_{{course.name}}_m{{ forloop.counter }}"
 			>{{mark.value}}</button>
 	{% empty %}
 		<div>Оценок нет</div>

@@ -59,8 +59,10 @@
 		</div>
 	{% endwith %}
 	{% endfor %}
-
+	{% if assignment.due_date != "undefined undefined" %}
 	<div class="card__due-date">
-		До <strong>{{assignment.due_date}}</strong>
+	{% load ext_humanize %}
+		До <strong>{{assignment.due_date|humanize_date}}</strong>
 	</div>
+	{% endif %}
 </div>

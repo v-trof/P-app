@@ -158,7 +158,8 @@ var test = {
 		var testfile = {
 			"title" : $(".test__heading").text(),
 			"author": "{{teachername}}",
-			"tasks" : []
+			"tasks" : [],
+			"mark_setting":{"5":85, "4":70, "3":50}
 		};
 		$(".task__content").each(function(index, el) {
 			var c_task = {
@@ -211,9 +212,13 @@ var test = {
 			setTimeout(function(){
 				{% if attempt %}
 					panel.show("")
-					$(".task__answer__item").each(function(index, el) {
-						$("#panel").append("<a class='link--card'><div index='"+index+"' class='card--small'>" + (index+1) +": Пусто</div></a><br>")
-						$(this).attr('index', index);
+					$(".task__answer").each(function(){
+						console.log("index");
+						$(this).children(".task__answer__item").each(function(index, el) {
+							console.log(index);
+							$("#panel").append("<a class='link--card'><div index='"+index+"' class='card--small'>" + (index+1) +": Пусто</div></a><br>")
+							$(this).attr('index', index);
+						});
 					});
 					$("#panel .card--small").css('width', '100%');
 					$(".task__answer__item input").blur(function(event) {

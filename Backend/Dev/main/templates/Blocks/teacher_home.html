@@ -21,35 +21,8 @@
 </section>
 
 <section class="learning">
-	<!-- {% include 'Blocks/home.html' with teacher=True %} -->
-	<section class='courses'>
-				<h2>Курсы</h2>
-				<div class="subject">
-					<h3>Испанский язык</h3>
-					<a class="link--card" href="course.html">
-						<div class="card">
-							<div class="icons--warning">
-								{% include "UI_elements/Icons/in_progress.svg" %}
-							</div>
-							<h4 class="card__heading">Времена</h4>
-							<div class="card__content">
-								<div>
-									<b>15</b> материалов
-								</div>
-								<div>
-									<b>8</b> тестов
-								</div>
-							</div>
-							<div class="messages">
-								<div class="messages__item--warning">
-									Вы начали проходить тест и не закончили попытку
-								</div>
-							</div>
-						</div>
-					</a>
-				</div>
-			</section>
-			<section class='marks'>
+	{% include 'Blocks/home.html' with teacher=True %}
+		<!--	<section class='marks'>
 				<h2>Оценки</h2>
 				<div class="subject">
 					<h3>Испанский язык</h3>
@@ -87,4 +60,5 @@
 					</div>
 				</div>
 			</section>
+			-->
 </section>

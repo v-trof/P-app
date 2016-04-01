@@ -18,10 +18,10 @@ def humanize_date(value):
     11 : "ноября",
     12 : "декабря"
     }
-    day = value.split(".")[0]
-    month = month_sting[int(value.split(".")[1])]
-    if len(value.split(".")) > 2:
-        year = value.split(".")[2]
+    day = value.split("-")[0]
+    month = month_sting[int(value.split("-")[1])]
+    if len(value.split("-")) > 2:
+        year = value.split("-")[2]
     return day + " " + month + " " + year
 
 def of(value, max_value):

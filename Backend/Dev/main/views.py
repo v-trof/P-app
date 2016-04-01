@@ -132,17 +132,16 @@ def home(request):
     if request.user.is_anonymous():
         return render(request, 'Pages/home.html')
     courses=[]
+    user_courses=[]
     if request.user.participation_list:
-        courses=load_courses(request)
-    if request.user.participation_list:
-        user_courses=load_user_courses(request)
-    # context = {}
-    # print(context)
+        courses=load_courses(request,request.user)
+    if request.user.courses:
+        user_courses=load_user_courses(request,request.user)
     if request.user.is_teacher:
-        context = {"courses": courses, "homework": homework, "marks":marks, "user_courses": user_courses, "user_data":user_getdata(request,request.user)}
+        context = {"courses": courses,"user_courses": user_courses, "user_data":user_getdata(request,request.user)}
         return render(request, 'Pages/home.html', context)
     else:
-        context = {"courses": courses, "homework": homework, "marks":marks}
+        context = {"courses": courses}
         return render(request, 'Pages/home.html', context)
 
 # login group
@@ -194,7 +193,6 @@ def course(request, course_id):
             is_participant=True
         else: is_participant = False
     else: is_participant=False
-    print(is_participant)
     return render(request, 'Pages/course.html',{"is_participant":is_participant, "course":course, "course_data":course_data, "assignments":course_get_assignments(request,course),
             "breadcrumbs" : [{
                 "href" : "#",
