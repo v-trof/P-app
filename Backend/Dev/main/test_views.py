@@ -170,10 +170,12 @@ def attempt(request):
 				}]
 	if not os.path.exists('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'):
 		os.makedirs('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/')
+	if not os.path.exists('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/results/'):
+		os.makedirs('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/results/')
 	if os.path.exists('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json'):
 		with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			data=json.load(json_file)
-	with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'a', encoding='utf8') as json_file:
+	with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
 		test={}
 		test["tasks"]=[]
 		with io.open('courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
@@ -181,17 +183,46 @@ def attempt(request):
 			for question in test_info["tasks"]:
 				user_question=[]
 				for item in question["answer_items"]:
-					value={}
-					value["label"] = item["value"]["label"]
-					value["answer"] = item["value"]["answer"]
-					#обработать все типы вопросов
-					value["user_answer"] = None
+					value=check_question(request,item)
 					user_question.append(value)
 				test["tasks"].append(user_question)
 		data = json.dumps(test, ensure_ascii=False)
 		json_file.write(data)
+	with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/results/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
+		data={}
+		data = json.dumps(data, ensure_ascii=False)
+		json_file.write(data)
 
 	return render(request, 'Pages/test_attempt.html', context)
+
+
+
+def check_question(request,item):
+	value={}
+	type=item["class"]
+	if type=="text-answer":
+		value["label"] = item["value"]["label"]
+		value["answer"] = item["value"]["answer"]
+		value["user_answer"] = None
+	elif type=="textarea":
+		pass
+		#textarea
+	elif type=="select-answer":
+		value["options"] = []
+		value["options"] = item["value"]["values"]
+		value["answer"] = item["value"]["answer"]
+		value["user_answer"] = None
+	elif type=="radio-answer":
+		value["options"] = []
+		value["options"] = item["value"]["values"]
+		value["answer"] = item["value"]["answer"]
+		value["user_answer"] = None
+	elif type=="checkbox-answer":
+		value["options"] = []
+		value["options"] = item["value"]["values"]
+		value["answer"] = item["value"]["answers"]
+		value["user_answer"] = None
+	return value
 
 def attempt_save(request):
 	if request.method == 'POST':
@@ -214,7 +245,6 @@ def attempt_check(request):
 		right=0
 		mistakes=0
 		missed=0
-		print("opened")
 		test_id=request.POST.get("test_id")
 		course_id=request.POST.get("course_id")
 		with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
@@ -231,13 +261,16 @@ def attempt_check(request):
 		test_results["right"]=right
 		test_results["mistakes"]=mistakes
 		test_results["missed"]=missed
+		test_results["unseen_by"]=[]
+		with io.open('courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data=json.load(data_file)
+			for key in data["teachers"].keys():
+				test_results["unseen_by"].append(key)
 		test_results["mark"]=give_mark(request,right/(right+mistakes+missed)*100, course_id, test_id)
 		test_results["mark_quality"]=set_mark_quality(test_results["mark"])
 
-		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/tests_results.json', 'r', encoding='utf8') as json_file:
-			data=json.load(json_file)
-		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/tests_results.json', 'w', encoding='utf8') as json_file:
-			data.append(test_results)
+		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/tests/results/'+test_id+'.json', 'w', encoding='utf8') as json_file:
+			data=test_results
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 

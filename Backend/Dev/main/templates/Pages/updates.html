@@ -13,19 +13,21 @@
 
 	<main>
 		<section>
+		{% if course.updates.new_marks|length > 0 %}
 			<h2>Новые оценки</h2>
-			{% for mark in couse.updates.new_marks %}
+			{% for mark in course.updates.new_marks %}
 				<a class="link--card" href="/test/attempt/{{mark.attempt.id}}/">
 					{% include "UI_elements/cards/person_extended/new_mark.html" with user=mark.student attempt=mark.attempt %}
 				</a>
 			{% endfor %}
+		{% endif %}
 		</section>
 		<section>
-			{% if (course.new_students.length>0) %}
-				<h2>Присоеденились</h2>
-				{% for user in course.new_students %}
-					<a class="link--card" href="/user/{{member.id}}/">
-						{% include "UI_elements/cards/person.html" %}
+			{% if course.updates.new_students|length > 0 %}
+				<h2>Присоединились</h2>
+				{% for user in course.updates.new_students %}
+					<a class="link--card" href="/user/{{user.id}}/">
+						{% include "UI_elements/cards/person.html"%}
 					</a>
 				{% endfor %}
 			{% endif %}

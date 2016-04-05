@@ -25,6 +25,7 @@ from django.core.mail import EmailMultiAlternatives
 from .models import User, LoginForm, RegForm, FileForm, Course
 from binascii import hexlify
 import glob
+from http import cookies
 
 def login(request):
 	def errorHandle(error):
@@ -124,6 +125,8 @@ def create_course(request):
 	if request.method == 'POST':
 		db = sqlite3.connect('db.sqlite3')
 		name = request.POST['course_name']
+		if not request.user.is_teacher:
+			request.user.is_teacher=True
 		request.user.save()
 		subject = request.POST['subject']
 		creator=request.user.id
@@ -140,7 +143,7 @@ def create_course(request):
 			data={}
 			data["pending_users"]={}
 			data["groups"]={}
-			data["groups"]["Нераспределенные"]=[]
+			data["groups"]["Нераспределенные"]={}
 			data["pending_users"]["Нераспределенные"]=[]
 			data["users"]=[request.user.id]
 			data["tests"]={}
@@ -148,7 +151,9 @@ def create_course(request):
 			data["tests"]["published"]=[]
 			data["tests"]["unpublished"]=[]
 			data["administrators"]=[request.user.id]
-			data["teachers"]=[request.user.id]
+			data["teachers"]={}
+			data["teachers"][request.user.id]={}
+			data["teachers"][request.user.id]["new_users"]=[]
 			data["pending_users"]["Заявки"]=[]
 			data["status"]="public"
 			if request.POST.get('is_closed', False):
@@ -302,23 +307,32 @@ def course_reg(request, course_id):
 		if request.user.id not in data["users"]:
 			if request.user.email not in data["pending_users"]["Заявки"]:
 				checker=0
+				is_invited=False
 				for group in data["pending_users"]:
 					if request.user.email in data["pending_users"][group]:
+						is_invited = True
 						checker=1
 						if group=="teachers":
 							if request.user.id in data["teachers"]:
 								return redirect('/login/')
-							data["teachers"].append(request.user.id)
+							data["teachers"][str(request.user.id)]={}
+							data["teachers"][str(request.user.id)]["new_users"]=[]
 							data["pending_users"]["teachers"].remove(request.user.email)
 						else:
 							if request.user.id in data["groups"][group]:
 								return redirect('/login/')
 							data["users"].append(request.user.id)
-							data["groups"][group].append(request.user.id)
+							data["groups"][group][str(request.user.id)]={}
 							data["pending_users"][group].remove(request.user.email)
-				if not data["status"]=="closed" and not checker:
+							data["groups"][group][str(request.user.id)]["unseen_by"]=len(data["teachers"])
+							for teacher in data["teachers"]:
+								data["teachers"][teacher]["new_users"].append(request.user.id)
+				if not data["status"]=="closed" and not checker and not is_invited:
 					group="Нераспределенные"
-					data["groups"][group].append(request.user.id)
+					data["groups"][group][str(request.user.id)]={}
+					data["groups"][group][str(request.user.id)]["unseen_by"]=len(data["teachers"])
+					for teacher in data["teachers"]:
+						data["teachers"][teacher]["new_users"].append(request.user.id)
 					data["users"].append(request.user.id)
 					if request.user.participation_list:
 						setattr(request.user, 'participation_list', request.user.participation_list+" "+str(course.id))
@@ -329,14 +343,7 @@ def course_reg(request, course_id):
 				saving_data = json.dumps(data, ensure_ascii=False)
 				json_file.write(saving_data)
 			os.makedirs('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/')
-			with io.open('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/tests.json', 'a', encoding='utf8') as json_file:
-				data=[]
-				saving_data = json.dumps(data, ensure_ascii=False)
-				json_file.write(saving_data)
-			with io.open('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/tests_results.json', 'a', encoding='utf8') as json_file:
-				data=[]
-				saving_data = json.dumps(data, ensure_ascii=False)
-				json_file.write(saving_data)
+			
 	return redirect('/course/'+str(course_id)+'/groups/')
 
 def course_getdata(request, course):
@@ -363,6 +370,7 @@ def course_getdata(request, course):
 			course_data["user_status"]="administrator"
 		elif request.user.id in data["teachers"]:
 			course_data["user_status"]="teacher"
+		#	course_data["user_status"]="moderator"
 		#elif str(request.user.id) in data["moderators"]:
 		#	course_data["user_status"]="moderator"
 		#elif str(request.user.id) in data["spectators"]:
@@ -383,25 +391,65 @@ def course_getdata(request, course):
 					test_d["title"]=test_data["title"]
 					test_d["link"]='?course_id='+str(course.id)+'&test_id='+str(it)
 					course_data["test_list"].append(test_d)
-		print("DO:")
-		print(course_data)
 		return course_data
 
-def user_getdata(request,user):
-	user_data={}
-	user_data["course_list"]=[]
-	if user.courses:
+def user_getdata(request, user, course_id=None):
+	user_data = {}
+	if course_id:
+		course = Course.objects.get(id=course_id)
+		user_data = {}
+		with io.open('courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			user_data["updates"] = {}
+			user_data["updates"]["new_students"]=[]
+			for user_id in data["teachers"][str(request.user.id)]["new_users"]:
+				user_data["updates"]["new_students"].append(User.objects.get(id=user_id))
+				user_data["object"] = course
+				user_data["status"] = data["status"]
+				if user_data["status"] == "closed":
+					user_data["updates"]["requesting_users"] = data["pending_users"]["Заявки"]
+			user_data["updates"]["new_marks"]={}
+			user_data["updates"]["new_marks"]["value"]=[]
+			user_data["updates"]["new_marks"]["quality"]=[]
+			for user in data["users"]:
+				for test_result in glob.glob('courses/' + str(course.id) + '/users/'+str(user)+'/tests/results/*.json'):
+					with io.open(test_result, 'r', encoding='utf8') as result_file:
+						result=json.load(result_file)
+						if request.user.id in result["unseen_by"]:
+							user_data["updates"]["new_marks"]["value"].append(result["marks"])
+							user_data["updates"]["new_marks"]["quality"].append(result["mark_quality"])
+			data["teachers"][str(request.user.id)]["new_users"]={}
+		with io.open('courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
+	elif user.courses:
+		user_data["course_list"] = []
 		for course in user.courses.split(' '):
-			course=Course.objects.get(id=course)
+			course = Course.objects.get(id=course)
 			user_data["course_list"].append(course)
-			user_data[course.id]={}
-			with io.open('courses/'+str(course.id)+'/info.json', 'r', encoding='utf8') as data_file:
+			user_data["courses"]={}
+			user_data["courses"][str(course.id)] = {}
+			with io.open('courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
-				user_data[course.id]["updates"]={}
-				user_data[course.id]["object"]=course
-				user_data[course.id]["status"]=data["status"]
-				if data["status"]=="closed":
-					user_data[course.id]["updates"]["requesting_users"]=data["pending_users"]["Заявки"]
+				user_data["courses"][str(course.id)]["updates"] = {}
+				user_data["courses"][str(course.id)]["updates"]["new_students"]=[]
+				for user_id in data["teachers"][str(request.user.id)]["new_users"]:
+					user_data["courses"][str(course.id)]["updates"]["new_students"].append(User.objects.get(id=user_id))
+				user_data["courses"][str(course.id)]["object"] = course
+				user_data["courses"][str(course.id)]["status"] = data["status"]
+				if user_data["courses"][str(course.id)]["status"] == "closed":
+					user_data["courses"][str(course.id)]["updates"]["requesting_users"] = data["pending_users"]["Заявки"]
+				user_data["courses"][str(course.id)]["updates"]["new_marks"]={}
+				user_data["courses"][str(course.id)]["updates"]["new_marks"]["value"]=[]
+				user_data["courses"][str(course.id)]["updates"]["new_marks"]["quality"]=[]
+				for user in data["users"]:
+					for test_result in glob.glob('courses/' + str(course.id) + '/users/'+str(user)+'/tests/results/*.json'):
+						with io.open(test_result, 'r', encoding='utf8') as result_file:
+							result=json.load(result_file)
+							if request.user.id in result["unseen_by"]:
+								user_data["courses"][str(course.id)]["updates"]["new_marks"]["value"].append(result["marks"])
+								user_data["courses"][str(course.id)]["updates"]["new_marks"]["quality"].append(result["mark_quality"])
+						print(user_data["courses"])
 	return user_data
 
 def course_get_assignments(request, course):
@@ -456,7 +504,6 @@ def create_assignment(request):
 	if request.method == 'POST':
 		assignment={}
 		assignment["due_date"]=request.POST.get('due_date')
-		print(assignment["due_date"])
 		assignment["tasks"]=[]
 		non_traditional_task={}
 		non_traditional_task["traditional"]=False
@@ -504,13 +551,13 @@ def load_courses(request, user):
 				data = json.load(data_file)
 		course_data["data"]=data;
 		marks=[]
-		with io.open('courses/'+str(course.id)+'/users/'+str(user.id)+'/tests_results.json', 'r', encoding='utf8') as data_file:
-			data=json.load(data_file)
-			for test in data:
+		for marks_file in glob.glob('courses/'+str(course.id)+'/users/'+str(user.id)+'/tests/results/*.json'):
+			with io.open(marks_file, 'r', encoding='utf8') as data_file:
+				data=json.load(data_file)
 				mark={}
-				mark["test_id"]=test["test_id"]
-				mark["value"]=test["mark"]
-				mark["quality"]=test["mark_quality"]
+				mark["test_id"]=data["test_id"]
+				mark["value"]=data["mark"]
+				mark["quality"]=data["mark_quality"]
 				marks.append(mark)
 		course_data["marks"]=marks
 		course_data["tasks"]=homework

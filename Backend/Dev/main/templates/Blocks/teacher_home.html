@@ -12,11 +12,10 @@
 </section>
 <section>
 	<h2>Оповещения</h2>
-	Ничего нового
-	{% for course in user_data.values %}
+	{% for course in user_data.courses.values %}
 		{% include "UI_elements/cards/update.html" %}
-	{% empty %}
-	Ничего нового
+		{% empty %}
+		Ничего нового
 	{% endfor %}
 </section>
 

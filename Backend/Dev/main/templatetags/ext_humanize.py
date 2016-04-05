@@ -51,7 +51,7 @@ def form_for_num(num, forms):
             form = many
     else:
         form = many
-    return str(num) + " " + form
+    return " "+form
 register.filter('of', of)
 register.filter('humanize_date', humanize_date)
 register.filter('form_for_num', form_for_num)
