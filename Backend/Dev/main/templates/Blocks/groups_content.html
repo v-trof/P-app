@@ -6,7 +6,7 @@
 			</a>
 		{% endfor %}
 </section>
-<section class="students">
+<section class="students accordion">
 	<h2>Ученики</h2>
 		{% for group, members in course_data.groups.items %}
 			{% include 'Blocks/group.html'%}

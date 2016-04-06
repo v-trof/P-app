@@ -1,0 +1,39 @@
+<style>
+	.button_accordion{
+		position: absolute;
+		right: 0;
+		margin-top: -0.6rem;
+	}
+	.button_accordion.closed{
+		float: right;
+		transform: rotate(180deg);
+	}
+</style>
+<script>
+	var button_accordion = '<button class="button--icon button_accordion">{% include "UI_elements/Icons/dropdown.svg" %}</button>'
+	$(document).ready(function() {
+		$(".accordion>div").css('position', 'relative').prepend(button_accordion)
+		$("body").on('click', '.button_accordion', function(event) {
+			var parent = $(this).parent()
+			if($(this).hasClass('closed')){
+				console.log("opening")
+				if( ! parent.attr('ostyle')){
+					parent.attr('ostyle', "")
+				}
+				parent.attr('style', parent.attr('ostyle'));
+				
+				$(this).removeClass('closed')
+			} else {
+				var heading = parent.children('h3')
+				parent.attr('ostyle', parent.attr('style'));
+				var new_h = parseInt(heading.outerHeight())+parseInt(parent.css('padding-top'))*2 + parseInt(heading.css("margin-top"))
+				console.log(new_h)
+				parent.css({
+					height: new_h+"px",
+					overflow: 'hidden'
+				});
+				$(this).addClass('closed')
+			}
+		});
+	});
+</script>

@@ -36,5 +36,8 @@ var popup = {
 	hide: function() {
 		$("#overlay").removeClass("shown");
 		$("#popup").attr("style", "");
+		if(context_menu){
+			context_menu.hide()
+		}
 	}
 } </script>

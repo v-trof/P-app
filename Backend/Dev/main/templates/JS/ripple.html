@@ -39,7 +39,7 @@ ripple.force_show = function(e, el, special_class) {
 $(document).ready(function() {
 	$("body").on({
 		mousedown: function(e) {
-			console.log("md");
+			// console.log("md");
 			ripple.show();
 			$(this).prepend(ripple);
 			var c_rect = this.getBoundingClientRect();
@@ -59,7 +59,7 @@ $(document).ready(function() {
 		},
 
 		mouseup: function() {
-			console.log("mu/click");
+			// console.log("mu/click");
 			ripple.dissolve();
 		},
 		mouseleave: function() {
@@ -70,7 +70,7 @@ $(document).ready(function() {
 //one more ff fix
 	$("body").on({
 		mouseup : function(e) {
-			console.log("reclick", this);
+			// console.log("reclick", this);
 			if(firefox){
 				this.click();
 			}
