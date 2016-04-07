@@ -17,7 +17,11 @@
 		<div class="editor">
 			<div class="question-elements">
 				<div class="text-wrapper" draggable="true">
-					Параграф текста
+					{% if is_material %}
+						Параграф тектса
+					{% else %}
+						Текст вопроса
+					{% endif %}
 				</div>
 				<div class="image-wrapper" draggable="true">
 					<img src="http://s3.amazonaws.com/sitebuilderreport-assets/stock_photos/files/000/016/033/small/IMG_4360.jpg?1456172789">
@@ -68,18 +72,18 @@
 
 			<div class="answer-elements">
 				<div class="text-answer answer__field card" draggable="true">
-					<input type="text" name="text_question" placeholder=""><label for="text_question" disabled>Ответ текстом</label>
+					<input type="text" name="text_question" placeholder="" disabled><label for="text_question">Ответ текстом</label>
 				</div>
 
 				<div class="textarea answer__field card" draggable="true">
-					<div class="textarea">
+					<div class="textarea" disabled="true">
 						<div class="textarea__text" contenteditable></div>
 						<label class="textarea__label">Развернутый ответ</label>
 					</div>
 				</div>
 	
 				<div class="file-answer answer__field card" draggable="true">
-					<div class="file">
+					<div class="file" disabled="true">
 						<button>Выбрать</button>
 						<span>Файл не выбран</span>
 						<input type="file">
@@ -87,7 +91,7 @@
 				</div>
 				
 				<div class="select-answer answer__field card" draggable="true">
-					<div class="select">
+					<div class="select" disabled="true">
 						<input type="hidden" class="value" value="1">
 						<div class="display">Option 1</div>
 						{% include "UI_elements/Icons/dropdown.svg" %}

@@ -130,7 +130,11 @@ var generate = {
 				value = popup_data.parse()	
 				function check_for_upload(){
 					if(generate.shared.upload_done){
-						generate.queued_el.replaceWith(el_data.build(value))
+						new_el = $(el_data.build(value))
+						{% if not attempt %}
+							new_el.children().attr('disabled', 'disabled');
+						{% endif %}
+						generate.queued_el.replaceWith(new_el)
 					} else {
 						console.log("trying over")
 						setTimeout(function(){
@@ -139,7 +143,6 @@ var generate = {
 					}
 				}
 				check_for_upload()
-			
 			}
 			editor.verify_type()
 		}

@@ -59,12 +59,16 @@ function add_menu_caller(select) {
 	
 	$(select).children('input').val(first_option.attr("value"));
 	$(select).children(".display").text(first_option.text());
+	
 	$(select).click(function(e) {
-		if($(this).attr('disabled') == "false"){
-			e.preventDefault();
-		}
 		var options = [];
 		var checked = {};
+		var is_disabled = $(this).attr('disabled');
+		// console.log($(this).attr('disabled'), "sEL")
+		if(is_disabled == "disabled"){
+			// console.log("DIs")
+			return 0
+		}
 		var current_value = $(this).children('input').val();
 		$(this).children('option').each(function(index, el) {
 			if($(this).attr("value") != current_value){
@@ -79,7 +83,10 @@ function add_menu_caller(select) {
 				}
 			}
 		});
-		context_menu.show(this, options, checked);
+		if(is_disabled != "disabled" && is_disabled !="true"){
+			// console.log(is_disabled, "2sel")
+			context_menu.show(this, options, checked);
+		}
 	});
 }
 

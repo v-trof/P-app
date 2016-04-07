@@ -95,14 +95,16 @@ $(document).ready(function() {
 		$(this).children('input').val(first_option.attr("value"));
 		$(this).children(".display").text(first_option.text());
 		$(this).click(function(e) {
-			if($(this).attr('disabled') == "false"){
-				e.preventDefault();
+			var is_disabled = $(this).attr('disabled');
+			if(is_disabled == "disabled" || is_disabled == "true"){
+				// console.log("DIs")
+				return 0
 			}
 			var options = [];
 			var checked = {};
 			var current_value = $(this).children('input').val();
 			$(this).children('option').each(function(index, el) {
-				console.log(index);
+				// console.log(index);
 				if($(this).attr("value") != current_value){
 					options.push({
 						text : $(this).text(),
@@ -115,9 +117,16 @@ $(document).ready(function() {
 					}
 				}
 			});
-			console.log($(this).children('option'), options, checked);
+			// console.log($(this).children('option'), options, checked);
 			context_menu.show(this, options, checked);
 		});
+	})
+	$("body").on("mousedown", ".textarea>*", function(e){
+		var is_disabled = $(this).parent().attr('disabled');
+		if(is_disabled == "disabled" || is_disabled == "true"){
+			$(this).blur()
+			return 0
+		}
 	})
 });
 </script>
