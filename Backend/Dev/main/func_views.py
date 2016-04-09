@@ -26,6 +26,7 @@ from .models import User, LoginForm, RegForm, FileForm, Course
 from binascii import hexlify
 import glob
 from http import cookies
+import collections
 
 def login(request):
 	def errorHandle(error):
@@ -139,7 +140,7 @@ def create_course(request):
 		db.commit()
 		os.makedirs('courses/'+str(course.id)+'/tests/')
 		os.makedirs('main/files/media/courses/'+str(course.id)+'/assets/')
-		with io.open('courses/'+str(course.id)+'/info.json', 'a', encoding='utf8') as json_file:
+		with io.open('courses/'+str(course.id)+'/info.json', 'w+', encoding='utf8') as json_file:
 			data={}
 			data["pending_users"]={}
 			data["groups"]={}
@@ -160,10 +161,7 @@ def create_course(request):
 				data["status"]="closed"
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-		with io.open('courses/'+str(course.id)+'/assignments.json', 'a', encoding='utf8') as json_file:
-			data=[]
-			saving_data = json.dumps(data, ensure_ascii=False)
-			json_file.write(saving_data)
+		os.makedirs('courses/'+str(course.id)+'/assignments/')
 		redirect_url='/course/'+str(course.id)+'/'
 		return HttpResponse(redirect_url)
 
@@ -342,8 +340,17 @@ def course_reg(request, course_id):
 			with io.open('courses/'+str(course.id)+'/info.json', 'w', encoding='utf8') as json_file:
 				saving_data = json.dumps(data, ensure_ascii=False)
 				json_file.write(saving_data)
-			os.makedirs('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/')
-			
+			if not os.path.exists('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/'):
+				os.makedirs('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/')
+				os.makedirs('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/assignments/')
+				data={}
+				with io.open('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/assignments/done.json', 'a', encoding='utf8') as json_file:
+					saving_data = json.dumps(data, ensure_ascii=False)
+					json_file.write(saving_data)
+				data={}
+				with io.open('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/assignments/in_process.json', 'a', encoding='utf8') as json_file:
+					saving_data = json.dumps(data, ensure_ascii=False)
+					json_file.write(saving_data)
 	return redirect('/course/'+str(course_id)+'/groups/')
 
 def course_getdata(request, course):
@@ -353,8 +360,6 @@ def course_getdata(request, course):
 		course_data["course_id"]=course.id
 		course_data["teachers"]=[]
 		course_data["status"]=data["status"]
-		course_data["updates"]={}
-		course_data["updates"]["new_students"]=[]
 		course_data["users"]=[]
 		course_data["groups"]={}
 		course_data["user_status"]=[]
@@ -383,7 +388,6 @@ def course_getdata(request, course):
 		it=0
 		for test in glob.glob('courses/'+str(course.id)+'/tests/*.json'):
 			it=it+1
-			print(data["tests"]["published"])
 			if str(it) in data["tests"]["published"]:
 				with io.open(test, 'r', encoding='utf8') as data_file:
 					test_data=json.load(data_file)
@@ -413,6 +417,7 @@ def user_getdata(request, user, course_id=None):
 			user_data["updates"]["new_marks"]["quality"]=[]
 			for user in data["users"]:
 				for test_result in glob.glob('courses/' + str(course.id) + '/users/'+str(user)+'/tests/results/*.json'):
+					print(test_result)
 					with io.open(test_result, 'r', encoding='utf8') as result_file:
 						result=json.load(result_file)
 						if request.user.id in result["unseen_by"]:
@@ -449,15 +454,41 @@ def user_getdata(request, user, course_id=None):
 							if request.user.id in result["unseen_by"]:
 								user_data["courses"][str(course.id)]["updates"]["new_marks"]["value"].append(result["marks"])
 								user_data["courses"][str(course.id)]["updates"]["new_marks"]["quality"].append(result["mark_quality"])
-						print(user_data["courses"])
 	return user_data
 
 def course_get_assignments(request, course):
-	with io.open('courses/'+str(course.id)+'/assignments.json', 'r', encoding='utf8') as data_file:
-		data = json.load(data_file)
-		assignments={}
-		assignments=data
+	assignments=[]
+	if request.user.is_anonymous():
 		return assignments
+	for assignment in glob.glob('courses/'+str(course.id)+'/assignments/*'):
+		with io.open(assignment, 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			assignments.append(data)
+	return assignments
+
+def user_get_course_assignments(request, course):
+	assignments=[]
+	if request.user.is_anonymous():
+		return assignments
+	with io.open('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/assignments/in_process.json', 'r', encoding='utf8') as json_file:
+			data = json.load(json_file)
+	for assignment in glob.glob('courses/'+str(course.id)+'/assignments/*'):
+		file_name=os.path.basename(assignment).split('.')[0]
+		print(file_name)
+		if file_name in data.keys():
+			with io.open(assignment, 'r', encoding='utf8') as data_file:
+				new_data = json.load(data_file)
+				done=True
+				it=0
+				for task in new_data["tasks"]:
+					it+=1
+					print(data[file_name])
+					print("it: "+str(it))
+					if task["traditional"] and not it in data[file_name]:
+						task["done"]=True
+				if os.path.basename(assignment).split('.')[0] in data.keys():
+					assignments.append(new_data)
+	return assignments
 
 def get_users_info(request, user_ids):
 	users=[]
@@ -502,16 +533,16 @@ def decline_request(request):
 
 def create_assignment(request):
 	if request.method == 'POST':
+		course_id=request.POST.get('course_id')
 		assignment={}
 		assignment["due_date"]=request.POST.get('due_date')
 		assignment["tasks"]=[]
+		assignment_id=str(len(glob.glob('courses/'+str(course_id)+'/assignments/*'))+1)
 		non_traditional_task={}
 		non_traditional_task["traditional"]=False
-		non_traditional_task["done"]=False
 		non_traditional_task["content"]={}
 		non_traditional_task["content"]["tests"]=[]
 		non_traditional_task["content"]["materials"]=[]
-		course_id=request.POST.get('course_id')
 		non_traditional_task["content"]["tests"]=json.loads(request.POST.get('test_list'))
 		non_traditional_task["content"]["materials"]=json.loads(request.POST.get('material_list'))
 		assignment["tasks"].append(non_traditional_task)
@@ -519,15 +550,22 @@ def create_assignment(request):
 			for traditional in json.loads(request.POST.get('traditionals_list')):
 				traditional_task={}
 				traditional_task["traditional"]=True
-				traditional_task["done"]=False
 				traditional_task["content"]=traditional
 				assignment["tasks"].append(traditional_task)
-		with io.open('courses/'+str(course_id)+'/assignments.json', 'r', encoding='utf8') as data_file:
-			data = json.load(data_file)
-			data.append(assignment)
-		with io.open('courses/'+str(course_id)+'/assignments.json', 'w', encoding='utf8') as json_file:
-			saving_data = json.dumps(data, ensure_ascii=False)
+		with io.open('courses/'+str(course_id)+'/assignments/'+assignment_id+'.json', 'a+', encoding='utf8') as json_file:
+			saving_data = json.dumps(assignment, ensure_ascii=False)
 			json_file.write(saving_data)
+		for in_process_file in glob.glob('courses/'+str(course_id)+'/users/*/assignments/in_process.json'):
+			with io.open(in_process_file, 'r', encoding='utf8') as json_file:
+				data = json.load(json_file)
+				data[assignment_id]=[]
+				it=0
+				for task in assignment["tasks"]:
+					it+=1
+					data[assignment_id].append(it)
+			with io.open(in_process_file, 'w', encoding='utf8') as json_file:
+				saving_data = json.dumps(data, ensure_ascii=False)
+				json_file.write(saving_data)
 	return HttpResponse("ok")
 
 def change_permission_level(request):
@@ -544,9 +582,9 @@ def load_courses(request, user):
 		courses[course.subject]=[]
 	for course_id in course_list:
 		course_data={}
-		course_data["object"]=course;
 		course=Course.objects.get(id=course_id)
-		homework=course_get_assignments(request,course)
+		course_data["object"]=course;
+		homework=user_get_course_assignments(request,course)
 		with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
 		course_data["data"]=data;
@@ -590,3 +628,36 @@ def get_group_list(request,course_id=None):
 			for group in data["groups"]:
 				course_groups.append(group)
 		return HttpResponse(json.dumps(course_groups, ensure_ascii=False))
+
+def set_done(request):
+	if request.method=="POST":
+		assignment_id=str(int(request.POST["assignment_id"])-1)
+		task_id=int(request.POST["task_id"])
+		course_id=int(request.POST["course_id"])
+		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/assignments/in_process.json', 'r', encoding='utf8') as json_file:
+			data = collections.OrderedDict(sorted(json.load(json_file).items()))
+			keys=list(data.keys())
+			index=keys[::-1][int(assignment_id)]
+			task=data[index].index(task_id+1)
+			del data[index][task]
+			if len(data[index])==0:
+				del data[index]
+		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/assignments/in_process.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
+	return HttpResponse('ok')
+
+def set_undone(request):
+	if request.method=="POST":
+		assignment_id=str(int(request.POST["assignment_id"])-1)
+		task_id=int(request.POST["task_id"])
+		course_id=int(request.POST["course_id"])
+		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/assignments/in_process.json', 'r', encoding='utf8') as json_file:
+			data = collections.OrderedDict(sorted(json.load(json_file).items()))
+			keys=list(data.keys())
+			index=keys[::-1][int(assignment_id)]
+			data[index].append(task_id+1)
+		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/assignments/in_process.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
+	return HttpResponse('ok')

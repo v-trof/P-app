@@ -138,7 +138,7 @@ def home(request):
     if request.user.courses:
         user_courses=load_user_courses(request,request.user)
     if request.user.is_teacher:
-        context = {"courses": courses,"user_courses": user_courses, "user_data":user_getdata(request,request.user)}
+        context = {"courses": courses, "user_courses": user_courses, "user_data":user_getdata(request,request.user)}
         return render(request, 'Pages/home.html', context)
     else:
         context = {"courses": courses}

@@ -3,7 +3,7 @@
 		<h3>{{subject}}</h3>
 		{% for course in value %}
 			{% for assignment in course.tasks %}
-				{% include 'UI_elements/cards/assignment.html' with course=course.object %}
+				{% include 'UI_elements/cards/assignment.html' with course_counter=forloop.counter course=course.object %}
 			{% endfor %}
 		{% endfor %}
 	</div>

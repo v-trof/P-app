@@ -1,5 +1,5 @@
 {% load ext_humanize %}
-<div class="card">
+<div class="card" id="{{course.id}}">
 	<div class="icons--warning">
 	</div>
 	<div class="icons--neutral">
@@ -17,13 +17,11 @@
 				<div class="card-homework__task traditional">
 			{% endif %}
 
-
-
-			<input type="checkbox" class="green" id="task_{{upperloop_counter}}_{{ forloop.counter }}"
+			<input type="checkbox" class="green" id="task_{{course_counter}}_{{ forloop.counter }}"
 			{% if task.done %}
 				checked
 			{% endif %}>
-			<label for="task_{{upperloop_counter}}_{{ forloop.counter }}">{{task.content}}</label>
+			<label for="task_{{course_counter}}_{{ forloop.counter }}">{{task.content}}</label>
 		
 		{% else %}
 
