@@ -1,0 +1,12 @@
+<script>
+	$("#add_announcement").click(function(){
+		popup.show("<input type='text' id='new_heading'><label>Заголовок</label><br><br><div class='textarea'><div class='textarea__text' contenteditable id='new_text'></div><label class='textarea__label'>Текст</label></div><br><br><button id='add_el'>Добавить объявление</button>", {}, function(){
+			$("#add_el").click(function(event) {
+				new_heading = $("#new_heading").val();
+				new_text = $("#new_text").text();
+				$(".announcements").append('<div class="card"><h4 class="card__heading">'+new_heading+'</h4><div>'+new_text+'</div>');
+				popup.hide()
+			});
+		});
+	})
+</script>
