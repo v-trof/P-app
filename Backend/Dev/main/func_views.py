@@ -533,6 +533,7 @@ def decline_request(request):
 
 def create_assignment(request):
 	if request.method == 'POST':
+		print(str(request.POST.get('test_list')))
 		course_id=request.POST.get('course_id')
 		assignment={}
 		assignment["due_date"]=request.POST.get('due_date')

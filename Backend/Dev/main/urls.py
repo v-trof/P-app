@@ -89,11 +89,8 @@ urlpatterns = [
     url(r'^forgot_password/$', views.forgot_password),
 
     url(r'^$', views.home, name='home'),
-    url(r'^user/(?P<user_id>[0-9]+)/$', views.profile),
-
-
-    #fake
-    url(r'^results/$', views.fake),
+    url(r'^results/$', views.results),
+    url(r'^user/(?P<user_id>[0-9]+)/$', views.profile)
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

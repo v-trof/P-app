@@ -261,5 +261,5 @@ def give_task(request, course_id):
         return render(request, 'Pages/give_task.html')
 
 
-def fake(request):
-    return render(request, 'Pages/fake_res.html')
+def results(request):
+    return render(request, 'Pages/results.html')

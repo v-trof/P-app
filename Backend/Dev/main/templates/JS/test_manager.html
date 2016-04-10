@@ -212,7 +212,7 @@ var test = {
 			setTimeout(function(){
 				{% if attempt %}
 					panel.show("")
-					$(".task__answer").each(function(){
+					$(".task__answer").each(function(index, el){
 						console.log("index");
 						$(this).children(".task__answer__item").each(function(index, el) {
 							console.log(index);
@@ -247,9 +247,6 @@ var test = {
 $(window).resize(function(event) {
 	resize_view()
 });
-function finish(){
-	window.location = "/results";
-}
 {% endif %}
 $(document).ready(function() {
 	$("#test_save").click(function(event) {

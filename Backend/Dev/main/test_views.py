@@ -188,10 +188,6 @@ def attempt(request):
 				test["tasks"].append(user_question)
 		data = json.dumps(test, ensure_ascii=False)
 		json_file.write(data)
-	with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/results/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
-		data={}
-		data = json.dumps(data, ensure_ascii=False)
-		json_file.write(data)
 
 	return render(request, 'Pages/test_attempt.html', context)
 
@@ -268,12 +264,10 @@ def attempt_check(request):
 				test_results["unseen_by"].append(key)
 		test_results["mark"]=give_mark(request,right/(right+mistakes+missed)*100, course_id, test_id)
 		test_results["mark_quality"]=set_mark_quality(test_results["mark"])
-
-		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/tests/results/'+test_id+'.json', 'w', encoding='utf8') as json_file:
+		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/tests/results/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
 			data=test_results
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-
 		return HttpResponse("ok")
 
 def give_mark(request, percentage, course_id, test_id):

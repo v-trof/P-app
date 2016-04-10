@@ -128,19 +128,22 @@
 			material.title=$(this).html();
 			material.done=false;
 			res_material_list.push(material);
+			material={};
 		});
 		$("#assignment--new__tests .link--card .card--small").each(function(index, el) {
 			material.link=$(this).attr('href');
 			material.title=$(this).html();
 			material.done=false;
 			res_test_list.push(material);
+			console.log(res_test_list);
+			material={};
 		});
 		var material={};
 		$("#assignment--new__traditional .link--card .card--small").each(function(index, el) {
 			traditionals_list.push($(this).html());
 		});
 		due_date=$("#due_date").val();
-		console.log("dfgdfgdf",res_material_list);
+	//	console.log("dfgdfgdf",res_test_list);
         $.ajax({
             type:"POST",
             url:"/func/create_assignment/",

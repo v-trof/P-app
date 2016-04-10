@@ -1,0 +1,77 @@
+{% load ext_humanize %}
+<!DOCTYPE html>
+<html>
+<head>
+  {% include "UI_elements/unique/head_info.html" %}
+  <title>Главная</title>
+</head>
+<body>
+    <div class="includer">{% include 'CSS/main.html' %}</div>
+    <div class="includer">{% include 'CSS/header.html' %}</div>
+    <div class="includer">{% include 'CSS/inputs.html' %}</div>
+    <div class="includer">{% include 'CSS/buttons.html' %}</div>
+    <div class="includer">{% include 'CSS/cards.html' %}</div>
+    <div class="includer">{% include 'CSS/content-wrappers.html' %}</div>
+    <div class="includer">{% include 'CSS/notification.html' %}</div>
+    <div class="includer">{% include 'CSS/test-editor.html' %}</div>
+
+  <main>
+        <div class="test" style="margin-left: -18.5rem;">
+        <h1 class="test__heading" contenteditable="" style="margin-left:18.5rem;">Короли Швеции</h1>
+        <div class="test__preview" style="margin-left: 28.5rem; width: 50rem;">
+        <div class="test__task"><div class="card task__content">
+
+        <h4 class="task__number" style="color: #4CAF50">1</h4>
+
+        <div class="task__question"><div class="text-wrapper">Чей это портрет?</div><div class="image-wrapper"><img src="http://127.0.0.1:8000/media/courses/3/assets/3/Gustav_I_of_Sweden_c_1550.jpg"></div></div><div class="task__answer">
+
+        <div class="text-answer task__answer__item" index="0">
+          <b>Ответ с незначительным недочетом:</b><br><span style="text-decoration: line-through; color:#F44336;">1</span> -> <span>I</span><br>
+          Густав 1 Ваза
+        </div>
+
+        </div></div></div><div class="test__task"><div class="card task__content">
+
+      <h4 class="task__number" style="color: #4CAF50">2</h4>
+
+      <div class="task__question"><div class="text-wrapper">Кто бы первым королем из&nbsp;Пфальц-Цвейбрюкенской династии?</div></div>
+
+        <div class="task__answer">
+
+        <div class="text-answer task__answer__item" index="1">
+           <b>Карл X</b><br>
+        </div></div></div></div><div class="test__task"><div class="card task__content">
+
+        <h4 class="task__number" style=" color:#F44336;">3</h4>
+
+        <div class="task__question"><div class="text-wrapper">Год рождения Густава II Адольфа</div></div><div class="task__answer">
+
+        <div class="radio-answer task__answer__item" index="2">
+          <b>Неверный ответ:</b><br>
+          <span style="text-decoration: line-through; color:#F44336;">1515</span> -> 1594
+        </div>
+
+        </div></div></div></div>
+
+      </div>
+      
+  </main>
+  
+    <div class="includer">{% include 'JS/jquery-2.html' %}</div>
+    <div class="includer">{% include 'JS/layout.html' %}</div>
+    <div class="includer">{% include 'JS/players.html' %}</div>
+    <!-- <div class="includer">{% include 'JS/drag_and_drop.html' %}</div> -->
+    <div class="includer">{% include 'JS/file_input.html' %}</div>
+    <div class="includer">{% include 'JS/create_question.html' %}</div>
+    <div class="includer">{% include 'JS/test_editor_generate.html' %}</div>
+    <div class="includer">{% include 'JS/test_manager.html' %}</div>
+    <div class="includer">{% include 'JS/ripple.html' %}</div>
+    <div class="includer">{% include 'JS/make_attempt.html' %}</div>
+  {% include 'UI_elements/unique/header.html' %}
+  {% include 'UI_elements/unique/context_menu.html' %}
+  {% include 'UI_elements/unique/popup.html' %}
+  {% include 'UI_elements/unique/tooltip.html' %}
+  {% include 'UI_elements/unique/notification.html' %}
+  {% include 'UI_elements/unique/panel.html' %}
+</body>
+</html>
