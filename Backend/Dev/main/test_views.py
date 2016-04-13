@@ -238,26 +238,40 @@ def attempt_save(request):
 
 def attempt_check(request):
 	if request.method == 'POST':
-		right=0
-		mistakes=0
-		missed=0
 		test_id=request.POST.get("test_id")
 		course_id=request.POST.get("course_id")
-		with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
-			data=json.load(json_file)
-			for task in data["tasks"]:
-				for question in task:
-					if question["user_answer"] == None:
-						missed+=1
-					elif check_correctness(question["user_answer"],question["answer"]):
-						right+=1
-					else: mistakes+=1
+		right=0
+		missed=0
+		mistakes=0
 		test_results={}
 		test_results["test_id"]=test_id
-		test_results["right"]=right
-		test_results["mistakes"]=mistakes
-		test_results["missed"]=missed
+		test_results["right"]=[]
+		test_results["mistakes"]=[]
+		test_results["missed"]=[]
 		test_results["unseen_by"]=[]
+		with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+			data=json.load(json_file)
+			it=-1
+			for task in data["tasks"]:
+				it+=1
+				test_results["right"].append(it)
+				test_results["right"][it]=[]
+				test_results["missed"].append(it)
+				test_results["missed"][it]=[]
+				test_results["mistakes"].append(it)
+				test_results["mistakes"][it]=[]
+				counter=-1
+				for question in task:
+					counter+=1
+					if question["user_answer"] == None:
+						missed+=1
+						test_results["missed"][it].append(counter)
+					elif check_correctness(question["user_answer"],question["answer"]):
+						right+=1
+						test_results["right"][it].append(counter)
+					else: 
+						mistakes+=1
+						test_results["mistakes"][it].append(counter)
 		with io.open('courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data=json.load(data_file)
 			for key in data["teachers"].keys():
@@ -294,6 +308,21 @@ def check_correctness(user_version, ideal_version):
 	if user_version == ideal_version:
 		return True
 	else: return False
+
+def get_results(request, course_id, test_id):
+	with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+		test_info=json.load(info_file)
+	return test_info
+
+def get_test_info(request, course_id, test_id):
+	with io.open('courses/'+str(course_id)+'/tests/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
+		test_info=json.load(info_file)
+	return test_info
+
+def get_attempt_info(request, course_id, test_id):
+	with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
+		test_info=json.load(info_file)
+	return test_info
 
 def upload_asset(request):
 	if request.method == 'POST':

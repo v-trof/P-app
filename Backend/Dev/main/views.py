@@ -2,10 +2,8 @@
 from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
-from main.func_views import course_getdata,course_get_assignments,user_getdata
-from main.func_views import get_users_info
-from main.func_views import logout_view
 from main.func_views import *
+from main.test_views import *
 import io
 import json
 
@@ -262,4 +260,7 @@ def give_task(request, course_id):
 
 
 def results(request):
-    return render(request, 'Pages/results.html')
+    course_id =request.GET["course_id"]
+    test_id =  request.GET["test_id"]
+    context = {"course":Course.objects.get(id=course_id), "test_id":test_id, "results":get_results(request, course_id, test_id), "attempt":get_attempt_info(request, course_id, test_id), "test":get_test_info(request, course_id, test_id)}
+    return render(request, 'Pages/results.html', context)

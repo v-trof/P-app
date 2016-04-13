@@ -1,0 +1,38 @@
+{% load filters %}
+<div class="test" style="margin-left: -18.5rem;">
+	<h1 class="test__heading" contenteditable="" style="margin-left:18.5rem;">{{test.title}}</h1>
+    <div class="test__preview" style="margin-left: 28.5rem; width: 50rem;">
+    	{% for task in test.tasks %}
+    		{% with forloop.counter0 as task_counter %}
+		    	<div class="test__task">
+		    		<div class="card task__content">
+			        	<h4 class="task__number" style="color: #4CAF50">{{forloop.counter}}</h4>
+				    	{% for question in task.question_items %}
+				        		{% with forloop.counter0 as question_counter %}
+						        	<div class="task__question">
+						        		<div class="text-wrapper">{{question.value}}</div>
+						        		<div class="image-wrapper"><img src="http://127.0.0.1:8000/media/courses/3/assets/3/Gustav_I_of_Sweden_c_1550.jpg"></div>
+						        	</div>
+						        	{% if results %}
+						        	{% with attempt.tasks|return_item:task_counter|return_item:question_counter as question_info %}
+						        	<div class="task__answer">
+				        				<div class="text-answer task__answer__item" index="{{question_counter}}">
+				        					{% if question_counter in results.right|return_item:task_counter %}
+				        					<b style="color: #4CAF50">Верный ответ:</b><br><span>{{question_info.user_answer}}</span><br>
+				        					{% elif question_counter in results.mistakes|return_item:task_counter %}
+				          					<b>Неверный ответ:</b><br><span style="text-decoration: line-through; color:#F44336;">{{question_info.user_answer}}</span> -> <span>{{question_info.answer}}</span><br>
+				          					{% else %}
+				          					<b>Вопрос пропущен:</b><br><span>{{question_info.answer}}</span><br>
+				        					{% endif %}
+				        				</div>
+				        			</div>
+				        			{% endwith %}
+				        			{% endif %}
+					        	{% endwith %}
+						{% endfor %}
+		        	</div>
+		        </div>
+	        {% endwith %}
+        {% endfor %}
+    </div>
+</div>

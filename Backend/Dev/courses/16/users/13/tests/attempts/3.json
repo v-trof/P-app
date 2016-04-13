@@ -1,1 +1,1 @@
-{"tasks": [[{"label": "dfgsdfgsdfg", "answer": "fddf", "user_answer": "dfgsfg"}, {"label": "dfsgdfgs", "answer": "sdfgsdfg", "user_answer": "sfgdgf"}, {"label": "sdfgsdfg", "answer": "dfsgdfsg", "user_answer": "dsfgdsgf"}]]}
+{"tasks": [[{"user_answer": null, "label": "dfgsdfgsdfg", "answer": "fddf"}, {"user_answer": null, "label": "dfsgdfgs", "answer": "sdfgsdfg"}, {"user_answer": null, "label": "sdfgsdfg", "answer": "dfsgdfsg"}]]}
