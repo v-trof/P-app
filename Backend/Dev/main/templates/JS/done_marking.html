@@ -4,10 +4,11 @@
     	console.log(this.closest(".card").id);
         if ($(this).is(':checked')) {
         	id=this.id.split("_");
-        	console.log(id[id.length-1]);
+        	console.log('assignment_id',id[id.length-2]);
+        	console.log('task_id', id[id.length-1]-1);
 			var formData = new FormData();
 			formData.append('course_id', this.closest(".card").id);
-			formData.append('assignment_id', id[id.length-2]-1);
+			formData.append('assignment_id', id[id.length-2]);
 			formData.append('task_id', id[id.length-1]-1);
 			formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 			formData.append('tasks', '{{ course.tasks }}');

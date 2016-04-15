@@ -1,0 +1,1 @@
+{"groups": {"Новая группа": [], "Нераспределенные": []}, "users": [12, 13], "administrators": [12], "pending_users": {"Заявки": [], "Нераспределенные": [], "Новая группа": []}, "tests": {"unpublished": [], "amount": 0, "published": ["1"]}, "teachers": {"12": {"new_users": [13]}}, "status": "public"}

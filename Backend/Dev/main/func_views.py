@@ -397,7 +397,7 @@ def course_getdata(request, course):
 					course_data["test_list"].append(test_d)
 		return course_data
 
-def user_getdata(request, user, course_id=None):
+def user_getdata(request, user, course_id=False):
 	user_data = {}
 	if course_id:
 		course = Course.objects.get(id=course_id)
@@ -464,7 +464,7 @@ def course_get_assignments(request, course):
 		with io.open(assignment, 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
 			assignments.append(data)
-	return assignments
+	return sorted(assignments, key=lambda k: k['due_date'])
 
 def user_get_course_assignments(request, course):
 	assignments=[]
@@ -472,23 +472,23 @@ def user_get_course_assignments(request, course):
 		return assignments
 	with io.open('courses/'+str(course.id)+'/users/'+str(request.user.id)+'/assignments/in_process.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
+	global_it=0
 	for assignment in glob.glob('courses/'+str(course.id)+'/assignments/*'):
 		file_name=os.path.basename(assignment).split('.')[0]
-		print(file_name)
 		if file_name in data.keys():
 			with io.open(assignment, 'r', encoding='utf8') as data_file:
 				new_data = json.load(data_file)
 				done=True
 				it=0
+				global_it+=1
 				for task in new_data["tasks"]:
 					it+=1
-					print(data[file_name])
-					print("it: "+str(it))
 					if task["traditional"] and not it in data[file_name]:
 						task["done"]=True
+				new_data["id"]=global_it
 				if os.path.basename(assignment).split('.')[0] in data.keys():
 					assignments.append(new_data)
-	return assignments
+	return sorted(assignments, key=lambda k : k['due_date'])
 
 def get_users_info(request, user_ids):
 	users=[]
@@ -533,7 +533,6 @@ def decline_request(request):
 
 def create_assignment(request):
 	if request.method == 'POST':
-		print(str(request.POST.get('test_list')))
 		course_id=request.POST.get('course_id')
 		assignment={}
 		assignment["due_date"]=request.POST.get('due_date')
@@ -577,30 +576,33 @@ def change_permission_level(request):
 
 def load_courses(request, user):
 	courses={}
-	course_list=user.participation_list.split(" ")
-	for course_id in course_list:
-		course=Course.objects.get(id=course_id)
-		courses[course.subject]=[]
-	for course_id in course_list:
-		course_data={}
-		course=Course.objects.get(id=course_id)
-		course_data["object"]=course;
-		homework=user_get_course_assignments(request,course)
-		with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
-				data = json.load(data_file)
-		course_data["data"]=data;
-		marks=[]
-		for marks_file in glob.glob('courses/'+str(course.id)+'/users/'+str(user.id)+'/tests/results/*.json'):
-			with io.open(marks_file, 'r', encoding='utf8') as data_file:
-				data=json.load(data_file)
-				mark={}
-				mark["test_id"]=data["test_id"]
-				mark["value"]=data["mark"]
-				mark["quality"]=data["mark_quality"]
-				marks.append(mark)
-		course_data["marks"]=marks
-		course_data["tasks"]=homework
-		courses[course.subject].append(course_data)
+	if user.participation_list:
+		course_list=user.participation_list.split(" ")
+		for course_id in course_list:
+			course=Course.objects.get(id=course_id)
+			courses[course.subject]=[]
+		for course_id in course_list:
+			course_data={}
+			course=Course.objects.get(id=course_id)
+			course_data["object"]=course
+			homework=user_get_course_assignments(request,course)
+			print(course.name)
+			print(homework)
+			with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
+					data = json.load(data_file)
+			course_data["data"]=data;
+			marks=[]
+			for marks_file in glob.glob('courses/'+str(course.id)+'/users/'+str(user.id)+'/tests/results/*.json'):
+				with io.open(marks_file, 'r', encoding='utf8') as data_file:
+					data=json.load(data_file)
+					mark={}
+					mark["test_id"]=data["test_id"]
+					mark["value"]=data["mark"]
+					mark["quality"]=data["mark_quality"]
+					marks.append(mark)
+			course_data["marks"]=marks
+			course_data["tasks"]=homework
+			courses[course.subject].append(course_data)
 	return courses
 
 def load_user_courses(request, user):
@@ -612,8 +614,8 @@ def load_user_courses(request, user):
 			user_courses[course.subject]=[]
 		for course_id in course_list:
 			course_data={}
-			course_data["object"]=course
 			course=Course.objects.get(id=course_id)
+			course_data["object"]=course
 			with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
 			course_data["data"]=data
@@ -632,14 +634,18 @@ def get_group_list(request,course_id=None):
 
 def set_done(request):
 	if request.method=="POST":
-		assignment_id=str(int(request.POST["assignment_id"])-1)
-		task_id=int(request.POST["task_id"])
+		assignment_id=str(int(request.POST["assignment_id"]))
+		task_id=int(request.POST["task_id"])+1
 		course_id=int(request.POST["course_id"])
+		print("assignment : "+assignment_id)
+		print("task_id : "+str(task_id))
 		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/assignments/in_process.json', 'r', encoding='utf8') as json_file:
 			data = collections.OrderedDict(sorted(json.load(json_file).items()))
 			keys=list(data.keys())
-			index=keys[::-1][int(assignment_id)]
-			task=data[index].index(task_id+1)
+			print(keys[::-1])
+			index=keys[int(assignment_id)-1]
+			task=data[index].index(task_id)
+			print(data[index][task])
 			del data[index][task]
 			if len(data[index])==0:
 				del data[index]

@@ -17,11 +17,11 @@
 				<div class="card-homework__task traditional">
 			{% endif %}
 
-			<input type="checkbox" class="green" id="task_{{course_counter}}_{{ forloop.counter }}"
+			<input type="checkbox" class="green" id="task_{{assignment_counter}}_{{ forloop.counter }}"
 			{% if task.done %}
 				checked
 			{% endif %}>
-			<label for="task_{{course_counter}}_{{ forloop.counter }}">{{task.content}}</label>
+			<label for="task_{{assignment_counter}}_{{ forloop.counter }}">{{task.content}}</label>
 		
 		{% else %}
 

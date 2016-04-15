@@ -2,9 +2,11 @@
 	<div class="subject">
 		<h3>{{subject}}</h3>
 		{% for course in value %}
+			{% with forloop.counter as course_counter %}
 			{% for assignment in course.tasks %}
-				{% include 'UI_elements/cards/assignment.html' with course_counter=forloop.counter course=course.object %}
+				{% include 'UI_elements/cards/assignment.html' with assignment_counter=assignment.id course=course.object %}
 			{% endfor %}
+			{% endwith %}
 		{% endfor %}
 	</div>
 		{% empty %}
