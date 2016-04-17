@@ -5,7 +5,19 @@
 				new_heading = $("#new_heading").val();
 				new_text = $("#new_text").text();
 				$(".announcements").append('<div class="card"><h4 class="card__heading">'+new_heading+'</h4><div>'+new_text+'</div>');
-				popup.hide()
+				$.ajax({
+		            type:"POST",
+		            url:"/func/add_announcement/",
+		            data: {
+		                   'csrfmiddlewaretoken': '{{ csrf_token }}',
+		                   'text': new_text,
+		                   'heading': new_heading,
+		                   'course_id': "{{course.id}}",
+		                  },
+		            success: function(){
+		            	popup.hide();
+		            }
+	            });
 			});
 		});
 	})

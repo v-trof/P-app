@@ -43,7 +43,6 @@ var generate = {
 			})
 		},
 		task_section_unpack: function(section_type, new_task, task_data) {
-
 			if(task_data[section_type+"_items"][0].class != "block--empty") {
 				new_task.find(".task__"+section_type).html("")
 				task_data[section_type+"_items"].forEach(function(element) {

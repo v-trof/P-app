@@ -163,6 +163,10 @@ def create_course(request):
 			json_file.write(saving_data)
 		os.makedirs('courses/'+str(course.id)+'/assignments/')
 		redirect_url='/course/'+str(course.id)+'/'
+		with io.open('courses/'+str(course.id)+'/announcements.json', 'w+', encoding='utf8') as json_file:
+			data=[]
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
 		return HttpResponse(redirect_url)
 
 
@@ -665,6 +669,20 @@ def set_undone(request):
 			index=keys[::-1][int(assignment_id)]
 			data[index].append(task_id+1)
 		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/assignments/in_process.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
+	return HttpResponse('ok')
+
+def add_announcement(request):
+	if request.method=="POST":
+		text=request.POST["text"]
+		print(text)
+		heading=request.POST["heading"]
+		course_id=request.POST["course_id"]
+		with io.open('courses/'+str(course_id)+'/announcements.json', 'r', encoding='utf8') as json_file:
+			data=json.load(json_file)
+		data.append({"heading":heading,"text":text})
+		with io.open('courses/'+str(course_id)+'/announcements.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 	return HttpResponse('ok')

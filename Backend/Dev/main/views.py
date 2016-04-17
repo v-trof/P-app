@@ -194,7 +194,9 @@ def course(request, course_id):
             is_participant=True
         else: is_participant = False
     else: is_participant=False
-    return render(request, 'Pages/course.html',{"is_participant":is_participant, "course":course, "course_data":course_data, "assignments":course_get_assignments(request,course),
+    with io.open('courses/'+str(course_id)+'/announcements.json', 'r', encoding='utf8') as json_file:
+        announcements=json.load(json_file)
+    return render(request, 'Pages/course.html',{"is_participant":is_participant,"announcements":announcements, "course":course, "course_data":course_data, "assignments":course_get_assignments(request,course),
             "breadcrumbs" : [{
                 "href" : "#",
                 "link" : course.name

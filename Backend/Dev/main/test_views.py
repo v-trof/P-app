@@ -188,6 +188,7 @@ def attempt(request):
 				test["tasks"].append(user_question)
 		data = json.dumps(test, ensure_ascii=False)
 		json_file.write(data)
+	context["test"]["user_answers"]=data
 
 	return render(request, 'Pages/test_attempt.html', context)
 
