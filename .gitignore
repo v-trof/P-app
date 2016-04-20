@@ -43,13 +43,18 @@ Temporary Items
 .apdisk
 #-------------------
 #Old dirs & serverdata
-/Frontend
+Frontend
 Backend/Dev/courses
 Backend/Dev/main/files
+App/courses/files
+App/Gulp/node_modules
+App/main/files
 #-------------------
 #sublime files
 *.sublime-project
 *.sublime-workspace
 *.sublime-workspace
+
+Chaches
 *.chache
 *.pyc
