@@ -46,7 +46,6 @@ test_patterns = [
 func_patterns = [
     url(r'^login/$', func_views.login),
     url(r'^login/(?P<course_id>[0-9]+)/$', func_views.login_with_reg),
-    url(r'^templatetest/$', func_views.test),
     url(r'^reg/$', func_views.reg),
     url(r'^create_course/$', func_views.create_course),
     url(r'^set_done/$', func_views.set_done),
