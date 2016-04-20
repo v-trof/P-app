@@ -1,0 +1,10 @@
+<div class="group">
+	<h3>{{ group_title }}</h3>
+	{% for user in group_members %}
+		<a class="--card" href="/user/{{user.id}}">
+			{% include "Elements/Cards/user/" %}
+		</a>
+	{% empty %}
+		<div class="__indicator --empty">Пустая группа</div>
+	{% endfor %}
+</div>

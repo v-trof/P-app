@@ -1,0 +1,8 @@
+{
+	"elements" : [],
+	"styles": ["#&"],
+	"scripts": ["#&/groups_edit"],
+	"fixes": [],
+	"template": "1col",
+	"title": "Groups {{ course.name }}"
+}

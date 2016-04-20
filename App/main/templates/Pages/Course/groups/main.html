@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Groups {{ course.name }}</title>
+	
+	<style> 
+		{% include "Styles/Pages/Course/groups/group.css" %} 
+		{% include "Styles/Pages/Course/groups.css" %} 
+		{% include "Styles/Elements/Cards/user.css" %} 
+		{% include "Styles/Page_templates/1col.css" %} 
+		{% include "Styles/Elements/Cards/small.css" %} 
+		{% include "Styles/Layout/header.css" %} 
+		{% include "Styles/Pages/Course/groups/Linkbox.css" %} 
+		{% include "Styles/Cards/main.css" %} 
+	</style>
+</head>
+<body>
+	{% include "Elements/Layout/header/main.html" %}
+<section class="main">
+	{% if course_data.user_status == "moderator" or course_data.user_status == "administrator" or course_data.user_status == "teacher" %}
+		{% include "Pages/Course/groups/Linkbox/teacher/main.html" %}
+	{% else %}
+		{% include "Pages/Course/groups/Linkbox/student/main.html" %}
+	{% endif %}
+	
+	<section class="teachers --accordion">
+		<h2>Преподаватели</h2>
+		{% for group_title, group_members in course.groups %}
+			{% include "Pages/Course/groups/group/main.html" %}
+		{% endfor %}
+	</section>
+	
+	<section class="students --accordion">
+		<h2>Ученики</h2>
+		{% for group_title, group_members in course.groups %}
+			{% include "Pages/Course/groups/group/main.html" %}
+		{% endfor %}
+	</section>
+</section>
+	<script> 
+		{% include "Scripts/Pages/Course/groups/groups_edit.js" %} 
+	</script>
+</body>
+</html>
