@@ -159,6 +159,10 @@ def ui_kit(request):
         },
         "user": {
             "name": "Sample User"
+        },
+        "announcement": {
+            "heading": "sample_announcement",
+            "text": "sample_text"
         }
     }
     return render(request, 'Pages/UI_kit/main.html', context)

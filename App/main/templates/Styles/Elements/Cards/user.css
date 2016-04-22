@@ -1,0 +1,14 @@
+.card.--user {
+  display: flex;
+  flex-direction: row; }
+  .card.--user .__user-avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%; }
+  .card.--user .__user-info {
+    margin-left: 0.75rem; }
+    .card.--user .__user-info .__user-name {
+      margin: 0;
+      font-size: 1rem; }
+    .card.--user .__user-info .__user-state {
+      color: #516a76; }

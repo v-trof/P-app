@@ -1,11 +1,11 @@
 <img src="{{ user.avatar.url }}" class="__user-avatar">
 <div class="__user-info">
 	<h4 class="__user-name">{{ user.name }}</h4>
-	<span class="__user-state">
+	<div class="__user-state">
 		{% if user.is_teacher %}
 			Преподаватель
 		{% else %}
 			Ученик
 		{% endif %}
-	</span>
+	</div>
 </div>

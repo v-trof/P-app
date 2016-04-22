@@ -1,5 +1,6 @@
 {
-	"elements": ["Cards/main","Cards/course", "Cards/user"],
+	"elements": ["Cards/main","Cards/course", "Cards/user", 
+				"Cards/announcement", "Cards/marks"],
 	"scripts": [],
 	"styles": ["#&"],
 	"fixes": [],

@@ -1,5 +1,5 @@
 {
-	"elements": [],
+	"elements": ["Cards/main"],
 	"scripts": [],
-	"styles": ["Elements/Cards/main", "#&"]
+	"styles": ["#&"]
 }
