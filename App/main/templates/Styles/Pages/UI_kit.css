@@ -1,0 +1,12 @@
+.UI_kit-box {
+  margin-bottom: 2.25rem; }
+  .UI_kit-box.--horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: top; }
+    .UI_kit-box.--horizontal .__item {
+      width: 100%; }
+    .UI_kit-box.--horizontal .__description {
+      width: 50%;
+      margin-left: 1.5rem;
+      color: #263238; }

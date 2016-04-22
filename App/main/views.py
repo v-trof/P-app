@@ -2,131 +2,10 @@
 from django.shortcuts import render
 from django.template import Context
 from .models import User, Course
-from main.func_views import *
-from main.test_views import *
 import io
 import json
 
 def home(request):
-    # sample data
-    # """
-    # breadcrumbs = request.path
-    # print(breadcrumbs)
-    """ courses = [
-        {
-            "subject": "История",
-            "courses": [
-                {
-                    "name": "Зарубежная история",
-                    "id": "3",
-                    "teacher": "smb",
-                    "tests":{
-                        "done": 0,
-                        "total": 3
-                    },
-                    "materials":{
-                        "done": 1,
-                        "total": 9
-                    },
-                },
-                {
-                    "name": "История России",
-                    "id": "4",
-                    "teacher": "smb",
-                    "tests":{
-                        "done": 14,
-                        "total": 16
-                    },
-                    "materials":{
-                        "done": 37,
-                        "total": 37
-                    },
-                }
-            ]
-        },
-
-    ]"""
-    homework = [
-        {
-            "name": "История",
-            "courses": [
-                {
-                    "name": "Зарубежная история",
-                    "course_title_lat": "kurs-a",
-                    "course_teacher": "smb",
-                    "tasks": [{"tasks": [{
-                        "traditional": False,
-                        "content": {
-                            "tests": [{
-                                "done": False,
-                                "title": "Короли Швеции",
-                                "link": "?course_id=3&test_id=3"
-                            }],
-                            "materials": []
-                        },
-                        "done": False
-                    }], "due_date": "10 апреля"}]
-                }
-            ]
-        }
-    ]
-    marks = [
-        {
-            "name": "История",
-            "courses": [
-                {
-                    "name": "Зарубжная история",
-                    "id": "3",
-                    "marks": [
-                        # {
-                        # #good, medium, bad
-                        #     "quality": "good",
-                        #     "value": 5
-                        # }
-                    ]
-                },
-                 {
-                    "name": "История России",
-                    "id": "4",
-                    "marks": [
-                            #good, medium, bad
-                        {
-                            "quality": "good",
-                            "value": 5
-                        },
-                        {
-                            "quality": "good",
-                            "value": 5
-                        },
-                        {
-                           "quality": "good",
-                            "value": 4
-                        },
-                        {
-                            "quality": "good",
-                            "value": 5
-                        },
-                        {
-                            "quality": "medium",
-                            "value": 3
-                        },
-                        {
-                            "quality": "bad",
-                            "value": 2
-                        },
-                        {
-                           "quality": "good",
-                            "value": 4
-                        },
-                        {
-                            "quality": "good",
-                            "value": 4
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
     if request.user.is_anonymous():
         return render(request, 'Pages/home.html')
     courses=[]
@@ -264,3 +143,22 @@ def results(request):
     test_id =  request.GET["test_id"]
     context = {"course":Course.objects.get(id=course_id), "test_id":test_id, "results":get_results(request, course_id, test_id), "attempt":get_attempt_info(request, course_id, test_id), "test":get_test_info(request, course_id, test_id)}
     return render(request, 'Pages/results.html', context)
+
+def ui_kit(request):
+    context = {
+        "course": {
+            "name": "sample_course",
+            "data": {
+                "materials": {
+                    "published": ["a","b","c"]
+                },
+                "tests": {
+                    "published": ["saple_test"]
+                }
+            }
+        },
+        "user": {
+            "name": "Sample User"
+        }
+    }
+    return render(request, 'Pages/UI_kit/main.html', context)

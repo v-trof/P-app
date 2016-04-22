@@ -1,6 +1,5 @@
 {
 	"elements" : [],
-	"styles": ["Layout/header","#&"],
-	"scripts": [],
-	"fixes": []
+	"styles": ["#&", "Page_templates/main"],
+	"scripts": []
 }

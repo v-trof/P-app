@@ -1,0 +1,19 @@
+@import "../../vars/main.sass"
+
+.card
+	display: flex
+	flex-direction: column
+	box-sizing: border-box
+	margin-bottom: $margin--m
+	padding: $padding--m
+	border-radius: $border--m
+	background: $white
+	color: $grey--dark
+	& .__heading
+		+h4()
+	& .__overall-info
+		display: flex
+		flex-direction: row
+	& .__content
+		margin: 0
+	+box-shadow(1)

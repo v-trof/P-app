@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>UI kit</title>
+	
+	<style> 
+		{% include "Styles/Elements/Cards/course.css" %} 
+		{% include "Styles/Page_templates/main.css" %} 
+		{% include "Styles/Pages/UI_kit.css" %} 
+		{% include "Styles/Elements/Cards/user.css" %} 
+		{% include "Styles/Elements/Cards/main.css" %} 
+		{% include "Styles/Page_templates/1col.css" %} 
+	</style>
+</head>
+<body>
+	{# {% include "Elements/Layout/header/main.html" %} #}
+<section class="main">
+	<h2>Cards</h2>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{% include "Elements/Cards/main/main.html" with heading="Sample card" content="The most default card in the world!"%}
+		</div>
+		<div class="__description">
+			<strong>Classes:</strong> .card <br>
+			<strong>Blocks:</strong> icons <br>
+			<strong>Dependencies:</strong> Styles/self(&sharp;&amp;) Modules/tooltip<br>
+			<strong>Usage:</strong> When there is no special card
+		</div>
+	</div>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{% include "Elements/Cards/course/main.html"%}
+		</div>
+		<div class="__description">
+			<strong>Classes:</strong> .card .--course<br>
+			<strong>Blocks:</strong> -<br>
+			<strong>Dependencies:</strong> Styles/self(&sharp;&amp;), Elements/Cards/main <br>
+			<strong>Usage:</strong> Display info about course
+		</div>
+	</div>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{% include "Elements/Cards/user/main.html"%}
+		</div>
+		<div class="__description">
+			<strong>Classes:</strong> .card .--user (.--extended)<br>
+			<strong>Blocks:</strong> info <br>
+			<strong>Dependencies:</strong> Styles/self(&sharp;&amp;), Elements/Cards/main <br>
+			<strong>Usage:</strong> Display info about user and optional information
+		</div>
+	</div>
+</section>
+	<script> 
+	</script>
+</body>
+</html>

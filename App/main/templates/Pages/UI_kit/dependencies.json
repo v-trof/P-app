@@ -1,0 +1,8 @@
+{
+	"elements": ["Cards/main","Cards/course", "Cards/user"],
+	"scripts": [],
+	"styles": ["#&"],
+	"fixes": [],
+	"title" : "UI kit",
+	"template": "1col"
+}

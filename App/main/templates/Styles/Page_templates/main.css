@@ -1,0 +1,22 @@
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: "Roboto", "Noto", "PT sans", "Verdana", "Arial", sans;
+  font-size: 1rem;
+  line-height: 1.5;
+  background: #ECEFF1; }
+
+* {
+  position: relative; }
+
+h2 {
+  color: #0f0f0f;
+  font-size: 2rem;
+  font-weight: 300;
+  margin: 0; }
+
+h3 {
+  color: #516a76;
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0; }

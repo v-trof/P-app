@@ -1,0 +1,36 @@
+<section>
+	<h2>Cards</h2>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{% include "Elements/Cards/main/" with heading="Sample card" content="The most default card in the world!"%}
+		</div>
+		<div class="__description">
+			<strong>Classes:</strong> .card <br>
+			<strong>Blocks:</strong> icons <br>
+			<strong>Dependencies:</strong> Styles/self(&sharp;&amp;) Modules/tooltip<br>
+			<strong>Usage:</strong> When there is no special card
+		</div>
+	</div>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{% include "Elements/Cards/course/"%}
+		</div>
+		<div class="__description">
+			<strong>Classes:</strong> .card .--course<br>
+			<strong>Blocks:</strong> -<br>
+			<strong>Dependencies:</strong> Styles/self(&sharp;&amp;), Elements/Cards/main <br>
+			<strong>Usage:</strong> Display info about course
+		</div>
+	</div>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{% include "Elements/Cards/user/"%}
+		</div>
+		<div class="__description">
+			<strong>Classes:</strong> .card .--user (.--extended)<br>
+			<strong>Blocks:</strong> info <br>
+			<strong>Dependencies:</strong> Styles/self(&sharp;&amp;), Elements/Cards/main <br>
+			<strong>Usage:</strong> Display info about user and optional information
+		</div>
+	</div>
+</section>
