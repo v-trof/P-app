@@ -1,0 +1,5 @@
+{
+	"elements" : ["Layout/header"],
+	"styles": ["Page_templates/main"],
+	"scripts": []
+}

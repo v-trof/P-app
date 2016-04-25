@@ -17,43 +17,39 @@ dependencies.add(page_dependencies, template_dependencies)
 blocks = [block[0] for block in os.walk(page_path)]
 for block_path in blocks:
 	block_path = block_path.replace("\\", "/")
-	
 	build.dev_file(block_path)
 
 	block_dependencies = dependencies.get(block_path)
 	dependencies.add(page_dependencies, block_dependencies)
 
-for element in page_dependencies["elements"]:
+#building all elements
+elements_done = set()
+elements_current = set()
+while elements_done != page_dependencies["elements"]:
 	#fix for Card/{{cardname}} to work
-	if element.split("/")[0][-1] != "s":
-		element_arr = element.split("/")
-		element_arr[0] += "s"
-		element = "/".join(element_arr)
-	element_path = path["elements"] + element
-	
-	element_dependencies =  dependencies.get(element_path)
-	dependencies.add(page_dependencies, element_dependencies)
+	elements_current = page_dependencies["elements"] \
+						- elements_done
 
-#after all elements are added to dependencies
-old_elements = set()
-while len(old_elements) != len(page_dependencies["elements"]):
-	old_elements |= page_dependencies["elements"]
-	print("O", old_elements)
+	print("Todos", page_dependencies["elements"] - elements_done)
 
-	for element in old_elements:
+	for element in elements_current:
+		if element.split("/")[0][-1] != "s" and element.split("/")[0] != "Layout":
+			element_arr = element.split("/")
+			element_arr[0] += "s"
+			element = "/".join(element_arr)
+
 		element_path = path["elements"] + element
-		print(element_path)
+
+		element_dependencies =  dependencies.get(element_path)
+		dependencies.add(page_dependencies, element_dependencies)
 
 		element_blocks = [block[0] for block in os.walk(element_path)]
-
 		for block_path in element_blocks:
-			print(block_path)
 			block_path = block_path.replace("\\", "/")
 			build.dev_file(block_path)
 
 			block_dependencies = dependencies.get(block_path)
 			dependencies.add(page_dependencies, block_dependencies)
-	print("P", page_dependencies["elements"])
+	elements_done |= elements_current
 
-build.dev_file(page_path)
 build.template(page_dependencies, page_path)

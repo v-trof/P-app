@@ -1,9 +1,10 @@
 {
 	"elements": ["Cards/main","Cards/course", "Cards/user", 
-				"Cards/announcement", "Cards/marks"],
+				"Cards/announcement",
+				"Buttons/main", "Buttons/ghost", "Buttons/flat"],
 	"scripts": [],
-	"styles": ["#&"],
+	"styles": [],
 	"fixes": [],
 	"title" : "UI kit",
-	"template": "1col"
+	"template": "default"
 }

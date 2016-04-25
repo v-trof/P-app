@@ -1,0 +1,10 @@
+@import "../../vars/main.sass"
+
+button.--ghost
+	font-weight: bold
+	color: $font__color--accent
+	background: transparent
+	transition: $time--s
+	&:hover, &:focus
+		box-shadow: none
+		color: darken($font__color--accent, $darkness-delta__focus--percent)

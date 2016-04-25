@@ -1,6 +1,6 @@
 {
 	"elements" : [],
-	"styles": ["#&"],
+	"styles": [],
 	"scripts": ["#&/groups_edit"],
 	"fixes": [],
 	"template": "1col",

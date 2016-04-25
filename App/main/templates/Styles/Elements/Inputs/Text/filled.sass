@@ -1,0 +1,19 @@
+@import "../../../vars/main.sass"
+
+.input.--filled
+	display: flex
+	flex-direction: row
+	
+	*
+		display: block
+
+	input
+		height: $base + $padding--s*2
+		margin: -$padding--s 0
+		padding: 0 $padding--s
+		font-weight: 300
+		color: $white
+		background: rgba($white, $darkness-delta__focus)
+		border-radius: $border--m
+		&:hover, &:focus
+			background: rgba($white, $darkness-delta__focus*2)

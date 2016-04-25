@@ -1,0 +1,8 @@
+.header > .__breadcrumbs {
+  display: flex;
+  align-items: center; }
+  .header > .__breadcrumbs svg {
+    display: block;
+    width: 0.75rem;
+    height: 0.75rem;
+    fill: #232d66; }

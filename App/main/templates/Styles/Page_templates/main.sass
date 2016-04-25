@@ -9,6 +9,9 @@ html, body
 	background: $grey--light
 *
 	position: relative
+	box-sizing: border-box
+	&:focus
+		outline: 0
 
 h2
 	+h2()
@@ -19,3 +22,8 @@ h3
 a
 	font-weight: bold
 	color: $font__color--accent
+	text-decoration: none
+	transition: $time--s
+
+img
+	background: $grey--light

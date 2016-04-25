@@ -8,7 +8,7 @@ path = {
 
 def dev_file(path):
 	template_path = path[len("../../templates/"):]
-	
+	print("Building:", template_path)
 	file_dev = open(path + "/dev.html", "r")
 	html = file_dev.read()
 	file_dev.close()

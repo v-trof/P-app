@@ -4,16 +4,27 @@
 	<title>UI kit</title>
 	
 	<style> 
+		{% include "Styles/Elements/Cards/announcement.css" %} 
+		{% include "Styles/Elements/Inputs/Text/main.css" %} 
 		{% include "Styles/Elements/Cards/user.css" %} 
+		{% include "Styles/Elements/Buttons/main.css" %} 
 		{% include "Styles/Pages/UI_kit.css" %} 
+		{% include "Styles/Elements/Layout/header/search.css" %} 
+		{% include "Styles/Page_templates/default.css" %} 
+		{% include "Styles/Elements/Buttons/flat.css" %} 
+		{% include "Styles/Elements/Inputs/Text/icon.css" %} 
+		{% include "Styles/Elements/Layout/header/user-info.css" %} 
+		{% include "Styles/Elements/Buttons/ghost.css" %} 
+		{% include "Styles/Elements/Inputs/Text/filled.css" %} 
+		{% include "Styles/Elements/Layout/header/main.css" %} 
 		{% include "Styles/Elements/Cards/course.css" %} 
-		{% include "Styles/Page_templates/main.css" %} 
+		{% include "Styles/Elements/Layout/header/breadcrumbs.css" %} 
 		{% include "Styles/Elements/Cards/main.css" %} 
-		{% include "Styles/Page_templates/1col.css" %} 
+		{% include "Styles/Page_templates/main.css" %} 
 	</style>
 </head>
 <body>
-	{# {% include "Elements/Layout/header/main.html" %} #}
+	{% include "Elements/Layout/header/main.html" %}
 <section class="main">
 	<section>
 		<h2>Cards</h2>
@@ -62,8 +73,39 @@
 			</div>
 		</div>
 	</section>
+	
+	<section>
+		<h2>Buttons</h2>
+		<div class="UI_kit-box --horizontal">
+			<div class="__item">
+				{% include "Elements/Buttons/main/main.html" %}
+			</div>
+			<div class="__description">
+				<strong>Usage:</strong> Default button
+			</div>
+		</div>
+		<div class="UI_kit-box --horizontal">
+			<div class="__item">
+				{% include "Elements/Buttons/flat/main.html" %}
+			</div>
+			<div class="__description">
+				<strong>Usage:</strong> If rising looks quite unestetic
+			</div>
+		</div>
+		<div class="UI_kit-box --horizontal">
+			<div class="__item">
+				{% include "Elements/Buttons/ghost/main.html" %}
+			</div>
+			<div class="__description">
+				<strong>Usage:</strong> Secondary actions
+			</div>
+		</div>
+	</section>
+	
 </section>
+	{% include "Scripts/jQuery.html" %}
 	<script> 
+		{% include "Scripts/Elements/Layout/header/build.js" %} 
 	</script>
 </body>
 </html>

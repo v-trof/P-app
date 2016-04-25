@@ -163,6 +163,18 @@ def ui_kit(request):
         "announcement": {
             "heading": "sample_announcement",
             "text": "sample_text"
+        },
+        "breadcrumbs" : [{
+            "href" : "/Курсы",
+            "link" : "/course/1"
+        },{
+            "href" : "#",
+            "link" : "Заявки"
+        }],
+        "request": {
+            "user": {
+                "name": "Sample User"
+            }
         }
     }
     return render(request, 'Pages/UI_kit/main.html', context)

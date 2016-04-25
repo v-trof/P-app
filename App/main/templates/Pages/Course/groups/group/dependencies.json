@@ -1,6 +1,6 @@
 {
 	"elements" : ["Card/user"],
-	"styles": ["#&"],
+	"styles": [],
 	"scripts": [],
 	"fixes": []
 }

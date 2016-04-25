@@ -13,13 +13,14 @@ $darkness-delta__font: 7%
 $font__color--black: darken($black, $darkness-delta__font)
 $font__color--dark : darken($grey--dark, $darkness-delta__font)
 $font__color--grey : darken($grey--semidark, $darkness-delta__font)
+$font__color--white : darken($white, $darkness-delta__font)
 
 $font__color--positive : darken($green, $darkness-delta__font)
 $font__color--negative : darken($red, $darkness-delta__font)
 $font__color--warning  : darken($yellow, $darkness-delta__font)
 $font__color--accent   : darken($color--accent, $darkness-delta__font)
 
-$font__color--accent--darken : darken($font__color--accent, $darkness-delta__focus)
+$font__color--accent--darken : darken($font__color--accent, $darkness-delta__focus--percent)
 
 //font sizes
 $font__size--m: 1rem
@@ -28,11 +29,12 @@ $font__size--l: $font__size--m*1.25
 $font__size--xl: $font__size--m*2
 //line height
 $line--m: 1.5
+$line--l: 3
 $line--condensed: $line--m*.8
 
 $base: $line--m*1rem
 
-//hadings
+//headings
 =h2()
 	color: $font__color--black
 	font-size: $font__size--xl

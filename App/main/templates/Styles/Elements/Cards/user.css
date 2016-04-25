@@ -7,8 +7,9 @@
     border-radius: 50%; }
   .card.--user .__user-info {
     margin-left: 0.75rem; }
-    .card.--user .__user-info .__user-name {
+    .card.--user .__user-info .__name {
       margin: 0;
-      font-size: 1rem; }
-    .card.--user .__user-info .__user-state {
+      font-size: 1rem;
+      font-weight: 400; }
+    .card.--user .__user-info .__state {
       color: #516a76; }

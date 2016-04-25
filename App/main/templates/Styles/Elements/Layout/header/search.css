@@ -1,0 +1,6 @@
+.header > .__search {
+  display: flex;
+  align-items: center;
+  margin: 0 2.25rem;
+  width: 100%;
+  max-width: 50rem; }

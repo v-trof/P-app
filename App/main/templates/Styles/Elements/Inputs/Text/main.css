@@ -1,0 +1,11 @@
+input {
+  border: 0;
+  font-size: 1rem;
+  font-family: "Roboto", "Noto", "PT sans", "Verdana", "Arial", sans;
+  background: rgba(250, 250, 250, 0.25);
+  transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1); }
+  input:focus {
+    outline: none; }
+
+input[type="text"], input[type="email"], input[type="password"], .input {
+  width: 100%; }
