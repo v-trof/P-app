@@ -47,6 +47,7 @@ Frontend
 Backend/Dev/courses
 Backend/Dev/main/files
 App/courses
+App/**/*.css
 App/Gulp/node_modules
 App/main/files
 #-------------------
