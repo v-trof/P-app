@@ -5,6 +5,7 @@
 		<h4  class="card__heading">В курсе {{course.object.name}}</h4>
 		{% if course.updates.new_marks|length > 0 %}
 			<div class="marks"><b>{{ course.updates.new_marks|length }}</b> {{course.updates.new_marks|length|form_for_num:"новая новые новых" }} {{course.updates.new_marks|length|form_for_num:"оценка оценки оценок" }}</div>
+			}
 		{% endif %}
 		{% if course.updates.new_students|length > 0 %}
 			<div class="joined"><b>{{course.updates.new_students|length}}</b> 

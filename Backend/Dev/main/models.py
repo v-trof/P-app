@@ -143,20 +143,20 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		return data
 
-	def task_set_undone(assignment_id, task_id, course_id):
-		with io.open('courses/' + str(course_id) + '/users/' + str(request.user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
+	def task_set_undone(self,user,assignment_id, task_id, course_id):
+		with io.open('courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
 			data = collections.OrderedDict(
 				sorted(json.load(json_file).items()))
 			keys = list(data.keys())
 			index = keys[::-1][int(assignment_id)]
 			data[index].append(task_id + 1)
-		with io.open('courses/' + str(course_id) + '/users/' + str(request.user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as json_file:
+		with io.open('courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return 0
 
-	def task_set_done(assignment_id, task_id, course_id):
-		with io.open('courses/' + str(course_id) + '/users/' + str(request.user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
+	def task_set_done(self,assignment_id, task_id, course_id):
+		with io.open('courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
 			data = collections.OrderedDict(
 				sorted(json.load(json_file).items()))
 			keys = list(data.keys())
@@ -165,7 +165,7 @@ class CourseManager(models.Manager):
 			del data[index][task]
 			if len(data[index]) == 0:
 				del data[index]
-		with io.open('courses/' + str(course_id) + '/users/' + str(request.user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as json_file:
+		with io.open('courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return 0
@@ -310,7 +310,7 @@ class CourseManager(models.Manager):
 			#   course_data["user_status"]="moderator"
 			# elif str(user.id) in data["spectators"]:
 			#   course_data["user_status"]="spectator"
-			elif str(request.user.name) in data["users"]:
+			elif str(user.name) in data["users"]:
 				course_data["user_status"] = "user"
 			else: course_data["user_status"] = "guest"
 			course_data["material_list"] = []
@@ -447,9 +447,9 @@ class CourseManager(models.Manager):
 			pending_users = data["pending_users"]["Заявки"]
 		return pending_users
 
-	def check_participance(self,course):
-		if request.user.participation_list:
-			if str(course.id) in request.user.participation_list.split(' '):
+	def check_participance(self,course,user):
+		if user.participation_list:
+			if str(course.id) in user.participation_list.split(' '):
 				is_participant = True
 			else:
 				is_participant = False
@@ -521,10 +521,10 @@ class UserManager(UserManager):
 
 	# loading courses for home page
 
-	def load_courses(self):
+	def load_courses(self,user):
 		courses = {}
-		if self.participation_list:
-			course_list = self.participation_list.split(" ")
+		if user.participation_list:
+			course_list = user.participation_list.split(" ")
 			for course_id in course_list:
 				course = Course.objects.get(id=course_id)
 				courses[course.subject] = []
@@ -532,12 +532,12 @@ class UserManager(UserManager):
 				course_data = {}
 				course = Course.objects.get(id=course_id)
 				course_data["object"] = course
-				homework = user_get_course_assignments(request, course)
+				homework = user_get_assignments(course=course)
 				with io.open('courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 						data = json.load(data_file)
 				course_data["data"] = data;
 				marks = []
-				for marks_file in glob.glob('courses/' + str(course.id) + '/users/' + str(self.id) + '/tests/results/*.json'):
+				for marks_file in glob.glob('courses/' + str(course.id) + '/users/' + str(user.id) + '/tests/results/*.json'):
 					with io.open(marks_file, 'r', encoding='utf8') as data_file:
 						data = json.load(data_file)
 						mark = {}
@@ -593,16 +593,17 @@ class UserManager(UserManager):
 				user_data["updates"]["new_marks"]["value"] = []
 				user_data["updates"]["new_marks"]["quality"] = []
 				for user in data["users"]:
-					for test_result in glob.glob('courses/' + str(course.id) + '/users/' + str(user) + '/tests/results/*.json'):
-						print(test_result)
-						with io.open(test_result, 'r', encoding='utf8') as result_file:
-							result = json.load(result_file)
-							if user.id in result["unseen_by"]:
-								user_data["updates"]["new_marks"][
-									"value"].append(result["marks"])
-								user_data["updates"]["new_marks"][
-									"quality"].append(result["mark_quality"])
-				data["teachers"][str(user.id)]["new_users"] = {}
+					if os.path.exists('courses/' + str(course.id) + '/users/' + str(user) + '/tests/results/'):
+						for test_result in glob.glob('courses/' + str(course.id) + '/users/' + str(user) + '/tests/results/*.json'):
+							print(test_result)
+							with io.open(test_result, 'r', encoding='utf8') as result_file:
+								result = json.load(result_file)
+								if user.id in result["unseen_by"]:
+									user_data["updates"]["new_marks"][
+										"value"].append(result["marks"])
+									user_data["updates"]["new_marks"][
+										"quality"].append(result["mark_quality"])
+				data["teachers"][str(object.id)]["new_users"] = {}
 			with io.open('courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
 				saving_data = json.dumps(data, ensure_ascii=False)
 				json_file.write(saving_data)
@@ -628,20 +629,18 @@ class UserManager(UserManager):
 						user_data["courses"][str(course.id)]["updates"]["requesting_users"] = data[
 												 "pending_users"]["Заявки"]
 					user_data["courses"][str(course.id)]["updates"][
-											 "new_marks"] = {}
-					user_data["courses"][str(course.id)]["updates"][
-											 "new_marks"]["value"] = []
-					user_data["courses"][str(course.id)]["updates"][
-											 "new_marks"]["quality"] = []
+											 "new_marks"] = []
+					mark={}
 					for user in data["users"]:
 						for test_result in glob.glob('courses/' + str(course.id) + '/users/' + str(user) + '/tests/results/*.json'):
 							with io.open(test_result, 'r', encoding='utf8') as result_file:
 								result = json.load(result_file)
-								if object.id in result["unseen_by"]:
-									user_data["courses"][str(course.id)]["updates"]["new_marks"][
-															 "value"].append(result["marks"])
-									user_data["courses"][str(course.id)]["updates"]["new_marks"][
-															 "quality"].append(result["mark_quality"])
+								if user.id in result["unseen_by"]:
+									mark["value"]=result["marks"]
+									mark["quality"]=result["mark_quality"]
+							user_data["courses"][str(course.id)]["updates"][
+											 "new_marks"].append(mark)
+					print(user_data)
 		return user_data
 
 	def change_data(self, user, data_list):
@@ -653,7 +652,7 @@ class UserManager(UserManager):
 	def get_view_permission(self,user,requesting_user):
 		if user.participation_list and requesting_user.participation_list:
 			classmates = any(i in user.participation_list.split(' ')
-				for i in request.user.participation_list.split(' '))
+				for i in user.participation_list.split(' '))
 		else:
 			classmates = False
 		if requesting_user.id == user.id or (user.permission_level == '0') or (user.permission_level == '1' and requesting_user.is_teacher) or (user.permission_level == '2' and not requesting_user.is_teacher) or (user.permission_level == '3' and classmates):
@@ -663,17 +662,15 @@ class UserManager(UserManager):
 		return contacts_view_allowed
 
 	def reset_password(self, email):
-		if request.method == 'POST':
-			email = request.POST['email']
-			if User.objects.filter(username=email):
-				user = User.objects.get(username=email);
-				length = 13
-				chars = string.ascii_letters + string.digits
-				random.seed = (os.urandom(1024))
-				new_pass = ''.join(random.choice(chars) for i in range(length))
-				while User.objects.filter(password=new_pass):
-					new_pass = ''.join(random.choice(chars)
-									   for i in range(length))
+		if User.objects.filter(username=email):
+			user = User.objects.get(username=email);
+			length = 13
+			chars = string.ascii_letters + string.digits
+			random.seed = (os.urandom(1024))
+			new_pass = ''.join(random.choice(chars) for i in range(length))
+			while User.objects.filter(password=new_pass):
+				new_pass = ''.join(random.choice(chars)
+					for i in range(length))
 				setattr(user, 'password', strip_tags(make_password(new_pass)))
 				user.save()
 				send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, ваш временный пароль: ' + new_pass + '. Зайдите в личный кабинет для его изменения', 'p.application.bot@gmail.com',
@@ -769,24 +766,24 @@ class TestManager(models.Manager):
 
 			if test_id in course_info['tests']['unpublished']:
 				course_info['tests']['unpublished'].remove(test_id)
-
 		with io.open('courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
+		print("dfgdfgg")
 		return 0
 
-	def save(self, json_file, course_id, test_id):
-		json_file_path = 'courses/' + course_id + '/Tests/' + test_id + '.json'
-		if not os.path.isfile(json_file_path):
-			with io.open('courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
-				course_info = json.load(info_file)
-			course_info['tests']['amount'] += 1
-			course_info['tests']['unpublished'].append(test_id)
-			test_id = str(course_info['tests']['amount'])
-			with io.open('courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
-				info_file.write(json.dumps(course_info, ensure_ascii=False))
-			with io.open(json_file_path, 'w', encoding='utf8') as test_file:
-				test_file.write(json_file)
-			return 0
+	def save(self, json_file,course_id, test_id):
+		json_file_path = 'courses/' + course_id + '/tests/' + test_id + '.json'
+		with io.open('courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
+			course_info = json.load(info_file)
+		course_info['tests']['amount'] += 1
+		course_info['tests']['unpublished'].append(test_id)
+		test_id = str(course_info['tests']['amount'])
+		with io.open('courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
+			info_file.write(json.dumps(course_info, ensure_ascii=False))
+		with io.open(json_file_path, 'w', encoding='utf8') as test_file:
+			test_file.write(json_file)
+		print(json_file_path)
+		return 0
 
 	def load(self, course_id, test_id):
 		with io.open('courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as json_file:
@@ -828,52 +825,8 @@ class TestManager(models.Manager):
 		with io.open('courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 			return 0
-
-	def attempt(self,course_id,test_id):
-		# creates or continues attempt
-		# loads test file
-		with io.open('courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as json_file:
-			with io.open('courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
-				course_info = json.load(info_file)
-				course = {"id": course_id}
-				test = {
-					"id": test_id,
-					"loaded": 1,
-					"json": json.load(json_file),
-					"published" : test_id in course_info["tests"]["published"]
-				}
-				context =  {"test": test, "course": course}
-				context["breadcrumbs"] =[{
-						"href" : "/course/"+str(course_id),
-						"link" : Course.objects.get(id=course_id).name
-					},{
-						"href" : "#",
-						"link" : test["json"]["title"]
-					}]
-		if not os.path.exists('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'):
-			os.makedirs('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/')
-		if not os.path.exists('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/results/'):
-			os.makedirs('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/results/')
-		if os.path.exists('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json'):
-			with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
-				data=json.load(json_file)
-		with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
-			test={}
-			test["tasks"]=[]
-			with io.open('courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
-				test_info=json.load(info_file)
-				for question in test_info["tasks"]:
-					user_question=[]
-					for item in question["answer_items"]:
-						value=check_question(request,item)
-						user_question.append(value)
-					test["tasks"].append(user_question)
-			data = json.dumps(test, ensure_ascii=False)
-			json_file.write(data)
-			context["test"]["user_answers"]=data
-			return context
-
-	def check_question(request,item):
+			
+	def check_question(self,item):
 		value={}
 		type=item["class"]
 		if type=="text-answer":
@@ -900,16 +853,60 @@ class TestManager(models.Manager):
 			value["user_answer"] = None
 		return value
 
-	def attempt_save(self,test_id,question_id,task_id,course_id,answer):
-		with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+	def attempt(self,course_id,user,test_id):
+		# creates or continues attempt
+		# loads test file
+		with io.open('courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+			with io.open('courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
+				course_info = json.load(info_file)
+				course = {"id": course_id}
+				test = {
+					"id": test_id,
+					"loaded": 1,
+					"json": json.load(json_file),
+					"published" : test_id in course_info["tests"]["published"]
+				}
+				context =  {"test": test, "course": course}
+				context["breadcrumbs"] =[{
+						"href" : "/course/"+str(course_id),
+						"link" : Course.objects.get(id=course_id).name
+					},{
+						"href" : "#",
+						"link" : test["json"]["title"]
+					}]
+		if not os.path.exists('courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'):
+			os.makedirs('courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/')
+		if not os.path.exists('courses/'+course_id+'/users/'+str(user.id)+'/tests/results/'):
+			os.makedirs('courses/'+course_id+'/users/'+str(user.id)+'/tests/results/')
+		if os.path.exists('courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json'):
+			with io.open('courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+				data=json.load(json_file)
+		with io.open('courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
+			test={}
+			test["tasks"]=[]
+			with io.open('courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+				test_info=json.load(info_file)
+				for question in test_info["tasks"]:
+					user_question=[]
+					for item in question["answer_items"]:
+						value=check_question(item=item)
+						user_question.append(value)
+					test["tasks"].append(user_question)
+			data = json.dumps(test, ensure_ascii=False)
+			json_file.write(data)
+			context["test"]["user_answers"]=data
+			return context
+
+	def attempt_save(self,test_id,question_id,task_id,course_id,answer,user):
+		with io.open('courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			data=json.load(json_file)
-		with io.open('courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'w', encoding='utf8') as json_file:
+		with io.open('courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w', encoding='utf8') as json_file:
 			data["tasks"][task_id][question_id]["user_answer"]=answer
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return 0
 
-	def attempt_check(self,test_id,course_id):
+	def attempt_check(self,request,test_id,course_id):
 		right=0
 		missed=0
 		mistakes=0
@@ -974,8 +971,8 @@ class TestManager(models.Manager):
 		else: mark_quality = "bad"
 		return mark_quality
 	
-	def get_results(self,course_id,test_id):
-		with io.open('courses/'+str(course_id)+'/users/'+str(request.user.id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+	def get_results(self,course_id,test_id,user):
+		with io.open('courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 			test_info=json.load(info_file)
 		return test_info
 	

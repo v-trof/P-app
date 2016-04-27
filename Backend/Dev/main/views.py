@@ -138,7 +138,7 @@ def home(request):
 		user_courses = User.objects.load_self_courses(user=request.user)
 	if request.user.is_teacher:
 		context = {"courses": courses, "user_courses": user_courses,
-				   "user_data": User.objects.get_data(object=request.user)}
+				   "user_data": User.objects.get_data(object=request.user, course_id=False)}
 		return render(request, 'Pages/home.html', context)
 	else:
 		context = {"courses": courses}
@@ -195,7 +195,7 @@ def profile(request, user_id):
 def course(request, course_id):
 	course = Course.objects.get(id=course_id)
 	course_data = Course.objects.get_data(user=request.user, course=course)
-	is_participant=Course.objects.check_participance(course=course)
+	is_participant=Course.objects.check_participance(course=course,user=request.user)
 	announcements=Course.objects.load_announcements(course=course)
 	return render(request, 'Pages/course.html', {"is_participant": is_participant, "announcements": announcements, "course": course, "course_data": course_data, "assignments": Course.objects.get_assignments(user=request.user, course=course),
 												 "breadcrumbs": [{

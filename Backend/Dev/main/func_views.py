@@ -75,7 +75,7 @@ def reg(request):
         is_teacher = request.POST.get('is_teacher', False)
         password = request.POST['password']
         name_last_name = request.POST['name_last_name']
-        message = User.objects.reg(form=form, course_id=course_id, email=email,
+        message = User.objects.reg(form=form, request=request, course_id=course_id, email=email,
                                    is_teacher=is_teacher, password=password, name_last_name=name_last_name)
         if message == 'Данный email уже зарегистрирован':
             return errorHandle(error, email, password, name_last_name)

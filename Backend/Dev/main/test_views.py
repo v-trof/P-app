@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import Context
-from .models import User, Course
+from .models import *
 from . import transliterate
 # from django.core.servers.basehttp import FileWrapper
 import os
