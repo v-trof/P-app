@@ -50,7 +50,7 @@
 	<h2>Buttons</h2>
 	<div class="UI_kit-box --horizontal">
 		<div class="__item">
-			{% include "Elements/Buttons/main/main.html" %}
+			{% include "Elements/Buttons/main/" %}
 		</div>
 		<div class="__description">
 			<strong>Usage:</strong> Default button
@@ -58,7 +58,7 @@
 	</div>
 	<div class="UI_kit-box --horizontal">
 		<div class="__item">
-			{% include "Elements/Buttons/flat/main.html" %}
+			{% include "Elements/Buttons/flat/" %}
 		</div>
 		<div class="__description">
 			<strong>Usage:</strong> If rising looks quite unestetic
@@ -66,10 +66,38 @@
 	</div>
 	<div class="UI_kit-box --horizontal">
 		<div class="__item">
-			{% include "Elements/Buttons/ghost/main.html" %}
+			{% include "Elements/Buttons/ghost/" %}
 		</div>
 		<div class="__description">
 			<strong>Usage:</strong> Secondary actions
+		</div>
+	</div>
+</section>
+
+<section>
+	<h2>Inputs</h2>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{% include "Elements/Inputs/Text/main/" with placeholder="Main" %}
+		</div>
+		<div class="__description">
+			<strong>Usage:</strong> Default text input
+		</div>
+	</div>
+	<div class="UI_kit-box --horizontal --colored-bg">
+		<div class="__item">
+			{% include "Elements/Inputs/Text/Filled/icon/" with placeholder="Filled" %}
+		</div>
+		<div class="__description">
+			<strong>Usage:</strong> Displayed on colored background
+		</div>
+	</div>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{% include "Elements/Inputs/Text/textarea/" with placeholder="Textarea" %}
+		</div>
+		<div class="__description">
+			<strong>Usage:</strong> Big amounts of text
 		</div>
 	</div>
 </section>

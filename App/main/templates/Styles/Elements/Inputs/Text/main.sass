@@ -1,13 +1,63 @@
 @import "../../../vars/main.sass"
 
+$sacle__font--m-to-s: $font__size--s / $font__size--m
+
 input
 	border: 0
-	font-size: $font__size--m
 	font-family: $sans
+	font-size: $font__size--m
+	color: $font__color--dark
 	background: rgba($white, 0.25)
 	transition: $time--s
 	&:focus
 		outline: none
 
+
 input[type="text"], input[type="email"], input[type="password"], .input
 	width: 100%
+
+
+.input.--text
+	display: flex
+	flex-direction: column
+	align-items: center
+	margin-top: $margin--m
+	
+	*
+		display: block
+	
+	label
+		position: absolute
+		top: $padding--s
+		left: $border--s
+		font-size: $font__size--m
+		color: $font__color--grey
+		transition: $time--s
+		z-index: 0
+		&.--top
+			font-size: $font__size--s
+			transform: translateY(-$padding--l)
+
+	.__indicator
+		height: $border--s
+		width: 0
+		margin-top: -$border--s
+		background: $color--accent
+		transition: $time--s
+		z-index: 2
+
+	.__value
+		width: 100%
+		padding: $padding--s $border--s
+		background: transparent
+		border-bottom: $grey--semilight solid $border--s
+		z-index: 1
+		&:focus
+			& ~ .__indicator
+				width: 100%
+			&:focus ~ label
+				@extend label.--top
+				color: $font__color--accent
+
+::-webkit-input-placeholder
+	color: $grey--semilight

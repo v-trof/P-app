@@ -1,8 +1,9 @@
 button.--ghost {
   font-weight: bold;
   color: #0c84e4;
+  fill: #0c84e4;
   background: transparent;
   transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1); }
   button.--ghost:hover, button.--ghost:focus {
     box-shadow: none;
-    color: #07497e; }
+    color: #65b6f7; }

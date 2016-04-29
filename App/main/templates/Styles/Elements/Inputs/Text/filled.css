@@ -10,6 +10,6 @@
     font-weight: 300;
     color: #fafafa;
     background: rgba(250, 250, 250, 0.21);
-    border-radius: 0.2rem; }
+    border-radius: 0.25rem; }
     .input.--filled input:hover, .input.--filled input:focus {
       background: rgba(250, 250, 250, 0.42); }

@@ -4,23 +4,23 @@
 	<title>UI kit</title>
 	
 	<style> 
-		{% include "Styles/Elements/Cards/announcement.css" %} 
-		{% include "Styles/Elements/Inputs/Text/main.css" %} 
-		{% include "Styles/Elements/Cards/user.css" %} 
-		{% include "Styles/Elements/Buttons/main.css" %} 
 		{% include "Styles/Pages/UI_kit.css" %} 
-		{% include "Styles/Elements/Layout/header/search.css" %} 
-		{% include "Styles/Page_templates/default.css" %} 
-		{% include "Styles/Elements/Buttons/flat.css" %} 
-		{% include "Styles/Elements/Inputs/Text/icon.css" %} 
-		{% include "Styles/Elements/Layout/header/user-info.css" %} 
-		{% include "Styles/Elements/Buttons/ghost.css" %} 
 		{% include "Styles/Elements/Inputs/Text/filled.css" %} 
+		{% include "Styles/Elements/Cards/user.css" %} 
+		{% include "Styles/Elements/Layout/header/search.css" %} 
+		{% include "Styles/Elements/Cards/announcement.css" %} 
 		{% include "Styles/Elements/Layout/header/main.css" %} 
-		{% include "Styles/Elements/Cards/course.css" %} 
 		{% include "Styles/Elements/Layout/header/breadcrumbs.css" %} 
-		{% include "Styles/Elements/Cards/main.css" %} 
+		{% include "Styles/Page_templates/default.css" %} 
 		{% include "Styles/Page_templates/main.css" %} 
+		{% include "Styles/Elements/Buttons/flat.css" %} 
+		{% include "Styles/Elements/Inputs/Text/main.css" %} 
+		{% include "Styles/Elements/Cards/course.css" %} 
+		{% include "Styles/Elements/Layout/header/user-info.css" %} 
+		{% include "Styles/Elements/Inputs/Text/icon.css" %} 
+		{% include "Styles/Elements/Buttons/main.css" %} 
+		{% include "Styles/Elements/Cards/main.css" %} 
+		{% include "Styles/Elements/Buttons/ghost.css" %} 
 	</style>
 </head>
 <body>
@@ -102,9 +102,38 @@
 		</div>
 	</section>
 	
+	<section>
+		<h2>Inputs</h2>
+		<div class="UI_kit-box --horizontal">
+			<div class="__item">
+				{% include "Elements/Inputs/Text/main/main.html" with placeholder="Main" %}
+			</div>
+			<div class="__description">
+				<strong>Usage:</strong> Default text input
+			</div>
+		</div>
+		<div class="UI_kit-box --horizontal --colored-bg">
+			<div class="__item">
+				{% include "Elements/Inputs/Text/Filled/icon/main.html" with placeholder="Filled" %}
+			</div>
+			<div class="__description">
+				<strong>Usage:</strong> Displayed on colored background
+			</div>
+		</div>
+		<div class="UI_kit-box --horizontal">
+			<div class="__item">
+				{% include "Elements/Inputs/Text/textarea/main.html" with placeholder="Textarea" %}
+			</div>
+			<div class="__description">
+				<strong>Usage:</strong> Big amounts of text
+			</div>
+		</div>
+	</section>
+	
 </section>
 	{% include "Scripts/jQuery.html" %}
 	<script> 
+		{% include "Scripts/Elements/Inputs/Text/emptyness_checker.js" %} 
 		{% include "Scripts/Elements/Layout/header/build.js" %} 
 	</script>
 </body>

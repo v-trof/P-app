@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: row; }
   .card.--user .__user-avatar {
-    width: 3rem;
     height: 3rem;
+    width: 3rem;
     border-radius: 50%; }
   .card.--user .__user-info {
     margin-left: 0.75rem; }

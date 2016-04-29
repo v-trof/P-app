@@ -14,6 +14,20 @@ $margin--l : $margin--s + $margin--m
 $margin--xl: $margin--l*2
 
 //borders
-$border--m : .2rem
+$border--s : .125rem
+$border--m : .25rem
 
-//
+//sqares / icon size
+
+=sqare($size)
+	@if $size == "s"
+		height: $base
+		width: $base
+	
+	@else if $size == "m"
+		height: $base * 1.5
+		width: $base * 1.5
+
+	@else if $size == "l"
+		height: $base * 2 
+		width: $base * 2

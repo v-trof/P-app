@@ -1,0 +1,24 @@
+@import "../../vars/main.sass"
+
+#popup
+	display: flex
+	justify-content: center
+	align-items: center
+	position: fixed
+	top: 0
+	left: 0
+	z-index: 20
+
+	.__overlay
+		position: absolute
+		top: 0
+		left: 0
+		height: 100%
+		width: 100%
+		background: rgba($black, .5)
+		z-index: 1
+	
+	.__modal
+		min-width: 25rem
+		+box-shadow(5)
+		z-index: 2
