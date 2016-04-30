@@ -44,6 +44,17 @@
 			<strong>Usage:</strong> Display announcement in course
 		</div>
 	</div>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{% include "Elements/Cards/assignment/"%}
+		</div>
+		<div class="__description">
+			<strong>Classes:</strong> .card .--assignment <br>
+			<strong>Blocks:</strong> - <br>
+			<strong>Dependencies:</strong> - <br>
+			<strong>Usage:</strong> Display assignment in course
+		</div>
+	</div>
 </section>
 
 <section>
@@ -79,6 +90,15 @@
 	<div class="UI_kit-box --horizontal">
 		<div class="__item">
 			{% include "Elements/Inputs/Text/main/" with placeholder="Main" %}
+		</div>
+		<div class="__description">
+			<strong>Usage:</strong> Default text input
+		</div>
+	</div>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{%include "Elements/Inputs/checkbox/" with label="default" %}
+			{%include "Elements/Inputs/checkbox/" with label="--green" class="--green" %}
 		</div>
 		<div class="__description">
 			<strong>Usage:</strong> Default text input
