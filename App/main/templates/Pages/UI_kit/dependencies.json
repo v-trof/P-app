@@ -1,9 +1,8 @@
 {
 	"elements": ["Cards/main","Cards/course", "Cards/user", 
-				"Cards/announcement", "Cards/assignment",
+				"Cards/announcement",
 				"Buttons/main", "Buttons/ghost", "Buttons/flat",
-				"Inputs/Text/main","Inputs/checkbox",
-				"Inputs/Text/Filled/icon",
+				"Inputs/Text/main","Inputs/Text/Filled/icon",
 				"Inputs/Text/textarea"],
 	"scripts": [],
 	"styles": [],

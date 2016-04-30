@@ -153,7 +153,7 @@ def ui_kit(request):
                     "published": ["a","b","c"]
                 },
                 "tests": {
-                    "published": ["sample_test"]
+                    "published": ["saple_test"]
                 }
             }
         },
@@ -163,10 +163,6 @@ def ui_kit(request):
         "announcement": {
             "heading": "sample_announcement",
             "text": "sample_text"
-        },
-        "assignment": {
-            "heading": "sample_assignment",
-            "content": "sample_text"
         },
         "breadcrumbs" : [{
             "href" : "/Курсы",
