@@ -14,12 +14,12 @@
   #context_menu .__option {
     padding: 0.75rem;
     cursor: pointer;
-    background: #ECEFF1;
+    background: #F5F5F5;
     transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1); }
     #context_menu .__option:hover {
-      background: #CFD8DC; }
+      background: #E0E0E0; }
     #context_menu .__option:first-child {
-      border-bottom: 0.125rem solid #CFD8DC;
+      border-bottom: 0.125rem solid #E0E0E0;
       border-radius: 0.125rem 0.125rem 0 0; }
     #context_menu .__option:last-child {
       border-radius: 0 0 0.125rem 0.125rem; }

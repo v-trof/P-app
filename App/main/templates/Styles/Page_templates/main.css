@@ -4,7 +4,7 @@ html, body {
   font-family: "Roboto", "Noto", "PT sans", "Verdana", "Arial", sans;
   font-size: 1rem;
   line-height: 1.5;
-  background: #ECEFF1; }
+  background: #F5F5F5; }
 
 * {
   position: relative;
@@ -19,7 +19,7 @@ h2 {
   margin: 0; }
 
 h3 {
-  color: #516a76;
+  color: #636363;
   font-size: 1rem;
   font-weight: 400;
   margin: 0; }
@@ -31,4 +31,4 @@ a {
   transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1); }
 
 img {
-  background: #ECEFF1; }
+  background: #F5F5F5; }
