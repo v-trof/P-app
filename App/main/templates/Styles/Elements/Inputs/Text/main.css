@@ -8,7 +8,7 @@ input {
   input:focus {
     outline: none; }
 
-input[type="text"], input[type="email"], input[type="password"], .input {
+input[type="text"], input[type="email"], input[type="password"], .input.--text, .input.--filled {
   width: 100%; }
 
 .input.--text {

@@ -15,11 +15,15 @@ $margin--xl: $margin--l*2
 
 //borders
 $border--s : .125rem
-$border--m : .25rem
+$border--m : $border--s*2
 
 //sqares / icon size
 
-=sqare($size)
+=square($size)
+	@if $size == "xs"
+		height: $base*0.75
+		width: $base*0.75
+
 	@if $size == "s"
 		height: $base
 		width: $base

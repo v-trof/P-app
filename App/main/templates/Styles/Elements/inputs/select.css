@@ -1,0 +1,17 @@
+.input.--select {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  padding: 0.375rem;
+  border: #CFD8DC solid 0.125rem;
+  border-radius: 0.25rem;
+  cursor: pointer; }
+  .input.--select .__display, .input.--select .__icon {
+    display: block; }
+  .input.--select option, .input.--select input {
+    display: none; }
+  .input.--select .__icon {
+    height: 1.125rem;
+    width: 1.125rem;
+    fill: #263238; }

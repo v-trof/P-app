@@ -1,0 +1,5 @@
+{
+	"elements": ["Modules/context_menu"],
+	"styles": [],
+	"scripts": ["Elements/Inputs/select"]
+}

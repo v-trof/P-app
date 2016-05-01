@@ -1,0 +1,25 @@
+#context_menu {
+  position: fixed;
+  background: #fafafa;
+  border-radius: 0.25rem;
+  transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1);
+  transition-property: opacity, transform;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  z-index: 30; }
+  #context_menu.hiding {
+    opacity: 0;
+    transform: translateY(-0.75rem); }
+  #context_menu.hidden {
+    bottom: -100%; }
+  #context_menu .__option {
+    padding: 0.75rem;
+    cursor: pointer;
+    background: #ECEFF1;
+    transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1); }
+    #context_menu .__option:hover {
+      background: #CFD8DC; }
+    #context_menu .__option:first-child {
+      border-bottom: 0.125rem solid #CFD8DC;
+      border-radius: 0.125rem 0.125rem 0 0; }
+    #context_menu .__option:last-child {
+      border-radius: 0 0 0.125rem 0.125rem; }
