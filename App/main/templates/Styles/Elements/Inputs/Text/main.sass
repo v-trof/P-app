@@ -7,7 +7,7 @@ input
 	color: $font__color--dark
 	background: rgba($white, 0.25)
 	transition: $time--s
-	&:focus
+	&:enabled:focus
 		outline: none
 
 
@@ -50,12 +50,16 @@ input[type="text"], input[type="email"], input[type="password"], .input.--text, 
 		background: transparent
 		border-bottom: $grey--semilight solid $border--s
 		z-index: 1
-		&:focus
+		&:focus:not([disabled="disabled"])
 			& ~ .__indicator
 				width: 100%
-			&:focus ~ label
+			& ~ label
 				@extend label.--top
 				color: $font__color--accent
+		&[disabled="disabled"]
+			border-bottom-style: dotted
+			& ~ label
+				color: $grey--mid
 
 ::-webkit-input-placeholder
 	color: $grey--semilight

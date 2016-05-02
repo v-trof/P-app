@@ -11,5 +11,8 @@ button
 	background: $color--accent
 	border-radius: $border--m
 	transition: $time--m
-	&:hover, &:focus
+	&:enabled:hover, &:enabled:focus
 		+box-shadow(3)
+	&:disabled
+		color: $font__color--white
+		background: $grey--mid

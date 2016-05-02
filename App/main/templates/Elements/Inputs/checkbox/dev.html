@@ -1,7 +1,9 @@
 <label class="--checkbox">
-	<input type="checkbox" name="{{name}}" class="{{class}}">
+	<input type="checkbox" name="{{name}}" class="{{class}}"
+		{% include "Elements/Utils/disabled/" %}
+	>
 	<div class="__box">
-		{%include "Elements/Icons/done.svg" with class="__indicator"%}
+		{% include "Elements/Icons/done.svg" with class="__indicator"%}
 	</div>
 	<label>
 		{{label}}

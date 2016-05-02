@@ -3,7 +3,7 @@
 				"Cards/announcement", "Cards/assignment",
 				"Buttons/main", "Buttons/ghost", "Buttons/flat",
 				"Inputs/Text/main","Inputs/checkbox",
-				"Inputs/Text/Filled/icon",
+				"Inputs/Text/Filled/icon", "Inputs/Text/Filled/main",
 				"Inputs/Text/textarea",
 				"Inputs/select"],
 	"scripts": [],

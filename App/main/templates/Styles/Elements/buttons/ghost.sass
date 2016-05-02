@@ -6,6 +6,9 @@ button.--ghost
 	fill: $font__color--accent
 	background: transparent
 	transition: $time--s
-	&:hover, &:focus
+	&:enabled:hover, &:enabled:focus
 		box-shadow: none
 		color: lighten($font__color--accent, $darkness-delta__focus--percent)
+	&:disabled
+		background: transparent
+		color: $grey--mid	

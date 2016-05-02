@@ -1,5 +1,5 @@
 button.--flat {
   transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1); }
-  button.--flat:hover, button.--flat:focus {
+  button.--flat:enabled:hover, button.--flat:enabled:focus {
     box-shadow: none;
     background: #87c6f8; }

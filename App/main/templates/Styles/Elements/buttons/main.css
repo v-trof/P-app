@@ -9,5 +9,8 @@ button {
   background: #2196F3;
   border-radius: 0.25rem;
   transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1); }
-  button:hover, button:focus {
+  button:enabled:hover, button:enabled:focus {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }
+  button:disabled {
+    color: #e8e8e8;
+    background: #9E9E9E; }

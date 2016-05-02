@@ -1,4 +1,4 @@
-@import "../../../vars/main.sass"
+@import "../../../../vars/main.sass"
 
 .input.--filled
 	display: flex
@@ -15,5 +15,7 @@
 		color: $white
 		background: rgba($white, $darkness-delta__focus)
 		border-radius: $border--m
-		&:hover, &:focus
+		&:enabled:hover, &:enabled:focus
 			background: rgba($white, $darkness-delta__focus*2)
+		&:disabled
+			background: transparent

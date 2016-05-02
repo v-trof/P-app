@@ -1,5 +1,5 @@
 {
-	"elements": ["Inputs/Text/filled"],
-	"styles": ["Elements/Inputs/Text/icon"],
+	"elements": ["Inputs/Text/Filled/main"],
+	"styles": [],
 	"scripts": []
 }

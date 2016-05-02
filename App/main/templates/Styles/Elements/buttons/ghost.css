@@ -4,6 +4,9 @@ button.--ghost {
   fill: #0c84e4;
   background: transparent;
   transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1); }
-  button.--ghost:hover, button.--ghost:focus {
+  button.--ghost:enabled:hover, button.--ghost:enabled:focus {
     box-shadow: none;
     color: #65b6f7; }
+  button.--ghost:disabled {
+    background: transparent;
+    color: #9E9E9E; }
