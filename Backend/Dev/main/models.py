@@ -108,7 +108,7 @@ class CourseManager(models.Manager):
 			data["teachers"][creator.id]["new_users"] = []
 			data["pending_users"]["Заявки"] = []
 			data["status"] = "public"
-			if not is_closed:
+			if is_closed:
 				data["status"] = "closed"
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -342,25 +342,27 @@ class CourseManager(models.Manager):
 		assignments = []
 		if user.is_anonymous():
 			return assignments
-		with io.open('courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
-				data = json.load(json_file)
-		global_it = 0
-		for assignment in glob.glob('courses/' + str(course.id) + '/assignments/*'):
-			file_name = os.path.basename(assignment).split('.')[0]
-			if file_name in data.keys():
-				with io.open(assignment, 'r', encoding='utf8') as data_file:
-					new_data = json.load(data_file)
-					done = True
-					it = 0
-					global_it += 1
-					for task in new_data["tasks"]:
-						it += 1
-						if task["traditional"] and not it in data[file_name]:
-							task["done"] = True
-					new_data["id"] = global_it
-					if os.path.basename(assignment).split('.')[0] in data.keys():
-						assignments.append(new_data)
-		return sorted(assignments, key=lambda k: k['due_date'])
+		try:
+			with io.open('courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
+					data = json.load(json_file)
+			global_it = 0
+			for assignment in glob.glob('courses/' + str(course.id) + '/assignments/*'):
+				file_name = os.path.basename(assignment).split('.')[0]
+				if file_name in data.keys():
+					with io.open(assignment, 'r', encoding='utf8') as data_file:
+						new_data = json.load(data_file)
+						done = True
+						it = 0
+						global_it += 1
+						for task in new_data["tasks"]:
+							it += 1
+							if task["traditional"] and not it in data[file_name]:
+								task["done"] = True
+						new_data["id"] = global_it
+						if os.path.basename(assignment).split('.')[0] in data.keys():
+							assignments.append(new_data)
+			return sorted(assignments, key=lambda k: k['due_date'])
+		except: return assignments
 
 	def get_users_info(self, user_ids):
 		users = []
@@ -375,8 +377,11 @@ class CourseManager(models.Manager):
 				if pending_user == user.id:
 					data["pending_users"]["Заявки"].remove(pending_user)
 			group = "Нераспределенные"
+			course=Course.objects.get(id=course_id)
 			data["users"].append(user.id)
-			data["groups"][group].append(user.id)
+			data["groups"][group]={}
+			data["groups"][group][str(user.id)] = {}
+			data["groups"][group][str(user.id)]["unseen_by"] = len(data["teachers"])
 			if user.participation_list:
 				setattr(user, 'participation_list',
 						user.participation_list + " " + str(course.id))
@@ -390,7 +395,7 @@ class CourseManager(models.Manager):
 	def decline_request(self, user, course_id):
 		with io.open('courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
-			del data["pending_users"]["Заявки"][user.id]
+			del data["pending_users"]["Заявки"][data["pending_users"]["Заявки"].index(user.id)]
 		with io.open('courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -532,7 +537,7 @@ class UserManager(UserManager):
 				course_data = {}
 				course = Course.objects.get(id=course_id)
 				course_data["object"] = course
-				homework = user_get_assignments(course=course)
+				homework = Course.objects.user_get_assignments(user=user,course=course)
 				with io.open('courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 						data = json.load(data_file)
 				course_data["data"] = data;
@@ -745,7 +750,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class TestManager(models.Manager):
-		# creates test environment (no test exists as file untill saved)
 
 	def create(self, course_id):
 		with io.open('courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
@@ -889,7 +893,7 @@ class TestManager(models.Manager):
 				for question in test_info["tasks"]:
 					user_question=[]
 					for item in question["answer_items"]:
-						value=check_question(item=item)
+						value=Test.objects.check_question(item=item)
 						user_question.append(value)
 					test["tasks"].append(user_question)
 			data = json.dumps(test, ensure_ascii=False)
