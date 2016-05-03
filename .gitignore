@@ -56,6 +56,13 @@ App/main/files
 *.sublime-workspace
 *.sublime-workspace
 
+<<<<<<< HEAD
 Chaches
+=======
+#gulp job
+*.css
+
+#Chaches
+>>>>>>> parent of ba03811... Update .gitignore
 *.chache
 *.pyc
