@@ -4,28 +4,29 @@
 	<title>UI kit</title>
 	
 	<style> 
-		{% include "Styles/Elements/Inputs/Text/Filled/main.css" %} 
-		{% include "Styles/Page_templates/default.css" %} 
-		{% include "Styles/Elements/Inputs/checkbox.css" %} 
-		{% include "Styles/Page_templates/main.css" %} 
-		{% include "Styles/Elements/Buttons/ghost.css" %} 
-		{% include "Styles/Elements/Layout/header/search.css" %} 
-		{% include "Styles/Elements/Inputs/select.css" %} 
-		{% include "Styles/Elements/Buttons/main.css" %} 
-		{% include "Styles/Elements/Inputs/Text/main.css" %} 
-		{% include "Styles/Elements/Layout/header/breadcrumbs.css" %} 
+		{% include "Styles/Elements/Cards/user.css" %} 
 		{% include "Styles/Elements/Inputs/toggle.css" %} 
+		{% include "Styles/Elements/Layout/header/search.css" %} 
+		{% include "Styles/Elements/Buttons/flat.css" %} 
+		{% include "Styles/Elements/Layout/header/user-info.css" %} 
+		{% include "Styles/Elements/Layout/header/main.css" %} 
+		{% include "Styles/Page_templates/default.css" %} 
+		{% include "Styles/Elements/Inputs/Text/Filled/icon.css" %} 
+		{% include "Styles/Elements/Inputs/Text/Filled/main.css" %} 
 		{% include "Styles/Elements/Modules/context_menu.css" %} 
 		{% include "Styles/Elements/Cards/assignment.css" %} 
-		{% include "Styles/Elements/Cards/course.css" %} 
-		{% include "Styles/Elements/Buttons/flat.css" %} 
-		{% include "Styles/Elements/Layout/header/main.css" %} 
-		{% include "Styles/Elements/Layout/header/user-info.css" %} 
+		{% include "Styles/Elements/Buttons/ghost.css" %} 
+		{% include "Styles/Page_templates/main.css" %} 
 		{% include "Styles/Elements/Cards/announcement.css" %} 
-		{% include "Styles/Elements/Inputs/Text/Filled/icon.css" %} 
+		{% include "Styles/Elements/Inputs/checkbox.css" %} 
+		{% include "Styles/Elements/Cards/course.css" %} 
 		{% include "Styles/Elements/Cards/main.css" %} 
+		{% include "Styles/Elements/Inputs/radio.css" %} 
+		{% include "Styles/Elements/Inputs/Text/main.css" %} 
+		{% include "Styles/Elements/Inputs/select.css" %} 
+		{% include "Styles/Elements/Layout/header/breadcrumbs.css" %} 
 		{% include "Styles/Pages/UI_kit.css" %} 
-		{% include "Styles/Elements/Cards/user.css" %} 
+		{% include "Styles/Elements/Buttons/main.css" %} 
 	</style>
 </head>
 <body>
@@ -135,7 +136,19 @@
 				{%include "Elements/Inputs/checkbox/main.html" with label="disabled" disabled="true" %}
 			</div>
 			<div class="__description">
-				<strong>Usage:</strong> Default text input
+				<strong>Usage:</strong> Multiple chices
+			</div>
+		</div>
+		<div class="UI_kit-box --horizontal">
+			<div class="__item">
+				{% include "Elements/Inputs/radio/main.html" with label="default" name="sample_radio" %}
+	
+				{% include "Elements/Inputs/radio/main.html" with label="default" name="sample_radio" %}
+				
+				{% include "Elements/Inputs/radio/main.html" with label="disabled" disabled="true" %}
+			</div>
+			<div class="__description">
+				<strong>Usage:</strong> One choice
 			</div>
 		</div>
 		<div class="UI_kit-box --horizontal --colored-bg">
@@ -169,10 +182,10 @@
 </section>
 	{% include "Scripts/jQuery.html" %}
 	<script> 
-		{% include "Scripts/Elements/Inputs/Text/emptyness_checker.js" %} 
-		{% include "Scripts/Elements/Modules/context_menu.js" %} 
-		{% include "Scripts/Elements/Layout/header/build.js" %} 
 		{% include "Scripts/Elements/Inputs/select.js" %} 
+		{% include "Scripts/Elements/Layout/header/build.js" %} 
+		{% include "Scripts/Elements/Modules/context_menu.js" %} 
+		{% include "Scripts/Elements/Inputs/Text/emptyness_checker.js" %} 
 	</script>
 </body>
 </html>

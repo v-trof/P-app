@@ -1,0 +1,8 @@
+{
+	"elements": ["Cards/user"],
+	"scripts": [],
+	"styles": [],
+	"fixes": [],
+	"title" : "Профиль",
+	"template": "default"
+}

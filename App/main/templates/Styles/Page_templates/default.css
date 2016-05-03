@@ -4,6 +4,7 @@ body {
   align-items: center; }
 
 .main {
-  width: 50rem;
+  width: 51.5rem;
   max-width: 100%;
-  margin-top: 4.5rem; }
+  margin-top: 4.5rem;
+  padding: 0.75rem; }

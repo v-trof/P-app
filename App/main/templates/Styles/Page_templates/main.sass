@@ -24,6 +24,11 @@ a
 	color: $font__color--accent
 	text-decoration: none
 	transition: $time--s
+	&.--card
+		font-weight: normal
+		& > .card
+			&:hover, &:focus
+				+box-shadow(3)
 
 img
 	background: $grey--light

@@ -29,6 +29,10 @@ a {
   color: #0c84e4;
   text-decoration: none;
   transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1); }
+  a.--card {
+    font-weight: normal; }
+    a.--card > .card:hover, a.--card > .card:focus {
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }
 
 img {
   background: #F5F5F5; }

@@ -52,33 +52,33 @@ def profile(request, user_id):
     if request.user.id == user.id or (user.permission_level == '0') or (user.permission_level == '1' and request.user.is_teacher) or (user.permission_level == '2' and not request.user.is_teacher) or (user.permission_level == '3' and classmates):
         contacts_view_allowed=True
     else: contacts_view_allowed=False
-    try:
-        return render(request, 'Pages/profile.html', {
-            "user":user,
-            "breadcrumbs" : [{
-                "href" : "#",
-                "link" : "Профиль"
-                }
-            ],
-            "contacts_view_allowed":contacts_view_allowed,
-            })
-    except:
-        return render(request, 'Pages/404.html')
+    return render(request, 'Pages/Account/profile/main.html', {
+        "user": user,
+        "breadcrumbs" : [{
+            "href" : "#",
+            "link" : "Профиль"
+            }
+        ],
+        "contacts_view_allowed": contacts_view_allowed,
+        })
 
 def course(request, course_id):
-    course=Course.objects.get(id=course_id)
-    course_data = course_getdata(request,course)
-    if request.user.participation_list:
-        if str(course.id) in request.user.participation_list.split(' '):
-            is_participant=True
-        else: is_participant = False
-    else: is_participant=False
-    return render(request, 'Pages/course.html',{"is_participant":is_participant, "course":course, "course_data":course_data, "assignments":course_get_assignments(request,course),
+    # course=Course.objects.get(id=course_id)
+    # course_data = course_getdata(request,course)
+    # if request.user.participation_list:
+    #     if str(course.id) in request.user.participation_list.split(' '):
+    #         is_participant=True
+    #     else: is_participant = False
+    # else: is_participant=False
+    return render(request, 'Pages/Сourse/main.html', {
+            "is_participant": True,
+            "course": course,
+            "course_data":course_data,
             "breadcrumbs" : [{
                 "href" : "#",
-                "link" : course.name
+                "link" : "Курс"
             }
-            ]})
+        ]})
 
 def course_requests(request, course_id):
     with io.open('courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as data_file:

@@ -1,12 +1,16 @@
 @import "../../../../vars/main.sass"
 
 .input.--filled.--icon
+	display: flex
+	flex-direction: row
+	align-items: center
 	
 	svg
-		height: $base
-		width: $base
-		margin-right: -$base - $padding--s
+		display: block
+		transform: translateX($padding--s)
+		+square("s")
 		fill: $white
 
 	input
 		padding: 0 $padding--s 0 $padding--s*2 + $base
+		margin-left: -$base

@@ -36,7 +36,7 @@ urlpatterns = [
 
     url(r'^$', views.home, name='home'),
     url(r'^uikit/$', views.ui_kit),
-    url(r'^user/(?P<user_id>[0-9]+)/$', views.profile)
+    url(r'^profile/(?P<user_id>[0-9]+)/$', views.profile)
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
