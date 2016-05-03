@@ -125,18 +125,18 @@ function toggle_edit(){
 		});
 		console.log(groups);
 		$.ajax({
-            type:"POST",
-            url:"/func/edit_groups/",
-            data: {
-                   'new_groups': JSON.stringify(groups),
-                   'csrfmiddlewaretoken': '{{ csrf_token }}',
-                   'course_id': "{{course.id}}",
-                  },
-            success: function(){
-                  notification.change('success', 'Группы изменены' );
-                  $('#groups_content').load('../groups_content/');
-                   }
-            });
+			type:"POST",
+			url:"/func/edit_groups/",
+			data: {
+				   'new_groups': JSON.stringify(groups),
+				   'csrfmiddlewaretoken': '{{ csrf_token }}',
+				   'course_id': "{{course.id}}",
+				  },
+			success: function(){
+				  notification.change('success', 'Группы изменены' );
+				  $('#groups_content').load('../groups_content/');
+				   }
+			});
 		$("#create_group").hide();
 		editing = false;
 	} else {
