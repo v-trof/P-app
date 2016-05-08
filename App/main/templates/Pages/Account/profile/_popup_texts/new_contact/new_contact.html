@@ -1,0 +1,8 @@
+<h4 class="__heading">Добавить контакт</h4>
+{% include "Elements/Inputs/select/" with 
+	options=possible_contacts 
+	class="__contact-type" %}
+{% include "Elements/Inputs/text/" with 
+	placeholder="Котактная иформация" 
+	class="__contact-value" %}
+<button class="__submit">Добавить</button>

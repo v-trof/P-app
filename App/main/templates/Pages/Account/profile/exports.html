@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Профиль</title>
+	<style> 
+		{% include "Elements/Layout/header/__user-info/__user-info.css" %} 
+		{% include "Page_templates/default/default.css" %} 
+		{% include "Elements/Inputs/text/filled/filled.css" %} 
+		{% include "Elements/card/user/user.css" %} 
+		{% include "Elements/button/ghost/ghost.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
+		{% include "Elements/Inputs/radio/radio.css" %} 
+		{% include "Elements/Layout/header/__search/__search.css" %} 
+		{% include "Elements/Layout/header/__breadcrumbs/__breadcrumbs.css" %} 
+		{% include "Elements/Inputs/text/text.css" %} 
+		{% include "Elements/card/small/small.css" %} 
+		{% include "Pages/Account/profile/contacts/item/item.css" %} 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Elements/Modules/context_menu/context_menu.css" %} 
+		{% include "Elements/button/button.css" %} 
+		{% include "Elements/Modules/popup/popup.css" %} 
+		{% include "Elements/Layout/header/header.css" %} 
+		{% include "Elements/Inputs/select/select.css" %} 
+		{% include "Elements/Modules/notification/notification.css" %} 
+		{% include "Elements/Layout/linkbox/linkbox.css" %} 
+		{% include "Page_templates/main.css" %} 
+		{% include "Elements/Inputs/_shared/toggle.css" %} 
+		{% include "Elements/card/card.css" %} 
+	</style>
+</head>
+<body>
+	{% include "Elements/Layout/header/exports.html" %}
+<section class="main">
+	{% include "Pages/Account/profile/linkbox/exports.html" %}{% include "Elements/card/user/exports.html"%}{% include "Pages/Account/profile/contacts/exports.html" %}{% include "Pages/Account/profile/settings/exports.html" %}
+</section>
+	{% include "JS_libs/jQuery.html" %}
+	<script> 
+		{% include "Elements/Modules/context_menu/context_menu.js" %} 
+		{% include "Elements/Modules/popup/popup.js" %} 
+		{% include "Elements/Layout/header/header.js" %} 
+		{% include "Elements/Inputs/select/select.js" %} 
+		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
+		{% include "Pages/Account/profile/_scripts/change_avatar.js" %} 
+		{% include "Elements/Modules/notification/notification.js" %} 
+		{% include "Pages/Account/profile/_scripts/add_contact.js" %} 
+		{% include "Elements/Modules/toggle_edit/toggle_edit.js" %} 
+		{% include "Pages/Account/profile/_scripts/change_password.js" %} 
+		{% include "Elements/Modules/upload/upload.js" %} 
+	</script>
+</body>
+</html>

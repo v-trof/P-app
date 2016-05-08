@@ -2,7 +2,7 @@
 	<h3>{{ group_title }}</h3>
 	{% for user in group_members %}
 		<a class="--card" href="/user/{{user.id}}">
-			{% include "Elements/Cards/user/main.html" %}
+			{% include "Elements/card/user/main.html" %}
 		</a>
 	{% empty %}
 		<div class="__indicator --empty">Пустая группа</div>

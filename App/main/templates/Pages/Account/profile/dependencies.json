@@ -1,6 +1,8 @@
 {
-	"elements": ["Cards/user"],
-	"scripts": [],
+	"elements": ["card/user", "Modules/upload", "Modules/notification"],
+	"scripts": ["#&/_scripts/add_contact",
+	 			"#&/_scripts/change_avatar",
+	 		 	"#&/_scripts/change_password"],
 	"styles": [],
 	"fixes": [],
 	"title" : "Профиль",

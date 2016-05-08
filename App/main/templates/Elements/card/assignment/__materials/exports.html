@@ -1,0 +1,1 @@
+{% if assignment.content.materials %}<div class="__materials"><div>Материалы для ознакомления:</div><div class="__links">{% for material in assignment.content.materials %}<a href='{{material.link}}' class='--block {% if material.done %} --done {% endif %}'>{{material.title}}</a>{% if not forloop.last %},{% endif %}{% endfor %}</div></div>{% endif %}

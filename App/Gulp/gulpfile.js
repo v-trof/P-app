@@ -6,7 +6,7 @@ var	sass = require('gulp-sass'); //compiles sass into css
 
 gulp.task('sass_to_css', function () {
 	//converts sass to css, prefixes, and minificates css
-	gulp.src('../main/templates/Styles/**/*.sass')
+	gulp.src('../main/templates/**/*.sass')
 		.pipe(sass().on('error', sass.logError))
 		.pipe(gulp.dest(function(file) {
 			return file.base;
@@ -15,7 +15,7 @@ gulp.task('sass_to_css', function () {
 
 
 gulp.task('watch', function() {
-  gulp.watch("../main/templates/Styles/**/*.sass", ['sass_to_css']);
+  gulp.watch("../main/templates/**/*.sass", ['sass_to_css']);
 });
 
 gulp.task('default', ['watch']);

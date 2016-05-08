@@ -1,0 +1,451 @@
+{% if accept %}
+accept='{{accept}}'
+{% endif %}
+
+{% if accept-charset %}
+accept-charset='{{accept-charset}}'
+{% endif %}
+
+{% if accesskey %}
+accesskey='{{accesskey}}'
+{% endif %}
+
+{% if action %}
+action='{{action}}'
+{% endif %}
+
+{% if align %}
+align='{{align}}'
+{% endif %}
+
+{% if alt %}
+alt='{{alt}}'
+{% endif %}
+
+{% if async %}
+async='{{async}}'
+{% endif %}
+
+{% if autocomplete %}
+autocomplete='{{autocomplete}}'
+{% endif %}
+
+{% if autofocus %}
+autofocus='{{autofocus}}'
+{% endif %}
+
+{% if autoplay %}
+autoplay='{{autoplay}}'
+{% endif %}
+
+{% if autosave %}
+autosave='{{autosave}}'
+{% endif %}
+
+{% if bgcolor %}
+bgcolor='{{bgcolor}}'
+{% endif %}
+
+{% if border %}
+border='{{border}}'
+{% endif %}
+
+{% if buffered %}
+buffered='{{buffered}}'
+{% endif %}
+
+{% if challenge %}
+challenge='{{challenge}}'
+{% endif %}
+
+{% if charset %}
+charset='{{charset}}'
+{% endif %}
+
+{% if checked %}
+checked='{{checked}}'
+{% endif %}
+
+{% if cite %}
+cite='{{cite}}'
+{% endif %}
+
+{% if class %}
+class='{{class}}'
+{% endif %}
+
+{% if code %}
+code='{{code}}'
+{% endif %}
+
+{% if codebase %}
+codebase='{{codebase}}'
+{% endif %}
+
+{% if color %}
+color='{{color}}'
+{% endif %}
+
+{% if cols %}
+cols='{{cols}}'
+{% endif %}
+
+{% if colspan %}
+colspan='{{colspan}}'
+{% endif %}
+
+{% if content %}
+content='{{content}}'
+{% endif %}
+
+{% if contenteditable %}
+contenteditable='{{contenteditable}}'
+{% endif %}
+
+{% if contextmenu %}
+contextmenu='{{contextmenu}}'
+{% endif %}
+
+{% if controls %}
+controls='{{controls}}'
+{% endif %}
+
+{% if coords %}
+coords='{{coords}}'
+{% endif %}
+
+{% if data %}
+data='{{data}}'
+{% endif %}
+
+{% if data-* %}
+data-*='{{data-*}}'
+{% endif %}
+
+{% if datetime %}
+datetime='{{datetime}}'
+{% endif %}
+
+{% if default %}
+default='{{default}}'
+{% endif %}
+
+{% if defer %}
+defer='{{defer}}'
+{% endif %}
+
+{% if dir %}
+dir='{{dir}}'
+{% endif %}
+
+{% if dirname %}
+dirname='{{dirname}}'
+{% endif %}
+
+{% if disabled %}
+disabled='{{disabled}}'
+{% endif %}
+
+{% if download %}
+download='{{download}}'
+{% endif %}
+
+{% if draggable %}
+draggable='{{draggable}}'
+{% endif %}
+
+{% if dropzone %}
+dropzone='{{dropzone}}'
+{% endif %}
+
+{% if enctype %}
+enctype='{{enctype}}'
+{% endif %}
+
+{% if for %}
+for='{{for}}'
+{% endif %}
+
+{% if form %}
+form='{{form}}'
+{% endif %}
+
+{% if formaction %}
+formaction='{{formaction}}'
+{% endif %}
+
+{% if headers %}
+headers='{{headers}}'
+{% endif %}
+
+{% if height %}
+height='{{height}}'
+{% endif %}
+
+{% if hidden %}
+hidden='{{hidden}}'
+{% endif %}
+
+{% if high %}
+high='{{high}}'
+{% endif %}
+
+{% if href %}
+href='{{href}}'
+{% endif %}
+
+{% if hreflang %}
+hreflang='{{hreflang}}'
+{% endif %}
+
+{% if http-equiv %}
+http-equiv='{{http-equiv}}'
+{% endif %}
+
+{% if icon %}
+icon='{{icon}}'
+{% endif %}
+
+{% if id %}
+id='{{id}}'
+{% endif %}
+
+{% if ismap %}
+ismap='{{ismap}}'
+{% endif %}
+
+{% if itemprop %}
+itemprop='{{itemprop}}'
+{% endif %}
+
+{% if keytype %}
+keytype='{{keytype}}'
+{% endif %}
+
+{% if kind %}
+kind='{{kind}}'
+{% endif %}
+
+{% if label %}
+label='{{label}}'
+{% endif %}
+
+{% if lang %}
+lang='{{lang}}'
+{% endif %}
+
+{% if language %}
+language='{{language}}'
+{% endif %}
+
+{% if list %}
+list='{{list}}'
+{% endif %}
+
+{% if loop %}
+loop='{{loop}}'
+{% endif %}
+
+{% if low %}
+low='{{low}}'
+{% endif %}
+
+{% if manifest %}
+manifest='{{manifest}}'
+{% endif %}
+
+{% if max %}
+max='{{max}}'
+{% endif %}
+
+{% if maxlength %}
+maxlength='{{maxlength}}'
+{% endif %}
+
+{% if media %}
+media='{{media}}'
+{% endif %}
+
+{% if method %}
+method='{{method}}'
+{% endif %}
+
+{% if min %}
+min='{{min}}'
+{% endif %}
+
+{% if multiple %}
+multiple='{{multiple}}'
+{% endif %}
+
+{% if muted %}
+muted='{{muted}}'
+{% endif %}
+
+{% if name %}
+name='{{name}}'
+{% endif %}
+
+{% if novalidate %}
+novalidate='{{novalidate}}'
+{% endif %}
+
+{% if open %}
+open='{{open}}'
+{% endif %}
+
+{% if optimum %}
+optimum='{{optimum}}'
+{% endif %}
+
+{% if pattern %}
+pattern='{{pattern}}'
+{% endif %}
+
+{% if ping %}
+ping='{{ping}}'
+{% endif %}
+
+{% if placeholder %}
+placeholder='{{placeholder}}'
+{% endif %}
+
+{% if poster %}
+poster='{{poster}}'
+{% endif %}
+
+{% if preload %}
+preload='{{preload}}'
+{% endif %}
+
+{% if radiogroup %}
+radiogroup='{{radiogroup}}'
+{% endif %}
+
+{% if readonly %}
+readonly='{{readonly}}'
+{% endif %}
+
+{% if rel %}
+rel='{{rel}}'
+{% endif %}
+
+{% if required %}
+required='{{required}}'
+{% endif %}
+
+{% if reversed %}
+reversed='{{reversed}}'
+{% endif %}
+
+{% if rows %}
+rows='{{rows}}'
+{% endif %}
+
+{% if rowspan %}
+rowspan='{{rowspan}}'
+{% endif %}
+
+{% if sandbox %}
+sandbox='{{sandbox}}'
+{% endif %}
+
+{% if scope %}
+scope='{{scope}}'
+{% endif %}
+
+{% if scoped %}
+scoped='{{scoped}}'
+{% endif %}
+
+{% if seamless %}
+seamless='{{seamless}}'
+{% endif %}
+
+{% if selected %}
+selected='{{selected}}'
+{% endif %}
+
+{% if shape %}
+shape='{{shape}}'
+{% endif %}
+
+{% if size %}
+size='{{size}}'
+{% endif %}
+
+{% if sizes %}
+sizes='{{sizes}}'
+{% endif %}
+
+{% if span %}
+span='{{span}}'
+{% endif %}
+
+{% if spellcheck %}
+spellcheck='{{spellcheck}}'
+{% endif %}
+
+{% if src %}
+src='{{src}}'
+{% endif %}
+
+{% if srcdoc %}
+srcdoc='{{srcdoc}}'
+{% endif %}
+
+{% if srclang %}
+srclang='{{srclang}}'
+{% endif %}
+
+{% if srcset %}
+srcset='{{srcset}}'
+{% endif %}
+
+{% if start %}
+start='{{start}}'
+{% endif %}
+
+{% if step %}
+step='{{step}}'
+{% endif %}
+
+{% if style %}
+style='{{style}}'
+{% endif %}
+
+{% if summary %}
+summary='{{summary}}'
+{% endif %}
+
+{% if tabindex %}
+tabindex='{{tabindex}}'
+{% endif %}
+
+{% if target %}
+target='{{target}}'
+{% endif %}
+
+{% if title %}
+title='{{title}}'
+{% endif %}
+
+{% if type %}
+type='{{type}}'
+{% endif %}
+
+{% if usemap %}
+usemap='{{usemap}}'
+{% endif %}
+
+{% if value %}
+value='{{value}}'
+{% endif %}
+
+{% if width %}
+width='{{width}}'
+{% endif %}
+
+{% if wrap %}
+wrap ='{{wrap}}'
+{% endif %}

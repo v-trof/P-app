@@ -1,5 +1,6 @@
 {
-	"elements": [],
+	"elements": ["button/ghost", "Modules/popup",
+		 "Inputs/select", "Inputs/text"],
 	"scripts": [],
 	"styles": []
 }

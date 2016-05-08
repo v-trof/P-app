@@ -33,19 +33,29 @@ while elements_done != page_dependencies["elements"]:
 	print("Todos", page_dependencies["elements"] - elements_done)
 
 	for element in elements_current:
-		if element.split("/")[0][-1] != "s" and element.split("/")[0] != "Layout":
-			element_arr = element.split("/")
-			element_arr[0] += "s"
-			element = "/".join(element_arr)
-
 		element_path = path["elements"] + element
 
+		build.dev_file(element_path)
 		element_dependencies =  dependencies.get(element_path)
+		
+		element_arr = element.split("/")
+		element_l = len(element_arr)
+		for i in range(element_l-1):
+			proto = "/".join(element_arr[:-i-1])
+			element_dependencies["elements"].add(proto)
+
 		dependencies.add(page_dependencies, element_dependencies)
 
 		element_blocks = [block[0] for block in os.walk(element_path)]
+
 		for block_path in element_blocks:
 			block_path = block_path.replace("\\", "/")
+			block_name = block_path.split("/")[-1]
+
+			if not block_name.startswith("__"):
+				continue
+			
+
 			build.dev_file(block_path)
 
 			block_dependencies = dependencies.get(block_path)

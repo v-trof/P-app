@@ -52,7 +52,7 @@ def profile(request, user_id):
     if request.user.id == user.id or (user.permission_level == '0') or (user.permission_level == '1' and request.user.is_teacher) or (user.permission_level == '2' and not request.user.is_teacher) or (user.permission_level == '3' and classmates):
         contacts_view_allowed=True
     else: contacts_view_allowed=False
-    return render(request, 'Pages/Account/profile/main.html', {
+    return render(request, 'Pages/Account/profile/exports.html', {
         "user": user,
         "breadcrumbs" : [{
             "href" : "#",
@@ -60,7 +60,21 @@ def profile(request, user_id):
             }
         ],
         "contacts_view_allowed": contacts_view_allowed,
-        })
+        "possible_contacts": [
+        {
+            "value": "Мобильный телефон",
+            "text": "Мобильный телефон"
+        }, {
+            "value": "ВКонтакте",
+            "text": "ВКонтакте"
+        }, {
+            "value": "Facebook",
+            "text": "Facebook"
+        },{
+            "value": "Дневник.py",
+            "text": "Дневник.ру"
+        }
+        ]})
 
 def course(request, course_id):
     # course=Course.objects.get(id=course_id)
@@ -186,5 +200,29 @@ def ui_kit(request):
             "value": 3,
             "text" : "Option 3",
         }],
+        "assignment": {
+            "content": {
+                "materials": [{
+                    "done": True,
+                    "link": "#",
+                    "title": "Test n"
+                },{
+                    "done": False,
+                    "link": "#",
+                    "title": "Test n+m"
+                }],
+                "tests": [],
+                "traditional": [{
+                    "done": False,
+                    "content": "This is traditional task"
+                },{
+                    "done": True,
+                    "content": "This is done traditional task"
+                }]
+            },
+            "due_date": {
+
+            }
+        }
     }
-    return render(request, 'Pages/UI_kit/main.html', context)
+    return render(request, 'Pages/UI_kit/exports.html', context)

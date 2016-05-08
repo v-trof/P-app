@@ -1,7 +1,7 @@
 {
-	"elements": ["Cards/main","Cards/course", "Cards/user", 
-				"Cards/announcement", "Cards/assignment",
-				"Buttons/main", "Buttons/ghost", "Buttons/flat",
+	"elements": ["card/course", "card/user", 
+				"card/announcement", "card/assignment",
+				"button/main", "button/ghost", "button/flat",
 				"Inputs/Text/main",	"Inputs/Text/Filled/icon",
 				"Inputs/Text/Filled/main",
 				"Inputs/Text/textarea",

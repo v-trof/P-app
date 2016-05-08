@@ -1,0 +1,9 @@
+<div class="card --assignment">
+	{% include "#&/../__overall-info/" 
+		with heading="В курсе "|add:course.name %}
+	<div class="__content">
+		{% include "#&/__materials/" %}
+		{% include "#&/__tests/" %}
+		{% include "#&/__traditional/" %}
+	</div>
+</div>

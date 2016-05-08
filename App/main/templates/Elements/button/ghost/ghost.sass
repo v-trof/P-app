@@ -1,0 +1,27 @@
+@import "../../../sass_vars/main.sass"
+
+button.--ghost
+	font-weight: bold
+	color: $font__color--accent
+	background: transparent
+	transition: $time--s
+	padding: $padding--s
+	margin: 0 $padding--l - $padding--s
+
+	svg
+		fill: $font__color--accent
+		margin: -$padding--s 0-$padding--m
+		transition: $time--s
+		+square("s")
+
+	&:enabled:hover, &:enabled:focus
+		box-shadow: none
+		color: lighten($font__color--accent, $darkness-delta__focus--percent)
+		svg
+			fill: lighten($font__color--accent, $darkness-delta__focus--percent)
+	&:disabled
+		background: transparent
+		color: $grey--mid
+
+	&.--first
+		margin-left: 0

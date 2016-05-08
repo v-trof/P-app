@@ -1,0 +1,24 @@
+@import "../../../sass_vars/main.sass"
+
+label.--checkbox
+	.__box
+		border-radius: $border--m
+		.__indicator
+			+square("s")
+			fill: $white
+			opacity: 0
+	input
+		&:checked
+			&:disabled
+				& ~ .__box
+					background: $grey--semilight
+			& ~ .__box
+				border-color: $color--accent
+				background: $color--accent
+				.__indicator
+					opacity: 1
+
+		&.--green:checked
+			& ~ .__box
+				border-color: $green
+				background: $green

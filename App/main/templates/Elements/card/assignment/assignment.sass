@@ -1,0 +1,21 @@
+@import "../../../sass_vars/main.sass"
+
+.card.--assignment
+	.__tests, .__materials
+		display: flex
+		flex-direction: row
+		align-items: top
+		margin-bottom: $margin--s
+		div
+			display: flex
+		.__links 
+			flex-wrap: wrap
+			a
+				margin-left: $margin--xs
+				&.--done
+					color: $green
+					&:hover, &:focus
+						color: lighten($green, $darkness-delta__focus--percent)
+	.__traditional
+		label:last-child
+			margin-bottom: 0
