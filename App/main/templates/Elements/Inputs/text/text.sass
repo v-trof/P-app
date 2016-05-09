@@ -41,7 +41,7 @@ input[type="text"], input[type="email"], input[type="password"], .input.--text, 
 		height: $border--s
 		width: 0
 		margin-top: -$border--s
-		background: $color--accent
+		background: $font__color--accent
 		transition: $time--s
 		z-index: 2
 
@@ -57,10 +57,28 @@ input[type="text"], input[type="email"], input[type="password"], .input.--text, 
 			& ~ label
 				@extend label.--top
 				color: $font__color--accent
+			
+		&.--valid
+			color: $font__color--positive
+			
+			&:focus:not([disabled="disabled"])
+				& ~ .__indicator
+					background: $font__color--positive
+				& ~ label
+					color: $font__color--positive
+			
+		&.--invalid
+			color: $font__color--negative
+			
+			&:focus:not([disabled="disabled"])
+				& ~ .__indicator
+					background: $font__color--negative
+				& ~ label
+					color: $font__color--negative
+
 		&[disabled="disabled"]
 			border-bottom-style: dotted
 			& ~ label
 				color: $grey--mid
-
 ::-webkit-input-placeholder
 	color: $grey--semilight

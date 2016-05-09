@@ -1,0 +1,18 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script type="text/javascript" src="../verifier.js"></script>
+<script type="text/javascript" src="../../delay/delay.js"></script>
+
+<style type="text/css">
+	.--invalid{
+		box-shadow: 0 0 15px 0 red;
+	}
+	.--valid{
+		box-shadow: 0 0 15px 0 green;
+	}
+</style>
+
+<input type="text" id="test_input">
+
+<script type="text/javascript">
+	verifier.add($(test_input), "password");
+</script>

@@ -1,5 +1,5 @@
-var context_menu = (function(){
-	var $menu = $("<div id='context_menu' class='hidden hiding'></div>")
+var context_menu = (function() {
+	var $menu = $("<div id='context_menu' class='--hidden --hiding'></div>")
 	var is_shown = false
 
 	var build = function(options, el, chosen) {
@@ -8,7 +8,7 @@ var context_menu = (function(){
 		if(el) {
 			$menu.append("<div class='__option default' value='" + chosen.value + "'>" + chosen.text + "</div>")
 
-			options.forEach(function(option){
+			options.forEach(function(option) {
 				$menu.append("<div class='__option' value='" + option.value + "'>" + option.text + "</div>");
 			});
 
@@ -23,7 +23,7 @@ var context_menu = (function(){
 			});
 		}
 	}
-	exports ={
+	exports = {
 		show: function(options, el, chosen) {
 			$("body").append($menu);
 			if(is_shown) {
@@ -42,7 +42,7 @@ var context_menu = (function(){
 
 			menu_rect = $menu[0].getBoundingClientRect();
 
-			console.log(menu_rect.top, $menu.innerHeight(), $(window).height())
+			// console.log(menu_rect.top, $menu.innerHeight(), $(window).height())
 
 			if(menu_rect.top + menu_rect.height > $(window).height()) {
 				$menu.css({
@@ -53,24 +53,28 @@ var context_menu = (function(){
 
 			// console.log(menu_rect.top + menu_rect.height, $(window).width())
 
-			if(menu_rect.left + menu_rect.width >$(window).width()) {
+			if(menu_rect.left + menu_rect.width > $(window).width()) {
 				$menu.css({
 					"right": 0,
 					"left": "auto",
 				})
 			}
 
-			$menu.removeClass('hidden')
-			$menu.removeClass('hiding')
+			$menu.removeClass('--hidden')
+			$menu.removeClass('--hiding')
 		},
 
 		hide: function() {
-			$menu.addClass('hiding')
+			$menu.addClass('--hiding')
 			setTimeout(function() {
-				$menu.addClass('hidden')
+				$menu.addClass('--hidden')
 				$menu.removeAttr('style')
 			}, 150);
 		}
 	}
 	return exports;
 })();
+
+$(document).scroll(function(event) {
+	context_menu.hide();
+});

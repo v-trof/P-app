@@ -7,7 +7,7 @@ function add_menu_caller(select) {
 		$(select).children('option').each(function(index, el){
 			max_w = Math.max($(this).outerWidth(), max_w);
 		});
-		$(select).children('.__display').css('min-width', max_w+"px");
+		$(select).children('.__display').css('min-width', max_w + "px");
 	},300);
 	
 	$(select).children('input').val(first_option.attr("value"));

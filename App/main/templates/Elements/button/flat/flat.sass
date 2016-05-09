@@ -5,3 +5,11 @@ button.--flat
 	&:enabled:hover, &:enabled:focus
 		box-shadow: none
 		background: lighten($color--accent, $darkness-delta__focus--percent)
+
+	&.--negative
+		&:enabled:hover, &:enabled:focus
+			background: lighten($red, $darkness-delta__focus--percent)
+
+	&.--positive
+		&:enabled:hover, &:enabled:focus
+			background: lighten($green, $darkness-delta__focus--percent)

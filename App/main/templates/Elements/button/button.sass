@@ -3,8 +3,9 @@
 button
 	display: block
 	padding: $padding--s $padding--l
+	margin-right: $margin--xs
 	border: 0
-	font: $sans
+	font-family: $sans
 	font-size: $font__size--m
 	line-height: $line--m
 	color: $font__color--white
@@ -16,3 +17,9 @@ button
 	&:disabled
 		color: $font__color--white
 		background: $grey--mid
+
+	&.--negative
+		background: $red
+
+	&.--positive
+		background: $green

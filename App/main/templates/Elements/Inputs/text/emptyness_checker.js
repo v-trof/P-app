@@ -3,7 +3,7 @@ function check_if_filled($input) {
 		$input.val().length || 
 		($input.text().length && $input.html() != "&nbsp;")
 	) {
-		console.log($input.val())
+		// console.log($input.val())
 		$input.siblings('label').addClass('--top')
 	} else {
 		$input.siblings('label').removeClass('--top')

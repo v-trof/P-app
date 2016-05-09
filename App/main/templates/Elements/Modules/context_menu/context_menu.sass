@@ -8,11 +8,7 @@
 	transition-property: opacity, transform
 	+box-shadow(3)
 	z-index: 30
-	&.hiding
-		opacity: 0
-		transform: translateY(-$margin--s)
-	&.hidden
-		top: -100%
+
 	.__option
 		padding: $padding--m
 		cursor: pointer
@@ -25,3 +21,9 @@
 			border-radius: $border--s $border--s 0 0
 		&:last-child
 			border-radius: 0 0 $border--s $border--s
+
+	&.--hiding
+		opacity: 0
+		transform: translateY(-$margin--s)
+	&.--hidden
+		top: -100%

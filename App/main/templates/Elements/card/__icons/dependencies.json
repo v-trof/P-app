@@ -1,6 +1,5 @@
 {
-	"elements": [],
+	"elements": ["Modules/tooltip"],
 	"scripts": [],
-	"styles": [],
-	"expected": ["Modules/tooltip"]
+	"styles": []
 }
