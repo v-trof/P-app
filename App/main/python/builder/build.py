@@ -16,7 +16,7 @@ def dev_file(path):
 	if not os.path.isfile(path + "/" + filename):
 		return ""
 	template_path = path[len("../../templates/"):]
-	print("Building:", template_path)
+	print("Building:", template_path, filename)
 	file_dev = open(path + "/" + filename, "r")
 	html = file_dev.read()
 	file_dev.close()

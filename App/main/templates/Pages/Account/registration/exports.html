@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Регистрация</title>
+	<style> 
+		{% include "Pages/Account/registration/css/login.css" %} 
+		{% include "Elements/Modules/notification/notification.css" %} 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Elements/Inputs/text/filled/filled.css" %} 
+		{% include "Elements/button/button.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
+		{% include "Elements/Inputs/text/text.css" %} 
+		{% include "Elements/card/card.css" %} 
+		{% include "Page_templates/default/default.css" %} 
+		{% include "Page_templates/main.css" %} 
+	</style>
+</head>
+<body>
+<main>
+	{% include "Pages/Account/registration/login-box/exports.html" %}<div id="tooltip"><div class="tooltip__content"></div></div>{% include "Pages/Account/registration/footer/exports.html" %}
+</main>
+	{% include "JS_libs/jQuery.html" %}
+	<script> 
+		{% include "Elements/Modules/notification/notification.js" %} 
+	</script>
+</body>
+</html>

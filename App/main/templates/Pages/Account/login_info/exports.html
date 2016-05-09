@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Вход</title>
+	<style> 
+		{% include "Page_templates/default/default.css" %} 
+		{% include "Elements/Inputs/text/filled/filled.css" %} 
+		{% include "Elements/Modules/notification/notification.css" %} 
+		{% include "Elements/button/button.css" %} 
+		{% include "Elements/Inputs/text/text.css" %} 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Page_templates/main.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
+		{% include "Pages/Account/login/css/login.css" %} 
+		{% include "Elements/card/card.css" %} 
+	</style>
+</head>
+<body>
+<main>
+	{% include "Pages/Account/login_info/account_info_box/exports.html" %}{% include "Pages/Account/login_info/footer/exports.html" %}
+</main>
+	{% include "JS_libs/jQuery.html" %}
+	<script> 
+		{% include "Elements/Modules/notification/notification.js" %} 
+	</script>
+</body>
+</html>

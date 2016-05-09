@@ -1,0 +1,16 @@
+<div class="login-box">
+			<h1>Вход</h1>
+			{% if course.id %}<form class="login-box--form" action="/func/login/{{course.id}}/" method="post">
+			{% else %}<form class="login-box--form" action="/func/login/" method="post">{% endif %}
+				{% csrf_token %}
+			<div>
+				<input type="email" name="email" value="{{ email }}" class="input__placeholder-label"><label for="email">Email</label>
+				<input type="password" name="password" value="{{ password }}" class="input__placeholder-label" pattern=".{8,}"><label for="password">Пароль</label>
+			</div>
+				<button class="button--proceed" type="submit" disabled>
+					<span>Далее</span>
+					<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M16 3C8.832 3 3 8.832 3 16s5.832 13 13 13 13-5.832 13-13S23.168 3 16 3zm0 2c6.087 0 11 4.913 11 11s-4.913 11-11 11S5 22.087 5 16 9.913 5 16 5zm-1.78 4.28l-1.44 1.44L18.064 16l-5.282 5.28 1.44 1.44 6-6 .686-.72-.687-.72-6-6z"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100" preserveaspectratio="xMidYMid" class="spinner"><circle cx="50" cy="50" r="38" stroke="#4670dc" fill="none" stroke-width="6" stroke-linecap="round"/><animate attributename="stroke-dashoffset" dur="2s" repeatcount="indefinite" from="0" to="476.9"><animate attributename="stroke-dasharray" dur="2s" repeatcount="indefinite" values="143.07 95.38;1 237.5;143.07 95.38"/></animate></svg>
+				</button>
+			</form>
+		</div>
+</section>

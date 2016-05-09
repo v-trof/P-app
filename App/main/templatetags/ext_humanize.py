@@ -37,7 +37,10 @@ def form_for_num(num, forms):
     many = forms[2]
 
     form = ""
-    if num%100 - num%10 != 10:
+    if num == 0:
+        num = "Нет"
+        form = many
+    elif num%100 - num%10 != 10:
         if num%10 == 0:
             form = many
         elif num%10 == 1:

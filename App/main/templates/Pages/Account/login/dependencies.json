@@ -1,7 +1,11 @@
 {
-	"elements": [],
+	"elements": ["Modules/notification"],
 	"scripts": [],
-	"styles": [],
+	"styles": ["Page_templates/default/default","Elements/Inputs/checkbox/checkbox",
+	"Elements/card/card", "Elements/button/button" ,"Elements/Inputs/text/text", 
+	"Elements/Inputs/text/filled/icon/icon","Elements/Inputs/text/filled/filled",
+	"Page_templates/main", "Pages/Account/login/css/login"],
+	"fixes": [],
 	"title" : "Вход",
-	"template": "central"
+	"template": "central_box"
 }
