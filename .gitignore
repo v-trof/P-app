@@ -59,9 +59,6 @@ App/main/files
 <<<<<<< HEAD
 Chaches
 =======
-#gulp job
-*.css
-
 #Chaches
 >>>>>>> parent of ba03811... Update .gitignore
 *.chache
