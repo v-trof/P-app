@@ -17,7 +17,7 @@ def dev_file(path):
 		return ""
 	template_path = path[len("../../templates/"):]
 	print("Building:", template_path, filename)
-	file_dev = open(path + "/" + filename, "r")
+	file_dev = open(path + "/" + filename, "r", encoding="utf-8")
 	html = file_dev.read()
 	file_dev.close()
 
@@ -25,7 +25,7 @@ def dev_file(path):
 	html = html.replace('/"', '/exports.html"')
 	html = html.replace('\n', '')
 	
-	file_main = open(path + "/exports.html", "w")
+	file_main = open(path + "/exports.html", "w", encoding="utf-8")
 	file_main.write(html)
 	file_main.close()
 	return html
