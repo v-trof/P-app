@@ -24,7 +24,6 @@ def dev_file(path):
 	html = html.replace('#&', template_path)
 	html = html.replace('/"', '/exports.html"')
 	html = html.replace('\n', '')
-	html = html.replace('	', '')
 	
 	file_main = open(path + "/exports.html", "w")
 	file_main.write(html)
