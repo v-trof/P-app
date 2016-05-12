@@ -1,6 +1,6 @@
-<div class="account_info">
-	<h1>Ваш аккаунт</h1>
+<div class="login-box account_info modal card">
+	<h2>Ваш аккаунт</h2>
 	<br> </br>
-	{% include "UI_elements/cards/person.html" with user=request.user %}
-	<a href="/change_user/" style="display: block; text-align:center">Сменить пользователя</a>
+	{% include "Elements/card/user/" with user=request.user %}
+	<a href='/change_user/'>Сменить пользователя</a>
 </div>

@@ -1,0 +1,8 @@
+<section class="accordion">
+	<div class="announcements">
+		 <h3>Объявления</h3>
+			{% for announcement in announcements %}
+				{% include "UI_elements/cards/default.html" with card=announcement%}
+			{% endfor %}
+	</div>
+</section>

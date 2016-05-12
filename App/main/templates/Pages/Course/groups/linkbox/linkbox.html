@@ -1,0 +1,16 @@
+<section id="groups_content">
+	<section class="teachers">
+		<h2>Преподаватели</h2>
+			{% for teacher in course_data.teachers %}
+				<a class="link--card" href="/user/{{teacher.id}}/">
+					{% include "UI_elements/cards/person.html" with user=teacher %}
+				</a>
+			{% endfor %}
+	</section>
+	<section class="students accordion">
+		<h2>Ученики</h2>
+			{% for group, members in course_data.groups.items %}
+				{% include '#&/group/exports.html' %}
+			{% endfor %}
+	</section>
+</section>

@@ -1,7 +1,8 @@
 {
-	"elements": [],
+	"elements": ["Modules/notification"],
 	"scripts": [],
-	"styles": [],
+	"styles": ["Pages/Course/main/css/courses"],
+	"fixes": [],
 	"title" : "Курс",
 	"template": "default"
 }

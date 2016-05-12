@@ -1,0 +1,8 @@
+{
+	"elements": ["Modules/notification", "Modules/verification"],
+	"scripts": ["#&/_scripts/verify_inputs"],
+	"styles": [],
+	"fixes": [],
+	"title" : "Забыл пароль",
+	"template": "central_box"
+}

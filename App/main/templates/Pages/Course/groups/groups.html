@@ -1,0 +1,4 @@
+{% if course_data.user_status == "moderator" or course_data.user_status == "administrator" or course_data.user_status == "teacher" %}
+	{% include '#&/linkbox/exports.html' %}
+{% endif %}
+{% include '#&/main_content/exports.html' %}

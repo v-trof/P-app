@@ -1,12 +1,8 @@
 {
-	"elements" : {
-
-	},
-	"styles": {
-
-	},
-	"scripts": {
-
-	},
-	"template": "3cols"
+	"elements": ["Modules/notification","Modules/header","Modules/popup"],
+	"scripts": ["#&/_scripts/create_course"],
+	"styles": ["Pages/home/css/home"],
+	"fixes": [],
+	"title" : "Главная",
+	"template": "default"
 }

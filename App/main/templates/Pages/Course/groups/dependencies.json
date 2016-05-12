@@ -1,8 +1,8 @@
 {
-	"elements" : [],
-	"styles": [],
-	"scripts": ["#&/groups_edit"],
+	"elements": ["Modules/notification"],
+	"scripts": [],
+	"styles": ["Pages/Course/main/css/courses"],
 	"fixes": [],
-	"template": "1col",
-	"title": "Groups {{ course.name }}"
+	"title" : "Курс",
+	"template": "default"
 }

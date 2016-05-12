@@ -3,16 +3,20 @@
 <head>
 	<title>Вход</title>
 	<style> 
-		{% include "Page_templates/default/default.css" %} 
-		{% include "Elements/Inputs/text/filled/filled.css" %} 
-		{% include "Elements/Modules/notification/notification.css" %} 
-		{% include "Elements/button/button.css" %} 
-		{% include "Elements/Inputs/text/text.css" %} 
 		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Elements/Inputs/text/filled/filled.css" %} 
 		{% include "Page_templates/main.css" %} 
+		{% include "Elements/../Pages/Account/_shared/footer/footer.css" %} 
+		{% include "Elements/Modules/notification/notification.css" %} 
 		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
-		{% include "Pages/Account/login/css/login.css" %} 
+		{% include "Elements/../Pages/Account/_shared/modal/modal.css" %} 
+		{% include "Elements/Inputs/text/text.css" %} 
+		{% include "Elements/card/user/user.css" %} 
+		{% include "Elements/Modules/tooltip/tooltip.css" %} 
+		{% include "Elements/Modules/ripple/ripple.css" %} 
+		{% include "Elements/button/button.css" %} 
 		{% include "Elements/card/card.css" %} 
+		{% include "Page_templates/central_box/central_box.css" %} 
 	</style>
 </head>
 <body>
@@ -21,7 +25,10 @@
 </main>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
+		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
 		{% include "Elements/Modules/notification/notification.js" %} 
+		{% include "Elements/Modules/tooltip/tooltip.js" %} 
+		{% include "Elements/Modules/ripple/ripple.js" %} 
 	</script>
 </body>
 </html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Забыл пароль</title>
+	<style> 
+		{% include "Elements/Inputs/text/filled/filled.css" %} 
+		{% include "Elements/../Pages/Account/_shared/modal/modal.css" %} 
+		{% include "Elements/Modules/tooltip/tooltip.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
+		{% include "Elements/Modules/ripple/ripple.css" %} 
+		{% include "Elements/Inputs/text/text.css" %} 
+		{% include "Elements/Modules/notification/notification.css" %} 
+		{% include "Elements/../Pages/Account/_shared/footer/footer.css" %} 
+		{% include "Page_templates/main.css" %} 
+		{% include "Elements/button/button.css" %} 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Elements/card/card.css" %} 
+		{% include "Page_templates/central_box/central_box.css" %} 
+	</style>
+</head>
+<body>
+<main>
+	{% include "Pages/Account/password_recovery/login-box/exports.html" %}{% include "Pages/Account/password_recovery/footer/exports.html" %}
+</main>
+	{% include "JS_libs/jQuery.html" %}
+	<script> 
+		{% include "Elements/Modules/tooltip/tooltip.js" %} 
+		{% include "Elements/Modules/notification/notification.js" %} 
+		{% include "Elements/Modules/ripple/ripple.js" %} 
+		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
+	</script>
+</body>
+</html>

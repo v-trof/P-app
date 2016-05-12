@@ -1,0 +1,5 @@
+{% if request.user.is_teacher %}
+	{% include '#&/teacher_main/exports.html' %}
+{% else %}
+	{% include '#&/main/exports.html' %}
+{% endif %}

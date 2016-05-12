@@ -52,7 +52,7 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'main.auth_backends.UserModelBackend',
+    'main.python.other.auth_backends.UserModelBackend',
 )
 
 ROOT_URLCONF = 'main.urls'
@@ -133,7 +133,7 @@ STATIC_URL = '/Static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    '/main/Static/',
+    '/main/files/static/',
 ]
 
 USER_IMAGE_PATH = STATICFILES_DIRS

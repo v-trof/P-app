@@ -685,7 +685,8 @@ class UserManager(UserManager):
 				return False
 
 	def upload_avatar(self, user, new_avatar):
-		os.remove(user.avatar.path)
+		if user.avatar.path != "avatar.png":
+			os.remove(user.avatar.path)
 		setattr(user, 'avatar', new_avatar)
 		user.save()
 		return user.avatar.path

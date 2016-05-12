@@ -1,0 +1,7 @@
+{% if request.user.id == course.creator %}
+	{% include '#&/linkbox/teacher/exports.html' %}
+{% else %}
+	{% include '#&/linkbox/student/exports.html' %}
+{% endif %}
+{% include '#&/announcements/exports.html' %}
+{% include '#&/homework/exports.html' %}

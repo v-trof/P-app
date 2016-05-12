@@ -1,0 +1,13 @@
+<div class="login-box modal card">
+	<h2>Сброс пароля</h2>
+		<form action='/func/reset_password/' method="post">
+		{% csrf_token %}
+		{% include "Elements/Inputs/text/" with 
+			placeholder="Email" 
+			name="email"
+			type="email"
+			value=email %}
+			<button>Далее</button>
+		</form>
+</div>
+</section>

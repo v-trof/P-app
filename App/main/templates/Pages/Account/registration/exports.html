@@ -3,25 +3,32 @@
 <head>
 	<title>Регистрация</title>
 	<style> 
-		{% include "Pages/Account/registration/css/login.css" %} 
-		{% include "Elements/Modules/notification/notification.css" %} 
-		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Elements/../Pages/Account/_shared/footer/footer.css" %} 
+		{% include "Elements/../Pages/Account/_shared/modal/modal.css" %} 
+		{% include "Page_templates/main.css" %} 
+		{% include "Elements/Modules/ripple/ripple.css" %} 
 		{% include "Elements/Inputs/text/filled/filled.css" %} 
-		{% include "Elements/button/button.css" %} 
+		{% include "Elements/Modules/tooltip/tooltip.css" %} 
 		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Elements/button/button.css" %} 
+		{% include "Page_templates/central_box/central_box.css" %} 
 		{% include "Elements/Inputs/text/text.css" %} 
 		{% include "Elements/card/card.css" %} 
-		{% include "Page_templates/default/default.css" %} 
-		{% include "Page_templates/main.css" %} 
+		{% include "Elements/Modules/notification/notification.css" %} 
 	</style>
 </head>
 <body>
 <main>
-	{% include "Pages/Account/registration/login-box/exports.html" %}<div id="tooltip"><div class="tooltip__content"></div></div>{% include "Pages/Account/registration/footer/exports.html" %}
+	{% include "Pages/Account/registration/login-box/exports.html" %}{% include "Pages/Account/registration/footer/exports.html" %}
 </main>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
 		{% include "Elements/Modules/notification/notification.js" %} 
+		{% include "Elements/Modules/tooltip/tooltip.js" %} 
+		{% include "Pages/Account/registration/_scripts/verify_inputs.js" %} 
+		{% include "Elements/Modules/ripple/ripple.js" %} 
+		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
 	</script>
 </body>
 </html>

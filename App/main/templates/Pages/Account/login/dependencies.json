@@ -1,6 +1,6 @@
 {
-	"elements": ["Modules/notification"],
-	"scripts": [],
+	"elements": ["Modules/notification", "Modules/verifier"],
+	"scripts": ["#&/_scripts/verify_inputs"],
 	"styles": [],
 	"fixes": [],
 	"title" : "Вход",
