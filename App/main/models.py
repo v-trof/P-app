@@ -493,8 +493,16 @@ class UserManager(UserManager):
 				password=password,
 				name=name_last_name,
 				is_teacher=is_teacher,
-				avatar='avatar.png',
+				avatar='Avatars/avatar.png',
 				permission_level="0")
+			os.makedirs('main/files/json/users/'+str(user.id)+'/')
+			with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'w+', encoding='utf8') as json_file:
+				data={}
+				data["contacts"]={}
+				data["contacts"]["email"]=user.email
+				saving_data = json.dumps(data, ensure_ascii=False)
+				json_file.write(saving_data)
+
 		else:
 			return 'Данный email уже зарегистрирован'
 		if user is not None:
@@ -503,7 +511,7 @@ class UserManager(UserManager):
 				auth(request, user)
 				request.session.set_expiry(36000)
 				if course_id and request.POST.get('course_reg', False):
-					course_reg(request, course_id)
+					reg_user(request, course_id)
 					return 'groups'
 				return 'success'
 		else:
@@ -515,14 +523,36 @@ class UserManager(UserManager):
 		user.save()
 		return 0
 
+	def create_contact(self,user,contact_info,contact_type):
+		with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'r', encoding='utf8') as json_file:
+				data=json.load(json_file)
+		with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'w', encoding='utf8') as json_file:
+				if (data["contacts"][contact_type]):
+					it=2
+					while contact_type+" "+str(it) in data["contacts"]:
+						it+=1
+					contact_type=contact_type+" "+str(it)
+				data["contacts"][contact_type]=contact_info
+				saving_data = json.dumps(data, ensure_ascii=False)
+				json_file.write(saving_data)
+		print("model", data["contacts"])
+		return 0
+
+	def get_contacts(self, user):
+		with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'r', encoding='utf8') as json_file:
+			data=json.load(json_file)
+			return data["contacts"]
+
 	# password change
 
 	def change_password(self, request, user, old_password, new_password):
 		if user.check_password(old_password):
 			setattr(user, 'password', strip_tags(new_password))
-			request.user.save()
+			user.save()
 			login(request)
-			return user
+			return True
+		else: 	
+			return False
 
 	# loading courses for home page
 
@@ -680,12 +710,12 @@ class UserManager(UserManager):
 				user.save()
 				send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, ваш временный пароль: ' + new_pass + '. Зайдите в личный кабинет для его изменения', 'p.application.bot@gmail.com',
 		[email], fail_silently=False)
-				return True
-			else:
-				return False
+			return True
+		else:
+			return False
 
 	def upload_avatar(self, user, new_avatar):
-		if user.avatar.path != "avatar.png":
+		if user.avatar.path != "Avatars/avatar.png":
 			os.remove(user.avatar.path)
 		setattr(user, 'avatar', new_avatar)
 		user.save()
@@ -707,14 +737,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 		}
 	)
 	name = models.CharField(_('name'), max_length=30, blank=True)
-	Skype = models.CharField(_('skype'), max_length=30, blank=True)
 	courses = models.CharField(_('courses'), max_length=300, blank=True)
 	participation_list = models.CharField(
 		_('participation_list'), max_length=300, blank=True)
-	Codeforces = models.CharField(_('codeforces'), max_length=30, blank=True)
-	VK = models.CharField(_('vk'), max_length=30, blank=True)
-	Facebook = models.CharField(_('facebook'), max_length=30, blank=True)
-	Dnevnik = models.CharField(_('dnevnik'), max_length=30, blank=True)
 	avatar = models.ImageField(
 		_('avatar'), upload_to='Avatars/', max_length=120, blank=True)
 	permission_level = models.CharField(

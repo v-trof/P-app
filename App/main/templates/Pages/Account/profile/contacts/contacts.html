@@ -1,11 +1,15 @@
 <section class="card" id="contacts">
 	<div class="__overall-info">
 		<h4 class="__heading">Контакты</h4>
-		{# {% if request.user.id = user.id %} #}
+		{% if request.user.id = user.id %}
 		<button class="--ghost --icon" id="add_contact">
 			{% include 'Elements/Icons/add.svg' %}
 		</button>
-		{# {% endif %} #}
+		{% endif %}
 	</div>	
-	{% include "#&/item/" with type="email" value=user.email %}
+	{% for type,value in contacts.items %}
+		{{ contact }}
+		{% include "#&/item/" with type=type value=value %}
+	{% endfor %}
+
 </section>

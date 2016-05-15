@@ -3,19 +3,19 @@
 <head>
 	<title>Вход</title>
 	<style> 
-		{% include "Page_templates/central_box/central_box.css" %} 
-		{% include "Elements/card/card.css" %} 
-		{% include "Page_templates/main.css" %} 
-		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
-		{% include "Elements/Modules/notification/notification.css" %} 
-		{% include "Elements/Modules/tooltip/tooltip.css" %} 
-		{% include "Elements/../Pages/Account/_shared/modal/modal.css" %} 
-		{% include "Elements/Modules/ripple/ripple.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
 		{% include "Elements/button/button.css" %} 
 		{% include "Elements/../Pages/Account/_shared/footer/footer.css" %} 
-		{% include "Elements/Inputs/text/filled/filled.css" %} 
 		{% include "Elements/Inputs/text/text.css" %} 
+		{% include "Elements/Modules/ripple/ripple.css" %} 
+		{% include "Elements/Modules/notification/notification.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
+		{% include "Elements/Inputs/text/filled/filled.css" %} 
+		{% include "Elements/card/card.css" %} 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Elements/../Pages/Account/_shared/modal/modal.css" %} 
+		{% include "Page_templates/main.css" %} 
+		{% include "Elements/Modules/tooltip/tooltip.css" %} 
+		{% include "Page_templates/central_box/central_box.css" %} 
 	</style>
 </head>
 <body>
@@ -24,12 +24,12 @@
 </main>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/ripple/ripple.js" %} 
-		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
-		{% include "Elements/Modules/tooltip/tooltip.js" %} 
 		{% include "Elements/Modules/verifier/verifier.js" %} 
+		{% include "Elements/Modules/tooltip/tooltip.js" %} 
+		{% include "Elements/Modules/ripple/ripple.js" %} 
 		{% include "Elements/Modules/notification/notification.js" %} 
 		{% include "Pages/Account/login/_scripts/verify_inputs.js" %} 
+		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
 	</script>
 </body>
 </html>

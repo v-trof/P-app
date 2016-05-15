@@ -1,0 +1,4 @@
+{% include "Elements/Inputs/text/" with placeholder="Название курса" name="course_name" type="text" %}<br><br>
+{% include "Elements/Inputs/checkbox/" with placeholder="Закрытый (Доступ к курсу только по приглашению)" name="is_closed" type="checkbox" %}<br>
+{% include "Elements/Inputs/select/" with options="f g"|make_list %}<br>
+<br><br><button id="create_course_button">{{"f g"|make_list}} Создать</button>

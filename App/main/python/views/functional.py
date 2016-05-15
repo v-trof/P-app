@@ -34,7 +34,7 @@ class User_views():
 	def login(request):
 		def errorHandle(error):
 			form = LoginForm()
-			return render(request, 'Pages/login.html', {
+			return render(request, 'Pages/Account/login/exports.html', {
 				'error': error,
 				'form': form,
 			})
@@ -67,7 +67,7 @@ class User_views():
 	def reg(request):
 		def errorHandle(error, email, password, name_last_name):
 			form = RegForm()
-			return render(request, 'Pages/registration.html', {
+			return render(request, 'Pages/Account/registration/exports.html', {
 				'error': error,
 				'form': form,
 				'email': email,
@@ -84,9 +84,9 @@ class User_views():
 			message = User.objects.reg(form=form, request=request, course_id=course_id, email=email,
 									   is_teacher=is_teacher, password=password, name_last_name=name_last_name)
 			if message == 'Данный email уже зарегистрирован':
-				return errorHandle(error, email, password, name_last_name)
+				return errorHandle(message, email, password, name_last_name)
 			elif message == 'Неверный логин или пароль':
-				return errorHandle(error, email, password, name_last_name)
+				return errorHandle(message, email, password, name_last_name)
 			elif message == 'groups':
 				return redirect('/course/' + course_id + '/groups/')
 			elif message == 'success':
@@ -109,8 +109,7 @@ class User_views():
 		if request.method == 'POST':
 			contact_type = request.POST['contact_type']
 			contact_info = request.POST['contact_info']
-			setattr(request.user, contact_type, strip_tags(contact_info))
-			request.user.save()
+			User.objects.create_contact(contact_type=contact_type,user=request.user,contact_info=contact_info)
 		return HttpResponse("ok")
 
 	def reset_password(request):
@@ -119,7 +118,7 @@ class User_views():
 			if User.objects.reset_password(email=email):
 				return redirect('/login/')
 			else:
-				return render(request, 'Pages/forgot_password.html', {
+				return render(request, 'Pages/Account/password_recovery/exports.html', {
 					'error': 'Введенный email не существует',
 				})
 
@@ -127,15 +126,11 @@ class User_views():
 		if request.method == 'POST':
 			old_password = request.POST['old_password']
 			new_password = make_password(request.POST['new_password'])
-			user = User.objects.change_password(
-				request, user=request.user, old_password=old_password, new_password=new_password)
-			return render(request, 'Pages/profile.html', {
-				'success_message': 'Пароль успешно изменен',
-			})
-		else:
-			return render(request, 'Pages/profile.html', {
-				'error': 'Неверный пароль',
-			})
+			print(User.objects.change_password(request=request, user=request.user, old_password=old_password, new_password=new_password))
+			if User.objects.change_password(request=request, user=request.user, old_password=old_password, new_password=new_password):
+				return HttpResponse("success")
+			else:
+				return HttpResponse("error")
 
 	def upload_avatar(request):
 		return HttpResponse(User.objects.upload_avatar(user=request.user, new_avatar=request.FILES['new_avatar']))

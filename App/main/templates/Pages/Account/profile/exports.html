@@ -3,51 +3,52 @@
 <head>
 	<title>Профиль</title>
 	<style> 
+		{% include "Elements/card/user/user.css" %} 
+		{% include "Elements/button/ghost/ghost.css" %} 
+		{% include "Page_templates/main.css" %} 
 		{% include "Elements/Modules/ripple/ripple.css" %} 
-		{% include "Elements/Layout/linkbox/linkbox.css" %} 
-		{% include "Elements/card/small/small.css" %} 
-		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
-		{% include "Elements/Modules/context_menu/context_menu.css" %} 
-		{% include "Pages/Account/profile/contacts/item/item.css" %} 
-		{% include "Elements/button/ghost/icon/icon.css" %} 
-		{% include "Elements/Modules/popup/popup.css" %} 
-		{% include "Elements/Inputs/select/select.css" %} 
 		{% include "Elements/Modules/notification/notification.css" %} 
 		{% include "Elements/Modules/tooltip/tooltip.css" %} 
-		{% include "Elements/card/card.css" %} 
-		{% include "Elements/Inputs/text/text.css" %} 
-		{% include "Elements/Inputs/text/filled/filled.css" %} 
-		{% include "Elements/card/user/user.css" %} 
-		{% include "Elements/Inputs/radio/radio.css" %} 
-		{% include "Elements/button/ghost/ghost.css" %} 
-		{% include "Elements/Inputs/_shared/toggle.css" %} 
-		{% include "Page_templates/default/default.css" %} 
-		{% include "Page_templates/main.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
-		{% include "Elements/button/button.css" %} 
+		{% include "Elements/Layout/linkbox/linkbox.css" %} 
+		{% include "Elements/button/ghost/icon/icon.css" %} 
 		{% include "Elements/Layout/header/header.css" %} 
+		{% include "Elements/Inputs/_shared/toggle.css" %} 
+		{% include "Elements/Modules/popup/popup.css" %} 
+		{% include "Elements/Inputs/radio/radio.css" %} 
+		{% include "Elements/Inputs/text/filled/filled.css" %} 
+		{% include "Page_templates/default/default.css" %} 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Elements/Inputs/text/text.css" %} 
+		{% include "Elements/card/card.css" %} 
+		{% include "Elements/Inputs/select/select.css" %} 
+		{% include "Elements/card/small/small.css" %} 
+		{% include "Pages/Account/profile/contacts/item/item.css" %} 
+		{% include "Elements/button/button.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
+		{% include "Elements/Modules/context_menu/context_menu.css" %} 
 	</style>
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	{% include "Pages/Account/profile/linkbox/exports.html" %}{% include "Elements/card/user/exports.html"%}{% include "Pages/Account/profile/contacts/exports.html" %}{% include "Pages/Account/profile/settings/exports.html" %}
+	{% if user.id == request.user.id %}	{% include "Pages/Account/profile/linkbox/exports.html" %}{% endif %}{% include "Elements/card/user/exports.html"%}{% include "Pages/Account/profile/contacts/exports.html" %}{% if user.id == request.user.id %}	{% include "Pages/Account/profile/settings/exports.html" %}{% endif %}
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
 		{% include "Elements/Modules/ripple/ripple.js" %} 
-		{% include "Pages/Account/profile/_scripts/change_password.js" %} 
-		{% include "Elements/Modules/upload/upload.js" %} 
-		{% include "Pages/Account/profile/_scripts/change_avatar.js" %} 
 		{% include "Elements/Modules/context_menu/context_menu.js" %} 
-		{% include "Elements/Modules/popup/popup.js" %} 
-		{% include "Elements/Modules/toggle_edit/toggle_edit.js" %} 
-		{% include "Elements/Inputs/select/select.js" %} 
 		{% include "Elements/Modules/notification/notification.js" %} 
 		{% include "Elements/Modules/tooltip/tooltip.js" %} 
-		{% include "Elements/Layout/header/header.js" %} 
 		{% include "Pages/Account/profile/_scripts/add_contact.js" %} 
+		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
+		{% include "Elements/Layout/header/header.js" %} 
+		{% include "Elements/Modules/upload/upload.js" %} 
+		{% include "Elements/Modules/popup/popup.js" %} 
+		{% include "Pages/Account/profile/_scripts/change_avatar.js" %} 
+		{% include "Elements/Modules/verifier/verifier.js" %} 
+		{% include "Pages/Account/profile/_scripts/change_password.js" %} 
+		{% include "Elements/Inputs/select/select.js" %} 
+		{% include "Pages/Account/profile/_scripts/change_view_permissions.js" %} 
 	</script>
 </body>
 </html>

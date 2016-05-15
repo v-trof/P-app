@@ -1,6 +1,10 @@
-{% include "#&/linkbox/" %}
+{% if user.id == request.user.id %}
+	{% include "#&/linkbox/" %}
+{% endif %}
 
 {% include "Elements/card/user/"%}
 {% include "#&/contacts/" %}
 
-{% include "#&/settings/" %}
+{% if user.id == request.user.id %}
+	{% include "#&/settings/" %}
+{% endif %}

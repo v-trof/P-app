@@ -7,9 +7,10 @@ function request_password_change(passwords) {
 			'csrfmiddlewaretoken': '{{ csrf_token }}',
 			'new_password': passwords.new
 			},
-		success: function() {
-			popup.hide();
-			notification.show('success','Пароль изменен');
+		success: function(response) {
+			if (response=="success")
+				notification.show('success','Пароль изменен');
+			else notification.show('error','Пароль неверный');
 		},
 		error: function(data) {
 			notification.show('error', data);

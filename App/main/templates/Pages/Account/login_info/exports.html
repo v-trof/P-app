@@ -3,31 +3,31 @@
 <head>
 	<title>Вход</title>
 	<style> 
-		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
-		{% include "Elements/Inputs/text/filled/filled.css" %} 
-		{% include "Page_templates/main.css" %} 
-		{% include "Elements/../Pages/Account/_shared/footer/footer.css" %} 
-		{% include "Elements/Modules/notification/notification.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
-		{% include "Elements/../Pages/Account/_shared/modal/modal.css" %} 
-		{% include "Elements/Inputs/text/text.css" %} 
-		{% include "Elements/card/user/user.css" %} 
-		{% include "Elements/Modules/tooltip/tooltip.css" %} 
-		{% include "Elements/Modules/ripple/ripple.css" %} 
 		{% include "Elements/button/button.css" %} 
-		{% include "Elements/card/card.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
+		{% include "Elements/card/user/user.css" %} 
+		{% include "Elements/Modules/ripple/ripple.css" %} 
+		{% include "Elements/Inputs/text/filled/filled.css" %} 
+		{% include "Elements/Modules/notification/notification.css" %} 
+		{% include "Page_templates/main.css" %} 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
 		{% include "Page_templates/central_box/central_box.css" %} 
+		{% include "Elements/card/card.css" %} 
+		{% include "Elements/Inputs/text/text.css" %} 
+		{% include "Elements/../Pages/Account/_shared/footer/footer.css" %} 
+		{% include "Elements/../Pages/Account/_shared/modal/modal.css" %} 
+		{% include "Elements/Modules/tooltip/tooltip.css" %} 
 	</style>
 </head>
 <body>
 <main>
-	{% include "Pages/Account/login_info/account_info_box/exports.html" %}{% include "Pages/Account/login_info/footer/exports.html" %}
+	{% include "Pages/../../Templates/Pages/Account/login_info/account_info_box/exports.html" %}{% include "Pages/../../Templates/Pages/Account/login_info/footer/exports.html" %}
 </main>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
 		{% include "Elements/Modules/notification/notification.js" %} 
 		{% include "Elements/Modules/tooltip/tooltip.js" %} 
+		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
 		{% include "Elements/Modules/ripple/ripple.js" %} 
 	</script>
 </body>

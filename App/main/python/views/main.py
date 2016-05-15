@@ -9,39 +9,19 @@ import json
 
 class Main_group():
 
-    #def profile(request, user_id):
-    #    user = User.objects.get(id=user_id)
-    #    contacts_view_allowed=User.objects.get_view_permission(user=user, requesting_user=request.user)
-    #    try:
-    #        return render(request, 'Pages/profile.html', {
-     #           "user": user,
-    #            "breadcrumbs": [{
-    #                "href": "#",
-    #                "link": "Профиль"
-    #            }
-    #            ],
-    #            "contacts_view_allowed": contacts_view_allowed,
-     #       })
-    #    except:
-     #       return render(request, 'Pages/404.html')
-
     def profile(request, user_id):
-        user=User.objects.get(id=user_id)
-        if user.participation_list and request.user.participation_list:
-            classmates=any(i in user.participation_list.split(' ') for i in request.user.participation_list.split(' '))
-        else: classmates=False
-        if request.user.id == user.id or (user.permission_level == '0') or (user.permission_level == '1' and request.user.is_teacher) or (user.permission_level == '2' and not request.user.is_teacher) or (user.permission_level == '3' and classmates):
-            contacts_view_allowed=True
-        else: contacts_view_allowed=False
+        user = User.objects.get(id=user_id)
+        contacts_view_allowed=User.objects.get_view_permission(user=user, requesting_user=request.user)
         return render(request, 'Pages/Account/profile/exports.html', {
-            "user": user,
-            "breadcrumbs" : [{
-                "href" : "#",
-                "link" : "Профиль"
+               "user": user,
+                "breadcrumbs": [{
+                    "href": "#",
+                    "link": "Профиль"
                 }
-            ],
-            "contacts_view_allowed": contacts_view_allowed,
-            "possible_contacts": [
+                ],
+                "contacts_view_allowed": contacts_view_allowed,
+                "contacts":User.objects.get_contacts(user=user),
+                "possible_contacts": [
             {
                 "value": "Мобильный телефон",
                 "text": "Мобильный телефон"
@@ -55,7 +35,8 @@ class Main_group():
                 "value": "Дневник.py",
                 "text": "Дневник.ру"
             }
-            ]})
+            ],
+            })
 
     def updates(request, course_id):
         return render(request, 'Pages/updates.html', {"course": Course.objects.get(id=course_id), "course": User.objects.get_data(object=request.user, course_id=course_id)})
