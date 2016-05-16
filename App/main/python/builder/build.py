@@ -49,8 +49,14 @@ def template(dependencies, page_path):
 	styles_html += "	</style>"
 
 	scripts_html = "<script> \n"
+	scripts_pages = ""
 	for script in dependencies["scripts"]:
-		scripts_html += '		{% include "' + script +'.js" %} \n'
+		if script.startswith("Elements/Modules"):
+			scripts_html += '		{% include "' + script +'.js" %} \n'
+		else:
+			scripts_pages += '		{% include "' + script +'.js" %} \n'
+	
+	scripts_html += scripts_pages
 	scripts_html += "	</script>"
 
 	page_html = template_html \

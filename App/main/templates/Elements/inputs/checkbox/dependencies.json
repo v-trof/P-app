@@ -1,5 +1,5 @@
 {
 	"elements": [],
 	"scripts": [],
-	"styles": []
+	"styles": ["Elements/Inputs/_shared/toggle"]
 }

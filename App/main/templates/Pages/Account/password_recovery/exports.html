@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
+	{% include "Page_templates/_shared/fixes/charset.html" %}
+	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Забыл пароль</title>
 	<style> 
-		{% include "Elements/button/button.css" %} 
+		{% include "Elements/../Pages/Account/_shared/footer/footer.css" %} 
+		{% include "Elements/Modules/tooltip/tooltip.css" %} 
 		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
-		{% include "Elements/Modules/ripple/ripple.css" %} 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Page_templates/main.css" %} 
 		{% include "Elements/Inputs/text/filled/filled.css" %} 
 		{% include "Elements/Modules/notification/notification.css" %} 
-		{% include "Page_templates/main.css" %} 
-		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Elements/Inputs/_shared/toggle.css" %} 
 		{% include "Page_templates/central_box/central_box.css" %} 
-		{% include "Elements/card/card.css" %} 
 		{% include "Elements/Inputs/text/text.css" %} 
-		{% include "Elements/../Pages/Account/_shared/footer/footer.css" %} 
 		{% include "Elements/../Pages/Account/_shared/modal/modal.css" %} 
-		{% include "Elements/Modules/tooltip/tooltip.css" %} 
+		{% include "Elements/Modules/ripple/ripple.css" %} 
+		{% include "Elements/card/card.css" %} 
+		{% include "Elements/button/button.css" %} 
 	</style>
 </head>
 <body>
 <main>
-	{% include "Pages/../../Templates/Pages/Account/password_recovery/login-box/exports.html" %}{% include "Pages/../../Templates/Pages/Account/password_recovery/footer/exports.html" %}
+	{% include "Pages/Account/password_recovery/login-box/exports.html" %}{% include "Pages/Account/password_recovery/footer/exports.html" %}
 </main>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
+		{% include "Elements/Modules/verifier/verifier.js" %} 
 		{% include "Elements/Modules/tooltip/tooltip.js" %} 
-		{% include "Elements/Modules/notification/notification.js" %} 
-		{% include "Pages/../../Templates/Pages/Account/password_recovery/_scripts/verify_inputs.js" %} 
-		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
 		{% include "Elements/Modules/ripple/ripple.js" %} 
+		{% include "Elements/Modules/notification/notification.js" %} 
+		{% include "Pages/Account/password_recovery/_scripts/verify_inputs.js" %} 
+		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
 	</script>
 </body>
 </html>

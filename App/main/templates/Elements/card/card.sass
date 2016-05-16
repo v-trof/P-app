@@ -19,3 +19,12 @@
 	.__content
 		margin: 0
 	+box-shadow(1)
+
+.--extended
+	display: flex
+	flex-direction: row
+	&>.__main, &>.__extension
+		width: 100%
+
+.--selected
+	box-shadow: 0 0 0 $border--s $color--accent

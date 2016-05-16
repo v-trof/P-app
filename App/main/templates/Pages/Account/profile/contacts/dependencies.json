@@ -1,6 +1,7 @@
 {
-	"elements": ["button/ghost/icon", "Modules/popup",
-		 "Inputs/select", "Inputs/text"],
+	"elements": ["button/ghost/icon", "Modules/popup", 
+				"Modules/button_delete",
+				"Inputs/select", "Inputs/text"],
 	"scripts": [],
 	"styles": []
 }

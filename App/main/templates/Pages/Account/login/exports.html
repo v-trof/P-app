@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+	{% include "Page_templates/_shared/fixes/charset.html" %}
+	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Вход</title>
 	<style> 
-		{% include "Elements/button/button.css" %} 
 		{% include "Elements/../Pages/Account/_shared/footer/footer.css" %} 
-		{% include "Elements/Inputs/text/text.css" %} 
-		{% include "Elements/Modules/ripple/ripple.css" %} 
-		{% include "Elements/Modules/notification/notification.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
-		{% include "Elements/Inputs/text/filled/filled.css" %} 
-		{% include "Elements/card/card.css" %} 
-		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
-		{% include "Elements/../Pages/Account/_shared/modal/modal.css" %} 
-		{% include "Page_templates/main.css" %} 
 		{% include "Elements/Modules/tooltip/tooltip.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Page_templates/main.css" %} 
+		{% include "Elements/Inputs/text/filled/filled.css" %} 
+		{% include "Elements/Modules/notification/notification.css" %} 
+		{% include "Elements/Inputs/_shared/toggle.css" %} 
 		{% include "Page_templates/central_box/central_box.css" %} 
+		{% include "Elements/Inputs/text/text.css" %} 
+		{% include "Elements/../Pages/Account/_shared/modal/modal.css" %} 
+		{% include "Elements/Modules/ripple/ripple.css" %} 
+		{% include "Elements/card/card.css" %} 
+		{% include "Elements/button/button.css" %} 
 	</style>
 </head>
 <body>
@@ -28,8 +31,9 @@
 		{% include "Elements/Modules/tooltip/tooltip.js" %} 
 		{% include "Elements/Modules/ripple/ripple.js" %} 
 		{% include "Elements/Modules/notification/notification.js" %} 
-		{% include "Pages/Account/login/_scripts/verify_inputs.js" %} 
 		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
+		{% include "Pages/Account/login/_scripts/verify_inputs.js" %} 
+		{% include "Pages/Account/login/login-box/login-box.js" %} 
 	</script>
 </body>
 </html>

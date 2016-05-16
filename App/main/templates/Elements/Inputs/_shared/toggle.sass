@@ -21,5 +21,8 @@ label
 
 		input
 			display: none
+			&:focus
+				& ~ .__box
+					border-color: $color--accent
 			&:disabled ~ .__box, &:disabled:checked ~ .__box
 				border-color: $grey--semilight

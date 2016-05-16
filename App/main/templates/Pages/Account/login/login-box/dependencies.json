@@ -1,6 +1,7 @@
 {
 	"elements": ["card","button","Inputs/text", 
-	"../Pages/Account/_shared/modal"],
+				"../Pages/Account/_shared/modal",
+				"Modules/verifier"],
 	"scripts": [],
 	"styles": []
 }

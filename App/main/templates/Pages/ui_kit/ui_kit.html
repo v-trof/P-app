@@ -7,7 +7,7 @@
 		<div class="__description">
 			<strong>Classes:</strong> .card <br>
 			<strong>Blocks:</strong> __icons __overall-info <br>
-			<strong>Dependencies:</strong> Elements/Modules/tooltip<br>
+			<strong>Dependencies:</strong> Modules/tooltip <br>
 			<strong>Usage:</strong> When there is no special card
 		</div>
 	</div>
@@ -18,18 +18,20 @@
 		<div class="__description">
 			<strong>Classes:</strong> .card .--course<br>
 			<strong>Blocks:</strong> -<br>
-			<strong>Dependencies:</strong> Elements/card/main <br>
+			<strong>Dependencies:</strong> - <br>
 			<strong>Usage:</strong> Display info about course
 		</div>
 	</div>
 	<div class="UI_kit-box --horizontal">
 		<div class="__item">
 			{% include "Elements/card/user/" %}
+			{% include "Elements/card/user/extended/" with extension="{{extension}}" %}
+			{% include "Elements/card/user/extended/" with extension="{{extension}}" class="--selected" %}
 		</div>
 		<div class="__description">
 			<strong>Classes:</strong> .card .--user (.--extended)<br>
 			<strong>Blocks:</strong> __info <br>
-			<strong>Dependencies:</strong> Elements/card/main <br>
+			<strong>Dependencies:</strong> - <br>
 			<strong>Usage:</strong> Display info about user and optional information
 		</div>
 	</div>
@@ -40,7 +42,7 @@
 		<div class="__description">
 			<strong>Classes:</strong> .card .--announcement <br>
 			<strong>Blocks:</strong> - <br>
-			<strong>Dependencies:</strong> card/main<br>
+			<strong>Dependencies:</strong> - <br>
 			<strong>Usage:</strong> Display announcement in course
 		</div>
 	</div>
@@ -51,8 +53,32 @@
 		<div class="__description">
 			<strong>Classes:</strong> .card .--assignment <br>
 			<strong>Blocks:</strong> - <br>
-			<strong>Dependencies:</strong> card/main, checkbox <br>
+			<strong>Dependencies:</strong> checkbox <br>
 			<strong>Usage:</strong> Display assignment
+		</div>
+	</div>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{% include "Elements/card/test/"%}
+			{% include "Elements/card/test/extended/" with extension="{{extension}}" %}
+		</div>
+		<div class="__description">
+			<strong>Classes:</strong> .card .--test (.--extended) <br>
+			<strong>Blocks:</strong> - <br>
+			<strong>Dependencies:</strong> - <br>
+			<strong>Usage:</strong> Display info about test
+		</div>
+	</div>
+	<div class="UI_kit-box --horizontal">
+		<div class="__item">
+			{% include "Elements/card/material/"%}
+			{% include "Elements/card/material/extended/" with extension="{{extension}}" %}
+		</div>
+		<div class="__description">
+			<strong>Classes:</strong> .card .--material (.--extended) <br>
+			<strong>Blocks:</strong> - <br>
+			<strong>Dependencies:</strong> - <br>
+			<strong>Usage:</strong> Display info about material
 		</div>
 	</div>
 </section>

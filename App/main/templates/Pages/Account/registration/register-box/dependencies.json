@@ -1,0 +1,7 @@
+{
+	"elements": ["card","button", "Inputs/text", "Inputs/checkbox", 
+				"../Pages/Account/_shared/modal",
+				"Modules/tooltip"],
+	"scripts": [],
+	"styles": []
+}

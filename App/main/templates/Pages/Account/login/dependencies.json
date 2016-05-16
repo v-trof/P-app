@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/notification", "Modules/verifier"],
+	"elements": ["Modules/notification"],
 	"scripts": ["#&/_scripts/verify_inputs"],
 	"styles": [],
 	"fixes": [],

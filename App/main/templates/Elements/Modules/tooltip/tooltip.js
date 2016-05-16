@@ -9,32 +9,38 @@ var tooltip = (function() {
 
 		exports = {
 			top: {
-			top: element_rect.top - tooltip_rect.height + 'px',
-			left: element_rect.left + 'px'
+				top: element_rect.top - tooltip_rect.height + 'px',
+				left: element_rect.left + 'px',
+				class: '--top'
 			},
 			top_centered: {
 				top: element_rect.top - tooltip_rect.height + 'px',
 				left: element_rect.left - 
-					(tooltip_rect.width/2 - element_rect.width/2) + 'px'
+					(tooltip_rect.width/2 - element_rect.width/2) + 'px',
+				class: '--top'
 			},
 			right: {
 				height: element_rect.height + 'px',
 				top: element_rect.top + 'px',
-				left: element_rect.left + element_rect.width + 'px'
+				left: element_rect.left + element_rect.width + 'px',
+				class: '--right'
 			},
 			left: {
 				height: element_rect + 'px',
 				top: element_rect.top + 'px',
-				left: element_rect.left - tooltip_rect.width + 'px'
+				left: element_rect.left - tooltip_rect.width + 'px',
+				class: '--left'
 			},
 			bottom: {
 				top: element_rect.top + element_rect.height + 'px',
-				left: element_rect.left + 'px'
+				left: element_rect.left + 'px',
+				class: '--bottom'
 			},
 			bottom_centered: {
 				top: element_rect.top + element_rect.height + 'px',
 				left: element_rect.left - 
-					(tooltip_rect.width/2 - element_rect.width/2) + 'px'
+					(tooltip_rect.width/2 - element_rect.width/2) + 'px',
+				class: '--bottom'
 			}
 		}
 
@@ -79,7 +85,7 @@ var tooltip = (function() {
 		show: function(element, content, direction) {
 			var position;
 
-			$tooltip.find(".__content").html(content);
+			$tooltip.find('.__content').html(content);
 			if(direction) {
 				position = directions(element)[direction];
 			} else {
@@ -87,6 +93,7 @@ var tooltip = (function() {
 			}
 
 			$tooltip.css(position);
+			$tooltip.addClass(position.class)
 			prevent_edge_breaking();
 
 			$tooltip.removeClass('--hidden');
@@ -102,11 +109,16 @@ var tooltip = (function() {
 $(document).ready(function() {
 	$('body').append(tooltip.$);
 	$('body').on({
+		focus: function() {
+			tooltip.show(this,  $(this).attr('tip'));
+		},
 		mouseenter: function() {
-			console.log('tip');
 			tooltip.show(this,  $(this).attr('tip'));
 		},
 		mouseleave: function() {
+			tooltip.hide();
+		},
+		blur: function() {
 			tooltip.hide();
 		}
 	}, '[tip]');

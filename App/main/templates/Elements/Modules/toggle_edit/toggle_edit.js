@@ -10,12 +10,12 @@ var edit = (function(exports) {
 
 $(document).ready(function() {
 	$linkbox = $(".linkbox");
-	$linkbox.append('<a class="--card" id="edit_toggle">'
-		+ '<div class="card --small">Редактировать'
-		+ '</div></a>');
 	$linkbox.append('<a class="--card">'
-		+ '<div class="card --small" id="edit_discard">Отмена'
-		+ '</div></a>');
+		+ '<button class="--flat" id="edit_toggle">Редактировать'
+		+ '</button></a>');
+	$linkbox.append('<a class="--card">'
+		+ '<button class="--flat" id="edit_discard">Отмена'
+		+ '</button></a>');
 	$("#edit_discard").hide()
 
 	$("#edit_toggle").click(function(event) {

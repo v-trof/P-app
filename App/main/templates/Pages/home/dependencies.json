@@ -1,7 +1,7 @@
 {
 	"elements": ["Modules/notification","Modules/header","Modules/popup"],
 	"scripts": ["#&/_scripts/create_course"],
-	"styles": ["Pages/home/css/home"],
+	"styles": [],
 	"fixes": [],
 	"title" : "Главная",
 	"template": "default"

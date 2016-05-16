@@ -1,31 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
+	{% include "Page_templates/_shared/fixes/charset.html" %}
+	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Профиль</title>
 	<style> 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
 		{% include "Elements/card/user/user.css" %} 
+		{% include "Elements/Inputs/select/select.css" %} 
+		{% include "Pages/Account/profile/contacts/item/item.css" %} 
+		{% include "Elements/Modules/ripple/ripple.css" %} 
+		{% include "Elements/card/card.css" %} 
+		{% include "Elements/Modules/button_delete/button_delete.css" %} 
+		{% include "Elements/Modules/popup/popup.css" %} 
+		{% include "Elements/Modules/tooltip/tooltip.css" %} 
+		{% include "Page_templates/default/default.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
 		{% include "Elements/button/ghost/ghost.css" %} 
 		{% include "Page_templates/main.css" %} 
-		{% include "Elements/Modules/ripple/ripple.css" %} 
+		{% include "Elements/Inputs/text/filled/filled.css" %} 
 		{% include "Elements/Modules/notification/notification.css" %} 
-		{% include "Elements/Modules/tooltip/tooltip.css" %} 
-		{% include "Elements/Layout/linkbox/linkbox.css" %} 
 		{% include "Elements/button/ghost/icon/icon.css" %} 
+		{% include "Elements/Inputs/radio/radio.css" %} 
 		{% include "Elements/Layout/header/header.css" %} 
 		{% include "Elements/Inputs/_shared/toggle.css" %} 
-		{% include "Elements/Modules/popup/popup.css" %} 
-		{% include "Elements/Inputs/radio/radio.css" %} 
-		{% include "Elements/Inputs/text/filled/filled.css" %} 
-		{% include "Page_templates/default/default.css" %} 
-		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
 		{% include "Elements/Inputs/text/text.css" %} 
-		{% include "Elements/card/card.css" %} 
-		{% include "Elements/Inputs/select/select.css" %} 
-		{% include "Elements/card/small/small.css" %} 
-		{% include "Pages/Account/profile/contacts/item/item.css" %} 
-		{% include "Elements/button/button.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
+		{% include "Elements/Layout/linkbox/linkbox.css" %} 
+		{% include "Elements/button/flat/flat.css" %} 
 		{% include "Elements/Modules/context_menu/context_menu.css" %} 
+		{% include "Elements/button/button.css" %} 
 	</style>
 </head>
 <body>
@@ -35,20 +38,22 @@
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/ripple/ripple.js" %} 
-		{% include "Elements/Modules/context_menu/context_menu.js" %} 
-		{% include "Elements/Modules/notification/notification.js" %} 
-		{% include "Elements/Modules/tooltip/tooltip.js" %} 
-		{% include "Pages/Account/profile/_scripts/add_contact.js" %} 
-		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
-		{% include "Elements/Layout/header/header.js" %} 
-		{% include "Elements/Modules/upload/upload.js" %} 
 		{% include "Elements/Modules/popup/popup.js" %} 
-		{% include "Pages/Account/profile/_scripts/change_avatar.js" %} 
+		{% include "Elements/Modules/tooltip/tooltip.js" %} 
+		{% include "Elements/Modules/notification/notification.js" %} 
 		{% include "Elements/Modules/verifier/verifier.js" %} 
+		{% include "Elements/Modules/context_menu/context_menu.js" %} 
+		{% include "Elements/Modules/ripple/ripple.js" %} 
+		{% include "Elements/Modules/button_delete/button_delete.js" %} 
+		{% include "Elements/Modules/upload/upload.js" %} 
+		{% include "Pages/Account/profile/_scripts/add_contact.js" %} 
 		{% include "Pages/Account/profile/_scripts/change_password.js" %} 
 		{% include "Elements/Inputs/select/select.js" %} 
+		{% include "Elements/Layout/header/header.js" %} 
+		{% include "Pages/Account/profile/_scripts/change_avatar.js" %} 
 		{% include "Pages/Account/profile/_scripts/change_view_permissions.js" %} 
+		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
+		{% include "Pages/Account/profile/contacts/contacts.js" %} 
 	</script>
 </body>
 </html>

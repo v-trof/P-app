@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% include "Page_templates/_shared/fixes/charset.html" %}
+	{% include "Page_templates/_shared/fixes/viewport.html" %}
+	<title>Курс</title>
+	<style> 
+		{% include "Elements/Modules/tooltip/tooltip.css" %} 
+		{% include "Page_templates/default/default.css" %} 
+		{% include "Elements/Card/user/user.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/icon.css" %} 
+		{% include "Elements/Inputs/checkbox/checkbox.css" %} 
+		{% include "Elements/Card/small/small.css" %} 
+		{% include "Page_templates/main.css" %} 
+		{% include "Elements/Inputs/text/filled/filled.css" %} 
+		{% include "Elements/Modules/notification/notification.css" %} 
+		{% include "Elements/Card/Card.css" %} 
+		{% include "Elements/Layout/header/header.css" %} 
+		{% include "Elements/Inputs/_shared/toggle.css" %} 
+		{% include "Elements/Inputs/text/text.css" %} 
+		{% include "Pages/Course/main/css/courses.css" %} 
+	</style>
+</head>
+<body>
+	{% include "Elements/Layout/header/exports.html" %}
+<section class="main">
+	{% if course_data.user_status == "moderator" or course_data.user_status == "administrator" or course_data.user_status == "teacher" %}	{% include 'Pages/Course/groups/linkbox/exports.html' %}{% endif %}{% include 'Pages/Course/groups/main_content/exports.html' %}
+</section>
+	{% include "JS_libs/jQuery.html" %}
+	<script> 
+		{% include "Elements/Modules/tooltip/tooltip.js" %} 
+		{% include "Elements/Modules/notification/notification.js" %} 
+		{% include "Elements/Inputs/text/emptyness_checker.js" %} 
+		{% include "Elements/Layout/header/header.js" %} 
+	</script>
+</body>
+</html>

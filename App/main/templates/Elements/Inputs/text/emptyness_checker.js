@@ -15,7 +15,7 @@ function check_if_filled($input) {
 
 $(document).ready(function() {
 	$("body").on(
-		"keydown chenge blur", ".--text>.__value", function() {
+		"keydown change blur", ".--text>.__value", function() {
 		 check_if_filled($(this));
 	});
 	$("input").each(function(index, el) {

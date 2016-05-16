@@ -1,10 +1,1 @@
-<div class="group">
-	<h3>{{ group_title }}</h3>
-	{% for user in group_members %}
-		<a class="--card" href="/user/{{user.id}}">
-			{% include "Elements/card/user/" %}
-		</a>
-	{% empty %}
-		<div class="__indicator --empty">Пустая группа</div>
-	{% endfor %}
-</div>
+<section id="groups_content">	<section class="teachers">		<h2>Преподаватели</h2>			{% for teacher in course_data.teachers %}				<a class="link--card" href="/user/{{teacher.id}}/exports.html">					{% include "UI_elements/cards/person.html" with user=teacher %}				</a>			{% endfor %}	</section>	<section class="students accordion">		<h2>Ученики</h2>			{% for group, members in course_data.groups.items %}				{% include 'Blocks/group.html'%}			{% endfor %}	</section></section>
