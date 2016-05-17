@@ -1,6 +1,6 @@
 {
 	"elements": ["Modules/notification", "Modules/verifier"],
-	"scripts": ["#&/_scripts/verify_inputs"],
+	"scripts": ["#&/_scripts/verify_inputs","#&/_scripts/registration"],
 	"styles": [],
 	"fixes": [],
 	"title" : "Регистрация",

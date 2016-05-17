@@ -1,11 +1,5 @@
 <div class="login-box modal card">
 	<h2>Вход</h2>
-	{% if course.id %}
-		<form action='/func/login/{{course.id}}/' method="post">
-	{% else %}
-		<form action='/func/login/' method="post">
-	{% endif %}
-		{% csrf_token %}
 		{% include "Elements/Inputs/text/" with 
 			placeholder="Email" 
 			name="email"
@@ -16,7 +10,6 @@
 			name="password"
 			type="password"
 			value=password %}
-			<button>Далее</button>
-		</form>
+			<button id="login">Далее</button>
 </div>
 </section>

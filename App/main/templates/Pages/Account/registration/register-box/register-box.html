@@ -1,6 +1,5 @@
 <div class="register-box modal card">
 	<h2>Регистрация</h2>
-	<form action="/func/reg/" method="post">
 		{% csrf_token %}
 		{% include "Elements/Inputs/text/" with 
 			placeholder="Фамилия и Имя" 
@@ -33,7 +32,6 @@
 				name="course_reg"
 				value=1
 				checked="checked" %}
-			{% endif %}
-		<button>Далее</button>
-	</form>
+		{% endif %}
+		<button id="register">Далее</button>
 </div>

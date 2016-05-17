@@ -32,20 +32,11 @@ import collections
 class User_views():
 
 	def login(request):
-		def errorHandle(error):
-			form = LoginForm()
-			return render(request, 'Pages/Account/login/exports.html', {
-				'error': error,
-				'form': form,
-			})
-		form = LoginForm(request.POST)
-		email = request.POST['email']
-		password = request.POST['password']
-		message = User.objects.login(request=request,email=email, password=password)
-		if message is not 'success':
-			return errorHandle(message)
-		else:
-			return redirect('/')
+		if request.method == 'POST':
+			email = request.POST['email']
+			password = request.POST['password']
+			message = User.objects.login(request=request,email=email, password=password)
+			return HttpResponse(message)
 
 
 	def login_with_reg(request, course_id):
@@ -65,37 +56,15 @@ class User_views():
 
 
 	def reg(request):
-		def errorHandle(error, email, password, name_last_name):
-			form = RegForm()
-			return render(request, 'Pages/Account/registration/exports.html', {
-				'error': error,
-				'form': form,
-				'email': email,
-				'password': password,
-				'name_last_name': name_last_name,
-			})
 		if request.method == 'POST':
-			form = RegForm(request.POST)
 			course_id = request.POST.get('course_id', False)
 			email = request.POST['email']
 			is_teacher = request.POST.get('is_teacher', False)
 			password = request.POST['password']
 			name_last_name = request.POST['name_last_name']
-			message = User.objects.reg(form=form, request=request, course_id=course_id, email=email,
+			message = User.objects.reg(request=request, course_id=course_id, email=email,
 									   is_teacher=is_teacher, password=password, name_last_name=name_last_name)
-			if message == 'Данный email уже зарегистрирован':
-				return errorHandle(message, email, password, name_last_name)
-			elif message == 'Неверный логин или пароль':
-				return errorHandle(message, email, password, name_last_name)
-			elif message == 'groups':
-				return redirect('/course/' + course_id + '/groups/')
-			elif message == 'success':
-				return redirect('/')
-		else:
-			form = LoginForm()
-			return render_to_response('Pages/login.html', {
-				'form': form,
-			})
+			return HttpResponse(message)
 
 	def change_data(request):
 		if request.method == 'POST':
@@ -116,21 +85,18 @@ class User_views():
 		if request.method == 'POST':
 			email = request.POST['email']
 			if User.objects.reset_password(email=email):
-				return redirect('/login/')
+				return HttpResponse("success")
 			else:
-				return render(request, 'Pages/Account/password_recovery/exports.html', {
-					'error': 'Введенный email не существует',
-				})
+				return HttpResponse("Введен несуществующий email")
 
 	def change_password(request):
 		if request.method == 'POST':
 			old_password = request.POST['old_password']
 			new_password = make_password(request.POST['new_password'])
-			print(User.objects.change_password(request=request, user=request.user, old_password=old_password, new_password=new_password))
 			if User.objects.change_password(request=request, user=request.user, old_password=old_password, new_password=new_password):
 				return HttpResponse("success")
 			else:
-				return HttpResponse("error")
+				return HttpResponse("Неправильный пароль")
 
 	def upload_avatar(request):
 		return HttpResponse(User.objects.upload_avatar(user=request.user, new_avatar=request.FILES['new_avatar']))
@@ -147,7 +113,6 @@ class Course_views():
 			subject = request.POST['subject']
 			creator = User.objects.get(id=request.user.id)
 			is_closed = request.POST.get('is_closed', False)
-			print(is_closed)
 			course = Course.objects.create_course(
 				name=name, subject=subject, creator=creator, is_closed=is_closed)
 			redirect_url = '/course/' + str(course.id) + '/'

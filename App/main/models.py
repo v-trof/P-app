@@ -485,7 +485,7 @@ class UserManager(UserManager):
 		else:
 			return 'Неверный логин или пароль'
 
-	def reg(self, request, form, course_id, email, is_teacher, password, name_last_name):
+	def reg(self, request, course_id, email, is_teacher, password, name_last_name):
 		if not User.objects.filter(email=email):
 			user = User.objects.create_user(
 				username=email,
@@ -706,9 +706,9 @@ class UserManager(UserManager):
 			while User.objects.filter(password=new_pass):
 				new_pass = ''.join(random.choice(chars)
 					for i in range(length))
-				setattr(user, 'password', strip_tags(make_password(new_pass)))
-				user.save()
-				send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, ваш временный пароль: ' + new_pass + '. Зайдите в личный кабинет для его изменения', 'p.application.bot@gmail.com',
+			setattr(user, 'password', strip_tags(make_password(new_pass)))
+			user.save()
+			send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, ваш временный пароль: ' + new_pass + '. Зайдите в личный кабинет для его изменения', 'p.application.bot@gmail.com',
 		[email], fail_silently=False)
 			return True
 		else:
