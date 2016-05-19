@@ -1,6 +1,8 @@
 function add_menu_caller(select) {
-	var first_option = $(select).children('option').get(0);
-	first_option = $(first_option);
+
+	$(select).append('<option value="">Выберите...</option>')
+
+	var last_option = $(select).children('option').last();
 	
 	setTimeout(function(){
 		var max_w = 0;
@@ -10,8 +12,8 @@ function add_menu_caller(select) {
 		$(select).children('.__display').css('min-width', max_w + "px");
 	},300);
 	
-	$(select).children('input').val(first_option.attr("value"));
-	$(select).children(".__display").text(first_option.text());
+	$(select).children('input').val(last_option.attr("value"));
+	$(select).children(".__display").text(last_option.text());
 	
 	$(select).click(function(e) {
 		var options = [];

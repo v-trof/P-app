@@ -4,7 +4,7 @@ var verifier = (function() {
 		words2:  /^[^\s]+\s[^\s]+$/,
 		password:  /.{8,}/
 	}
-	var typing_interval = 3000;
+	var typing_interval = 2000;
 
 	function verify($input, expression) {
 		console.log("verifying:", $input);

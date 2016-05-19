@@ -1,6 +1,9 @@
 <section class="courses">
 	<h2>Курсы</h2>
 	{% include '#&/courses/exports.html' %}
+	{% if not teacher %}
+		{% include "#&/../create_course/" %}
+	{% endif %}
 </section>
 <section class="marks">
 	<h2>Оценки</h2>
