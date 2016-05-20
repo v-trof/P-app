@@ -1,0 +1,45 @@
+@import "../../sass_vars/main.sass"
+
+html, body
+	padding: 0
+	margin: 0
+	font-family: $sans
+	font-size: $font__size--m
+	line-height: $line--m
+	background: $grey--light
+*
+	position: relative
+	box-sizing: border-box
+	&:focus
+		outline: 0
+
+h2
+	+h2()
+
+h3
+	+h3()
+
+a
+	font-weight: 500
+	color: $font__color--accent
+	text-decoration: none
+	transition: $time--s
+	cursor: pointer
+	&.--card
+		font-weight: normal
+		& > .card
+			&:hover, &:focus
+				+box-shadow(2)
+	&:hover, &:focus
+		color: lighten($font__color--accent, $darkness-delta__focus--percent)
+
+img
+	background: $grey--light
+
+.row
+	display: flex
+	flex-direction: row
+
+.--hidden
+	opacity: 0
+	transition: $time--s

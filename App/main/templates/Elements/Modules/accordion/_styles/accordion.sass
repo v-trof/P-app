@@ -1,0 +1,14 @@
+@import "../../../../sass_vars/main.sass"
+
+.--accordion-toggle
+	position: absolute
+	top: $padding--s
+	right: $padding--s
+	transform: rotate(180deg)
+	&.--accordion-minimized
+		top: 50%
+		transform: rotate(0)
+
+.--accordion-hidden
+	//to override any element
+	display: none !important

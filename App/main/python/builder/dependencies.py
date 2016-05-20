@@ -29,11 +29,17 @@ def get(path):
 
 	filename = build.get_filename(path)	
 
-	if os.path.isfile(path + "/" + filename + ".css"):
-		dependencies_json["styles"].add(real_path + "/" + filename)
+	if os.path.isdir(path + "/_styles/css"):
+		styles = [file for file in os.listdir(path + "/_styles/css")]
+		for style in styles:
+			style = real_path + "/_styles/css/" + style
+			dependencies_json["styles"].add(".".join(style.split(".")[:-1]))
 
-	if os.path.isfile(path + "/" + filename + ".js"):
-		dependencies_json["scripts"].add(real_path + "/" + filename)
+	if os.path.isdir(path + "/_scripts"):
+		scripts = [file for file in os.listdir(path + "/_scripts")]
+		for script in scripts:
+			script = real_path + "/_scripts/" + script
+			dependencies_json["scripts"].add(".".join(script.split(".")[:-1]))
 
 	return dependencies_json
 

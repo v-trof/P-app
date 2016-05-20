@@ -1,0 +1,92 @@
+@import "../../../../sass_vars/main.sass"
+
+input
+	border: 0
+	font-family: $sans
+	font-size: $font__size--m
+	color: $font__color--dark
+	background: rgba($white, 0.25)
+	transition: $time--s
+	&:enabled:focus
+		outline: none
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active
+	transition: background-color 5000s ease-in-out 0s
+
+input[type="text"], input[type="email"], input[type="password"], .input.--text, .input.--filled
+	width: 100%
+
+.input.--text
+	display: flex
+	flex-direction: column
+	align-items: center
+	margin-top: $margin--m
+	margin-bottom: $margin--s
+	
+	*
+		display: block
+	
+	label
+		position: absolute
+		top: $padding--s
+		left: $border--s
+		font-size: $font__size--m
+		color: $font__color--grey
+		transition: $time--s
+		z-index: 0
+		&.--top
+			font-size: $font__size--s
+			transform: translateY(-$padding--l)
+
+	.__indicator
+		height: $border--s
+		width: 0
+		margin-top: -$border--s
+		background: $font__color--accent
+		transition: $time--s
+		z-index: 2
+
+	.__value
+		width: 100%
+		padding: $padding--s $border--s
+		background: transparent
+		border-bottom: $grey--semilight solid $border--s
+		z-index: 1
+		&:focus:not([disabled="disabled"])
+			& ~ .__indicator
+				width: 100%
+			& ~ label
+				@extend label.--top
+				color: $font__color--accent
+			
+		&.--valid
+			& ~ label
+				color: $font__color--positive
+			&:focus:not([disabled="disabled"])
+				& ~ label
+					color: $font__color--positive
+				& ~ .__indicator
+					background: $font__color--positive
+			
+			
+		&.--invalid
+			& ~ label
+					color: $font__color--negative
+			&:focus:not([disabled="disabled"])
+				& ~ label
+					color: $font__color--negative
+				& ~ .__indicator
+					background: $font__color--negative
+				
+		&.--short
+			width: 5rem
+		&[disabled="disabled"]
+			border-bottom-style: dotted
+			& ~ label
+				color: $grey--mid
+
+::-webkit-input-placeholder
+	color: $grey--semilight

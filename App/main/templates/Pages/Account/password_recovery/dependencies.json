@@ -1,6 +1,6 @@
 {
 	"elements": ["Modules/notification", "Modules/verifier"],
-	"scripts": ["#&/_scripts/verify_inputs","#&/_scripts/password_recovery"],
+	"scripts": [],
 	"styles": [],
 	"fixes": [],
 	"title" : "Забыл пароль",

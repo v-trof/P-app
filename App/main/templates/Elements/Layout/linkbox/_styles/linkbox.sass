@@ -1,0 +1,17 @@
+@import "../../../../sass_vars/main.sass"
+
+.linkbox
+	display: flex
+	flex-direction: row
+	flex-wrap: wrap
+	margin-bottom: $margin--s
+
+	& > a.--card
+		margin-right: $margin--s
+		margin-bottom: $margin--s
+		.card
+			margin: 0
+			&:active
+				background: $grey--semilight
+		&:last-child
+			margin-right: 0

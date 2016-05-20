@@ -1,10 +1,7 @@
 {
 	"elements": ["card/user", 
 				"Modules/upload", "Modules/notification", "Modules/verifier"],
-	"scripts": ["#&/_scripts/add_contact",
-	 			"#&/_scripts/change_avatar",
-	 		 	"#&/_scripts/change_password",
-	 		 	"#&/_scripts/change_view_permissions"],
+	"scripts": [],
 	"styles": [],
 	"fixes": [],
 	"title" : "Профиль",
