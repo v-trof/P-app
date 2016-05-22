@@ -7,13 +7,18 @@ $(document).ready(function() {
 				tooltip.show($("input[name=course_name]")[0], "У курса должно быть название");
 				return 0;
 			}
+			subject=$('.__display').text();
+			if (subject=="Выберите...")
+			{
+				subject="Неопределенный предмет"
+			}
   			$.ajax({
 	            type:"POST",
 	            url:"/func/create_course/",
 	            data: {
 	                   'csrfmiddlewaretoken': '{{ csrf_token }}',
 	                   'course_name': $("input[name=course_name]").val(),
-	                   'subject': $('#subject').text(),
+	                   'subject': subject,
 	                  },
 	            success: function(response){
 	                  window.location.href = response;

@@ -1,0 +1,8 @@
+{
+	"elements": ["Modules/notification","Modules/popup","card"],
+	"scripts": [],
+	"styles": ["Pages/Course/main/_styles/course"],
+	"fixes": [],
+	"title" : "Курс",
+	"template": "default"
+}

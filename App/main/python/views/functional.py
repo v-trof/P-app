@@ -81,6 +81,12 @@ class User_views():
 			User.objects.create_contact(contact_type=contact_type,user=request.user,contact_info=contact_info)
 		return HttpResponse("ok")
 
+	def delete_contact(request):
+		if request.method == 'POST':
+			contact_type = request.POST['contact_type']
+			User.objects.delete_contact(contact_type=contact_type,user=request.user)
+		return HttpResponse("ok")
+
 	def reset_password(request):
 		if request.method == 'POST':
 			email = request.POST['email']

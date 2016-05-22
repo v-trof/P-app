@@ -1,8 +1,8 @@
 {
-	"elements": ["Modules/notification"],
+	"elements": ["Modules/notification","card/user"],
 	"scripts": [],
-	"styles": ["Pages/Course/main/css/courses"],
+	"styles": ["Pages/Course/main/_styles/course"],
 	"fixes": [],
-	"title" : "Курс",
+	"title" : "Группы",
 	"template": "default"
 }

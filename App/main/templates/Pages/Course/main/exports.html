@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% include "Page_templates/_shared/fixes/charset.html" %}
+	{% include "Page_templates/_shared/fixes/viewport.html" %}
+	<title>Курс</title>
+	<style> 
+		{% include "Pages/Course/main/_styles/course.css" %} 
+		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Page_templates/_styles/css/main.css" %} 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
+		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
+		{% include "Elements/Inputs/select/_styles/css/select.css" %} 
+		{% include "Elements/Modules/context_menu/_styles/css/context_menu.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+	</style>
+</head>
+<body>
+	{% include "Elements/Layout/header/exports.html" %}
+<section class="main">
+	{% if request.user.id == course.creator %}	{% include 'Pages/Course/main/linkbox/teacher/exports.html' %}{% else %}	{% include 'Pages/Course/main/linkbox/student/exports.html' %}{% endif %}{% include 'Pages/Course/main/announcements/exports.html' %}{% include 'Pages/Course/main/homework/exports.html' %}
+</section>
+	{% include "JS_libs/jQuery.html" %}
+	<script> 
+		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
+		{% include "Elements/Modules/context_menu/_scripts/context_menu.js" %} 
+		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
+		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
+		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
+		{% include "Elements/Inputs/select/_scripts/select.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
+		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Pages/Course/main/_scripts/main.js" %} 
+	</script>
+</body>
+</html>

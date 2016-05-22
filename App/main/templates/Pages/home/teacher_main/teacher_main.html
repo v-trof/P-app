@@ -4,7 +4,7 @@
 	<div class="subject">
 		<h3>{{subject}}</h3>
 		{% for course in value %}
-			{% include "Elements/card/course/" %}
+			{% include "Elements/card/course/" with course=course.object %}
 		{% endfor %}
 	</div>
 	{% endfor %}

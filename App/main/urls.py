@@ -57,6 +57,7 @@ func_patterns = [
     url(r'^change_password/$', functional.User_views.change_password, name="change_password"),
     url(r'^edit_groups/$', functional.Course_views.edit_groups, name="edit_groups"),
     url(r'^create_contact/$', functional.User_views.create_contact, name="create_contact"),
+    url(r'^delete_contact/$', functional.User_views.delete_contact, name="delete_contact"),
     url(r'^upload_avatar/$', functional.User_views.upload_avatar, name="upload_avatar"),
     url(r'^invite_students/$', functional.Course_views.invite_students, name="invite_students"),
     url(r'^invite_teacher/$', functional.Course_views.invite_teacher, name="invite_teacher"),

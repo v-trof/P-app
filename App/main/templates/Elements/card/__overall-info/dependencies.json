@@ -1,5 +1,5 @@
 {
-	"elements": [],
+	"elements": ["card"],
 	"scripts": [],
 	"styles": [],
 	"expected": []

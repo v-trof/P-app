@@ -1,6 +1,6 @@
 {% include "Elements/Inputs/text/" with placeholder="Название курса" name="course_name" type="text" %}
 
-{% include "Elements/Inputs/select/" %}
+{% include "Elements/Inputs/select/" with options=subjects %}
 
 {% include "Elements/Inputs/checkbox/" with label="Закрытый (Доступ к курсу только по приглашению)" name="is_closed" %}
 

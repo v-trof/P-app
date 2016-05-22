@@ -1,0 +1,6 @@
+{
+	"elements": ["button", "Inputs/select", "Inputs/checkbox",
+				 "Inputs/text","card"],
+	"scripts": [],
+	"styles": []
+}
