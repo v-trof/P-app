@@ -80,6 +80,14 @@ var tooltip = (function() {
 			});
 		}
 	}
+
+	function reset_class() {
+		$tooltip.removeClass("--left");
+		$tooltip.removeClass("--right");
+		$tooltip.removeClass("--top");
+		$tooltip.removeClass("--bottom");
+	}
+
 	exports = {
 		$: $tooltip,
 		show: function(element, content, direction) {
@@ -93,7 +101,11 @@ var tooltip = (function() {
 			}
 
 			$tooltip.css(position);
+			
+			reset_class();
+
 			$tooltip.addClass(position.class)
+
 			prevent_edge_breaking();
 
 			$tooltip.removeClass('--hidden');

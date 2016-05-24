@@ -2,7 +2,7 @@ var popup = (function() {
 	$popup = $('{% include "Elements/Modules/popup/exports.html" %}')
 	exports = {
 		$: $popup,
-		show: function(content, callback, css) {
+		show: function(content, _callback, css) {
 			console.log($popup)
 			$popup.find(".__content").html(content);
 			$popup.removeClass('--hidden');
@@ -17,8 +17,8 @@ var popup = (function() {
 				$popup.find('__modal').css(css);
 			}
 
-			if(callback){
-				callback();
+			if(_callback){
+				_callback();
 			}
 		},
 		hide: function() {

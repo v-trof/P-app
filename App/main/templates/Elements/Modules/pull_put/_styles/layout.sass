@@ -1,0 +1,30 @@
+@import "../../../../sass_vars/main.sass"
+
+.pull_put_ui
+	display: flex
+	flex-direction: row
+	position: fixed
+	bottom: 0
+	left: 50%
+	margin-bottom: $margin--m
+	transition: $time--m
+	transition-property: transform
+	z-index: 15
+	&>.__content
+		&>*
+			margin-bottom: 0
+			+box-shadow(3)
+	.__actions
+		display: flex
+		flex-direction: row
+		align-items: flex-start
+		.card
+			margin: 0 $margin--s
+			height: auto
+			+box-shadow(3)
+	&.--hidden
+		bottom: -100%
+		transform: translateY($margin--xl)
+
+.--pullable
+	cursor: pointer

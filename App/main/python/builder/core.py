@@ -6,7 +6,6 @@ import build
 path = build.path
 
 def build_page(page_name):
-	print(page_name)
 	page_path = path["page"] + page_name
 
 	page_dependencies = dependencies.get(page_path)

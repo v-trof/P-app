@@ -12,6 +12,7 @@ def get(path):
 			"scripts": [],
 		}
 	else:
+		print("LOADING:", path)
 		dependencies_file = open(path + "/dependencies.json", "r")
 		dependencies_json = json.loads(dependencies_file.read())
 
