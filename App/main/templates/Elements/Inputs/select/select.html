@@ -5,7 +5,7 @@
 	{% include "Elements/Icons/angle_down.svg" with class="__icon" %}
 	
 	{% for option in options %}
-		<option value="{{option.value}}">{{option.text}}</option>
+		<option value="{{option}}">{{option}}</option>
 	{% endfor %}
 	
 	<input type="text" {% include "Elements/_shared/attrs/" %} class="{{class}} __value">

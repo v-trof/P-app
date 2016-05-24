@@ -1,6 +1,6 @@
 {
 	"elements": ["button", "Inputs/select", "Inputs/checkbox",
-				 "Inputs/text","card"],
+				 "Inputs/text","card","Modules/verifier"],
 	"scripts": [],
 	"styles": []
 }

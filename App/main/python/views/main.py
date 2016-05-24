@@ -21,21 +21,7 @@ class Main_group():
                 ],
                 "contacts_view_allowed": contacts_view_allowed,
                 "contacts":User.objects.get_contacts(user=user),
-                "possible_contacts": [
-            {
-                "value": "Мобильный телефон",
-                "text": "Мобильный телефон"
-            }, {
-                "value": "ВКонтакте",
-                "text": "ВКонтакте"
-            }, {
-                "value": "Facebook",
-                "text": "Facebook"
-            },{
-                "value": "Дневник.py",
-                "text": "Дневник.ру"
-            }
-            ],
+                "possible_contacts": ["Мобильный телефон","Мобильный телефон","ВКонтакте","Facebook","Дневник.py"],
             })
 
     def updates(request, course_id):
@@ -111,7 +97,10 @@ class Course_group():
     def groups(request, course_id):
         if course_id:
             course = Course.objects.get(id=course_id)
-            context = {"course": course, "course_data": Course.objects.get_data(user=request.user, course=course),
+            course_data=Course.objects.get_data(user=request.user, course=course)
+            course_data["group_list"]=list(course_data["groups"].keys())
+            print(course_data["group_list"])
+            context = {"course": course, "course_data": course_data,
                        "breadcrumbs": [{
                            "href": "/course/" + str(course.id),
                            "link": course.name

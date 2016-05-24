@@ -75,9 +75,9 @@ def overall_test(request):
 
 	check_example="ancilliary"
 	check_example_right="ancillary"
-	check_result=full_check(check_example,check_example_right,True)
-	context = {"pages": pages, "functions": functions, "check_example": check_example, "check_example_right": check_example_right, "check_result": check_result}
-	return render(request, 'Pages/test_status.html', context)
+	#check_result=full_check(check_example,check_example_right,True)
+	context = {"pages": pages, "functions": functions}
+	return render(request, 'Pages/Unit_tests/test_status.html', context)
 
 
 def page_login(c, user):

@@ -495,8 +495,8 @@ class UserManager(UserManager):
 				is_teacher=is_teacher,
 				avatar='Avatars/avatar.png',
 				permission_level="0")
-			os.makedirs('main/main/files/json/users/'+str(user.id)+'/')
-			with io.open('main/main/files/json/users/'+str(user.id)+'/info.json', 'w+', encoding='utf8') as json_file:
+			os.makedirs('main/files/json/users/'+str(user.id)+'/')
+			with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'w+', encoding='utf8') as json_file:
 				data={}
 				data["contacts"]={}
 				data["contacts"]["email"]=user.email
@@ -524,9 +524,9 @@ class UserManager(UserManager):
 		return 0
 
 	def create_contact(self,user,contact_info,contact_type):
-		with io.open('main/main/files/json/users/'+str(user.id)+'/info.json', 'r', encoding='utf8') as json_file:
+		with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'r', encoding='utf8') as json_file:
 				data=json.load(json_file)
-		with io.open('main/main/files/json/users/'+str(user.id)+'/info.json', 'w', encoding='utf8') as json_file:
+		with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'w', encoding='utf8') as json_file:
 				if contact_type in data["contacts"].keys():
 					it=2
 					while contact_type+" "+str(it) in data["contacts"]:
@@ -538,16 +538,16 @@ class UserManager(UserManager):
 		return 0
 
 	def delete_contact(self,user,contact_type):
-		with io.open('main/main/files/json/users/'+str(user.id)+'/info.json', 'r', encoding='utf8') as json_file:
+		with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'r', encoding='utf8') as json_file:
 			data=json.load(json_file)
-		with io.open('main/main/files/json/users/'+str(user.id)+'/info.json', 'w', encoding='utf8') as json_file:
+		with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'w', encoding='utf8') as json_file:
 			data["contacts"].pop(contact_type, None)
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return 0
 
 	def get_contacts(self, user):
-		with io.open('main/main/files/json/users/'+str(user.id)+'/info.json', 'r', encoding='utf8') as json_file:
+		with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'r', encoding='utf8') as json_file:
 			data=json.load(json_file)
 			return data["contacts"]
 
@@ -1025,7 +1025,7 @@ class TestManager(models.Manager):
 		return test_info
 		
 	def upload_asset(self,asset,course_id,test_id,path):
-		path = 'main/main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
+		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
 		if not os.path.exists(path):
 			os.makedirs(path)
 		filename = transliterate.ru_en(asset.name)

@@ -1,7 +1,7 @@
 {
-	"elements": ["Modules/notification","card/user"],
+	"elements": ["Modules/notification","card/user","Modules/popup"],
 	"scripts": [],
-	"styles": ["Pages/Course/main/_styles/course"],
+	"styles": [],
 	"fixes": [],
 	"title" : "Группы",
 	"template": "default"

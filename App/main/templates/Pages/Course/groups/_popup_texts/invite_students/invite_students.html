@@ -1,5 +1,8 @@
-{% include "Elements/Inputs/text/" with placeholder="Заголовок" name="heading" type="text" %}
+{% include "Elements/Inputs/text/" with placeholder="Email" class="student__email" type="email" name="email" %}
 
-{% include "Elements/Inputs/text/textarea/" with placeholder="Текст объявления" class="announcement_text" type="text" %}
+<button class="--ghost --icon" id="add_student">
+	{% include 'Elements/Icons/add.svg' %}
+</button>
+{% include "Elements/Inputs/select/" with options=course_data.group_list %}
 
-<button id="add_el">Добавить объявление</button>
+<button id="invite_students_button">Пригласить</button>

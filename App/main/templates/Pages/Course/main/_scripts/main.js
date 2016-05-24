@@ -17,9 +17,9 @@ $(document).ready(function() {
 	            success: function(){
 	            	popup.hide();
 	            	notification.show('success','Объявление добавлено');
-	            	var card='{% include "Elements/card/exports.html" with content=new_text heading=new_heading %}';
-					console.log(card);
-					$( ".announcements" ).append(card);
+					$(".announcements").append('{% include "Elements/card/exports.html" %}');
+					$(".announcements .card:last-child .__overall-info .__heading").text(new_heading);
+					$(".announcements .card:last-child .__content").text(new_text);
 	            },
 	            error: function(){
 	            	notification.show('error','Произошла ошибка');		            	

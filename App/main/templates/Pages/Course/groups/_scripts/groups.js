@@ -96,11 +96,11 @@ var add_boundary = {
 	}
 }
 
-var button_remove_all = '<button class="button--icon button_remove_all">{% include "UI_elements/Icons/delete_all.svg" %}</button>';
+var button_remove_all = '<button class="button--icon button_remove_all">{% include "Elements/Icons/delete_all.svg" %}</button>';
 
-var button_remove = '<button class="button--icon button_remove">{% include "UI_elements/Icons/delete.svg" %}</button>';
+var button_remove = '<button class="button--icon button_remove">{% include "Elements/Icons/delete.svg" %}</button>';
 
-var icon_add = '<div class"icon_add--wrapper">{% include "UI_elements/Icons/add.svg" %}</div>';
+var icon_add = '<div class"icon_add--wrapper">{% include "Elements/Icons/add.svg" %}</div>';
 function toggle_edit(){
 	if(editing){
 		$("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
@@ -233,96 +233,7 @@ $(document).ready(function() {
 		new_group.find("h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
 		$(".students").append(unordered);
 	});
-	
 
-
-
-	$("#invite_teacher").click(function(event) {
-		popup.show("<input type='email' id='email'><label for='email' required>Email</label><br><br><button id='invite_teacher_button'>Пригласить</button>",
-		{"width":"20rem"},
-		function(){
-			add_menu_caller($("#popup .select").get(0));
-			$("#popup input")[0].focus();
-			$("#invite_teacher_button").click(function(event) {
-				var formData = new FormData();
-				formData.append('email', $("#email").val());
-				formData.append('course_id', "{{course.id}}");
-				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-				processing.button.start($("#invite_teacher_button"));
-				$.ajax({
-					type:"POST",
-					url:"/func/invite_teacher/",
-					data: formData,
-					processData: false,
-					contentType: false,
-					success: function(){
-						popup.hide();
-						notification.change('success', 'Ученики приглашены, ждем от них подтверждения' );
-					},
-			});
-			});
-		});
-	});
-	$("#invite_students").click(function(event) {
-		var group_list=[];
-		$.ajax({
-					type:"POST",
-					url:"./func/get_group_list/",
-					data:{'csrfmiddlewaretoken': '{{ csrf_token }}'
-					},
-					async: false,
-					success: function(response){
-						group_list=$.parseJSON(response);
-					},
-			});
-		popup_data="<input type='email' class='student__email'>" +
-			"<label for='email'>Email</label><br>" +
-			"<button class='button--icon' id='add_student'><svg  viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/><path d='M0 0h24v24H0z' fill='none'/></svg></button>" +
-			"<div class='group select'><div class='display'>Нераспределенные</div>" +
-			"<svg class='{{ class }}' id='{{id}}' viewBox='0 0 24 24'  xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>" +
-			"<input type='hidden' name='group' class='value'>";
-							console.log(group_list);
-		$.each(group_list, function( index, value ) {
-				popup_data+="<option value='"+value+"'>"+value+"</option>";
-		});
-		popup_data+="</div>" +
-			"<br><br><br><button id='invite_students_button'>Пригласить</button>";
-		popup.show(popup_data,{"width":"20rem"},
-		function(){
-			add_menu_caller($("#popup .select").get(0));
-			$("#popup input")[0].focus();
-			$("#add_student").click(function(e){
-				$("#popup .student__email+label").last().after("<input type='email' class='student__email'><label for='email'>Email</label>");
-				add_emptiness_checker($("#popup .student__email").last()[0]);
-			});
-			$("#invite_students_button").click(function(e) {
-				var formData = new FormData();
-				var email_list=[];
-				$("#popup .student__email").each(function(index, el) {
-					email_list.push($(this).val());
-				});
-				//email_list='"'+email_list.join('","')+'"';
-				//console.log(JSON.stringify(email_list))
-				formData.append('email_list', JSON.stringify(email_list));
-				formData.append('course_id', "{{course.id}}");
-				formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-				formData.append('group', $(".group.select").children("div").text());
-				//console.log($(".group.select").children("div").text());
-				processing.button.start($("#invite_students_button"));
-				$.ajax({
-					type:"POST",
-					url:"/func/invite_students/",
-					data: formData,
-					processData: false,
-					contentType: false,
-					success: function(){
-						popup.hide();
-						notification.change('success','Ученики приглашены, ждем от них подтверждения' );
-					},
-			});
-			});
-		});
-	});
 	add_boundary.group($(".group"));
 	$.extend({
 		replaceTag: function (currentElem, newTagObj, keepProps) {
