@@ -1,7 +1,5 @@
 {
-	"elements": [],
+	"elements": ["card/announcement"],
 	"scripts": [],
-	"styles": [],
-	"title" : "Курс",
-	"template": "default"
+	"styles": []
 }

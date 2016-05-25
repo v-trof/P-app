@@ -1,1 +1,1 @@
-<section class="homework accordion">	<div>		{% if assignments %}			<h3>Выданные задания</h3>				{% for assignment in assignments %}					{% include "Elements/card/assignment/exports.html" %}				{% endfor %}		{% else %}			<h3>Заданий нет</h3>		{% endif %}	</div></section>
+<section class=" accordion">	{% if assignments %}		<h3>Задания</h3>			{% for assignment in assignments %}				{% include "Elements/card/assignment/exports.html" %}			{% endfor %}	{% else %}		<h3>Заданий нет</h3>	{% endif %}</section>

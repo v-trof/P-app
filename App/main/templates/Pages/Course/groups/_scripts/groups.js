@@ -21,9 +21,9 @@ function drag_reset(){
 
 function check_for_emptiness() {
 	$(".group").each(function(index, el) {
-	//	console.log($(this).children(".link--card").length, $(this).children("h3").text());
+	//	console.log($(this).children(".--card").length, $(this).children("h3").text());
 		
-		if($(this).children(".link--card").length == 0){
+		if($(this).children(".--card").length == 0){
 			if($(this).children(".empty").length == 0){
 				$(this).append("<div class='empty'>Пустая группа</div>");
 			}
@@ -83,7 +83,7 @@ var add_boundary = {
 			if($(this).parent(".card").length){
 				$(this).parent(".card").parent().remove();
 			} else {
-				unordered.append($(this).parent(".group").children('.link--card'));
+				unordered.append($(this).parent(".group").children('.--card'));
 				$(this).parent(".group").remove();
 			}
 			check_for_emptiness();
@@ -107,9 +107,9 @@ function toggle_edit(){
 		$(".button_remove").remove();
 		$(".button_remove_all").remove();
 		$("#edit>.card--small").text("Редактировать");
-		$(".students .link--card").attr("draggable", "false");
+		$(".students .--card").attr("draggable", "false");
 		//enabling links
-		$(".students .link--card").each(function(index, el) {
+		$(".students .--card").each(function(index, el) {
 			$(this).attr('style', '');
 			$(this).attr('draggable', 'false');
 			$(this).replaceTag("<a>", true);
@@ -142,15 +142,15 @@ function toggle_edit(){
 	} else {
 		$(".group>h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
 		$("#edit>.card--small").text("Сохранить изменения");
-		$(".students .link--card").attr("draggable", "true");
+		$(".students .--card").attr("draggable", "true");
 		//disabling links
-		$(".students .link--card").each(function(index, el) {
+		$(".students .--card").each(function(index, el) {
 			$(this).css('cursor', 'move');
 			$(this).attr('draggable', 'true');
 			$(this).replaceTag("<div>", true);
 		});
 
-		$(".students .link--card").bind({
+		$(".students .--card").bind({
 			dragstart: function(e){
 				e.originalEvent.dataTransfer.setData('useless', 'stupid firefox');
 				e_data.original_el = $(this);
@@ -197,7 +197,7 @@ $(document).ready(function() {
 
 
 	$("h3").css('border-bottom', '1px dashed transparent');
-	$(".students .link--card").attr("draggable", "false");
+	$(".students .--card").attr("draggable", "false");
 
 	$(".group").each(function(index, el) {
 		if($(this).children('h3').text() == "Нераспределенные"){

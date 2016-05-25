@@ -2,11 +2,12 @@
 
 .--accordion-toggle
 	position: absolute
-	top: $padding--s
+	top: $padding--s/2
 	right: $padding--s
 	transform: rotate(180deg)
+	z-index: 5
+	border-radius: 50%
 	&.--accordion-minimized
-		top: 50%
 		transform: rotate(0)
 
 .--accordion-hidden

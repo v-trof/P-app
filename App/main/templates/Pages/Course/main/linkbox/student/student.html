@@ -1,35 +1,35 @@
 {% if is_participant %}
 	<section class="linkbox">
-		<a class="link--card" href="groups/">
-			<div class="card--small">
+		<a class="--card" href="groups/ ">
+			<button class="--flat">
 				Группы и учителя
-			</div>
+			</button>
 		</a>
-		<a class="link--card" href="marks/">
-			<div class="card--small">
+		<a class="--card" href="marks/ ">
+			<button class="--flat">
 				Мои оценки
-			</div>
+			</button>
 		</a>
-		<a class="link--card" href="tasks/">
-			<div class="card--small">
+		<a class="--card" href="tasks/ ">
+			<button class="--flat">
 				Задания
-			</div>
+			</button>
 		</a>
 	</section>
 {% elif course.is_closed %}
 	<section class="linkbox">
-		<a class="link--card" href="/func/course_reg/{{course.id}}/">
-			<div class="card--small">
+		<a class="--card" href="/func/course_reg/{{course.id}}/ ">
+			<button class="--flat">
 				Подать заявку
-			</div>
+			</button>
 		</a>
 	</section>
 {% else %}
 	<section class="linkbox">
-		<a class="link--card" href="/func/course_reg/{{course.id}}/">
-			<div class="card--small">
+		<a class="--card" href="/func/course_reg/{{course.id}}/ ">
+			<button class="--flat">
 				Присоединиться
-			</div>
+			</button>
 		</a>
 	</section>
 {% endif %}

@@ -1,7 +1,7 @@
 var accordion = (function() {
 	
 	toggle_template = '<button class="--ghost --icon --accordion-toggle">'
-		+'{% include "Elements/Icons/arrow_down.svg" %}</button>';
+		+'{% include "Elements/Icons/angle_down.svg" %}</button>';
 
 	function expand($element, $indicator) {
 		console.log($element);
@@ -21,11 +21,6 @@ var accordion = (function() {
 		$element.children('.--accordion-toggle').first()
 			.removeClass('--accordion-hidden')
 			.addClass('--accordion-minimized');
-
-
-		$element.children('.--accordion-toggle').first()
-			.css('margin-top', 
-				-$element.children('.--accordion-toggle').first().height()/2);
 	}
 
 	exports = {

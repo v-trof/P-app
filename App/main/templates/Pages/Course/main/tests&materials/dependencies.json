@@ -1,7 +1,5 @@
 {
-	"elements": ["card"],
+	"elements": ["card/test", "card/material"],
 	"scripts": [],
-	"styles": [],
-	"title" : "Курс",
-	"template": "default"
+	"styles": []
 }

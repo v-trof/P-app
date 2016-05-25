@@ -1,7 +1,7 @@
 <div class="group">
 	<h3>{{group}}</h3>
 	{% for member in members %}
-		<a class="link--card" href='/user/{{member.id}}/'>
+		<a class="--card" href='/profile/{{member.id}}/'>
 			{% include "Elements/card/user/" with user=member %}
 		</a>
 	{% empty %}

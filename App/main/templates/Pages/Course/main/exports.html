@@ -5,26 +5,30 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Курс</title>
 	<style> 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/Modules/context_menu/_styles/css/context_menu.css" %} 
 		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Pages/Course/main/_styles/course.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
 		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/Inputs/select/_styles/css/select.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
 		{% include "Page_templates/_styles/css/main.css" %} 
-		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
 		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/card/announcement/_styles/css/announcement.css" %} 
+		{% include "Elements/button/flat/_styles/css/flat.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
+		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
+		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/Inputs/select/_styles/css/select.css" %} 
+		{% include "Elements/card/assignment/_styles/css/assignment.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Elements/Modules/context_menu/_styles/css/context_menu.css" %} 
+		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
 	</style>
 </head>
 <body>
@@ -34,15 +38,16 @@
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
+		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
 		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
 		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
+		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/context_menu/_scripts/context_menu.js" %} 
 		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
-		{% include "Elements/Layout/header/_scripts/header.js" %} 
-		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
 		{% include "Elements/Inputs/select/_scripts/select.js" %} 
-		{% include "Pages/Course/main/_scripts/main.js" %} 
+		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Pages/Course/main/announcements/_scripts/new_announcement.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
 	</script>
 </body>
 </html>

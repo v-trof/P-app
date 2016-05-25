@@ -1,0 +1,6 @@
+<section class="students">
+	<h2>Ученики</h2>
+		{% for group, members in course_data.groups.items %}
+			{% include "#&/group/" %}
+		{% endfor %}
+</section>

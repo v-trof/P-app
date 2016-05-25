@@ -1,30 +1,30 @@
 <section class="linkbox">
-	<a class="link--card" id="invite_students">
-		<div class="card--small">
+	<a class="--card" id="invite_students">
+		<button class="--flat">
 		Пригласить учеников
-		</div>
+		</button>
 	</a>
 	{% if course_data.user_status == "administrator" %}
-		<a class="link--card" id="invite_teacher">
-			<div class="card--small">
+		<a class="--card" id="invite_teacher">
+			<button class="--flat">
 			Пригласить преподавателя
-			</div>
+			</button>
 		</a>
-		<a class="link--card" id="edit">
-			<div class="card--small">
+		<a class="--card" id="edit">
+			<button class="--flat">
 				Редактировать
-			</div>
+			</button>
 		</a>
-		<a class="link--card" id="create_group" style="display:none">
-			<div class="card--small">
+		<a class="--card" id="create_group">
+			<button class="--flat">
 				Создать новую группу
-			</div>
+			</button>
 		</a>
 		{% if course_data.status == "closed" %}
-			<a class="link--card" href="/course/{{course_data.course_id}}/requests/">
-				<div class="card--small">
+			<a class="--card" href="/course/{{course_data.course_id}}/requests/">
+				<button class="--flat">
 					Заявки на курс
-				</div>
+				</button>
 			</a>
 		{% endif %}
 	{% endif %}

@@ -5,21 +5,21 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Вход</title>
 	<style> 
-		{% include "Page_templates/central_box/_styles/css/central_box.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
 		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
 		{% include "Elements/../Pages/Account/_shared/modal/_styles/css/modal.css" %} 
 		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Page_templates/central_box/_styles/css/central_box.css" %} 
 		{% include "Page_templates/_styles/css/main.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
 		{% include "Elements/../Pages/Account/_shared/footer/_styles/css/footer.css" %} 
 		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
 	</style>
 </head>
 <body>
@@ -28,13 +28,13 @@
 </main>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
+		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
 		{% include "Elements/Modules/verifier/_scripts/verifier.js" %} 
+		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
 		{% include "Pages/Account/login/_scripts/login.js" %} 
 		{% include "Pages/Account/login/_scripts/verify_inputs.js" %} 
-		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
 	</script>
 </body>
 </html>

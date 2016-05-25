@@ -5,46 +5,52 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Группы</title>
 	<style> 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/Modules/context_menu/_styles/css/context_menu.css" %} 
 		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements/Inputs/select/_styles/css/select.css" %} 
-		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
-		{% include "Page_templates/_styles/css/main.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
 		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
 		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
-		{% include "Elements/card/user/_styles/css/user.css" %} 
+		{% include "Page_templates/_styles/css/main.css" %} 
+		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/Inputs/select/_styles/css/select.css" %} 
+		{% include "Elements/button/flat/_styles/css/flat.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
+		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
 		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/card/user/_styles/css/user.css" %} 
+		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Elements/Modules/context_menu/_styles/css/context_menu.css" %} 
 		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
 	</style>
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	{% if course_data.user_status == "moderator" or course_data.user_status == "administrator" or course_data.user_status == "teacher" %}	{% include "Pages/Course/groups/linkbox/exports.html" %}{% endif %}{% include "Pages/Course/groups/main_content/exports.html" %}
+	{% if course_data.user_status == "moderator" or course_data.user_status == "administrator" or course_data.user_status == "teacher" %}	{% include "Pages/Course/groups/linkbox/exports.html" %}{% endif %}{% include "Pages/Course/groups/teachers/exports.html" %}{% include "Pages/Course/groups/students/exports.html" %}
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
-		{% include "Elements/Modules/verifier/_scripts/verifier.js" %} 
+		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
 		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
-		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/context_menu/_scripts/context_menu.js" %} 
-		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Elements/Modules/verifier/_scripts/verifier.js" %} 
+		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
+		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
 		{% include "Elements/Inputs/select/_scripts/select.js" %} 
-		{% include "Elements/Layout/header/_scripts/header.js" %} 
-		{% include "Pages/Course/groups/_scripts/groups.js" %} 
-		{% include "Pages/Course/groups/_scripts/invite_teacher.js" %} 
 		{% include "Pages/Course/groups/_scripts/invite_students.js" %} 
+		{% include "Pages/Course/groups/_scripts/invite_teacher.js" %} 
+		{% include "Pages/Course/groups/_scripts/acconrdion_add.js" %} 
+		{% include "Pages/Course/groups/_scripts/groups.js" %} 
+		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
 	</script>
 </body>
 </html>
