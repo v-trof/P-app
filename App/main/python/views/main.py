@@ -37,7 +37,7 @@ class Main_group():
         if request.user.courses:
             user_courses = User.objects.load_self_courses(user=request.user)
         if request.user.is_teacher:
-            subjects=[{"value":"Русский язык","text":"Русский язык"},{"value":"Математика","text":"Математика"},{"value":"Английский язык","text":"Английский язык"}]
+            subjects=["Русский язык","Математика","Английский язык"]
             context = {"courses": courses, "user_courses": user_courses,
                        "user_data": User.objects.get_data(object=request.user, course_id=False),"subjects":subjects}
             return render(request, 'Pages/home/exports.html', context)
