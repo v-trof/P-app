@@ -10,10 +10,12 @@ pull_put.put_zone = (function() {
 			$element.addClass('--put-zone');
 			
 			$element.click(function(event) {
-				_action(event, $element);
-				$placeholder.remove();
-				pull_put.ui.element = undefined;
-				pull_put.ui.hide();				
+				if(pull_put.ui.is_pulled && $(this) != pull_put.ui.element) {	
+					_action(event, $element);
+					$placeholder.remove();
+					pull_put.ui.element = undefined;
+					pull_put.ui.hide();
+				}		
 			});
 
 			if(_callback) {

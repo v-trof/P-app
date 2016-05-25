@@ -31,16 +31,19 @@ pull_put.puller = (function() {
 		add: function($element, action_additional, _callback) {
 			$element = $($element).first(); //fault-tolerance
 			$element.addClass('--pullable');
-			$element.click(function(event) {				
-				replace($element);
-								
-				pull_put.ui.get($element, _callback);
-				
-				if(action_additional) {
-					pull_put.ui.add_action(action_additional);
-				}
+			$element.click(function(event) {
+				console.log(pull_put.ui.is_pulled)
+				if( ! pull_put.ui.is_pulled) {			
+					replace($element);
+									
+					pull_put.ui.get($element, _callback);
+					
+					if(action_additional) {
+						pull_put.ui.add_action(action_additional);
+					}
 
-				pull_put.ui.show();
+					pull_put.ui.show();
+				}
 			});
 		}
 	}

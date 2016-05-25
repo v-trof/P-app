@@ -22,6 +22,7 @@ pull_put.ui = (function() {
 
 
 	exports = {
+		is_pulled: false,
 		$: $ui,
 		element: undefined,
 		add_action: function(icon, tip, _action) {
@@ -45,9 +46,16 @@ pull_put.ui = (function() {
 		},
 		show: function() {
 			$ui.removeClass('--hidden');
+			setTimeout(function(){
+				pull_put.ui.is_pulled = true;
+			}, 300)
+			
 		},
 		hide: function() {
 			$ui.addClass('--hidden');
+			setTimeout(function(){
+				pull_put.ui.is_pulled = false;
+			}, 300)
 		}
 	} 
 	return exports;
