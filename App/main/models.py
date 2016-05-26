@@ -732,6 +732,7 @@ class UserManager(UserManager):
 
 	def upload_avatar(self, user, new_avatar):
 		if user.avatar.path != "Avatars/avatar.png":
+			print('fgdgfgdf')
 			os.remove(user.avatar.path)
 		setattr(user, 'avatar', new_avatar)
 		user.save()

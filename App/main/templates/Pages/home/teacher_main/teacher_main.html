@@ -4,7 +4,7 @@
 	<div class="subject">
 		<h3>{{subject}}</h3>
 		{% for course in value %}
-			{% include "Elements/card/course/" with course=course.object %}
+			<a class="--card" href='course/{{course.object.id}}'>{% include "Elements/card/course/" with course=course.object %}</a>
 		{% endfor %}
 	</div>
 	{% endfor %}
@@ -14,7 +14,7 @@
 	<h2>Оповещения</h2>
 	{% for course in user_data.courses.values %}
 		{% include "Elements/card/update/" %}
-		{% empty %}
+	{% empty %}
 		Ничего нового
 	{% endfor %}
 </section>

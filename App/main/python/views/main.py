@@ -36,13 +36,13 @@ class Main_group():
             courses = User.objects.load_courses(user=request.user)
         if request.user.courses:
             user_courses = User.objects.load_self_courses(user=request.user)
+        subjects=["Русский язык","Математика","Английский язык"]
         if request.user.is_teacher:
-            subjects=["Русский язык","Математика","Английский язык"]
             context = {"courses": courses, "user_courses": user_courses,
                        "user_data": User.objects.get_data(object=request.user, course_id=False),"subjects":subjects}
             return render(request, 'Pages/home/exports.html', context)
         else:
-            context = {"courses": courses}
+            context = {"courses": courses,"subjects":subjects}
             return render(request, 'Pages/home/exports.html', context)
 
 class Auth_group():
