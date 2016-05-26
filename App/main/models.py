@@ -487,6 +487,8 @@ class UserManager(UserManager):
 
 	def reg(self, request, course_id, email, is_teacher, password, name_last_name):
 		if not User.objects.filter(email=email):
+			if is_teacher=="false":
+				is_teacher=False
 			user = User.objects.create_user(
 				username=email,
 				email=email,
@@ -693,15 +695,21 @@ class UserManager(UserManager):
 		return 0
 
 	def get_view_permission(self,user,requesting_user):
-		if user.participation_list and requesting_user.participation_list:
-			classmates = any(i in user.participation_list.split(' ')
-				for i in user.participation_list.split(' '))
+		if requesting_user.is_anonymous():
+			if user.permission_level == '0':
+				contacts_view_allowed = True
+			else: contacts_view_allowed = False
 		else:
-			classmates = False
-		if requesting_user.id == user.id or (user.permission_level == '0') or (user.permission_level == '1' and requesting_user.is_teacher) or (user.permission_level == '2' and not requesting_user.is_teacher) or (user.permission_level == '3' and classmates):
-			contacts_view_allowed = True
-		else:
-			contacts_view_allowed = False
+			if user.participation_list and requesting_user.participation_list:
+				classmates = any(i in user.participation_list.split(' ')
+					for i in user.participation_list.split(' '))
+			else:
+				classmates = False
+			if requesting_user.id == user.id or (user.permission_level == '0') or (user.permission_level == '1' and requesting_user.is_teacher) or (user.permission_level == '2' 
+				and not requesting_user.is_teacher) or (user.permission_level == '3' and classmates):
+				contacts_view_allowed = True
+			else:
+				contacts_view_allowed = False
 		return contacts_view_allowed
 
 	def reset_password(self, email):

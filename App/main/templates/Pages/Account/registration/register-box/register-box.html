@@ -23,8 +23,7 @@
 			
 		{% include "Elements/Inputs/checkbox/" with 
 				label="Я - Преподаватель" 
-				name="is_teacher"
-				value=is_teacher %}
+				name="is_teacher"%}
 			
 		{% if course %}
 			<input type="hidden" name="course_id" value="{{course.id}}">

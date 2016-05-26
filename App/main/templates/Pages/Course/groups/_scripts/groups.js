@@ -4,21 +4,6 @@ var counter = 0;
 
 var unordered = $();
 
-function drag_over(e) {
-	// console.log("over");
-	if (e.preventDefault) {
-		e.preventDefault(); // Necessary. Allows us to drop.
-		e.stopPropagation();
-	}
-	return false;
-}
-
-function drag_reset(){
-	tooltip.hide();
-	counter=0;
-	check_for_emptiness();
-}
-
 function check_for_emptiness() {
 	$(".group").each(function(index, el) {
 	//	console.log($(this).children(".--card").length, $(this).children("h3").text());
@@ -32,7 +17,6 @@ function check_for_emptiness() {
 		}
 	});
 }
-
 
 function sort_group(group){
 	//better redo it after
@@ -54,30 +38,6 @@ function sort_group(group){
 }
 
 var add_boundary = {
-	group: function(el){
-		el.bind({
-			dragover: function(e) {
-				drag_over(e);
-			},
-			dragenter: function(e) {
-				$(this).find("*").css('pointer-events', 'none');
-				if(e_data.last_el != this){
-					drag_reset();
-				}
-				tooltip.show(this, "Переместить ученика");
-				e_data.last_el = this;
-			},
-			dragleave: function(e) {
-				$(this).find("*").css('pointer-events', 'all');
-				tooltip.hide();
-			},
-			drop: function(e) {
-				$(this).append(e_data.original_el);
-				$(this).find("*").css('pointer-events', 'all');
-				tooltip.hide();
-			}
-		});
-	},
 	button_remove: function(el){
 		el.click(function(event) {
 			if($(this).parent(".card").length){
@@ -101,6 +61,7 @@ var button_remove_all = '<button class="button--icon button_remove_all">{% inclu
 var button_remove = '<button class="button--icon button_remove">{% include "Elements/Icons/delete.svg" %}</button>';
 
 var icon_add = '<div class"icon_add--wrapper">{% include "Elements/Icons/add.svg" %}</div>';
+
 function toggle_edit(){
 	if(editing){
 		$("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
@@ -111,7 +72,6 @@ function toggle_edit(){
 		//enabling links
 		$(".students .--card").each(function(index, el) {
 			$(this).attr('style', '');
-			$(this).attr('draggable', 'false');
 			$(this).replaceTag("<a>", true);
 		});
 		var groups={};
@@ -123,7 +83,6 @@ function toggle_edit(){
 						groups[group].push($(this).html());
 					});
 		});
-		console.log(groups);
 		$.ajax({
 			type:"POST",
 			url:"/func/edit_groups/",
@@ -145,8 +104,6 @@ function toggle_edit(){
 		$(".students .--card").attr("draggable", "true");
 		//disabling links
 		$(".students .--card").each(function(index, el) {
-			$(this).css('cursor', 'move');
-			$(this).attr('draggable', 'true');
 			$(this).replaceTag("<div>", true);
 		});
 

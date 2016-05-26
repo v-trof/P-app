@@ -21,7 +21,7 @@ class Main_group():
                 ],
                 "contacts_view_allowed": contacts_view_allowed,
                 "contacts":User.objects.get_contacts(user=user),
-                "possible_contacts": ["Мобильный телефон","Мобильный телефон","ВКонтакте","Facebook","Дневник.py"],
+                "possible_contacts": ["Мобильный телефон","ВКонтакте","Facebook","Дневник.py"],
             })
 
     def updates(request, course_id):
@@ -56,10 +56,13 @@ class Auth_group():
         return render(request, 'Pages/Account/login/exports.html', {"course": Course.objects.get(id=course_id)})
 
     def change_user(request):
-        logout(request)
+        if not request.user.is_anonymous():  
+            logout(request)
         return render(request, 'Pages/Account/login/exports.html')
 
     def register(request, course_id=None):
+        if not request.user.is_anonymous():  
+            logout(request)
         if course_id is not None:
             return render(request, 'Pages/Account/registration/exports.html', {"course": Course.objects.get(id=course_id)})
         else:
@@ -73,7 +76,9 @@ class Course_group():
     def main(request, course_id):
         course = Course.objects.get(id=course_id)
         course_data = Course.objects.get_data(user=request.user, course=course)
-        is_participant=Course.objects.check_participance(course=course,user=request.user)
+        if not request.user.is_anonymous():  
+            is_participant=Course.objects.check_participance(course=course,user=request.user)
+        else: is_participant=False
         announcements=Course.objects.load_announcements(course=course)
         return render(request, 'Pages/Course/main/exports.html', {"is_participant": is_participant, "announcements": announcements, "course": course, "course_data": course_data, "assignments": Course.objects.get_assignments(user=request.user, course=course),
                                                      "breadcrumbs": [{
@@ -99,7 +104,6 @@ class Course_group():
             course = Course.objects.get(id=course_id)
             course_data=Course.objects.get_data(user=request.user, course=course)
             course_data["group_list"]=list(course_data["groups"].keys())
-            print(course_data["group_list"])
             context = {"course": course, "course_data": course_data,
                        "breadcrumbs": [{
                            "href": "/course/" + str(course.id),
