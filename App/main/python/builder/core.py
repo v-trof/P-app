@@ -10,6 +10,8 @@ def build_page(page_name):
 
 	page_dependencies = dependencies.get(page_path)
 
+	page_dependencies["scripts_critical"] = set()
+
 	template_path = path["page_template"] + page_dependencies["template"]
 	template_dependencies = dependencies.get(template_path)
 	dependencies.add(page_dependencies, template_dependencies)

@@ -1,7 +1,3 @@
-if(typeof pull_put === 'undefined') {
-	pull_put = {}
-}
-
 pull_put.put_zone = (function() {
 
 	var exports = {
@@ -10,7 +6,7 @@ pull_put.put_zone = (function() {
 			$element.addClass('--put-zone');
 			
 			$element.click(function(event) {
-				if(pull_put.ui.is_pulled && $(this) != pull_put.ui.element) {	
+				if(pull_put.is_pulled) {	
 					_action(event, $element);
 					$placeholder.remove();
 					pull_put.ui.element = undefined;

@@ -1,7 +1,3 @@
-if(typeof pull_put === 'undefined') {
-	pull_put = {}
-}
-
 pull_put.ui = (function() {
 
 	$ui = $('{% include "Elements/Modules/pull_put/exports.html" %}');
@@ -22,7 +18,6 @@ pull_put.ui = (function() {
 
 
 	exports = {
-		is_pulled: false,
 		$: $ui,
 		element: undefined,
 		add_action: function(icon, tip, _action) {
@@ -47,14 +42,14 @@ pull_put.ui = (function() {
 		show: function() {
 			$ui.removeClass('--hidden');
 			setTimeout(function(){
-				pull_put.ui.is_pulled = true;
+				pull_put.is_pulled = true;
 			}, 300)
 			
 		},
 		hide: function() {
 			$ui.addClass('--hidden');
 			setTimeout(function(){
-				pull_put.ui.is_pulled = false;
+				pull_put.is_pulled = false;
 			}, 300)
 		}
 	} 

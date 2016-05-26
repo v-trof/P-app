@@ -18,6 +18,12 @@ def get(path):
 
 	real_path = path[len("../../templates/"):]
 
+	if not "styles" in dependencies_json:
+		dependencies_json["styles"] = []
+
+	if not "scripts" in dependencies_json:
+		dependencies_json["scripts"] = []
+
 	for kind in dependencies_json:
 		if type(dependencies_json[kind])  is list:
 			for n in range(len(dependencies_json[kind])):
@@ -27,7 +33,9 @@ def get(path):
 	dependencies_json["elements"] = set(dependencies_json["elements"])
 	dependencies_json["scripts"]  = set(dependencies_json["scripts"])
 	dependencies_json["styles"]   = set(dependencies_json["styles"])
-
+	
+	dependencies_json["scripts_critical"] = set()
+	
 	filename = build.get_filename(path)	
 
 	if os.path.isdir(path + "/_styles/css"):
@@ -39,8 +47,15 @@ def get(path):
 	if os.path.isdir(path + "/_scripts"):
 		scripts = [file for file in os.listdir(path + "/_scripts")]
 		for script in scripts:
+			is_critical = False
+			print(script)
+			if script == "core.js":
+				is_critical = True
 			script = real_path + "/_scripts/" + script
-			dependencies_json["scripts"].add(".".join(script.split(".")[:-1]))
+			if is_critical:
+				dependencies_json["scripts_critical"].add(".".join(script.split(".")[:-1]))
+			else:
+				dependencies_json["scripts"].add(".".join(script.split(".")[:-1]))
 
 	return dependencies_json
 
@@ -49,3 +64,4 @@ def add(page_dependencies, dependencies):
 	page_dependencies["elements"] |= dependencies["elements"]
 	page_dependencies["scripts"]  |= dependencies["scripts"]
 	page_dependencies["styles"]   |= dependencies["styles"]
+	page_dependencies["scripts_critical"] |= dependencies["scripts_critical"]

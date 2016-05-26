@@ -1,6 +1,6 @@
 {
 	"elements": ["Modules/notification","Modules/header","Modules/popup"],
-	"scripts": ["#&/_scripts/create_course"],
+	"scripts": [],
 	"styles": [],
 	"fixes": [],
 	"title" : "Главная",

@@ -6,12 +6,13 @@ $(document).ready(function() {
 		popup.show('{% include "Pages/Account/profile/_popup_texts/new_contact/exports.html" %}',
 		function() {
 			popup.$.find(".__submit").click(function(e) {
-				new_contact = $(contact_template);
-				new_contact.find(".__type")
+				$new_contact = $(contact_template);
+				$new_contact.find(".__type")
 					.text(popup.$.find(".__contact-type").val());
-				new_contact.find(".__value")
+
+				$new_contact.find(".__value")
 					.text(popup.$.find(".__contact-value").val());
-				button_delete.add(new_contact);
+
 				$.ajax({
 			        type:"POST",
 			        url:"/func/create_contact/",
@@ -24,8 +25,10 @@ $(document).ready(function() {
 			                  notification.show('success','Контакт добавлен' );
 			                               }
 			            });
-					$("#contacts").append(new_contact);
+					$("#contacts").append($new_contact);
 					popup.hide();
+
+					location.reload();
 				});
 			});
 		});

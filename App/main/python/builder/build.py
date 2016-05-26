@@ -48,22 +48,27 @@ def template(dependencies, page_path):
 		styles_html += '		{% include "' + style +'.css" %} \n'
 	styles_html += "	</style>"
 
-	scripts_html = "<script> \n"
+	scripts_critical= "<script> \n"
+	scripts_html = ""
 	scripts_pages = ""
+
+	for script in dependencies["scripts_critical"]:
+		scripts_critical += '		{% include "' + script +'.js" %} \n'
+
 	for script in dependencies["scripts"]:
 		if script.startswith("Elements/Modules"):
 			scripts_html += '		{% include "' + script +'.js" %} \n'
 		else:
 			scripts_pages += '		{% include "' + script +'.js" %} \n'
 	
-	scripts_html += scripts_pages
-	scripts_html += "	</script>"
+	scripts_critical += scripts_html + scripts_pages
+	scripts_critical += "	</script>"
 
 	page_html = template_html \
 					.replace("{ ###title }", dependencies["title"]) \
 					.replace("{ **#styles }", styles_html) \
 					.replace("{ *#*content }", page_dev_html)\
-					.replace("{ ##*js }", scripts_html)
+					.replace("{ ##*js }", scripts_critical)
 	
 	page_file = open(page_path + "/exports.html", "w")
 	page_file.write(page_html)

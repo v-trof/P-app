@@ -3,38 +3,39 @@
 <head>
 	{% include "Page_templates/_shared/fixes/charset.html" %}
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
-	<title>Вход</title>
+	<title>Редактирование теста</title>
 	<style> 
-		{% include "Elements/../Pages/Account/_shared/footer/_styles/css/footer.css" %} 
-		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
-		{% include "Elements/card/user/_styles/css/user.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
 		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Pages/Account/login_info/account_info_box/_styles/css/account_info_box.css" %} 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
+		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
 		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
 		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/../Pages/Account/_shared/modal/_styles/css/modal.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
 		{% include "Page_templates/_styles/css/main.css" %} 
 		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Pages/Test/editor/preview/_styles/css/preview.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
 		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
 		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Page_templates/central_box/_styles/css/central_box.css" %} 
 		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Pages/Test/editor/_styles/css/layout.css" %} 
 		{% include "Elements/card/_styles/css/card.css" %} 
 	</style>
 </head>
 <body>
-<main>
-	{% include "Pages/Account/login_info/account_info_box/exports.html" %}{% include "Pages/Account/login_info/footer/exports.html" %}
-</main>
+	{% include "Elements/Layout/header/exports.html" %}
+<section class="main">
+	{% include "Pages/Test/editor/question_items/exports.html" %}{% include "Pages/Test/editor/preview/exports.html" %}{% include "Pages/Test/editor/answer_items/exports.html" %}
+</section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
 		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
 	</script>
 </body>
 </html>

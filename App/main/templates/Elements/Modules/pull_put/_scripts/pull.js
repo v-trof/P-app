@@ -1,7 +1,3 @@
-if(typeof pull_put === 'undefined') {
-	pull_put = {}
-}
-
 pull_put.puller = (function() {
 
 	$placeholder = $("<div class='--pull_put_empty'></div>")
@@ -33,7 +29,7 @@ pull_put.puller = (function() {
 			$element.addClass('--pullable');
 			$element.click(function(event) {
 				console.log(pull_put.ui.is_pulled)
-				if( ! pull_put.ui.is_pulled) {			
+				if( ! pull_put.is_pulled) {			
 					replace($element);
 									
 					pull_put.ui.get($element, _callback);

@@ -29,7 +29,7 @@ def create(request):
 			"link": "Новый тест"
 		}]
 
-	return render(request, 'Pages/test_editor.html', context)
+	return render(request, 'Pages/Test/editor/exports.html', context)
 
 
 def delete(request):
