@@ -11,6 +11,7 @@ $(document).ready(function() {
 					.text(popup.$.find(".__contact-type").val());
 				new_contact.find(".__value")
 					.text(popup.$.find(".__contact-value").val());
+				button_delete.add(new_contact);
 				$.ajax({
 			        type:"POST",
 			        url:"/func/create_contact/",
