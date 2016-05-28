@@ -1,10 +1,7 @@
-<div class="card card-marks">
+<div class="--card card-marks">
 	<h4 class="card-marks__course">{{course.name}}</h4>
 	{% for mark in marks %}
-		<button 
-			class="mark--{{mark.quality}}"
-			id="c_{{course.name}}_m{{ forloop.counter }}"
-			>{{mark.value}}</button>
+		{{mark}}
 	{% empty %}
 		<div>Оценок нет</div>
 	{% endfor %}

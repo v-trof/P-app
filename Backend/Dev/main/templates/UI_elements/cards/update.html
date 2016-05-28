@@ -1,18 +1,18 @@
 {% load ext_humanize %}
-{% if course.updates.new_students|length > 0 or course.updates.new_marks|length > 0 or course.status == "closed" and course.updates.requesting_users|length > 0 %}
+{% if updates.new_students|length > 0 or updates.new_marks|length > 0 or course.status == "closed" and updates.requesting_users|length > 0 %}
 <a class="link--card" href="/course/{{course.object.id}}/updates">
 	<div class="card">
 		<h4  class="card__heading">В курсе {{course.object.name}}</h4>
-		{% if course.updates.new_marks|length > 0 %}
-			<div class="marks"><b>{{ course.updates.new_marks|length }}</b> {{course.updates.new_marks|length|form_for_num:"новая новые новых" }} {{course.updates.new_marks|length|form_for_num:"оценка оценки оценок" }}</div>
+		{% if updates.new_marks|length > 0 %}
+			<div class="marks"><b>{{ updates.new_marks|length }}</b> {{updates.new_marks|length|form_for_num:"новая новые новых" }} {{updates.new_marks|length|form_for_num:"оценка оценки оценок" }}</div>
 			}
 		{% endif %}
-		{% if course.updates.new_students|length > 0 %}
-			<div class="joined"><b>{{course.updates.new_students|length}}</b> 
-			{{course.updates.new_students|length|form_for_num:"ученик ученика учеников" }} {{course.updates.new_students|length|form_for_num:"присоединился присоединились присоединились" }}</div>
+		{% if updates.new_students|length > 0 %}
+			<div class="joined"><b>{{updates.new_students|length}}</b> 
+			{{updates.new_students|length|form_for_num:"ученик ученика учеников" }} {{updates.new_students|length|form_for_num:"присоединился присоединились присоединились" }}</div>
 		{% endif %}
-		{% if course.status == "closed" and course.updates.requesting_users|length > 0 %}
-			<div class="joined"><b>{{course.updates.requesting_users|length}}</b>{{course.updates.requesting_users|length|form_for_num:"ученик ученика учеников" }} {{course.updates.requesting_users|length|form_for_num:"подал подали подали" }} {{course.updates.requesting_users|length|form_for_num:"заявку заявки заявки" }}</div>
+		{% if course.status == "closed" and updates.requesting_users|length > 0 %}
+			<div class="joined"><b>{{updates.requesting_users|length}}</b>{{updates.requesting_users|length|form_for_num:"ученик ученика учеников" }} {{updates.requesting_users|length|form_for_num:"подал подали подали" }} {{updates.requesting_users|length|form_for_num:"заявку заявки заявки" }}</div>
 		{% endif %}
 	</div>
 </a>

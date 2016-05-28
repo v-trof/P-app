@@ -18,6 +18,7 @@ $(document).ready(function() {
 	            data: {
 	                   'csrfmiddlewaretoken': '{{ csrf_token }}',
 	                   'course_name': $("input[name=course_name]").val(),
+	                   'is_closed': $("input[name=is_closed]").is(":checked"),
 	                   'subject': subject,
 	                  },
 	            success: function(response){

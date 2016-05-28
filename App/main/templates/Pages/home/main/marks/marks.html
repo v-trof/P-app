@@ -1,8 +1,8 @@
-{% for subject,value in courses %}
+{% for subject,value in marks.items %}
 	<div class="subject">
 		<h3>{{subject}}</h3>
 		{% for course in value %}
-			{% include "Elements/card/marks/exports.html" with marks=course.marks course=course.object %}
+			{% include "Elements/card/marks/" with marks=course.course_marks course=course.course %}
 		{% endfor %}
 	</div>
 {% empty %}

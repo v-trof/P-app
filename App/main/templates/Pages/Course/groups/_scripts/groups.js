@@ -38,7 +38,7 @@ function sort_group(group){
 }
 
 var add_boundary = {
-	button_remove: function(el){
+	button_delete: function(el){
 		el.click(function(event) {
 			if($(this).parent(".card").length){
 				$(this).parent(".card").parent().remove();
@@ -49,24 +49,20 @@ var add_boundary = {
 			check_for_emptiness();
 		});
 	},
-	button_remove_all: function(el){
+	button_delete_all: function(el){
 		el.click(function(event) {
 			$(this).parent(".group").remove();
 		});
 	}
 }
 
-var button_remove_all = '<button class="button--icon button_remove_all">{% include "Elements/Icons/delete_all.svg" %}</button>';
-
-var button_remove = '<button class="button--icon button_remove">{% include "Elements/Icons/delete.svg" %}</button>';
-
 var icon_add = '<div class"icon_add--wrapper">{% include "Elements/Icons/add.svg" %}</div>';
 
 function toggle_edit(){
 	if(editing){
 		$("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
-		$(".button_remove").remove();
-		$(".button_remove_all").remove();
+		$(".--button-delete").remove();
+		$(".--button-delete_all").remove();
 		$("#edit>.card--small").text("Редактировать");
 		$(".students .--card").attr("draggable", "false");
 		//enabling links
@@ -92,7 +88,7 @@ function toggle_edit(){
 				   'course_id': "{{course.id}}",
 				  },
 			success: function(){
-				  notification.change('success', 'Группы изменены' );
+				  notification.show('success', 'Группы изменены' );
 				  $('#groups_content').load('../groups_content/');
 				   }
 			});
@@ -100,49 +96,44 @@ function toggle_edit(){
 		editing = false;
 	} else {
 		$(".group>h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
-		$("#edit>.card--small").text("Сохранить изменения");
-		$(".students .--card").attr("draggable", "true");
+		$("#edit>button").text("Сохранить изменения");
 		//disabling links
 		$(".students .--card").each(function(index, el) {
 			$(this).replaceTag("<div>", true);
 		});
-
-		$(".students .--card").bind({
-			dragstart: function(e){
-				e.originalEvent.dataTransfer.setData('useless', 'stupid firefox');
-				e_data.original_el = $(this);
-				e_data.original_group = $(this).parent().parent();
-			},
-			dragend: function(e){
-				drag_reset();
-			}
+		$(".students .card-person").each(function(index, el) {
+			console.log(this);
+			button_delete.add($(this), function() {
+				//delete_user($(el));
+			});
 		});
-		
-		$(".students .card-person").prepend(button_remove);
-		$(".group").prepend(button_remove);
-		$(".group").prepend(button_remove_all);
+		$(".group").each(function(index, el) {
+			console.log(this);
+			button_delete.add($(this), function() {
+				//delete_user($(el));
+			});
+		});
 
-
-		unordered.children('.button_remove').remove();
-		unordered.children('.button_remove_all').remove();
+		unordered.children('.--button-delete').remove();
+		unordered.children('.--button-delete_all').remove();
 
 		unordered.children("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
 
-		$(".group>.button_remove").attr('tip', 'Удалить группу, сохранить учеников');
+		$(".group>.--button-delete").attr('tip', 'Удалить группу, сохранить учеников');
 
-		$(".group>.button_remove_all").attr('tip', 'Удалить группу и учеников');
+		$(".group>.--button-delete_all").attr('tip', 'Удалить группу и учеников');
 
-		$(".card-person>.button_remove").attr('tip', 'Исключить из курса');
+		$(".card-person>.--button-delete").attr('tip', 'Исключить из курса');
 		
-		$(".button_remove").each(function(index, el) {
+		$(".--button-delete").each(function(index, el) {
 			tooltip.generate.tip_based(this);
-			add_boundary.button_remove($(this));
+			add_boundary.button-delete($(this));
 		});
 
-		$(".button_remove_all").each(function(index, el) {
+	/*	$(".--button-delete_all").each(function(index, el) {
 			tooltip.generate.tip_based(this);
-			add_boundary.button_remove_all($(this));
-		});
+			add_boundary.button-delete_all($(this));
+		}); */
 		
 		$("#create_group").show();
 		editing = true;
@@ -152,9 +143,7 @@ function toggle_edit(){
 $(document).ready(function() {
 	check_for_emptiness();
 
-
 	$("h3").css('border-bottom', '1px dashed transparent');
-	$(".students .--card").attr("draggable", "false");
 
 	$(".group").each(function(index, el) {
 		if($(this).children('h3').text() == "Нераспределенные"){
@@ -171,27 +160,24 @@ $(document).ready(function() {
 		toggle_edit();
 	});
 
-	$("#create_group").click(function(event) {
+/*	$("#create_group").click(function(event) {
 		var new_group = $("<div class='group'><h3>Новая группа</h3></div>");
 		$(".students").append(new_group);
-		new_group.prepend(button_remove);
-		new_group.prepend(button_remove_all);
-		add_boundary.group(new_group);
+		new_group.prepend(button_delete);
+		new_group.prepend(button_delete_all);
 
-		add_boundary.button_remove(new_group.find(".button_remove"));
-		new_group.find(".button_remove").attr('tip', 'Удалить группу, сохранить учеников')
-		tooltip.generate.tip_based(new_group.find(".button_remove")[0]);
+		add_boundary.button-delete(new_group.find(".--button-delete"));
+		new_group.find(".--button-delete").attr('tip', 'Удалить группу, сохранить учеников')
+		tooltip.generate.tip_based(new_group.find(".--button-delete")[0]);
 
-		add_boundary.button_remove_all(new_group.find(".button_remove_all"));
-		new_group.find(".button_remove_all").attr('tip', 'Удалить группу и учеников')		
-		tooltip.generate.tip_based(new_group.find(".button_remove_all")[0]);
+		add_boundary.button-delete_all(new_group.find(".--button-delete_all"));
+		new_group.find(".--button-delete_all").attr('tip', 'Удалить группу и учеников')		
+		tooltip.generate.tip_based(new_group.find(".--button-delete_all")[0]);
 
 		check_for_emptiness();
 		new_group.find("h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
 		$(".students").append(unordered);
-	});
-
-	add_boundary.group($(".group"));
+	});*/
 	$.extend({
 		replaceTag: function (currentElem, newTagObj, keepProps) {
 			var $currentElem = $(currentElem);
@@ -201,7 +187,7 @@ $(document).ready(function() {
 				newTag = $newTag[0];
 				for (var att, i = 0, atts = currentElem.attributes, n = atts.length; i < n; i++){
 					att = atts[i];
-					newTag.setAttribute(att.nodeName, att.nodeValue);
+					newTag.setAttribute(att.nodeName, att.value);
 				}
 				$.extend(newTag.classList, currentElem.classList);
 				$.extend(newTag.attributes, currentElem.attributes);

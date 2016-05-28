@@ -1,8 +1,13 @@
+{% if not request.user.is_teacher %}
+	{% include "#&/../../create_course/" %}
+{% endif %}
+
 {% for subject,value in courses.items %}
 	<div class="subject">
 		<h3>{{subject}}</h3>
 		{% for course in value %}
-			{% include "Elements/card/course/" with course=course.object %}
+			<a class="--card" href='course/{{course.object.id}}'>{% include "Elements/card/course/"  with course=course.object 
+			materials_number=course.materials_number tests_number=course.tests_number  %}</a>
 		{% endfor %}
 	</div>
 	{% empty %}

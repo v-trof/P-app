@@ -1,10 +1,10 @@
-{% for subject,value in courses.items %}
+{% for subject,value in tasks.items %}
 	<div class="subject">
 		<h3>{{subject}}</h3>
 		{% for course in value %}
 			{% with forloop.counter as course_counter %}
-			{% for assignment in course.tasks %}
-				{% include "Elements/card/assignment/" with assignment_counter=assignment.id course=course.object %}
+			{% for assignment in course %}
+				{% include "Elements/card/assignment/" with assignment_counter=assignment.id %}
 			{% endfor %}
 			{% endwith %}
 		{% endfor %}

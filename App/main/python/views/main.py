@@ -30,20 +30,26 @@ class Main_group():
     def home(request):
         if request.user.is_anonymous():
             return render(request, 'Pages/home/exports.html')
-        courses = []
-        user_courses = []
+        context={}
+        context["subjects"]=["Русский язык","Математика","Английский язык"]
+
+        sample_marks={"Русский язык":[{"course_marks":[{"test_id":1,"value":4,"quality":"good"},{"test_id":2,"value":2,"quality":"bad"}],"course":Course.objects.get(id=1)}]}
+        sample_tasks=[]
+
         if request.user.participation_list:
-            courses = User.objects.load_courses(user=request.user)
+            context["marks"] = User.objects.load_marks(string_array=request.user.participation_list, user_id=request.user.id)
+            context["marks"] = sample_marks
+
+            context["tasks"] = User.objects.load_tasks(string_array=request.user.participation_list, user=request.user)
+            context["tasks"] = sample_tasks
+
+            context["courses"] = User.objects.load_courses_previews(string_array=request.user.participation_list)
+            context["updates"] = User.objects.load_updates(user=request.user)
         if request.user.courses:
-            user_courses = User.objects.load_self_courses(user=request.user)
-        subjects=["Русский язык","Математика","Английский язык"]
-        if request.user.is_teacher:
-            context = {"courses": courses, "user_courses": user_courses,
-                       "user_data": User.objects.get_data(object=request.user, course_id=False),"subjects":subjects}
-            return render(request, 'Pages/home/exports.html', context)
-        else:
-            context = {"courses": courses,"subjects":subjects}
-            return render(request, 'Pages/home/exports.html', context)
+            context["own_courses"] = User.objects.load_courses_previews(string_array=request.user.courses)
+        print(context["own_courses"])
+
+        return render(request, 'Pages/home/exports.html', context)
 
 class Auth_group():
 
@@ -79,7 +85,7 @@ class Course_group():
         if not request.user.is_anonymous():  
             is_participant=Course.objects.check_participance(course=course,user=request.user)
         else: is_participant=False
-        announcements=Course.objects.load_announcements(course=course)
+        announcements=Course.objects.load_announcements(course_id=course.id)
         return render(request, 'Pages/Course/main/exports.html', {"is_participant": is_participant, "announcements": announcements, "course": course, "course_data": course_data, "assignments": Course.objects.get_assignments(user=request.user, course=course),
                                                      "breadcrumbs": [{
                                                          "href": "#",
