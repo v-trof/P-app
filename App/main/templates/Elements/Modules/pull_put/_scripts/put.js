@@ -6,26 +6,20 @@ pull_put.put_zone = (function() {
 			$element.addClass('--put-zone');
 			
 			$element.click(function(event) {
-				if(pull_put.is_pulled) {	
-					_action(event, $element);
-					$placeholder.remove();
-					pull_put.ui.element = undefined;
-					pull_put.ui.hide();
-				}		
-			});
+				if(pull_put.is_pulled && ! pull_put.ui.$.find(($(this)))[0]) {
+					console.log(pull_put.is_pulled);
 
-			if(_callback) {
-				_callback();
-			}
+					_action(event, $(this), pull_put.ui.element);
+					
+					pull_put.reset();
+
+					if(_callback) {
+						_callback();
+					}
+				}		
+			});			
 		}
 	}
 
 	return exports;
 })();
-
-
-// pull_put.puller.add($(".card"));
-
-pull_put.put_zone.add($(".card")[1], function(event, $element) {
-	$element.after(pull_put.ui.element);
-});

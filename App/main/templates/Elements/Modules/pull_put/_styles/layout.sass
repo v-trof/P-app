@@ -11,9 +11,11 @@
 	transition-property: transform
 	z-index: 15
 	&>.__content
-		&>*
+		&.card
+			+box-shadow(2)
+		&:not(.card)>*
 			margin-bottom: 0
-			+box-shadow(3)
+			+box-shadow(2)
 	.__actions
 		display: flex
 		flex-direction: row
@@ -21,7 +23,7 @@
 		.card
 			margin: 0 $margin--s
 			height: auto
-			+box-shadow(3)
+			+box-shadow(2)
 	&.--hidden
 		bottom: -100%
 		transform: translateY($margin--xl)

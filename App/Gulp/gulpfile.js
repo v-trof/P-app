@@ -30,11 +30,21 @@ gulp.task('concat_test_generate', function() {
     .pipe(gulp.dest(function(file) {
 		return file.base;
 	}));
+
+	gulp.src(['../main/templates/Elements/Modules/test_generate/_scripts/build/**/*.js'])
+    .pipe(concat('build.js'))
+    .pipe(rename(function (path) {
+		console.log(path.dirname)
+		path.dirname = "../";
+	}))
+    .pipe(gulp.dest(function(file) {
+		return file.base;
+	}));
 });
 
 gulp.task('watch', function() {
   gulp.watch("../main/templates/**/*.sass", ['sass_to_css']);
-  gulp.watch('../main/templates/Elements/Modules/test_generate/_scripts/data/**/*.js', ['concat_test_generate']);
+  gulp.watch('../main/templates/Elements/Modules/test_generate/_scripts/**/*.js', ['concat_test_generate']);
 });
 
 gulp.task('default', ['watch']);

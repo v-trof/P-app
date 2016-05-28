@@ -2,8 +2,7 @@ var button_delete = (function(){
 	var template = '{% include "Elements/Modules/button_delete/exports.html" %}';
 
 	var exports = {
-		add: function($element, $deletable, _call_back) {
-			console.log(typeof $deletable)
+		add: function($element, $deletable, _callback) {
 			//if callback passed second
 			if(typeof $deletable === 'function') {
 				_call_back = $deletable;
@@ -22,7 +21,9 @@ var button_delete = (function(){
 			
 			$button.click(function(event) {
 				$deletable.remove();
-				_call_back();
+				if(_callback) {
+					_callback();
+				}
 			});
 		}
 	}
