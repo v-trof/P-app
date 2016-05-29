@@ -1,9 +1,8 @@
-generate.data["--text"] = {
+generate.data["answer--text"] = {
 	element: {
 		type: 'answer',
 		
 		parse: function($original) {
-			console.log($original.attr('answer'))
 			return {
 				label: $original.find('label').html(),
 				answer: $original.attr('answer')
@@ -11,7 +10,7 @@ generate.data["--text"] = {
 		},
 
 		build: function(value) {
-			$element = $(generate.build.template.answer('--text'))
+			$element = $(generate.build.template.answer('answer--text'))
 			$element.html('{% include "Elements/Inputs/text/exports.html" %}')
 			$element.find('label').text(value.label)
 			return $element 
@@ -25,8 +24,6 @@ generate.data["--text"] = {
 		parse: function() {
 			var label = $('#new_element_label').val()
 			var answer = $('#new_element_answer').val()
-
-			console.log($('#new_element_label').val());
 
 			return {
 				'label': label,

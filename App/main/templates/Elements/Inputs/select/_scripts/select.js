@@ -21,7 +21,6 @@ function add_menu_caller(select) {
 		var is_disabled = $(this).attr('disabled');
 
 		if(is_disabled == "disabled"){
-			// console.log("DIs")
 			return 0
 		}
 		var current_value = $(this).children('input').val();
@@ -42,7 +41,6 @@ function add_menu_caller(select) {
 			chosen = options[0]
 		}
 		if(is_disabled != "disabled" && is_disabled !="true"){
-			// console.log(is_disabled, "2sel")
 			context_menu.show(options, this, chosen);
 		}
 	});

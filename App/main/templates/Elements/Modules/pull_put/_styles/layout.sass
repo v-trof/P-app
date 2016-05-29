@@ -11,7 +11,10 @@
 	transition-property: transform
 	z-index: 15
 	&>.__content
+		max-height: 16rem + $padding--m*2
+		overflow-y: auto
 		&.card
+			margin-bottom: 0
 			+box-shadow(2)
 		&:not(.card)>*
 			margin-bottom: 0

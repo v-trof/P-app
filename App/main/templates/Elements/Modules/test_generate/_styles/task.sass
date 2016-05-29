@@ -5,7 +5,10 @@
 		margin-bottom: $margin--m
 	.__task
 		.__question
-			& > *:last-child()
+			*
+				margin-bottom: $margin--s
+				&:last-child()
+					margin-bottom: 0
 	.--empty
 		padding: $padding--m
 		color: $font__color--grey

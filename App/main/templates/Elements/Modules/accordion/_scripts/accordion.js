@@ -4,8 +4,6 @@ var accordion = (function() {
 		+'{% include "Elements/Icons/angle_down.svg" %}</button>';
 
 	function expand($element, $indicator) {
-		console.log($element);
-
 		$element.children().removeClass('--accordion-hidden');
 		$element.children('.--accordion-toggle').first()
 			.removeClass('--accordion-minimized')
@@ -13,8 +11,6 @@ var accordion = (function() {
 	}
 
 	function minimize($element, $indicator) {
-		console.log($element);
-
 		$element.children().addClass('--accordion-hidden');
 		
 		$indicator.removeClass('--accordion-hidden');

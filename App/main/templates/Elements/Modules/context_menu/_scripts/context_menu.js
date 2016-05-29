@@ -42,16 +42,12 @@ var context_menu = (function() {
 
 			menu_rect = $menu[0].getBoundingClientRect();
 
-			// console.log(menu_rect.top, $menu.innerHeight(), $(window).height())
-
 			if(menu_rect.top + menu_rect.height > $(window).height()) {
 				$menu.css({
 					"bottom": 0,
 					"top": "auto",
 				})
 			}
-
-			// console.log(menu_rect.top + menu_rect.height, $(window).width())
 
 			if(menu_rect.left + menu_rect.width > $(window).width()) {
 				$menu.css({

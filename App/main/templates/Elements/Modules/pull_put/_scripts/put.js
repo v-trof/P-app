@@ -7,11 +7,10 @@ pull_put.put_zone = (function() {
 			
 			$element.click(function(event) {
 				if(pull_put.is_pulled && ! pull_put.ui.$.find(($(this)))[0]) {
-					console.log(pull_put.is_pulled);
 
 					_action(event, $(this), pull_put.ui.element);
 					
-					pull_put.reset();
+					// pull_put.reset();
 
 					if(_callback) {
 						_callback();

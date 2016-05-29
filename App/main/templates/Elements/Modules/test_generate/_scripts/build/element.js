@@ -14,6 +14,7 @@ generate.build.element = function(element_class, value, addtitional) {
 
 	{% if not attempt %}
 		$element.attr('answer', value.answer)
+		console.log($element.attr('answer'))
 	{% endif %}
 	
 	return $element;

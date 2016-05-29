@@ -35,7 +35,7 @@ generate.edit = (function() {
 
 			pull_put.ui.add_action(preview_action);
 			
-			pull_put.ui.$.on("keydown change blur",".__content input", 
+			pull_put.ui.$.find(".__content input, .__content .__value").on("keydown change blur",
 				function() {
 					var value = blueprints.edit.parse();
 					
@@ -46,7 +46,6 @@ generate.edit = (function() {
 					pull_put.ui.element.html($new_element);
 				})
 
-			generate.edit.is_on = true;
 		},
 		stop: function() {
 			if(pull_put.is_pulled) {
@@ -59,18 +58,38 @@ generate.edit = (function() {
 
 				var value = blueprints.edit.parse();
 
-				console.log(value);
-
 				var $new_element =  generate.build.element(element_class, value);
 
-				pull_put.ui.element.html($new_element);
+				pull_put.ui.element = $new_element;
 
 				pull_put.ui.$.find(".__content")
 					.html(pull_put.ui.element);
 
 				pull_put.ui.add_action(edit_action);
-				generate.edit.is_on = false;
 			}
+		},
+		add_puller: function($element, _action) {
+			pull_put.put_zone.add($element, function(event, $this, $pulled) {
+				if ($pulled.hasClass('__answer-field')) {
+					var element_type = "answer";
+				} else {
+					var element_type = "question";
+				}
+
+				if(element_type == $element.parent().attr("class").substring(2)) {
+					{% if not attempt %}
+						generate.let_editing($pulled);
+					{% endif %}
+
+					_action($this, $pulled);
+					
+					pull_put.reset();
+
+					if(editor){
+						editor.check_self();
+					}
+				}
+			});
 		},
 		edit_action: edit_action,
 		preview_action: preview_action

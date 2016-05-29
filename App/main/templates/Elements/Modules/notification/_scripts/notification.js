@@ -44,7 +44,6 @@ var notification = (function() {
 		},
 
 		hide: function($notification) {
-			console.log($notification);
 			$notification.addClass('--hidden');
 			setTimeout(function() {
 				$notification.remove();

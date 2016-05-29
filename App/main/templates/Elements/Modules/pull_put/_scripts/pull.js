@@ -15,17 +15,7 @@ pull_put.puller = (function() {
 			marginLeft: $element.css("margin-left"),
 			marginRight: $element.css("margin-right")
 		});
-
-		console.log(
-			$element.css("margin-top"),
-			$element.css("margin-left"),
-			$element.css("margin-right"),
-			$element.css("margin-left"),
-			$element.outerHeight(),
-			$element.height(),
-			$element[0].getBoundingClientRect()
-		)
-
+		
 		$element.after($placeholder);
 	}
 
@@ -48,7 +38,6 @@ pull_put.puller = (function() {
 				$(this).addClass('--pulled');
 
 				if( ! pull_put.is_pulled) {
-					console.log(pull_put.is_pulled);
 					element_width = $(this).outerWidth();
 
 					if (clone) {	

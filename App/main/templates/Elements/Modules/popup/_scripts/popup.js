@@ -3,12 +3,10 @@ var popup = (function() {
 	exports = {
 		$: $popup,
 		show: function(content, _callback, css) {
-			console.log($popup)
 			$popup.find(".__content").html(content);
 			$popup.removeClass('--hidden');
 			
 			$popup.find(".--select").each(function(index, el) {
-				// console.log(this);
 				add_menu_caller(this);
 			});
 			$popup.find("input").first().focus();

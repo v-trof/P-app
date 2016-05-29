@@ -27,6 +27,9 @@ function add_to_item_list(element_class, $list) {
 
 $(document).ready(function() {
 	for(var element_class in generate.data) {
+
+		console.log(element_class)
+
 		var type = generate.data[element_class].element.type;
 		var $list = $(".item-list.--" + type);
 

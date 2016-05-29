@@ -759,7 +759,7 @@ class TestManager(models.Manager):
 	def create(self, course_id):
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
 			course_info = json.load(data_file)
-			test_id = str(course_info['tests']['amount'] + 1)
+			test_id=str(len(course_info['tests']['published']) + len(course_info['tests']['unpublished']) + 1)
 		course = {"id": course_id}
 		test = {"id": test_id, "loaded": 0}
 		context = {"test": test, "course": course}
@@ -1024,14 +1024,3 @@ class TestManager(models.Manager):
 	
 class Test(models.Model):
 	objects = TestManager()
-	
-
-	
-
-	
-
-	
-	
-	
-	
-		
