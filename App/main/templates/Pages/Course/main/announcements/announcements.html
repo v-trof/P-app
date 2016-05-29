@@ -2,7 +2,7 @@
 	{% if announcements %}
 		<h3>Объявления</h3>
 		{% for announcement in announcements %}
-			{% include "Elements/card/exports.html" with content=announcement.text heading=announcement.heading %}
+			{% include "Elements/card/announcement/" with content=announcement.text heading=announcement.heading %}
 		{% endfor %}
 	{% else %}
 		<h3>Объявлений нет</h3>

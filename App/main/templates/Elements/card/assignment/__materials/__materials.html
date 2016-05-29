@@ -3,7 +3,7 @@
 	<div>Материалы для ознакомления:</div>
 	<div class="__links">
 	{% for material in task.materials %}
-		<a href='{{material.link}}' class='--block {% if material.done %} --done {% endif %}'>
+		<a href='{{material.link}}' class='--block {% if material.done %} --done {% endif %} --material'>
 		{{material.title}}</a>{% if not forloop.last %},{% endif %}
 	{% endfor %}
 	</div>	

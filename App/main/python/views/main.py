@@ -32,7 +32,7 @@ class Main_group():
             return render(request, 'Pages/home/exports.html')
         context={}
         context["subjects"]=["Русский язык","Математика","Английский язык"]
-
+        print(request.user.avatar)
         sample_marks={"Русский язык":[{"course_marks":[{"test_id":1,"value":4,"quality":"good"},{"test_id":2,"value":2,"quality":"bad"}],"course":Course.objects.get(id=1)}]}
         sample_tasks={}
         sample_tasks["Русский язык"]={}
@@ -56,7 +56,6 @@ class Main_group():
         sample_task["tests"]=[]
         sample_task["traditionals"].append({"content":"dgfgdfg","due_date":"27-05-2016"})
         sample_taskss["tasks"].append(sample_task)
-        print(sample_taskss)
         sample_tasks["Русский язык"]["1"]=sample_taskss
         # {"Русский язык":{"1":[]}}
         if request.user.participation_list:
@@ -70,7 +69,8 @@ class Main_group():
             context["updates"] = User.objects.load_updates(user=request.user)
         if request.user.courses:
             context["own_courses"] = User.objects.load_courses_previews(string_array=request.user.courses)
-        print(context["tasks"])
+        elif request.user.is_teacher:
+            context["own_courses"] = []
 
         return render(request, 'Pages/home/exports.html', context)
 

@@ -507,7 +507,7 @@ class UserManager(UserManager):
 				password=password,
 				name=name_last_name,
 				is_teacher=is_teacher,
-				avatar='Avatars/avatar.png',
+				avatar='default_avatar.png',
 				permission_level="0")
 			os.makedirs('main/files/json/users/'+str(user.id)+'/')
 			with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'w+', encoding='utf8') as json_file:
@@ -694,11 +694,11 @@ class UserManager(UserManager):
 			return False
 
 	def upload_avatar(self, user, new_avatar):
-		if user.avatar.path != "Avatars/avatar.png":
+		if user.avatar != "default_avatar.png":
 			os.remove(user.avatar.path)
 		setattr(user, 'avatar', new_avatar)
 		user.save()
-		return user.avatar.path
+		return user.avatar
 
 
 class User(AbstractBaseUser, PermissionsMixin):
