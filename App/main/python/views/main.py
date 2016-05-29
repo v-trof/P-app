@@ -34,8 +34,31 @@ class Main_group():
         context["subjects"]=["Русский язык","Математика","Английский язык"]
 
         sample_marks={"Русский язык":[{"course_marks":[{"test_id":1,"value":4,"quality":"good"},{"test_id":2,"value":2,"quality":"bad"}],"course":Course.objects.get(id=1)}]}
-        sample_tasks=[]
-
+        sample_tasks={}
+        sample_tasks["Русский язык"]={}
+        sample_taskss={}
+        sample_taskss["due_date"]="27-05-2016"
+        sample_taskss["course"]=Course.objects.get(id=1)
+        sample_taskss["tasks"]=[]
+        sample_test={}
+        sample_test["title"]="1"
+        sample_test["link"]="?course_id=1&test_id=1"
+        sample_test["done"]=False
+        sample_task={}
+        sample_task["tests"]=[]
+        sample_task["tests"].append(sample_test)
+        sample_task["materials"]=[]
+        sample_task["traditionals"]=[]
+        sample_taskss["tasks"].append(sample_task)
+        sample_task={}
+        sample_task["traditionals"]=[]
+        sample_task["materials"]=[]
+        sample_task["tests"]=[]
+        sample_task["traditionals"].append({"content":"dgfgdfg","due_date":"27-05-2016"})
+        sample_taskss["tasks"].append(sample_task)
+        print(sample_taskss)
+        sample_tasks["Русский язык"]["1"]=sample_taskss
+        # {"Русский язык":{"1":[]}}
         if request.user.participation_list:
             context["marks"] = User.objects.load_marks(string_array=request.user.participation_list, user_id=request.user.id)
             context["marks"] = sample_marks
@@ -47,7 +70,7 @@ class Main_group():
             context["updates"] = User.objects.load_updates(user=request.user)
         if request.user.courses:
             context["own_courses"] = User.objects.load_courses_previews(string_array=request.user.courses)
-        print(context["own_courses"])
+        print(context["tasks"])
 
         return render(request, 'Pages/home/exports.html', context)
 

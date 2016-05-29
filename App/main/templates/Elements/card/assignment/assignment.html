@@ -1,9 +1,11 @@
 <div class="card --assignment">
 	{% include "#&/../__overall-info/" 
-		with heading="В курсе "|add:course.name %}
+		with heading="В курсе "|add:assignment.course.name %}
 	<div class="__content">
-		{% include "#&/__materials/" %}
-		{% include "#&/__tests/" %}
-		{% include "#&/__traditional/" %}
+		{% for task in assignment.tasks %}
+			{% include "#&/__materials/" %}
+			{% include "#&/__tests/" %}
+			{% include "#&/__traditional/" %}
+		{% endfor %}
 	</div>
 </div>

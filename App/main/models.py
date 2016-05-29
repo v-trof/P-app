@@ -349,22 +349,10 @@ class CourseManager(models.Manager):
 		try:
 			with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
 					data = json.load(json_file)
-			global_it = 0
-			for assignment in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*'):
-				file_name = os.path.basename(assignment).split('.')[0]
-				if file_name in data.keys():
-					with io.open(assignment, 'r', encoding='utf8') as data_file:
-						new_data = json.load(data_file)
-						done = True
-						it = 0
-						global_it += 1
-						for task in new_data["tasks"]:
-							it += 1
-							if task["traditional"] and not it in data[file_name]:
-								task["done"] = True
-						new_data["id"] = global_it
-						if os.path.basename(assignment).split('.')[0] in data.keys():
-							assignments.append(new_data)
+			for assignment in data.keys():
+				with io.open('main/files/json/courses/' + str(course.id) + '/assignments/'+assignment, 'r', encoding='utf8') as data_file:
+					new_data = json.load(data_file)
+					assignments.append(new_data)
 			return sorted(assignments, key=lambda k: k['due_date'])
 		except: return assignments
 
@@ -409,23 +397,17 @@ class CourseManager(models.Manager):
 		assignment = {}
 		assignment["due_date"] = due_date
 		assignment["tasks"] = []
-		assignment_id = str(
-			len(glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*')) + 1)
-		non_traditional_task = {}
-		non_traditional_task["traditional"] = False
-		non_traditional_task["content"] = {}
-		non_traditional_task["content"]["tests"] = []
-		non_traditional_task["content"]["materials"] = []
-		non_traditional_task["content"]["tests"] = json.loads(test_list)
-		non_traditional_task["content"][
-			"materials"] = json.loads(material_list)
-		assignment["tasks"].append(non_traditional_task)
-		if json.loads(traditionals_list):
-			for traditional in json.loads(traditionals_list):
-				traditional_task = {}
-				traditional_task["traditional"] = True
-				traditional_task["content"] = traditional
-				assignment["tasks"].append(traditional_task)
+		assignment["course"]=Course.objects.get(id=course_id)
+		assignment_id = str(len(glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*')) + 1)
+		task = {}
+		task["content"] = {}
+		task["content"]["tests"] = []
+		task["content"]["materials"] = []
+		task["content"]["traditionals"] = []
+		task["content"]["tests"] = json.loads(test_list)
+		task["content"]["materials"] = json.loads(material_list)
+		task["content"]["traditionals"] = json.loads(traditionals_list)
+		assignment["tasks"].append(task)
 		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + assignment_id + '.json', 'a+', encoding='utf8') as json_file:
 			saving_data = json.dumps(assignment, ensure_ascii=False)
 			json_file.write(saving_data)
