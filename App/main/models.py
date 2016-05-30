@@ -468,10 +468,7 @@ class CourseManager(models.Manager):
 		for marks_file in glob.glob('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/*.json'):
 			with io.open(marks_file, 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
-				mark = {}
-				mark["test_id"] = data["test_id"]
-				mark["value"] = data["mark"]
-				mark["quality"] = data["mark_quality"]
+				mark = data
 				marks.append(mark)
 		if len(marks)==0:
 			marks=None
@@ -922,9 +919,9 @@ class TestManager(models.Manager):
 		test_results["missed"]=[]
 		test_results["unseen_by"]=[]
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
-			data=json.load(json_file)
+			test_data=json.load(json_file)
 			it=-1
-			for task in data["tasks"]:
+			for task in test_data["tasks"]:
 				it+=1
 				test_results["right"].append(it)
 				test_results["right"][it]=[]
@@ -950,8 +947,10 @@ class TestManager(models.Manager):
 				test_results["unseen_by"].append(key)
 		test_results["mark"]=give_mark(request,right/(right+mistakes+missed)*100, course_id, test_id)
 		test_results["mark_quality"]=set_mark_quality(test_results["mark"])
+		test_results["test_title"]=test_data["title"]
+		test_results["right_answers"]=right
+		test_results["questions_overall"]=right+mistakes+missed
 		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(request.user.id)+'/tests/results/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
-			data=test_results
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return 0

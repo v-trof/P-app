@@ -33,7 +33,6 @@ class Main_group():
         context={}
         context["subjects"]=["Русский язык","Математика","Английский язык"]
         print(request.user.avatar)
-        sample_marks={"Русский язык":[{"course_marks":[{"test_id":1,"value":4,"quality":"good"},{"test_id":2,"value":2,"quality":"bad"}],"course":Course.objects.get(id=1)}]}
         sample_tasks={}
         sample_tasks["Русский язык"]={}
         sample_taskss={}
