@@ -40,6 +40,5 @@ test_manager.pack = function() {
 		});
 
 	});
-	console.log(test_json);
 	return JSON.stringify(test_json);
 }

@@ -3,7 +3,6 @@ $(document).ready(function() {
 		popup.show('{% include "Pages/Course/main/_popup_texts/add_announcement/exports.html" %}');
 		$("#add_el").click(function(event) {
 			var new_heading = $('[name="heading"]').val();
-			console.log(new_heading);
 			var new_text = $('.announcement_text').text();
 			$.ajax({
 				type:"POST",

@@ -4,7 +4,6 @@ $("#invite_students").click(function(event) {
 	verifier.add($(".student__email"), "email");
 	$("#add_student").click(function(e){
 		$(".__content .--text").last().after('<div class="input --text"><input class="student__email __value" type="email"><label>Email</label><div class="__indicator"></div></div>');
-		console.log($(".--text").last().children(".student__email"));
   		verifier.add($(".--text").last().children(".student__email"), "email");
 	});
 	$("#invite_students_button").click(function(e) {

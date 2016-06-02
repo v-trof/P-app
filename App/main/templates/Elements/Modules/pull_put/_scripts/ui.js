@@ -69,7 +69,6 @@ pull_put.ui = (function() {
 			}
 		},
 		show: function() {
-			console.log("UI is shown");
 			if(editor) {
 				$(".__task:last-child").addClass("--stand-out");
 			}

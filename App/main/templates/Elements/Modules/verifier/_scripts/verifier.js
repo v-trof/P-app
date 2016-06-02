@@ -7,7 +7,6 @@ var verifier = (function() {
 	var typing_interval = 2000;
 
 	function verify($input, expression) {
-		console.log("verifying:", $input);
 		if($input.val()) {
 			if( expression.test($input.val()) ) {
 				$input.addClass('--valid');

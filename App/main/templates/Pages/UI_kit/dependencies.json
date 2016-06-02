@@ -8,9 +8,8 @@
 				"Inputs/text/filled",
 				"Inputs/text/textarea",
 				"Inputs/checkbox", "Inputs/radio",
-				"Inputs/select",
-				"Modules/pull_put",
-				"Modules/processing"],
+				"Inputs/select", "Inputs/file"
+				],
 	"scripts": [],
 	"styles": [],
 	"fixes": [],

@@ -9,7 +9,6 @@ var ripple = (function() {
 	exports = {
 		$: $ripple,
 		show: function($element, position, css) {
-			// console.log("ripple:", $element, position);
 			reset();
 			$element.append($ripple);
 			$element.addClass('ripple_target');

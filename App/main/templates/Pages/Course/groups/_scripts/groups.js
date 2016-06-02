@@ -6,8 +6,6 @@ var unordered = $();
 
 function check_for_emptiness() {
 	$(".group").each(function(index, el) {
-	//	console.log($(this).children(".--card").length, $(this).children("h3").text());
-		
 		if($(this).children(".--card").length == 0){
 			if($(this).children(".empty").length == 0){
 				$(this).append("<div class='empty'>Пустая группа</div>");
@@ -75,7 +73,6 @@ function toggle_edit(){
 			group=$(this).children('h3').html();
 			groups[group]=[];
 			$(this).find('.card-person__name').each(function() {
-						console.log("found!");
 						groups[group].push($(this).html());
 					});
 		});
@@ -108,7 +105,6 @@ function toggle_edit(){
 			});
 		});
 		$(".group").each(function(index, el) {
-			console.log(this);
 			button_delete.add($(this), function() {
 				//delete_user($(el));
 			});

@@ -8,7 +8,6 @@ generate.data["question--image"] = {
 			}
 		},
 		build: function(value) {
-
 			return $(generate.build.template.question("question--image")).append("<img src="
 				+value.url+">")
 		},

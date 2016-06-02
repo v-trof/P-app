@@ -1,9 +1,6 @@
 {% if request.user.id = user.id %}
 
 function delete_contact($contact) {
-	console.log($contact);
-	console.log($contact.closest( ".__item" ).attr('id'));
-
 	$.ajax({
 		type:"POST",
 		url:"/func/delete_contact/",
@@ -20,7 +17,6 @@ function delete_contact($contact) {
 
 $(document).ready(function() {
 	$("#contacts .__item").each(function(index, el) {
-		console.log(el);
 		button_delete.add($(this), function() {
 			delete_contact($(el));
 		});

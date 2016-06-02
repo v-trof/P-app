@@ -43,7 +43,7 @@ generate.edit = (function() {
 						element_class, value
 					);
 
-					pull_put.ui.element.html($new_element);
+					pull_put.ui.element = $new_element;
 				})
 
 		},

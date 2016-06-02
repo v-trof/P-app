@@ -14,7 +14,6 @@ generate.build.element = function(element_class, value, addtitional) {
 
 	{% if not attempt %}
 		$element.attr('answer', value.answer)
-		// console.log($element.attr('answer'))
 	{% endif %}
 	
 	return $element;
@@ -63,7 +62,6 @@ generate.build.task = function($element) {
 
 generate.build.template = {
 	question: function(element_class) {
-		console.log(element_class);
 		return "<div class='"+element_class+" __question-element'></div>"
 	},
 	answer: function(element_class) {
