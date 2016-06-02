@@ -3,7 +3,8 @@ generate.data["answer--textarea"]= {
 		type: "answer",
 		parse: function($original) {
 			return {
-				label: $original.find('label').html()
+				label: $original.find('label').html(),
+				class: "answer--text"
 			}
 		},
 		build: function(value) {

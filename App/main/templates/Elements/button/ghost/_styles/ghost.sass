@@ -8,7 +8,7 @@ button.--ghost
 	background: transparent
 	transition: $time--s
 
-	&:enabled:hover, &:enabled:focus
+	&:enabled:hover
 		box-shadow: none
 		color: lighten($font__color--accent, $darkness-delta__focus--percent)
 		svg
@@ -23,11 +23,11 @@ button.--ghost
 	&.--negative
 		background: transparent
 		color: $font__color--negative
-		&:enabled:hover, &:enabled:focus
+		&:enabled:hover
 			color: lighten($font__color--negative, $darkness-delta__focus--percent)
 
 	&.--positive
 		background: transparent
 		color: $font__color--positive
-		&:enabled:hover, &:enabled:focus
+		&:enabled:hover
 			color: lighten($font__color--positive, $darkness-delta__focus--percent)

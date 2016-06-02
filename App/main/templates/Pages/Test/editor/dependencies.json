@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/test_generate",
+	"elements": ["Modules/test_generate", "Modules/test_manager",
 				 "Modules/pull_put"],
 	"scripts": [],
 	"styles": [],

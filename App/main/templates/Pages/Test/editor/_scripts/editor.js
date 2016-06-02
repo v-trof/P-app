@@ -8,7 +8,7 @@ var editor = (function() {
 	var check_for_emptiness = function()  {
 		$(".__task .__question").each(function(index, el) {
 			if($(this).children().length == 0){
-				$empty = $("<div class='--empty'>Добавьте сюда вопрос</div>");
+				$empty = $("<div class='question--empty --empty'>Добавьте сюда вопрос</div>");
 				
 				$(this).append($empty);
 
@@ -20,7 +20,7 @@ var editor = (function() {
 
 		$(".__task .__answer").each(function(index, el) {
 			if($(this).children().length == 0) {
-				var $empty = $("<div class='--empty'>Добавьте сюда поле ответа</div>");
+				var $empty = $("<div class='answer--empty --empty'>Добавьте сюда поле ответа</div>");
 				
 				$(this).append($empty);
 

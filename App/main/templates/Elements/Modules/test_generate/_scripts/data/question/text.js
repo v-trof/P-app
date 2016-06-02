@@ -2,14 +2,15 @@ generate.data["question--text"] = {
 	element: {
 		type: "question",
 		parse: function($original) {
-			console.log("O:", $original)
 			return {
-				text: $original.html()
+				text: $original.html(),
+				class: "question--text"
 			}
 		},
 		build: function(value) {
 			console.log(value)
 			var $question = $(generate.build.template.question("question--text"))
+			
 			return $question.html(value.text)
 		},
 		value_sample: {
@@ -26,7 +27,6 @@ generate.data["question--text"] = {
 			}
 		},
 		fill: function(value) {
-			console.log(value)
 			$("#new_element_text").html(value.text).focus();
 		}
 	}

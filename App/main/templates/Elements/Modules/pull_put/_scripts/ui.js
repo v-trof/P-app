@@ -69,6 +69,10 @@ pull_put.ui = (function() {
 			}
 		},
 		show: function() {
+			console.log("UI is shown");
+			if(editor) {
+				$(".__task:last-child").addClass("--stand-out");
+			}
 			$ui.removeClass('--hidden');
 			setTimeout(function(){
 				pull_put.is_pulled = true;
@@ -76,6 +80,9 @@ pull_put.ui = (function() {
 			
 		},
 		hide: function() {
+			if(editor) {
+				$(".--stand-out").removeClass("--stand-out");
+			}
 			$ui.addClass('--hidden');
 			setTimeout(function(){
 				pull_put.is_pulled = false;

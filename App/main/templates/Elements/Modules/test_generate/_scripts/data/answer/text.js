@@ -5,7 +5,8 @@ generate.data["answer--text"] = {
 		parse: function($original) {
 			return {
 				label: $original.find('label').html(),
-				answer: $original.attr('answer')
+				answer: $original.attr('answer'),
+				class: "answer--text"
 			}
 		},
 

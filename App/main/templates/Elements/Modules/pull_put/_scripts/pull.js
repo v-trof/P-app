@@ -35,8 +35,6 @@ pull_put.puller = (function() {
 			$element.addClass('--pullable');
 
 			$element.click(function(event) {
-				$(this).addClass('--pulled');
-
 				if( ! pull_put.is_pulled) {
 					element_width = $(this).outerWidth();
 

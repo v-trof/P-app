@@ -20,4 +20,6 @@ generate.build.task = function($element) {
 		generate.let_editing($element);
 		editor.check_self();
 	{% endif %}
+	
+	return $new_task;
 }

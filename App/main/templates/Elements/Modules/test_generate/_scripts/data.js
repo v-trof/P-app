@@ -1,3 +1,22 @@
+generate.data["answer--empty"] = {
+	element: {
+		type: "answer",
+		nopull: true,
+		parse: function($original) {
+			return {
+				text: "Добавьте сюда поле ответа",
+				class: "answer--empty"
+			}
+		},
+		build: function(value) {
+			return $("<div class='--empty answer--empty'>Добавьте сюда поле ответа</div>");
+		},
+		value_sample: {
+			text: "answer"
+		}
+	},
+	edit: {}
+},
 generate.data["answer--text"] = {
 	element: {
 		type: 'answer',
@@ -5,7 +24,8 @@ generate.data["answer--text"] = {
 		parse: function($original) {
 			return {
 				label: $original.find('label').html(),
-				answer: $original.attr('answer')
+				answer: $original.attr('answer'),
+				class: "answer--text"
 			}
 		},
 
@@ -42,7 +62,8 @@ generate.data["answer--textarea"]= {
 		type: "answer",
 		parse: function($original) {
 			return {
-				label: $original.find('label').html()
+				label: $original.find('label').html(),
+				class: "answer--text"
 			}
 		},
 		build: function(value) {
@@ -67,12 +88,32 @@ generate.data["answer--textarea"]= {
 		}
 	}
 },
+generate.data["question--empty"] = {
+	element: {
+		type: "question",
+		nopull: true,
+		parse: function($original) {
+			return {
+				text: "Добавьте сюда вопрос",
+				class: "question--empty"
+			}
+		},
+		build: function(value) {
+			return $("<div class='--empty question--empty'>Добавьте сюда вопрос</div>");
+		},
+		value_sample: {
+			text: "Добавьте сюда вопрос"
+		}
+	},
+	edit: {}
+},
 generate.data["question--image"] = {
 	element: {
 		type: "question",
 		parse: function($original) {
 			return {
-				url: $original.find("img").attr("src")
+				url: $original.find("img").attr("src"),
+				class: "question--image"
 			}
 		},
 		build: function(value) {
@@ -104,14 +145,15 @@ generate.data["question--text"] = {
 	element: {
 		type: "question",
 		parse: function($original) {
-			console.log("O:", $original)
 			return {
-				text: $original.html()
+				text: $original.html(),
+				class: "question--text"
 			}
 		},
 		build: function(value) {
 			console.log(value)
 			var $question = $(generate.build.template.question("question--text"))
+			
 			return $question.html(value.text)
 		},
 		value_sample: {
@@ -128,7 +170,6 @@ generate.data["question--text"] = {
 			}
 		},
 		fill: function(value) {
-			console.log(value)
 			$("#new_element_text").html(value.text).focus();
 		}
 	}

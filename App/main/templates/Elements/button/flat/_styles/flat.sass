@@ -2,14 +2,14 @@
 
 button.--flat
 	transition: $time--s
-	&:enabled:hover, &:enabled:focus
+	&:enabled:hover
 		box-shadow: none
 		background: lighten($color--accent, $darkness-delta__focus--percent/2)
 
 	&.--negative
-		&:enabled:hover, &:enabled:focus
+		&:enabled:hover
 			background: lighten($red, $darkness-delta__focus--percent/2)
 
 	&.--positive
-		&:enabled:hover, &:enabled:focus
+		&:enabled:hover
 			background: lighten($green, $darkness-delta__focus--percent/2)
