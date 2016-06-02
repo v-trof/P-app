@@ -22,17 +22,25 @@ $border--m : $border--s*2
 
 =square($size)
 	@if $size == "xs"
-		height: $base*0.75
-		width: $base*0.75
+		min-height: $base*0.75
+		max-height: $base*0.75
+		min-width: $base*0.75
+		max-width: $base*0.75
 
 	@if $size == "s"
-		height: $base
-		width: $base
+		min-height: $base
+		max-height: $base
+		min-width: $base
+		max-width: $base
 	
 	@else if $size == "m"
-		height: $base * 1.5
-		width: $base * 1.5
+		min-height: $base * 1.5
+		max-height: $base * 1.5
+		min-width: $base * 1.5
+		max-width: $base * 1.5
 
 	@else if $size == "l"
-		height: $base * 2 
-		width: $base * 2
+		min-height: $base * 2 
+		max-height: $base * 2 
+		min-width: $base * 2
+		max-width: $base * 2
