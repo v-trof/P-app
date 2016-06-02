@@ -53,7 +53,9 @@ from binascii import hexlify
 import glob
 from http import cookies
 import collections
-
+import requests
+import tempfile
+from django.core import files
 
 class MediaModel(models.Model):
 	media_file = models.FileField(upload_to='media')
@@ -570,7 +572,7 @@ class UserManager(UserManager):
 			user.save()
 			login(request)
 			return True
-		else: 	
+		else:   
 			return False
 
 	def load_courses_previews(self,string_array):
@@ -780,9 +782,8 @@ class TestManager(models.Manager):
 		json_file_path = 'main/files/json/courses/' + course_id + '/tests/' + test_id + '.json'
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
-		course_info['tests']['amount'] += 1
 		course_info['tests']['unpublished'].append(test_id)
-		test_id = str(course_info['tests']['amount'])
+		test_id=str(len(course_info['tests']['published'])+len(course_info['tests']['unpublished']) + 1)
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		return 0
@@ -999,6 +1000,24 @@ class TestManager(models.Manager):
 			for chunk in asset.chunks():
 				destination.write(chunk)
 		return filename
+
+	def upload_asset_by_url(self,asset_url,course_id,test_id,path):
+		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+'/'
+		if not os.path.exists(path):
+			os.makedirs(path)
+		request = requests.get(asset_url, stream=True)
+		asset_name = asset_url.split('/')[-1]
+		temp = tempfile.NamedTemporaryFile()
+		for block in request.iter_content(1024 * 8):
+			if not block:
+				break
+			temp.write(block)
+
+		with open(path+asset_name, 'wb+') as destination:
+			for chunk in files.File(temp).chunks():
+				destination.write(chunk)
+		url='/media/courses/'+course_id+'/assets/'+test_id+'/'+asset_name
+		return url
 		
 	def upload_downloadable(self,asset,course_id,test_id,path):
 		if not os.path.exists(path):

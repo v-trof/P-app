@@ -88,7 +88,7 @@ pull_put.ui = (function() {
 				pull_put.is_pulled = false;
 			}, 300)
 		}
-	} 
+	}
 	return exports;
 })();
 

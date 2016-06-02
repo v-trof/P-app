@@ -19,7 +19,7 @@ def edit(request):
 
 def create(request):
 	# creates test environment (no test exists as file untill saved)
-	course_id = request.GET["course_id"]
+	course_id = request.GET.get("course_id",None)
 	context = Test.objects.create(course_id=course_id)
 	context["breadcrumbs"] = [{
 			"href": "/course/" + str(course_id),
@@ -28,33 +28,32 @@ def create(request):
 			"href": "#",
 			"link": "Новый тест"
 		}]
-
+	print(context)
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
 
 def delete(request):
 	# moves test to trash bin
-	course_id = request.POST["course_id"]
-	test_id = request.POST["test_id"]
+	course_id = request.POST.get("course_id",None)
+	test_id = request.POST.get("test_id",None)
 	Test.objects.delete(course_id, test_id)
 	return HttpResponse("Тест удален")
 
 
 def save(request):
 	# saves test file
-	print("save")
 	if request.method == 'POST':
-		json_file = request.POST["json_file"]
-		course_id = request.POST["course_id"]
-		test_id = request.POST["test_id"]
+		json_file = request.POST.get("json_file",None)
+		course_id = request.POST.get("course_id",None)
+		test_id = request.POST.get("test_id",None)
 		Test.objects.save(json_file=json_file, course_id=course_id, test_id=test_id)
 	return HttpResponse("Тест сохранен")
 
 
 def load(request):
 	# loads test file
-	course_id = request.GET["course_id"]
-	test_id = request.GET["test_id"]
+	course_id = request.GET.get("course_id",None)
+	test_id = request.GET.get("test_id",None)
 	Test.objects.load(course_id=course_id, test_id=test_id)
 	context["breadcrumbs"] = [{
 			"href": "/course/" + str(course_id),
@@ -68,16 +67,16 @@ def load(request):
 
 def publish(request):
 	# makes test visible in course screen
-	course_id = request.POST["course_id"]
-	test_id = request.POST["test_id"]
+	course_id = request.POST.get("course_id",None)
+	test_id = request.POST.get("test_id",None)
 	Test.objects.publish(course_id=course_id, test_id=test_id)
 	return HttpResponse("Тест опубликован")
 
 
 def unpublish(request):
 	# makes test invisible in course screen
-	course_id = request.POST["course_id"]
-	test_id = request.POST["test_id"]
+	course_id = request.POST.get("course_id",None)
+	test_id = request.POST.get("test_id",None)
 	Test.objects.unpublish(course_id=course_id, test_id=test_id)
 	return HttpResponse("Тест скрыт")
 
@@ -90,8 +89,8 @@ def share(request):
 def attempt(request):
 	# creates or continues attempt
 	# loads test file
-	course_id = request.GET["course_id"]
-	test_id = request.GET["test_id"]
+	course_id = request.GET.get("course_id",None)
+	test_id = request.GET.get("test_id",None)
 	context = Test.objects.attempt(course_id=course_id, text_id=test_id)
 	return render(request, 'Pages/test_attempt.html', context)
 
@@ -102,10 +101,10 @@ def check_question(request, item):
 
 def attempt_save(request):
 	if request.method == 'POST':
-		test_id = request.POST.get("test_id")
-		question_id = int(request.POST.get("question"))
-		task_id = int(request.POST.get("task_number")) - 1
-		course_id = request.POST.get("course_id")
+		test_id = request.POST.get("test_id",None)
+		question_id = int(request.POST.get("question",None))
+		task_id = int(request.POST.get("task_number",None)) - 1
+		course_id = request.POST.get("course_id",None)
 		answer = request.POST.get("answer", None)
 		Test.objects.attempt_save(test_id=test_id, question_id=question_id,
 		                          task_id=task_id, course_id=course_id, answer=answer)
@@ -114,8 +113,8 @@ def attempt_save(request):
 
 def attempt_check(request):
 	if request.method == 'POST':
-		test_id = request.POST.get("test_id")
-		course_id = request.POST.get("course_id")
+		test_id = request.POST.get("test_id",None)
+		course_id = request.POST.get("course_id",None)
 		Test.objects.attempt_check(test_id=test_id, course_id=course_id)
 		return HttpResponse("ok")
 
@@ -145,19 +144,28 @@ def get_attempt_info(request, course_id, test_id):
 
 def upload_asset(request):
 	if request.method == 'POST':
-		asset=request.FILES["asset"]
-		course_id=request.POST["course_id"]
-		test_id=request.POST["test_id"]
+		asset=request.FILES.get("asset",None)
+		course_id=request.POST.get("course_id",None)
+		test_id=request.POST.get("test_id",None)
 		path='main/files/media/courses/' + course_id + '/assets/' + test_id + "/"
 		filename=Test.objects.upload_asset(
 		    asset=asset, course_id=course_id, test_id=test_id, path=path)
 		return HttpResponse(filename)
 
+def upload_asset_by_url(request):
+	if request.method == 'POST':
+		asset_url=request.POST.get("asset_url",None)
+		course_id=request.POST.get("course_id",None)
+		test_id=request.POST.get("test_id",None)
+		path='main/files/media/courses/' + course_id + '/assets/' + test_id + "/"
+		filepath=Test.objects.upload_asset_by_url(asset_url=asset_url, course_id=course_id, test_id=test_id, path=path)
+		return HttpResponse(filepath)
+
 def upload_downloadable(request):
 	if request.method == 'POST':
-		asset=request.FILES["asset"]
-		course_id=request.POST["course_id"]
-		test_id=request.POST["test_id"]
+		asset=request.FILES.get("asset",None)
+		course_id=request.POST.get("course_id",None)
+		test_id=request.POST.get("test_id",None)
 		path='main/files/media/courses/' + course_id + '/assets/' + test_id + "/"
 		Test.objects.upload_downloadable(
 		    asset=asset, course_id=course_id, test_id=test_id, path=path)

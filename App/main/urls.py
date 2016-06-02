@@ -42,6 +42,7 @@ test_patterns = [
     url(r'^attempt/check/$', test.attempt_check, name="check_attempt"),
 
     url(r'^upload/$', test.upload_asset, name="upload_asset"),
+    url(r'^upload_by_url/$', test.upload_asset_by_url, name="upload_asset_by_url"),
 ]
 
 func_patterns = [

@@ -22,8 +22,24 @@ test_manager.pack = function() {
 
 			test_json[task_index].question_items.push(generate.read(element_class)
 				.element.parse($(this)));
+			$(this).find(".question--image").find("img").each(function(index, $element) {
+				$.ajax({
+					type:"POST",
+					url:"/test/upload_by_url/",
+					data: {
+						'asset_url':$(this).attr('src'),
+						'course_id':'{{course.id}}',
+						'test_id':'{{test.id}}',
+						'csrfmiddlewaretoken' : '{{ csrf_token }}'
+						},
+					success:function(response){
+						test_json[task_index].question_items[index].url=response;
+					}
+				});
+			});
 		});
 
 	});
+	console.log(test_json);
 	return JSON.stringify(test_json);
 }
