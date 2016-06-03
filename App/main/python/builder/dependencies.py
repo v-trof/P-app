@@ -1,5 +1,6 @@
 import json
 import os
+import io
 import build
 
 paths = build.path
@@ -13,8 +14,9 @@ def get(path):
 		}
 	else:
 		print("LOADING:", path)
-		dependencies_file = open(path + "/dependencies.json", "r")
-		dependencies_json = json.loads(dependencies_file.read())
+		with io.open(path + "/dependencies.json", 'r', encoding='utf8') as dependencies_file:
+			dependencies_json = json.load(dependencies_file)
+	print(dependencies_json)
 
 	real_path = path[len("../../templates/"):]
 
