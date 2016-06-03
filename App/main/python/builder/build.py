@@ -19,8 +19,9 @@ def dev_file(path):
 	template_path = path[len("../../templates/"):]
 	print("Building:", filename)
 
-	with io.open(path + "/exports.html", 'r', encoding='utf8') as file_dev:
-		html=file_dev
+	file_dev = open(path + "/" + filename, "r", encoding="utf-8")
+	html = file_dev.read()
+	file_dev.close()
 
 	html = html.replace('#&', template_path)
 	html = html.replace('/"', '/exports.html"')
@@ -33,8 +34,8 @@ def dev_file(path):
 def template(dependencies, page_path):
 	template_path = path["page_template"] + dependencies["template"]
 
-	with io.open(template_path + "/exports.html", 'r', encoding='utf8') as template_file:
-		template_html=template_file
+	template_file = open(template_path + "/exports.html", "r")
+	template_html = template_file.read()
 
 	page_dev_html = dev_file(page_path)
 
