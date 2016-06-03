@@ -1,0 +1,8 @@
+{
+	"elements": ["Modules/notification","Modules/popup", "Modules/accordion", "Modules/panel", "card/due_date", "button/ghost/icon"],
+	"scripts": [],
+	"styles": [],
+	"fixes": [],
+	"title" : "Дать задание",
+	"template": "default"
+}

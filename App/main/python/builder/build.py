@@ -1,4 +1,5 @@
 import os
+import io
 
 path = {
 	"page": "../../templates/Pages/",
@@ -17,23 +18,23 @@ def dev_file(path):
 		return ""
 	template_path = path[len("../../templates/"):]
 	print("Building:", filename)
-	file_dev = open(path + "/" + filename, "r", encoding="utf-8")
-	html = file_dev.read()
-	file_dev.close()
+
+	with io.open(path + "/exports.html", 'r', encoding='utf8') as file_dev:
+		html=file_dev
 
 	html = html.replace('#&', template_path)
 	html = html.replace('/"', '/exports.html"')
 	html = html.replace('\n', '')
-	
-	file_main = open(path + "/exports.html", "w", encoding="utf-8")
-	file_main.write(html)
-	file_main.close()
+
+	with io.open(path + "/exports.html", 'w+', encoding='utf8') as file_main:
+		file_main.write(html)
 	return html
 
 def template(dependencies, page_path):
 	template_path = path["page_template"] + dependencies["template"]
-	template_file = open(template_path + "/exports.html", "r")
-	template_html = template_file.read()
+
+	with io.open(template_path + "/exports.html", 'r', encoding='utf8') as template_file:
+		template_html=template_file
 
 	page_dev_html = dev_file(page_path)
 
@@ -70,5 +71,5 @@ def template(dependencies, page_path):
 					.replace("{ *#*content }", page_dev_html)\
 					.replace("{ ##*js }", scripts_critical)
 	
-	page_file = open(page_path + "/exports.html", "w")
-	page_file.write(page_html)
+	with io.open(page_path + "/exports.html", 'w+', encoding='utf8') as page_file:
+		page_file.write(page_html)
