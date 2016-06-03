@@ -7,6 +7,8 @@ var panel = (function() {
 
 	var exports = {
 		$: $all,
+		content: $panel,
+		actions: $actions,
 		show: function(content,  _callback, css) {
 			$panel.html(content)
 			

@@ -3,8 +3,7 @@ var as_g = {}
 	as_g.original = $()
 
 	as_g.card_template = function(el){ 
-		console.log(el)
-		return '<a class="link--card"><div class="card--small" href="'+el.link+'">'+el.title+'</div></a>'
+		return '<div class="card --small" href="'+el.link+'">'+el.title+'</div>'
 	}
 	
 	as_g.material_list = {{course_data.material_list|safe}}
@@ -16,12 +15,10 @@ var as_g = {}
 		as_g.current_type = content_type
 		as_g.original = original
 
-		console.log(list)
-
-		as_g.panel.html("")
+		panel.show();
 
 		list.forEach(function(el){
-			as_g.panel.append(as_g.card_template(el))
+			panel.content.append(as_g.card_template(el))
 		})
 
 		if(original){
@@ -29,21 +26,14 @@ var as_g = {}
 		} else {
 			as_g.delete.hide()
 		}
-
-		as_g.panel.css('transform', 'none');
-		as_g.panel_actions.css('transform', 'none');
 	}
 
 	as_g.hide_list = function(content_type){
-		as_g.panel.css('transform', 'translateX(18.5rem)');
-		as_g.panel_actions.css('transform', 'translateX(18.5rem)');
+		panel.hide();
 	}
 
 	$(document).ready(function() {
-		as_g.panel = $("#panel")
-		as_g.panel_actions = $("#panel--actions")
-
-		$("#panel--actions").html('<button class="button--ghost" id="cancel">Отмена</button><button class="button--ghost" id="delete">Удалить</button>');
+		panel.actions.html('<button class="--ghost" id="cancel">Отмена</button><button class="--ghost --negative" id="delete">Удалить</button>');
 		$("#delete").css('color', '#F44336');
 
 		$("#assignment--new__add_test").click(function(event) {
@@ -53,11 +43,11 @@ var as_g = {}
 			as_g.show_list("material");
 		});
 
-		$(".panel--list, #panel--actions").click(function(event) {
+		panel.$.click(function(event) {
 			as_g.hide_list()
 		});
 
-		$(".panel--list").on("click", ".link--card", function(event) {
+		panel.$.on("click", ".card.--small", function(event) {
 			if(as_g.original){
 				as_g.original.replaceWith($(this))
 			} else {
@@ -66,11 +56,11 @@ var as_g = {}
 			
 		});
 
-		$("#assignment--new__materials").on("click", ".link--card", function(event) {
+		$("#assignment--new__materials").on("click", ".card.--small", function(event) {
 				as_g.show_list("material", $(this))
 		});
 
-		$("#assignment--new__tests").on("click", ".link--card", function(event) {
+		$("#assignment--new__tests").on("click", ".card.--small", function(event) {
 				as_g.show_list("test", $(this))
 		});
 		setTimeout(function(){
@@ -94,7 +84,7 @@ var as_g = {}
 			popup.hide()
 		})
 	});
-	$("#assignment--new__traditional").on("click", ".link--card", function(event) {
+	$("#assignment--new__traditional").on("click", ".card--small", function(event) {
 		as_g.original = $(this)
 		popup.show('{% include "Pages/Course/give_task/_popup_texts/add_traditional/exports.html" %}'+'<button id="delete_el" class="button--ghost">Удалить</button>');
 		$("#new_el_value").text(as_g.original.text())
@@ -120,14 +110,14 @@ var as_g = {}
 		var traditionals_list=[];
 		var material={};
 		var due_date="";
-		$("#assignment--new__materials .link--card .card--small").each(function(index, el) {
+		$("#assignment--new__materials .card.--small").each(function(index, el) {
 			material.link=$(this).attr('href');
 			material.title=$(this).html();
 			material.done=false;
 			res_material_list.push(material);
 			material={};
 		});
-		$("#assignment--new__tests .link--card .card--small").each(function(index, el) {
+		$("#assignment--new__tests .card.--small").each(function(index, el) {
 			material.link=$(this).attr('href');
 			material.title=$(this).html();
 			material.done=false;
@@ -135,7 +125,7 @@ var as_g = {}
 			material={};
 		});
 		var material={};
-		$("#assignment--new__traditional .link--card .card--small").each(function(index, el) {
+		$("#assignment--new__traditional .card.--small").each(function(index, el) {
 			traditionals_list.push($(this).html());
 		});
 		due_date=$("#due_date").val();

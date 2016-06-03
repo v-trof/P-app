@@ -1,8 +1,13 @@
 {
-	"elements": ["Modules/notification","Modules/popup", "Modules/accordion", "Modules/panel", "card/due_date", "button/ghost/icon"],
+	"elements": ["Modules/notification",
+				 "Modules/popup",
+				 "Modules/accordion",
+				 "Modules/panel",
+				 "card/due_date",
+				 "card/small",
+				 "button/ghost/icon"],
 	"scripts": [],
 	"styles": [],
-	"fixes": [],
-	"title" : "Дать задание",
+	"title": "Выдать задание",
 	"template": "default"
 }
