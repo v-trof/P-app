@@ -1,9 +1,9 @@
 <div class="__traditional">
 {% for task in task.traditionals %}
 	{% if task.done %}
-		{% include "Elements/Inputs/checkbox/" with label=task.content checked="true" class="--green" %}
+		{% include "Elements/Inputs/checkbox/" with label=task class="--green" %}
 	{% else %}
-		{% include "Elements/Inputs/checkbox/" with label=task.content class="--green" %}
+		{% include "Elements/Inputs/checkbox/" with label=task class="--green" %}
 	{% endif %}
 {% endfor %}
 </div>

@@ -3,28 +3,28 @@ var as_g = {}
 	as_g.original = $()
 
 	as_g.card_template = function(el){ 
-		return '<div class="card --small" href="'+el.link+'">'+el.title+'</div>'
+		return '<div class="card --small" href="'+el.href+'">'+el.title+'</div>'
 	}
 	
-	as_g.material_list = {{course_data.material_list|safe}}
-	as_g.test_list = {{course_data.test_list|safe}}
-
-	console.log(as_g.material_list, as_g.test_list)
+	as_g.material_list = {{course.material_list|safe}}
+	as_g.test_list = {{course.test_list|safe}}
+	console.log(as_g.test_list,as_g.material_list);
 	as_g.show_list = function(content_type, original){
-		var list = as_g[content_type+"_list"]
-		as_g.current_type = content_type
-		as_g.original = original
+		var list = as_g[content_type+"_list"];
+		as_g.current_type = content_type;
+		as_g.original = original;
 
 		panel.show();
-
+		panel.content.html("");
 		list.forEach(function(el){
-			panel.content.append(as_g.card_template(el))
+			console.log(el);
+			panel.content.append(as_g.card_template(el));
 		})
 
 		if(original){
-			as_g.delete.show()
+			as_g.delete.show();
 		} else {
-			as_g.delete.hide()
+			as_g.delete.hide();
 		}
 	}
 
@@ -33,6 +33,10 @@ var as_g = {}
 	}
 
 	$(document).ready(function() {
+		//var pickerDefault = new Pikaday(
+	  //  {
+	  //      field: document.getElementById('due_date'),
+	  //  });
 		panel.actions.html('<button class="--ghost" id="cancel">Отмена</button><button class="--ghost --negative" id="delete">Удалить</button>');
 		$("#delete").css('color', '#F44336');
 
@@ -77,7 +81,7 @@ var as_g = {}
 			// console.log(el_data)
 			popup.hide()
 			$("#assignment--new__add_traditional").before(as_g.card_template(
-					{"title": $("#new_el_value").html()}
+					{"title": $(".__value").html()}
 				))
 		})
 		$("#popup__close").click(function(event) {
@@ -85,7 +89,7 @@ var as_g = {}
 		})
 	});
 	$("#assignment--new__traditional").on("click", ".card--small", function(event) {
-		as_g.original = $(this)
+		as_g.original = $(this);
 		popup.show('{% include "Pages/Course/give_task/_popup_texts/add_traditional/exports.html" %}'+'<button id="delete_el" class="button--ghost">Удалить</button>');
 		$("#new_el_value").text(as_g.original.text())
 		$("#add_el").click(function(event) {
@@ -129,7 +133,10 @@ var as_g = {}
 			traditionals_list.push($(this).html());
 		});
 		due_date=$("#due_date").val();
-	//	console.log("dfgdfgdf",res_test_list);
+		console.log("test",res_test_list);
+		console.log("mat",res_material_list);
+		console.log("trad",traditionals_list);
+		console.log("due_date",due_date);
         $.ajax({
             type:"POST",
             url:"/func/create_assignment/",
@@ -139,7 +146,7 @@ var as_g = {}
                    'test_list': JSON.stringify(res_test_list),
                    'traditionals_list': JSON.stringify(traditionals_list),
                    'due_date': due_date,
-                   'course_id': '{{ course.id }}'
+                   'course_id': '{{ course.object.id }}'
                   },
             success: function(){
                   notification.show('success','Задание создано' );

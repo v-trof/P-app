@@ -32,41 +32,14 @@ class Main_group():
 			return render(request, 'Pages/home/exports.html')
 		context={}
 		context["subjects"]=["Русский язык","Математика","Английский язык"]
-		print(request.user.avatar)
 		sample_marks={"Русский язык":[{"course_marks":[{"test_id":1,"value":4,"quality":"good","test_title":"Подготовка к ЕГЭ","right_answers":4,"questions_overall":6},{"test_id":2,"value":2,"quality":"bad","test_title":"Подготовка к ЕГЭ","right_answers":1,"questions_overall":6}],"course":Course.objects.get(id=1)}]}
-		sample_tasks={}
-		sample_tasks["Русский язык"]={}
-		sample_taskss={}
-		sample_taskss["due_date"]="27-05-2016"
-		sample_taskss["course"]=Course.objects.get(id=1)
-		sample_taskss["tasks"]=[]
-		sample_test={}
-		sample_test["title"]="1"
-		sample_test["link"]="?course_id=1&test_id=1"
-		sample_test["done"]=False
-		sample_task={}
-		sample_task["tests"]=[]
-		sample_task["tests"].append(sample_test)
-		sample_task["materials"]=[]
-		sample_task["traditionals"]=[]
-		sample_taskss["tasks"].append(sample_task)
-		sample_task={}
-		sample_task["traditionals"]=[]
-		sample_task["materials"]=[]
-		sample_task["tests"]=[]
-		sample_task["traditionals"].append({"content":"dgfgdfg","due_date":"27-05-2016"})
-		sample_taskss["tasks"].append(sample_task)
-		sample_tasks["Русский язык"]["1"]=sample_taskss
-		# {"Русский язык":{"1":[]}}
 		if request.user.participation_list:
 			context["marks"] = User.objects.load_marks(string_array=request.user.participation_list, user_id=request.user.id)
 			context["marks"] = sample_marks
-
-			context["tasks"] = User.objects.load_tasks(string_array=request.user.participation_list, user=request.user)
-			context["tasks"] = sample_tasks
-
+			context["tasks"] = User.objects.load_assignments(string_array=request.user.participation_list, user=request.user)
 			context["courses"] = User.objects.load_courses_previews(string_array=request.user.participation_list)
 			context["updates"] = User.objects.load_updates(user=request.user)
+			print(context["tasks"])
 		if request.user.courses:
 			context["own_courses"] = User.objects.load_courses_previews(string_array=request.user.courses)
 		elif request.user.is_teacher:
@@ -148,9 +121,12 @@ class Course_group():
 	def new_task(request, course_id):
 		if course_id:
 			course = Course.objects.get(id=course_id)
-			context = {"course": course, "course_data": Course.objects.get_data(
-				user=request.user, course=course)}
-			context["course_data"]["material_list"] = [
+			context={}
+			context["course"]={}
+			context["course"]["material_list"]=Course.objects.get_material_list(course=course)
+			context["course"]["test_list"]=Course.objects.get_test_list(course=course)
+			context["course"]["object"]=course
+			context["course"]["material_list"] = [
 				{
 					"title": "!How to make bugs!",
 					"href": "/1"

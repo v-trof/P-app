@@ -1,5 +1,5 @@
 {
-	"elements": ["card","card/assignment"],
+	"elements": ["card","card/assignment","card/due_date"],
 	"scripts": [],
 	"styles": []
 }

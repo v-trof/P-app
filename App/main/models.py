@@ -94,6 +94,7 @@ class CourseManager(models.Manager):
 		else: setattr(creator, 'courses', str(course.id))
 		creator.save()
 		os.makedirs('main/files/json/courses/' + str(course.id) + '/tests/')
+		os.makedirs('main/files/json/courses/' + str(course.id) + '/materials/')
 		os.makedirs('main/files/media/courses/' + str(course.id) + '/assets/')
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w+', encoding='utf8') as json_file:
 			data = {}
@@ -334,6 +335,36 @@ class CourseManager(models.Manager):
 						course_data["test_list"].append(test_d)
 		return course_data
 
+	def get_test_list(self,course):
+		it=0
+		test_list=[]
+		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/*.json'):
+			it = it + 1
+			if str(it) in data["tests"]["published"]:
+				with io.open(test, 'r', encoding='utf8') as data_file:
+					test_data = json.load(data_file)
+					test_preview = {}
+					test_preview["title"] = test_data["title"]
+					test_preview["link"] = '?course_id=' + \
+						str(course.id) + '&test_id=' + str(it)
+					test_list.append(test_preview)
+		return test_list
+
+	def get_material_list(self,course):
+		it=0
+		material_list=[]
+		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/materials/*.json'):
+			it = it + 1
+			if str(it) in data["materials"]["published"]:
+				with io.open(test, 'r', encoding='utf8') as data_file:
+					material_data = json.load(data_file)
+					material_preview = {}
+					material_preview["title"] = material_data["title"]
+					material_preview["link"] = '?course_id=' + \
+						str(course.id) + '&test_id=' + str(it)
+					material_list.append(material_preview)
+		return material_list
+						
 	def get_assignments(self, user, course):
 		assignments = []
 		if user.is_anonymous():
@@ -341,22 +372,24 @@ class CourseManager(models.Manager):
 		for assignment in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*'):
 			with io.open(assignment, 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
+				data.pop("course_id", None)
 				assignments.append(data)
 		return sorted(assignments, key=lambda k: k['due_date'])
 
-	def user_get_assignments(self, user, course):
-		assignments = []
+	def user_get_tasks(self, user, course):
+		tasks = []
 		if user.is_anonymous():
 			return assignments
 		try:
 			with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
 					data = json.load(json_file)
-			for assignment in data.keys():
-				with io.open('main/files/json/courses/' + str(course.id) + '/assignments/'+assignment, 'r', encoding='utf8') as data_file:
+			for task in data.keys():
+				with io.open('main/files/json/courses/' + str(course.id) + '/assignments/'+task+'.json', 'r', encoding='utf8') as data_file:
 					new_data = json.load(data_file)
-					assignments.append(new_data)
-			return sorted(assignments, key=lambda k: k['due_date'])
-		except: return assignments
+					new_data.pop("course_id",None)
+					tasks.append(new_data)
+			return sorted(tasks, key=lambda k: k['due_date'])
+		except: return tasks
 
 	def get_users_info(self, user_ids):
 		users = []
@@ -398,18 +431,17 @@ class CourseManager(models.Manager):
 	def create_assignment(self, course_id, test_list, material_list, traditionals_list, due_date):
 		assignment = {}
 		assignment["due_date"] = due_date
-		assignment["tasks"] = []
-		assignment["course"]=Course.objects.get(id=course_id)
+		assignment["sub_tasks"] = []
+		assignment["course_id"]=course_id
 		assignment_id = str(len(glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*')) + 1)
-		task = {}
-		task["content"] = {}
-		task["content"]["tests"] = []
-		task["content"]["materials"] = []
-		task["content"]["traditionals"] = []
-		task["content"]["tests"] = json.loads(test_list)
-		task["content"]["materials"] = json.loads(material_list)
-		task["content"]["traditionals"] = json.loads(traditionals_list)
-		assignment["tasks"].append(task)
+		sub_task = {}
+		sub_task["tests"] = []
+		sub_task["materials"] = []
+		sub_task["traditionals"] = []
+		sub_task["tests"] = json.loads(test_list)
+		sub_task["materials"] = json.loads(material_list)
+		sub_task["traditionals"] = json.loads(traditionals_list)
+		assignment["sub_tasks"].append(sub_task)
 		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + assignment_id + '.json', 'a+', encoding='utf8') as json_file:
 			saving_data = json.dumps(assignment, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -418,7 +450,7 @@ class CourseManager(models.Manager):
 				data = json.load(json_file)
 				data[assignment_id] = []
 				it = 0
-				for task in assignment["tasks"]:
+				for task in assignment["sub_tasks"]:
 					it += 1
 					data[assignment_id].append(it)
 			with io.open(in_process_file, 'w', encoding='utf8') as json_file:
@@ -601,19 +633,23 @@ class UserManager(UserManager):
 			marks=None
 		return marks
 
-	def load_tasks(self, string_array, user):
-		tasks={}
-		has_tasks=False
+	def load_assignments(self, string_array, user):
+		assignments={}
+		has_assignments=False
 		if string_array:
 			course_array = string_array.split(" ")
 			for course_id in course_array:
 				course=Course.objects.get(id=course_id)
-				tasks[course.subject] = Course.objects.user_get_assignments(user=user,course=course)
-				if len(tasks[course.subject])!=0:
-					has_tasks=True
-		if not has_tasks:
-			tasks=None
-		return tasks
+				if not course.subject in assignments.keys():
+					assignments[course.subject]={}
+				assignments[course.subject][course_id]={}
+				assignments[course.subject][course_id]["course"]=course
+				assignments[course.subject][course_id]["tasks"] = Course.objects.user_get_tasks(user=user,course=course)
+				if len(assignments[course.subject][course_id]["tasks"])!=0:
+					has_assignments=True
+		if not has_assignments:
+			assignments=None
+		return assignments
 
 	def load_updates(self,user):
 		updates={}
