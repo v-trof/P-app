@@ -30,4 +30,4 @@ generate.data["question--image"] = {
 		}
 		// middleware: generate.shared.catch_asset_file
 	}
-},
+}

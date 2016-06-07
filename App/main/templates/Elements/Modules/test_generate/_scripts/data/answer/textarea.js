@@ -28,4 +28,4 @@ generate.data["answer--textarea"]= {
 			$("#new_element_label").val(value.label).focus();
 		}
 	}
-},
+}

@@ -2,6 +2,10 @@
 	<div class="{{class}} __value" contenteditable 
 		{% include "Elements/_shared/attrs/" %}
 	></div>
-	<label>{{placeholder}}</label>
+	<label
+		{% if alwaystop %}
+			class="--top-fixed"
+		{% endif %}
+	>{{placeholder}}</label>
 	<div class="__indicator"></div>
 </div>

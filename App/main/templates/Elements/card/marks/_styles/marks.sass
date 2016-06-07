@@ -1,0 +1,17 @@
+@import "../../../../sass_vars/main.sass"
+
+.card.--marks
+	flex-direction: row
+	align-items: center
+	.__heading
+		margin: 0
+		margin-right: $padding--s
+		font-size: $font__size--m*1.1
+		height: auto
+	.__mark
+		margin: 0 
+		padding: 0 $padding--s
+	.__mark.--medium
+		color: darken($yellow, $darkness-delta__font)
+		&:focus
+			color: lighten(darken($yellow, $darkness-delta__font), $darkness-delta__focus)

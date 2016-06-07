@@ -8,6 +8,11 @@
 	class="{{class}} __value" placeholder=" "
 		{% include "Elements/_shared/attrs/" %}
 		>
-	<label>{{placeholder}}</label>
+
+	<label
+		{% if alwaystop %}
+		class="--top-fixed"
+		{% endif %}
+	>{{placeholder}}</label>
 	<div class="__indicator"></div>
 </div>

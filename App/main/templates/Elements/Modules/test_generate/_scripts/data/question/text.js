@@ -27,4 +27,4 @@ generate.data["question--text"] = {
 			$("#new_element_text").html(value.text).focus();
 		}
 	}
-},
+}

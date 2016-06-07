@@ -4,6 +4,7 @@ $(document).ready(function() {
 	});
 
 	$("#test_publish").click(function(event) {
+		console.log("p");
 		test_manager.publish();
 	});
 

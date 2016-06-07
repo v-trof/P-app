@@ -16,7 +16,7 @@ generate.data["answer--empty"] = {
 		}
 	},
 	edit: {}
-},
+}
 generate.data["answer--text"] = {
 	element: {
 		type: 'answer',
@@ -87,7 +87,7 @@ generate.data["answer--textarea"]= {
 			$("#new_element_label").val(value.label).focus();
 		}
 	}
-},
+}
 generate.data["question--empty"] = {
 	element: {
 		type: "question",
@@ -106,7 +106,7 @@ generate.data["question--empty"] = {
 		}
 	},
 	edit: {}
-},
+}
 generate.data["question--image"] = {
 	element: {
 		type: "question",
@@ -139,7 +139,7 @@ generate.data["question--image"] = {
 		}
 		// middleware: generate.shared.catch_asset_file
 	}
-},
+}
 generate.data["question--text"] = {
 	element: {
 		type: "question",
@@ -169,4 +169,4 @@ generate.data["question--text"] = {
 			$("#new_element_text").html(value.text).focus();
 		}
 	}
-},
+}

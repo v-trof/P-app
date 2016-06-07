@@ -16,4 +16,4 @@ generate.data["answer--empty"] = {
 		}
 	},
 	edit: {}
-},
+}

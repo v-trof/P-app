@@ -3,7 +3,6 @@
 				 "Modules/popup",
 				 "Modules/accordion",
 				 "Modules/panel",
-				 "card/due_date",
 				 "card/small",
 				 "button/ghost/icon"],
 	"scripts": [],

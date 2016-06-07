@@ -1,8 +1,8 @@
-<div class="card card-marks">
-	<h4 class="__heading">{{course.name}}</h4>
+<div class="card --marks">
+	<h4 class="__heading">{{course.name}}:</h4>
 	{% for mark in marks %}
 		<button 
-			class="mark--{{mark.quality}}"
+			class="--ghost __mark --{{mark.quality}}"
 			id="c_{{course.name}}_m{{ forloop.counter }}"
 			tip='Тест:"{{mark.test_title}}"<br><br>
 			Верно: {{mark.right_answers}} из {{mark.questions_overall}}'>{{mark.value}}</button>

@@ -81,31 +81,29 @@ var as_g = {}
 			// console.log(el_data)
 			popup.hide()
 			$("#assignment--new__add_traditional").before(as_g.card_template(
-					{"title": $(".__value").html()}
+					{"title": $("#new_el_value").html()}
 				))
 		})
 		$("#popup__close").click(function(event) {
 			popup.hide()
 		})
 	});
-	$("#assignment--new__traditional").on("click", ".card--small", function(event) {
-		as_g.original = $(this);
-		popup.show('{% include "Pages/Course/give_task/_popup_texts/add_traditional/exports.html" %}'+'<button id="delete_el" class="button--ghost">Удалить</button>');
-		$("#new_el_value").text(as_g.original.text())
+	$("#assignment--new__traditional").on("click", ".card.--small", function(event) {
+		as_g.original = $(this)
+		popup.show('{% include "Pages/Course/give_task/_popup_texts/add_traditional/exports.html" %}');
+		$("#new_el_value").html(as_g.original.html()).focus();
+		popup.$.find(".row").append('<button id="delete_el" class="button --ghost --negative">Удалить</button>')
 		$("#add_el").click(function(event) {
 			// console.log(el_data)
 			popup.hide()
 			as_g.original.replaceWith(as_g.card_template(
-					{"title": $("#new_el_value").text()}
+					{"title": $("#new_el_value").html()}
 				))
 		})
 		$("#delete_el").click(function(event) {
-			popup.hide()
-			$("#delete").click()
+			popup.hide();
+			$("#delete").click();
 		});
-		$("#popup__close").click(function(event) {
-			popup.hide()
-		})
 		});
 
 	$("#give_task").click(function(e) {
