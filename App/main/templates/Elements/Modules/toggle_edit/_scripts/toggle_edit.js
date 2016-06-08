@@ -22,12 +22,12 @@ $(document).ready(function() {
 		if(edit.editing){
 			edit.editing = false;
 			edit.end();
-			$("#edit_toggle > .card.--small").text("Редактировать");
+			$("#edit_toggle").text("Редактировать");
 			$("#edit_discard").hide();
 		} else {
 			edit.editing = true;
 			edit.start();
-			$("#edit_toggle > .card.--small").text("Сохранить изменения")
+			$("#edit_toggle").text("Сохранить изменения")
 			$("#edit_discard").show();
 
 		}

@@ -1,6 +1,8 @@
 {
 	"elements": ["Modules/notification", "Modules/accordion",
-				 "Modules/popup","Modules/button_delete"],
+				 "Modules/popup","Modules/button_delete",
+				 "Modules/text_sort", "Modules/pull_put",
+				 "Modules/toggle_edit"],
 	"scripts": [],
 	"styles": [],
 	"fixes": [],

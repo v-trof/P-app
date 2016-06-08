@@ -14,6 +14,7 @@ var accordion = (function() {
 		$element.children().addClass('--accordion-hidden');
 		
 		$indicator.removeClass('--accordion-hidden');
+
 		$element.children('.--accordion-toggle').first()
 			.removeClass('--accordion-hidden')
 			.addClass('--accordion-minimized');
@@ -21,12 +22,10 @@ var accordion = (function() {
 
 	exports = {
 		add: function($element, indicator) {
-			$indicator = $element.find(indicator).first();
+			var $indicator = $element.find(indicator).first();
 
 			var $toggle = $(toggle_template);
 			$element.prepend($toggle);
-
-
 
 			$toggle.click(function(event) {
 				if($(this).hasClass('--accordion-minimized')){

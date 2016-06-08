@@ -1,206 +1,188 @@
-var editing = false;
-var e_data = {};
-var counter = 0;
-
-var unordered = $();
+var unordered;
 
 function check_for_emptiness() {
 	$(".group").each(function(index, el) {
-		if($(this).children(".--card").length == 0){
-			if($(this).children(".empty").length == 0){
-				$(this).append("<div class='empty'>Пустая группа</div>");
+		if($(this).children(".--card").length == 0) {
+			if($(this).children(".--empty").length == 0){
+				$(this).append("<div class='--empty'>Пустая группа</div>");
 			}
 		} else {
-			$(this).children('.empty').remove();
+			$(this).children('.--empty').remove();
 		}
 	});
 }
 
-function sort_group(group){
-	//better redo it after
-	user2names = []
-	$(group).find(".card-person").each(function(index, el) {
-		user2names.push($(this).find(".card-person__name").text().split(" ")[0])
-	});
-	
-	user2names.sort()
-
-	while(user2names.length > 0){
-		$(group).find(".card-person").each(function(index, el) {
-			if($(this).find(".card-person__name").text().split(" ")[0] == user2names[0]){
-				$(group).append($(this).parent())
-				user2names.splice(0,1)
-			}
-		});
-	}
-}
-
-var add_boundary = {
-	button_delete: function(el){
-		el.click(function(event) {
-			if($(this).parent(".card").length){
-				$(this).parent(".card").parent().remove();
-			} else {
-				unordered.append($(this).parent(".group").children('.--card'));
-				$(this).parent(".group").remove();
-			}
-			check_for_emptiness();
-		});
-	},
-	button_delete_all: function(el){
-		el.click(function(event) {
-			$(this).parent(".group").remove();
-		});
-	}
-}
-
 var icon_add = '<div class"icon_add--wrapper">{% include "Elements/Icons/add.svg" %}</div>';
 
-function toggle_edit(){
-	if(editing){
-		$("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
-		$(".--button-delete").remove();
-		$(".--button-delete_all").remove();
-		$("#edit>.card--small").text("Редактировать");
-		$(".students .--card").attr("draggable", "false");
-		//enabling links
-		$(".students .--card").each(function(index, el) {
-			$(this).attr('style', '');
-			$(this).replaceTag("<a>", true);
-		});
-		var groups={};
-		$(".group").each(function(index, el) {
-			group=$(this).children('h3').html();
-			groups[group]=[];
-			$(this).find('.card-person__name').each(function() {
-						groups[group].push($(this).html());
-					});
-		});
-		$.ajax({
-			type:"POST",
-			url:"/func/edit_groups/",
-			data: {
-				   'new_groups': JSON.stringify(groups),
-				   'csrfmiddlewaretoken': '{{ csrf_token }}',
-				   'course_id': "{{course.id}}",
-				  },
-			success: function(){
-				  notification.show('success', 'Группы изменены' );
-				  $('#groups_content').load('../groups_content/');
-				   }
-			});
-		$("#create_group").hide();
-		editing = false;
-	} else {
-		$(".group>h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
-		$("#edit>button").text("Сохранить изменения");
-		//disabling links
-		$(".students .--card").each(function(index, el) {
-			$(this).replaceTag("<div>", true);
-		});
-		$(".students .card-person").each(function(index, el) {
-			console.log(this);
-			button_delete.add($(this), function() {
-				//delete_user($(el));
-			});
-		});
-		$(".group").each(function(index, el) {
-			button_delete.add($(this), function() {
-				//delete_user($(el));
-			});
-		});
+edit.end = function() {
+	//getting pull_put down
+	pull_put.is_pulled = true;
+	pull_put.puller.cancel();
+	
 
-		unordered.children('.--button-delete').remove();
-		unordered.children('.--button-delete_all').remove();
+	//enabling group name editing
+	$("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
+	
+	//removing delete btns
+	$(".--button-delete").remove();
+	
+	//enabling links
+	$(".students .--card").each(function(index, el) {
+		$(this).attr('style', '');
+		$(this).replaceTag("<a>", true);
+	});
 
-		unordered.children("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
-
-		$(".group>.--button-delete").attr('tip', 'Удалить группу, сохранить учеников');
-
-		$(".group>.--button-delete_all").attr('tip', 'Удалить группу и учеников');
-
-		$(".card-person>.--button-delete").attr('tip', 'Исключить из курса');
+	
+	//back stuff
+	var groups={};
+	$(".group").each(function(index, el) {
+		group=$(this).children('h3').html();
 		
-		$(".--button-delete").each(function(index, el) {
-			tooltip.generate.tip_based(this);
-			add_boundary.button-delete($(this));
-		});
-
-	/*	$(".--button-delete_all").each(function(index, el) {
-			tooltip.generate.tip_based(this);
-			add_boundary.button-delete_all($(this));
-		}); */
+		groups[group]=[];
 		
-		$("#create_group").show();
-		editing = true;
-	}
+		$(this).find('.__name').each(function() {
+			groups[group].push($(this).html());
+		});
+	});
+	$.ajax({
+		type:"POST",
+		url:"/func/edit_groups/",
+		data: {
+			   'new_groups': JSON.stringify(groups),
+			   'csrfmiddlewaretoken': '{{ csrf_token }}',
+			   'course_id': "{{course.id}}",
+			  },
+		success: function(){
+			  notification.show('success', 'Группы изменены' );
+			  $('#groups_content').load('../groups_content/');
+			   }
+	});
+	$("#create_group").hide();
+}
+
+edit.start = function() {
+	pull_put.is_pulled = false;
+
+	$(".group>h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
+		
+	//disabling links
+	$(".students .--card").each(function(index, el) {
+		$(this).replaceTag("<div>", true);
+	});
+	$(".students .--card").each(function(){
+		pull_put.puller.add(
+			$(this),
+			["delete"]
+		);
+	});
+
+	$(".group").each(function(index, el) {
+		button_delete.add($(this));
+		$(this).find(".--button-delete").css('margin-right', '3rem');
+	});
+
+	unordered.children('.--button-delete').remove();
+	unordered.children('.--button-delete_all').remove();
+
+	unordered.children("h3").css('border-bottom', '1px dashed transparent').attr("contenteditable", "false");
+
+	$(".group>.--button-delete").attr('tip', 'Удалить группу (ученики будут исключены)');
+			
+	$("#create_group").show();
 }
 
 $(document).ready(function() {
+	pull_put.delete_action = check_for_emptiness;
 	check_for_emptiness();
+	pull_put.is_pulled = true;
+	sort_by_text($(".students"), "h3");
 
-	$("h3").css('border-bottom', '1px dashed transparent');
+	$(".students h3").css('border-bottom', '1px dashed transparent');
 
 	$(".group").each(function(index, el) {
+		accordion.add($(this), "h3");
+		sort_by_text($(this), ".__name");
+
 		if($(this).children('h3').text() == "Нераспределенные"){
 			unordered = $(this);
-			if(unordered.find(".card-person").length==0){
+			if(unordered.find(".card.--user").length==0){
 				$(".students").append(unordered);
 			} else {
 				$(".students>h2").after(unordered);
 			}
 		}
+
+
+		pull_put.put_zone.add($(this), function(e, $this, $pulled) {
+			$this.append($pulled);
+			check_for_emptiness();
+			sort_by_text($this, ".__name");
+			pull_put.reset();
+		});
 	});
 
-	$("#edit").click(function(event) {
-		toggle_edit();
-	});
+	$("#create_group").hide();
 
-/*	$("#create_group").click(function(event) {
+	$("#create_group").click(function(event) {
 		var new_group = $("<div class='group'><h3>Новая группа</h3></div>");
 		$(".students").append(new_group);
-		new_group.prepend(button_delete);
-		new_group.prepend(button_delete_all);
-
-		add_boundary.button-delete(new_group.find(".--button-delete"));
-		new_group.find(".--button-delete").attr('tip', 'Удалить группу, сохранить учеников')
-		tooltip.generate.tip_based(new_group.find(".--button-delete")[0]);
-
-		add_boundary.button-delete_all(new_group.find(".--button-delete_all"));
-		new_group.find(".--button-delete_all").attr('tip', 'Удалить группу и учеников')		
-		tooltip.generate.tip_based(new_group.find(".--button-delete_all")[0]);
+		accordion.add(new_group, "h3");
 
 		check_for_emptiness();
 		new_group.find("h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
-		$(".students").append(unordered);
-	});*/
-	$.extend({
-		replaceTag: function (currentElem, newTagObj, keepProps) {
-			var $currentElem = $(currentElem);
-			var i, $newTag = $(newTagObj).clone();
-			if (keepProps) {//{{{
-				var nodes=[], values=[];
-				newTag = $newTag[0];
-				for (var att, i = 0, atts = currentElem.attributes, n = atts.length; i < n; i++){
-					att = atts[i];
-					newTag.setAttribute(att.nodeName, att.value);
-				}
-				$.extend(newTag.classList, currentElem.classList);
-				$.extend(newTag.attributes, currentElem.attributes);
-			}//}}}
-			$currentElem.wrapAll($newTag);
-			$currentElem.contents().unwrap();
-			// return node; (Error spotted by Frank van Luijn)
-			return this; // Suggested by ColeLawrence
+		
+		if(unordered.find(".card.--user").length==0){
+			$(".students").append(unordered);
+		} else {
+			$(".students>h2").after(unordered);
 		}
+
+		pull_put.put_zone.add(new_group, function(e, $this, $pulled) {
+			$this.append($pulled);
+			check_for_emptiness();
+			sort_by_text($this, "__name");
+			pull_put.reset();
+		});
+
+		button_delete.add(new_group);
+		new_group.find(".--button-delete").css('margin-right', '3rem');
 	});
 
-	$.fn.extend({
-		replaceTag: function (newTagObj, keepProps) {
-			// "return" suggested by ColeLawrence
-			return this.each(function() {
-				jQuery.replaceTag(this, newTagObj, keepProps);
-			});
-		}
+	$("h3").blur(function(event) {
+		sort_by_text($(".students"), "h3");
 	});
+});
+
+
+
+
+
+$.extend({
+	replaceTag: function (currentElem, newTagObj, keepProps) {
+		var $currentElem = $(currentElem);
+		var i, $newTag = $(newTagObj).clone();
+		if (keepProps) {//{{{
+			var nodes=[], values=[];
+			newTag = $newTag[0];
+			for (var att, i = 0, atts = currentElem.attributes, n = atts.length; i < n; i++){
+				att = atts[i];
+				newTag.setAttribute(att.nodeName, att.value);
+			}
+			$.extend(newTag.classList, currentElem.classList);
+			$.extend(newTag.attributes, currentElem.attributes);
+		}//}}}
+		$currentElem.wrapAll($newTag);
+		$currentElem.contents().unwrap();
+		// return node; (Error spotted by Frank van Luijn)
+		return this; // Suggested by ColeLawrence
+	}
+});
+
+$.fn.extend({
+	replaceTag: function (newTagObj, keepProps) {
+		// "return" suggested by ColeLawrence
+		return this.each(function() {
+			jQuery.replaceTag(this, newTagObj, keepProps);
+		});
+	}
 });
