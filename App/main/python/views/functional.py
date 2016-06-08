@@ -40,8 +40,11 @@ class User_views():
 
 
 	def login_with_reg(request, course_id):
-		login(request)
-		course_reg(request, course_id)
+		if request.method == 'POST':
+			email = request.POST['email']
+			password = request.POST['password']
+			message = User.objects.login(request=request,email=email, password=password)
+			Course_views.register(request, course_id)
 		return redirect('/course/' + course_id + '/groups/')
 
 	def change_permission_level(request):
@@ -135,11 +138,11 @@ class Course_views():
 
 	def edit_groups(request):
 		if request.method == 'POST':
-			groups_data = {}
-			groups_data = json.loads(request.POST["new_groups"])
+			groups_data = json.loads(request.POST["groups_data"])
+			renames= json.loads(request.POST["renames"])
 			course = Course.objects.get(id=request.POST["course_id"])
 			course = Course.objects.edit_groups(
-				course=course, groups_data=groups_data)
+				course=course, groups_data=groups_data, renames=renames)
 			return HttpResponse('ok')
 
 

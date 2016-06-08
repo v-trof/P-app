@@ -1,5 +1,5 @@
 var unordered;
-
+var renames={};
 function check_for_emptiness() {
 	$(".group").each(function(index, el) {
 		if($(this).children(".--card").length == 0) {
@@ -48,9 +48,10 @@ edit.end = function() {
 		type:"POST",
 		url:"/func/edit_groups/",
 		data: {
-			   'new_groups': JSON.stringify(groups),
+			   'groups_data': JSON.stringify(groups),
 			   'csrfmiddlewaretoken': '{{ csrf_token }}',
 			   'course_id': "{{course.id}}",
+			   'renames':JSON.stringify(renames)
 			  },
 		success: function(){
 			  notification.show('success', 'Группы изменены' );
@@ -81,6 +82,18 @@ edit.start = function() {
 		$(this).find(".--button-delete").css('margin-right', '3rem');
 	});
 
+	$( "h3" ).focusin(function() {
+		prev_heading=$(this).html();
+		$(this).focusout(function() {
+			renames[prev_heading]=$(this).html();
+		});
+	});
+
+	$( ".--button-delete" ).click(function() {
+		prev_heading=$(this).parents().find("h3").html();
+		renames[prev_heading]="Нераспределенные";
+	});
+
 	unordered.children('.--button-delete').remove();
 	unordered.children('.--button-delete_all').remove();
 
@@ -89,6 +102,7 @@ edit.start = function() {
 	$(".group>.--button-delete").attr('tip', 'Удалить группу (ученики будут исключены)');
 			
 	$("#create_group").show();
+
 }
 
 $(document).ready(function() {
@@ -124,7 +138,14 @@ $(document).ready(function() {
 	$("#create_group").hide();
 
 	$("#create_group").click(function(event) {
-		var new_group = $("<div class='group'><h3>Новая группа</h3></div>");
+		var new_group_counter=0;
+		$("h3").each(function(){
+			if ($(this).html().search( 'Новая группа' ) >= 0)
+				new_group_counter+=1;
+		});
+		if (new_group_counter>0)
+			var new_group = $("<div class='group'><h3>Новая группа "+new_group_counter+"</h3></div>");
+		else var new_group = $("<div class='group'><h3>Новая группа</h3></div>");
 		$(".students").append(new_group);
 		accordion.add(new_group, "h3");
 

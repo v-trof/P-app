@@ -126,16 +126,21 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		return course
 
-	def edit_groups(self, course, groups_data):
+	def edit_groups(self, course, groups_data,renames):
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
-			data["groups"] = groups_data
-			for heading in data["groups"]:
-				for key, value in enumerate(data["groups"][heading]):
-					user = User.objects.get(name=value)
-					data["groups"][heading][key] = user.id
-				if heading not in data["pending_users"]:
-					data["pending_users"][heading] = []
+			data["groups"]={}
+			for group,members in groups_data.items():
+				data["groups"][group]={}
+				for member in members:
+					user=User.objects.get(name=member)
+					data["groups"][group][str(user.id)]={}
+				if not group in data["pending_users"]:
+					data["pending_users"][group]=[]
+			for prev_name,new_name in renames.items():
+				data["pending_users"][new_name]=data["pending_users"][prev_name]
+				del data["pending_users"][prev_name]
+
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -248,7 +253,7 @@ class CourseManager(models.Manager):
 								data["pending_users"][
 									"teachers"].remove(user.email)
 							else:
-								if user.id in data["groups"][group]:
+								if user.id in data["groups"][group].keys():
 									return redirect('/login/')
 								data["users"].append(user.id)
 								data["groups"][group][str(user.id)] = {}
@@ -305,7 +310,8 @@ class CourseManager(models.Manager):
 				course_data["teachers"].append(User.objects.get(id=teacher_id))
 			for group in data["groups"]:
 				course_data["groups"][group] = []
-				for user_id in data["groups"][group]:
+				print(data["groups"][group])
+				for user_id in data["groups"][group].keys():
 					course_data["groups"][group].append(
 						User.objects.get(id=user_id))
 			if user.is_anonymous():
@@ -525,6 +531,34 @@ class CourseManager(models.Manager):
 			marks=None
 		return marks
 
+	def load_updates(self,course,user):
+		updates={}
+		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			updates["new_students"] = []
+			updates["course"]={}
+			if data["status"] == "closed":
+				updates["course"]["is_closed"]=True
+			else: updates["course"]["is_closed"]=False
+			for user_id in data["teachers"][str(user.id)]["new_users"]:
+				updates["new_students"].append(User.objects.get(id=user.id))
+			data["teachers"][str(user.id)]["new_users"]=[]
+			if data["status"] == "closed":
+				updates["requesting_users"] = data["pending_users"]["Заявки"]
+			updates["new_marks"] = []
+			mark={}
+			for user_id in data["users"]:
+				for test_result in glob.glob('main/files/json/courses/' + str(course.id) + '/users/' + str(course.id) + '/tests/results/*.json'):
+					with io.open(test_result, 'r', encoding='utf8') as result_file:
+						result = json.load(result_file)
+						if user.id in result["unseen_by"]:
+							mark["value"]=result["marks"]
+							mark["quality"]=result["mark_quality"]
+					updates["new_marks"].append(mark)
+		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as data_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			data_file.write(saving_data)			
+		return updates
 
 
 class Course(models.Model):

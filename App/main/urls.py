@@ -76,6 +76,7 @@ course_patterns = [
     url(r'^(?P<course_id>[0-9]+)/give_task/$', main.Course_group.new_task, name="give_task"),
     url(r'^(?P<course_id>[0-9]+)/requests/$', main.Course_group.requests, name="course_requests"),
     url(r'^(?P<course_id>[0-9]+)/$', main.Course_group.main, name="course"),
+    url(r'^(?P<course_id>[0-9]+)/updates/$', main.Course_group.updates, name="updates"),
 ]
 
 urlpatterns = [

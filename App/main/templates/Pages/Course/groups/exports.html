@@ -5,35 +5,35 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Группы</title>
 	<style> 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
+		{% include "Elements/Inputs/select/_styles/css/select.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Elements/Modules/button_delete/_styles/css/button_delete.css" %} 
+		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
+		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/card/circle/_styles/css/shape.css" %} 
+		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
+		{% include "Pages/Course/groups/_styles/css/groups.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
 		{% include "Page_templates/_styles/css/main.css" %} 
 		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/Inputs/select/_styles/css/select.css" %} 
+		{% include "Elements/Modules/pull_put/_styles/css/placeholder.css" %} 
+		{% include "Elements/card/_styles/css/link.css" %} 
+		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Modules/pull_put/_styles/css/layout.css" %} 
+		{% include "Elements/Modules/context_menu/_styles/css/context_menu.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
 		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
 		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Modules/context_menu/_styles/css/context_menu.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
 		{% include "Elements/card/user/_styles/css/user.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
 		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Pages/Course/groups/_styles/css/groups.css" %} 
-		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/card/circle/_styles/css/shape.css" %} 
-		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
-		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
 		{% include "Elements/button/flat/_styles/css/flat.css" %} 
 		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
-		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Elements/Modules/pull_put/_styles/css/placeholder.css" %} 
-		{% include "Elements/Modules/button_delete/_styles/css/button_delete.css" %} 
-		{% include "Elements/Modules/pull_put/_styles/css/layout.css" %} 
 	</style>
 </head>
 <body>
@@ -44,25 +44,25 @@
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
 		{% include "Elements/Modules/pull_put/_scripts/core.js" %} 
-		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
-		{% include "Elements/Modules/toggle_edit/_scripts/toggle_edit.js" %} 
-		{% include "Elements/Modules/verifier/_scripts/verifier.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/ui.js" %} 
-		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
-		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/put.js" %} 
-		{% include "Elements/Modules/context_menu/_scripts/context_menu.js" %} 
-		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
-		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
-		{% include "Elements/Modules/text_sort/_scripts/text_sort.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/pull.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
-		{% include "Pages/Course/groups/_scripts/invite_students.js" %} 
-		{% include "Pages/Course/groups/_scripts/invite_teacher.js" %} 
-		{% include "Elements/Layout/header/_scripts/header.js" %} 
-		{% include "Pages/Course/groups/_scripts/groups.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/pull.js" %} 
+		{% include "Elements/Modules/verifier/_scripts/verifier.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/put.js" %} 
+		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
+		{% include "Elements/Modules/context_menu/_scripts/context_menu.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/ui.js" %} 
+		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
+		{% include "Elements/Modules/toggle_edit/_scripts/toggle_edit.js" %} 
+		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
+		{% include "Elements/Modules/text_sort/_scripts/text_sort.js" %} 
+		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
+		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Pages/Course/groups/_scripts/invite_students.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
 		{% include "Elements/Inputs/select/_scripts/select.js" %} 
+		{% include "Pages/Course/groups/_scripts/groups.js" %} 
+		{% include "Pages/Course/groups/_scripts/invite_teacher.js" %} 
 	</script>
 </body>
 </html>

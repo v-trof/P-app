@@ -24,9 +24,6 @@ class Main_group():
 				"possible_contacts": ["Мобильный телефон","ВКонтакте","Facebook","Дневник.py"],
 			})
 
-	def updates(request, course_id):
-		return render(request, 'Pages/updates.html', {"course": Course.objects.get(id=course_id), "course": User.objects.get_data(object=request.user, course_id=course_id)})
-
 	def home(request):
 		if request.user.is_anonymous():
 			return render(request, 'Pages/home/exports.html')
@@ -95,6 +92,12 @@ class Course_group():
 														 "link": course.name
 													 }
 		]})
+
+	def updates(request, course_id):
+		context={}
+		context=Course.objects.load_updates(course=Course.objects.get(id=course_id), user=request.user)
+		context["course"]=Course.objects.get(id=course_id)
+		return render(request, 'Pages/Course/updates/exports.html', context)
 
 	def requests(request, course_id):
 		pending_users=Course.objects.load_course_requests(course_id=course_id)

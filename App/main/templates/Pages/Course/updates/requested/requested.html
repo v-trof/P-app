@@ -1,0 +1,7 @@
+{% for user in requesting_users %}
+	<a class="--card" href="/profile/{{user.id}}/">
+		{% include "Elements/card/user/extended/" %}
+	</a>
+{% empty %}
+	Никто не подавал заявки в курс за последнее время
+{% endfor %}

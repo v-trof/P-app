@@ -1,6 +1,6 @@
-{% for user in joined %}
+{% for user in new_students %}
 	<a class="--card" href="/profile/{{user.id}}/">
-		{% include "Elements/card/user" %}
+		{% include "Elements/card/user/extended/" %}
 	</a>
 {% empty %}
 	Никто не присоединялся за последнее время

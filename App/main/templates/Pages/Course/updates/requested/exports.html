@@ -1,0 +1,1 @@
+{% for user in requesting_users %}	<a class="--card" href="/profile/{{user.id}}/exports.html">		{% include "Elements/card/user/extended/exports.html" %}	</a>{% empty %}	Никто не подавал заявки в курс за последнее время{% endfor %}
