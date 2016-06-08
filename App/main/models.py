@@ -311,7 +311,7 @@ class CourseManager(models.Manager):
 			for group in data["groups"]:
 				course_data["groups"][group] = []
 				print(data["groups"][group])
-				for user_id in data["groups"][group].keys():
+				for user_id in data["groups"][group]:
 					course_data["groups"][group].append(
 						User.objects.get(id=user_id))
 			if user.is_anonymous():
