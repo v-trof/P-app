@@ -9,6 +9,10 @@
 </section>
 <section class="homework">
 	<h2>Задания</h2>
-	{% include '#&/homework/exports.html' %}
+	{% if tasks.sort_method == "by_course" %}
+		{% include '#&/homework/by_course/exports.html' with tasks=tasks.content %}
+	{% else %}
+		{% include '#&/homework/by_date/exports.html' with tasks=tasks.content %}
+	{% endif %}
 	</div>
 </section>

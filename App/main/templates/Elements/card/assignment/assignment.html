@@ -1,35 +1,14 @@
 {% load ext_humanize %}
-<div class="card --assignment">
-	{% if assignment.course.name %}
+<div class="card --assignment" id="{{assignment.course.id}}_{{assignment.id}}">
+	{% if assignment.course %}
 		{% include "#&/../__overall-info/" 
-			with heading="В курсе "|add:assignment.course.name %}
-	{% endif %}
+				with heading="В курсе "|add:assignment.course.name %}
+	{% endif %}		
 	<div class="__content">
-	{% if assignment.tasks %}
-		{% for task in assignment.tasks %}
-			{% for sub_task in task.sub_tasks %}
-			{{subtask}}
-				{% include "#&/__materials/" with task=sub_task %}
-				{% include "#&/__tests/" with task=sub_task %}
-				{% include "#&/__traditional/" with task=sub_task %}
-			{% endfor %}
-
-		{% if task.due_date != "" %}
-			<div class="card__due-date">
-				До <strong>{{assignment.due_date|humanize_date}}</strong>
-			</div>
-		{% endif %}
-
-		{% endfor %}
-	{% else %}
-		{% for sub_task in assignment.sub_tasks %}
-			{{subtask}}
-				{% include "#&/__materials/" with task=sub_task %}
-				{% include "#&/__tests/" with task=sub_task %}
-				{% include "#&/__traditional/" with task=sub_task %}
-		{% endfor %}
+	{% if assignment.content %}
+		{% include "#&/__materials/" with task=assignment.content %}
+		{% include "#&/__tests/" with task=assignment.content %}
+		{% include "#&/__traditional/" with task=assignment.content %}
 	{% endif %}
-
 	</div>
-
 </div>

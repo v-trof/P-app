@@ -207,20 +207,20 @@ class Task_views():
 	def set_done(request):
 		if request.method == "POST":
 			assignment_id = str(int(request.POST["assignment_id"]))
-			task_id = int(request.POST["task_id"]) + 1
+			traditional_id = int(request.POST["traditional_id"])
 			course_id = int(request.POST["course_id"])
 			Course.objects.task_set_done(
-				assignment_id=assignment_id, task_id=task_id, course_id=course_id)
+				assignment_id=assignment_id, traditional_id=traditional_id, course_id=course_id, user=request.user)
 		return HttpResponse('ok')
 
 
 	def set_undone(request):
 		if request.method == "POST":
-			assignment_id = str(int(request.POST["assignment_id"]) - 1)
-			task_id = int(request.POST["task_id"])
+			assignment_id = str(int(request.POST["assignment_id"]))
+			traditional_id = int(request.POST["traditional_id"])
 			course_id = int(request.POST["course_id"])
 			Course.objects.task_set_undone(
-				assignment_id=assignment_id, task_id=task_id, course_id=course_id)
+				assignment_id=assignment_id, traditional_id=traditional_id, course_id=course_id, user=request.user)
 		return HttpResponse('ok')
 
 def get_group_list(request, course_id=None):

@@ -1,0 +1,7 @@
+{% for assignment in tasks %}
+	<div class="subject">
+		{% include "Elements/card/assignment/" %}
+	</div>
+		{% empty %}
+	Ура! Все задания выполнены.
+{% endfor %}

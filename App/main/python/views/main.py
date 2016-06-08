@@ -31,12 +31,19 @@ class Main_group():
 		if request.user.is_anonymous():
 			return render(request, 'Pages/home/exports.html')
 		context={}
+		with io.open('main/files/json/users/' + str(request.user.id) + '/settings.json', 'r', encoding='utf8') as settings_file:
+				user_settings = json.load(settings_file)
 		context["subjects"]=["Русский язык","Математика","Английский язык"]
-		sample_marks={"Русский язык":[{"course_marks":[{"test_id":1,"value":4,"quality":"good","test_title":"Подготовка к ЕГЭ","right_answers":4,"questions_overall":6},{"test_id":2,"value":2,"quality":"bad","test_title":"Подготовка к ЕГЭ","right_answers":1,"questions_overall":6}],"course":Course.objects.get(id=1)}]}
+		sample_marks={"Русский язык":[{"course_marks":[{"test_id":1,"value":4,"quality":"positive","test_title":"Подготовка к ЕГЭ","right_answers":4,"questions_overall":6},{"test_id":2,"value":2,"quality":"negative","test_title":"Подготовка к ЕГЭ","right_answers":1,"questions_overall":6}],"course":Course.objects.get(id=1)}]}
 		if request.user.participation_list:
 			context["marks"] = User.objects.load_marks(string_array=request.user.participation_list, user_id=request.user.id)
 			context["marks"] = sample_marks
-			context["tasks"] = User.objects.load_assignments(string_array=request.user.participation_list, user=request.user)
+			context["tasks"]={}
+			if user_settings["assignments"]["sort_method"] == "by_course": 
+				context["tasks"]["content"] = User.objects.load_assignments_by_course(string_array=request.user.participation_list, user=request.user)
+			else:	
+				context["tasks"]["content"] = User.objects.load_assignments_by_date(string_array=request.user.participation_list, user=request.user)
+			context["tasks"]["sort_method"]=user_settings["assignments"]["sort_method"]
 			context["courses"] = User.objects.load_courses_previews(string_array=request.user.participation_list)
 			context["updates"] = User.objects.load_updates(user=request.user)
 			print(context["tasks"])

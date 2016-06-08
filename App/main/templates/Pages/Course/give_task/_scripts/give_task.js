@@ -110,26 +110,28 @@ var as_g = {}
 		var res_material_list=[];
 		var res_test_list=[];
 		var traditionals_list=[];
-		var material={};
+		var task={};
 		var due_date="";
 		$("#assignment--new__materials .card.--small").each(function(index, el) {
-			material.link=$(this).attr('href');
-			material.title=$(this).html();
-			material.done=false;
-			res_material_list.push(material);
-			material={};
+			task.link=$(this).attr('href');
+			task.title=$(this).html();
+			res_material_list.push(task);
+			task={};
 		});
 		$("#assignment--new__tests .card.--small").each(function(index, el) {
-			material.link=$(this).attr('href');
-			material.title=$(this).html();
-			material.done=false;
-			res_test_list.push(material);
-			material={};
+			task.link=$(this).attr('href');
+			task.title=$(this).html();
+			task.done=false;
+			res_test_list.push(task);
+			task={};
 		});
-		var material={};
 		$("#assignment--new__traditional .card.--small").each(function(index, el) {
-			traditionals_list.push($(this).html());
+			task.done=false
+			task.text=$(this).html()
+			traditionals_list.push(task);
+			task={};
 		});
+
 		due_date=$("#due_date").val();
 		console.log("test",res_test_list);
 		console.log("mat",res_material_list);
