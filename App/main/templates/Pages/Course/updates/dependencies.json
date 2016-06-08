@@ -1,0 +1,8 @@
+{
+	"elements": ["card/user/extended"],
+	"scripts": [],
+	"styles": [],
+	"fixes": [],
+	"title" : "Оповещения",
+	"template": "default"
+}

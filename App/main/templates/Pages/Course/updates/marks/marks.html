@@ -1,0 +1,7 @@
+{% for mark in new_marks %}
+	<a class="--card" href="{{mark.link}}">
+		{% include "#&/mark/" %}
+	</a>
+{% empty %}
+	Новых оценок нет
+{% endfor %}

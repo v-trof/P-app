@@ -1,0 +1,7 @@
+{% for user in joined %}
+	<a class="--card" href="/profile/{{user.id}}/">
+		{% include "Elements/card/user" %}
+	</a>
+{% empty %}
+	Никто не присоединялся за последнее время
+{% endfor %}
