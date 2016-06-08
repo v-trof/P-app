@@ -38,6 +38,10 @@ pull_put.ui = (function() {
 		},
 		get: function($element, element_width, actions, _callback, card) {
 			
+			if(typeof actions === "undefined") {
+				actions = []
+			}
+
 			if(card){
 				$ui.__content.addClass('card');
 			} else {
@@ -69,7 +73,7 @@ pull_put.ui = (function() {
 			}
 		},
 		show: function() {
-			if(editor) {
+			if(typeof editor !== "undefined") {
 				$(".__task:last-child").addClass("--stand-out");
 			}
 			$ui.removeClass('--hidden');
@@ -79,7 +83,7 @@ pull_put.ui = (function() {
 			
 		},
 		hide: function() {
-			if(editor) {
+			if(typeof editor !== "undefined") {
 				$(".--stand-out").removeClass("--stand-out");
 			}
 			$ui.addClass('--hidden');
@@ -103,6 +107,7 @@ $(document).ready(function() {
 	$(".pull_put_ui .__actions .--delete").click(function(event) {
 		pull_put.ui.element = "";
 		pull_put.reset();
+		pull_put.delete_action();
 	});
 
 	$(".pull_put_ui .__actions .--add").click(function(event) {
