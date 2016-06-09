@@ -544,7 +544,9 @@ class CourseManager(models.Manager):
 				updates["new_students"].append(User.objects.get(id=user.id))
 			data["teachers"][str(user.id)]["new_users"]=[]
 			if data["status"] == "closed":
-				updates["requesting_users"] = data["pending_users"]["Заявки"]
+				updates["requesting_users"]=[]
+				for requesting_user_id in data["pending_users"]["Заявки"]:
+					updates["requesting_users"].append(User.objects.get(id=requesting_user_id))
 			updates["new_marks"] = []
 			mark={}
 			for user_id in data["users"]:
@@ -603,7 +605,7 @@ class UserManager(UserManager):
 				data["assignments"]={}
 				data["assignments"]["sort_method"]="by_date"
 				saving_data = json.dumps(data, ensure_ascii=False)
-				json_file.write(saving_data)
+				settings_file.write(saving_data)
 		else:
 			return 'Данный email уже зарегистрирован'
 		if user is not None:

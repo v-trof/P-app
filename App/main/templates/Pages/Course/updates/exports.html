@@ -5,25 +5,25 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Оповещения</title>
 	<style> 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
 		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
 		{% include "Elements/card/user/_styles/css/user.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
 		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
 		{% include "Page_templates/_styles/css/main.css" %} 
+		{% include "Elements/card/_styles/css/link.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
 	</style>
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	<h2>Новые оценки</h2>{% include "Pages/Course/updates/marks/exports.html" %}<h2>Присоединились</h2>{% include "Pages/Course/updates/joined/exports.html" %}{% if course.is_closed %}<h2>Подали заявки</h2>{% include "Pages/Course/updates/requested/exports.html" %}{% endif %}
+	<h2>Новые оценки</h2>{% include "Pages/Course/updates/marks/exports.html" %}<h2>Присоединились</h2>{% include "Pages/Course/updates/joined/exports.html" %}{% if requesting_users %}<h2>Подали заявки</h2>{% include "Pages/Course/updates/requested/exports.html" %}{% endif %}
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
