@@ -25,8 +25,7 @@
 	<div class="UI_kit-box --horizontal">
 		<div class="__item">
 			{% include "Elements/card/user/" %}
-			{% include "Elements/card/user/extended/" with extension="{{extension}}" %}
-			{% include "Elements/card/user/extended/" with extension="{{extension}}" class="--selected" %}
+			{% include "Elements/card/user/extended/" with extension="#&/_extension/" %}
 		</div>
 		<div class="__description">
 			<strong>Classes:</strong> .card .--user (.--extended)<br>
@@ -59,7 +58,7 @@
 	<div class="UI_kit-box --horizontal">
 		<div class="__item">
 			{% include "Elements/card/test/"%}
-			{% include "Elements/card/test/extended/" with extension="{{extension}}" %}
+			{% include "Elements/card/test/extended/" with extension="#&/_extension/" %}
 		</div>
 		<div class="__description">
 			<strong>Classes:</strong> .card .--test (.--extended) <br>
@@ -71,7 +70,7 @@
 	<div class="UI_kit-box --horizontal">
 		<div class="__item">
 			{% include "Elements/card/material/"%}
-			{% include "Elements/card/material/extended/" with extension="{{extension}}" %}
+			{% include "Elements/card/material/extended/" with extension="#&/_extension/" %}
 		</div>
 		<div class="__description">
 			<strong>Classes:</strong> .card .--material (.--extended) <br>

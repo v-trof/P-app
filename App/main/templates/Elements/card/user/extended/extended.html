@@ -1,8 +1,10 @@
 <div class="card --user --extended {{class}}">
-	<div class="__main">
-		{% include "#&/../__info/" %}
-	</div>
+	<a class="--card" href="/profile/{{user.id}}">
+		<div class="__main">
+			{% include "#&/../__info/" %}
+		</div>
+	</a>
 	<div class="__extension">
-		{{ extension }}
+		{% include extension %}
 	</div>
 </div>

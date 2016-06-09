@@ -1,8 +1,10 @@
+{% if requesting_users %}
+	<h2>Подали заявки</h2>
+	{% include "#&/requested/" %}
+{% endif %}
+
 <h2>Новые оценки</h2>
 {% include "#&/marks/" %}
+
 <h2>Присоединились</h2>
 {% include "#&/joined/" %}
-{% if requesting_users %}
-<h2>Подали заявки</h2>
-{% include "#&/requested/" %}
-{% endif %}
