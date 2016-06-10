@@ -1,3 +1,4 @@
 {
-	"elements": ["Modules/button_delete", "Modules/pull_put"]
+	"elements": ["Modules/button_delete", "Modules/pull_put",
+				"Inputs/radio", "Inputs/checkbox"]
 }

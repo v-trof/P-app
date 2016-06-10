@@ -16,6 +16,12 @@ generate.data["answer--text"] = {
 			$element.find('label').text(value.label)
 			return $element 
 		},
+		getter: function($element, _action) {
+			$element.on("blur mouseout", function() {
+				var value = $element.find(".__value").val();
+				_action($element, value);
+			});
+		},
 		value_sample: {
 			label: "Текстовый ответ"
 		}

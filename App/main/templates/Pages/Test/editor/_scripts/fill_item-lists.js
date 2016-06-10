@@ -27,7 +27,11 @@ function add_to_item_list(element_class, $list) {
 
 $(document).ready(function() {
 	for(var element_class in generate.data) {
+		if(element_class == "shared") {
+			continue;
+		}
 		var blueprint = generate.data[element_class].element;
+
 		var type = blueprint.type;
 
 		if( ! blueprint.nopull){

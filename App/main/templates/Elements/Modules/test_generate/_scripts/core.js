@@ -1,6 +1,8 @@
 var generate = (function() {
 	var exports = {
-		data: {},
+		data: {
+			shared: {}
+		},
 		build: {}
 	}
 	return exports;

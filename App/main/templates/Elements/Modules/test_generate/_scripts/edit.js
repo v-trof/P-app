@@ -31,11 +31,17 @@ generate.edit = (function() {
 			pull_put.ui.$.find(".__content")
 				.html(blueprints.edit.text);
 
+			if(typeof blueprints.edit.middleware !== "undefined") {
+				blueprints.edit.middleware();
+			}
+
 			blueprints.edit.fill(value);
 
 			pull_put.ui.add_action(preview_action);
 			
-			pull_put.ui.$.find(".__content input, .__content .__value").on("keydown change blur",
+			pull_put.ui.$.on(
+				"keydown change blur click", 
+				".__content input, .__content .__value button",
 				function() {
 					var value = blueprints.edit.parse();
 					
@@ -44,8 +50,7 @@ generate.edit = (function() {
 					);
 
 					pull_put.ui.element = $new_element;
-				})
-
+			});
 		},
 		stop: function() {
 			if(pull_put.is_pulled) {

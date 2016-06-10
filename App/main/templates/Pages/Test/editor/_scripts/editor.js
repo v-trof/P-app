@@ -31,10 +31,19 @@ var editor = (function() {
 		});
 	}
 
+	var check_pullers = function() {
+		$(".__answer-field").each(function(index, el) {
+			if( ! $(this).hasClass('--pullable')){
+				generate.let_editing($(this));
+			}
+		});
+	}
+
 	var exports = {
 		check_self: function() {
 			check_for_emptiness();
 			check_numbers();
+			check_pullers();
 		} 
 	}
 	return exports;

@@ -13,6 +13,12 @@ generate.data["answer--textarea"]= {
 			$element.find("label").text(value.label)
 			return $element 
 		},
+		getter: function($element, _action) {
+			$element.on("blur mouseout", function() {
+				var value = $element.find(".__value").text();
+				_action($element, value);
+			});
+		},
 		value_sample: {
 			label: "Большой текстовый ответ"
 		}
