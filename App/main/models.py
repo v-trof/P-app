@@ -890,7 +890,8 @@ class TestManager(models.Manager):
 
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
-		course_info['tests']['unpublished'].append(test_id)
+		if not test_id in course_info['tests']['unpublished']:
+			course_info['tests']['unpublished'].append(test_id)
 		test_id=str(len(course_info['tests']['published'])+len(course_info['tests']['unpublished']) + 1)
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -907,7 +908,7 @@ class TestManager(models.Manager):
 					"published": test_id in course_info["tests"]["published"]
 				}
 		return test
-
+		
 	def publish(self,course_id,test_id):
 		# makes test visible in course screen
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:

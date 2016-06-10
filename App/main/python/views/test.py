@@ -57,8 +57,8 @@ def load(request):
 	print("ololololo",test)
 	context={}
 	context["test"]=test
-	context["test_id"]=test_id
-	context["course_id"]=course_id
+	context["test"]["id"]=test_id
+	context["course"]=Course.objects.get(id=course_id)
 	context["breadcrumbs"] = [{
 			"href": "/course/" + str(course_id),
 			"link": Course.objects.get(id=course_id).name
