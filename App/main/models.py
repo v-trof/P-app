@@ -871,6 +871,7 @@ class TestManager(models.Manager):
 
 	def delete(self, course_id, test_id):
 		# moves test to trash bin
+		os.remove('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json')
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
@@ -884,7 +885,9 @@ class TestManager(models.Manager):
 		return 0
 
 	def save(self, json_file,course_id, test_id):
-		json_file_path = 'main/files/json/courses/' + course_id + '/tests/' + test_id + '.json'
+		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
+			test_file.write(json_file)
+
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 		course_info['tests']['unpublished'].append(test_id)
@@ -897,15 +900,13 @@ class TestManager(models.Manager):
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 				course_info = json.load(info_file)
-				course = {"id": course_id}
 				test = {
 					"id": test_id,
 					"loaded": 1,
 					"json": json.load(json_file),
 					"published": test_id in course_info["tests"]["published"]
 				}
-		context =  {"test": test, "course": course}
-		return context
+		return test
 
 	def publish(self,course_id,test_id):
 		# makes test visible in course screen
@@ -979,9 +980,12 @@ class TestManager(models.Manager):
 						"href" : "/course/"+str(course_id),
 						"link" : Course.objects.get(id=course_id).name
 					},{
-						"href" : "#",
-						"link" : test["json"]["title"]
+						"href" : "#"#,
+				#		"link" : test["json"]["title"]
 					}]
+		for element in context["test"]["json"]:
+			print(element)
+			element.pop("answer_items",None)
 		if not os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'):
 			os.makedirs('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/')
 		if not os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/results/'):
@@ -994,7 +998,7 @@ class TestManager(models.Manager):
 			test["tasks"]=[]
 			with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 				test_info=json.load(info_file)
-				for question in test_info["tasks"]:
+				for question in test_info:
 					user_question=[]
 					for item in question["answer_items"]:
 						value=Test.objects.check_question(item=item)
@@ -1003,7 +1007,8 @@ class TestManager(models.Manager):
 			data = json.dumps(test, ensure_ascii=False)
 			json_file.write(data)
 			context["test"]["user_answers"]=data
-			return context
+		print(context)
+		return context
 
 	def attempt_save(self,test_id,question_id,task_id,course_id,answer,user):
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:

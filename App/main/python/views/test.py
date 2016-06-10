@@ -28,7 +28,6 @@ def create(request):
 			"href": "#",
 			"link": "Новый тест"
 		}]
-	print(context)
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
 
@@ -54,15 +53,20 @@ def load(request):
 	# loads test file
 	course_id = request.GET.get("course_id",None)
 	test_id = request.GET.get("test_id",None)
-	Test.objects.load(course_id=course_id, test_id=test_id)
+	test=Test.objects.load(course_id=course_id, test_id=test_id)
+	print("ololololo",test)
+	context={}
+	context["test"]=test
+	context["test_id"]=test_id
+	context["course_id"]=course_id
 	context["breadcrumbs"] = [{
 			"href": "/course/" + str(course_id),
 			"link": Course.objects.get(id=course_id).name
-		}, {
-			"href": "#",
-			"link": test["json"]["title"]
-		}]
-	return render(request, 'Pages/test_editor.html', context)
+		}]#, {
+		#	"href": "#",
+		#	"link": test["json"]["title"]
+		#}]
+	return render(request, 'Pages/Test/editor/exports.html', context)
 
 
 def publish(request):
@@ -91,8 +95,8 @@ def attempt(request):
 	# loads test file
 	course_id = request.GET.get("course_id",None)
 	test_id = request.GET.get("test_id",None)
-	context = Test.objects.attempt(course_id=course_id, text_id=test_id)
-	return render(request, 'Pages/test_attempt.html', context)
+	context = Test.objects.attempt(user=request.user,course_id=course_id, test_id=test_id)
+	return render(request, 'Test/attempt/main/exports.html', context)
 
 
 def check_question(request, item):

@@ -43,7 +43,6 @@ class Main_group():
 			context["tasks"]["sort_method"]=user_settings["assignments"]["sort_method"]
 			context["courses"] = User.objects.load_courses_previews(string_array=request.user.participation_list)
 			context["updates"] = User.objects.load_updates(user=request.user)
-			print(context["tasks"])
 		if request.user.courses:
 			context["own_courses"] = User.objects.load_courses_previews(string_array=request.user.courses)
 		elif request.user.is_teacher:
