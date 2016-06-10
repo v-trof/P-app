@@ -62,10 +62,10 @@ def load(request):
 	context["breadcrumbs"] = [{
 			"href": "/course/" + str(course_id),
 			"link": Course.objects.get(id=course_id).name
-		}]#, {
-		#	"href": "#",
-		#	"link": test["json"]["title"]
-		#}]
+		}, {
+			"href": "#",
+			"link": test["json"]["title"]
+		}]
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
 
@@ -96,7 +96,7 @@ def attempt(request):
 	course_id = request.GET.get("course_id",None)
 	test_id = request.GET.get("test_id",None)
 	context = Test.objects.attempt(user=request.user,course_id=course_id, test_id=test_id)
-	return render(request, 'Test/attempt/main/exports.html', context)
+	return render(request, 'Pages/Test/Attempt/main/exports.html', context)
 
 
 def check_question(request, item):

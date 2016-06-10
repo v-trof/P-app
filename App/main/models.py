@@ -984,9 +984,9 @@ class TestManager(models.Manager):
 						"href" : "#"#,
 				#		"link" : test["json"]["title"]
 					}]
-		for element in context["test"]["json"]:
-			print(element)
-			element.pop("answer_items",None)
+		for element in context["test"]["json"]["tasks"]:
+			for answer_item in element["answer_items"]: 
+				answer_item.pop("answer",None)
 		if not os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'):
 			os.makedirs('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/')
 		if not os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/results/'):
@@ -999,7 +999,7 @@ class TestManager(models.Manager):
 			test["tasks"]=[]
 			with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 				test_info=json.load(info_file)
-				for question in test_info:
+				for question in test_info["tasks"]:
 					user_question=[]
 					for item in question["answer_items"]:
 						value=Test.objects.check_question(item=item)

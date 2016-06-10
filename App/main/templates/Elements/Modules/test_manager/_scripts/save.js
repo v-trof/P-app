@@ -2,6 +2,7 @@ test_manager.save = function() {
 	var test_packed = test_manager.pack();
 
 	var formData = new FormData();
+		console.log("{{course.id}}", "{{test.id}}");
 		formData.append("json_file", test_packed);
 		formData.append("course_id", "{{course.id}}");
 		formData.append("test_id", "{{test.id}}");
