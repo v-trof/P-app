@@ -17,9 +17,22 @@ generate.data["answer--text"] = {
 			return $element 
 		},
 		getter: function($element, _action) {
+			var timer;
+			var typing_interval = 1000;
+
 			$element.on("blur mouseout", function() {
 				var value = $element.find(".__value").val();
-				_action($element, value);
+				_action(value);
+			});
+			
+			$element.keydown(function(event) {
+				$element.keydown(function() {
+					clearTimeout(timer); 
+					timer = setTimeout(function() {
+						var value = $element.find(".__value").val();
+						_action(value);
+					}, typing_interval);
+				});
 			});
 		},
 		value_sample: {

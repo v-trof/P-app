@@ -123,9 +123,22 @@ generate.data["answer--text"] = {
 			return $element 
 		},
 		getter: function($element, _action) {
+			var timer;
+			var typing_interval = 1000;
+
 			$element.on("blur mouseout", function() {
 				var value = $element.find(".__value").val();
-				_action($element, value);
+				_action(value);
+			});
+			
+			$element.keydown(function(event) {
+				$element.keydown(function() {
+					clearTimeout(timer); 
+					timer = setTimeout(function() {
+						var value = $element.find(".__value").val();
+						_action(value);
+					}, typing_interval);
+				});
 			});
 		},
 		value_sample: {
@@ -154,9 +167,10 @@ generate.data["answer--textarea"]= {
 	element: {
 		type: "answer",
 		parse: function($original) {
+			console.log("parsed");
 			return {
 				label: $original.find('label').html(),
-				class: "answer--text"
+				class: "answer--textarea"
 			}
 		},
 		build: function(value) {
@@ -166,9 +180,22 @@ generate.data["answer--textarea"]= {
 			return $element 
 		},
 		getter: function($element, _action) {
+			var timer;
+			var typing_interval = 1000;
+
 			$element.on("blur mouseout", function() {
-				var value = $element.find(".__value").text();
-				_action($element, value);
+				var value = $element.find(".__value").text().substring(0, 17);
+				_action(value);
+			});
+			
+			$element.keydown(function(event) {
+				$element.keydown(function() {
+					clearTimeout(timer); 
+					timer = setTimeout(function() {
+						var value = $element.find(".__value").text().substring(0, 17);
+						_action(value);
+					}, typing_interval);
+				});
 			});
 		},
 		value_sample: {

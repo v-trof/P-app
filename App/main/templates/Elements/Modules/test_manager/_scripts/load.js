@@ -9,6 +9,8 @@ test_manager.load = function(test_json) {
 			.element.build(task_data.question_items[0])
 		);
 
+		console.log($task);
+
 		for (var i = 1; i < task_data.question_items.length; i++) {
 			element_class = task_data.question_items[i].class;
 			var $element =  generate.read(element_class)

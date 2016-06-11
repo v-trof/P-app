@@ -32,6 +32,12 @@ var editor = (function() {
 	}
 
 	var check_pullers = function() {
+		$(".__question-element").each(function(index, el) {
+			if( ! $(this).hasClass('--pullable')){
+				generate.let_editing($(this));
+			}
+		});
+
 		$(".__answer-field").each(function(index, el) {
 			if( ! $(this).hasClass('--pullable')){
 				generate.let_editing($(this));

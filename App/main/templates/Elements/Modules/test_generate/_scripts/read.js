@@ -4,7 +4,8 @@ generate.read = function(element_class) {
 	var element_data = {
 		"build": raw_data.element.build,
 		"parse": raw_data.element.parse,
-		"type": raw_data.element.type
+		"type": raw_data.element.type,
+		"getter": raw_data.element.getter
 	}
 	
 	if( ! element_data.boundaries) {
