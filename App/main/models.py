@@ -942,27 +942,27 @@ class TestManager(models.Manager):
 	def build_question(self,item):
 		value={}
 		type=item["class"]
+		print("item",item)
+		value["type"] = type.split("--")[1]
 		if type=="answer--text":
 			value["answer"] = item["answer"]
 			value["user_answer"] = None
-			value["type"] = type.split("--")[1]
-		elif type=="textarea":
-			pass
+		elif type=="answer--textarea":
+			value["user_answer"] = None
 			# textarea
 		elif type=="answer--select":
 			value["options"] = []
-			value["options"] = item["value"]["values"]
-			value["answer"] = item["value"]["answer"]
+			value["options"] = item["values"]
+			value["answer"] = item["answer"]
 			value["user_answer"] = None
 		elif type=="answer--radio":
 			value["options"] = []
-			value["options"] = item["value"]["values"]
-			value["answer"] = item["value"]["answer"]
+			value["options"] = item["values"]
 			value["user_answer"] = None
-		elif type=="checkbox-answer":
+		elif type=="answer--checkbox":
 			value["options"] = []
-			value["options"] = item["value"]["values"]
-			value["answer"] = item["value"]["answers"]
+			value["options"] = item["values"]
+			value["answer"] = item["answers"]
 			value["user_answer"] = None
 		return value
 
@@ -1019,45 +1019,7 @@ class TestManager(models.Manager):
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			data=json.load(json_file)
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w', encoding='utf8') as json_file:
-			data[question_id]["user_answer"]=answer
-			saving_data = json.dumps(data, ensure_ascii=False)
-			json_file.write(saving_data)
-		return 0
-
-	def attempt_check(self,request,test_id,course_id):
-		right=0
-		missed=0
-		mistakes=0
-		test_results={}
-		test_results["test_id"]=test_id
-		test_results["right"]=[]
-		test_results["mistakes"]=[]
-		test_results["missed"]=[]
-		test_results["unseen_by"]=[]
-		with io.open('main/files/json/courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
-			test_data=json.load(json_file)
-			counter=0
-			for question in test_data:
-				if question["user_answer"] == None:
-					missed+=1
-					test_results["missed"].append(counter)
-				elif check_correctness(question["user_answer"],question["answer"]):
-					right+=1
-					test_results["right"].append(counter)
-				else: 
-					mistakes+=1
-					test_results["mistakes"].append(counter)
-				counter+=1
-		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
-			data=json.load(data_file)
-			for key in data["teachers"].keys():
-				test_results["unseen_by"].append(key)
-		test_results["mark"]=give_mark(request,right/(right+mistakes+missed)*100, course_id, test_id)
-		test_results["mark_quality"]=set_mark_quality(test_results["mark"])
-		test_results["test_title"]=test_data["title"]
-		test_results["right_answers"]=right
-		test_results["questions_overall"]=right+mistakes+missed
-		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(request.user.id)+'/tests/results/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
+			data[question_id-1]["user_answer"]=answer
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return 0
@@ -1081,7 +1043,51 @@ class TestManager(models.Manager):
 			mark_quality ="neutral"
 		else: mark_quality = "negative"
 		return mark_quality
-	
+
+	def check_question_correctness(self,question):
+		if question["answer"] == question["user_answer"]:
+			return True
+		else: return False
+
+	def attempt_check(self,user,test_id,course_id):
+		right=0
+		missed=0
+		mistakes=0
+		test_results={}
+		test_results["test_id"]=test_id
+		test_results["right"]=[]
+		test_results["mistakes"]=[]
+		test_results["missed"]=[]
+		test_results["unseen_by"]=[]
+		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+			attempt_data=json.load(json_file)
+			counter=0
+			for question in attempt_data:
+				if question["user_answer"] == None:
+					missed+=1
+					test_results["missed"].append(counter)
+					question["result"]="missing"
+				elif Test.objects.check_question_correctness(question=question):
+					right+=1
+					test_results["right"].append(counter)
+					question["result"]="right"
+				else:
+					mistakes+=1
+					test_results["mistakes"].append(counter)
+					question["result"]="false"
+				counter+=1
+		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+				test_data=json.load(info_file)
+		test_results["mark"]=Test.objects.give_mark(percentage=right/(right+mistakes+missed)*100, course_id=course_id, test_id=test_id)
+		test_results["mark_quality"]=Test.objects.set_mark_quality(test_results["mark"])
+		test_results["test_title"]=test_data["title"]
+		test_results["right_answers"]=right
+		test_results["questions_overall"]=right+mistakes+missed
+		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
+			saving_data = json.dumps(test_results, ensure_ascii=False)
+			json_file.write(saving_data)
+		return 0
+
 	def get_results(self,course_id,test_id,user):
 		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 			test_info=json.load(info_file)
@@ -1094,7 +1100,10 @@ class TestManager(models.Manager):
 		
 	def get_attempt_info(self, course_id, test_id, user):
 		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/attempts/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
-			test_info=json.load(info_file)
+			attempt_info=json.load(info_file)
+		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
+			attempt_result=json.load(info_file)
+		test_info=attempt_result+attempt_info
 		return test_info
 		
 	def upload_asset(self,asset,course_id,test_id,path):

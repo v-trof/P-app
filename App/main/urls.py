@@ -30,7 +30,6 @@ test_patterns = [
     url(r'^edit/$', test.edit, name="edit_test"),
 
     url(r'^delete/$', test.delete, name="delete_test"),
-
     url(r'^save/$', test.save, name="save_test"),
 
     url(r'^publish/$', test.publish, name="publish_test"),
@@ -40,7 +39,8 @@ test_patterns = [
     url(r'^attempt/$', test.attempt, name="attempt"),
     url(r'^attempt/save/$', test.attempt_save, name="save_attempt"),
     url(r'^attempt/check/$', test.attempt_check, name="check_attempt"),
-
+    url(r'^attempt/results/$', test.results, name="test_results"),
+    
     url(r'^upload/$', test.upload_asset, name="upload_asset"),
     url(r'^upload_by_url/$', test.upload_asset_by_url, name="upload_asset_by_url"),
 ]
@@ -92,7 +92,6 @@ urlpatterns = [
     url(r'^forgot_password/$', main.Auth_group.forgot_password, name="forgot_password"),
 
     url(r'^$', main.Main_group.home, name='home'),
-    url(r'^results/$', main.Test_group.results, name="test_results"),
     url(r'^profile/(?P<user_id>[0-9]+)/$', main.Main_group.profile, name="profile"),
     url(r'^run_test/$', testing_system.overall_test, name="overall_test")
 ]

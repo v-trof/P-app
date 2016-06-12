@@ -5,69 +5,69 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Тест </title>
 	<style> 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/card/small/_styles/css/small.css" %} 
+		{% include "Pages/Test/attempt/main/_styles/css/summary.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/Modules/pull_put/_styles/css/placeholder.css" %} 
+		{% include "Elements/Modules/pull_put/_styles/css/layout.css" %} 
+		{% include "Elements/card/_styles/css/link.css" %} 
+		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
 		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Modules/panel/_styles/css/panel.css" %} 
-		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
-		{% include "Elements/Modules/test_generate/_styles/css/answer-field.css" %} 
-		{% include "Elements/Modules/button_delete/_styles/css/button_delete.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements/card/circle/_styles/css/shape.css" %} 
-		{% include "Elements/Modules/test_generate/_styles/css/task.css" %} 
-		{% include "Pages/Test/Attempt/main/_styles/css/summary.css" %} 
+		{% include "Elements/Inputs/radio/_styles/css/radio.css" %} 
 		{% include "Page_templates/_styles/css/main.css" %} 
 		{% include "Elements/Modules/test_generate/_styles/css/image.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
 		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
-		{% include "Elements/Inputs/radio/_styles/css/radio.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/Modules/test_generate/_styles/css/answer-field.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/Modules/test_generate/_styles/css/task.css" %} 
+		{% include "Elements/card/circle/_styles/css/shape.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Modules/panel/_styles/css/panel.css" %} 
 		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/Modules/pull_put/_styles/css/placeholder.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/Modules/test_generate/_styles/css/answer-item.css" %} 
-		{% include "Elements/Modules/pull_put/_styles/css/layout.css" %} 
+		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
+		{% include "Elements/Modules/button_delete/_styles/css/button_delete.css" %} 
+		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
+		{% include "Elements/card/small/_styles/css/small.css" %} 
 	</style>
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	<div class="preview">	<h2 class="__heading"></h2>	<div class="__content"></div>	<button>Сдать на проверку</button></div>
+	<div class="preview">	<h2 class="__heading"></h2>	<div class="__content"></div>	<button id="finish">Сдать на проверку</button></div>1
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/test_generate/_scripts/core.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/core.js" %} 
 		{% include "Elements/Modules/test_manager/_scripts/core.js" %} 
-		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/put.js" %} 
-		{% include "Elements/Modules/test_manager/_scripts/publish.js" %} 
-		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
-		{% include "Elements/Modules/test_generate/_scripts/build.js" %} 
-		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
-		{% include "Elements/Modules/test_generate/_scripts/data.js" %} 
-		{% include "Elements/Modules/panel/_scripts/panel.js" %} 
-		{% include "Elements/Modules/test_manager/_scripts/delete.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/ui.js" %} 
-		{% include "Elements/Modules/test_generate/_scripts/counter.js" %} 
-		{% include "Elements/Modules/test_manager/_scripts/load.js" %} 
-		{% include "Elements/Modules/test_generate/_scripts/edit.js" %} 
-		{% include "Elements/Modules/test_manager/_scripts/pack.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/pull.js" %} 
-		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
-		{% include "Elements/Modules/test_manager/_scripts/save.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/core.js" %} 
+		{% include "Elements/Modules/test_generate/_scripts/core.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/read.js" %} 
 		{% include "Elements/Modules/test_manager/_scripts/unpublish.js" %} 
-		{% include "Pages/Test/Attempt/main/_scripts/summary.js" %} 
-		{% include "Elements/Layout/header/_scripts/header.js" %} 
+		{% include "Elements/Modules/test_manager/_scripts/pack.js" %} 
+		{% include "Elements/Modules/test_generate/_scripts/build.js" %} 
+		{% include "Elements/Modules/test_manager/_scripts/load.js" %} 
+		{% include "Elements/Modules/test_generate/_scripts/data.js" %} 
+		{% include "Elements/Modules/test_generate/_scripts/counter.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/pull.js" %} 
+		{% include "Elements/Modules/test_manager/_scripts/delete.js" %} 
+		{% include "Elements/Modules/test_manager/_scripts/save.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/put.js" %} 
+		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
+		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
+		{% include "Elements/Modules/panel/_scripts/panel.js" %} 
+		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/ui.js" %} 
+		{% include "Elements/Modules/test_manager/_scripts/publish.js" %} 
+		{% include "Elements/Modules/test_generate/_scripts/edit.js" %} 
+		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Pages/Test/attempt/main/_scripts/summary.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
+		{% include "Pages/Test/attempt/main/_scripts/get_results.js" %} 
 	</script>
 </body>
 </html>

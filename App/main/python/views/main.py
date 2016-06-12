@@ -162,14 +162,6 @@ class Course_group():
 			else:
 				return render(request, 'Blocks/groups_content.html')
 
-class Test_group():
-	def results(request):
-		course_id = request.GET["course_id"]
-		test_id = request.GET["test_id"]
-		context = {"course": Course.objects.get(id=course_id), "test_id": test_id, "results": get_results(
-			request, course_id, test_id), "attempt": get_attempt_info(request, course_id, test_id), "test": get_test_info(request, course_id, test_id)}
-		return render(request, 'Pages/Test/results/exports.html', context)
-
 
 def ui_kit(request):
 	context = {

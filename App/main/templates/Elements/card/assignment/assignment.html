@@ -11,4 +11,9 @@
 		{% include "#&/__traditional/" with task=assignment.content %}
 	{% endif %}
 	</div>
+	{% if assignment.due_date != "" %}
+	<div class="card__due-date">
+		До <strong>{{assignment.due_date|humanize_date}}</strong>
+	</div>
+	{% endif %}
 </div>

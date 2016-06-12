@@ -18,6 +18,7 @@ def humanize_date(value):
     11 : "ноября",
     12 : "декабря"
     }
+    print(value)
     day = value.split("-")[0]
     month = month_sting[int(value.split("-")[1])]
     if len(value.split("-")) > 2:

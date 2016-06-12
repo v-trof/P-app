@@ -113,12 +113,18 @@ def attempt_save(request):
 		Test.objects.attempt_save(test_id=test_id, question_id=question_id, course_id=course_id, answer=answer, user=request.user)
 		return HttpResponse("ok")
 
+def results(request):
+	course_id = request.GET["course_id"]
+	test_id = request.GET["test_id"]
+	context = {"course": Course.objects.get(id=course_id), "test_id": test_id, "results": get_results(
+		request, course_id, test_id), "attempt": get_attempt_info(request, course_id, test_id), "test": get_test_info(request, course_id, test_id)}
+	return render(request, 'Pages/Attempt/results/exports.html', context)
 
 def attempt_check(request):
 	if request.method == 'POST':
 		test_id = request.POST.get("test_id",None)
 		course_id = request.POST.get("course_id",None)
-		Test.objects.attempt_check(test_id=test_id, course_id=course_id)
+		Test.objects.attempt_check(test_id=test_id, course_id=course_id, user=request.user)
 		return HttpResponse("ok")
 
 
@@ -128,13 +134,6 @@ def give_mark(request, percentage, course_id, test_id):
 
 def set_mark_quality(mark):
 	return Test.object.set_mark_quality(mark=mark)
-
-
-def check_correctness(user_version, ideal_version):
-	if user_version == ideal_version:
-		return True
-	else: return False
-
 
 def get_results(request, course_id, test_id):
 	return Test.objects.get_results(course_id=course_id, test_id=test_id)
