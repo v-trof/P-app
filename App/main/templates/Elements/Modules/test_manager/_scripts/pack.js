@@ -3,27 +3,16 @@ test_manager.pack = function() {
 		"title": $("h2").text(),
 		tasks: []
 	}
-	$(".preview .__task").each(function(index, el) {
+	$(".preview .__task .__content").each(function(index, el) {
 		var task_index = index;
 
-		test_json.tasks[task_index] = {
-			answer_items: [],
-			question_items: []
-		}
+		test_json.tasks[task_index] = []
 
-		$(this).find(".__answer").children().each(function(index, $element) {
+		$(this).children().each(function(index, $element) {
 			var element_class = $(this)
 				.attr('class').split(' ')[0];
 
-			test_json.tasks[task_index].answer_items.push(generate.read(element_class)
-				.element.parse($(this)));
-		});
-
-		$(this).find(".__question").children().each(function(index, $element) {
-			var element_class = $(this)
-				.attr('class').split(' ')[0];
-
-			test_json.tasks[task_index].question_items.push(generate.read(element_class)
+			test_json.tasks[task_index].push(generate.read(element_class)
 				.element.parse($(this)));
 			$(this).find(".question--image").find("img").each(function(index, $element) {
 				$.ajax({

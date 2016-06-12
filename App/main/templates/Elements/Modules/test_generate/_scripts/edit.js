@@ -75,24 +75,16 @@ generate.edit = (function() {
 		},
 		add_puller: function($element, _action) {
 			pull_put.put_zone.add($element, function(event, $this, $pulled) {
-				if ($pulled.hasClass('__answer-field')) {
-					var element_type = "answer";
-				} else {
-					var element_type = "question";
-				}
+				{% if not attempt %}
+					generate.let_editing($pulled);
+				{% endif %}
 
-				if(element_type == $element.parent().attr("class").substring(2)) {
-					{% if not attempt %}
-						generate.let_editing($pulled);
-					{% endif %}
+				_action($this, $pulled);
+				
+				pull_put.reset();
 
-					_action($this, $pulled);
-					
-					pull_put.reset();
-
-					if(editor){
-						editor.check_self();
-					}
+				if(editor){
+					editor.check_self();
 				}
 			});
 		},

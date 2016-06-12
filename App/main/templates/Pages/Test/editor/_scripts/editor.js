@@ -6,20 +6,27 @@ var editor = (function() {
 	}
 
 	var check_for_emptiness = function()  {
-		$(".__task .__question").each(function(index, el) {
-			if($(this).children().length == 0){
-				$empty = $("<div class='question--empty --empty'>Добавьте сюда вопрос</div>");
+		$(".__task .__content").each(function(index, el) {
+			if($(this).children(".__question-element").length == 0
+				) {
+				if($(this).children('.question--empty').length == 0){
+					$empty = $("<div class='question--empty --empty'>Добавьте сюда вопрос</div>");
 				
-				$(this).append($empty);
+					$(this).prepend($empty);
 
-				generate.edit.add_puller($empty, function($this, $pulled) {
-					$this.replaceWith($pulled);
-				});
+					generate.edit.add_puller($empty, function($this, $pulled) {
+						$this.replaceWith($pulled);
+					});
+				}
+			} else {
+				$(this).children('.question--empty').remove();
 			}
 		});
 
-		$(".__task .__answer").each(function(index, el) {
-			if($(this).children().length == 0) {
+		$(".__task .__content").each(function(index, el) {
+			if($(this).children(".__answer-field").length == 0
+				) {
+				if($(this).children('.answer--empty').length == 0) {
 				var $empty = $("<div class='answer--empty --empty'>Добавьте сюда поле ответа</div>");
 				
 				$(this).append($empty);
@@ -28,6 +35,9 @@ var editor = (function() {
 					$this.replaceWith($pulled);
 				});
 			}
+		} else {
+			$(this).children('.answer--empty').remove();
+		}
 		});
 	}
 

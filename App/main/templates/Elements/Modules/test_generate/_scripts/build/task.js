@@ -8,13 +8,7 @@ generate.build.task = function($element) {
 		})
 	{% endif %}
 
-	if ($element.hasClass('__answer-field')) {
-		element_type = "answer";
-	} else {
-		element_type = "question";
-	}
-
-	$new_task.find(".__" + element_type).html($element);
+	$new_task.find(".__content").append($element);
 
 	{% if not attempt %}
 		generate.let_editing($element);
