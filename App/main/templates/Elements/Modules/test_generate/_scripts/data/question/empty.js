@@ -5,7 +5,8 @@ generate.data["question--empty"] = {
 		parse: function($original) {
 			return {
 				text: "Добавьте сюда вопрос",
-				class: "question--empty"
+				class: "question--empty",
+				type: "question"
 			}
 		},
 		build: function(value) {

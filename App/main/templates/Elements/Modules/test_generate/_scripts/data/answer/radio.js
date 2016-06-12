@@ -13,7 +13,8 @@ generate.data["answer--radio"] = {
 			return {
 				values: values,
 				answer: $original.attr('answer'),
-				class: "answer--radio"
+				class: "answer--radio",
+				type: "answer"
 			}
 		},
 

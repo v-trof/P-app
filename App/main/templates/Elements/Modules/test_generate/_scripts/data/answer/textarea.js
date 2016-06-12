@@ -5,7 +5,8 @@ generate.data["answer--textarea"]= {
 			console.log("parsed");
 			return {
 				label: $original.find('label').html(),
-				class: "answer--textarea"
+				class: "answer--textarea",
+				type: "answer"
 			}
 		},
 		build: function(value) {

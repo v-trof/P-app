@@ -5,7 +5,8 @@ generate.data["answer--empty"] = {
 		parse: function($original) {
 			return {
 				text: "Добавьте сюда поле ответа",
-				class: "answer--empty"
+				class: "answer--empty",
+				type: "answer"
 			}
 		},
 		build: function(value) {
@@ -32,7 +33,8 @@ generate.data["answer--radio"] = {
 			return {
 				values: values,
 				answer: $original.attr('answer'),
-				class: "answer--radio"
+				class: "answer--radio",
+				type: "answer"
 			}
 		},
 
@@ -112,7 +114,8 @@ generate.data["answer--text"] = {
 			return {
 				label: $original.find('label').html(),
 				answer: $original.attr('answer'),
-				class: "answer--text"
+				class: "answer--text",
+				type: "answer"
 			}
 		},
 
@@ -170,7 +173,8 @@ generate.data["answer--textarea"]= {
 			console.log("parsed");
 			return {
 				label: $original.find('label').html(),
-				class: "answer--textarea"
+				class: "answer--textarea",
+				type: "answer"
 			}
 		},
 		build: function(value) {
@@ -221,7 +225,8 @@ generate.data["question--empty"] = {
 		parse: function($original) {
 			return {
 				text: "Добавьте сюда вопрос",
-				class: "question--empty"
+				class: "question--empty",
+				type: "question"
 			}
 		},
 		build: function(value) {
@@ -239,7 +244,8 @@ generate.data["question--image"] = {
 		parse: function($original) {
 			return {
 				url: $original.find("img").attr("src"),
-				class: "question--image"
+				class: "question--image",
+				type: "question"
 			}
 		},
 		build: function(value) {
@@ -272,7 +278,8 @@ generate.data["question--text"] = {
 		parse: function($original) {
 			return {
 				text: $original.html(),
-				class: "question--text"
+				class: "question--text",
+				type: "question"
 			}
 		},
 		build: function(value) {

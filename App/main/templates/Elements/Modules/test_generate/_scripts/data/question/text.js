@@ -4,7 +4,8 @@ generate.data["question--text"] = {
 		parse: function($original) {
 			return {
 				text: $original.html(),
-				class: "question--text"
+				class: "question--text",
+				type: "question"
 			}
 		},
 		build: function(value) {

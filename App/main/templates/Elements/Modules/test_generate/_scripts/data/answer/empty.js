@@ -5,7 +5,8 @@ generate.data["answer--empty"] = {
 		parse: function($original) {
 			return {
 				text: "Добавьте сюда поле ответа",
-				class: "answer--empty"
+				class: "answer--empty",
+				type: "answer"
 			}
 		},
 		build: function(value) {

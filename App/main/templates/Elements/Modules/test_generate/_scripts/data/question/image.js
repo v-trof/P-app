@@ -4,7 +4,8 @@ generate.data["question--image"] = {
 		parse: function($original) {
 			return {
 				url: $original.find("img").attr("src"),
-				class: "question--image"
+				class: "question--image",
+				type: "question"
 			}
 		},
 		build: function(value) {

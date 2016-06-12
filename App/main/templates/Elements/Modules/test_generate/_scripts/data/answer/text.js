@@ -6,7 +6,8 @@ generate.data["answer--text"] = {
 			return {
 				label: $original.find('label').html(),
 				answer: $original.attr('answer'),
-				class: "answer--text"
+				class: "answer--text",
+				type: "answer"
 			}
 		},
 
