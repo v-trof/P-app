@@ -129,7 +129,7 @@ generate.data["answer--text"] = {
 			var timer;
 			var typing_interval = 1000;
 
-			$element.on("blur mouseout", function() {
+			$element.on("change", function() {
 				var value = $element.find(".__value").val();
 				_action(value);
 			});
@@ -187,7 +187,7 @@ generate.data["answer--textarea"]= {
 			var timer;
 			var typing_interval = 1000;
 
-			$element.on("blur mouseout", function() {
+			$element.on("change", function() {
 				var value = $element.find(".__value").text().substring(0, 17);
 				_action(value);
 			});

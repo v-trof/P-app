@@ -1,6 +1,6 @@
 generate.build.task = function($element) {
 	var $new_task = $(generate.build.template.task)
-	$(".preview .__content").append($new_task)
+	$(".preview>.__content").append($new_task)
 	
 	{% if not attempt %}
 		button_delete.add($new_task, $new_task, function() {
