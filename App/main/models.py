@@ -1076,6 +1076,8 @@ class TestManager(models.Manager):
 					test_results["mistakes"].append(counter)
 					question["result"]="false"
 				counter+=1
+		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w', encoding='utf8') as json_file:
+			json_file.write(json.dumps(attempt_data, ensure_ascii=False))
 		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 				test_data=json.load(info_file)
 		test_results["mark"]=Test.objects.give_mark(percentage=right/(right+mistakes+missed)*100, course_id=course_id, test_id=test_id)
@@ -1103,7 +1105,8 @@ class TestManager(models.Manager):
 			attempt_info=json.load(info_file)
 		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
 			attempt_result=json.load(info_file)
-		test_info=attempt_result+attempt_info
+		test_info=attempt_result
+		test_info["tasks"]=attempt_info
 		return test_info
 		
 	def upload_asset(self,asset,course_id,test_id,path):
