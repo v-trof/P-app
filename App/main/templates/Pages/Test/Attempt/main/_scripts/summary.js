@@ -10,6 +10,21 @@ $(document).ready(function() {
 
 	function show_value(field_index ,value) {
 		$(".sumfor_"+field_index).children(".__value").html(value);
+		console.log("dfggfgf");
+		$.ajax({
+			type:"POST",
+			url:"../attempt/save/",
+			data: {
+			"question":field_index,
+			"answer":value,
+			"test_id":"{{test.id}}",
+			"course_id":"{{course.id}}",
+			"csrfmiddlewaretoken":"{{ csrf_token }}"
+		},
+			success: function(){
+				notification.show('success', 'Ответ отправлен' );
+			},
+		});
 	}
 
 	$(".__answer-field").each(function(index, el) {

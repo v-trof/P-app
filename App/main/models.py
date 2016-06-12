@@ -346,6 +346,8 @@ class CourseManager(models.Manager):
 	def get_test_list(self,course):
 		it=0
 		test_list=[]
+		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data=json.load(data_file)
 		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/*.json'):
 			it = it + 1
 			if str(it) in data["tests"]["published"]:
@@ -454,6 +456,7 @@ class CourseManager(models.Manager):
 		assignment["content"]["tests"] = []
 		assignment["content"]["materials"] = []
 		assignment["content"]["traditionals"] = []
+		print(test_list)
 		assignment["content"]["tests"] = json.loads(test_list)
 		assignment["content"]["materials"] = json.loads(material_list)
 		assignment["content"]["traditionals"] = json.loads(traditionals_list)
@@ -936,22 +939,22 @@ class TestManager(models.Manager):
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 			return 0
 			
-	def check_question(self,item):
+	def build_question(self,item):
 		value={}
 		type=item["class"]
-		if type=="text-answer":
-			value["label"] = item["value"]["label"]
-			value["answer"] = item["value"]["answer"]
+		if type=="answer--text":
+			value["answer"] = item["answer"]
 			value["user_answer"] = None
+			value["type"] = type.split("--")[1]
 		elif type=="textarea":
 			pass
 			# textarea
-		elif type=="select-answer":
+		elif type=="answer--select":
 			value["options"] = []
 			value["options"] = item["value"]["values"]
 			value["answer"] = item["value"]["answer"]
 			value["user_answer"] = None
-		elif type=="radio-answer":
+		elif type=="answer--radio":
 			value["options"] = []
 			value["options"] = item["value"]["values"]
 			value["answer"] = item["value"]["answer"]
@@ -981,12 +984,13 @@ class TestManager(models.Manager):
 						"href" : "/course/"+str(course_id),
 						"link" : Course.objects.get(id=course_id).name
 					},{
-						"href" : "#"#,
-				#		"link" : test["json"]["title"]
+						"href" : "#",
+						"link" : test["json"]["title"]
 					}]
 		for element in context["test"]["json"]["tasks"]:
-			for answer_item in element["answer_items"]: 
-				answer_item.pop("answer",None)
+			for item in element:
+				if item["type"]=="answer": 
+					item.pop("answer",None)
 		if not os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'):
 			os.makedirs('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/')
 		if not os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/results/'):
@@ -995,27 +999,27 @@ class TestManager(models.Manager):
 			with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 				data=json.load(json_file)
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
-			test={}
-			test["tasks"]=[]
+			test=[]
 			with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 				test_info=json.load(info_file)
-				for question in test_info["tasks"]:
-					user_question=[]
-					for item in question["answer_items"]:
-						value=Test.objects.check_question(item=item)
-						user_question.append(value)
-					test["tasks"].append(user_question)
+				for task in test_info["tasks"]:
+					for item in task:
+						if item["type"]=="question":
+							current_question=item
+						else:
+							value=Test.objects.build_question(item=item)
+							test.append(value)
 			data = json.dumps(test, ensure_ascii=False)
 			json_file.write(data)
-			context["test"]["user_answers"]=data
-		print(context)
+			print(test)
+			context["test"]["compiled_tasks"]=test
 		return context
 
-	def attempt_save(self,test_id,question_id,task_id,course_id,answer,user):
+	def attempt_save(self,test_id,question_id,course_id,answer,user):
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			data=json.load(json_file)
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w', encoding='utf8') as json_file:
-			data["tasks"][task_id][question_id]["user_answer"]=answer
+			data[question_id]["user_answer"]=answer
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return 0
@@ -1032,27 +1036,18 @@ class TestManager(models.Manager):
 		test_results["unseen_by"]=[]
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(request.user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			test_data=json.load(json_file)
-			it=-1
-			for task in test_data["tasks"]:
-				it+=1
-				test_results["right"].append(it)
-				test_results["right"][it]=[]
-				test_results["missed"].append(it)
-				test_results["missed"][it]=[]
-				test_results["mistakes"].append(it)
-				test_results["mistakes"][it]=[]
-				counter=-1
-				for question in task:
-					counter+=1
-					if question["user_answer"] == None:
-						missed+=1
-						test_results["missed"][it].append(counter)
-					elif check_correctness(question["user_answer"],question["answer"]):
-						right+=1
-						test_results["right"][it].append(counter)
-					else: 
-						mistakes+=1
-						test_results["mistakes"][it].append(counter)
+			counter=0
+			for question in test_data:
+				if question["user_answer"] == None:
+					missed+=1
+					test_results["missed"].append(counter)
+				elif check_correctness(question["user_answer"],question["answer"]):
+					right+=1
+					test_results["right"].append(counter)
+				else: 
+					mistakes+=1
+					test_results["mistakes"].append(counter)
+				counter+=1
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data=json.load(data_file)
 			for key in data["teachers"].keys():
@@ -1081,10 +1076,10 @@ class TestManager(models.Manager):
 
 	def set_mark_quality(self,mark):
 		if mark == "4" or mark == "5":
-			mark_quality = "good"
+			mark_quality = "positive"
 		elif mark == "3":
-			mark_quality ="medium"
-		else: mark_quality = "bad"
+			mark_quality ="neutral"
+		else: mark_quality = "negative"
 		return mark_quality
 	
 	def get_results(self,course_id,test_id,user):

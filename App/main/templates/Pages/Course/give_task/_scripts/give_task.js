@@ -3,7 +3,7 @@ var as_g = {}
 	as_g.original = $()
 
 	as_g.card_template = function(el){ 
-		return '<div class="card --small" href="'+el.href+'">'+el.title+'</div>'
+		return '<div class="card --small" href="'+el.link+'">'+el.title+'</div>'
 	}
 	
 	as_g.material_list = {{course.material_list|safe}}
