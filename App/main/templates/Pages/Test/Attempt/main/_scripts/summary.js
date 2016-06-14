@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 	panel.show("");
 
-	function show_value(field_index ,value) {
+	function show_value(field_index, value) {
 		$(".sumfor_"+field_index).children(".__value").html(value);
 		console.log("dfggfgf");
 		$.ajax({

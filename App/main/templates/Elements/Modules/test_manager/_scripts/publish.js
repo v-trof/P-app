@@ -6,6 +6,18 @@ test_manager.publish = function() {
 			formData.append("course_id", "{{course.id}}");
 			formData.append("test_id", "{{test.id}}");
 			formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
+			$(".--publish-popup .__mark-settigns")
+				.find("input").each(function(index, el) {
+				// console.log("m:", $(this).attr("id"), $(this).val());
+				formData.append($(this).attr("id"), $(this).val())
+			});
+
+			$(".--publish-popup .__forgive")
+				.find("input").each(function(index, el) {
+				// console.log("ac:", $(this).attr("id"), $(this).is(":checked"));
+				formData.append($(this).attr("id"), $(this).is(":checked"))
+			});
+
 			$.ajax({
 				type:"POST",
 				url:"/test/publish/",
