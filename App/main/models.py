@@ -56,6 +56,7 @@ import collections
 import requests
 import tempfile
 from django.core import files
+from main.python.views.forgiving_check import check
 
 class MediaModel(models.Model):
 	media_file = models.FileField(upload_to='media')
@@ -888,8 +889,11 @@ class TestManager(models.Manager):
 		return 0
 
 	def save(self, json_file,course_id, test_id):
+		json_file=json.loads(json_file)
+		json_file["allowed_mistakes"]=[]
+		json_file["mark_setting"]={"2":0,"3":25,"4":50,"5":75}
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
-			test_file.write(json_file)
+			test_file.write(json.dumps(json_file, ensure_ascii=False))
 
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
@@ -912,7 +916,7 @@ class TestManager(models.Manager):
 				}
 		return test
 		
-	def publish(self,course_id,test_id):
+	def publish(self,course_id,test_id,allowed_mistakes,mark_setting):
 		# makes test visible in course screen
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
@@ -924,6 +928,18 @@ class TestManager(models.Manager):
 
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
+
+		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+			test_data=json.load(info_file)
+
+		test_data["allowed_mistakes"]=allowed_mistakes
+
+		for key in mark_setting:
+			test_data["mark_setting"][key]=mark_setting[key]
+
+		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'w', encoding='utf8') as info_file:
+			info_file.write(json.dumps(test_data, ensure_ascii=False))
+
 		return 0
 
 	def unpublish(self,course_id,test_id):
@@ -1044,21 +1060,23 @@ class TestManager(models.Manager):
 		else: mark_quality = "negative"
 		return mark_quality
 
-	def check_question_correctness(self,question):
-		if question["answer"] == question["user_answer"]:
-			return True
-		else: return False
+	def check_question_correctness(self,question,allowed_mistakes):
+		return check(answer_right=question["answer"],answer=question["user_answer"],allowed=allowed_mistakes)
 
 	def attempt_check(self,user,test_id,course_id):
 		right=0
 		missed=0
 		mistakes=0
+		forgiving=0
 		test_results={}
 		test_results["test_id"]=test_id
 		test_results["right"]=[]
 		test_results["mistakes"]=[]
+		test_results["forgiving"]=[]
 		test_results["missed"]=[]
 		test_results["unseen_by"]=[]
+		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+				test_data=json.load(info_file)
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			attempt_data=json.load(json_file)
 			counter=0
@@ -1067,10 +1085,14 @@ class TestManager(models.Manager):
 					missed+=1
 					test_results["missed"].append(counter)
 					question["result"]="missing"
-				elif Test.objects.check_question_correctness(question=question):
+				elif Test.objects.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"])=="right":
 					right+=1
 					test_results["right"].append(counter)
 					question["result"]="right"
+				elif Test.objects.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"])=="forgiving":
+					forgiving+=1
+					test_results["forgiving"].append(counter)
+					question["result"]="forgiving"
 				else:
 					mistakes+=1
 					test_results["mistakes"].append(counter)
@@ -1078,16 +1100,14 @@ class TestManager(models.Manager):
 				counter+=1
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w', encoding='utf8') as json_file:
 			json_file.write(json.dumps(attempt_data, ensure_ascii=False))
-		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
-				test_data=json.load(info_file)
-		test_results["mark"]=Test.objects.give_mark(percentage=right/(right+mistakes+missed)*100, course_id=course_id, test_id=test_id)
+		test_results["mark"]=Test.objects.give_mark(percentage=(right+forgiving)/(right+mistakes+missed+forgiving)*100, course_id=course_id, test_id=test_id)
 		test_results["mark_quality"]=Test.objects.set_mark_quality(test_results["mark"])
-		test_results["test_title"]=test_data["title"]
-		test_results["right_answers"]=right
-		test_results["questions_overall"]=right+mistakes+missed
+		test_results["right_answers"]=right+forgiving
+		test_results["questions_overall"]=right+mistakes+missed+forgiving
 		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
 			saving_data = json.dumps(test_results, ensure_ascii=False)
 			json_file.write(saving_data)
+
 		return 0
 
 	def get_results(self,course_id,test_id,user):

@@ -73,7 +73,19 @@ def publish(request):
 	# makes test visible in course screen
 	course_id = request.POST.get("course_id",None)
 	test_id = request.POST.get("test_id",None)
-	Test.objects.publish(course_id=course_id, test_id=test_id)
+	allowed_mistakes=[]
+	mark_setting={}
+	for setting in request.POST:
+		if setting.startswith('min_for'):
+			if request.POST[setting]!='':
+				mark_setting[setting[-1]]=int(request.POST[setting])
+			else: mark_setting[setting[-1]]=101
+		elif setting.startswith('autocorrect_'):
+			if request.POST[setting]=="true":
+				allowed_mistakes.append(setting[12:])
+	print(allowed_mistakes)
+	print(mark_setting)
+	Test.objects.publish(course_id=course_id, test_id=test_id,allowed_mistakes=allowed_mistakes,mark_setting=mark_setting)
 	return HttpResponse("Тест опубликован")
 
 
