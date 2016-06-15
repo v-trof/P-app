@@ -34,6 +34,7 @@ def check(answer, answer_right, allowed):
 			if answer == answer_right:
 				return "forgiving"
 	if "word_order" in allowed:
+		print('alalala')
 		if forgiving["word_order"](answer=answer,answer_right=answer_right):
 			return "forgiving"
 	return "false"
@@ -49,7 +50,6 @@ def roman_nums(answer):
 	return answer
 
 def punctuation(answer):
-	print(answer)
 	answer = answer.replace(".", "")
 	answer = answer.replace(",", "")
 	answer = answer.replace("-", "")
@@ -58,8 +58,7 @@ def punctuation(answer):
 def word_order(answer, answer_right):
 	answer = set(re.split('\W+', answer))
 	answer_right = set(re.split('\W+', answer_right))
-	# print(answer, answer_right)
-	return answer
+	return answer==answer_right
 
 def e(answer):
 	answer = answer.replace("ё", "е")
@@ -82,7 +81,6 @@ def full_delta(answer, answer_right):
 		for letter in answer:
 			if single_delta(letter.lower(),answer_right[it].lower()):
 				k=k[:it] + answer_right[it] + k[it+1:]
-				print(k)
 			it+=1
 	return k
 
@@ -125,7 +123,6 @@ def lost_chars(answer,right_answer):
 		if correctness(k,right_answer,delta)>=max:
 			max=correctness(k,right_answer,delta)
 			max_var=k
-			print(max_var)
 		k=answer
 	return max_var
 
@@ -173,22 +170,15 @@ def typo(answer, right_answer, delta):
 	k=answer
 	if len(k)<len(right_answer):
 		k=lost_chars(k,right_answer)
-	#print(k)
 	max=correctness(k,right_answer,delta)
 	if delta:
 		k=full_delta(k,right_answer)
-	#print(k)
 	if len(k)>len(right_answer) and correctness(cutting(k,right_answer,delta),right_answer,delta)>max:
 		max=correctness(cutting(k,right_answer,delta),right_answer,delta)
 		k=cutting(k,right_answer,delta)
-	#print(k)
-	print(correctness(k,right_answer,delta))
-	print(correctness(replacement(k,right_answer,delta),right_answer,delta))
 	if correctness(replacement(k,right_answer,delta),right_answer,delta)>max:
 		max=correctness(replacement(k,right_answer,delta),right_answer,delta)
 		k=replacement(k,right_answer,delta)
-		print(k)
-	#print(k)
 	return k
 
 

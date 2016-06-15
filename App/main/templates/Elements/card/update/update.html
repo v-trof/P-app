@@ -1,11 +1,10 @@
 {% load ext_humanize %}
-{% if update.new_students|length > 0 or update.new_marks|length > 0 or update.requesting_users|length > 0 %}
+{% if update.new_students|length > 0 or update.new_results > 0 or update.requesting_users|length > 0 %}
 <a class="--card" href='/course/{{update.course.id}}/updates'>
 	<div class="card">
 		<h4  class="__heading">В курсе {{ update.course.name}}</h4>
-		{% if update.new_marks|length > 0 %}
-			<div class="marks"><b>{{ update.new_marks|length }}</b> {{update.new_marks|length|form_for_num:"новая новые новых" }} {{update.new_marks|length|form_for_num:"оценка оценки оценок" }}</div>
-			}
+		{% if update.new_results > 0 %}
+			<div class="marks"><b>{{ update.new_results }}</b> {{update.new_results|form_for_num:"новая новые новых" }} {{update.new_results|form_for_num:"оценка оценки оценок" }}</div>
 		{% endif %}
 		{% if update.new_students|length > 0 %}
 			<div class="joined"><b>{{update.new_students|length}}</b> 

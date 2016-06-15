@@ -1,8 +1,9 @@
-{% for subject,value in marks.items %}
+{% load get_obj from filters %}
+{% for subject,courses in marks.items %}
 	<div class="subject">
 		<h3>{{subject}}</h3>
-		{% for course in value %}
-			{% include "Elements/card/marks/" with marks=course.course_marks course=course.course %}
+		{% for course_id,results in courses.items %}
+			{% include "Elements/card/marks/" with course=course_id|get_obj:"id" %}
 		{% endfor %}
 	</div>
 {% empty %}

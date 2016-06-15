@@ -279,6 +279,12 @@ class CourseManager(models.Manager):
 						else: setattr(user, 'participation_list', str(course.id))
 						user.save()
 					elif data["status"] == "closed": data["pending_users"]["Заявки"].append(user.id)
+					else: 						
+						if user.participation_list:
+							setattr(user, 'participation_list',
+									user.participation_list + " " + str(course.id))
+						else: setattr(user, 'participation_list', str(course.id))
+						user.save()
 				with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(data, ensure_ascii=False)
 					json_file.write(saving_data)
@@ -311,7 +317,6 @@ class CourseManager(models.Manager):
 				course_data["teachers"].append(User.objects.get(id=teacher_id))
 			for group in data["groups"]:
 				course_data["groups"][group] = []
-				print(data["groups"][group])
 				for user_id in data["groups"][group]:
 					course_data["groups"][group].append(
 						User.objects.get(id=user_id))
@@ -396,7 +401,6 @@ class CourseManager(models.Manager):
 			with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
 					data = json.load(json_file)
 			for task in data.keys():
-				print(len(data[task]["traditionals"]))
 				if len(data[task]["traditionals"])+len(data[task]["tests"]) == 0:
 					del data[task]
 					with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as json_file:
@@ -457,7 +461,6 @@ class CourseManager(models.Manager):
 		assignment["content"]["tests"] = []
 		assignment["content"]["materials"] = []
 		assignment["content"]["traditionals"] = []
-		print(test_list)
 		assignment["content"]["tests"] = json.loads(test_list)
 		assignment["content"]["materials"] = json.loads(material_list)
 		assignment["content"]["traditionals"] = json.loads(traditionals_list)
@@ -524,16 +527,16 @@ class CourseManager(models.Manager):
 		course_data["tests_number"]=len(data["tests"]["published"])
 		return course_data
 
-	def load_marks(self,course_id,user_id):
-		marks = []
-		for marks_file in glob.glob('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/*.json'):
-			with io.open(marks_file, 'r', encoding='utf8') as data_file:
+	def load_results(self,course_id,user_id):
+		results = []
+		for results_file in glob.glob('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/*.json'):
+			with io.open(results_file, 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
-				mark = data
-				marks.append(mark)
-		if len(marks)==0:
-			marks=None
-		return marks
+				data["course"]=Course.objects.get(id=course_id)
+				results.append(data)
+		if len(results)==0:
+			results=None
+		return results
 
 	def load_updates(self,course,user):
 		updates={}
@@ -551,16 +554,15 @@ class CourseManager(models.Manager):
 				updates["requesting_users"]=[]
 				for requesting_user_id in data["pending_users"]["Заявки"]:
 					updates["requesting_users"].append(User.objects.get(id=requesting_user_id))
-			updates["new_marks"] = []
-			mark={}
+			updates["new_results"] = []
 			for user_id in data["users"]:
-				for test_result in glob.glob('main/files/json/courses/' + str(course.id) + '/users/' + str(course.id) + '/tests/results/*.json'):
+				for test_result in glob.glob('main/files/json/courses/' + str(course.id) + '/users/' + str(user_id) + '/tests/results/*.json'):
 					with io.open(test_result, 'r', encoding='utf8') as result_file:
 						result = json.load(result_file)
 						if user.id in result["unseen_by"]:
-							mark["value"]=result["marks"]
-							mark["quality"]=result["mark_quality"]
-					updates["new_marks"].append(mark)
+							result_preview=result
+							result_preview["user"]=User.objects.get(id=user_id)
+							updates["new_results"].append(result_preview)
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as data_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			data_file.write(saving_data)			
@@ -683,16 +685,21 @@ class UserManager(UserManager):
 
 	def load_marks(self, string_array, user_id):
 		if string_array:
-			has_marks=False
+			subject_has_marks={}
 			course_array = string_array.split(" ")
 			marks={}
 			for course_id in course_array:
 				course=Course.objects.get(id=course_id)
-				marks[course.subject]=Course.objects.load_marks(course_id=course_id,user_id=user_id)
-				if marks[course.subject] != None:
-					has_marks=True
-		if not has_marks:
-			marks=None
+				if not course.subject in marks.keys():
+					marks[course.subject]={}
+					subject_has_marks[course.subject]=False
+				marks[course.subject][course_id]=Course.objects.load_results(course_id=course_id,user_id=user_id)
+				if marks[course.subject][course_id] != None:
+					subject_has_marks[course.subject]=True
+				else: marks[course.subject].pop(course_id,None)
+			for subject,has_marks in subject_has_marks.items():
+				if not has_marks:
+					marks.pop(subject,None)
 		return marks
 
 	def load_assignments_by_course(self, string_array, user):
@@ -729,7 +736,6 @@ class UserManager(UserManager):
 		has_updates=False
 		for course_id in user.courses.split(' '):
 			updates[course_id]={}
-			print("user",user)
 			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
 				updates[course_id]["course"]=Course.objects.get(id=course_id)
@@ -738,19 +744,16 @@ class UserManager(UserManager):
 					updates[course_id]["new_students"].append(User.objects.get(id=user_id))
 				if data["status"] == "closed":
 					updates[course_id]["requesting_users"] = data["pending_users"]["Заявки"]
-				updates[course_id]["new_marks"] = []
-				mark={}
+				updates[course_id]["new_results"] = 0
 				for user_id in data["users"]:
-					for test_result in glob.glob('main/files/json/courses/' + course_id + '/users/' + course_id + '/tests/results/*.json'):
-						with io.open(test_result, 'r', encoding='utf8') as result_file:
-							result = json.load(result_file)
+					for test_result in glob.glob('main/files/json/courses/' + course_id + '/users/' + str(user_id) + '/tests/results/*.json'):
+						with io.open(test_result, 'r', encoding='utf8') as test_data_file:
+							result = json.load(test_data_file)
 							if user.id in result["unseen_by"]:
-								mark["value"]=result["marks"]
-								mark["quality"]=result["mark_quality"]
-						updates[course_id]["new_marks"].append(mark)
-				updates_count=0
+								updates[course_id]["new_results"]+=1
+				updates_count=updates[course_id]["new_results"]
 				for key in updates[course_id].keys():
-					if key is not "course":
+					if key is not "course" and key is not "new_results":
 						updates_count+=len(updates[course_id][key])
 				if updates_count==0:
 					updates[course_id]={}
@@ -958,7 +961,6 @@ class TestManager(models.Manager):
 	def build_question(self,item):
 		value={}
 		type=item["class"]
-		print("item",item)
 		value["type"] = type.split("--")[1]
 		if type=="answer--text":
 			value["answer"] = item["answer"]
@@ -1027,7 +1029,6 @@ class TestManager(models.Manager):
 							test.append(value)
 			data = json.dumps(test, ensure_ascii=False)
 			json_file.write(data)
-			print(test)
 			context["test"]["compiled_tasks"]=test
 		return context
 
@@ -1053,14 +1054,15 @@ class TestManager(models.Manager):
 		return mark
 
 	def set_mark_quality(self,mark):
-		if mark == "4" or mark == "5":
+		if mark["value"] == "4" or mark["value"] == "5":
 			mark_quality = "positive"
-		elif mark == "3":
+		elif mark["value"] == "3":
 			mark_quality ="neutral"
 		else: mark_quality = "negative"
 		return mark_quality
 
 	def check_question_correctness(self,question,allowed_mistakes):
+		print(question["answer"],question["user_answer"])
 		return check(answer_right=question["answer"],answer=question["user_answer"],allowed=allowed_mistakes)
 
 	def attempt_check(self,user,test_id,course_id):
@@ -1069,14 +1071,14 @@ class TestManager(models.Manager):
 		mistakes=0
 		forgiving=0
 		test_results={}
-		test_results["test_id"]=test_id
 		test_results["right"]=[]
 		test_results["mistakes"]=[]
 		test_results["forgiving"]=[]
 		test_results["missed"]=[]
 		test_results["unseen_by"]=[]
 		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
-				test_data=json.load(info_file)
+			test_data=json.load(info_file)
+		test_results["test"]={"id":test_id,"title":test_data["title"]}
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			attempt_data=json.load(json_file)
 			counter=0
@@ -1098,10 +1100,15 @@ class TestManager(models.Manager):
 					test_results["mistakes"].append(counter)
 					question["result"]="false"
 				counter+=1
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data=json.load(data_file)
+		for teacher in course_data["teachers"]:
+			test_results["unseen_by"].append(int(teacher))
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w', encoding='utf8') as json_file:
 			json_file.write(json.dumps(attempt_data, ensure_ascii=False))
-		test_results["mark"]=Test.objects.give_mark(percentage=(right+forgiving)/(right+mistakes+missed+forgiving)*100, course_id=course_id, test_id=test_id)
-		test_results["mark_quality"]=Test.objects.set_mark_quality(test_results["mark"])
+		test_results["mark"]={}
+		test_results["mark"]["value"]=Test.objects.give_mark(percentage=(right+forgiving)/(right+mistakes+missed+forgiving)*100, course_id=course_id, test_id=test_id)
+		test_results["mark"]["quality"]=Test.objects.set_mark_quality(test_results["mark"])
 		test_results["right_answers"]=right+forgiving
 		test_results["questions_overall"]=right+mistakes+missed+forgiving
 		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
