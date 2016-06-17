@@ -1062,7 +1062,6 @@ class TestManager(models.Manager):
 		return mark_quality
 
 	def check_question_correctness(self,question,allowed_mistakes):
-		print(question["answer"],question["user_answer"])
 		return check(answer_right=question["answer"],answer=question["user_answer"],allowed=allowed_mistakes)
 
 	def attempt_check(self,user,test_id,course_id):

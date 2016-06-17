@@ -9,34 +9,48 @@ def swap(c, i, j):
 	return ''.join(c)
 
 def numbers(answer):
-    rlist = romanList = [(1000, "M"),(900, "CM"),(500, "D"),(400, "CD"),(100, "C"),(90, "XC"),(50, "L"),(40, "XL"),(10, "X"),(9, "IX"),(5, "V"),(4, "IV"),(1, "I")]
-    romanResult = answer
-   # for char in answer:
-   # 	if char.isdigit():
-   # 		integer=int(char)
-	#    	for wholeNumber in rlist:
-	#            while integer >= wholeNumber[0]:
-	#                    integer -= wholeNumber[0]
-	#                    romanResult += wholeNumber[1]
-    return romanResult
+	rlist = romanList = [(1000, "M"),(900, "CM"),(500, "D"),(400, "CD"),(100, "C"),(90, "XC"),(50, "L"),(40, "XL"),(10, "X"),(9, "IX"),(5, "V"),(4, "IV"),(1, "I")]
+	romanResult = ""
+	num_string=""
+	for char in answer:
+		if char.isdigit():
+			num_string+=char
+		elif num_string!="":
+			integer=int(num_string)
+			for wholeNumber in rlist:
+				while integer >= wholeNumber[0]:
+					integer -= wholeNumber[0]
+					romanResult += wholeNumber[1]
+			num_string=""
+	integer=int(num_string)
+	for wholeNumber in rlist:
+		while integer >= wholeNumber[0]:
+			integer -= wholeNumber[0]
+			romanResult += wholeNumber[1]
+	return romanResult
 
 def check(answer, answer_right, allowed):
 	if answer == answer_right:
 		return "right"
+	if "word_order" in allowed:
+		if forgiving["word_order"](answer=answer,answer_right=answer_right):
+			return "forgiving"
 	for mistake in allowed:
+		prev_answer=answer
 		#simple replacements
 		if mistake != "word_order":
 			if mistake == "typo":
 				answer = forgiving[mistake](answer=answer,answer_right=answer_right)
+				if answer == answer_right:
+					return "forgiving"
+			elif mistake == "numbers":
+				if forgiving[mistake](answer=answer) == answer_right:
+					return "forgiving"
 			else:
 				answer = forgiving[mistake](answer=answer)
 				answer_right = forgiving[mistake](answer=answer_right)
-			if answer == answer_right:
-				return "forgiving"
-	if "word_order" in allowed:
-		print('alalala')
-		if forgiving["word_order"](answer=answer,answer_right=answer_right):
-			return "forgiving"
+				if answer == answer_right:
+					return "forgiving"
 	return "false"
 
 def spaces(answer):
@@ -87,12 +101,12 @@ def full_delta(answer, answer_right):
 def register(answer):
 	return answer.lower()
 
-def correctness(answer, right_answer, delta):
+def correctness(answer, answer_right, delta=True):
 	it=0
 	right_letters=0
-	if len(answer)>len(right_answer):
-		letter_coefficient=len(right_answer)/len(answer)
-		for letter in right_answer:
+	if len(answer)>len(answer_right):
+		letter_coefficient=len(answer_right)/len(answer)
+		for letter in answer_right:
 			if letter==answer[it]:
 				right_letters+=1
 			elif delta:
@@ -102,7 +116,7 @@ def correctness(answer, right_answer, delta):
 	else: 
 		letter_coefficient=1
 		for letter in answer:
-			if letter==right_answer[it]:
+			if letter==answer_right[it]:
 				right_letters+=1
 			elif delta:
 				if single_delta(letter.lower(),right_answer[it].lower()):
