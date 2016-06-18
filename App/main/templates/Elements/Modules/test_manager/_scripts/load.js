@@ -10,13 +10,14 @@ test_manager.load = function(test_json) {
 			.element.build(task_data[0])
 		);
 
-		console.log($task);
-
 		for (var i = 1; i < task_data.length; i++) {
 			element_class = task_data[i].class;
+			console.log(task_data[i]);
 			var $element =  generate.read(element_class)
 				.element.build(task_data[i])
-
+			{% if attempt %}
+				$element.find('.__value').attr('value', task_data[i].value);
+			{% endif %}
 			$task.find(".__content").append($element);
 		}
 
@@ -29,6 +30,5 @@ test_manager.load = function(test_json) {
 {% if test.json %}
 $(document).ready(function() {
 	test_manager.load({{test.json|safe}});
-	console.log("{{test.json|safe}}");
 });
 {% endif %}

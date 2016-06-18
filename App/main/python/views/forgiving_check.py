@@ -22,11 +22,12 @@ def numbers(answer):
 					integer -= wholeNumber[0]
 					romanResult += wholeNumber[1]
 			num_string=""
-	integer=int(num_string)
-	for wholeNumber in rlist:
-		while integer >= wholeNumber[0]:
-			integer -= wholeNumber[0]
-			romanResult += wholeNumber[1]
+	if num_string.isdigit():
+		integer=int(num_string)
+		for wholeNumber in rlist:
+			while integer >= wholeNumber[0]:
+				integer -= wholeNumber[0]
+				romanResult += wholeNumber[1]
 	return romanResult
 
 def check(answer, answer_right, allowed):

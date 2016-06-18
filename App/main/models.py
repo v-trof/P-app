@@ -408,10 +408,18 @@ class CourseManager(models.Manager):
 				else: 
 					with io.open('main/files/json/courses/' + str(course.id) + '/assignments/'+task+'.json', 'r', encoding='utf8') as data_file:
 						new_data = json.load(data_file)
+						print(new_data["content"]["tests"])
+						for test in new_data["content"]["tests"]:
+							if not test["id"] in data[task]["tests"]:
+								test["done"]=True
+							if test["id"] in data[task]["unfinished_tests"]:
+								test["unfinished"]=True
+							else: test["unfinished"]=False
 						new_data.pop("course_id",None)
 						new_data["course"]=course
 						new_data["id"]=task
 						tasks.append(new_data)
+						print(new_data)
 			return sorted(tasks, key=lambda k: k['due_date'])
 		except: return tasks
 
@@ -462,6 +470,8 @@ class CourseManager(models.Manager):
 		assignment["content"]["materials"] = []
 		assignment["content"]["traditionals"] = []
 		assignment["content"]["tests"] = json.loads(test_list)
+		for test in assignment["content"]["tests"]:
+			test["id"]=test["link"].split('&')[1].split('=')[1]
 		assignment["content"]["materials"] = json.loads(material_list)
 		assignment["content"]["traditionals"] = json.loads(traditionals_list)
 		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + assignment_id + '.json', 'a+', encoding='utf8') as json_file:
@@ -472,12 +482,11 @@ class CourseManager(models.Manager):
 				data = json.load(json_file)
 				assignment_map={}
 				data[assignment_id] = {}
+				assignment_map["unfinished_tests"]=[]
 				assignment_map["tests"]=[]
 				assignment_map["traditionals"]=[]
-				it = 0
 				for task in assignment["content"]["tests"]:
-					it += 1
-					assignment_map["tests"].append(it)
+					assignment_map["tests"].append(task["link"].split('&')[1].split('=')[1])
 				it = 0
 				for task in assignment["content"]["traditionals"]:
 					it += 1
@@ -987,6 +996,14 @@ class TestManager(models.Manager):
 	def attempt(self,course_id,user,test_id):
 		# creates or continues attempt
 		# loads test file
+		if not os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'):
+			os.makedirs('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/')
+		if not os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/results/'):
+			os.makedirs('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/results/')
+		if os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json'):
+			with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+				data=json.load(json_file)
+		else:data=None
 		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 				course_info = json.load(info_file)
@@ -997,6 +1014,16 @@ class TestManager(models.Manager):
 					"json": json.load(json_file),
 					"published" : test_id in course_info["tests"]["published"]
 				}
+				it=0
+				print(test["json"]["tasks"])
+				for task in test["json"]["tasks"]:
+					for item in task:
+						if not data == None and item["type"]=="answer" and str(it) in data and not data[str(it)]["user_answer"] == None: 
+							item["value"]=data[str(it)]["user_answer"]
+							it+=1
+						elif item["type"]=="answer":
+							item["value"]=""
+							it+=1
 				context =  {"test": test, "course": course}
 				context["breadcrumbs"] =[{
 						"href" : "/course/"+str(course_id),
@@ -1009,34 +1036,37 @@ class TestManager(models.Manager):
 			for item in element:
 				if item["type"]=="answer": 
 					item.pop("answer",None)
-		if not os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'):
-			os.makedirs('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/')
-		if not os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/results/'):
-			os.makedirs('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/results/')
-		if os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json'):
-			with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
-				data=json.load(json_file)
-		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
-			test=[]
-			with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
-				test_info=json.load(info_file)
-				for task in test_info["tasks"]:
-					for item in task:
-						if item["type"]=="question":
-							current_question=item
-						else:
-							value=Test.objects.build_question(item=item)
-							test.append(value)
-			data = json.dumps(test, ensure_ascii=False)
-			json_file.write(data)
-			context["test"]["compiled_tasks"]=test
+		if data==None:
+			with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
+				test={}
+				question_id=0
+				with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+					test_info=json.load(info_file)
+					for task in test_info["tasks"]:
+						for item in task:
+							if item["type"]=="question":
+								current_question=item
+							else:
+								value=Test.objects.build_question(item=item)
+								test[str(question_id)]=value
+								question_id+=1
+				data = json.dumps(test, ensure_ascii=False)
+				json_file.write(data)
 		return context
 
 	def attempt_save(self,test_id,question_id,course_id,answer,user):
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as assignments_file:
+			assignment_map = json.load(assignments_file)
+		print(assignment_map)
+		for assignment_id, content in assignment_map.items():
+			if not test_id in content["unfinished_tests"] and test_id in content["tests"]:
+				content["unfinished_tests"].append(test_id)
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as assignments_file:
+			assignments_file.write(json.dumps(assignment_map, ensure_ascii=False))
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			data=json.load(json_file)
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w', encoding='utf8') as json_file:
-			data[question_id-1]["user_answer"]=answer
+			data[str(question_id-1)]["user_answer"]=answer
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return 0
@@ -1081,7 +1111,9 @@ class TestManager(models.Manager):
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			attempt_data=json.load(json_file)
 			counter=0
-			for question in attempt_data:
+			print(attempt_data)
+			for question_id,question in attempt_data.items():
+				print(question)
 				if question["user_answer"] == None:
 					missed+=1
 					test_results["missed"].append(counter)
@@ -1113,6 +1145,15 @@ class TestManager(models.Manager):
 		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
 			saving_data = json.dumps(test_results, ensure_ascii=False)
 			json_file.write(saving_data)
+		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/assignments/in_process.json', 'r', encoding='utf8') as assignment_map:
+			assignment_map = json.load(assignment_map)
+			for assignment_id, content in assignment_map.items():
+				if test_id in content["tests"]:
+					del content["tests"][content["tests"].index(test_id)]
+				if test_id in content["unfinished_tests"]:
+					del content["tests"][content["unfinished_tests"].index(test_id)]
+		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/assignments/in_process.json', 'w+', encoding='utf8') as assignment:
+			assignment.write(json.dumps(assignment_map, ensure_ascii=False))
 
 		return 0
 
