@@ -57,6 +57,8 @@ import requests
 import tempfile
 from django.core import files
 from main.python.views.forgiving_check import check
+import datetime
+from django.utils import timezone
 
 class MediaModel(models.Model):
 	media_file = models.FileField(upload_to='media')
@@ -264,6 +266,7 @@ class CourseManager(models.Manager):
 								for teacher in data["teachers"]:
 									data["teachers"][teacher][
 										"new_users"].append(user.id)
+					print("2")
 					if not data["status"] == "closed" and not checker and not is_invited:
 						group = "Нераспределенные"
 						data["groups"][group][str(user.id)] = {}
@@ -293,11 +296,12 @@ class CourseManager(models.Manager):
 								'/users/' + str(user.id) + '/')
 					os.makedirs('main/files/json/courses/' + str(course.id) +
 								'/users/' + str(user.id) + '/assignments/')
-					data = {}
+					data = []
 					with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/done.json', 'a', encoding='utf8') as json_file:
 						saving_data = json.dumps(data, ensure_ascii=False)
 						json_file.write(saving_data)
 					data = {}
+					print("3")
 					with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'a', encoding='utf8') as json_file:
 						saving_data = json.dumps(data, ensure_ascii=False)
 						json_file.write(saving_data)
@@ -394,34 +398,69 @@ class CourseManager(models.Manager):
 		return sorted(assignments, key=lambda k: k['due_date'])
 
 	def user_get_tasks(self, user, course):
-		tasks = []
+		tasks = {"done":[],"undone":[]}
 		if user.is_anonymous():
 			return tasks
-		try:
-			with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
-					data = json.load(json_file)
-			for task in data.keys():
-				if len(data[task]["traditionals"])+len(data[task]["tests"]) == 0:
-					del data[task]
-					with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as json_file:
-						json_file.write(json.dumps(data, ensure_ascii=False))
-				else: 
-					with io.open('main/files/json/courses/' + str(course.id) + '/assignments/'+task+'.json', 'r', encoding='utf8') as data_file:
-						new_data = json.load(data_file)
-						print(new_data["content"]["tests"])
-						for test in new_data["content"]["tests"]:
-							if not test["id"] in data[task]["tests"]:
-								test["done"]=True
-							if test["id"] in data[task]["unfinished_tests"]:
-								test["unfinished"]=True
-							else: test["unfinished"]=False
-						new_data.pop("course_id",None)
-						new_data["course"]=course
-						new_data["id"]=task
-						tasks.append(new_data)
-						print(new_data)
-			return sorted(tasks, key=lambda k: k['due_date'])
-		except: return tasks
+		with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
+				data = json.load(json_file)
+		next_data=list(data)
+		for task in data.keys():
+			#if len(next_data[task]["traditionals"])+len(next_data[task]["tests"])+len(next_data[task]["unfinished_tests"])== 0:
+			#	del next_data[task]
+			#	with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/done.json', 'r', encoding='utf8') as done_file:
+			#		done = json.load(done_file)
+			#	done.append(task)
+			#	with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/done.json', 'w+', encoding='utf8') as done_file:	
+			#		done_file.write(json.dumps(done, ensure_ascii=False))
+			#	with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as json_file:
+			#		json_file.write(json.dumps(next_data, ensure_ascii=False))
+			#else:
+			with io.open('main/files/json/courses/' + str(course.id) + '/assignments/'+task+'.json', 'r', encoding='utf8') as data_file:
+				new_data = json.load(data_file)
+				for test in new_data["content"]["tests"]:
+					if not test["id"] in data[task]["tests"]:
+						test["done"]=True
+					if test["id"] in data[task]["unfinished_tests"]:
+						test["unfinished"]=True
+					else: test["unfinished"]=False
+				new_data.pop("course_id",None)
+				new_data["course"]=course
+				new_data["id"]=task
+				date=str(datetime.datetime.now())[:10]
+				if len(new_data["due_date"]) > 0:
+					if int(new_data["due_date"][-4:])>int(date[:4]):
+						new_data["relevant"]=True
+					elif int(new_data["due_date"][-4:])<int(date[:4]):
+						new_data["relevant"]=False
+					else:
+						if int(new_data["due_date"][3:5])>int(date[5:7]):
+							new_data["relevant"]=True
+						elif int(new_data["due_date"][-4:])<int(date[:4]):
+							new_data["relevant"]=False
+						else:
+							if int(new_data["due_date"][:2])>=int(date[-2:]):
+								new_data["relevant"]=True
+							else:
+								new_data["relevant"]=False
+				else: new_data["relevant"]=True
+				tasks["undone"].append(new_data)
+			with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/done.json', 'r', encoding='utf8') as json_file:
+				data = json.load(json_file)
+			next_data=data
+			for task in data:
+				with io.open('main/files/json/courses/' + str(course.id) + '/assignments/'+task+'.json', 'r', encoding='utf8') as data_file:
+					new_data = json.load(data_file)
+					for test in new_data["content"]["tests"]:
+						if not test["id"] in data[task]["tests"]:
+							test["done"]=True
+						if test["id"] in data[task]["unfinished_tests"]:
+							test["unfinished"]=True
+						else: test["unfinished"]=False
+					new_data.pop("course_id",None)
+					new_data["course"]=course
+					new_data["id"]=task
+				tasks["done"].append(new_data)
+		return tasks#sorted(tasks, key=lambda k: k['due_date'])
 
 	def get_users_info(self, user_ids):
 		users = []
@@ -628,8 +667,9 @@ class UserManager(UserManager):
 				user = authenticate(username=email, password=password)
 				auth(request, user)
 				request.session.set_expiry(36000)
-				if course_id and request.POST.get('course_reg', False):
-					reg_user(request, course_id)
+				if course_id:
+					course=Course.objects.get(id=course_id)
+					Course.objects.reg_user(course=course, user=user)
 					return 'groups'
 				return 'success'
 		else:
@@ -730,15 +770,17 @@ class UserManager(UserManager):
 		return assignments
 
 	def load_assignments_by_date(self, string_array, user):
-		assignments=[]
+		assignments={"done":[],"undone":[]}
 		if string_array:
 			course_array = string_array.split(" ")
 			for course_id in course_array:
 				course=Course.objects.get(id=course_id)
-				assignments= assignments + Course.objects.user_get_tasks(user=user,course=course)
-		if len(assignments)==0:
+				assignment=Course.objects.user_get_tasks(user=user,course=course)
+				assignments["done"]=assignment["done"]
+				assignments["undone"]=assignment["undone"]
+		if len(assignments["done"])+len(assignments["undone"])==0:
 			return None
-		return sorted(assignments, key=lambda k: k['due_date'])
+		return assignments#sorted(assignments, key=lambda k: k['due_date'])
 
 	def load_updates(self,user):
 		updates={}
@@ -1151,7 +1193,7 @@ class TestManager(models.Manager):
 				if test_id in content["tests"]:
 					del content["tests"][content["tests"].index(test_id)]
 				if test_id in content["unfinished_tests"]:
-					del content["tests"][content["unfinished_tests"].index(test_id)]
+					del content["unfinished_tests"][content["unfinished_tests"].index(test_id)]
 		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/assignments/in_process.json', 'w+', encoding='utf8') as assignment:
 			assignment.write(json.dumps(assignment_map, ensure_ascii=False))
 
@@ -1174,6 +1216,7 @@ class TestManager(models.Manager):
 			attempt_result=json.load(info_file)
 		test_info=attempt_result
 		test_info["tasks"]=attempt_info
+		print(test_info)
 		return test_info
 		
 	def upload_asset(self,asset,course_id,test_id,path):

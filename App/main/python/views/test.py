@@ -54,7 +54,6 @@ def load(request):
 	course_id = request.GET.get("course_id",None)
 	test_id = request.GET.get("test_id",None)
 	test=Test.objects.load(course_id=course_id, test_id=test_id)
-	print("ololololo",test)
 	context={}
 	context["test"]=test
 	context["test"]["id"]=test_id
