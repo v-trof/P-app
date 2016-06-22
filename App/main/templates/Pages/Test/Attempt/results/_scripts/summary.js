@@ -8,5 +8,18 @@ $(document).ready(function() {
 
 	panel.show("");
 
-	for
-}
+	$(".__answer-field").each(function(index, el) {
+		panel.content.append(summary_template(index+1));
+		var element_class = $(this)
+				.attr('class').split(' ')[0];
+
+		var blueprints = generate.read(element_class);
+
+		console.log(blueprints, element_class);
+
+		blueprints.element.getter($(this), function(value) {
+			show_value(index+1, value);
+		});
+
+	});	
+});

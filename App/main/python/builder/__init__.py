@@ -26,7 +26,6 @@ while message != "_exit":
 					 + page_path.split("\\")[1]
 			else:
 				page_name = pagel_list[0].split("/")[-1]
-			# print(page_name)s
 
 			core.build_page(page_name)
 

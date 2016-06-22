@@ -1,3 +1,10 @@
 {
-	
+	"elements": ["Modules/test_generate", "Modules/test_manager",
+				 "Modules/pull_put","Modules/notification",
+				 "card/small", "Modules/panel"],
+	"scripts": [],
+	"styles": [],
+	"fixes": [],
+	"title" : "Резульататы",
+	"template": "default"
 }

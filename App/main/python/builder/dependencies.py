@@ -13,10 +13,10 @@ def get(path):
 			"scripts": [],
 		}
 	else:
-		print("LOADING:", path)
+		# print("LOADING:", path)
 		with io.open(path + "/dependencies.json", 'r', encoding='utf8') as dependencies_file:
 			dependencies_json = json.load(dependencies_file)
-	print(dependencies_json)
+	# print(dependencies_json)
 
 	real_path = path[len("../../templates/"):]
 
