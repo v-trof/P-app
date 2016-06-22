@@ -134,6 +134,9 @@ def results(request):
 	"results": Test.objects.get_results(user=user, course_id=course_id, test_id=test_id), 
 	"attempt": Test.objects.get_attempt_info(user=user, course_id=course_id, test_id=test_id), 
 	"test": Test.objects.get_test_info(course_id=course_id, test_id=test_id)}
+	test=Test.objects.load(course_id=course_id, test_id=test_id)
+	context["test"]["json"]=test["json"]
+	context["is_results"] = True
 	return render(request, 'Pages/Test/Attempt/results/exports.html', context)
 
 def attempt_check(request):

@@ -11,9 +11,10 @@ generate.build.element = function(element_class, value, additional) {
 	blueprint.boundaries.forEach(function(boundary_name) {
 		boundary_name($element)
 	});
-	{% if not attempt %}
+	{% if not attempt  %}
 		$element.attr('answer', value.answer);
 	{% endif %}
+
 	return $element;
 }
 {% if not attempt %}
