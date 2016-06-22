@@ -1,1 +1,1 @@
-{% for user in requesting_users %}			{% include "Elements/card/user/extended/exports.html" with		extension="Pages/Course/updates/requested/../_extensions/request/exports.html" %}{% empty %}	Никто не подавал заявки в курс за последнее время{% endfor %}
+<section class="requests">{% for user in requesting_users %}			{% include "Elements/card/user/extended/exports.html" with		extension="Pages/Course/updates/requested/../_extensions/request/exports.html" %}{% empty %}	Никто не подавал заявки в курс за последнее время{% endfor %}</section>

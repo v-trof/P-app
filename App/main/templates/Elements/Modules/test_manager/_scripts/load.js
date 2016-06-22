@@ -1,4 +1,5 @@
 test_manager.load = function(test_json) {
+	console.log("load_call");
 	$("h2").text(test_json.title);
 	test_json.tasks.forEach(function(task_data) {
 		console.log(task_data);

@@ -7,9 +7,9 @@ $('#finish').click(function(){
 			'course_id':"{{course.id}}",
 			'csrfmiddlewaretoken':"{{ csrf_token }}"
 		},
-		success: function(){
+		error: function(){
 			notification.show('success', 'Тест проверен системой' );
-			window.location = 'test/attempt/results?course_id={{course.id}}&test_id={{test.id}}';
+			window.location = '/test/attempt/results?course_id={{course.id}}&test_id={{test.id}}';
 		},
 		});
 })

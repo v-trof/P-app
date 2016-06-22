@@ -6,9 +6,16 @@ import build
 path = build.path
 
 def build_page(page_name):
+	print("PAGE_TO_BUILD:", page_name)
+	print("==========================")
 	page_path = path["page"] + page_name
 
 	page_dependencies = dependencies.get(page_path)
+
+
+	if not "template" in page_dependencies:
+		print("READ FAILED:", page_name)
+		# return False
 
 	page_dependencies["scripts_critical"] = set()
 

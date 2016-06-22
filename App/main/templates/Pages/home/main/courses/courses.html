@@ -1,7 +1,3 @@
-{% if not request.user.is_teacher %}
-	{% include "#&/../../create_course/" %}
-{% endif %}
-
 {% for subject,value in courses.items %}
 	<div class="subject">
 		<h3>{{subject}}</h3>
@@ -13,3 +9,7 @@
 	{% empty %}
 	Вы ещё не присоединились ни к одному курсу, найдите то, что вас интересует через поиск.
 {% endfor %}
+
+{% if not request.user.is_teacher %}
+	{% include "#&/../../create_course/" %}
+{% endif %}
