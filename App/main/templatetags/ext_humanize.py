@@ -19,11 +19,13 @@ def humanize_date(value):
     12 : "декабря"
     }
     print(value)
-    day = value.split("-")[0]
-    month = month_sting[int(value.split("-")[1])]
-    if len(value.split("-")) > 2:
-        year = value.split("-")[2]
-    return day + " " + month + " " + year
+    if not value is "":
+        day = value.split("-")[0]
+        month = month_sting[int(value.split("-")[1])]
+        if len(value.split("-")) > 2:
+            year = value.split("-")[2]
+        return day + " " + month + " " + year
+    else: return value
 
 def of(value, max_value):
     percent = round((int(value)/max_value)*100)
