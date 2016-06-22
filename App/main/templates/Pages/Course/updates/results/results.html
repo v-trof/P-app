@@ -1,7 +1,5 @@
 {% for result in new_results %}
-	<a class="--card" href="{{result.link}}">
-		{% include "#&/result_preview/" %}
-	</a>
+	{% include "#&/result_preview/" %}
 {% empty %}
 	Новых оценок нет
 {% endfor %}
