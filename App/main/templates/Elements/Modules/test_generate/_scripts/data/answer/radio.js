@@ -31,7 +31,7 @@ generate.data["answer--radio"] = {
 			return $element 
 		},
 		getter: function($element, _action) {
-			//fuck gg
+			$(element).on(change)
 		},
 		value_sample: {
 			values: ["Вариант 1", "Вариант 2", "Вариант 3"]

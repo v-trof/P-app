@@ -8,6 +8,7 @@ $(document).ready(function() {
 
 	panel.show("");
 
+	forgiving = {{attempt|safe}}.forgiving;
 	mark = {{attempt|safe}}.mark;
 	panel.actions.html("Оценка: <b class='--"+mark.quality+"' style='margin-left:0.325rem'> " + mark.value +"</b>");
 
@@ -20,9 +21,15 @@ $(document).ready(function() {
 
 		panel.content.append(summary_template(index+1, value));
 
-		if (value == results["0"].answer){
+		
+		if (value == results["0"].answer) {
 			$(this).html("<div class='__user-answer'><b class='--positive'>"
 				+value+"</b></div>");
+		}
+		else if (mark.value>3) {
+			$(this).html("<div class='__user-answer'><b class='--positive'>"
+				+value+"</b></div><div>Верный ответ: "
+				+ results["0"].answer + "</div>");
 		} else {
 			$(this).html("<div class='__user-answer'><b class='--negative'>"
 				+value+"</b></div><div>Верный ответ: "

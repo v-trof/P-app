@@ -20,11 +20,6 @@ generate.data["answer--text"] = {
 		getter: function($element, _action) {
 			var timer;
 			var typing_interval = 1000;
-
-			$element.on("change", function() {
-				var value = $element.find(".__value").val();
-				_action(value);
-			});
 			
 			$element.keydown(function(event) {
 				$element.keydown(function() {
