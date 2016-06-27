@@ -127,16 +127,21 @@ generate.data["answer--radio"] = {
 			$element = $(generate.build.template.answer('answer--radio'))
 			value.values.forEach(function(label) {
 				var $new_option = $('{% include "Elements/Inputs/radio/exports.html" %}');
-				$new_option.children("label").text(label)
-
+				$new_option.children("label").text(label);
+				$new_option.children("input").val(label);
+				$new_option.children("input")
+					.attr("name", "r_"+generate.counter.radio);
 				$element.append($new_option);
-
 			});
+			generate.counter.radio++;
 
 			return $element 
 		},
 		getter: function($element, _action) {
-			//fuck gg
+			$element.change(function(event) {
+				var value = $element.find(":checked").val();
+				_action(value);
+			});
 		},
 		value_sample: {
 			values: ["Вариант 1", "Вариант 2", "Вариант 3"]
