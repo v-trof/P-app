@@ -59,6 +59,10 @@ from django.core import files
 from main.python.views.forgiving_check import check
 import datetime
 from django.utils import timezone
+from collections import OrderedDict
+from operator import itemgetter
+import operator
+from sortedcontainers import SortedListWithKey
 
 class MediaModel(models.Model):
 	media_file = models.FileField(upload_to='media')
@@ -84,6 +88,49 @@ class FileForm(forms.Form):
 		help_text='max. 42 megabytes'
 	)
 
+class Utility():
+
+	def sort_by_year(item):
+		if not item == "":
+			return item.split("-")[2]
+		else: return item
+
+	def sort_by_month(item):
+		if not item == "":
+			return item.split("-")[1]
+		else: return item
+
+	def sort_by_day(item):
+		if not item == "":
+			return item.split("-")[0]
+		else: return item
+
+	def sort_by_date(object,indicator,raising=True):
+		items=[]
+		sorted_list=[]
+		no_date_list=[]
+		if isinstance(object,list):
+			for item in object:
+				if isinstance(item,dict):
+					if not item[indicator] == "":
+						items.append(item[indicator])
+					else: no_date_list.append(item) 
+			if raising:
+				items.sort(key=Utility.sort_by_day)
+				items.sort(key=Utility.sort_by_month)
+				items.sort(key=Utility.sort_by_year)
+			else:
+				items.sort(key=Utility.sort_by_day, reverse=True)
+				items.sort(key=Utility.sort_by_month, reverse=True)
+				items.sort(key=Utility.sort_by_year, reverse=True)
+			for placing_item in items:
+				for item in object:
+					if item[indicator]==placing_item:
+						sorted_list.append(item)
+						break
+			sorted_list+=no_date_list
+			return sorted_list
+		return object
 
 class CourseManager(models.Manager):
 
@@ -97,6 +144,7 @@ class CourseManager(models.Manager):
 		else: setattr(creator, 'courses', str(course.id))
 		creator.save()
 		os.makedirs('main/files/json/courses/' + str(course.id) + '/tests/')
+		os.makedirs('main/files/json/courses/' + str(course.id) + '/assignments/')
 		os.makedirs('main/files/json/courses/' + str(course.id) + '/materials/')
 		os.makedirs('main/files/media/courses/' + str(course.id) + '/assets/')
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w+', encoding='utf8') as json_file:
@@ -122,7 +170,6 @@ class CourseManager(models.Manager):
 				data["status"] = "closed"
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-		os.makedirs('main/files/json/courses/' + str(course.id) + '/assignments/')
 		with io.open('main/files/json/courses/' + str(course.id) + '/announcements.json', 'w+', encoding='utf8') as json_file:
 			data = []
 			saving_data = json.dumps(data, ensure_ascii=False)
@@ -159,32 +206,26 @@ class CourseManager(models.Manager):
 		return data
 
 	def task_set_undone(self,user,assignment_id, traditional_id, course_id):
-		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-			data[assignment_id]["traditionals"].append(traditional_id)
-		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as json_file:
+			data[assignment_id]["in_process"]["traditionals"].append(traditional_id)
+			del data[assignment_id]["done"]["traditionals"][data[assignment_id]["done"]["traditionals"].index(traditional_id)]
+			data[assignment_id]["finished"]=False
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/'+str(assignment_id)+'.json', 'r', encoding='utf8') as data_file:
-			data = json.load(data_file)
-			data["content"]["traditionals"][traditional_id-1]["done"]=False
-		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/'+str(assignment_id)+'.json', 'w', encoding='utf8') as json_file:
-			json_file.write(json.dumps(data, ensure_ascii=False))
 		return 0
 
 	def task_set_done(self,assignment_id, traditional_id, course_id, user):
-		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-			task = data[assignment_id]["traditionals"].index(traditional_id)
-			del data[assignment_id]["traditionals"][task]
-		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as json_file:
+			data[assignment_id]["done"]["traditionals"].append(traditional_id)
+			del data[assignment_id]["in_process"]["traditionals"][data[assignment_id]["in_process"]["traditionals"].index(traditional_id)]
+			if len(data[assignment_id]["in_process"]["tests"])+len(data[assignment_id]["in_process"]["traditionals"])+len(data[assignment_id]["in_process"]["unfinished_tests"])==0:
+				data[assignment_id]["finished"]=True
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/'+assignment_id+'.json', 'r', encoding='utf8') as data_file:
-			data = json.load(data_file)
-			data["content"]["traditionals"][traditional_id-1]["done"]=True
-		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/'+assignment_id+'.json', 'w', encoding='utf8') as json_file:
-			json_file.write(json.dumps(data, ensure_ascii=False))
 		return 0
 
 	def invite_students(self, course, user, group, email_list):
@@ -266,7 +307,6 @@ class CourseManager(models.Manager):
 								for teacher in data["teachers"]:
 									data["teachers"][teacher][
 										"new_users"].append(user.id)
-					print("2")
 					if not data["status"] == "closed" and not checker and not is_invited:
 						group = "Нераспределенные"
 						data["groups"][group][str(user.id)] = {}
@@ -294,15 +334,29 @@ class CourseManager(models.Manager):
 				if not os.path.exists('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/'):
 					os.makedirs('main/files/json/courses/' + str(course.id) +
 								'/users/' + str(user.id) + '/')
-					os.makedirs('main/files/json/courses/' + str(course.id) +
-								'/users/' + str(user.id) + '/assignments/')
-					data = []
-					with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/done.json', 'a', encoding='utf8') as json_file:
-						saving_data = json.dumps(data, ensure_ascii=False)
-						json_file.write(saving_data)
 					data = {}
-					print("3")
-					with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'a', encoding='utf8') as json_file:
+					assignment_id=1
+					for assignment_path in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*.json'):
+						with io.open(assignment_path, 'r', encoding='utf8') as data_file:
+							assignment = json.load(data_file)
+							assignment_map={}
+							data[str(assignment_id)] = {}
+							assignment_map["unfinished_tests"]=[]
+							assignment_map["tests"]=[]
+							assignment_map["traditionals"]=[]
+							for task in assignment["content"]["tests"]:
+								assignment_map["tests"].append(task["link"].split('&')[1].split('=')[1])
+							it = 0
+							for task in assignment["content"]["traditionals"]:
+								it += 1
+								assignment_map["traditionals"].append(it)
+							data[str(assignment_id)]["in_process"]=assignment_map
+							data[str(assignment_id)]["done"]={}
+							data[str(assignment_id)]["done"]["tests"]=[]
+							data[str(assignment_id)]["done"]["traditionals"]=[]
+							data[str(assignment_id)]["finished"]=False
+							assignment_id+=1
+					with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments.json', 'w+', encoding='utf8') as json_file:
 						saving_data = json.dumps(data, ensure_ascii=False)
 						json_file.write(saving_data)
 		return 0
@@ -373,10 +427,12 @@ class CourseManager(models.Manager):
 	def get_material_list(self,course):
 		it=0
 		material_list=[]
-		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/materials/*.json'):
+		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data=json.load(data_file)
+		for material in glob.glob('main/files/json/courses/' + str(course.id) + '/materials/*.json'):
 			it = it + 1
 			if str(it) in data["materials"]["published"]:
-				with io.open(test, 'r', encoding='utf8') as data_file:
+				with io.open(material, 'r', encoding='utf8') as data_file:
 					material_data = json.load(data_file)
 					material_preview = {}
 					material_preview["title"] = material_data["title"]
@@ -389,78 +445,62 @@ class CourseManager(models.Manager):
 		assignments = []
 		if user.is_anonymous():
 			return assignments
-
 		for assignment in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*'):
 			with io.open(assignment, 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
 				data.pop("course_id", None)
 				assignments.append(data)
-		return sorted(assignments, key=lambda k: k['due_date'])
+		return Utility.sort_by_date(object=assignments,indicator="due_date")
 
 	def user_get_tasks(self, user, course):
 		tasks = {"done":[],"undone":[]}
 		if user.is_anonymous():
 			return tasks
-		with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as json_file:
-				data = json.load(json_file)
-		next_data=list(data)
-		for task in data.keys():
-			#if len(next_data[task]["traditionals"])+len(next_data[task]["tests"])+len(next_data[task]["unfinished_tests"])== 0:
-			#	del next_data[task]
-			#	with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/done.json', 'r', encoding='utf8') as done_file:
-			#		done = json.load(done_file)
-			#	done.append(task)
-			#	with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/done.json', 'w+', encoding='utf8') as done_file:	
-			#		done_file.write(json.dumps(done, ensure_ascii=False))
-			#	with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as json_file:
-			#		json_file.write(json.dumps(next_data, ensure_ascii=False))
-			#else:
+		with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as json_file:
+				assignments_data = json.load(json_file)
+		for task, content in assignments_data.items():
 			with io.open('main/files/json/courses/' + str(course.id) + '/assignments/'+task+'.json', 'r', encoding='utf8') as data_file:
 				new_data = json.load(data_file)
 				for test in new_data["content"]["tests"]:
-					if not test["id"] in data[task]["tests"]:
+					if test["id"] in assignments_data[task]["done"]["tests"]:
 						test["done"]=True
-					if test["id"] in data[task]["unfinished_tests"]:
+					else: test["done"]=False
+					if test["id"] in assignments_data[task]["in_process"]["unfinished_tests"]:
 						test["unfinished"]=True
 					else: test["unfinished"]=False
+				it=0
+				for traditional in new_data["content"]["traditionals"]:
+					it+=1
+					if it in assignments_data[task]["done"]["traditionals"]:	
+						traditional["done"]=True
+					else: traditional["done"]=False
 				new_data.pop("course_id",None)
 				new_data["course"]=course
 				new_data["id"]=task
-				date=str(datetime.datetime.now())[:10]
-				if len(new_data["due_date"]) > 0:
-					if int(new_data["due_date"][-4:])>int(date[:4]):
-						new_data["relevant"]=True
-					elif int(new_data["due_date"][-4:])<int(date[:4]):
-						new_data["relevant"]=False
-					else:
-						if int(new_data["due_date"][3:5])>int(date[5:7]):
+			if content["finished"]==False:
+					date=str(datetime.datetime.now())[:10]
+					if len(new_data["due_date"]) > 0:
+						if int(new_data["due_date"].split("-")[2])>int(date.split("-")[0]):
 							new_data["relevant"]=True
-						elif int(new_data["due_date"][-4:])<int(date[:4]):
+						elif int(new_data["due_date"].split("-")[2])<int(date.split("-")[0]):
 							new_data["relevant"]=False
 						else:
-							if int(new_data["due_date"][:2])>=int(date[-2:]):
+							if int(new_data["due_date"].split("-")[1])>int(date.split("-")[1]):
 								new_data["relevant"]=True
-							else:
+							elif int(new_data["due_date"].split("-")[1])<int(date.split("-")[1]):
 								new_data["relevant"]=False
-				else: new_data["relevant"]=True
-				tasks["undone"].append(new_data)
-			with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments/done.json', 'r', encoding='utf8') as json_file:
-				data = json.load(json_file)
-			next_data=data
-			for task in data:
-				with io.open('main/files/json/courses/' + str(course.id) + '/assignments/'+task+'.json', 'r', encoding='utf8') as data_file:
-					new_data = json.load(data_file)
-					for test in new_data["content"]["tests"]:
-						if not test["id"] in data[task]["tests"]:
-							test["done"]=True
-						if test["id"] in data[task]["unfinished_tests"]:
-							test["unfinished"]=True
-						else: test["unfinished"]=False
-					new_data.pop("course_id",None)
-					new_data["course"]=course
-					new_data["id"]=task
+							else:
+								if int(new_data["due_date"].split("-")[0])>=int(date.split("-")[2]):
+									new_data["relevant"]=True
+								else:
+									new_data["relevant"]=False
+					else: new_data["relevant"]=True
+					tasks["undone"].append(new_data)
+			else:
 				tasks["done"].append(new_data)
-		return tasks#sorted(tasks, key=lambda k: k['due_date'])
+		tasks["undone"]=Utility.sort_by_date(object=tasks["undone"],indicator="due_date")
+		tasks["done"]=Utility.sort_by_date(object=tasks["done"],indicator="due_date")
+		return tasks
 
 	def get_users_info(self, user_ids):
 		users = []
@@ -513,11 +553,11 @@ class CourseManager(models.Manager):
 			test["id"]=test["link"].split('&')[1].split('=')[1]
 		assignment["content"]["materials"] = json.loads(material_list)
 		assignment["content"]["traditionals"] = json.loads(traditionals_list)
-		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + assignment_id + '.json', 'a+', encoding='utf8') as json_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + assignment_id + '.json', 'w+', encoding='utf8') as json_file:
 			saving_data = json.dumps(assignment, ensure_ascii=False)
 			json_file.write(saving_data)
-		for in_process_file in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/assignments/in_process.json'):
-			with io.open(in_process_file, 'r', encoding='utf8') as json_file:
+		for assignments_file in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/assignments.json'):
+			with io.open(assignments_file, 'r', encoding='utf8') as json_file:
 				data = json.load(json_file)
 				assignment_map={}
 				data[assignment_id] = {}
@@ -530,8 +570,12 @@ class CourseManager(models.Manager):
 				for task in assignment["content"]["traditionals"]:
 					it += 1
 					assignment_map["traditionals"].append(it)
-				data[assignment_id]=assignment_map
-			with io.open(in_process_file, 'w', encoding='utf8') as json_file:
+				data[assignment_id]["in_process"]=assignment_map
+				data[str(assignment_id)]["done"]={}
+				data[str(assignment_id)]["done"]["tests"]=[]
+				data[str(assignment_id)]["done"]["traditionals"]=[]
+				data[str(assignment_id)]["finished"]=False
+			with io.open(assignments_file, 'w', encoding='utf8') as json_file:
 				saving_data = json.dumps(data, ensure_ascii=False)
 				json_file.write(saving_data)
 		return 0
@@ -780,7 +824,7 @@ class UserManager(UserManager):
 				assignments["undone"]=assignment["undone"]
 		if len(assignments["done"])+len(assignments["undone"])==0:
 			return None
-		return assignments#sorted(assignments, key=lambda k: k['due_date'])
+		return assignments
 
 	def load_updates(self,user):
 		updates={}
@@ -1057,7 +1101,6 @@ class TestManager(models.Manager):
 					"published" : test_id in course_info["tests"]["published"]
 				}
 				it=0
-				print(test["json"]["tasks"])
 				for task in test["json"]["tasks"]:
 					for item in task:
 						if not data == None and item["type"]=="answer" and str(it) in data and not data[str(it)]["user_answer"] == None: 
@@ -1097,13 +1140,12 @@ class TestManager(models.Manager):
 		return context
 
 	def attempt_save(self,test_id,question_id,course_id,answer,user):
-		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'r', encoding='utf8') as assignments_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as assignments_file:
 			assignment_map = json.load(assignments_file)
-		print(assignment_map)
 		for assignment_id, content in assignment_map.items():
-			if not test_id in content["unfinished_tests"] and test_id in content["tests"]:
-				content["unfinished_tests"].append(test_id)
-		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments/in_process.json', 'w', encoding='utf8') as assignments_file:
+			if not test_id in content["in_process"]["unfinished_tests"] and test_id in content["in_process"]["tests"]:
+				content["in_process"]["unfinished_tests"].append(test_id)
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'w', encoding='utf8') as assignments_file:
 			assignments_file.write(json.dumps(assignment_map, ensure_ascii=False))
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			data=json.load(json_file)
@@ -1153,9 +1195,7 @@ class TestManager(models.Manager):
 		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			attempt_data=json.load(json_file)
 			counter=0
-			print(attempt_data)
 			for question_id,question in attempt_data.items():
-				print(question)
 				if question["user_answer"] == None:
 					missed+=1
 					test_results["missed"].append(counter)
@@ -1187,16 +1227,19 @@ class TestManager(models.Manager):
 		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
 			saving_data = json.dumps(test_results, ensure_ascii=False)
 			json_file.write(saving_data)
-		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/assignments/in_process.json', 'r', encoding='utf8') as assignment_map:
+		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/assignments.json', 'r', encoding='utf8') as assignment_map:
 			assignment_map = json.load(assignment_map)
 			for assignment_id, content in assignment_map.items():
-				if test_id in content["tests"]:
-					del content["tests"][content["tests"].index(test_id)]
-				if test_id in content["unfinished_tests"]:
-					del content["unfinished_tests"][content["unfinished_tests"].index(test_id)]
-		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/assignments/in_process.json', 'w+', encoding='utf8') as assignment:
+				if test_id in content["in_process"]["tests"]:
+					del content["in_process"]["tests"][content["tests"].index(test_id)]
+					content["done"]["tests"].append(test_id)
+				if test_id in content["in_process"]["unfinished_tests"]:
+					del content["in_process"]["unfinished_tests"][content["unfinished_tests"].index(test_id)]
+					content["done"]["tests"].append(test_id)
+				if len(content["in_process"]["tests"])+len(content["in_process"]["unfinished_tests"])+len(content["in_process"]["traditionals"]) == 0:
+					content["finished"]=True
+		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/assignments.json', 'w+', encoding='utf8') as assignment:
 			assignment.write(json.dumps(assignment_map, ensure_ascii=False))
-
 		return 0
 
 	def get_results(self,course_id,test_id,user):
@@ -1216,7 +1259,6 @@ class TestManager(models.Manager):
 			attempt_result=json.load(info_file)
 		test_info=attempt_result
 		test_info["tasks"]=attempt_info
-		print(test_info)
 		return test_info
 		
 	def upload_asset(self,asset,course_id,test_id,path):

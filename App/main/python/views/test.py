@@ -82,8 +82,6 @@ def publish(request):
 		elif setting.startswith('autocorrect_'):
 			if request.POST[setting]=="true":
 				allowed_mistakes.append(setting[12:])
-	print(allowed_mistakes)
-	print(mark_setting)
 	Test.objects.publish(course_id=course_id, test_id=test_id,allowed_mistakes=allowed_mistakes,mark_setting=mark_setting)
 	return HttpResponse("Тест опубликован")
 
@@ -125,6 +123,7 @@ def attempt_save(request):
 		return HttpResponse("ok")
 
 def results(request):
+	print("ff")
 	course_id = request.GET["course_id"]
 	test_id = request.GET["test_id"]
 	user_id=request.GET.get("user_id",request.user.id)

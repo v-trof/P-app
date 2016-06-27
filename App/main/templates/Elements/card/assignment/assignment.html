@@ -1,5 +1,5 @@
 {% load ext_humanize %}
-<div class="card --assignment" id="{{assignment.course.id}}_{{assignment.id}}">
+<div class="card --assignment {% if not assignment.relevant %} irrelevant {% endif %}" id="{{assignment.course.id}}_{{assignment.id}}">
 	{% if assignment.course %}
 		{% include "#&/../__overall-info/" 
 				with heading="В курсе "|add:assignment.course.name %}
