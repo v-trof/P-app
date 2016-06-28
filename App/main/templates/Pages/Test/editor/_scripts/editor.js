@@ -9,7 +9,7 @@ var editor = (function() {
 		$(".__task .__content").each(function(index, el) {
 			if($(this).children(".__question-element").length == 0
 				) {
-				if($(this).children('.question--empty').length == 0){
+				if($(this).children('.question--empty').length == 0) {
 					$empty = $("<div class='question--empty --empty'>Добавьте сюда вопрос</div>");
 				
 					$(this).prepend($empty);
@@ -43,13 +43,13 @@ var editor = (function() {
 
 	var check_pullers = function() {
 		$(".__question-element").each(function(index, el) {
-			if( ! $(this).hasClass('--pullable')){
+			if( ! $(this).hasClass('--pullable')) {
 				generate.let_editing($(this));
 			}
 		});
 
 		$(".__answer-field").each(function(index, el) {
-			if( ! $(this).hasClass('--pullable')){
+			if( ! $(this).hasClass('--pullable')) {
 				generate.let_editing($(this));
 			}
 		});

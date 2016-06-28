@@ -9,7 +9,7 @@ $(document).ready(function() {
 	panel.show("");
 
 	$(".__answer-field").each(function(index, el) {
-		console.log({{attempt|safe}})
+		// console.log({{attempt|safe}})
 		panel.content.append(summary_template(index+1), "1");
 
 		$(this).html("<div>"+"value"+"</div>");

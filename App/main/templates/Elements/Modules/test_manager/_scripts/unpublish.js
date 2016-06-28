@@ -9,7 +9,7 @@ test_manager.unpublish = function() {
 		data: formData,
 		processData: false,
 		contentType: false,
-		success: function(data){
+		success: function(data) {
 			notification.show('success', data);
 		}
 	});

@@ -23,11 +23,11 @@ processing.button = {
 			.html(processing.button.spinner);
 		$button.attr('disabled', 'disabled');
 	},
-	stop: function($button){
+	stop: function($button) {
 		$button.html($button.attr("o-html"));
 		$button.removeAttr('disabled');
 		
-		if($button.attr("o-style")){
+		if($button.attr("o-style")) {
 			$button.attr('style', $button.attr("o-style"));
 		} else {
 			$button.removeAttr('style');

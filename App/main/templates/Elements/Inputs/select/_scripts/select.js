@@ -4,9 +4,9 @@ function add_menu_caller(select) {
 
 	var last_option = $(select).children('option').last();
 	
-	setTimeout(function(){
+	setTimeout(function() {
 		var max_w = 0;
-		$(select).children('option').each(function(index, el){
+		$(select).children('option').each(function(index, el) {
 			max_w = Math.max($(this).outerWidth(), max_w);
 		});
 		$(select).children('.__display').css('min-width', max_w + "px");
@@ -20,12 +20,12 @@ function add_menu_caller(select) {
 		var chosen = {};
 		var is_disabled = $(this).attr('disabled');
 
-		if(is_disabled == "disabled"){
+		if(is_disabled == "disabled") {
 			return 0
 		}
 		var current_value = $(this).children('input').val();
 		$(this).children('option').each(function(index, el) {
-			if($(this).attr("value") != current_value){
+			if($(this).attr("value") != current_value) {
 				options.push({
 					text : $(this).text(),
 					value: $(this).attr("value")
@@ -40,7 +40,7 @@ function add_menu_caller(select) {
 		if(!chosen) {
 			chosen = options[0]
 		}
-		if(is_disabled != "disabled" && is_disabled !="true"){
+		if(is_disabled != "disabled" && is_disabled !="true") {
 			context_menu.show(options, this, chosen);
 		}
 	});

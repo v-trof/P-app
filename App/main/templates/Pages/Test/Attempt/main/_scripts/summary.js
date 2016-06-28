@@ -21,7 +21,7 @@ $(document).ready(function() {
 			"course_id":"{{course.id}}",
 			"csrfmiddlewaretoken":"{{ csrf_token }}"
 		},
-			success: function(){
+			success: function() {
 				notification.show('success', 'Ответ отправлен' );
 			},
 		});
@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 		var blueprints = generate.read(element_class);
 
-		console.log(blueprints, element_class);
+		// console.log(blueprints, element_class);
 
 		blueprints.element.getter($(this), function(value) {
 			show_value(index+1, value);

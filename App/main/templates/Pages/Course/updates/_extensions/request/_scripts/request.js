@@ -7,7 +7,7 @@ $( "#button_accept" ).click(function() {
 			   'csrfmiddlewaretoken': '{{ csrf_token }}',
 			   'course_id': "{{course.id}}"
 			  },
-		success: function(){
+		success: function() {
 			notification.show('success', 'Заявка принята' );
 			   }
 	});
@@ -22,7 +22,7 @@ $( "#button_decline" ).click(function() {
 			   'csrfmiddlewaretoken': '{{ csrf_token }}',
 			   'course_id': "{{course.id}}",
 			  },
-		success: function(){
+		success: function() {
 			  notification.show('success', 'Заявка отклонена' );
 			   }
 	});

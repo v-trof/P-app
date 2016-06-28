@@ -11,10 +11,10 @@ function upload(formData, url, success) {
         data: formData,
         processData: false,
         contentType: false,
-        success: function(){
+        success: function() {
             notification.show('success', success);
         },
-        error: function(){
+        error: function() {
             notification.show('error', "Произошла ошибка");
         },
     });

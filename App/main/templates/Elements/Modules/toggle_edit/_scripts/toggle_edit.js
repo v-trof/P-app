@@ -19,7 +19,7 @@ $(document).ready(function() {
 	$("#edit_discard").hide()
 
 	$("#edit_toggle").click(function(event) {
-		if(edit.editing){
+		if(edit.editing) {
 			edit.editing = false;
 			edit.end();
 			$("#edit_toggle").text("Редактировать");

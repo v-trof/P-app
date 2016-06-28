@@ -21,7 +21,7 @@ $(document).ready(function() {
 			          'csrfmiddlewaretoken': '{{ csrf_token }}',
 			          'contact_info': popup.$.find(".__contact-value").val()
 			            },
-			        success: function(){
+			        success: function() {
 			                  notification.show('success','Контакт добавлен' );
 			                               }
 			            });

@@ -59,10 +59,10 @@ var tooltip = (function() {
 	function prevent_edge_breaking() {
 		tooltip_rect = $tooltip[0].getBoundingClientRect();
 
-		if( $tooltip.css('left')[0]=='-'){
+		if( $tooltip.css('left')[0]=='-') {
 			$tooltip.css('left', '0');
 		}
-		if( $tooltip.css('top')[0]=='-'){
+		if( $tooltip.css('top')[0]=='-') {
 			$tooltip.css('top', '0');
 		}
 		

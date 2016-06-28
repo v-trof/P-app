@@ -3,7 +3,7 @@ var renames={};
 function check_for_emptiness() {
 	$(".group").each(function(index, el) {
 		if($(this).children(".--card").length == 0) {
-			if($(this).children(".--empty").length == 0){
+			if($(this).children(".--empty").length == 0) {
 				$(this).append("<div class='--empty'>Пустая группа</div>");
 			}
 		} else {
@@ -53,7 +53,7 @@ edit.end = function() {
 			   'course_id': "{{course.id}}",
 			   'renames':JSON.stringify(renames)
 			  },
-		success: function(){
+		success: function() {
 			  notification.show('success', 'Группы изменены' );
 			  $('#groups_content').load('../groups_content/');
 			   }
@@ -70,7 +70,7 @@ edit.start = function() {
 	$(".students .--card").each(function(index, el) {
 		$(this).replaceTag("<div>", true);
 	});
-	$(".students .--card").each(function(){
+	$(".students .--card").each(function() {
 		pull_put.puller.add(
 			$(this),
 			["delete"]
@@ -117,9 +117,9 @@ $(document).ready(function() {
 		accordion.add($(this), "h3");
 		sort_by_text($(this), ".__name");
 
-		if($(this).children('h3').text() == "Нераспределенные"){
+		if($(this).children('h3').text() == "Нераспределенные") {
 			unordered = $(this);
-			if(unordered.find(".card.--user").length==0){
+			if(unordered.find(".card.--user").length==0) {
 				$(".students").append(unordered);
 			} else {
 				$(".students>h2").after(unordered);
@@ -139,7 +139,7 @@ $(document).ready(function() {
 
 	$("#create_group").click(function(event) {
 		var new_group_counter=0;
-		$("h3").each(function(){
+		$("h3").each(function() {
 			if ($(this).html().search( 'Новая группа' ) >= 0)
 				new_group_counter+=1;
 		});
@@ -152,7 +152,7 @@ $(document).ready(function() {
 		check_for_emptiness();
 		new_group.find("h3").css('border-bottom', '1px dashed #2196F3').attr("contenteditable", "true");
 		
-		if(unordered.find(".card.--user").length==0){
+		if(unordered.find(".card.--user").length==0) {
 			$(".students").append(unordered);
 		} else {
 			$(".students>h2").after(unordered);
@@ -185,7 +185,7 @@ $.extend({
 		if (keepProps) {//{{{
 			var nodes=[], values=[];
 			newTag = $newTag[0];
-			for (var att, i = 0, atts = currentElem.attributes, n = atts.length; i < n; i++){
+			for (var att, i = 0, atts = currentElem.attributes, n = atts.length; i < n; i++) {
 				att = atts[i];
 				newTag.setAttribute(att.nodeName, att.value);
 			}

@@ -42,7 +42,7 @@ pull_put.ui = (function() {
 				actions = []
 			}
 
-			if(card){
+			if(card) {
 				$ui.__content.addClass('card');
 			} else {
 				$ui.__content.removeClass('card');
@@ -77,7 +77,7 @@ pull_put.ui = (function() {
 				$(".__task:last-child").addClass("--stand-out");
 			}
 			$ui.removeClass('--hidden');
-			setTimeout(function(){
+			setTimeout(function() {
 				pull_put.is_pulled = true;
 			}, 300)
 			
@@ -87,7 +87,7 @@ pull_put.ui = (function() {
 				$(".--stand-out").removeClass("--stand-out");
 			}
 			$ui.addClass('--hidden');
-			setTimeout(function(){
+			setTimeout(function() {
 				pull_put.is_pulled = false;
 			}, 300)
 		}

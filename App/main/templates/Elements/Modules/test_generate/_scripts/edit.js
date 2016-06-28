@@ -83,7 +83,7 @@ generate.edit = (function() {
 				
 				pull_put.reset();
 
-				if(editor){
+				if(editor) {
 					editor.check_self();
 				}
 			});

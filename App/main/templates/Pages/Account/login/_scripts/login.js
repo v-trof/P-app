@@ -9,7 +9,7 @@ $('#login').click(function() {
 			          'email': $( "input[name$='email']" ).val(),
 			          'csrfmiddlewaretoken' : '{{ csrf_token }}'
 			            },
-			        success: function(response){
+			        success: function(response) {
 			                  if (response == "success")
 			                  {
 			                  	window.location.href='/'

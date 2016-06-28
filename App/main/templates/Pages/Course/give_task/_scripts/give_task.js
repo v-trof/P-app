@@ -2,33 +2,33 @@ var as_g = {}
 	as_g.current_type = ""
 	as_g.original = $()
 
-	as_g.card_template = function(el){ 
+	as_g.card_template = function(el) { 
 		return '<div class="card --small" href="'+el.link+'">'+el.title+'</div>'
 	}
 	
 	as_g.material_list = {{course.material_list|safe}}
 	as_g.test_list = {{course.test_list|safe}}
-	console.log(as_g.test_list,as_g.material_list);
-	as_g.show_list = function(content_type, original){
+
+	as_g.show_list = function(content_type, original) {
 		var list = as_g[content_type+"_list"];
 		as_g.current_type = content_type;
 		as_g.original = original;
 
 		panel.show();
 		panel.content.html("");
-		list.forEach(function(el){
-			console.log(el);
+		list.forEach(function(el) {
+
 			panel.content.append(as_g.card_template(el));
 		})
 
-		if(original){
+		if(original) {
 			as_g.delete.show();
 		} else {
 			as_g.delete.hide();
 		}
 	}
 
-	as_g.hide_list = function(content_type){
+	as_g.hide_list = function(content_type) {
 		panel.hide();
 	}
 
@@ -52,7 +52,7 @@ var as_g = {}
 		});
 
 		panel.$.on("click", ".card.--small", function(event) {
-			if(as_g.original){
+			if(as_g.original) {
 				as_g.original.replaceWith($(this))
 			} else {
 				$("#assignment--new__add_"+as_g.current_type).before($(this))
@@ -67,7 +67,7 @@ var as_g = {}
 		$("#assignment--new__tests").on("click", ".card.--small", function(event) {
 				as_g.show_list("test", $(this))
 		});
-		setTimeout(function(){
+		setTimeout(function() {
 			as_g.cancel = $("#cancel")
 			as_g.delete = $("#delete")
 			$("#delete").click(function(event) {
@@ -133,10 +133,10 @@ var as_g = {}
 		});
 
 		due_date=$("#due_date").val();
-		console.log("test",res_test_list);
-		console.log("mat",res_material_list);
-		console.log("trad",traditionals_list);
-		console.log("due_date",due_date);
+		// console.log("test",res_test_list);
+		// console.log("mat",res_material_list);
+		// console.log("trad",traditionals_list);
+		// console.log("due_date",due_date);
         $.ajax({
             type:"POST",
             url:"/func/create_assignment/",
@@ -148,7 +148,7 @@ var as_g = {}
                    'due_date': due_date,
                    'course_id': '{{ course.object.id }}'
                   },
-            success: function(){
+            success: function() {
                   notification.show('success','Задание создано' );
                                }
             });

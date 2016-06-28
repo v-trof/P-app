@@ -4,11 +4,16 @@
 	& > .__heading
 		margin-bottom: $margin--m
 	.__task
-		.__question
-			*
+		.__content
+			margin: 0
+			padding: 0
+			& > *
 				margin-bottom: $margin--s
-				&:last-child()
+				&:last-child
 					margin-bottom: 0
+		.__answer-field>*:last-child
+			margin-bottom: 0
+
 	.--empty
 		padding: $padding--m
 		color: $font__color--grey

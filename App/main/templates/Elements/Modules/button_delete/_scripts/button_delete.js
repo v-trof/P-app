@@ -1,4 +1,4 @@
-var button_delete = (function(){
+var button_delete = (function() {
 	var template = '{% include "Elements/Modules/button_delete/exports.html" %}';
 
 	var exports = {

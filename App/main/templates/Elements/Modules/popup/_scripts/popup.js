@@ -11,11 +11,11 @@ var popup = (function() {
 			});
 			$popup.find("input").first().focus();
 
-			if(css){
+			if(css) {
 				$popup.find('__modal').css(css);
 			}
 
-			if(_callback){
+			if(_callback) {
 				_callback();
 			}
 		},

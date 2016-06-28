@@ -1,5 +1,5 @@
 test_manager.load = function(test_json) {
-	console.log("load_call");
+
 	$("h2").text(test_json.title);
 	test_json.tasks.forEach(function(task_data) {
 		console.log(task_data);
@@ -13,12 +13,14 @@ test_manager.load = function(test_json) {
 
 		for (var i = 1; i < task_data.length; i++) {
 			element_class = task_data[i].class;
-			console.log(task_data[i]);
-			var $element =  generate.read(element_class)
-				.element.build(task_data[i])
+			// console.log(task_data[i]);
+			var $element =  generate.build.
+								element(element_class, task_data[i])
+			
 			{% if attempt %}
 				$element.find('.__value').attr('value', task_data[i].value);
 			{% endif %}
+
 			$task.find(".__content").append($element);
 		}
 

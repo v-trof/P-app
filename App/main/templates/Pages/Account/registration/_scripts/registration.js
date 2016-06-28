@@ -10,7 +10,7 @@ $('#register').click(function() {
 			  {% if course %} 'course_reg': $( "input[name$='course_reg']" ).is(":checked"), 'course_id':{{course.id}}, {% endif %}
 			  'csrfmiddlewaretoken' : '{{ csrf_token }}'
 				},
-			success: function(response){
+			success: function(response) {
 					  if (response == "success" || response == "groups")
 					  {
 						window.location.href='/'

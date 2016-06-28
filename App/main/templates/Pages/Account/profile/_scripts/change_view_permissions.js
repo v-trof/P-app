@@ -6,7 +6,7 @@ $(document).on('click', '[name="contacts_see"]', function () {
              data: {'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'permission_level':this.id.substr(this.id.length - 1),
                     },
-             success: function(){
+             success: function() {
                  notification.show('success','Разрешения были успешно изменены' );
              }
         });

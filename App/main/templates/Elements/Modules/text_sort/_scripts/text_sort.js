@@ -10,9 +10,9 @@ function sort_by_text($parent, key) {
 
 	keyarr.sort();
 
-	console.log($parent);
+
 	while(keyarr.length > 0) {
-		console.log(keyarr);
+
 		$children.each(function(index, el) {
 			if($(this).find(key).text() == keyarr[0]) {
 				$parent.append($(this));

@@ -5,7 +5,7 @@ function header_build() {
 	var breadcrumbs_width = $(".header>.__breadcrumbs").innerWidth();
 	var user_width = $(".header>.__user").innerWidth();
 	
-	if(breadcrumbs_width > user_width){
+	if(breadcrumbs_width > user_width) {
 		breadcrumbs_width += 10;
 		user_width = breadcrumbs_width;
 	} else {
@@ -22,11 +22,11 @@ $(window).resize(function(event) {
 	
 	try {
 		tooltip.hide();
-	} catch(err){}
+	} catch(err) {}
 
 	try {
 		context_menu.hide();
-	} catch(err){}
+	} catch(err) {}
 });
 
 $(document).ready(function() {

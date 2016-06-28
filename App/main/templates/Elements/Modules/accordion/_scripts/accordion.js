@@ -28,7 +28,7 @@ var accordion = (function() {
 			$element.prepend($toggle);
 
 			$toggle.click(function(event) {
-				if($(this).hasClass('--accordion-minimized')){
+				if($(this).hasClass('--accordion-minimized')) {
 					expand($element, $indicator);
 				} else {
 					minimize($element, $indicator);

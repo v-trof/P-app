@@ -1,5 +1,5 @@
 $('input:checkbox').change(
-    function(){
+    function() {
         if ($(this).is(':checked')) {
         	id=this.closest(".card").id.split("_");
         	console.log('course_id',id[id.length-2]);
@@ -17,7 +17,7 @@ $('input:checkbox').change(
 					data: formData,
 					processData: false,
 					contentType: false,
-					success: function(){
+					success: function() {
 					},
         });
     }
@@ -35,7 +35,7 @@ $('input:checkbox').change(
 					data: formData,
 					processData: false,
 					contentType: false,
-					success: function(){
+					success: function() {
 					},
         });
     };

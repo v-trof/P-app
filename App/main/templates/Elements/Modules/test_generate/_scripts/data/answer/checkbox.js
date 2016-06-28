@@ -1,24 +1,28 @@
-generate.data["answer--radio"] = {
+generate.data["answer--checkbox"] = {
 	element: {
 		type: 'answer',
 		
 		parse: function($original) {
 			return generate.data.shared
-				.options.element.parse($original, "radio");
+				.options.element.parse($original, "checkbox");
 		},
 
 		build: function(value) {
-			$element = $(generate.build.template.answer('answer--radio'))
+			if (value.answer) {
+				value.answer = value.answer.join(', ');
+			}
+			
+			$element = $(generate.build.template.answer('answer--checkbox'))
 			
 			value.values.forEach(function(label) {
-				var $new_option = $('{% include "Elements/Inputs/radio/exports.html" %}');
+				var $new_option = $('{% include "Elements/Inputs/checkbox/exports.html" %}');
 				$new_option.children("label").text(label);
 				$new_option.children("input").val(label);
 				$new_option.children("input")
-					.attr("name", "r_"+generate.counter.radio);
+					.attr("name", "c_"+generate.counter.checkbox);
 				$element.append($new_option);
 			});
-			generate.counter.radio++;
+			generate.counter.checkbox++;
 
 			return $element 
 		},
@@ -33,17 +37,14 @@ generate.data["answer--radio"] = {
 		}
 	},
 	edit: {
-		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/exports.html" %}',
+		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__checkbox/exports.html" %}',
 		parse: function() {
-			var result = generate.data.shared.options.edit.parse("radio");
+			var result = generate.data.shared.options.edit.parse("checkbox");
 
-			if(result.answer) {
-				result.answer = result.answer[0]
-			}
 			return result
 		},
 		middleware: function() {
-			generate.data.shared.options.edit.middleware("radio");
+			generate.data.shared.options.edit.middleware("checkbox");
 		},
 		fill: function(value) {
 			generate.data.shared.options.edit.fill(value);

@@ -24,7 +24,7 @@ test_manager.pack = function() {
 						'test_id':'{{test.id}}',
 						'csrfmiddlewaretoken' : '{{ csrf_token }}'
 						},
-					success:function(response){
+					success:function(response) {
 						test_json[task_index].question_items[index].url=response;
 					}
 				});

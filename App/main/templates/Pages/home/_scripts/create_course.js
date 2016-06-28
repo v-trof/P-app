@@ -2,7 +2,7 @@ $(document).ready(function() {
 	$("#create_course").click(function() {
 		popup.show('{% include "Pages/home/_popup_texts/create_course/exports.html" %}');
 		$( "#create_course_button" ).click(function() {
-  			if( $("input[name=course_name]").val() == ""){
+  			if( $("input[name=course_name]").val() == "") {
 			$("input[name=course_name]").attr('invalid', "true");
 				tooltip.show($("input[name=course_name]")[0], "У курса должно быть название");
 				return 0;
@@ -21,7 +21,7 @@ $(document).ready(function() {
 	                   'is_closed': $("input[name=is_closed]").is(":checked"),
 	                   'subject': subject,
 	                  },
-	            success: function(response){
+	            success: function(response) {
 	                  window.location.href = response;
 	                   }
 	            });

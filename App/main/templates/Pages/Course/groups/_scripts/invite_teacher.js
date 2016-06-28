@@ -15,7 +15,7 @@ $("#invite_teacher").click(function(event) {
 					'course_id':"{{course.id}}",
 					'group':group,
 				},
-				success: function(){
+				success: function() {
 					popup.hide();
 					notification.show('success','Учитель приглашен, ждем от него подтверждение' );
 				},

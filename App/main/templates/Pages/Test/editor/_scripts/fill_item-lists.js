@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 		var type = blueprint.type;
 
-		if( ! blueprint.nopull){
+		if( ! blueprint.nopull) {
 			var $list = $(".item-list.--" + type);
 			add_to_item_list(element_class, $list)
 		}

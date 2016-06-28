@@ -1,4 +1,5 @@
 {
 	"elements": ["Modules/button_delete", "Modules/pull_put",
-				"Inputs/radio", "Inputs/checkbox", "button/flat"]
+				"Inputs/radio", "Inputs/checkbox", "button/flat",
+				"Inputs/text/textarea"]
 }
