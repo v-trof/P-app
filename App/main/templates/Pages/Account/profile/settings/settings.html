@@ -1,4 +1,4 @@
-<section class="card">
+<section class="card settings">
 	<h4 class="__heading">Настройки профиля</h4>
 	<div>
 		<p>Мои контакты могут просматривать:</p>
@@ -34,8 +34,14 @@
 		{% endif %}
 
 	</div>
-	<div class="row">
-		<button class="--ghost --first" id="change_password">Сменить пароль</button>
+	<div class="row __actions">
+		<div class="row">
+			<button class="--ghost --first" id="change_password">Сменить пароль</button>
+
+			<button class="--ghost --first" id="change_email">
+				Сменить email для входа
+			</button>
+		</div>
 		<a href='/func/logout/'> <button class="--ghost">Выйти</button> </a>
 	</div>
 </section>
