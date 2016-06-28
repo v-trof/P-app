@@ -22,15 +22,20 @@ generate.data["answer--checkbox"] = {
 					.attr("name", "c_"+generate.counter.checkbox);
 				$element.append($new_option);
 			});
+
 			generate.counter.checkbox++;
 
 			return $element 
 		},
 		getter: function($element, _action) {
 			$element.change(function(event) {
-				var value = $element.find(":checked").val();
-				_action(value);
+				var values = [];
+				$element.find(":checked").each(function(index, el) {
+					values.push( $(this).val() );
+				});;
+				_action(values.join(", "));
 			});
+			
 		},
 		value_sample: {
 			values: ["Вариант 1", "Вариант 2", "Вариант 3"]

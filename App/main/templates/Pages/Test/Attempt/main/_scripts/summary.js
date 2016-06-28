@@ -10,7 +10,7 @@ $(document).ready(function() {
 
 	function show_value(field_index, value) {
 		$(".sumfor_"+field_index).children(".__value").html(value);
-		console.log("dfggfgf");
+		
 		$.ajax({
 			type:"POST",
 			url:"../attempt/save/",
@@ -28,7 +28,10 @@ $(document).ready(function() {
 	}
 
 	$(".__answer-field").each(function(index, el) {
-		panel.content.append(summary_template(index+1));
+
+		var $new_summary = $(summary_template(index+1));
+
+		panel.content.append($new_summary);
 		var element_class = $(this)
 				.attr('class').split(' ')[0];
 
@@ -40,5 +43,6 @@ $(document).ready(function() {
 			show_value(index+1, value);
 		});
 
+		scroll.wire($new_summary, $(this).parents(".card"));
 	});	
 });
