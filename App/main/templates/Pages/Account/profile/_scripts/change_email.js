@@ -1,17 +1,16 @@
-function request_email_change(password, email) {
+function request_email_change(email) {
 	// console.log(password, email);
 	
 	$.ajax({
 		type:"POST",
 		url:"/func/change_email/",
 		data: {
-			'password': password,
 			'csrfmiddlewaretoken': '{{ csrf_token }}',
-			'new_password': email
+			'new_email': email
 			},
 		success: function(response) {
 			if (response=="success")
-				notification.show('success','Email изменен');
+				notification.show('success','Вам на почту отправлено письмо для подтверждения');
 			else notification.show('error','Email неверный');
 		},
 		error: function(data) {
@@ -26,9 +25,8 @@ $(document).ready(function() {
 		function() {
 			// verifier.add(popup.$.find(".__email"), "email");
 			popup.$.find(".__submit").click(function(e) {
-				var password =  popup.$.find(".__password").val();
 				var email = popup.$.find(".__email").val();
-				request_email_change(password, email);
+				request_email_change(email);
 			});
 		});
 	});

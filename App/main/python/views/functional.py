@@ -102,10 +102,40 @@ class User_views():
 		if request.method == 'POST':
 			old_password = request.POST['old_password']
 			new_password = make_password(request.POST['new_password'])
-			if User.objects.change_password(request=request, user=request.user, old_password=old_password, new_password=new_password):
+			if User.objects.change_password(user=request.user, request=request, old_password=old_password, new_password=new_password):
 				return HttpResponse("success")
 			else:
 				return HttpResponse("Неправильный пароль")
+
+	def change_email(request):
+		if request.method == 'POST':
+			new_email = request.POST['new_email']
+			if User.objects.change_email(user=request.user, new_email=new_email):
+				return HttpResponse("success")
+			else:
+				return HttpResponse("Email занят")
+
+	def approve_email(request):
+		if request.method == 'POST':
+			user=User.objects.get(id=int(request.POST['user_id']))
+			if user.check_password(request.POST['password']):
+				if User.objects.approve(type=request.POST['type'],code=request.POST['code'])["user_id"]==str(user.id):
+					setattr(user, 'username', request.POST['requesting_data'])
+					setattr(user, 'email', request.POST['requesting_data'])
+					user.save()
+					return HttpResponse("success")
+			else:
+				return HttpResponse("Неправильный пароль")
+
+	def approve_password(request):
+		if request.method == 'POST':
+			user=User.objects.get(id=int(request.POST['user_id']))
+			if User.objects.approve(type=request.POST['type'],code=request.POST['code'])["user_id"]==str(user.id):
+				setattr(user, 'password', strip_tags(make_password(request.POST['new_password'])))
+				user.save()
+				return HttpResponse("success")
+
+
 
 	def upload_avatar(request):
 		return HttpResponse(User.objects.upload_avatar(user=request.user, new_avatar=request.FILES['new_avatar']))

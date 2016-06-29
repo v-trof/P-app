@@ -1,0 +1,14 @@
+<div class="login-box modal card">
+{% if type == "email" %}
+	<h2>Пароль</h2>
+{% else %}
+	<h2>Новый пароль</h2>
+{% endif %}
+		{% include "Elements/Inputs/text/" with 
+			placeholder="Пароль" 
+			name="password"
+			type="password"
+			value=password %}
+			<button id="confirm">Далее</button>
+</div>
+</section>

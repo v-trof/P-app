@@ -9,7 +9,7 @@ $('#reset_password').click(function() {
 			        success: function(response) {
 			                  if (response == "success")
 			                  {
-			                  	notification.show('success','Новый пароль отправлен вам на почту');
+			                  	notification.show('success','Ссылка на сброс пароля отправлена вам на почту');
 			                  }
 			                  else
 			                  {

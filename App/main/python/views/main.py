@@ -75,6 +75,17 @@ class Auth_group():
 	def forgot_password(request):
 		return render(request, 'Pages/Account/password_recovery/exports.html')
 
+	def secure_entry(request):
+		type=request.GET['type']
+		code=request.GET['code']
+		approve_info=User.objects.approve(code=code,type=type)
+		if approve_info==None:
+			return render(request, 'Pages/404/exports.html')
+		user_id=approve_info["user_id"]
+		requesting_data=approve_info["requesting_data"]
+		if User.objects.get(id=user_id):
+			return render(request, 'Pages/Account/secure_entry/exports.html',{"user":User.objects.get(id=user_id),"type":type,"code":code,"requesting_data":requesting_data})
+
 class Course_group():
 
 	def main(request, course_id):

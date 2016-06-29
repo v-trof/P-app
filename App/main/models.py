@@ -757,9 +757,9 @@ class UserManager(UserManager):
 
 	def change_password(self, request, user, old_password, new_password):
 		if user.check_password(old_password):
-			setattr(user, 'password', strip_tags(new_password))
+			user.set_password(new_password)
 			user.save()
-			login(request)
+			User.objects.login(request=request,email=user.email,password=new_password)
 			return True
 		else:   
 			return False
@@ -883,21 +883,62 @@ class UserManager(UserManager):
 
 	def reset_password(self, email):
 		if User.objects.filter(username=email):
-			user = User.objects.get(username=email);
-			length = 13
-			chars = string.ascii_letters + string.digits
-			random.seed = (os.urandom(1024))
-			new_pass = ''.join(random.choice(chars) for i in range(length))
-			while User.objects.filter(password=new_pass):
-				new_pass = ''.join(random.choice(chars)
-					for i in range(length))
-			setattr(user, 'password', strip_tags(make_password(new_pass)))
-			user.save()
-			send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, ваш временный пароль: ' + new_pass + '. Зайдите в личный кабинет для его изменения', 'p.application.bot@gmail.com',
+			user=User.objects.get(username=email)
+			password_code=User.objects.generate_code(type="password")
+			with io.open('main/files/json/other/code_bank.json', 'r', encoding='utf8') as codes_file:
+				codes_dict = json.load(codes_file)
+			if not str(user.id) in codes_dict.keys():
+				codes_dict[str(user.id)]={}
+			codes_dict[str(user.id)]["password"]=password_code
+			with io.open('main/files/json/other/code_bank.json', 'w', encoding='utf8') as codes_file:
+				codes_file.write(json.dumps(codes_dict, ensure_ascii=False))
+			send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, перейдите по ссылке для подтверждения: 127.0.0.1:8000/secure_entry/?code='+password_code+'&type=password.', 'p.application.bot@gmail.com',
 		[email], fail_silently=False)
 			return True
 		else:
 			return False
+
+	def generate_code(self,type):
+		length = 13
+		chars = string.ascii_letters + string.digits
+		random.seed = (os.urandom(1024))
+		code = ''.join(random.choice(chars) for i in range(length))
+		with io.open('main/files/json/other/code_bank.json', 'r', encoding='utf8') as codes_file:
+			codes_dict = json.load(codes_file)
+		for user_id, codes in codes_dict.items():
+			if type in codes.keys():
+				if codes[type]==code:
+					code = ''.join(random.choice(chars)
+						for i in range(length))
+				else: break
+		return code
+
+	def change_email(self,new_email,user):
+		if User.objects.filter(email=new_email):
+			return False
+
+		email_code=User.objects.generate_code(type="email")
+		with io.open('main/files/json/other/code_bank.json', 'r', encoding='utf8') as codes_file:
+			codes_dict = json.load(codes_file)
+		if not str(user.id) in codes_dict.keys():
+			codes_dict[str(user.id)]={}
+		codes_dict[str(user.id)]["email"]=email_code
+		codes_dict[str(user.id)]["requesting_email"]=new_email
+		with io.open('main/files/json/other/code_bank.json', 'w', encoding='utf8') as codes_file:
+			codes_file.write(json.dumps(codes_dict, ensure_ascii=False))
+		send_mail('Изменение email', 'Вы запрашивали изменение email на сервисе p-app, перейдите по ссылке для подтверждения: 127.0.0.1:8000/secure_entry/?code='+email_code+'&type=email.', 'p.application.bot@gmail.com',
+		[new_email], fail_silently=False)
+		return True
+
+	def approve(self,code,type):
+		with io.open('main/files/json/other/code_bank.json', 'r', encoding='utf8') as codes_file:
+			codes_dict = json.load(codes_file)
+		for user_id, codes in codes_dict.items():
+			if codes[str(type)]==code:
+				if "requesting_"+type in codes.keys():
+					return {"user_id":user_id,"requesting_data":codes["requesting_"+type]}
+				else: return {"user_id":user_id,"requesting_data":None}
+		return None
 
 	def upload_avatar(self, user, new_avatar):
 		if user.avatar != "default_avatar.png":

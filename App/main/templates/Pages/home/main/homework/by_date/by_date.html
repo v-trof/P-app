@@ -1,3 +1,4 @@
+{% if tasks %}
 {% if tasks.undone %}
 {% for assignment in tasks.undone %}
 	<div class="subject">
@@ -8,10 +9,15 @@
 {% endfor %}
 {% endif %}
 {% if tasks.done %}
-	Выполненные
+	<div class="done">
+		<h3>Выполненные</h3>
 	{% for assignment in tasks.done %}
 		<div class="subject">
 			{% include "Elements/card/assignment/" %}
 		</div>
 	{% endfor %}
+	</div>
+{% endif %}
+{% else %}
+	Ура! Все задания выполнены.
 {% endif %}
