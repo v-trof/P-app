@@ -11,6 +11,7 @@ var verifier = (function() {
 			if( expression.test($input.val()) ) {
 				$input.addClass('--valid');
 				$input.removeClass('--invalid');
+				return true
 			} else {
 				$input.removeClass('--valid');
 				$input.addClass('--invalid');
@@ -19,8 +20,11 @@ var verifier = (function() {
 			$input.removeClass('--valid');
 			$input.removeClass('--invalid');
 		}
+		return false
 	}
 	exports = {
+		verify: verify,
+		expressions: expressions,
 		add: function($input, expression) {
 			if(typeof expression === "string") {
 				expression = expressions[expression];

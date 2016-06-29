@@ -10,7 +10,7 @@ function request_email_change(email) {
 			},
 		success: function(response) {
 			if (response=="success")
-				notification.show('success','Вам на почту отправлено письмо для подтверждения');
+				notification.show('success','Email изменен');
 			else notification.show('error','Email неверный');
 		},
 		error: function(data) {
@@ -23,10 +23,20 @@ $(document).ready(function() {
 	$('#change_email').click(function(e) {
 		popup.show('{% include "Pages/Account/profile/_popup_texts/change_email/exports.html" %}',
 		function() {
-			// verifier.add(popup.$.find(".__email"), "email");
+			verifier.add(popup.$.find(".__email"), "email");
+
 			popup.$.find(".__submit").click(function(e) {
 				var email = popup.$.find(".__email").val();
-				request_email_change(email);
+
+				if(verifier.verify(
+					popup.$.find(".__email"),
+					verifier.expressions.email)
+				) {
+					request_email_change(email);
+				} else {
+					notification.show("error",
+						'"email@сервис.домен" - должно быть похоже на это');
+				}
 			});
 		});
 	});

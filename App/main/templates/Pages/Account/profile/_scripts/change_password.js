@@ -3,9 +3,8 @@ function request_password_change(passwords) {
 		type:"POST",
 		url:"/func/change_password/",
 		data: {
-			'old_password': passwords.old,
 			'csrfmiddlewaretoken': '{{ csrf_token }}',
-			'new_password': passwords.new
+			'password': password
 			},
 		success: function(response) {
 			if (response=="success")
@@ -23,11 +22,18 @@ $(document).ready(function() {
 		popup.show('{% include "Pages/Account/profile/_popup_texts/change_password/exports.html" %}',
 		function() {
 			popup.$.find(".__submit").click(function(e) {
-				var passwords = {
-					old: popup.$.find(".__password-old").val(),
-					new: popup.$.find(".__password-new").val()
+				var password = popup.$.find(".__password").val();
+
+				if(verifier.verify(
+					popup.$.find(".__password"),
+					verifier.expressions.password)
+				) {
+					request_password_change(password);
+				} else {
+					notification.show("error",
+						'Минимум 8 символов');
 				}
-				request_password_change(passwords);
+				
 			});
 		});
 	});
