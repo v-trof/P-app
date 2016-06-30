@@ -7,7 +7,7 @@ generate.let_editing = function($element) {
 		false,
 		true);
 
-	generate.edit.add_puller($element, function($this, $pulled) {
+	generate.edit.add_put_zone($element, function($this, $pulled) {
 		$this.after($pulled);
 	})
 

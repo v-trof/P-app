@@ -73,7 +73,7 @@ generate.edit = (function() {
 				pull_put.ui.add_action(edit_action);
 			}
 		},
-		add_puller: function($element, _action) {
+		add_put_zone: function($element, _action) {
 			pull_put.put_zone.add($element, function(event, $this, $pulled) {
 				{% if not attempt %}
 					generate.let_editing($pulled);

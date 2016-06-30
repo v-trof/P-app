@@ -14,7 +14,7 @@ var editor = (function() {
 				
 					$(this).prepend($empty);
 
-					generate.edit.add_puller($empty, function($this, $pulled) {
+					generate.edit.add_put_zone($empty, function($this, $pulled) {
 						$this.replaceWith($pulled);
 					});
 				}
@@ -24,20 +24,22 @@ var editor = (function() {
 		});
 
 		$(".__task .__content").each(function(index, el) {
-			if($(this).children(".__answer-field").length == 0
-				) {
+			if(
+				$(this).children(".__answer-field").length == 0
+			) {
 				if($(this).children('.answer--empty').length == 0) {
-				var $empty = $("<div class='answer--empty --empty'>Добавьте сюда поле ответа</div>");
-				
-				$(this).append($empty);
+					var $empty = $("<div class='answer--empty --empty'>Добавьте сюда поле ответа</div>");
 
-				generate.edit.add_puller($empty, function($this, $pulled) {
-					$this.replaceWith($pulled);
-				});
+					$(this).append($empty);
+
+					generate.edit.add_put_zone($empty, function($this, $pulled) {
+						$this.replaceWith($pulled);
+					});
+				}
+
+			} else {
+				$(this).children('.answer--empty').remove();
 			}
-		} else {
-			$(this).children('.answer--empty').remove();
-		}
 		});
 	}
 

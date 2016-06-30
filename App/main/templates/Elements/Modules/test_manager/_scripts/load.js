@@ -1,5 +1,4 @@
 test_manager.load = function(test_json) {
-
 	$("h2").text(test_json.title);
 	test_json.tasks.forEach(function(task_data) {
 		console.log(task_data);
@@ -24,6 +23,8 @@ test_manager.load = function(test_json) {
 			$task.find(".__content").append($element);
 		}
 
+		$(document).find(".answer--empty, .question--empty").remove();
+		
 		{% if not attempt %}
 			editor.check_self();
 		{% endif %}
