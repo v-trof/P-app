@@ -41,7 +41,7 @@ generate.edit = (function() {
 			
 			pull_put.ui.$.on(
 				"keydown change blur click", 
-				".__content input, .__content .__value button",
+				"input, .__value, button",
 				function() {
 					var value = blueprints.edit.parse();
 					
