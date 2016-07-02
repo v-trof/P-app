@@ -98,15 +98,6 @@ class User_views():
 			else:
 				return HttpResponse("Введен несуществующий email")
 
-	def change_password(request):
-		if request.method == 'POST':
-			old_password = request.POST['old_password']
-			new_password = make_password(request.POST['new_password'])
-			if User.objects.change_password(user=request.user, request=request, old_password=old_password, new_password=new_password):
-				return HttpResponse("success")
-			else:
-				return HttpResponse("Неправильный пароль")
-
 	def change_email(request):
 		if request.method == 'POST':
 			new_email = request.POST['new_email']
@@ -164,6 +155,16 @@ class Course_views():
 			course_id = request.POST["course_id"]
 			announcement = Course.objects.add_announcement(
 				text=text, heading=heading, course_id=course_id)
+		return HttpResponse('ok')
+
+	def edit_announcement(request):
+		if request.method == "POST":
+			announcement_id = request.POST["announcement_id"]
+			text = request.POST["text"]
+			heading = request.POST["heading"]
+			course_id = request.POST["course_id"]
+			announcement = Course.objects.edit_announcement(
+				text=text, heading=heading, course_id=course_id, announcement_id=announcement_id)
 		return HttpResponse('ok')
 
 	def edit_groups(request):

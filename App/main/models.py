@@ -132,6 +132,17 @@ class Utility():
 			return sorted_list
 		return object
 
+	def sort_by_name(item):
+		return item["object"].name
+
+	def sort_by_alphabet(object,indicator=False):
+		if isinstance(object,dict):
+			if indicator:
+				object[indictator]=collections.OrderedDict(sorted(object[indictator].items()))
+			else: object=collections.OrderedDict(sorted(object.items()))
+		else: object.sort(key=Utility.sort_by_name, reverse=False)
+		return object
+
 class CourseManager(models.Manager):
 
 	def create_course(self, name, subject, creator, is_closed):
@@ -171,7 +182,7 @@ class CourseManager(models.Manager):
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		with io.open('main/files/json/courses/' + str(course.id) + '/announcements.json', 'w+', encoding='utf8') as json_file:
-			data = []
+			data = {}
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return course
@@ -199,7 +210,16 @@ class CourseManager(models.Manager):
 	def add_announcement(self, heading, text, course_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-		data.append({"heading": heading, "text": text})
+		data[str(len(data.keys())+1)]=({"heading": heading, "text": text})
+		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
+		return data
+
+	def edit_announcement(self, heading, text, course_id, announcement_id):
+		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
+			data = json.load(json_file)
+		data[str(announcement_id)]={"heading":heading,"text":text}
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -774,6 +794,10 @@ class UserManager(UserManager):
 			for course_id in course_array:
 				course = Course.objects.get(id=course_id)
 				courses[course.subject].append(Course.objects.load_preview(course_id=course_id))
+			for subject in courses:
+				print(subject,courses[subject])
+				courses[subject]=Utility.sort_by_alphabet(object=courses[subject])
+			courses=Utility.sort_by_alphabet(object=courses)
 		return courses
 
 	def load_marks(self, string_array, user_id):
@@ -1114,11 +1138,29 @@ class TestManager(models.Manager):
 			value["options"] = item["values"]
 			value["user_answer"] = None
 		elif type=="answer--checkbox":
+			print(item)
 			value["options"] = []
 			value["options"] = item["values"]
-			value["answer"] = item["answers"]
+			value["answer"] = item["answer"]
 			value["user_answer"] = None
 		return value
+
+	def build_answer(self,item,data):
+		type=item["class"]
+		if type=="answer--text":
+			item["value"]=data["user_answer"]
+		elif type=="answer--textarea":
+			item["value"]=data["user_answer"]
+		elif type=="answer--select":
+			item["value"]=data["user_answer"]
+			item["filled"]=data["user_answer"]
+		elif type=="answer--radio":
+			item["value"]=data["user_answer"]
+			item["filled"]=data["user_answer"]
+		elif type=="answer--checkbox":
+			item["value"]=data["user_answer"].split(',')
+			item["filled"]=data["user_answer"].split(',')
+		return item
 
 	def attempt(self,course_id,user,test_id):
 		# creates or continues attempt
@@ -1144,8 +1186,8 @@ class TestManager(models.Manager):
 				it=0
 				for task in test["json"]["tasks"]:
 					for item in task:
-						if not data == None and item["type"]=="answer" and str(it) in data and not data[str(it)]["user_answer"] == None: 
-							item["value"]=data[str(it)]["user_answer"]
+						if not data == None and item["type"]=="answer" and str(it) in data and not data[str(it)]["user_answer"] == None:
+							item=Test.objects.build_answer(item=item,data=data[str(it)])
 							it+=1
 						elif item["type"]=="answer":
 							item["value"]=""

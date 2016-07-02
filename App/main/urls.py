@@ -55,7 +55,6 @@ func_patterns = [
     url(r'^logout/$', functional.User_views.logout, name="func_logout"),
     url(r'^change_data/$', functional.User_views.change_data, name="change_data"),
     url(r'^reset_password/$', functional.User_views.reset_password, name="reset_password"),
-    url(r'^change_password/$', functional.User_views.change_password, name="change_password"),
     url(r'^change_email/$', functional.User_views.change_email, name="change_email"),
     url(r'^approve_email/$', functional.User_views.approve_email, name="approve_email"),
     url(r'^approve_password/$', functional.User_views.approve_password, name="approve_password"),
@@ -70,6 +69,7 @@ func_patterns = [
     url(r'^create_assignment/$', functional.Course_views.create_assignment, name="create_assignment"),
     url(r'^change_permission_level/$', functional.User_views.change_permission_level, name="change_permission_level"),
     url(r'^add_announcement/$', functional.Course_views.add_announcement, name="add_announcement"),
+    url(r'^edit_announcement/$', functional.Course_views.edit_announcement, name="edit_announcement"),
     url(r'^course_reg/(?P<course_id>[0-9]+)/$', functional.Course_views.register, name="register_on_course"),
 ]
 
