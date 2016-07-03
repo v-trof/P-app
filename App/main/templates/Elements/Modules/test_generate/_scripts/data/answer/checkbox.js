@@ -27,6 +27,19 @@ generate.data["answer--checkbox"] = {
 
 			return $element 
 		},
+
+		fill: function($element, checked) {
+			checked = checked.split(", ");
+
+			$element.find("input").each(function(index, el) {
+				var value = $(this).val();
+
+				if(checked.indexOf(value) > -1) {
+					$(this).prop('checked', true);	
+				}
+			});
+		},
+
 		getter: function($element, _action) {
 			$element.change(function(event) {
 				var values = [];
@@ -37,6 +50,7 @@ generate.data["answer--checkbox"] = {
 			});
 			
 		},
+		
 		value_sample: {
 			values: ["Вариант 1", "Вариант 2", "Вариант 3"]
 		}

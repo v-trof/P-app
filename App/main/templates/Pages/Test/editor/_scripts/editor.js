@@ -67,6 +67,6 @@ var editor = (function() {
 	return exports;
 })();
 
-$("body").on("click", "button", function() {
+$("body").on("click", ".--button-delete", function() {
 	editor.check_self();
-})
+});

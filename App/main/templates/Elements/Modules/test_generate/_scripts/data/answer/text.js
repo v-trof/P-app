@@ -17,12 +17,19 @@ generate.data["answer--text"] = {
 			$element.find('label').text(value.label)
 			return $element 
 		},
+
+		fill: function($element, answer) {
+			console.log(answer);
+			$element.find('input').val(answer);
+			$element.find('label').addClass('--top');
+		},
+
 		getter: function($element, _action) {
 			var timer;
 			var typing_interval = 1000;
 
-			$element.on("change", function() {
-				var value = $element.find(".__value").val();
+			$element.on('change', function() {
+				var value = $element.find('.__value').val();
 				_action(value);
 			});
 			
@@ -30,7 +37,7 @@ generate.data["answer--text"] = {
 				$element.keydown(function() {
 					clearTimeout(timer); 
 					timer = setTimeout(function() {
-						var value = $element.find(".__value").val();
+						var value = $element.find('.__value').val();
 						_action(value);
 					}, typing_interval);
 				});
@@ -52,9 +59,8 @@ generate.data["answer--text"] = {
 			}
 		},
 		fill: function(value) {
-			$("#new_element_answer").val(value.answer).focus();
-			
-			$("#new_element_label").val(value.label).focus();
+			$('#new_element_answer').val(value.answer).focus();			
+			$('#new_element_label').val(value.label).focus();
 		}
 	}
 }

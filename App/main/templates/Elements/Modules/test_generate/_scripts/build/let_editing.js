@@ -1,6 +1,7 @@
 {% if not attempt %}
 generate.let_editing = function($element) {
-	pull_put.puller.add($element,
+	pull_put.puller.add(
+		$element,
 		["add", "delete"],
 		generate.edit.edit_action,
 		undefined,

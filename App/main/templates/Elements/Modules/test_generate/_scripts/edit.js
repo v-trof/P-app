@@ -39,7 +39,7 @@ generate.edit = (function() {
 
 			pull_put.ui.add_action(preview_action);
 			
-			pull_put.ui.$.on(
+			pull_put.ui.$.find(".__content").on(
 				"keydown change blur click", 
 				"input, .__value, button",
 				function() {
@@ -49,24 +49,13 @@ generate.edit = (function() {
 						element_class, value
 					);
 
+					generate.let_editing($new_element);
+
 					pull_put.ui.element = $new_element;
 			});
 		},
 		stop: function() {
 			if(pull_put.is_pulled) {
-				var $element = pull_put.ui.element;
-					
-				var element_class = $element
-						.attr('class').split(' ')[0];
-
-				var blueprints = generate.read(element_class);
-
-				var value = blueprints.edit.parse();
-
-				var $new_element =  generate.build.element(element_class, value);
-
-				pull_put.ui.element = $new_element;
-
 				pull_put.ui.$.find(".__content")
 					.html(pull_put.ui.element);
 
@@ -75,10 +64,6 @@ generate.edit = (function() {
 		},
 		add_put_zone: function($element, _action) {
 			pull_put.put_zone.add($element, function(event, $this, $pulled) {
-				{% if not attempt %}
-					generate.let_editing($pulled);
-				{% endif %}
-
 				_action($this, $pulled);
 				
 				pull_put.reset();

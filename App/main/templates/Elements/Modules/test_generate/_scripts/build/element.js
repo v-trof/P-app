@@ -12,7 +12,15 @@ generate.build.element = function(element_class, value, additional) {
 		boundary_name($element)
 	});
 	{% if not attempt  %}
-		$element.attr('answer', value.answer);
+		if(value.answer) {
+			$element.attr('answer', value.answer);
+			if (typeof blueprint.fill === "undefined") {
+				console.error("NOFILL", element_class);
+			} else {
+			blueprint.fill($element, value.answer);	
+			}
+
+		}
 	{% endif %}
 
 	return $element;

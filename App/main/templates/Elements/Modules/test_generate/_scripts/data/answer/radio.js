@@ -28,6 +28,17 @@ generate.data["answer--radio"] = {
 				_action(value);
 			});
 		},
+
+		fill: function($element, checked) {
+			$element.find("input").each(function(index, el) {
+				var value = $(this).val();
+
+				if(value === checked) {
+					$(this).prop('checked', true);	
+				}
+			});
+		},
+
 		value_sample: {
 			values: ["Вариант 1", "Вариант 2", "Вариант 3"]
 		}
