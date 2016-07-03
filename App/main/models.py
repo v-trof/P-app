@@ -844,10 +844,11 @@ class UserManager(UserManager):
 			for course_id in course_array:
 				course=Course.objects.get(id=course_id)
 				assignment=Course.objects.user_get_tasks(user=user,course=course)
-				assignments["done"]=assignment["done"]
-				assignments["undone"]=assignment["undone"]
+				assignments["done"]+=assignment["done"]
+				assignments["undone"]+=assignment["undone"]
 		if len(assignments["done"])+len(assignments["undone"])==0:
 			return None
+		print(assignments)
 		return assignments
 
 	def load_updates(self,user):
@@ -1049,6 +1050,37 @@ class TestManager(models.Manager):
 				course_info['tests']['unpublished'].remove(test_id)
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
+		for assignment_path in glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*.json'):
+			with io.open(assignment_path, 'r', encoding='utf8') as assignment_file:
+				assignment_info = json.load(assignment_file)
+			for test in assignment_info["content"]["tests"]:
+				if str(test_id) == test["id"]:
+					del assignment_info["content"]["tests"][assignment_info["content"]["tests"].index(test)]
+			if len(assignment_info["content"]["tests"])+len(assignment_info["content"]["traditionals"]) == 0:
+				os.remove(assignment_path)
+				assignment_removed=True
+			else: 
+				assignment_removed=False
+				with io.open(assignment_path, 'w', encoding='utf8') as assignment_file:
+					assignment_file.write(json.dumps(assignment_info, ensure_ascii=False))
+		test_id=str(test_id)
+		for user_assignments_path in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/assignments.json'):
+			with io.open(user_assignments_path, 'r', encoding='utf8') as assignment_file:
+				assignments_map = json.load(assignment_file)
+			for assignment_id in list(assignments_map):
+				if assignment_removed:
+					assignments_map.pop(assignment_id,None)
+				else:
+					if test_id in assignments_map[assignment_id]["done"]["tests"]:
+						del assignments_map[assignment_id]["done"]["tests"][assignments_map[assignment_id]["done"]["tests"].index(test_id)]
+					elif test_id in assignments_map[assignment_id]["in_process"]["tests"]:
+						del assignments_map[assignment_id]["in_process"]["tests"][assignments_map[assignment_id]["in_process"]["tests"].index(test_id)]
+					elif test_id in assignments_map[assignment_id]["in_process"]["unfinished_tests"]:
+						del assignments_map[assignment_id]["in_process"]["unfinished_tests"][assignments_map[assignment_id]["in_process"]["unfinished_tests"].index(test_id)]
+					if len(assignments_map[assignment_id]["in_process"]["tests"])+len(assignments_map[assignment_id]["in_process"]["unfinished_tests"])+len(assignments_map[assignment_id]["in_process"]["traditionals"]) == 0:
+						assignments_map[assignment_id]["finished"]=True
+			with io.open(user_assignments_path, 'w', encoding='utf8') as assignment_file:
+				assignment_file.write(json.dumps(assignments_map, ensure_ascii=False))
 		return 0
 
 	def save(self, json_file,course_id, test_id):

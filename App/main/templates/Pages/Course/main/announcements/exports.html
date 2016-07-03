@@ -1,1 +1,1 @@
-<section class="announcements">	{% if announcements %}		<h3>Объявления</h3>		{% for announcement in announcements %}			{% include "Elements/card/announcement/exports.html" with content=announcement.text heading=announcement.heading %}		{% endfor %}	{% else %}		<h3>Объявлений нет</h3>	{% endif %}</section>
+<section class="announcements">	{% if announcements %}		<h3>Объявления</h3>		{% for id,announcement in announcements.items %}			{% include "Elements/card/announcement/exports.html"%}		{% endfor %}	{% else %}		<h3>Объявлений нет</h3>	{% endif %}</section>

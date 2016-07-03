@@ -35,7 +35,7 @@ def delete(request):
 	# moves test to trash bin
 	course_id = request.POST.get("course_id",None)
 	test_id = request.POST.get("test_id",None)
-	Test.objects.delete(course_id, test_id)
+	Test.objects.delete(course_id=course_id, test_id=test_id)
 	return HttpResponse("Тест удален")
 
 

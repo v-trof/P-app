@@ -1,7 +1,7 @@
 test_manager.delete = function() {
 	var formData = new FormData();
-	formData.append("course_id", "{{course_id}}");
-	formData.append("test_id", "{{test_id}}");
+	formData.append("course_id", "{{course.id}}");
+	formData.append("test_id", "{{test.id}}");
 
 	formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
 	$.ajax({
