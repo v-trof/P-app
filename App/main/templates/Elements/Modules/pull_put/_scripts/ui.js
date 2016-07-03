@@ -23,6 +23,7 @@ pull_put.ui = (function() {
 		added_card: false,
 		$: $ui,
 		element: undefined,
+		proto_element: undefined,
 		add_action: function(icon, tip, _action) {
 			
 			if(typeof icon === "object") {
@@ -36,11 +37,12 @@ pull_put.ui = (function() {
 
 			$ui.__actions__additional.html($new_button);
 		},
-		get: function($element, element_width, actions, _callback, card) {
-			
+		get: function($element, element_width, actions, _callback, card) {	
 			if(typeof actions === "undefined") {
 				actions = []
 			}
+
+			pull_put.ui.proto_element = $element.clone();
 
 			if(card) {
 				$ui.__content.addClass('card');
@@ -66,6 +68,12 @@ pull_put.ui = (function() {
 				$ui.find(".__actions button.--add").parent().show();
 			} else {
 				$ui.find(".__actions button.--add").parent().hide();
+			}
+
+			if(actions.indexOf("save")>-1) {
+				$ui.find(".__actions button.--save").parent().show();
+			} else {
+				$ui.find(".__actions button.--save").parent().hide();
 			}
 
 			if(_callback) {
@@ -98,9 +106,18 @@ pull_put.ui = (function() {
 $(document).ready(function() {
 	$("body").append(pull_put.ui.$)
 
-
-
 	$(".pull_put_ui .__actions .--cancel").click(function(event) {
+		console.log(pull_put.ui.proto_element.children().children());
+
+		//restoring defaut element
+		pull_put.ui.element = pull_put.ui.proto_element;
+		
+		generate.let_editing(pull_put.ui.element);
+
+		pull_put.puller.cancel();
+	});
+
+	$(".pull_put_ui .__actions .--save").click(function(event) {
 		pull_put.puller.cancel();
 	});
 

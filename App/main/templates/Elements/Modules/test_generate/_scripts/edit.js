@@ -39,20 +39,17 @@ generate.edit = (function() {
 
 			pull_put.ui.add_action(preview_action);
 			
-			pull_put.ui.$.find(".__content").on(
-				"keydown change blur click", 
-				"input, .__value, button",
-				function() {
-					var value = blueprints.edit.parse();
-					
-					var $new_element = generate.build.element(
-						element_class, value
-					);
+			pull_put.ui.rebuild_element = function() {
+				var value = blueprints.edit.parse();
+				
+				var $new_element = generate.build.element(
+					element_class, value
+				);
 
-					generate.let_editing($new_element);
+				generate.let_editing($new_element);
 
-					pull_put.ui.element = $new_element;
-			});
+				pull_put.ui.element = $new_element;
+			}
 		},
 		stop: function() {
 			if(pull_put.is_pulled) {
@@ -78,3 +75,23 @@ generate.edit = (function() {
 	}
 	return exports;
 })();
+
+$(document).ready(function() {
+	pull_put.ui.$.find(".__content").on(
+		"keydown click", 
+		"button, input, .__value",
+		function() {
+			pull_put.ui.rebuild_element();		
+		}
+	);
+	$(document).on(
+		"click",
+		".--button-delete",
+		function() {
+			if($(this).parent().hasClass('__item')) {
+				console.log("re")
+				pull_put.ui.rebuild_element();
+			}
+		}
+	)
+});

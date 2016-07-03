@@ -2,12 +2,18 @@
 	<div class="__content">
 	</div>
 	<div class="__actions">
-		<div class="card --circle" tip="Вернуть на место (изменения сохранятся)">
+		<div class="card --circle" tip="Отмена">
 			<button class="--ghost --icon --cancel" >
 				{% include "Elements/Icons/undo.svg" %}
 			</button>
 		</div>
 		
+		<div class="card --circle" tip="Сохранить элемент и вернуть на место">
+			<button class="--ghost --icon --save" >
+				{% include "Elements/Icons/save.svg" %}
+			</button>
+		</div>
+
 		<div class="card --circle" tip="Удалить">
 			<button class="--ghost  --icon --negative --delete">
 				{% include "Elements/Icons/delete.svg" %}

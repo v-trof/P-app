@@ -29,7 +29,7 @@ generate.build.element = function(element_class, value, additional) {
 generate.let_editing = function($element) {
 	pull_put.puller.add(
 		$element,
-		["add", "delete"],
+		["add", "save", "delete"],
 		generate.edit.edit_action,
 		undefined,
 		false,
