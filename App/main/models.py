@@ -1168,6 +1168,7 @@ class TestManager(models.Manager):
 		elif type=="answer--radio":
 			value["options"] = []
 			value["options"] = item["values"]
+			value["answer"] = item["answer"]
 			value["user_answer"] = None
 		elif type=="answer--checkbox":
 			print(item)
@@ -1187,11 +1188,10 @@ class TestManager(models.Manager):
 			item["value"]=data["user_answer"]
 			item["filled"]=data["user_answer"]
 		elif type=="answer--radio":
+			print(data["user_answer"])
 			item["value"]=data["user_answer"]
-			item["filled"]=data["user_answer"]
 		elif type=="answer--checkbox":
-			item["value"]=data["user_answer"].split(',')
-			item["filled"]=data["user_answer"].split(',')
+			item["value"]=data["user_answer"].split(', ')
 		return item
 
 	def attempt(self,course_id,user,test_id):
@@ -1346,10 +1346,10 @@ class TestManager(models.Manager):
 			assignment_map = json.load(assignment_map)
 			for assignment_id, content in assignment_map.items():
 				if test_id in content["in_process"]["tests"]:
-					del content["in_process"]["tests"][content["tests"].index(test_id)]
+					del content["in_process"]["tests"][content["in_process"]["tests"].index(test_id)]
 					content["done"]["tests"].append(test_id)
 				if test_id in content["in_process"]["unfinished_tests"]:
-					del content["in_process"]["unfinished_tests"][content["unfinished_tests"].index(test_id)]
+					del content["in_process"]["unfinished_tests"][content["in_process"]["unfinished_tests"].index(test_id)]
 					content["done"]["tests"].append(test_id)
 				if len(content["in_process"]["tests"])+len(content["in_process"]["unfinished_tests"])+len(content["in_process"]["traditionals"]) == 0:
 					content["finished"]=True

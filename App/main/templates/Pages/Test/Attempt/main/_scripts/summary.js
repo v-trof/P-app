@@ -1,9 +1,9 @@
 $(document).ready(function() {
-	var summary_template = function(index) {
+	var summary_template = function(index,value="Пусто") {
 		return '<div class="card --small sumfor_'
 			+ index + ' row">'
 			+'<div class="__number">' + index + ':</div>'
-			+'<div class="__value">Пусто</div></div>';
+			+'<div class="__value">' + value + '</div></div>';
 	}
 
 	panel.show("");
@@ -26,11 +26,17 @@ $(document).ready(function() {
 			},
 		});
 	}
-
+	test_json={{test.json|safe}};
+	answer_it=0;
 	$(".__answer-field").each(function(index, el) {
-
-		var $new_summary = $(summary_template(index+1));
-
+		console.log('11');
+		while (test_json.tasks[index][answer_it].type != "answer")
+		{
+			answer_it+=1;
+		}
+		if (test_json.tasks[index][answer_it].value == "" || test_json.tasks[index][answer_it].value == null)
+			var $new_summary = $(summary_template(index+1,"Пусто"));
+		else var $new_summary = $(summary_template(index+1,test_json.tasks[index][answer_it].value));
 		panel.content.append($new_summary);
 		var element_class = $(this)
 				.attr('class').split(' ')[0];

@@ -106,6 +106,7 @@ def attempt(request):
 	test_id = request.GET.get("test_id",None)
 	context = Test.objects.attempt(user=request.user,course_id=course_id, test_id=test_id)
 	context["attempt"] = True
+	print(context["test"]["json"]["tasks"])
 	return render(request, 'Pages/Test/Attempt/main/exports.html', context)
 
 

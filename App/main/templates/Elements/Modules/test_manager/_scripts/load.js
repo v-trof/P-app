@@ -17,7 +17,16 @@ test_manager.load = function(test_json) {
 								element(element_class, task_data[i])
 			
 			{% if attempt %}
-				$element.find('.__value').attr('value', task_data[i].value);
+				if (task_data[i].class == "answer--checkbox")
+				{
+					$(task_data[i].value).each(function( index ) {
+						  $element.find("input[value='"+this+"']").attr('checked', true);
+						});
+				}
+				else if (task_data[i].class == "answer--radio")
+					$element.find("input[value='"+task_data[i].value+"']").attr('checked', true);
+				else $element.find('.__value').attr('value', task_data[i].value);
+
 			{% endif %}
 
 			$task.find(".__content").append($element);
