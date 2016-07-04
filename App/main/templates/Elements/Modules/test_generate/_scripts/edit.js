@@ -78,7 +78,7 @@ generate.edit = (function() {
 
 $(document).ready(function() {
 	pull_put.ui.$.find(".__content").on(
-		"keydown click", 
+		"keyup click", 
 		"button, input, .__value",
 		function() {
 			pull_put.ui.rebuild_element();		
@@ -92,6 +92,14 @@ $(document).ready(function() {
 				console.log("re")
 				pull_put.ui.rebuild_element();
 			}
+		}
+	)
+	$(document).on(
+		"click",
+		".--enpty",
+		function() {
+			console.log("e");
+			editor.check_self();
 		}
 	)
 });

@@ -44,14 +44,13 @@ var editor = (function() {
 	}
 
 	var check_pullers = function() {
-		$(".__question-element").each(function(index, el) {
-			if( ! $(this).hasClass('--pullable')) {
-				generate.let_editing($(this));
-			}
-		});
-
-		$(".__answer-field").each(function(index, el) {
-			if( ! $(this).hasClass('--pullable')) {
+		$(".__task>.__content").children().each(function(index, el) {
+			if(
+				(
+					   ! $(this).hasClass('--pullable')
+					|| ! $(this).hasClass('--put-zone')
+				) && ! $(this).hasClass('--empty')
+			) {
 				generate.let_editing($(this));
 			}
 		});
@@ -67,6 +66,6 @@ var editor = (function() {
 	return exports;
 })();
 
-$("body").on("click", ".--button-delete", function() {
+$("body").on("click", ".--button-delete, .pull_put_ui .__actions button", function() {
 	editor.check_self();
 });
