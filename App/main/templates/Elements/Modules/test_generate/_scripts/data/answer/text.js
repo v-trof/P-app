@@ -30,6 +30,7 @@ generate.data["answer--text"] = {
 
 			$element.on('change', function() {
 				var value = $element.find('.__value').val();
+				clearTimeout(timer); 
 				_action(value);
 			});
 			

@@ -21,34 +21,61 @@ $(document).ready(function() {
 			"course_id":"{{course.id}}",
 			"csrfmiddlewaretoken":"{{ csrf_token }}"
 		},
-			success: function() {
-				notification.show('success', 'Ответ отправлен' );
+			error: function() {
+				notification.show('error', 'Не удалось сохранить ответ на сервере, <br> не закрывайте тест' );
 			},
 		});
 	}
+
 	test_json={{test.json|safe}};
-	answer_it=0;
-	$(".__answer-field").each(function(index, el) {
-		console.log('11');
-		while (test_json.tasks[index][answer_it].type != "answer")
-		{
-			answer_it+=1;
+
+	$(".preview .__task>.__content").each(function(task_index, el) {
+		var item_it = -1; //for no repeat later
+		var use_full_format = false;
+
+		var $answer_fileds = $(this).find(".__answer-field");
+
+		if($answer_fileds.length > 1) {
+			use_full_format = true;
 		}
-		if (test_json.tasks[index][answer_it].value == "" || test_json.tasks[index][answer_it].value == null)
-			var $new_summary = $(summary_template(index+1,"Пусто"));
-		else var $new_summary = $(summary_template(index+1,test_json.tasks[index][answer_it].value));
-		panel.content.append($new_summary);
-		var element_class = $(this)
-				.attr('class').split(' ')[0];
 
-		var blueprints = generate.read(element_class);
+		$answer_fileds.each(function(index, el) {
 
-		// console.log(blueprints, element_class);
+			var value;
+			var $new_summary;
 
-		blueprints.element.getter($(this), function(value) {
-			show_value(index+1, value);
+			item_it+=1; //step after last found
+			while (test_json.tasks[task_index][item_it].type !== "answer") {
+				item_it+=1;
+			}
+			
+			if(use_full_format) {
+				index = "" + (task_index+1) + "." + (index+1);
+			} else {
+				index = task_index+1;
+			}
+
+			console.log(item_it);
+			if (test_json.tasks[task_index][item_it].value) {
+				value = test_json.tasks[task_index][item_it].value;
+			} else {
+				value = "Пусто";
+			}
+
+			$new_summary = summary_template(index, value);
+
+			panel.content.append($new_summary);
+
+			var element_class = $(this)
+					.attr('class').split(' ')[0];
+
+			var blueprints = generate.read(element_class);
+
+			blueprints.element.getter($(this), function(value) {
+				show_value(index, value);
+			});
+
+			scroll.wire($new_summary, $(this).closest(".__question-element"));
 		});
-
-		scroll.wire($new_summary, $(this).parents(".card"));
 	});	
 });
