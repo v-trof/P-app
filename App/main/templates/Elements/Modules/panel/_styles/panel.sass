@@ -1,5 +1,7 @@
 @import "../../../../sass_vars/main.sass"
 
+$panel_width : 15rem + $padding--m*2
+
 .card.panel
 	display: flex
 	flex-direction: column
@@ -7,10 +9,20 @@
 	position: fixed
 	top: 0
 	right: 0
-	width: 15rem + $padding--m*2
+	width: $panel_width
 	padding-top: $margin--xl + $padding--m
+	overflow-y: scroll
 	.__content
 		flex: 1
+		padding-bottom: $base + $padding--m
 	.__actions
 		display: flex
 		flex-direction: row
+		position: fixed
+		bottom: 0
+		right: 0
+		width: $panel_width
+		padding: $padding--m
+		border-top: $border--s solid $grey--semilight
+		background: $white
+		

@@ -5,7 +5,7 @@ Array.prototype.has = function(value) {
 
 $(document).ready(function() {
 	var results = {{results|safe}};
-	// var attempt = {{test|safe}};
+	var attempt = {{attempt|safe}};
 
 	var summary_template = function(index, value, quality) {
 		return '<div class="card --small sumfor_'
@@ -16,27 +16,56 @@ $(document).ready(function() {
 
 	panel.show("");
 
-	console.log(results)
-	$(".__answer-field").each(function(index, el) {
+	answer_index = 0
+	$(".preview .__task>.__content").each(function(task_index, el) {
+		$(this).find(".__answer-field").each(function(i, el) {
+			var quality = "positive"
+			var value = "Пусто"
+			var $new_summary
 
-		index+=1
-		var quality = "positive"
-		var value = "Пусто"
+			answer_index+=1
+			if(results.forgiving.has(answer_index)) {
+				quality = "neutral"
+			} 
+			if (results.missed.has(answer_index) ||
+				results.mistakes.has(answer_index)) {
+				quality = "negative"
+			}
 
-		if(results.forgiving.has(index)) {
-			quality = "neutral"
-		} 
-		if (results.missed.has(index) || results.mistakes.has(index)) {
-			quality = "negative"
-		}
+			if(attempt["tasks"][task_index].user_answer) {
+				value =attempt["tasks"][task_index].user_answer;
+			}
 
-		// if(test_json.tasks[index][answer_it].value) {
-		// 	value = test_json.tasks[index][answer_it].value;
-		// }
+			$new_summary = $(summary_template(answer_index, value, quality));
+			panel.content.append($new_summary);
 
-		panel.content.append(summary_template(index, value, quality));
+			$(this).html("");
+			if(quality === "positive") {
+				// $(this).html("Вы ответили верно:");
+				$(this).append("<div>Ваш ответ: <b class='--positive'>" 
+					+ value + "</b></div>");
+			}
 
-		$(this).html("<div>"+"value"+"</div>");
+			if(quality === "neutral") {
+				// $(this).html("Вы допустили помарку, но идея верная:");
+				$(this).append("<div>Ваш ответ: <b class='--neutral'>" 
+					+ value + "</b></div>");
+				$(this).append("<div>Верный ответ: <b>" 
+					+ attempt["tasks"][task_index].answer 
+				+ "</b></div>");
+			}
 
-	});	
+			if(quality === "negative") {
+				// $(this).html("Вы ответили неверно:");
+				$(this).append("<div>Ваш ответ: <b class='--negative'>" 
+					+ value + "</b></div>");
+				$(this).append("<div>Верный ответ: <b>" + 
+						attempt["tasks"][task_index].answer + 
+					"</b></div>");
+			}
+
+			scroll.wire($new_summary, $(this).parent().parent());
+		});	
+	});
+	
 });

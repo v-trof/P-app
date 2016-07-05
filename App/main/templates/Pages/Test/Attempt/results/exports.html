@@ -5,23 +5,24 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Резульататы</title>
 	<style> 
-		{% include "Elements/Modules/button_delete/_styles/css/button_delete.css" %} 
+		{% include "Pages/Test/Attempt/results/_styles/css/summary.css" %} 
 		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Elements/Modules/button_delete/_styles/css/button_delete.css" %} 
 		{% include "Elements/card/_styles/css/card.css" %} 
 		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Inputs/Text/_styles/css/reset.css" %} 
 		{% include "Elements/Modules/test_generate/_styles/css/answer-item.css" %} 
 		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Pages/Test/Attempt/results/_styles/css/core.css" %} 
+		{% include "Elements/Inputs/Text/_styles/css/reset.css" %} 
 		{% include "Elements/Inputs/text/textarea/_styles/css/height_fix.css" %} 
 		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Pages/Test/Attempt/results/_styles/css/main.css" %} 
 		{% include "Elements/Inputs/Text/_styles/css/text.css" %} 
 		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
+		{% include "Pages/Test/Attempt/results/_styles/css/answer.css" %} 
 		{% include "Elements/Modules/test_generate/_styles/css/task.css" %} 
 		{% include "Elements/button/_styles/css/button.css" %} 
 		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
 		{% include "Elements/Modules/pull_put/_styles/css/placeholder.css" %} 
+		{% include "Pages/Test/Attempt/results/_styles/css/color_quality.css" %} 
 		{% include "Page_templates/default/_styles/css/default.css" %} 
 		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
 		{% include "Elements/card/_styles/css/link.css" %} 
@@ -50,9 +51,10 @@
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/pull_put/_scripts/core.js" %} 
+		{% include "Elements/Modules/scroll/_scripts/core.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/core.js" %} 
 		{% include "Elements/Modules/test_manager/_scripts/core.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/core.js" %} 
 		{% include "Elements/Modules/panel/_scripts/panel.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/data.js" %} 
@@ -72,6 +74,8 @@
 		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
 		{% include "Elements/Modules/pull_put/_scripts/ui.js" %} 
 		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
+		{% include "Elements/Modules/scroll/_scripts/wire.js" %} 
+		{% include "Pages/Test/Attempt/results/_scripts/numberinag.js" %} 
 		{% include "Elements/Inputs/Text/_scripts/emptyness_checker.js" %} 
 		{% include "Pages/Test/Attempt/results/_scripts/summary.js" %} 
 		{% include "Pages/Test/Attempt/results/_scripts/test_answers.js" %} 

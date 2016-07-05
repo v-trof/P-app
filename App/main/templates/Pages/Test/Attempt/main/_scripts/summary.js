@@ -62,7 +62,7 @@ $(document).ready(function() {
 				value = "Пусто";
 			}
 
-			$new_summary = summary_template(index, value);
+			$new_summary = $(summary_template(index, value));
 
 			panel.content.append($new_summary);
 
@@ -75,7 +75,7 @@ $(document).ready(function() {
 				show_value(index, value);
 			});
 
-			scroll.wire($new_summary, $(this).closest(".__question-element"));
+			scroll.wire($new_summary, $(this).parent().parent());
 		});
 	});	
 });

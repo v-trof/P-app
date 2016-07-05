@@ -4,6 +4,6 @@ $(document).ready(function() {
 	mark = results.mark;
 
 	panel.actions.html("Оценка: <b class='--" + mark.quality + 
-		"' result-mark'> " + 
+		" result-mark'> " + 
 		mark.value +"</b>");
 });
