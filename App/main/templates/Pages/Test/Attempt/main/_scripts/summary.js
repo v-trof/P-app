@@ -7,6 +7,7 @@ $(document).ready(function() {
 	}
 
 	panel.show("");
+	panel.actions.hide();
 
 	function show_value(field_index, value) {
 		$(".sumfor_"+field_index).children(".__value").html(value);

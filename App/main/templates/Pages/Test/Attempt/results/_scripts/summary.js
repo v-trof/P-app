@@ -67,5 +67,4 @@ $(document).ready(function() {
 			scroll.wire($new_summary, $(this).parent().parent());
 		});	
 	});
-	
 });

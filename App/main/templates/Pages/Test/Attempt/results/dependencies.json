@@ -2,7 +2,7 @@
 	"elements": ["Modules/test_generate", "Modules/test_manager",
 				 "Modules/pull_put","Modules/notification","Modules/scroll",
 				 "card/small", "Modules/panel"],
-	"scripts": [],
+	"scripts": ["Pages/Test/Attempt/_shared/responsive"],
 	"styles": [],
 	"fixes": [],
 	"title" : "Резульататы",
