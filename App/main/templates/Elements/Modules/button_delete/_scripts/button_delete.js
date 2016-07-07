@@ -5,7 +5,7 @@ var button_delete = (function() {
 		add: function($element, $deletable, _callback) {
 			//if callback passed second
 			if(typeof $deletable === 'function') {
-				_call_back = $deletable;
+				_callback = $deletable;
 				$deletable = undefined;
 			}
 
@@ -20,10 +20,10 @@ var button_delete = (function() {
 			$element.append($button);
 			
 			$button.click(function(event) {
-				$deletable.remove();
 				if(_callback) {
 					_callback();
 				}
+				$deletable.remove();
 			});
 		}
 	}

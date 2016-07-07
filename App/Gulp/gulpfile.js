@@ -47,4 +47,4 @@ gulp.task('watch', function() {
   gulp.watch('../main/templates/Elements/Modules/test_generate/_scripts/**/*.js', ['concat_test_generate']);
 });
 
-gulp.task('default', ['watch']);
+gulp.task('default', ['watch', 'sass_to_css', 'concat_test_generate']);

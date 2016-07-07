@@ -5,15 +5,15 @@ function adapt_layout() {
 	// console.log(width);
 
 	if(width > 1600) {
-		console.log("l");
+		// console.log("l");
 		panel.show();
 		body.css('padding-right', '0');
 	} else if(width >= 800) {
-		console.log(panel.content.width());
+		// console.log(panel.content.width());
 		panel.show();
 		body.css('padding-right', panel.$.width()+24);
 	} else if(width < 800) {
-		console.log("s");
+		// console.log("s");
 		panel.hide();
 		body.css('padding-right', '0');
 	}

@@ -1,3 +1,4 @@
+{% if request.user.id == course.creator %}
 $(document).ready(function() {
 	$("#add_announcement").click(function() {
 		popup.show('{% include "Pages/Course/main/_popup_texts/add_announcement/exports.html" %}');
@@ -37,3 +38,5 @@ $(document).ready(function() {
 		});
 	});
 });
+
+{% endif %}

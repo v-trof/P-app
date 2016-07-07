@@ -1,3 +1,5 @@
+{% if request.user.id == course.creator %}
+
 $(document).ready(function() {
 	$(".announcements").on("click", ".card", function() {
 		var $original = $(this);
@@ -42,11 +44,11 @@ $(document).ready(function() {
 	});
 
 	$(".announcements>.card").each(function(index, el) {
-		console.log("dsf");
 		var id = $(this).attr("id");
 		button_delete.add($(this), function() {
-			console.log("dsf");
 			announcement_delete(id);
 		});
 	});
 });
+
+{% endif %}

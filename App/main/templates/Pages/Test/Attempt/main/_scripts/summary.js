@@ -9,8 +9,8 @@ $(document).ready(function() {
 	panel.show("");
 	panel.actions.hide();
 
-	function show_value(field_index, value) {
-		$(".sumfor_"+field_index).children(".__value").html(value);
+	function show_value($summary, value) {
+		$summary.children(".__value").html(value);
 		
 		$.ajax({
 			type:"POST",
@@ -56,7 +56,6 @@ $(document).ready(function() {
 				index = task_index+1;
 			}
 
-			console.log(item_it);
 			if (test_json.tasks[task_index][item_it].value) {
 				value = test_json.tasks[task_index][item_it].value;
 			} else {
@@ -73,7 +72,7 @@ $(document).ready(function() {
 			var blueprints = generate.read(element_class);
 
 			blueprints.element.getter($(this), function(value) {
-				show_value(index, value);
+				show_value($new_summary, value);
 			});
 
 			scroll.wire($new_summary, $(this).parent().parent());
