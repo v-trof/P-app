@@ -153,9 +153,9 @@ class Course_views():
 			text = request.POST["text"]
 			heading = request.POST["heading"]
 			course_id = request.POST["course_id"]
-			announcement = Course.objects.add_announcement(
+			announcement_id = Course.objects.add_announcement(
 				text=text, heading=heading, course_id=course_id)
-		return HttpResponse('ok')
+			return HttpResponse(announcement_id)
 
 	def edit_announcement(request):
 		if request.method == "POST":

@@ -13,10 +13,11 @@ $(document).ready(function() {
 					'heading': new_heading,
 					'course_id': "{{course.id}}",
 				},
-				success: function() {
+				success: function(response) {
 					popup.hide();
 					notification.show('success','Объявление добавлено');
 					$(".announcements").append('{% include "Elements/card/exports.html" %}');
+					$(".announcements .card:last-child").attr("id",response);
 					$(".announcements .card:last-child .__overall-info .__heading").text(new_heading);
 					$(".announcements .card:last-child .__content").text(new_text);
 				},

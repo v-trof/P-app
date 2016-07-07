@@ -214,7 +214,7 @@ class CourseManager(models.Manager):
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-		return data
+		return len(data)
 
 	def edit_announcement(self, heading, text, course_id, announcement_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
