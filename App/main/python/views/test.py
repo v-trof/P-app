@@ -117,7 +117,7 @@ def check_question(request, item):
 def attempt_save(request):
 	if request.method == 'POST':
 		test_id = request.POST.get("test_id",None)
-		question_id = int(request.POST.get("question",None))
+		question_id = int(request.POST.get("question",None).split(".")[1])
 		course_id = request.POST.get("course_id",None)
 		answer = request.POST.get("answer", None)
 		Test.objects.attempt_save(test_id=test_id, question_id=question_id, course_id=course_id, answer=answer, user=request.user)

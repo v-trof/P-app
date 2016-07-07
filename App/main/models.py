@@ -219,7 +219,7 @@ class CourseManager(models.Manager):
 	def edit_announcement(self, heading, text, course_id, announcement_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-		data[int(announcement_id)]={"heading":heading,"text":text}
+		data[int(announcement_id)-1]={"heading":heading,"text":text}
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -568,9 +568,10 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		return 0
 
-	def create_assignment(self, course_id, test_list, material_list, traditionals_list, due_date):
+	def create_assignment(self, course_id, group_list, test_list, material_list, traditionals_list, due_date):
 		assignment = {}
 		assignment["due_date"] = due_date
+		assignment["group_list"]= group_list
 		assignment["content"] = {}
 		assignment["course_id"]=course_id
 		assignment_id = str(len(glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*'))+1)
@@ -585,28 +586,31 @@ class CourseManager(models.Manager):
 		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + assignment_id + '.json', 'w+', encoding='utf8') as json_file:
 			saving_data = json.dumps(assignment, ensure_ascii=False)
 			json_file.write(saving_data)
-		for assignments_file in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/assignments.json'):
-			with io.open(assignments_file, 'r', encoding='utf8') as json_file:
-				data = json.load(json_file)
-				assignment_map={}
-				data[assignment_id] = {}
-				assignment_map["unfinished_tests"]=[]
-				assignment_map["tests"]=[]
-				assignment_map["traditionals"]=[]
-				for task in assignment["content"]["tests"]:
-					assignment_map["tests"].append(task["link"].split('&')[1].split('=')[1])
-				it = 0
-				for task in assignment["content"]["traditionals"]:
-					it += 1
-					assignment_map["traditionals"].append(it)
-				data[assignment_id]["in_process"]=assignment_map
-				data[str(assignment_id)]["done"]={}
-				data[str(assignment_id)]["done"]["tests"]=[]
-				data[str(assignment_id)]["done"]["traditionals"]=[]
-				data[str(assignment_id)]["finished"]=False
-			with io.open(assignments_file, 'w', encoding='utf8') as json_file:
-				saving_data = json.dumps(data, ensure_ascii=False)
-				json_file.write(saving_data)
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as json_file:
+			course_info=json.load(json_file)
+		for group in group_list:
+			for user_id in course_info["groups"][group].keys():
+				with io.open('main/files/json/courses/' + str(course_id) + '/users/'+user_id+'/assignments.json', 'r', encoding='utf8') as json_file:
+					data = json.load(json_file)
+					assignment_map={}
+					data[assignment_id] = {}
+					assignment_map["unfinished_tests"]=[]
+					assignment_map["tests"]=[]
+					assignment_map["traditionals"]=[]
+					for task in assignment["content"]["tests"]:
+						assignment_map["tests"].append(task["link"].split('&')[1].split('=')[1])
+					it = 0
+					for task in assignment["content"]["traditionals"]:
+						it += 1
+						assignment_map["traditionals"].append(it)
+					data[assignment_id]["in_process"]=assignment_map
+					data[str(assignment_id)]["done"]={}
+					data[str(assignment_id)]["done"]["tests"]=[]
+					data[str(assignment_id)]["done"]["traditionals"]=[]
+					data[str(assignment_id)]["finished"]=False
+				with io.open(assignments_file, 'w', encoding='utf8') as json_file:
+					saving_data = json.dumps(data, ensure_ascii=False)
+					json_file.write(saving_data)
 		return 0
 
 	def get_group_list(self, course):

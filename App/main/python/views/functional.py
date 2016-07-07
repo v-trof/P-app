@@ -238,8 +238,9 @@ class Course_views():
 			test_list = request.POST.get('test_list')
 			material_list = request.POST.get('material_list')
 			traditionals_list = request.POST.get('traditionals_list')
+			group_list = request.POST.get('group_list')
 			due_date = request.POST.get('due_date')
-			Course.objects.create_assignment(course_id=course_id, test_list=test_list,
+			Course.objects.create_assignment(course_id=course_id, test_list=test_list, group_list=group_list,
 											 material_list=material_list, traditionals_list=traditionals_list, due_date=due_date)
 		return HttpResponse("ok")
 

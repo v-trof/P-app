@@ -24,7 +24,7 @@ $(document).ready(function() {
 						'text': new_text,
 						'heading': new_heading,
 						'course_id': "{{course.id}}",
-						'announcement_id': "id",
+						'announcement_id': id,
 					},
 					success: function(response) {
 						popup.hide();
@@ -42,8 +42,10 @@ $(document).ready(function() {
 	});
 
 	$(".announcements>.card").each(function(index, el) {
+		console.log("dsf");
 		var id = $(this).attr("id");
 		button_delete.add($(this), function() {
+			console.log("dsf");
 			announcement_delete(id);
 		});
 	});
