@@ -3,7 +3,7 @@ $(document).ready(function() {
 		popup.show('{% include "Pages/Course/main/_popup_texts/add_announcement/exports.html" %}');
 		$("#add_el").click(function(event) {
 			var new_heading = $('[name="heading"]').val();
-			var new_text = $('.announcement_text').text();
+			var new_text = $('.announcement_text').html();
 			$.ajax({
 				type:"POST",
 				url:"/func/add_announcement/",
@@ -16,10 +16,19 @@ $(document).ready(function() {
 				success: function(response) {
 					popup.hide();
 					notification.show('success','Объявление добавлено');
-					$(".announcements").append('{% include "Elements/card/exports.html" %}');
-					$(".announcements .card:last-child").attr("id",response);
-					$(".announcements .card:last-child .__overall-info .__heading").text(new_heading);
-					$(".announcements .card:last-child .__content").text(new_text);
+					if($(".announcements .card").length === 0) {
+						$(".announcements").html($(".announcements h3"));
+					}
+
+					var $new_announcement = $('{% include "Elements/card/exports.html" %}');
+					$(".announcements").append($new_announcement);
+					$new_announcement.attr("id",response);
+					$new_announcement.find(".__heading").text(new_heading);
+					$new_announcement.find(".__content").text(new_text);
+
+					button_delete.add($new_announcement, function() {
+						announcement_delete(response);
+					});
 				},
 				error: function() {
 					notification.show('error','Произошла ошибка');						

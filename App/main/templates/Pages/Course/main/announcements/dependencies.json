@@ -1,5 +1,5 @@
 {
-	"elements": ["card/announcement"],
+	"elements": ["card/announcement", "Modules/button_delete"],
 	"scripts": [],
 	"styles": []
 }
