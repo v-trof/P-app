@@ -167,6 +167,13 @@ class Course_views():
 				text=text, heading=heading, course_id=course_id, announcement_id=announcement_id)
 		return HttpResponse('ok')
 
+	def delete_announcement(request):
+		if request.method == "POST":
+			announcement_id = request.POST["announcement_id"]
+			course_id = request.POST["course_id"]
+			announcement = Course.objects.delete_announcement(course_id=course_id, announcement_id=announcement_id)
+		return HttpResponse('ok')
+
 	def edit_groups(request):
 		if request.method == 'POST':
 			groups_data = json.loads(request.POST["groups_data"])

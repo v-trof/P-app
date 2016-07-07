@@ -145,6 +145,7 @@ class Course_group():
 			context["course"]["material_list"]=Course.objects.get_material_list(course=course)
 			context["course"]["test_list"]=Course.objects.get_test_list(course=course)
 			context["course"]["object"]=course
+			context["course"]["group_list"]=Course.objects.get_group_list(course=course)
 			context["course"]["material_list"] = [
 				{
 					"title": "!How to make bugs!",

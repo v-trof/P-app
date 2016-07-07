@@ -70,6 +70,7 @@ func_patterns = [
     url(r'^change_permission_level/$', functional.User_views.change_permission_level, name="change_permission_level"),
     url(r'^add_announcement/$', functional.Course_views.add_announcement, name="add_announcement"),
     url(r'^edit_announcement/$', functional.Course_views.edit_announcement, name="edit_announcement"),
+    url(r'^delete_announcement/$', functional.Course_views.delete_announcement, name="delete_announcement"),
     url(r'^course_reg/(?P<course_id>[0-9]+)/$', functional.Course_views.register, name="register_on_course"),
 ]
 
