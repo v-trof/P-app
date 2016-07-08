@@ -182,7 +182,7 @@ class CourseManager(models.Manager):
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		with io.open('main/files/json/courses/' + str(course.id) + '/announcements.json', 'w+', encoding='utf8') as json_file:
-			data = []
+			data = {}
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return course
@@ -210,7 +210,12 @@ class CourseManager(models.Manager):
 	def add_announcement(self, heading, text, course_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-		data.append({"heading": heading, "text": text})
+		if len(data.keys()):
+			maximum=max(k for k, v in data.items())
+		else: maximum=0
+		maximum=int(maximum)
+		print(maximum)
+		data[str(maximum+1)]=({"heading": heading, "text": text})
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -219,7 +224,7 @@ class CourseManager(models.Manager):
 	def edit_announcement(self, heading, text, course_id, announcement_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-		data[int(announcement_id)-1]={"heading":heading,"text":text}
+		data[announcement_id]={"heading":heading,"text":text}
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -228,7 +233,7 @@ class CourseManager(models.Manager):
 	def delete_announcement(self, course_id, announcement_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-		del(data[int(announcement_id)])
+		data.pop(str(announcement_id),None)
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)

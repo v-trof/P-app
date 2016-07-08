@@ -1,8 +1,8 @@
 <section class="announcements">
 	{% if announcements %}
 		<h3>Объявления</h3>
-		{% for announcement in announcements %}
-			{% include "Elements/card/announcement/" with id=forloop.counter %}
+		{% for id,announcement in announcements.items %}
+			{% include "Elements/card/announcement/" %}
 		{% endfor %}
 	{% else %}
 		<h3>Объявлений нет</h3>
