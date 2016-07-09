@@ -52,7 +52,6 @@ def get(path):
 		for script in scripts:
 			if len(script.split(".")) > 1:
 				is_critical = False
-				print(script, )
 				if script == "core.js":
 					is_critical = True
 				script = real_path + "/_scripts/" + script

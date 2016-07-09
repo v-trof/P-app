@@ -16,20 +16,23 @@ while message != "_exit":
 		for directory in pages_n_blocks:	
 			dependencies_json = dependencies.get(directory)
 			if "template" in dependencies_json:
-				pages.append(directory)
-				print(directory)
+				directory_list = directory.split("\\")
+				
+				print(directory_list)
+				if len(directory_list) > 1:
+					page_name = directory_list[0].split("/")[-1] + "/" \
+					 + "/".join(directory_list[1:])
+				else:
+					page_name = directory_list[0].split("/")[-1]
 
-		for page_path in pages:
-			pagel_list = page_path.split("\\")
-			if len(pagel_list) > 1:
-				page_name = pagel_list[0].split("/")[-1] + "/" \
-					 + page_path.split("\\")[1]
-			else:
-				page_name = pagel_list[0].split("/")[-1]
+				pages.append(page_name)
 
+		print(pages)
+		for page_name in pages:
 			core.build_page(page_name)
 
 	else:
+
 		core.build_page(message)
 	print("\n ---- \n")
 	message = input().split("/n")[0]
