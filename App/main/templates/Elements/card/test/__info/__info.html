@@ -1,11 +1,11 @@
 {% load ext_humanize %}
 {% include "#&/../../__overall-info/" 
-	with heading=test.name %}
+	with heading=test.title %}
 <p class="__content">
-	{% if test.questions %}
-		<strong>{{test.questions|length}}</strong>
-		{{test.questions|length|form_for_num:"вопрос вопроса вопросов"}}
+	{% ifnotequal 0 test.questions_number %}
+		<strong>{{test.questions_number}}</strong>
+		{{test.questions_number|form_for_num:"вопрос вопроса вопросов"}}
 	{% else %}
 		Вопросов <strong>нет</strong>
-	{% endif %}
+	{% endifnotequal %}
 </p>

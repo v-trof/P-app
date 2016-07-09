@@ -645,7 +645,8 @@ class CourseManager(models.Manager):
 			for test_id in list(value):
 				with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 					test_data=json.load(info_file)
-					tests[section_name].append({"title":test_data["title"],"id":test_id})
+					tests[section_name].append({"title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"]})
+		print(tests)
 		return tests
 
 
@@ -1073,9 +1074,11 @@ class TestManager(models.Manager):
 	def create(self, course_id):
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
 			course_info = json.load(data_file)
-			test_id=str(len(course_info['tests']['published']) + len(course_info['tests']['unpublished']) + 1)
+			for section in course_info['tests']['published']:
+				test_id+=len(section)
+			test_id+=len(course_info['tests']['unpublished'])+1
 		course = {"id": course_id}
-		test = {"id": test_id, "loaded": 0}
+		test = {"id": str(test_id), "loaded": 0}
 		context = {"test": test, "course": course}
 		return context
 
@@ -1128,10 +1131,15 @@ class TestManager(models.Manager):
 	def save(self, json_file,course_id, test_id):
 		json_file=json.loads(json_file)
 		json_file["allowed_mistakes"]=[]
+		questions_number=0
+		for task in json_file["tasks"]:
+			for question in task:
+				if question["type"] == "answer":
+					questions_number+=1
+		json_file["questions_number"]=questions_number
 		json_file["mark_setting"]={"2":0,"3":25,"4":50,"5":75}
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
 			test_file.write(json.dumps(json_file, ensure_ascii=False))
-
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 		if not test_id in course_info['tests']['unpublished']:
