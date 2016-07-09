@@ -1,3 +1,13 @@
+<div class="card">
+	{% for group in course.group_list %}
+		{% include "Elements/Inputs/checkbox/" with
+			name="group_choose"
+			value=group
+			label=group
+			checked="true" %}
+	{% endfor %}
+</div>
+
 <div class="card assignment--new">
 	<div class="row" id="assignment--new__materials">
 		<h4 class="__heading">Материалы:</h4>
@@ -10,9 +20,9 @@
 		</button>
 	</div>
 	<div id="assignment--new__traditional">
-		<h4 class="__heading">Задания вне Pi</h4>
+		<h4 class="__heading">Задания вне Pileus</h4>
 		
-		<button class="--ghost --icon" id="assignment--new__add_traditional" tip="Добавить описание того, что надо сделать вне Pi">{% include "Elements/Icons/add.svg" %}</button>
+		<button class="--ghost --icon" id="assignment--new__add_traditional" tip="Добавить описание того, что надо сделать вне Pileus">{% include "Elements/Icons/add.svg" %}</button>
 	</div>
 	{% include "#&/due_date/" %}
 </div>

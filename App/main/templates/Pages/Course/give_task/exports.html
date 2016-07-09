@@ -5,51 +5,52 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Выдать задание</title>
 	<style> 
-		{% include "Elements/Inputs/text/textarea/_styles/css/height_fix.css" %} 
-		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
-		{% include "Elements/Modules/panel/_styles/css/panel.css" %} 
-		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
-		{% include "Elements/card/small/_styles/css/small.css" %} 
 		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Page_templates/_styles/css/main.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
 		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Elements/Inputs/Text/_styles/css/reset.css" %} 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
 		{% include "Elements/Inputs/Text/_styles/css/text.css" %} 
 		{% include "Pages/Course/give_task/due_date/_styles/css/due_date.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
 		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Pages/Course/give_task/_styles/css/layout.css" %} 
-		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
+		{% include "Elements/Modules/panel/_styles/css/panel.css" %} 
 		{% include "Elements/card/_styles/css/link.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Page_templates/_styles/css/main.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
+		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
 		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Inputs/text/textarea/_styles/css/height_fix.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
+		{% include "Pages/Course/give_task/_styles/css/layout.css" %} 
+		{% include "Elements/Inputs/Text/_styles/css/reset.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Elements/card/small/_styles/css/small.css" %} 
+		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
 	</style>
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	<div class="card assignment--new">	<div class="row" id="assignment--new__materials">		<h4 class="__heading">Материалы:</h4>		<button class="--ghost --icon" id="assignment--new__add_material" tip="Добавить материал в задание">{% include "Elements/Icons/add.svg" %}</button>	</div>	<div class="row" id="assignment--new__tests">		<h4 class="__heading">Тесты:</h4>		<button class="--ghost --icon" id="assignment--new__add_test" tip="Добавить тест в задание">			{% include 'Elements/Icons/add.svg' %}		</button>	</div>	<div id="assignment--new__traditional">		<h4 class="__heading">Задания вне Pi</h4>				<button class="--ghost --icon" id="assignment--new__add_traditional" tip="Добавить описание того, что надо сделать вне Pi">{% include "Elements/Icons/add.svg" %}</button>	</div>	{% include "Pages/Course/give_task/due_date/exports.html" %}</div><button class="button--raized" id="give_task">Выдать задание</button>
+	<div class="card">	{% for group in course.group_list %}		{% include "Elements/Inputs/checkbox/exports.html" with			name="group_choose"			value=group			label=group			checked="true" %}	{% endfor %}</div><div class="card assignment--new">	<div class="row" id="assignment--new__materials">		<h4 class="__heading">Материалы:</h4>		<button class="--ghost --icon" id="assignment--new__add_material" tip="Добавить материал в задание">{% include "Elements/Icons/add.svg" %}</button>	</div>	<div class="row" id="assignment--new__tests">		<h4 class="__heading">Тесты:</h4>		<button class="--ghost --icon" id="assignment--new__add_test" tip="Добавить тест в задание">			{% include 'Elements/Icons/add.svg' %}		</button>	</div>	<div id="assignment--new__traditional">		<h4 class="__heading">Задания вне Pileus</h4>				<button class="--ghost --icon" id="assignment--new__add_traditional" tip="Добавить описание того, что надо сделать вне Pileus">{% include "Elements/Icons/add.svg" %}</button>	</div>	{% include "Pages/Course/give_task/due_date/exports.html" %}</div><button class="button--raized" id="give_task">Выдать задание</button>
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
-		{% include "Elements/Modules/panel/_scripts/panel.js" %} 
-		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
-		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
+		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
+		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
+		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
+		{% include "Elements/Modules/panel/_scripts/panel.js" %} 
+		{% include "Pages/Course/give_task/_scripts/give_task.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
 		{% include "Elements/Inputs/Text/_scripts/emptyness_checker.js" %} 
-		{% include "Elements/Layout/header/_scripts/header.js" %} 
-		{% include "Pages/Course/give_task/_scripts/give_task.js" %} 
 	</script>
 </body>
 </html>

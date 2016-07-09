@@ -1,5 +1,7 @@
+var invite_students_text = '{% include "Pages/Course/groups/_popup_texts/invite_students/exports.html" %}'
+
 $("#invite_students").click(function(event) {
-	popup.show('{% include "Pages/Course/groups/_popup_texts/invite_students/exports.html" %}');
+	popup.show(invite_students_text);
 	$(".student__email").focus();
 	verifier.add($(".student__email"), "email");
 	$("#add_student").click(function(e) {

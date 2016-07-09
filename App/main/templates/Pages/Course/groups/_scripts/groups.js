@@ -32,18 +32,27 @@ edit.end = function() {
 		$(this).replaceTag("<a>", true);
 	});
 
+
 	
 	//back stuff
 	var groups={};
+	
+	var popup_invite = $(invite_students_text)
+	$(popup_invite[2]).find("option").remove();
 	$(".group").each(function(index, el) {
 		group=$(this).children('h3').html();
 		
+		$(popup_invite[2]).append('<option value="' + group + '">'
+			+ group + '</option>');
+
 		groups[group]=[];
 		
 		$(this).find('.__name').each(function() {
 			groups[group].push($(this).html());
 		});
 	});
+
+	invite_students_text = popup_invite;
 	$.ajax({
 		type:"POST",
 		url:"/func/edit_groups/",

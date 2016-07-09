@@ -137,6 +137,15 @@ var as_g = {}
 		// console.log("mat",res_material_list);
 		// console.log("trad",traditionals_list);
 		// console.log("due_date",due_date);
+
+		var group_list = []
+
+		$('[name="group_choose"]').each(function(index, el) {
+			if( $(this).is(":checked") ) {
+				group_list.push($(this).val());
+			}		
+		});
+
         $.ajax({
             type:"POST",
             url:"/func/create_assignment/",
@@ -145,6 +154,7 @@ var as_g = {}
                    'material_list': JSON.stringify(res_material_list),
                    'test_list': JSON.stringify(res_test_list),
                    'traditionals_list': JSON.stringify(traditionals_list),
+                   'group_list': JSON.stringify(group_list),
                    'due_date': due_date,
                    'course_id': '{{ course.object.id }}'
                   },
