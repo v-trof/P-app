@@ -214,7 +214,6 @@ class CourseManager(models.Manager):
 			maximum=max(k for k, v in data.items())
 		else: maximum=0
 		maximum=int(maximum)
-		print(maximum)
 		data[str(maximum+1)]=({"heading": heading, "text": text})
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
@@ -624,7 +623,7 @@ class CourseManager(models.Manager):
 			course_groups = []
 			for group in data["groups"]:
 				course_groups.append(group)
-		return json.dumps(course_groups, ensure_ascii=False)
+		return course_groups
 
 	def load_course_requests(self,course_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
