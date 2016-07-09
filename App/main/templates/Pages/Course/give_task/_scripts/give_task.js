@@ -6,20 +6,23 @@ var as_g = {}
 		return '<div class="card --small" href="'+el.link+'">'+el.title+'</div>'
 	}
 	
-	as_g.material_list = {{course.material_list|safe}}
-	as_g.test_list = {{course.test_list|safe}}
+	as_g.material_list = {{course.materials|safe}}
+	as_g.test_list = {{course.tests|safe}}
 
 	as_g.show_list = function(content_type, original) {
-		var list = as_g[content_type+"_list"];
+		var dict = as_g[content_type+"_list"];
 		as_g.current_type = content_type;
 		as_g.original = original;
 
 		panel.show();
 		panel.content.html("");
-		list.forEach(function(el) {
-
+		$.each(dict,function(section,value) {
+			console.log(section);
+			panel.content.append("<h3>"+section+"</h3>");
+			value.forEach(function(el) {
 			panel.content.append(as_g.card_template(el));
-		})
+		});
+		});
 
 		if(original) {
 			as_g.delete.show();

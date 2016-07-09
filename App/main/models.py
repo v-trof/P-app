@@ -166,10 +166,12 @@ class CourseManager(models.Manager):
 			data["pending_users"]["Нераспределенные"] = []
 			data["users"] = [creator.id]
 			data["tests"] = {}
-			data["tests"]["published"] = []
+			data["tests"]["published"]={}
+			data["tests"]["published"]["Нераспределенные"] = []
 			data["tests"]["unpublished"] = []
-			data["materials"]={}
-			data["materials"]["published"] = []
+			data["materials"] = {}
+			data["materials"]["published"]={}
+			data["materials"]["published"]["Нераспределенные"] = []
 			data["materials"]["unpublished"] = []
 			data["administrators"] = [creator.id]
 			data["teachers"] = {}
@@ -624,6 +626,29 @@ class CourseManager(models.Manager):
 			for group in data["groups"]:
 				course_groups.append(group)
 		return course_groups
+
+	def get_sections(self, course_id):
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			course_sections = []
+			for section in data["tests"]["published"].keys():
+				course_sections.append(section)
+		return course_sections
+
+	def get_tests(self, course_id):
+		tests={}
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			tests=data["tests"]["published"]
+		for section_name,value in tests.items():
+			tests[section_name]=[]
+			for test_id in list(value):
+				with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+					test_data=json.load(info_file)
+					tests[section_name].append({"title":test_data["title"],"id":test_id})
+		return tests
+
+
 
 	def load_course_requests(self,course_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -1128,7 +1153,7 @@ class TestManager(models.Manager):
 				}
 		return test
 		
-	def publish(self,course_id,test_id,allowed_mistakes,mark_setting):
+	def publish(self,course_id,test_id,section,allowed_mistakes,mark_setting):
 		# makes test visible in course screen
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
@@ -1136,7 +1161,10 @@ class TestManager(models.Manager):
 		if test_id in course_info['tests']['unpublished']:
 			course_info['tests']['unpublished'].remove(test_id)
 
-		course_info['tests']['published'].append(test_id)
+		if not course_info['tests']['published'][section]:
+			course_info['tests']['published'][section]=[]
+
+		course_info['tests']['published'][section].append(test_id)
 
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -1158,14 +1186,18 @@ class TestManager(models.Manager):
 		# makes test invisible in course screen
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
-		if test_id in course_info['tests']['published']:
-			course_info['tests']['published'].remove(test_id)
+
+		sections=list(course_info['tests']['published'].keys())
+
+		for section in sections:
+			if test_id in course_info['tests']['published'][section]:
+				course_info['tests']['published'][section].remove(test_id)
 
 		course_info['tests']['unpublished'].append(test_id)
 
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
-			return 0
+		return 0
 			
 	def build_question(self,item):
 		value={}

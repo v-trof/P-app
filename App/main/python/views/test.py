@@ -28,6 +28,7 @@ def create(request):
 			"href": "#",
 			"link": "Новый тест"
 		}]
+	context["sections"] = Course.objects.get_sections(course_id=course_id)
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
 
@@ -65,6 +66,7 @@ def load(request):
 			"href": "#",
 			"link": test["json"]["title"]
 		}]
+	context["sections"] = Course.objects.get_sections(course_id=course_id)
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
 
@@ -72,6 +74,7 @@ def publish(request):
 	# makes test visible in course screen
 	course_id = request.POST.get("course_id",None)
 	test_id = request.POST.get("test_id",None)
+	section = request.POST.get("section","Нераспределенные")
 	allowed_mistakes=[]
 	mark_setting={}
 	for setting in request.POST:
@@ -82,7 +85,7 @@ def publish(request):
 		elif setting.startswith('autocorrect_'):
 			if request.POST[setting]=="true":
 				allowed_mistakes.append(setting[12:])
-	Test.objects.publish(course_id=course_id, test_id=test_id,allowed_mistakes=allowed_mistakes,mark_setting=mark_setting)
+	Test.objects.publish(course_id=course_id, test_id=test_id,allowed_mistakes=allowed_mistakes,mark_setting=mark_setting,section=section)
 	return HttpResponse("Тест опубликован")
 
 
@@ -124,7 +127,6 @@ def attempt_save(request):
 		return HttpResponse("ok")
 
 def results(request):
-	print("ff")
 	course_id = request.GET["course_id"]
 	test_id = request.GET["test_id"]
 	user_id=request.GET.get("user_id",request.user.id)

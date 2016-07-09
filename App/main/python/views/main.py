@@ -95,7 +95,8 @@ class Course_group():
 			is_participant=Course.objects.check_participance(course=course,user=request.user)
 		else: is_participant=False
 		announcements=Course.objects.load_announcements(course_id=course.id)
-		return render(request, 'Pages/Course/main/exports.html', {"is_participant": is_participant, "announcements": announcements, "course": course, "course_data": course_data, "assignments": Course.objects.get_assignments(user=request.user, course=course),
+		tests=Course.objects.get_tests(course_id=str(course.id))
+		return render(request, 'Pages/Course/main/exports.html', {"tests":tests, "is_participant": is_participant, "announcements": announcements, "course": course, "course_data": course_data, "assignments": Course.objects.get_assignments(user=request.user, course=course),
 													 "breadcrumbs": [{
 														 "href": "#",
 														 "link": course.name
@@ -142,8 +143,8 @@ class Course_group():
 			course = Course.objects.get(id=course_id)
 			context={}
 			context["course"]={}
-			context["course"]["material_list"]=Course.objects.get_material_list(course=course)
-			context["course"]["test_list"]=Course.objects.get_test_list(course=course)
+			context["course"]["materials"]=Course.objects.get_tests(course_id=course_id)
+			context["course"]["tests"]=Course.objects.get_tests(course_id=course_id)
 			context["course"]["object"]=course
 			context["course"]["group_list"]=Course.objects.get_group_list(course=course)
 			context["course"]["material_list"] = [
