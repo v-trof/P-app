@@ -1,23 +1,10 @@
-{% if tests %}
-	<h3>Тесты</h3>
-	{% for section,value in tests.items %}
+{% if sections %}
+	<h3>Темы</h3>
+	{% for section,value in sections.items %}
 		<div class="section">
 			<h3>{{section}}</h3>
-			{{test}}
-			{% for test in value %}
-				<a class="--card" href='/test/attempt/?course_id={{course.id}}&test_id={{test.id}}'>{% include "Elements/card/test/" %}</a>
-			{% endfor %}
-		</div>
-	{% endfor %}
-{% endif %}
-
-{% if materials %}
-	<h3>Материалы</h3>
-	{% for section,value in materials.items %}
-		<div class="section">
-			<h3>{{section}}</h3>
-			{% for material in value %}
-				<a class="--card" href='/material/read/?course_id={{course.id}}&material_id={{material.id}}'>{{material.title}}</a>
+			{% for element in value %}
+				<a class="--card" href='/test/attempt/?course_id={{course.id}}&test_id={{element.id}}'>{% include "Elements/card/test/" with test=element %}</a>
 			{% endfor %}
 		</div>
 	{% endfor %}

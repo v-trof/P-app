@@ -95,8 +95,8 @@ class Course_group():
 			is_participant=Course.objects.check_participance(course=course,user=request.user)
 		else: is_participant=False
 		announcements=Course.objects.load_announcements(course_id=course.id)
-		tests=Course.objects.get_tests(course_id=str(course.id))
-		return render(request, 'Pages/Course/main/exports.html', {"tests":tests, "is_participant": is_participant, "announcements": announcements, "course": course, "course_data": course_data, "assignments": Course.objects.get_assignments(user=request.user, course=course),
+		sections=Course.objects.get_tests_and_materials(course_id=str(course.id))
+		return render(request, 'Pages/Course/main/exports.html', {"sections":sections, "is_participant": is_participant, "announcements": announcements, "course": course, "course_data": course_data, "assignments": Course.objects.get_assignments(user=request.user, course=course),
 													 "breadcrumbs": [{
 														 "href": "#",
 														 "link": course.name
