@@ -648,7 +648,28 @@ class CourseManager(models.Manager):
 					tests[section_name].append({"title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
 		return tests
 
-
+	def get_tests_and_materials(self,course_id):
+		context={}
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			tests=data["tests"]["published"]
+			materials=data["materials"]["published"]
+		test_sections=list(tests.keys())
+		material_sections=list(materials.keys())
+		sections=list(set(material_sections + test_sections))
+		for section in sections:
+			context[section]=[]
+			if section in test_sections:
+				for test_id in list(tests[section]):
+					with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+						test_data=json.load(info_file)
+						context[section].append({"title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
+			if section in material_sections:
+				for material_id in list(materials[section]):
+					with io.open('main/files/json/courses/'+course_id+'/materials/'+material_id+'.json', 'r', encoding='utf8') as info_file:
+						material_data=json.load(info_file)
+						context[section].append({"title":material_data["title"],"id":material_id, "questions_number":material_data["questions_number"], "link":'?course_id='+course_id+"&material_id="+material_id})
+		return context
 
 	def load_course_requests(self,course_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -1076,8 +1097,9 @@ class TestManager(models.Manager):
 	def create(self, course_id):
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
 			course_info = json.load(data_file)
-			for section in course_info['tests']['published']:
-				test_id+=len(section)
+			test_id=0
+			for section,tests in course_info['tests']['published'].items():
+				test_id+=len(tests)
 			test_id+=len(course_info['tests']['unpublished'])+1
 		course = {"id": course_id}
 		test = {"id": str(test_id), "loaded": 0}
@@ -1130,9 +1152,10 @@ class TestManager(models.Manager):
 				assignment_file.write(json.dumps(assignments_map, ensure_ascii=False))
 		return 0
 
-	def save(self, json_file,course_id, test_id):
+	def save(self, json_file,course_id, test_id,user):
 		json_file=json.loads(json_file)
 		json_file["allowed_mistakes"]=[]
+		json_file["creator"]=user.id
 		questions_number=0
 		for task in json_file["tasks"]:
 			for question in task:
@@ -1214,6 +1237,7 @@ class TestManager(models.Manager):
 		type=item["class"]
 		value["type"] = type.split("--")[1]
 		if type=="answer--text":
+			print(item)
 			value["answer"] = item["answer"]
 			value["user_answer"] = None
 		elif type=="answer--textarea":
@@ -1444,6 +1468,21 @@ class TestManager(models.Manager):
 			for chunk in asset.chunks():
 				destination.write(chunk)
 		return filename
+
+	def is_creator(self,user,test_id,course_id):
+		with io.open('main/files/json/courses/'+str(course_id)+'/tests/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
+			test_info=json.load(info_file)
+		return test_info["creator"]==user.id
+
+	def is_member(self,user,course_id):
+		with io.open('main/files/json/courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as info_file:
+			course_info=json.load(info_file)
+		return user.id in course_info["users"]
+
+	def is_teacher(self,user,course_id):
+		with io.open('main/files/json/courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as info_file:
+			course_info=json.load(info_file)
+		return str(user.id) in course_info["teachers"].keys()
 
 	def upload_asset_by_url(self,asset_url,course_id,test_id,path):
 		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+'/'

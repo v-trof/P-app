@@ -11,10 +11,18 @@ import io
 
 def edit(request):
 	# switch for create\load test, launches test editor anyway
-	if "test_id" in request.GET:
-		return load(request)
+	if request.GET['course_id']:
+		course_id=request.GET['course_id']
+		if request.user.is_anonymous():
+			return redirect('/login')
+		if not Test.objects.is_teacher(user=request.user,course_id=course_id):
+			return redirect('/course/'+course_id)
+		if "test_id" in request.GET:
+			return load(request)
+		else:
+			return create(request)
 	else:
-		return create(request)
+		return redirect('/')
 
 
 def create(request):
@@ -46,7 +54,7 @@ def save(request):
 		json_file = request.POST.get("json_file",None)
 		course_id = request.POST.get("course_id",None)
 		test_id = request.POST.get("test_id",None)
-		Test.objects.save(json_file=json_file, course_id=course_id, test_id=test_id)
+		Test.objects.save(json_file=json_file, course_id=course_id, test_id=test_id, user=request.user)
 	return HttpResponse("Тест сохранен")
 
 
@@ -72,20 +80,21 @@ def load(request):
 
 def publish(request):
 	# makes test visible in course screen
-	course_id = request.POST.get("course_id",None)
-	test_id = request.POST.get("test_id",None)
-	section = request.POST.get("section","Нераспределенные")
-	allowed_mistakes=[]
-	mark_setting={}
-	for setting in request.POST:
-		if setting.startswith('min_for'):
-			if request.POST[setting]!='':
-				mark_setting[setting[-1]]=int(request.POST[setting])
-			else: mark_setting[setting[-1]]=101
-		elif setting.startswith('autocorrect_'):
-			if request.POST[setting]=="true":
-				allowed_mistakes.append(setting[12:])
-	Test.objects.publish(course_id=course_id, test_id=test_id,allowed_mistakes=allowed_mistakes,mark_setting=mark_setting,section=section)
+	if request.method == 'POST':
+		course_id = request.POST.get("course_id",None)
+		test_id = request.POST.get("test_id",None)
+		section = request.POST.get("section","Нераспределенные")
+		allowed_mistakes=[]
+		mark_setting={}
+		for setting in request.POST:
+			if setting.startswith('min_for'):
+				if request.POST[setting]!='':
+					mark_setting[setting[-1]]=int(request.POST[setting])
+				else: mark_setting[setting[-1]]=101
+			elif setting.startswith('autocorrect_'):
+				if request.POST[setting]=="true":
+					allowed_mistakes.append(setting[12:])
+		Test.objects.publish(course_id=course_id, test_id=test_id,allowed_mistakes=allowed_mistakes,mark_setting=mark_setting,section=section)
 	return HttpResponse("Тест опубликован")
 
 
@@ -107,10 +116,16 @@ def attempt(request):
 	# loads test file
 	course_id = request.GET.get("course_id",None)
 	test_id = request.GET.get("test_id",None)
-	context = Test.objects.attempt(user=request.user,course_id=course_id, test_id=test_id)
-	context["attempt"] = True
-	print(context["test"]["json"]["tasks"])
-	return render(request, 'Pages/Test/Attempt/main/exports.html', context)
+	if request.user.is_anonymous():
+		return redirect('/login')
+	if Test.objects.is_creator(user=request.user,test_id=test_id,course_id=course_id):
+		return redirect("/test/edit/?course_id="+course_id+"&test_id="+test_id)
+	if Test.objects.is_member(user=request.user,test_id=test_id,course_id=course_id):
+		context = Test.objects.attempt(user=request.user,course_id=course_id, test_id=test_id)
+		context["attempt"] = True
+		return render(request, 'Pages/Test/Attempt/main/exports.html', context)
+	else:
+		return redirect('/')
 
 
 def check_question(request, item):
@@ -127,6 +142,8 @@ def attempt_save(request):
 		return HttpResponse("ok")
 
 def results(request):
+	if request.user.is_anonymous():
+		return redirect('/login')
 	course_id = request.GET["course_id"]
 	test_id = request.GET["test_id"]
 	user_id=request.GET.get("user_id",request.user.id)
@@ -136,7 +153,6 @@ def results(request):
 	"attempt": Test.objects.get_attempt_info(user=user, course_id=course_id, test_id=test_id), 
 	"test": Test.objects.get_test_info(course_id=course_id, test_id=test_id)}
 	test=Test.objects.load(course_id=course_id, test_id=test_id)
-	print(context["attempt"])
 	context["test"]["json"]=test["json"]
 	context["is_results"] = True
 	return render(request, 'Pages/Test/Attempt/results/exports.html', context)
