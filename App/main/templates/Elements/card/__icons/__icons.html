@@ -1,4 +1,4 @@
-<div class="__Icons">
+<div class="__icons">
 	<div class="__warning">
 		{% for message in course.data.messages.warning %}
 			{% include "Elements/Icons/"|add:message.icon|add:".svg" with tip=message.text %}
@@ -16,4 +16,7 @@
 			{% include "Elements/Icons/"|add:message.icon|add:".svg" with tip=message.text %}
 		{% endfor %}
 	</div>
+	{% if icons_path %}
+		{% include icons_path %}
+	{% endif %}
 </div>

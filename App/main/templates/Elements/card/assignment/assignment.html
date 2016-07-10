@@ -2,7 +2,8 @@
 <div class="card --assignment {% if not assignment.relevant %} irrelevant {% endif %}" id="{{assignment.course.id}}_{{assignment.id}}">
 	{% if assignment.course %}
 		{% include "#&/../__overall-info/" 
-				with heading="В курсе "|add:assignment.course.name %}
+				with heading="В курсе "|add:assignment.course.name
+				icons_path="#&/__icons/" %}
 	{% endif %}		
 	<div class="__content">
 	{% if assignment.content %}

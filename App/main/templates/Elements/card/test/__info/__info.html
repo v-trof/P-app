@@ -2,6 +2,7 @@
 {% include "#&/../../__overall-info/" 
 	with heading=test.title %}
 <p class="__content">
+	Тест, 
 	{% ifnotequal 0 test.questions_number %}
 		<strong>{{test.questions_number}}</strong>
 		{{test.questions_number|form_for_num:"вопрос вопроса вопросов"}}

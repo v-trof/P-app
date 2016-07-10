@@ -1,5 +1,8 @@
 {
-	"elements": ["Modules/notification","Modules/popup", "Modules/accordion","card/test"],
+	"elements": ["Modules/notification",
+				 "Modules/popup",
+				 "Modules/accordion",
+				 "card/test"],
 	"scripts": [],
 	"styles": [],
 	"fixes": [],

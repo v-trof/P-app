@@ -1,0 +1,30 @@
+@import "../../../../sass_vars/main.sass"
+
+@keyframes show_icon
+	0%
+		opacity: 0
+	100%
+		opacity: 1
+
+$show: show_icon $time--m forwards
+
+.card.--assignment
+	.__icons
+		svg
+			display: none
+			opacity: 0
+			// transition: $time--m
+	&.--irrelevant
+		.__icons .__late
+			display: block
+			animation: $show
+
+	&.--done
+		.__icons .__done
+			display: block
+			animation: $show
+
+	&.--urgent
+		.__icons .__soon
+			display: block
+			animation: $show
