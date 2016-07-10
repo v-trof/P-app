@@ -594,7 +594,7 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as json_file:
 			course_info=json.load(json_file)
-		for group in group_list:
+		for group in json.loads(group_list):
 			for user_id in course_info["groups"][group].keys():
 				with io.open('main/files/json/courses/' + str(course_id) + '/users/'+user_id+'/assignments.json', 'r', encoding='utf8') as json_file:
 					data = json.load(json_file)
@@ -614,7 +614,7 @@ class CourseManager(models.Manager):
 					data[str(assignment_id)]["done"]["tests"]=[]
 					data[str(assignment_id)]["done"]["traditionals"]=[]
 					data[str(assignment_id)]["finished"]=False
-				with io.open(assignments_file, 'w', encoding='utf8') as json_file:
+				with io.open('main/files/json/courses/' + str(course_id) + '/users/'+user_id+'/assignments.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(data, ensure_ascii=False)
 					json_file.write(saving_data)
 		return 0
@@ -645,8 +645,7 @@ class CourseManager(models.Manager):
 			for test_id in list(value):
 				with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 					test_data=json.load(info_file)
-					tests[section_name].append({"title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"]})
-		print(tests)
+					tests[section_name].append({"title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
 		return tests
 
 
@@ -678,8 +677,12 @@ class CourseManager(models.Manager):
 		course_data["object"] = course
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
-		course_data["materials_number"]=len(data["materials"]["published"])
-		course_data["tests_number"]=len(data["tests"]["published"])
+		course_data["tests_number"]=0
+		course_data["materials_number"]=0
+		for section,tests in data["tests"]["published"].items():
+			course_data["tests_number"]+=len(tests)
+		for section,materials in data["materials"]["published"].items():
+			course_data["materials_number"]+=len(materials)
 		return course_data
 
 	def load_results(self,course_id,user_id):
@@ -838,7 +841,6 @@ class UserManager(UserManager):
 				course = Course.objects.get(id=course_id)
 				courses[course.subject].append(Course.objects.load_preview(course_id=course_id))
 			for subject in courses:
-				print(subject,courses[subject])
 				courses[subject]=Utility.sort_by_alphabet(object=courses[subject])
 			courses=Utility.sort_by_alphabet(object=courses)
 		return courses
