@@ -19,6 +19,7 @@ from django.contrib import admin
 from .python.views import main
 from .python.views import functional
 from .python.views import test
+from .python.views import material
 from .python.views import testing_system
 from django.conf.urls.static import static
 from django.conf import settings
@@ -43,6 +44,22 @@ test_patterns = [
     
     url(r'^upload/$', test.upload_asset, name="upload_asset"),
     url(r'^upload_by_url/$', test.upload_asset_by_url, name="upload_asset_by_url"),
+]
+
+material_patterns = [
+    url(r'^edit/$', material.edit, name="edit_material"),
+
+    url(r'^delete/$', material.delete, name="delete_material"),
+    url(r'^save/$', material.save, name="save_material"),
+
+    url(r'^publish/$', material.publish, name="publish_material"),
+    url(r'^unpublish/$', material.unpublish, name="unpublish_material"),
+    url(r'^share/$', material.share, name="share_material"),
+
+    url(r'^attempt/$', material.read, name="read"),
+
+    url(r'^upload/$', material.upload_asset, name="upload_asset"),
+    url(r'^upload_by_url/$', material.upload_asset_by_url, name="upload_asset_by_url"),
 ]
 
 func_patterns = [
@@ -88,6 +105,7 @@ urlpatterns = [
     url(r'^course/', include(course_patterns)),
     url(r'^func/', include(func_patterns)),
     url(r'^test/', include(test_patterns)),
+    url(r'^material/', include(material_patterns)),
     url(r'^login/$', main.Auth_group.login, name="login"),
     url(r'^login/(?P<course_id>[0-9]+)/$', main.Auth_group.login_with_reg, name="login+course"),
     url(r'^secure_entry/$', main.Auth_group.secure_entry, name="secure_entry"),
