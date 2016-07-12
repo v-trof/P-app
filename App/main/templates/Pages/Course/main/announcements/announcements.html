@@ -1,10 +1,8 @@
+{% if announcements.items|length > 0 %}
 <section class="announcements">
-	{% if announcements %}
 		<h3>Объявления</h3>
 		{% for id,announcement in announcements.items %}
 			{% include "Elements/card/announcement/" %}
 		{% endfor %}
-	{% else %}
-		<h3>Объявлений нет</h3>
-	{% endif %}
 </section>
+{% endif %}

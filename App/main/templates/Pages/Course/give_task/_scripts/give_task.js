@@ -1,3 +1,7 @@
+if( ! used_links) {
+	var used_links = []
+}
+
 var as_g = {}
 	as_g.current_type = ""
 	as_g.original = $()
@@ -17,11 +21,17 @@ var as_g = {}
 		panel.show();
 		panel.content.html("");
 		$.each(dict,function(section,value) {
-			console.log(section);
-			panel.content.append("<h3>"+section+"</h3>");
+			
+			var $new_section = $("<section><h3>"+section+"</h3></section>")
+
+			panel.content.append($new_section);
+			accordion.add($new_section, "h3");
+			
 			value.forEach(function(el) {
-			panel.content.append(as_g.card_template(el));
-		});
+				if(used_links.indexOf(el.link) == -1) {
+					$new_section.append(as_g.card_template(el));
+				}
+			});
 		});
 
 		if(original) {
@@ -40,27 +50,13 @@ var as_g = {}
 	  //  {
 	  //      field: document.getElementById('due_date'),
 	  //  });
-		panel.actions.html('<button class="--ghost" id="cancel">Отмена</button><button class="--ghost --negative" id="delete">Удалить</button>');
-		$("#delete").css('color', '#F44336');
+		
 
 		$("#assignment--new__add_test").click(function(event) {
 			as_g.show_list("test");
 		});
 		$("#assignment--new__add_material").click(function(event) {
 			as_g.show_list("material");
-		});
-
-		panel.$.click(function(event) {
-			as_g.hide_list()
-		});
-
-		panel.$.on("click", ".card.--small", function(event) {
-			if(as_g.original) {
-				as_g.original.replaceWith($(this))
-			} else {
-				$("#assignment--new__add_"+as_g.current_type).before($(this))
-			}
-			
 		});
 
 		$("#assignment--new__materials").on("click", ".card.--small", function(event) {
@@ -73,9 +69,6 @@ var as_g = {}
 		setTimeout(function() {
 			as_g.cancel = $("#cancel")
 			as_g.delete = $("#delete")
-			$("#delete").click(function(event) {
-				as_g.original.remove()
-			});
 		}, 100)
 	});
 	$("#assignment--new__add_traditional").click(function(event) {

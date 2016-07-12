@@ -5,33 +5,33 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Выдать задание</title>
 	<style> 
-		{% include "Elements/Inputs/Text/_styles/css/reset.css" %} 
-		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
-		{% include "Elements/Inputs/text/textarea/_styles/css/height_fix.css" %} 
-		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/Inputs/Text/_styles/css/text.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Elements/card/small/_styles/css/small.css" %} 
-		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Pages/Course/give_task/due_date/_styles/css/due_date.css" %} 
-		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Modules/panel/_styles/css/panel.css" %} 
-		{% include "Page_templates/_styles/css/main.css" %} 
-		{% include "Pages/Course/give_task/_styles/css/layout.css" %} 
 		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
+		{% include "Elements/Inputs/Text/_styles/css/text.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
+		{% include "Elements/Modules/panel/_styles/css/panel.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Elements/Inputs/text/textarea/_styles/css/height_fix.css" %} 
+		{% include "Page_templates/_styles/css/main.css" %} 
+		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Elements/card/_styles/css/link.css" %} 
+		{% include "Elements/Inputs/Text/_styles/css/reset.css" %} 
+		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
+		{% include "Pages/Course/give_task/_styles/css/layout.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Pages/Course/give_task/due_date/_styles/css/due_date.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
+		{% include "Elements/card/small/_styles/css/small.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
 	</style>
 </head>
 <body>
@@ -41,16 +41,17 @@
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
-		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
-		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
-		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
 		{% include "Elements/Modules/panel/_scripts/panel.js" %} 
+		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
+		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
 		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
-		{% include "Pages/Course/give_task/_scripts/give_task.js" %} 
-		{% include "Elements/Layout/header/_scripts/header.js" %} 
+		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
+		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Inputs/Text/_scripts/emptyness_checker.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Pages/Course/give_task/_scripts/panel_control.js" %} 
+		{% include "Pages/Course/give_task/_scripts/give_task.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
 	</script>
 </body>
 </html>
