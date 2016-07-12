@@ -31,6 +31,8 @@ generate.edit = (function() {
 			pull_put.ui.$.find(".__content")
 				.html(blueprints.edit.text);
 
+			console.log(blueprints.edit.middleware);
+
 			if(typeof blueprints.edit.middleware !== "undefined") {
 				blueprints.edit.middleware();
 			}
@@ -65,7 +67,7 @@ generate.edit = (function() {
 				
 				pull_put.reset();
 
-				if(editor) {
+				if(typeof editor !== "undefined") {
 					editor.check_self();
 				}
 			});
@@ -78,7 +80,7 @@ generate.edit = (function() {
 
 $(document).ready(function() {
 	pull_put.ui.$.find(".__content").on(
-		"keyup click", 
+		"keyup click change", 
 		"button, input, .__value",
 		function() {
 			pull_put.ui.rebuild_element();		

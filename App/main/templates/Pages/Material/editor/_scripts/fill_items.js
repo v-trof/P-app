@@ -14,9 +14,10 @@ function add_to_item_list(element_class, $list) {
 
 	var $finished = $(template).html($element);
 	
+
 	pull_put.puller.add(
 		$element,
-		["add"],
+		[],
 		generate.edit.preview_action,
 		function() {
 			var preview_width = $(".preview>.__content").width();

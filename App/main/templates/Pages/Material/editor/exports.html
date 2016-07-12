@@ -3,59 +3,53 @@
 <head>
 	{% include "Page_templates/_shared/fixes/charset.html" %}
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
-	<title>Редактирование теста</title>
+	<title>Редактирование материала</title>
 	<style> 
 		{% include "Elements/Modules/test_generate/_styles/css/image.css" %} 
 		{% include "Elements/Modules/button_delete/_styles/css/button_delete.css" %} 
+		{% include "Elements/Modules/test_generate/_styles/css/task.css" %} 
 		{% include "Elements/button/_styles/css/button.css" %} 
 		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
 		{% include "Elements/Modules/test_generate/_styles/css/answer-field.css" %} 
 		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Elements/card/_styles/css/link.css" %} 
 		{% include "Elements/Inputs/Text/_styles/css/text.css" %} 
-		{% include "Pages/Test/editor/_styles/css/task.css" %} 
 		{% include "Elements/Modules/pull_put/_styles/css/layout.css" %} 
 		{% include "Elements/Modules/test_generate/_styles/css/answer-item.css" %} 
 		{% include "Elements/Inputs/radio/_styles/css/radio.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Elements//Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
-		{% include "Pages/Test/editor/_popup_texts/publish/_styles/css/publish.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Pages/Test/editor/preview/_styles/css/preview.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/Inputs/file/_styles/css/file.css" %} 
-		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
-		{% include "Elements/card/circle/_styles/css/shape.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/Modules/context_menu/_styles/css/context_menu.css" %} 
-		{% include "Elements/Modules/test_generate/_styles/css/task.css" %} 
-		{% include "Elements/inputs/text/_styles/css/reset.css" %} 
-		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
-		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
 		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Pages/Test/editor/actions/_styles/css/layout.css" %} 
 		{% include "Elements/Inputs/Text/_styles/css/reset.css" %} 
-		{% include "Pages/Test/editor/_styles/css/layout.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
 		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Inputs/select/_styles/css/select.css" %} 
-		{% include "Pages/Test/editor/_styles/css/disable.css" %} 
+		{% include "Pages/Material/editor/actions/_styles/css/layout.css" %} 
+		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
+		{% include "Pages/Material/editor/_styles/css/disable.css" %} 
+		{% include "Elements//Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
+		{% include "Pages/Material/editor/_styles/css/task.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Pages/Material/editor/_styles/css/layout.css" %} 
 		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
 		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
 		{% include "Elements/button/flat/_styles/css/flat.css" %} 
+		{% include "Elements/Inputs/file/_styles/css/file.css" %} 
 		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements/inputs/text/_styles/css/text.css" %} 
+		{% include "Pages/Material/editor/_styles/css/input_adaptation.css" %} 
 		{% include "Elements/Inputs/text/textarea/_styles/css/height_fix.css" %} 
 		{% include "Elements/Modules/pull_put/_styles/css/placeholder.css" %} 
-		{% include "Pages/Test/editor/_styles/css/input_adaptation.css" %} 
+		{% include "Pages/Material/editor/preview/_styles/css/preview.css" %} 
 		{% include "Page_templates/_styles/css/main.css" %} 
+		{% include "Elements/card/circle/_styles/css/shape.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
 	</style>
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	{% include "Pages/Test/editor/question_items/exports.html" %}{% include "Pages/Test/editor/preview/exports.html" %}{% include "Pages/Test/editor/answer_items/exports.html" %}{% include "Pages/Test/editor/actions/exports.html" %}
+	{% include "Pages/Material/editor/question_items/exports.html" %}{% include "Pages/Material/editor/preview/exports.html" %}{% include "Pages/Material/editor/actions/exports.html" %}
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
@@ -69,10 +63,8 @@
 		{% include "Elements/Modules/pull_put/_scripts/pull.js" %} 
 		{% include "Elements/Modules/pull_put/_scripts/put.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/build.js" %} 
-		{% include "Elements/Modules/context_menu/_scripts/context_menu.js" %} 
 		{% include "Elements/Modules/test_manager/_scripts/load.js" %} 
 		{% include "Elements/Modules/test_manager/_scripts/pack.js" %} 
-		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
 		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
 		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/edit.js" %} 
@@ -82,16 +74,14 @@
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/read.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/data.js" %} 
+		{% include "Pages/Material/editor/_scripts/fill_items.js" %} 
+		{% include "Pages/Material/editor/_scripts/new_autofill.js" %} 
 		{% include "Elements/Inputs/Text/_scripts/emptyness_checker.js" %} 
-		{% include "Elements/Inputs/select/_scripts/select.js" %} 
-		{% include "Pages/Test/editor/_scripts/config.js" %} 
-		{% include "Pages/Test/editor/_scripts/fill_item-lists.js" %} 
 		{% include "Elements/Inputs/file/_scripts/file_catcher.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
-		{% include "Pages/Test/editor/_scripts/editor.js" %} 
-		{% include "Elements/inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Pages/Material/editor/_scripts/add_pullers.js" %} 
+		{% include "Pages/Material/editor/actions/_scripts/handler.js" %} 
 		{% include "Elements/Layout/header/_scripts/header.js" %} 
-		{% include "Pages/Test/editor/actions/_scripts/handler.js" %} 
 	</script>
 </body>
 </html>

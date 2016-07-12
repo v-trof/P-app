@@ -1,0 +1,9 @@
+{
+	"elements": ["Modules/test_generate", "Modules/test_manager",
+				 "Modules/pull_put","Modules/notification"],
+	"scripts": [],
+	"styles": [],
+	"fixes": [],
+	"title" : "Редактирование материала",
+	"template": "default"
+}

@@ -20,6 +20,13 @@ file_catcher.add = function($file_input) {
 
 	$input_value.change(function(event) {
 		container.files = event.target.files;
+		container.urls = []
+				
+		for (var i = 0; i < container.files.length; i++) {
+			container.urls.push(
+				URL.createObjectURL(container.files[i]));
+		}
+
 		$input_text.text($input_value.val().replace( "C:\\fakepath\\", '' ));
 	});
 

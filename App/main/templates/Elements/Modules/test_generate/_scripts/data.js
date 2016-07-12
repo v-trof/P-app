@@ -320,17 +320,28 @@ generate.data["question--image"] = {
 	edit: {
 		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__image/exports.html" %}',
 		parse: function() {
-			return {
-				url: $("#new_element_url").val()
+
+			var url;
+			console.log($("#new_element_file").val());
+
+			if($("#new_element_file").val() != "") {
+				url = generate.data.shared.assets[
+					generate.data.shared.assets.last_id
+				].urls[0];
+			} else {
+				url = $("#new_element_url").val();
 			}
-			// else if($("#new_el_file") != "" ) {
-			// 	return generate.shared.upload_asset($("#new_el_file").val())
-			// }
+
+			return {
+				url: url 
+			}
 		},
 		fill: function(value) {
 			$("#new_element_url").val(value.url).focus()
+		},
+		middleware: function() {
+			generate.data.shared.catch_asset_file()
 		}
-		// middleware: generate.shared.catch_asset_file
 	}
 }
 generate.data["question--text"] = {
@@ -363,6 +374,22 @@ generate.data["question--text"] = {
 			$("#new_element_text").html(value.text).focus();
 		}
 	}
+}
+generate.data.shared.assets = {}
+
+generate.data.shared.assets.last_id = 0
+generate.data.shared.assets.get_id = function() {
+	generate.data.shared.assets.last_id++;
+	return generate.data.shared.assets.last_id;
+}
+
+generate.data.shared.catch_asset_file = function() {
+	$file_input = pull_put.ui.$.find(".input.--file");
+
+	new_id = generate.data.shared.assets.get_id();
+	console.log($file_input);
+
+	generate.data.shared.assets[new_id] = file_catcher.add($file_input);
 }
 generate.data.shared.options = {
 	element: {

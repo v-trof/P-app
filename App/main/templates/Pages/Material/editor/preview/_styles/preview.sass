@@ -6,18 +6,20 @@
 	align-items: center
 	width: 100%
 	overflow-y: scroll
-	padding: 0 $padding--m
-	margin-left: -16px !important
+	padding: 0
+	padding-left: $padding--m
+	padding-right: 16.5rem + $padding--m
+	@media screen and (max-width:1367px)
+		padding-right: $padding--m + 1rem
+
 	&>.__heading
 		min-width: 4rem
 		text-align: center
 		border-bottom: $border--s solid $grey--semilight
-		transition: $time--s
+		transition: $time--s	
 		&:hover, &:focus
 			border-bottom: $border--s solid $font__color--accent
 	&>.__content
 		width: 100%
-		max-width: 50rem + $padding--s*2
-		padding-left: 1rem
-		.__task:last-child.--stand-out
-			transform: translateX(-$margin--l)
+		max-width: 50rem
+		margin-left: 1rem
