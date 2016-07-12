@@ -100,6 +100,34 @@ class Utility():
 				destination.write(chunk)
 		return filename
 
+	def upload_file(file,path):
+		path = 'main/files/media/'+path
+		if not os.path.exists(path):
+			os.makedirs(path)
+		filename = transliterate.ru_en(file.name)
+		with open(path+filename, 'wb+') as destination:
+			for chunk in asset.chunks():
+				destination.write(chunk)
+		return filename
+
+	def upload_file_by_url(url,path):
+		path = 'main/files/media/'+path
+		if not os.path.exists(path):
+			os.makedirs(path)
+		request = requests.get(url, stream=True)
+		filename = url.split('/')[-1]
+		temp = tempfile.NamedTemporaryFile()
+		for block in request.iter_content(1024 * 8):
+			if not block:
+				break
+			temp.write(block)
+
+		with open(path+filename, 'wb+') as destination:
+			for chunk in files.File(temp).chunks():
+				destination.write(chunk)
+		url=path+asset_name
+		return url
+
 	def upload_asset_by_url(asset_url,course_id,test_id,path):
 		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+'/'
 		if not os.path.exists(path):

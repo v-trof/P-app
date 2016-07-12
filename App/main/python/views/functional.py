@@ -270,3 +270,38 @@ def get_group_list(request, course_id=None):
 		course = Course.objects.get(id=course_id)
 		Course.objects.get_group_list(course=course)
 		return HttpResponse()
+
+def upload_file(request):
+	if request.method == 'POST':
+		asset=request.FILES.get("asset",None)
+		path=request.POST.get("path",None)
+		filename=Utility.upload_file(asset=asset,path=path)
+		return HttpResponse(filename)
+
+def upload_file_by_url(request):
+	if request.method == 'POST':
+		file_url=request.POST.get("file_url",None)
+		path=request.POST.get("path",None)
+		filepath=Utility.upload_asset_by_url(url=url,path=path)
+		return HttpResponse(filepath)
+
+def upload_downloadable(request):
+	if request.method == 'POST':
+		asset=request.FILES.get("asset",None)
+		course_id=request.POST.get("course_id",None)
+		test_id=request.POST.get("test_id",None)
+		path='main/files/media/courses/' + course_id + '/assets/' + test_id + "/"
+		Utility.upload_downloadable(
+		    asset=asset, course_id=course_id, test_id=test_id, path=path)
+	return HttpResponse("ok")
+
+# embmend
+def upload_embmend(request):
+	if request.method == 'POST':
+		asset=request.POST["code"]
+		course_id=request.POST["course_id"]
+		test_id=request.POST["test_id"]
+		path='main/files/media/courses/' + course_id + '/assets/' + test_id + "/"
+		asset_id=Utility.upload_embmend(
+		    path=path, asset=asset, course_id=course_id, test_id=test_id)
+		return HttpResponse(asset_id)

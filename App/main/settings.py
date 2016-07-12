@@ -136,5 +136,7 @@ STATICFILES_DIRS = [
     '/main/files/static/',
 ]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'main/files/collected_static/')
+
 USER_IMAGE_PATH = STATICFILES_DIRS
 SESSION_COOKIE_AGE = 36000

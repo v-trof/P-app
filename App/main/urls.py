@@ -42,8 +42,6 @@ test_patterns = [
     url(r'^attempt/check/$', test.attempt_check, name="check_attempt"),
     url(r'^attempt/results/$', test.results, name="test_results"),
     
-    url(r'^upload/$', test.upload_asset, name="upload_asset"),
-    url(r'^upload_by_url/$', test.upload_asset_by_url, name="upload_asset_by_url"),
 ]
 
 material_patterns = [
@@ -57,9 +55,6 @@ material_patterns = [
     url(r'^share/$', material.share, name="share_material"),
 
     url(r'^attempt/$', material.read, name="read"),
-
-    url(r'^upload/$', material.upload_asset, name="upload_asset"),
-    url(r'^upload_by_url/$', material.upload_asset_by_url, name="upload_asset_by_url"),
 ]
 
 func_patterns = [
@@ -89,6 +84,8 @@ func_patterns = [
     url(r'^edit_announcement/$', functional.Course_views.edit_announcement, name="edit_announcement"),
     url(r'^delete_announcement/$', functional.Course_views.delete_announcement, name="delete_announcement"),
     url(r'^course_reg/(?P<course_id>[0-9]+)/$', functional.Course_views.register, name="register_on_course"),
+    url(r'^upload/$', functional.upload_file, name="upload_file"),
+    url(r'^upload_by_url/$', functional.upload_file_by_url, name="upload_file_by_url"),
 ]
 
 course_patterns = [

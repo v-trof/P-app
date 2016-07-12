@@ -179,46 +179,6 @@ def get_test_info(request, course_id, test_id):
 def get_attempt_info(request, course_id, test_id):
 	return Test.get_attempt_info(course_id=course_id, test_id=test_id, user=request.user)
 
-def upload_asset(request):
-	if request.method == 'POST':
-		asset=request.FILES.get("asset",None)
-		course_id=request.POST.get("course_id",None)
-		test_id=request.POST.get("test_id",None)
-		path='main/files/media/courses/' + course_id + '/assets/' + test_id + "/"
-		filename=Utility.upload_asset(
-		    asset=asset, course_id=course_id, test_id=test_id, path=path)
-		return HttpResponse(filename)
-
-def upload_asset_by_url(request):
-	if request.method == 'POST':
-		asset_url=request.POST.get("asset_url",None)
-		course_id=request.POST.get("course_id",None)
-		test_id=request.POST.get("test_id",None)
-		path='main/files/media/courses/' + course_id + '/assets/' + test_id + "/"
-		filepath=Utility.upload_asset_by_url(asset_url=asset_url, course_id=course_id, test_id=test_id, path=path)
-		return HttpResponse(filepath)
-
-def upload_downloadable(request):
-	if request.method == 'POST':
-		asset=request.FILES.get("asset",None)
-		course_id=request.POST.get("course_id",None)
-		test_id=request.POST.get("test_id",None)
-		path='main/files/media/courses/' + course_id + '/assets/' + test_id + "/"
-		Utility.upload_downloadable(
-		    asset=asset, course_id=course_id, test_id=test_id, path=path)
-	return HttpResponse("ok")
-
-# embmend
-def upload_embmend(request):
-	if request.method == 'POST':
-		asset=request.POST["code"]
-		course_id=request.POST["course_id"]
-		test_id=request.POST["test_id"]
-		path='main/files/media/courses/' + course_id + '/assets/' + test_id + "/"
-		asset_id=Utility.upload_embmend(
-		    path=path, asset=asset, course_id=course_id, test_id=test_id)
-		return HttpResponse(asset_id)
-
 def load_embmend(request):
 	course_id=request.GET["course_id"]
 	test_id=request.GET["test_id"]
