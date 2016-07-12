@@ -574,6 +574,7 @@ class CourseManager(models.Manager):
 			if content["finished"]==False:
 					date=str(datetime.datetime.now())[:10]
 					if len(new_data["due_date"]) > 0:
+						new_data["urgent"]=False
 						if int(new_data["due_date"].split("-")[2])>int(date.split("-")[0]):
 							new_data["relevant"]=True
 						elif int(new_data["due_date"].split("-")[2])<int(date.split("-")[0]):
@@ -586,6 +587,8 @@ class CourseManager(models.Manager):
 							else:
 								if int(new_data["due_date"].split("-")[0])>=int(date.split("-")[2]):
 									new_data["relevant"]=True
+									if int(new_data["due_date"].split("-")[0])-int(date.split("-")[2])<=1:
+										new_data["urgent"]=True
 								else:
 									new_data["relevant"]=False
 					else: new_data["relevant"]=True
@@ -1435,7 +1438,6 @@ class Test():
 		type=item["class"]
 		value["type"] = type.split("--")[1]
 		if type=="answer--text":
-			print(item)
 			value["answer"] = item["answer"]
 			value["user_answer"] = None
 		elif type=="answer--textarea":
@@ -1452,7 +1454,6 @@ class Test():
 			value["answer"] = item["answer"]
 			value["user_answer"] = None
 		elif type=="answer--checkbox":
-			print(item)
 			value["options"] = []
 			value["options"] = item["values"]
 			value["answer"] = item["answer"]
@@ -1469,7 +1470,6 @@ class Test():
 			item["value"]=data["user_answer"]
 			item["filled"]=data["user_answer"]
 		elif type=="answer--radio":
-			print(data["user_answer"])
 			item["value"]=data["user_answer"]
 		elif type=="answer--checkbox":
 			item["value"]=data["user_answer"].split(', ')
@@ -1485,7 +1485,8 @@ class Test():
 		if os.path.exists('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json'):
 			with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 				data=json.load(json_file)
-		else:data=None
+		else:
+			data=None
 		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as json_file:
 			with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 				course_info = json.load(info_file)
