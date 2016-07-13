@@ -40,7 +40,7 @@ class Main_group():
 			else:	
 				context["tasks"]["content"] = User.objects.load_assignments_by_date(string_array=request.user.participation_list, user=request.user)
 			context["tasks"]["sort_method"]=user_settings["assignments"]["sort_method"]
-			context["courses"] = User.objects.load_courses_previews(string_array=request.user.participation_list)
+			context["courses"] = User.objects.load_courses_previews(string_array=request.user.participation_list, user_id=request.user.id)
 		if request.user.courses:
 			context["updates"] = User.objects.load_updates(user=request.user)
 			context["own_courses"] = User.objects.load_courses_previews(string_array=request.user.courses)

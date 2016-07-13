@@ -3,7 +3,7 @@
 		<h3>{{subject}}</h3>
 		{% for course in value %}
 			<a class="--card" href='course/{{course.object.id}}'>{% include "Elements/card/course/"  with course=course.object 
-			materials_number=course.materials_number tests_number=course.tests_number  %}</a>
+			materials_number=course.materials_number tests_number=course.tests_number undone_counter=course.undone_counter  %}</a>
 		{% endfor %}
 	</div>
 	{% empty %}

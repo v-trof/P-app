@@ -23,7 +23,7 @@ from django.contrib.auth import authenticate, login as auth
 from django.contrib.auth.hashers import make_password, check_password
 from django.core.urlresolvers import reverse
 from django.core.mail import EmailMultiAlternatives
-from main.models import User, LoginForm, RegForm, FileForm, Course
+from main.models import *
 from binascii import hexlify
 import glob
 from http import cookies
@@ -273,16 +273,16 @@ def get_group_list(request, course_id=None):
 
 def upload_file(request):
 	if request.method == 'POST':
-		asset=request.FILES.get("asset",None)
+		file=request.FILES.get("file",None)
 		path=request.POST.get("path",None)
-		filename=Utility.upload_file(asset=asset,path=path)
+		filename=Utility.upload_file(file=file,path=path)
 		return HttpResponse(filename)
 
 def upload_file_by_url(request):
 	if request.method == 'POST':
 		file_url=request.POST.get("file_url",None)
 		path=request.POST.get("path",None)
-		filepath=Utility.upload_asset_by_url(url=url,path=path)
+		filepath=Utility.upload_file_by_url(url=file_url,path=path)
 		return HttpResponse(filepath)
 
 def upload_downloadable(request):

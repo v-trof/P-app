@@ -90,27 +90,20 @@ class FileForm(forms.Form):
 
 class Utility():
 
-	def upload_asset(asset,course_id,test_id,path):
-		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+"/"
-		if not os.path.exists(path):
-			os.makedirs(path)
-		filename = transliterate.ru_en(asset.name)
-		with open(path+filename, 'wb+') as destination:
-			for chunk in asset.chunks():
-				destination.write(chunk)
-		return filename
-
 	def upload_file(file,path):
+		custom_path=path
 		path = 'main/files/media/'+path
 		if not os.path.exists(path):
 			os.makedirs(path)
-		filename = transliterate.ru_en(file.name)
+		filename = file.name
 		with open(path+filename, 'wb+') as destination:
-			for chunk in asset.chunks():
+			for chunk in file.chunks():
 				destination.write(chunk)
-		return filename
+		url='media/'+custom_path+filename
+		return url
 
 	def upload_file_by_url(url,path):
+		custom_path=path
 		path = 'main/files/media/'+path
 		if not os.path.exists(path):
 			os.makedirs(path)
@@ -125,34 +118,8 @@ class Utility():
 		with open(path+filename, 'wb+') as destination:
 			for chunk in files.File(temp).chunks():
 				destination.write(chunk)
-		url=path+asset_name
+		url='media/'+custom_path+filename
 		return url
-
-	def upload_asset_by_url(asset_url,course_id,test_id,path):
-		path = 'main/files/media/courses/'+course_id+'/assets/'+test_id+'/'
-		if not os.path.exists(path):
-			os.makedirs(path)
-		request = requests.get(asset_url, stream=True)
-		asset_name = asset_url.split('/')[-1]
-		temp = tempfile.NamedTemporaryFile()
-		for block in request.iter_content(1024 * 8):
-			if not block:
-				break
-			temp.write(block)
-
-		with open(path+asset_name, 'wb+') as destination:
-			for chunk in files.File(temp).chunks():
-				destination.write(chunk)
-		url='/media/courses/'+course_id+'/assets/'+test_id+'/'+asset_name
-		return url
-	
-	def upload_downloadable(asset,course_id,test_id,path):
-		if not os.path.exists(path):
-			os.makedirs(path)
-		with open(path+asset.name, 'wb+') as destination:
-			for chunk in asset.chunks():
-				destination.write(chunk)
-		return 0
 
 	def upload_embmend(path,asset,course_id,test_id):
 		if not os.path.exists(path):
@@ -727,7 +694,7 @@ class CourseManager(models.Manager):
 			else:
 				for section in data["tests"]["published"].keys():
 					course_sections.append(section)
-		return course_sections
+		return Utility.sort_by_alphabet(course_sections)
 
 	def get_tests(self, course_id):
 		tests={}
@@ -786,12 +753,19 @@ class CourseManager(models.Manager):
 			announcements = json.load(json_file)
 		return announcements
 
-	def load_preview(self,course_id):
+	def load_preview(self,course_id,user_id=None):
 		course_data = {}
 		course = Course.objects.get(id=course_id)
 		course_data["object"] = course
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
+		if user_id:
+			with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user_id) + '/assignments.json', 'r', encoding='utf8') as json_file:
+				assignments_data = json.load(json_file)
+			course_data["undone_counter"]=0
+			for task, content in assignments_data.items():
+				if not content["finished"]:
+					course_data["undone_counter"]+=1;
 		course_data["tests_number"]=0
 		course_data["materials_number"]=0
 		for section,tests in data["tests"]["published"].items():
@@ -945,7 +919,7 @@ class UserManager(UserManager):
 		else:   
 			return False
 
-	def load_courses_previews(self,string_array):
+	def load_courses_previews(self,string_array,user_id=None):
 		courses = {}
 		if string_array:
 			course_array = string_array.split(" ")
@@ -954,10 +928,11 @@ class UserManager(UserManager):
 				courses[course.subject] = []
 			for course_id in course_array:
 				course = Course.objects.get(id=course_id)
-				courses[course.subject].append(Course.objects.load_preview(course_id=course_id))
+				courses[course.subject].append(Course.objects.load_preview(course_id=course_id,user_id=user_id))
 			for subject in courses:
 				courses[subject]=Utility.sort_by_alphabet(object=courses[subject])
 			courses=Utility.sort_by_alphabet(object=courses)
+			print(courses)
 		return courses
 
 	def load_marks(self, string_array, user_id):
@@ -1008,7 +983,6 @@ class UserManager(UserManager):
 				assignments["undone"]+=assignment["undone"]
 		if len(assignments["done"])+len(assignments["undone"])==0:
 			return None
-		print(assignments)
 		return assignments
 
 	def load_updates(self,user):

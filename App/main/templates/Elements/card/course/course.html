@@ -16,5 +16,13 @@
 		{% else %}
 			Тестов <strong>нет</strong>
 		{% endif %}
+		{% if undone_counter %}
+			{% if undone_counter != 0 %}
+				<strong>{{undone_counter}}</strong>
+				{{undone_counter|form_for_num:"невыполненное невыполненных невыполненных" }}{{undone_counter|form_for_num:"задание задания заданий" }}
+			{% else %}
+				Задания <strong>выполнены</strong>
+			{% endif %}
+		{% endif %}
 	</p>
 </div>

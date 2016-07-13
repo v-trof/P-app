@@ -7,11 +7,11 @@ test_manager.save = function() {
 
 		formData.append("json_file", test_packed);
 		formData.append("course_id", "{{course.id}}");
-		{% ifequal type "test" %}
+		{% if type == 'test' %}
 			formData.append("test_id", "{{test.id}}");
 		{% else %}
 			formData.append("material_id", "{{material.id}}");
-		{% endifequal %}
+		{% endif %}
 		formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
 		$.ajax({
 			type:"POST",
@@ -21,11 +21,11 @@ test_manager.save = function() {
 			contentType: false,
 			success: function(data) {
 				notification.show('success', data);
-				{% ifequal type "test" %}	
+				{% if type == 'test' %}	
 					window.history.pushState('Test {{test.id}}', 'Test {{test.id}}', '/test/edit/?course_id={{course.id}}&test_id={{test.id}}');
 				{% else %}
 					window.history.pushState('Material {{material.id}}', 'Material {{material.id}}', '/material/edit/?course_id={{course.id}}&material_id={{material.id}}');
-				{% endifequal %}
+				{% endif %}
 			}
 		});
 }

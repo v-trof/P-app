@@ -6,21 +6,18 @@ test_manager.pack = function() {
 		"title": $("h2").text(),
 		tasks: []
 	}
-	$(".preview .__task .__content").each(function(index, el) {
+	$(".preview {% if type == 'test' %}.__task{% endif %} .__content").each(function(index, el) {
 		var task_index = index;
-
 		test_json.tasks[task_index] = []
 
 		$(this).children().each(function(index, $element) {
 			//this == .task.child
-			console.log(this);
 			var element_class = $(this)
 				.attr('class').split(' ')[0];
 
 			test_json.tasks[task_index].push(generate.read(element_class)
 				.element.parse($(this)));
-
-			$(this).find("img").each(function(index, $element) {
+						$(this).find("img").each(function(index, $element) {
 				if($(this).attr('src').indexOf("blob") == 0){
 					//file upload
 					var assets = generate.data.shared.assets;
@@ -42,33 +39,36 @@ test_manager.pack = function() {
 					console.log("file", upload);
 
 					if(upload) {
-						//create formdata and stuff pls it's 00:45 already
+
+						var form_data = new FormData();
+						form_data.append('file', upload_file[0]);
+						form_data.append('path', 'courses/{{course.id}}/assets/{{type}}/');
+						form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 						$.ajax({
 							type:"POST",
-							url:"func/upload_file",
-							data: {
-								'file': upload_file,
-								'course_id':'{{course.id}}',
-								'test_id':'{{test.id}}',
-								'csrfmiddlewaretoken' : '{{ csrf_token }}'
-							},
+							url:"/func/upload/",
+							data: form_data,
+						    processData: false,
+						    contentType: false,
 							success:function(response) {
-								test_json[task_index].question_items[index].url=response;
+								console.log(response);
+								test_json.tasks[task_index][index].url=response;
 							}
 						});
 					}
 					
 				} else {
-					//url uplaod
+					var form_data = new FormData();
+					form_data.append('file_url',$(this).attr('src'));
+					form_data.append('path', 'courses/{{course.id}}/assets/{{type}}/');
+					form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 					$.ajax({
 						type:"POST",
 						url:"/func/upload_by_url/",
-						data: {
-							'asset_url':$(this).attr('src'),
-							'csrfmiddlewaretoken' : '{{ csrf_token }}'
-							},
+						data: form_data,
 						success:function(response) {
-							test_json[task_index].question_items[index].url=response;
+							console.log(response);
+							test_json.tasks[task_index][index].url=response;
 						}
 					});
 				}

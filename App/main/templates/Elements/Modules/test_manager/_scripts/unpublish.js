@@ -1,11 +1,11 @@
 test_manager.unpublish = function() {
 	var formData = new FormData();
 	formData.append("course_id", "{{course.id}}");
-	{% ifequal type "test" %}
+	{% if type == 'test' %}
 		formData.append("test_id", "{{test.id}}");
 	{% else %}
 		formData.append("material_id", "{{material.id}}");
-	{% endifequal %}
+	{% endif %}
 	formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
 	$.ajax({
 		type:"POST",
