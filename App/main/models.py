@@ -667,7 +667,7 @@ class CourseManager(models.Manager):
 	def create_assignment(self, course_id, group_list, test_list, material_list, traditionals_list, due_date):
 		assignment = {}
 		assignment["due_date"] = due_date
-		assignment["group_list"]= group_list
+		assignment["group_list"]= json.loads(group_list)
 		assignment["content"] = {}
 		assignment["course_id"]=course_id
 		assignment_id = str(len(glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*'))+1)
@@ -1210,7 +1210,7 @@ class Material():
 					del(materials[materials.index(material_id)])
 
 			if material_id in course_info['materials']['unpublished']:
-				course_info['materials']['unpublished'].remove(test_id)
+				course_info['materials']['unpublished'].remove(material_id)
 
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))

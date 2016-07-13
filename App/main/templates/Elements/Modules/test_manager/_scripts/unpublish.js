@@ -1,11 +1,15 @@
 test_manager.unpublish = function() {
 	var formData = new FormData();
 	formData.append("course_id", "{{course.id}}");
-	formData.append("test_id", "{{test.id}}");
+	{% ifequal type "test" %}
+		formData.append("test_id", "{{test.id}}");
+	{% else %}
+		formData.append("material_id", "{{material.id}}");
+	{% endifequal %}
 	formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
 	$.ajax({
 		type:"POST",
-		url:"/test/unpublish/",
+		url:"/{{type}}/unpublish/",
 		data: formData,
 		processData: false,
 		contentType: false,
@@ -13,6 +17,6 @@ test_manager.unpublish = function() {
 			notification.show('success', data);
 		}
 	});
-	$("#test_publish").show();
-	$("#test_unpublish").hide();
+	$("#{{type}}_publish").show();
+	$("#{{type}}_unpublish").hide();
 }

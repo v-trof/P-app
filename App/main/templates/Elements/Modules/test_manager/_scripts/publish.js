@@ -19,7 +19,11 @@ test_manager.publish = function() {
 			$("#publish").click(function() {
 				var formData = new FormData();
 				formData.append("course_id", "{{course.id}}");
-				formData.append("test_id", "{{test.id}}");
+				{% ifequal type "test" %}
+					formData.append("test_id", "{{test.id}}");
+				{% else %}
+					formData.append("material_id", "{{material.id}}");
+				{% endifequal %}
 				formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
 				$(".--publish-popup .__mark-settigns")
 					.find("input").each(function(index, el) {
@@ -35,7 +39,7 @@ test_manager.publish = function() {
 
 				$.ajax({
 					type:"POST",
-					url:"/test/publish/",
+					url:"/{{type}}/publish/",
 					data: formData,
 					processData: false,
 					contentType: false,
@@ -44,8 +48,8 @@ test_manager.publish = function() {
 					}
 				});
 
-				$("#test_publish").hide();
-				$("#test_unpublish").show();
+				$("#{{type}}_publish").hide();
+				$("#{{type}}_unpublish").show();
 				popup.hide();
 			});
 		});

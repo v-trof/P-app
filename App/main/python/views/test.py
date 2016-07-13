@@ -37,6 +37,7 @@ def create(request):
 			"link": "Новый тест"
 		}]
 	context["sections"] = Course.objects.get_sections(course_id=course_id)
+	context["type"]= "test"
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
 
@@ -75,6 +76,7 @@ def load(request):
 			"link": test["json"]["title"]
 		}]
 	context["sections"] = Course.objects.get_sections(course_id=course_id)
+	context["type"]= "test"
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
 
@@ -123,6 +125,7 @@ def attempt(request):
 	if Utility.is_member(user=request.user,test_id=test_id,course_id=course_id):
 		context = Test.attempt(user=request.user,course_id=course_id, test_id=test_id)
 		context["attempt"] = True
+		context["type"]= "test"
 		return render(request, 'Pages/Test/Attempt/main/exports.html', context)
 	else:
 		return redirect('/')

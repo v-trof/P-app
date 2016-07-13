@@ -44,4 +44,8 @@ test_manager.load = function(test_json) {
 $(document).ready(function() {
 	test_manager.load({{test.json|safe}});
 });
+{% elif material.json %}
+$(document).ready(function() {
+	test_manager.load({{material.json|safe}});
+});
 {% endif %}

@@ -62,11 +62,9 @@ test_manager.pack = function() {
 					//url uplaod
 					$.ajax({
 						type:"POST",
-						url:"/test/upload_by_url/",
+						url:"/func/upload_by_url/",
 						data: {
 							'asset_url':$(this).attr('src'),
-							'course_id':'{{course.id}}',
-							'test_id':'{{test.id}}',
 							'csrfmiddlewaretoken' : '{{ csrf_token }}'
 							},
 						success:function(response) {

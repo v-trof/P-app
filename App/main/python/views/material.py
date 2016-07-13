@@ -37,6 +37,7 @@ def create(request):
 			"link": "Новый материал"
 		}]
 	context["sections"] = Course.objects.get_sections(course_id=course_id,material=True)
+	context["type"]= "material"
 	return render(request, 'Pages/Material/editor/exports.html', context)
 
 
@@ -75,6 +76,7 @@ def load(request):
 			"link": material["json"]["title"]
 		}]
 	context["sections"] = Course.objects.get_sections(course_id=course_id)
+	context["type"]= "material"
 	return render(request, 'Pages/Material/editor/exports.html', context)
 
 
@@ -118,7 +120,8 @@ def read(request):
 	if Utility.is_member(user=request.user,material_id=material_id,course_id=course_id):
 		context = Material.read(user=request.user,course_id=course_id, material_id=material_id)
 		context["reading"] = True
-		return render(request, 'Pages/Material/Attempt/main/exports.html', context)
+		context["type"]= "material"
+		return render(request, 'Pages/Material/Read/main/exports.html', context)
 	else:
 		return redirect('/')
 
