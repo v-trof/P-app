@@ -20,7 +20,7 @@ function add_to_item_list(element_class, $list) {
 		[],
 		generate.edit.preview_action,
 		function() {
-			var preview_width = $(".preview>.__content").width();
+			var preview_width = $(".preview .__content").width();
 
 			pull_put.ui.$.css("margin-left", -preview_width/2);
 			pull_put.ui.$.find(".__content").css("width",
