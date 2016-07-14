@@ -47,8 +47,8 @@ $(document).ready(function() {
 				quality = "negative"
 			}
 
-			if(attempt["tasks"][answer_index].user_answer) {
-				value = attempt["tasks"][answer_index].user_answer;
+			if(attempt[answer_index].user_answer) {
+				value = attempt[answer_index].user_answer;
 			}
 
 			$new_summary = $(summary_template(index, value, quality));
@@ -66,7 +66,7 @@ $(document).ready(function() {
 				$(this).append("<div>Ваш ответ: <b class='--neutral'>" 
 					+ value + "</b></div>");
 				$(this).append("<div>Верный ответ: <b>" 
-					+ attempt["tasks"][answer_index].answer 
+					+ attempt[answer_index].answer 
 				+ "</b></div>");
 			}
 
@@ -75,7 +75,7 @@ $(document).ready(function() {
 				$(this).append("<div>Ваш ответ: <b class='--negative'>" 
 					+ value + "</b></div>");
 				$(this).append("<div>Верный ответ: <b>" + 
-						attempt["tasks"][answer_index].answer + 
+						attempt[answer_index].answer + 
 					"</b></div>");
 			}
 

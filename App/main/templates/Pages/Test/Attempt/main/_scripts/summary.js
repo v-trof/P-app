@@ -9,14 +9,13 @@ $(document).ready(function() {
 	panel.show("");
 	panel.actions.hide();
 
-	function show_value($summary, value) {
+	function show_value($summary, value, index) {
 		$summary.children(".__value").html(value);
-		
 		$.ajax({
 			type:"POST",
 			url:"../attempt/save/",
 			data: {
-			"question":field_index,
+			"question":index,
 			"answer":value,
 			"test_id":"{{test.id}}",
 			"course_id":"{{course.id}}",
@@ -72,7 +71,7 @@ $(document).ready(function() {
 			var blueprints = generate.read(element_class);
 
 			blueprints.element.getter($(this), function(value) {
-				show_value($new_summary, value);
+				show_value($new_summary, value, index);
 			});
 
 			scroll.wire($new_summary, $(this).parent().parent());

@@ -148,13 +148,36 @@ class Course_views():
 			redirect_url = '/course/' + str(course.id) + '/'
 		return HttpResponse(redirect_url)
 
+	def add_source(request):
+		if request.method == "POST":
+			#POST input
+			course_id = request.POST["course_id"]
+			announcement_id = Course.objects.add_source(
+				text=text, heading=heading, course_id=course_id, user=request.user)
+			return HttpResponse(announcement_id)
+
+	def edit_source(request):
+		if request.method == "POST":
+			#POST input
+			source_id = request.POST["source_id"]
+			course_id = request.POST["course_id"]
+			announcement = Course.objects.edit_source(course_id=course_id, source_id=source_id, user=request.user)
+		return HttpResponse('ok')
+
+	def delete_source(request):
+		if request.method == "POST":
+			source_id = request.POST["source_id"]
+			course_id = request.POST["course_id"]
+			announcement = Course.objects.delete_source(course_id=course_id, source_id=source_id)
+		return HttpResponse('ok')
+
 	def add_announcement(request):
 		if request.method == "POST":
 			text = request.POST["text"]
 			heading = request.POST["heading"]
 			course_id = request.POST["course_id"]
 			announcement_id = Course.objects.add_announcement(
-				text=text, heading=heading, course_id=course_id)
+				text=text, heading=heading, course_id=course_id, user=request.user)
 			return HttpResponse(announcement_id)
 
 	def edit_announcement(request):
@@ -164,7 +187,7 @@ class Course_views():
 			heading = request.POST["heading"]
 			course_id = request.POST["course_id"]
 			announcement = Course.objects.edit_announcement(
-				text=text, heading=heading, course_id=course_id, announcement_id=announcement_id)
+				text=text, heading=heading, course_id=course_id, announcement_id=announcement_id, user=request.user)
 		return HttpResponse('ok')
 
 	def delete_announcement(request):

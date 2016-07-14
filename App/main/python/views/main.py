@@ -90,13 +90,13 @@ class Course_group():
 
 	def main(request, course_id):
 		course = Course.objects.get(id=course_id)
-		course_data = Course.objects.get_data(user=request.user, course=course)
 		if not request.user.is_anonymous():  
 			is_participant=Course.objects.check_participance(course=course,user=request.user)
 		else: is_participant=False
-		announcements=Course.objects.load_announcements(course_id=course.id)
+		sources=Course.objects.load_sources(course_id=course.id, user=request.user)
+		announcements=Course.objects.load_announcements(course_id=course.id, user=request.user)
 		sections=Course.objects.get_tests_and_materials(course_id=str(course.id))
-		return render(request, 'Pages/Course/main/exports.html', {"sections":sections, "is_participant": is_participant, "announcements": announcements, "course": course, "course_data": course_data, "assignments": Course.objects.get_assignments(user=request.user, course=course),
+		return render(request, 'Pages/Course/main/exports.html', {"sections":sections, "sources":sources, "is_participant": is_participant, "announcements": announcements, "course": course, "assignments": Course.objects.get_assignments(user=request.user, course=course),
 													 "breadcrumbs": [{
 														 "href": "#",
 														 "link": course.name

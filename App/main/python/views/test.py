@@ -122,7 +122,7 @@ def attempt(request):
 		return redirect('/login')
 	if Test.is_creator(user=request.user,test_id=test_id,course_id=course_id):
 		return redirect("/test/edit/?course_id="+course_id+"&test_id="+test_id)
-	if Utility.is_member(user=request.user,test_id=test_id,course_id=course_id):
+	if Utility.is_member(user=request.user,course_id=course_id):
 		context = Test.attempt(user=request.user,course_id=course_id, test_id=test_id)
 		context["attempt"] = True
 		context["type"]= "test"
@@ -138,7 +138,7 @@ def check_question(request, item):
 def attempt_save(request):
 	if request.method == 'POST':
 		test_id = request.POST.get("test_id",None)
-		question_id = int(request.POST.get("question",None).split(".")[1])
+		question_id = int(request.POST.get("question",None))
 		course_id = request.POST.get("course_id",None)
 		answer = request.POST.get("answer", None)
 		Test.attempt_save(test_id=test_id, question_id=question_id, course_id=course_id, answer=answer, user=request.user)
@@ -151,7 +151,7 @@ def results(request):
 	test_id = request.GET["test_id"]
 	user_id=request.GET.get("user_id",request.user.id)
 	user=User.objects.get(id=user_id)
-	context = {"course": Course.objects.get(id=course_id), "test_id": test_id, 
+	context = {"course": Course.objects.get(id=course_id), 
 	"results": Test.get_results(user=user, course_id=course_id, test_id=test_id), 
 	"attempt": Test.get_attempt_info(user=user, course_id=course_id, test_id=test_id), 
 	"test": Test.get_test_info(course_id=course_id, test_id=test_id)}
