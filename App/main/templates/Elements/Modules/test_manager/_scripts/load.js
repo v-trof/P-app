@@ -1,31 +1,33 @@
-test_manager.load = function(test_json) {
+test_manager.load = {}
+
+test_manager.load.test = function(test_json) {
 	$("h2").text(test_json.title);
-	test_json.tasks.forEach(function(task_data) {
-		// console.log(task_data);
-		var element_class = task_data[0].class;
+	test_json.tasks.forEach(function(material_data) {
+		// console.log(material_data);
+		var element_class = material_data[0].class;
 
 		//building first element
 		var $task = generate.build.task(
 			generate.read(element_class)
-			.element.build(task_data[0])
+			.element.build(material_data[0])
 		);
 
-		for (var i = 1; i < task_data.length; i++) {
-			element_class = task_data[i].class;
-			// console.log(task_data[i]);
+		for (var i = 1; i < material_data.length; i++) {
+			element_class = material_data[i].class;
+			// console.log(material_data[i]);
 			var $element =  generate.build.
-								element(element_class, task_data[i])
+								element(element_class, material_data[i])
 			
 			{% if attempt %}
-				if (task_data[i].class == "answer--checkbox")
+				if (material_data[i].class == "answer--checkbox")
 				{
-					$(task_data[i].value).each(function( index ) {
+					$(material_data[i].value).each(function( index ) {
 						  $element.find("input[value='"+this+"']").attr('checked', true);
 						});
 				}
-				else if (task_data[i].class == "answer--radio")
-					$element.find("input[value='"+task_data[i].value+"']").attr('checked', true);
-				else $element.find('.__value').attr('value', task_data[i].value);
+				else if (material_data[i].class == "answer--radio")
+					$element.find("input[value='"+material_data[i].value+"']").attr('checked', true);
+				else $element.find('.__value').attr('value', material_data[i].value);
 
 			{% endif %}
 
@@ -40,12 +42,35 @@ test_manager.load = function(test_json) {
 	});
 }
 
+test_manager.load.material = function(material_json) {
+	$("h2").text(material_json.title);
+	var material_data = material_json.tasks[0]
+		console.log(material_data);
+	var element_class = material_data[0].class;
+
+	$content = $(".preview>.__content>.card");
+
+	for (var i = 0; i < material_data.length; i++) {
+		element_class = material_data[i].class;
+		console.log(material_data[i]);
+		var $element =  generate.build.
+							element(element_class, material_data[i])
+
+		$content.append($element);
+	}
+		$(document).find(".answer--empty, .question--empty").remove();
+		
+		{% if not attempt %}
+			editor.check_self();
+		{% endif %}
+}
+
 {% if test.json %}
 $(document).ready(function() {
-	test_manager.load({{test.json|safe}});
+	test_manager.load.test({{test.json|safe}});
 });
 {% elif material.json %}
 $(document).ready(function() {
-	test_manager.load({{material.json|safe}});
+	test_manager.load.material({{material.json|safe}});
 });
 {% endif %}
