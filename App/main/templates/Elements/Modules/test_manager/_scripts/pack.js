@@ -1,21 +1,30 @@
-
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
 
 test_manager.pack = function() {
 	console.log("packing")
-	var test_json = {
+	test_manager.packed_test = {
 		"title": $("h2").text(),
 		tasks: []
 	}
 	$(".preview {% if type == 'test' %}.__task{% endif %} .__content").each(function(index, el) {
 		var task_index = index;
-		test_json.tasks[task_index] = []
+		test_manager.packed_test.tasks[task_index] = []
 
 		$(this).children().each(function(index, $element) {
 			//this == .task.child
 			var element_class = $(this)
 				.attr('class').split(' ')[0];
 
-			test_json.tasks[task_index].push(generate.read(element_class)
+			test_manager.packed_test.tasks[task_index].push(generate.read(element_class)
 				.element.parse($(this)));
 						$(this).find("img").each(function(index, $element) {
 				if($(this).attr('src').indexOf("blob") == 0){
@@ -36,9 +45,13 @@ test_manager.pack = function() {
 						}
 					}
 
-					console.log("file", upload);
+					// console.log("file", upload);
 
 					if(upload) {
+
+						var file_id = test_manager.upload_queue.length;
+						console.log("uplaodigng file ||| id:", file_id);
+						test_manager.upload_queue.push(file_id);
 
 						var form_data = new FormData();
 						form_data.append('file', upload_file[0]);
@@ -51,8 +64,10 @@ test_manager.pack = function() {
 						    processData: false,
 						    contentType: false,
 							success:function(response) {
-								console.log(response);
-								test_json.tasks[task_index][index].url=response;
+								console.log(response, "as", file_id);
+								test_manager.packed_test.tasks[task_index][index].url=response;
+								test_manager.upload_queue.remove(file_id);
+								console.log("removed", test_manager.upload_queue);
 							}
 						});
 					}
@@ -68,7 +83,7 @@ test_manager.pack = function() {
 						data: form_data,
 						success:function(response) {
 							console.log(response);
-							test_json.tasks[task_index][index].url=response;
+							test_manager.packed_test.tasks[task_index][index].url=response;
 						}
 					});
 				}
@@ -77,5 +92,4 @@ test_manager.pack = function() {
 		});
 
 	});
-	return JSON.stringify(test_json);
 }
