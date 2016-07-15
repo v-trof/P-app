@@ -171,6 +171,14 @@ class Course_views():
 			announcement = Course.objects.delete_source(course_id=course_id, source_id=source_id)
 		return HttpResponse('ok')
 
+	def add_section(request):
+		if request.method == "POST":
+			section = request.POST["section"]
+			type = request.POST["type"]
+			course_id = request.POST["course_id"]
+			announcement_id = Course.objects.add_section(section=section,course_id=course_id, type=type)
+			return HttpResponse('ok')
+
 	def add_announcement(request):
 		if request.method == "POST":
 			text = request.POST["text"]

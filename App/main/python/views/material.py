@@ -119,10 +119,10 @@ def read(request):
 	if Material.is_creator(user=request.user,material_id=material_id,course_id=course_id):
 		return redirect("/material/edit/?course_id="+course_id+"&material_id="+material_id)
 	if Utility.is_member(user=request.user,course_id=course_id):
-		context = Material.read(user=request.user,course_id=course_id, material_id=material_id)
+		context = Material.load(course_id=course_id, material_id=material_id)
 		context["reading"] = True
 		context["type"]= "material"
-		return render(request, 'Pages/Material/Read/main/exports.html', context)
+		return render(request, 'Pages/Material/read/exports.html', context)
 	else:
 		return redirect('/')
 

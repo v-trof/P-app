@@ -3,7 +3,11 @@
 		<section>
 			<h3>{{section}}</h3>
 			{% for element in value %}
+				{% if element.type == 'test' %}
 				<a class="--card" href='/test/attempt/?course_id={{course.id}}&test_id={{element.id}}'>{% include "Elements/card/test/" with test=element %}</a>
+				{% else %}
+				<a class="--card" href='/material/read/?course_id={{course.id}}&material_id={{element.id}}'>{% include "Elements/card/material/" with material=element %}</a>
+				{% endif %}
 			{% endfor %}
 		</section>
 	{% endfor %}

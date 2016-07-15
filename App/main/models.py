@@ -137,6 +137,7 @@ class Utility():
 	def is_member(user,course_id):
 		with io.open('main/files/json/courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info=json.load(info_file)
+		print(user.id,course_info["users"])
 		return user.id in course_info["users"]
 
 	def is_teacher(user,course_id):
@@ -303,6 +304,14 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		return data
 
+	def add_section(self, course_id, section, type):
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			data[type]["published"][section]=[]
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w+', encoding='utf8') as data_file:
+			data_file.write(json.dumps(data, ensure_ascii=False))
+		return 0
+
 	def add_announcement(self, heading, text, course_id, user=None):
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
@@ -420,7 +429,7 @@ class CourseManager(models.Manager):
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
 			if user.id not in data["users"]:
-				if user.email not in data["pending_users"]["Заявки"]:
+				if not user.email in data["pending_users"]["Заявки"]:
 					checker = 0
 					is_invited = False
 					for group in data["pending_users"]:
@@ -828,12 +837,12 @@ class CourseManager(models.Manager):
 				for test_id in list(tests[section]):
 					with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 						test_data=json.load(info_file)
-						context[section].append({"title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
+						context[section].append({"type":"test","title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
 			if section in material_sections:
 				for material_id in list(materials[section]):
 					with io.open('main/files/json/courses/'+course_id+'/materials/'+material_id+'.json', 'r', encoding='utf8') as info_file:
 						material_data=json.load(info_file)
-						context[section].append({"title":material_data["title"],"id":material_id, "questions_number":material_data["questions_number"], "link":'?course_id='+course_id+"&material_id="+material_id})
+						context[section].append({"type":"material","title":material_data["title"],"id":material_id, "link":'?course_id='+course_id+"&material_id="+material_id})
 		return context
 
 	def load_course_requests(self,course_id):
