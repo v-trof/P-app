@@ -878,7 +878,7 @@ class CourseManager(models.Manager):
 		if user:
 			for id,source in sources.items():
 				if user.id in source["unseen_by"]:
-					source["unseen_by"].remove(user.id
+					source["unseen_by"].remove(user.id)
 		with io.open('main/files/json/courses/' + str(course_id) + '/sources.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(sources, ensure_ascii=False)
 			json_file.write(saving_data)
