@@ -1435,7 +1435,21 @@ class Material():
 					"json": json.load(json_file),
 					"published": not material_id in course_info["materials"]["unpublished"]
 				}
-		return material
+		context={}
+		context["material"]=material
+		context["material"]["id"]=material_id
+		context["course"]=Course.objects.get(id=course_id)
+		context["breadcrumbs"] = [{
+				"href": "/course/" + str(course_id),
+				"link": Course.objects.get(id=course_id).name
+			}, {
+				"href": "#",
+				"link": material["json"]["title"]
+			}]
+		context["sections"] = Course.objects.get_sections(course_id=course_id)
+		context["type"]= "material"
+		context["read"]= True
+		return context
 		
 	def publish(course_id,material_id,section):
 		# makes material visible in course screen

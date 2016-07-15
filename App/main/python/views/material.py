@@ -59,28 +59,6 @@ def save(request):
 	return HttpResponse("Материал сохранен")
 
 
-def load(request):
-	# loads material file
-	course_id = request.GET.get("course_id",None)
-	material_id = request.GET.get("material_id",None)
-	material=Material.load(course_id=course_id, material_id=material_id)
-	context={}
-	context["material"]=material
-	context["material"]["id"]=material_id
-	context["course"]=Course.objects.get(id=course_id)
-	context["breadcrumbs"] = [{
-			"href": "/course/" + str(course_id),
-			"link": Course.objects.get(id=course_id).name
-		}, {
-			"href": "#",
-			"link": material["json"]["title"]
-		}]
-	context["sections"] = Course.objects.get_sections(course_id=course_id)
-	context["type"]= "material"
-	context["read"]= True
-	return render(request, 'Pages/Material/editor/exports.html', context)
-
-
 def publish(request):
 	# makes material visible in course screen
 	if request.method == 'POST':
@@ -109,7 +87,7 @@ def read(request):
 	if Material.is_creator(user=request.user,material_id=material_id,course_id=course_id):
 		return redirect("/material/edit/?course_id="+course_id+"&material_id="+material_id)
 	if Utility.is_member(user=request.user,course_id=course_id):
-		context = load(course_id=course_id, material_id=material_id)
+		context = Material.load(course_id=course_id, material_id=material_id)
 		context["reading"] = True
 		context["type"]= "material"
 		return render(request, 'Pages/Material/read/exports.html', context)
