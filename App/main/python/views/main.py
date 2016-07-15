@@ -111,7 +111,7 @@ class Course_group():
 
 	def sources(request, course_id):
 		context={}
-		context=Course.objects.load_sources(course_id=course_id, user=request.user)
+		context["sources"]=Course.objects.load_sources(course_id=course_id, user=request.user)
 		context["course"]=Course.objects.get(id=course_id)
 		return render(request, 'Pages/Course/sources/exports.html', context)
 

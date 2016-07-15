@@ -276,12 +276,15 @@ class CourseManager(models.Manager):
 			maximum=max(k for k, v in data.items())
 		else: maximum=0
 		maximum=int(maximum)
-		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as info_file:
+		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as info_file:
 			info = json.load(info_file)
 			course_users=info["users"]
 		if user:
 			course_users.remove(user.id)
 		data[str(maximum+1)]={"unseen_by":course_users,"name":name,"size":size,"link":link}
+		with io.open('main/files/json/courses/' + str(course.id) + '/sources.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
 		return len(data)
 
 	def edit_source(self, heading, text, course_id, announcement_id):
@@ -890,6 +893,7 @@ class CourseManager(models.Manager):
 		with io.open('main/files/json/courses/' + str(course_id) + '/sources.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(sources, ensure_ascii=False)
 			json_file.write(saving_data)
+		print(sources)
 		return sources
 
 	def load_preview(self,course_id,user_id=None):
