@@ -1,0 +1,6 @@
+{% include "#&/linkbox/" %}
+{% for source_id, file in sources.items %}
+	{% include "Elements/card/file/" %}
+{% empty %}
+Источники ещё не добавляли
+{% endfor %}

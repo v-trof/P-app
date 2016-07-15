@@ -1,0 +1,10 @@
+{
+	"elements": ["card/file", "Modules/notification", "Modules/popup",
+				 "Inputs/text", "Inputs/file", "Modules/toggle_edit",
+				 "Modules/button_delete"],
+	"scripts": [],
+	"styles": [],
+	"fixes": [],
+	"title" : "Источники",
+	"template": "default"
+}
