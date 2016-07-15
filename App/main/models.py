@@ -99,7 +99,7 @@ class Utility():
 		with open(path+filename, 'wb+') as destination:
 			for chunk in file.chunks():
 				destination.write(chunk)
-		url='media/'+custom_path+filename
+		url='/media/'+custom_path+filename
 		return url
 
 	def upload_file_by_url(url,path):
@@ -118,7 +118,7 @@ class Utility():
 		with open(path+filename, 'wb+') as destination:
 			for chunk in files.File(temp).chunks():
 				destination.write(chunk)
-		url='media/'+custom_path+filename
+		url='/media/'+custom_path+filename
 		return url
 
 	def upload_embmend(path,asset,course_id,test_id):
@@ -666,21 +666,67 @@ class CourseManager(models.Manager):
 			for user_id in course_info["groups"][group].keys():
 				with io.open('main/files/json/courses/' + str(course_id) + '/users/'+user_id+'/assignments.json', 'r', encoding='utf8') as json_file:
 					data = json.load(json_file)
-					assignment_map={}
-					data[assignment_id] = {}
-					assignment_map["unfinished_tests"]=[]
-					assignment_map["tests"]=[]
-					assignment_map["traditionals"]=[]
+				assignment_map={}
+				data[assignment_id] = {}
+				assignment_map["unfinished_tests"]=[]
+				assignment_map["tests"]=[]
+				assignment_map["traditionals"]=[]
+				for task in assignment["content"]["tests"]:
+					assignment_map["tests"].append(task["link"].split('&')[1].split('=')[1])
+				it = 0
+				for task in assignment["content"]["traditionals"]:
+					it += 1
+					assignment_map["traditionals"].append(it)
+				data[assignment_id]["in_process"]=assignment_map
+				data[str(assignment_id)]["done"]={}
+				data[str(assignment_id)]["done"]["tests"]=[]
+				data[str(assignment_id)]["done"]["traditionals"]=[]
+				data[str(assignment_id)]["finished"]=False
+				with io.open('main/files/json/courses/' + str(course_id) + '/users/'+user_id+'/assignments.json', 'w', encoding='utf8') as json_file:
+					saving_data = json.dumps(data, ensure_ascii=False)
+					json_file.write(saving_data)
+		return 0
+
+	def edit_assignment(self, course_id, assignment_id, group_list, test_list, material_list, traditionals_list, due_date):
+		assignment = {}
+		assignment["due_date"] = due_date
+		assignment["group_list"]= json.loads(group_list)
+		assignment["content"] = {}
+		assignment["course_id"]=course_id
+		assignment["content"]["tests"] = []
+		assignment["content"]["materials"] = []
+		assignment["content"]["traditionals"] = []
+		assignment["content"]["tests"] = json.loads(test_list)
+		for test in assignment["content"]["tests"]:
+			test["id"]=test["link"].split('&')[1].split('=')[1]
+		assignment["content"]["materials"] = json.loads(material_list)
+		assignment["content"]["traditionals"] = json.loads(traditionals_list)
+		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + assignment_id + '.json', 'r', encoding='utf8') as json_file:
+			old_assignment=json.load(json_file)
+		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + assignment_id + '.json', 'w+', encoding='utf8') as json_file:
+			saving_data = json.dumps(assignment, ensure_ascii=False)
+			json_file.write(saving_data)
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as json_file:
+			course_info=json.load(json_file)
+		for group in json.loads(group_list):
+			for user_id in course_info["groups"][group].keys():
+				with io.open('main/files/json/courses/' + str(course_id) + '/users/'+user_id+'/assignments.json', 'r', encoding='utf8') as json_file:
+					data = json.load(json_file)
 					for task in assignment["content"]["tests"]:
-						assignment_map["tests"].append(task["link"].split('&')[1].split('=')[1])
-					it = 0
-					for task in assignment["content"]["traditionals"]:
-						it += 1
-						assignment_map["traditionals"].append(it)
-					data[assignment_id]["in_process"]=assignment_map
-					data[str(assignment_id)]["done"]={}
-					data[str(assignment_id)]["done"]["tests"]=[]
-					data[str(assignment_id)]["done"]["traditionals"]=[]
+						test=task["link"].split('&')[1].split('=')[1]
+						if not test in data[assignment_id]["done"]["tests"] and not test in data[assignment_id]["in_process"]["tests"] and not test in data[assignment_id]["in_process"]["unfinished_tests"]:
+							data[assignment_id]["in_process"]["tests"].append(test)
+					it=0
+					#for traditional in old_assignment["content"]["traditionals"]:
+					#	if not traditional in assignment["content"]["traditionals"]:
+					#		if del(data[assignment_id]["traditionals"][data[assignment_id]["traditionals"].index(it)])
+					#	it+=1
+					#for traditional in assignment["content"]["traditionals"]:
+					#	if not traditional in old_assignment["content"]["traditionals"]:
+					#it = 0
+					#for task in assignment["content"]["traditionals"]:
+					#	it += 1
+					#	assignment_map["traditionals"].append(it)
 					data[str(assignment_id)]["finished"]=False
 				with io.open('main/files/json/courses/' + str(course_id) + '/users/'+user_id+'/assignments.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(data, ensure_ascii=False)
@@ -1383,7 +1429,7 @@ class Material():
 				}
 		return material
 		
-	def publish(course_id,material_id,section,allowed_mistakes,mark_setting):
+	def publish(course_id,material_id,section):
 		# makes material visible in course screen
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
@@ -1398,17 +1444,6 @@ class Material():
 
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
-
-		with io.open('main/files/json/courses/'+course_id+'/materials/'+material_id+'.json', 'r', encoding='utf8') as info_file:
-			material_data=json.load(info_file)
-
-		material_data["allowed_mistakes"]=allowed_mistakes
-
-		for key in mark_setting:
-			material_data["mark_setting"][key]=mark_setting[key]
-
-		with io.open('main/files/json/courses/'+course_id+'/materials/'+material_id+'.json', 'w', encoding='utf8') as info_file:
-			info_file.write(json.dumps(material_data, ensure_ascii=False))
 
 		return 0
 

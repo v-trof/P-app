@@ -163,6 +163,31 @@ class Course_group():
 		else:
 			return render(request, 'Pages/Course/give_task/exports.html')
 
+	def edit_task(request, course_id):
+		if course_id:
+			course = Course.objects.get(id=course_id)
+			context={}
+			context["course"]={}
+			context["course"]["materials"]=Course.objects.get_tests(course_id=course_id)
+			context["course"]["tests"]=Course.objects.get_tests(course_id=course_id)
+			context["course"]["object"]=course
+			context["course"]["group_list"]=Course.objects.get_group_list(course=course)
+			context["course"]["material_list"] = [
+				{
+					"title": "!How to make bugs!",
+					"href": "/1"
+				}]
+			context["breadcrumbs"] = [{
+				"href": "/course/" + str(course.id),
+				"link": course.name
+			}, {
+				"href": "#",
+				"link": "Изменить задание"
+			}]
+			return render(request, 'Pages/Course/edit_task/exports.html', context)
+		else:
+			return render(request, 'Pages/Course/edit_task/exports.html')
+
 	class Elements():
 
 		def groups_content(request, course_id):

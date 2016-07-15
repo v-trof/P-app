@@ -77,6 +77,7 @@ def load(request):
 		}]
 	context["sections"] = Course.objects.get_sections(course_id=course_id)
 	context["type"]= "material"
+	context["read"]= True
 	return render(request, 'Pages/Material/editor/exports.html', context)
 
 
