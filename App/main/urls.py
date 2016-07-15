@@ -82,6 +82,7 @@ func_patterns = [
     url(r'^edit_assignment/$', functional.Course_views.edit_assignment, name="edit_assignment"),
     url(r'^change_permission_level/$', functional.User_views.change_permission_level, name="change_permission_level"),
     url(r'^add_section/$', functional.Course_views.add_section, name="add_section"),
+    url(r'^edit_sections/$', functional.Course_views.edit_sections, name="edit_sections"),
     url(r'^add_announcement/$', functional.Course_views.add_announcement, name="add_announcement"),
     url(r'^edit_announcement/$', functional.Course_views.edit_announcement, name="edit_announcement"),
     url(r'^delete_announcement/$', functional.Course_views.delete_announcement, name="delete_announcement"),

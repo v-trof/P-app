@@ -1,5 +1,6 @@
 {% if sections %}
 	{% for section,value in sections.items %}
+	{% if value|length > 0 %}
 		<section>
 			<h3>{{section}}</h3>
 			{% for element in value %}
@@ -10,5 +11,6 @@
 				{% endif %}
 			{% endfor %}
 		</section>
+	{% endif %}
 	{% endfor %}
 {% endif %}

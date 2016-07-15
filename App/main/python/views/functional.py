@@ -180,6 +180,14 @@ class Course_views():
 			announcement_id = Course.objects.add_section(section=section,course_id=course_id, type=type)
 			return HttpResponse('ok')
 
+	def edit_sections(request):
+		if request.method == "POST":
+			sections = json.load(request.POST["sections"])
+			type = request.POST["type"]
+			course_id = request.POST["course_id"]
+			announcement_id = Course.objects.edit_sections(sections=sections,course_id=course_id, type=type)
+			return HttpResponse('ok')
+
 	def add_announcement(request):
 		if request.method == "POST":
 			text = request.POST["text"]

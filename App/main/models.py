@@ -311,6 +311,14 @@ class CourseManager(models.Manager):
 			data_file.write(json.dumps(data, ensure_ascii=False))
 		return 0
 
+	def edit_sections(self, course_id, sections, type):
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			data[type]["published"]=sections
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w+', encoding='utf8') as data_file:
+			data_file.write(json.dumps(data, ensure_ascii=False))
+		return 0
+
 	def add_announcement(self, heading, text, course_id, user=None):
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
@@ -1458,7 +1466,7 @@ class Material():
 
 		if material_id in course_info['materials']['unpublished']:
 			course_info['materials']['unpublished'].remove(material_id)
-			if not course_info['materials']['published'][section]:
+			if not section in course_info['materials']['published'].keys():
 				course_info['materials']['published'][section]=[]
 			course_info['materials']['published'][section].append(material_id)
 
@@ -1600,7 +1608,7 @@ class Test():
 
 		if test_id in course_info['tests']['unpublished']:
 			course_info['tests']['unpublished'].remove(test_id)
-			if not course_info['tests']['published'][section]:
+			if not section in course_info['tests']['published'].keys():
 				course_info['tests']['published'][section]=[]
 			course_info['tests']['published'][section].append(test_id)
 			with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
