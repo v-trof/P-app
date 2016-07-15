@@ -727,7 +727,7 @@ class CourseManager(models.Manager):
 					it=0
 					#for traditional in old_assignment["content"]["traditionals"]:
 					#	if not traditional in assignment["content"]["traditionals"]:
-					#		if del(data[assignment_id]["traditionals"][data[assignment_id]["traditionals"].index(it)])
+					#		del(data[assignment_id]["traditionals"][data[assignment_id]["traditionals"].index(it)])
 					#	it+=1
 					#for traditional in assignment["content"]["traditionals"]:
 					#	if not traditional in old_assignment["content"]["traditionals"]:
@@ -1494,6 +1494,10 @@ class Material():
 			material_info=json.load(info_file)
 		return material_info["creator"]==user.id
 
+	def is_published(material_id,course_id):
+		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
+			course_info = json.load(info_file)
+		return not material_id in course_info["materials"]["unpublished"]
 
 class Test():
 
@@ -1631,7 +1635,12 @@ class Test():
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		return 0
-			
+
+	def is_published(test_id,course_id):
+		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
+			course_info = json.load(info_file)
+		return not test_id in course_info["tests"]["unpublished"]
+
 	def build_question(item):
 		value={}
 		type=item["class"]
