@@ -1,4 +1,4 @@
-{% if not attempt %}
+{% if not attempt and not read %}
 generate.let_editing = function($element) {
 	pull_put.puller.add(
 		$element,

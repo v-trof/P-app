@@ -1,17 +1,17 @@
 $(document).ready(function() {
-	$("#test_save").click(function(event) {
+	$("#material_save").click(function(event) {
 		test_manager.save();
 	});
 
-	$("#test_publish").click(function(event) {
-		test_manager.publish();
+	$("#material_publish").click(function(event) {
+		test_manager.publish_material();
 	});
 
-	$("#test_unpublish").click(function(event) {
+	$("#material_unpublish").click(function(event) {
 		test_manager.unpublish();
 	});
 
-	$("#test_delete").click(function(event) {
+	$("#material_delete").click(function(event) {
 		test_manager.delete();
 	});
 });

@@ -15,7 +15,7 @@ var editor = (function() {
 	}
 
 	var check_pullers = function() {
-		$(".preview .__content").children().each(function(index, el) {
+		$(".preview .__content>.card").children().each(function(index, el) {
 			if(
 				(
 					   ! $(this).hasClass('--pullable')

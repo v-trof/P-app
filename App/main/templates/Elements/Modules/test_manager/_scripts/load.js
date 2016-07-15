@@ -36,7 +36,7 @@ test_manager.load.test = function(test_json) {
 
 		$(document).find(".answer--empty, .question--empty").remove();
 		
-		{% if not attempt %}
+		{% if not attempt and not read %}
 			editor.check_self();
 		{% endif %}
 	});
@@ -45,24 +45,22 @@ test_manager.load.test = function(test_json) {
 test_manager.load.material = function(material_json) {
 	$("h2").text(material_json.title);
 	var material_data = material_json.tasks[0]
-		console.log(material_data);
+		// console.log(material_data);
 	var element_class = material_data[0].class;
 
 	$content = $(".preview>.__content>.card");
 
 	for (var i = 0; i < material_data.length; i++) {
 		element_class = material_data[i].class;
-		console.log(material_data[i]);
+		// console.log(material_data[i]);
 		var $element =  generate.build.
 							element(element_class, material_data[i])
 
 		$content.append($element);
 	}
-		$(document).find(".answer--empty, .question--empty").remove();
-		
-		{% if not attempt %}
-			editor.check_self();
-		{% endif %}
+	{% if not attempt and not read %}
+		editor.check_self();
+	{% endif %}
 }
 
 {% if test.json %}

@@ -35,9 +35,15 @@ test_manager.upload_test = function(test_packed) {
 
 test_manager.save = function() {
 	test_manager.pack();
+	
+	if(test_manager.upload_queue.length !== 0) {
+		popup.show('{% include "Elements/Modules/test_manager/__popup_texts/__save/exports.html" %}');
+	}
+	
 	var check_queue = function() {
 		if(test_manager.upload_queue.length === 0) {
 			test_manager.upload_test();
+			popup.hide();
 		} else {
 			setTimeout(check_queue, 100);
 		}

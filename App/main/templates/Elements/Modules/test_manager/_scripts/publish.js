@@ -19,11 +19,8 @@ test_manager.publish = function() {
 			$("#publish").click(function() {
 				var formData = new FormData();
 				formData.append("course_id", "{{course.id}}");
-				{% if type == 'test' %}
-					formData.append("test_id", "{{test.id}}");
-				{% else %}
-					formData.append("material_id", "{{material.id}}");
-				{% endif %}
+				formData.append("test_id", "{{test.id}}");
+				
 				formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
 				$(".--publish-popup .__mark-settigns")
 					.find("input").each(function(index, el) {
@@ -62,4 +59,23 @@ test_manager.publish = function() {
 			});
 		});
 	}
+}
+
+test_manager.publish_material = function() {
+	var formData = new FormData();
+	formData.append("course_id", "{{course.id}}");
+	formData.append("material_id", "{{material.id}}");
+		
+	formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
+
+	$.ajax({
+		type:"POST",
+		url:"/{{type}}/publish/",
+		data: formData,
+		processData: false,
+		contentType: false,
+		success: function(data) {
+			notification.show('success', data);
+		}
+	});
 }

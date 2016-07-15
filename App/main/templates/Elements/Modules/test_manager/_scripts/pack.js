@@ -32,7 +32,7 @@ test_manager.pack = function() {
 			test_manager.packed_test.tasks[task_index].push(
 				generate.read(element_class).element.parse($(this))
 			);
-			$(this).find("img").each(function(index, $element) {
+			$(this).find("img").each(function(img_index, $element) {
 				if($(this).attr('src').indexOf("blob") == 0){
 					//file upload
 					var assets = generate.data.shared.assets;
@@ -70,9 +70,12 @@ test_manager.pack = function() {
 						    processData: false,
 						    contentType: false,
 							success:function(response) {
-								console.log(response, "as", file_id);
 								test_manager.packed_test.tasks[task_index][index].url=response;
 								test_manager.upload_queue.remove(file_id);
+
+								console.log("saved to:", task_index, index, 
+									test_manager.packed_test.tasks[task_index][index]);
+								console.log(response, "as", file_id);
 								console.log("removed", test_manager.upload_queue);
 							}
 						});
