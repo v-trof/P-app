@@ -269,20 +269,20 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		return 0
 
-	def add_source(self,course,name,link,size,user=None):
-		with io.open('main/files/json/courses/' + str(course.id) + '/sources.json', 'r', encoding='utf8') as json_file:
+	def add_source(self,course_id,name,link,size,user=None):
+		with io.open('main/files/json/courses/' + str(course_id) + '/sources.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
 		if len(data.keys()):
 			maximum=max(k for k, v in data.items())
 		else: maximum=0
 		maximum=int(maximum)
-		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as info_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as info_file:
 			info = json.load(info_file)
 			course_users=info["users"]
 		if user:
 			course_users.remove(user.id)
 		data[str(maximum+1)]={"unseen_by":course_users,"name":name,"size":size,"link":link}
-		with io.open('main/files/json/courses/' + str(course.id) + '/sources.json', 'w', encoding='utf8') as json_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/sources.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return len(data)
@@ -1028,7 +1028,7 @@ class UserManager(UserManager):
 				password=password,
 				name=name_last_name,
 				is_teacher=is_teacher,
-				avatar='default_avatar.png',
+				avatar='Avatars/default_avatar.png',
 				permission_level="0")
 			os.makedirs('main/files/json/users/'+str(user.id)+'/')
 			with io.open('main/files/json/users/'+str(user.id)+'/info.json', 'w+', encoding='utf8') as json_file:
@@ -1311,7 +1311,7 @@ class UserManager(UserManager):
 		return None
 
 	def upload_avatar(self, user, new_avatar):
-		if user.avatar != "default_avatar.png":
+		if user.avatar != "Avatars/default_avatar.png":
 			os.remove(user.avatar.path)
 		setattr(user, 'avatar', new_avatar)
 		user.save()
