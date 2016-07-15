@@ -269,7 +269,7 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		return 0
 
-	def add_source(self,course,user=None,name,link,size):
+	def add_source(self,course,name,link,size,user=None):
 		with io.open('main/files/json/courses/' + str(course.id) + '/sources.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
 		if len(data.keys()):
