@@ -1,3 +1,4 @@
+{% if not attempt and not read %}
 test_manager.upload_queue = []
 test_manager.packed_test = []
 
@@ -50,3 +51,4 @@ test_manager.save = function() {
 	}
 	setTimeout(check_queue, 100);
 }
+{% endif %}

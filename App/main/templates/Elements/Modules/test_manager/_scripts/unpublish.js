@@ -1,3 +1,4 @@
+{% if not attempt and not read %}
 test_manager.unpublish = function() {
 	var formData = new FormData();
 	formData.append("course_id", "{{course.id}}");
@@ -20,3 +21,4 @@ test_manager.unpublish = function() {
 	$("#{{type}}_publish").show();
 	$("#{{type}}_unpublish").hide();
 }
+{% endif %}

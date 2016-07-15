@@ -50,6 +50,12 @@
 					id="course_setion"
 					options=course.sections
 				%}
+				<button class="--ghost --icon" id="add_section" tip="Добаваить секцию">
+					{% include "Elements/Icons/add.svg" %}
+				</button>
+				{% include "Elements/Inputs/text/" with
+					id="new_section_name"
+				%}
 		</div>
 		<button id="publish">Сделать доступным для порохождения</button>
 	</div>
@@ -58,7 +64,7 @@
 		<div class="__mark-settigns">
 			<h4 class="__heading">Критерии оценивания</h4>
 			<div>Максимум <span class="__max_ponts"> баллов</span></div>
-		{# 	{% include "Elements/Inputs/select/" with
+			{# 	{% include "Elements/Inputs/select/" with
 				options=user.mark_presets
 			%} #}
 

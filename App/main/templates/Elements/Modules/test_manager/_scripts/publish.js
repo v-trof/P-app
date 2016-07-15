@@ -1,3 +1,4 @@
+{% if not attempt and not read %}
 test_manager.publish = function() {
 	var no_empty = ($(".preview .--empty").length === 0);
 	var answers_everywhere = true;
@@ -22,6 +23,7 @@ test_manager.publish = function() {
 				formData.append("test_id", "{{test.id}}");
 				
 				formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
+				
 				$(".--publish-popup .__mark-settigns")
 					.find("input").each(function(index, el) {
 					// console.log("m:", $(this).attr("id"), $(this).val());
@@ -46,6 +48,7 @@ test_manager.publish = function() {
 				});
 
 				$("#{{type}}_publish").hide();
+				console.log("#{{type}}_publish");
 				$("#{{type}}_unpublish").show();
 				popup.hide();
 			});
@@ -62,20 +65,31 @@ test_manager.publish = function() {
 }
 
 test_manager.publish_material = function() {
-	var formData = new FormData();
-	formData.append("course_id", "{{course.id}}");
-	formData.append("material_id", "{{material.id}}");
-		
-	formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
+	popup.show('{% include "Pages/Material/editor/_popup_texts/publish/exports.html" %}',
+		function() {
+		$("#publish").click(function() {
+			var formData = new FormData();
+			formData.append("course_id", "{{course.id}}");
+			formData.append("material_id", "{{material.id}}");
+				
+			formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
 
-	$.ajax({
-		type:"POST",
-		url:"/{{type}}/publish/",
-		data: formData,
-		processData: false,
-		contentType: false,
-		success: function(data) {
-			notification.show('success', data);
-		}
+			$("#{{type}}_publish").hide();
+			console.log("#{{type}}_publish");
+			$("#{{type}}_unpublish").show();
+
+			$.ajax({
+				type:"POST",
+				url:"/{{type}}/publish/",
+				data: formData,
+				processData: false,
+				contentType: false,
+				success: function(data) {
+					notification.show('success', data);
+				}
+			});
+		});
 	});
+	
 }
+{% endif %}

@@ -9,7 +9,8 @@
 				"Inputs/text/textarea",
 				"Inputs/checkbox", "Inputs/radio",
 				"Inputs/select", "Inputs/file",
-				"Modules/panel"
+				"Modules/panel",
+				"card/file"
 				],
 	"scripts": [],
 	"styles": [],

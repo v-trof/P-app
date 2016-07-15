@@ -1,0 +1,14 @@
+@import "../../../../sass_vars/main.sass"
+
+.card.--file
+	flex-direction: row
+	align-items: center
+	&.--extended>.__main
+		display: flex
+		flex-direction: row
+	.__icon
+		+square("l")
+		margin-right: $margin--s
+	.__info
+		.__size
+			color: $font__color--grey

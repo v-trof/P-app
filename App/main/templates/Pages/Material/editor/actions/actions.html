@@ -1,6 +1,6 @@
 <div id="actions">
 	<button class="--ghost --icon" id="material_save" 
-		{% if  test.published %}
+		{% if  material.published %}
 		tip="Cохранить изменения"
 		{% else %}
 		tip="Сохранить в черновики"
@@ -8,7 +8,7 @@
 	>
 		{% include "Elements/Icons/save.svg" %}
 	</button>
-	{% if not test.loaded or not test.published %}
+	{% if not material.loaded or not material.published %}
 		<button class="--ghost --icon" id="material_publish" tip="Сделать доступным для просмотра">
 			{% include "Elements/Icons/visibility.svg" %}
 		</button>

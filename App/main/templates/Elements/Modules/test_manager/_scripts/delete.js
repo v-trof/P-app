@@ -1,3 +1,4 @@
+{% if not attempt and not read %}
 test_manager.delete = function() {
 	var formData = new FormData();
 	formData.append("course_id", "{{course.id}}");
@@ -24,3 +25,4 @@ test_manager.delete = function() {
 		}
 	});
 }
+{% endif %}

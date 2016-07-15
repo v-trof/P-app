@@ -1,0 +1,8 @@
+{
+	"elements": ["Modules/test_generate", "Modules/test_manager"],
+	"scripts": [],
+	"styles": [],
+	"fixes": [],
+	"title" : "Просмотр материала",
+	"template": "default"
+}

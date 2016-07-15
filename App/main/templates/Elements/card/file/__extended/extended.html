@@ -1,0 +1,15 @@
+<a class="--card" href="{{file.link}}" download>
+	<div class="card --file" tip="Нажмите чтобы скачать">
+		<div class="__main">
+		
+			<div class="__icon">
+				{% include "Elements/Icons/file.svg" %}
+			</div>
+			{% include "#&/../__info/" %}
+		</div>
+
+		<div class="__extension">
+			{% include extension %}
+		</div>
+	</div>
+</a>
