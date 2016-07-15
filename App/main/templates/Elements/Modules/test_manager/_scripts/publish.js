@@ -1,4 +1,27 @@
 {% if not attempt and not read %}
+
+test_manager.use_new_section = false;
+
+test_manager.add_section_binding = function() {
+	test_manager.use_new_section = false;
+	$new_section_name = $("#new_section_name").parent();
+	$new_section_name.hide();
+
+	var new_value = "new_section00";
+	var $new_section_option = $("<option value="+new_value+">Другая</option>")
+	$('#course_section').parent().append($new_section_option);
+
+	$("#course_section").change(function(event) {
+		if($('#course_section').val() === new_value) {
+			test_manager.use_new_section = true;
+			$new_section_name.show();
+		} else {
+			test_manager.use_new_section = false;
+			$new_section_name.hide();
+		}
+	});
+}
+
 test_manager.publish = function() {
 	var no_empty = ($(".preview .--empty").length === 0);
 	var answers_everywhere = true;
@@ -17,6 +40,8 @@ test_manager.publish = function() {
 			
 			popup.$.find(".__max_ponts").text($(".preview .__answer-field").length);
 			
+			test_manager.add_section_binding();
+
 			$("#publish").click(function() {
 				var formData = new FormData();
 				formData.append("course_id", "{{course.id}}");
@@ -35,6 +60,16 @@ test_manager.publish = function() {
 					// console.log("ac:", $(this).attr("id"), $(this).is(":checked"));
 					formData.append($(this).attr("id"), $(this).is(":checked"))
 				});
+
+				if(test_manager.use_new_section) {
+					console.log("n|", $("#new_section_name").val())
+					formData.append("section", $("#new_section_name").val());
+				} else {
+					console.log("o|", $('#course_section').val())
+					formData.append("section", $('#course_section').val());
+				}
+
+			
 
 				$.ajax({
 					type:"POST",
@@ -67,10 +102,21 @@ test_manager.publish = function() {
 test_manager.publish_material = function() {
 	popup.show('{% include "Pages/Material/editor/_popup_texts/publish/exports.html" %}',
 		function() {
+
+		test_manager.add_section_binding();
+			
 		$("#publish").click(function() {
 			var formData = new FormData();
 			formData.append("course_id", "{{course.id}}");
 			formData.append("material_id", "{{material.id}}");
+
+			if(test_manager.use_new_section) {
+				console.log("n|", $("#new_section_name").val())
+				formData.append("section", $("#new_section_name").val());
+			} else {
+				console.log("o|", $('#course_section').val())
+				formData.append("section", $('#course_section').val());
+			}
 				
 			formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
 

@@ -47,14 +47,13 @@
 		<div class="__course-section">
 			<h4 class="__heading">Секция курса</h4>
 				{% include "Elements/Inputs/select/" with
-					id="course_setion"
+					id="course_section"
 					options=course.sections
 				%}
-				<button class="--ghost --icon" id="add_section" tip="Добаваить секцию">
-					{% include "Elements/Icons/add.svg" %}
-				</button>
+
 				{% include "Elements/Inputs/text/" with
 					id="new_section_name"
+					placeholder="Название новой секции"
 				%}
 		</div>
 		<button id="publish">Сделать доступным для порохождения</button>

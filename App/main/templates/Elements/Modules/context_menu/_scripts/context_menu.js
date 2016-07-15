@@ -14,8 +14,9 @@ var context_menu = (function() {
 
 			$menu.children(".__option").click(function(event) {
 				context_menu.hide();
-				$(el).children('input').val($(this).attr('value'));
+				$(el).find('input').val($(this).attr('value')).change();
 				$(el).children('.__display').text($(this).text());
+				($(el).find('input').val(), $(el).find('input'));
 			});
 		} else {
 			options.forEach(function(option) {
