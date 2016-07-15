@@ -150,10 +150,11 @@ class Course_views():
 
 	def add_source(request):
 		if request.method == "POST":
-			#POST input
+			name = request.POST["name"]
+			size = request.POST["size"]
+			link = request.POST["link"]
 			course_id = request.POST["course_id"]
-			announcement_id = Course.objects.add_source(
-				text=text, heading=heading, course_id=course_id, user=request.user)
+			announcement_id = Course.objects.add_source(course_id=course_id, user=request.user, name=name, size=size, link=link)
 			return HttpResponse(announcement_id)
 
 	def edit_source(request):

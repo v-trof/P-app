@@ -269,7 +269,7 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		return 0
 
-	def add_source(self,course,user=None):
+	def add_source(self,course,user=None,name,link,size):
 		with io.open('main/files/json/courses/' + str(course.id) + '/sources.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
 		if len(data.keys()):
@@ -281,8 +281,7 @@ class CourseManager(models.Manager):
 			course_users=info["users"]
 		if user:
 			course_users.remove(user.id)
-		#add source content
-		data[str(maximum+1)]={"unseen_by":course_users}
+		data[str(maximum+1)]={"unseen_by":course_users,"name":name,"size":size,"link":link}
 		return len(data)
 
 	def edit_source(self, heading, text, course_id, announcement_id):
@@ -879,7 +878,7 @@ class CourseManager(models.Manager):
 		if user:
 			for id,source in sources.items():
 				if user.id in source["unseen_by"]:
-					source["unseen_by"].remove(user.id)
+					source["unseen_by"].remove(user.id
 		with io.open('main/files/json/courses/' + str(course_id) + '/sources.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(sources, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -1434,7 +1433,7 @@ class Material():
 					"id": material_id,
 					"loaded": 1,
 					"json": json.load(json_file),
-					"published": material_id in course_info["materials"]["published"]
+					"published": not material_id in course_info["materials"]["unpublished"]
 				}
 		return material
 		
@@ -1445,11 +1444,9 @@ class Material():
 
 		if material_id in course_info['materials']['unpublished']:
 			course_info['materials']['unpublished'].remove(material_id)
-
-		if not course_info['materials']['published'][section]:
-			course_info['materials']['published'][section]=[]
-
-		course_info['materials']['published'][section].append(material_id)
+			if not course_info['materials']['published'][section]:
+				course_info['materials']['published'][section]=[]
+			course_info['materials']['published'][section].append(material_id)
 
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -1574,7 +1571,7 @@ class Test():
 					"id": test_id,
 					"loaded": 1,
 					"json": json.load(json_file),
-					"published": test_id in course_info["tests"]["published"]
+					"published": not test_id in course_info["tests"]["unpublished"]
 				}
 		return test
 		
@@ -1585,25 +1582,22 @@ class Test():
 
 		if test_id in course_info['tests']['unpublished']:
 			course_info['tests']['unpublished'].remove(test_id)
+			if not course_info['tests']['published'][section]:
+				course_info['tests']['published'][section]=[]
+			course_info['tests']['published'][section].append(test_id)
+			with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
+				info_file.write(json.dumps(course_info, ensure_ascii=False))
 
-		if not course_info['tests']['published'][section]:
-			course_info['tests']['published'][section]=[]
+			with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+				test_data=json.load(info_file)
 
-		course_info['tests']['published'][section].append(test_id)
+			test_data["allowed_mistakes"]=allowed_mistakes
 
-		with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
-			info_file.write(json.dumps(course_info, ensure_ascii=False))
+			for key in mark_setting:
+				test_data["mark_setting"][key]=mark_setting[key]
 
-		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
-			test_data=json.load(info_file)
-
-		test_data["allowed_mistakes"]=allowed_mistakes
-
-		for key in mark_setting:
-			test_data["mark_setting"][key]=mark_setting[key]
-
-		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'w', encoding='utf8') as info_file:
-			info_file.write(json.dumps(test_data, ensure_ascii=False))
+			with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'w', encoding='utf8') as info_file:
+				info_file.write(json.dumps(test_data, ensure_ascii=False))
 
 		return 0
 

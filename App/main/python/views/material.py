@@ -87,16 +87,6 @@ def publish(request):
 		course_id = request.POST.get("course_id",None)
 		material_id = request.POST.get("material_id",None)
 		section = request.POST.get("section","Нераспределенные")
-		allowed_mistakes=[]
-		mark_setting={}
-		for setting in request.POST:
-			if setting.startswith('min_for'):
-				if request.POST[setting]!='':
-					mark_setting[setting[-1]]=int(request.POST[setting])
-				else: mark_setting[setting[-1]]=101
-			elif setting.startswith('autocorrect_'):
-				if request.POST[setting]=="true":
-					allowed_mistakes.append(setting[12:])
 		Material.publish(course_id=course_id, material_id=material_id,section=section)
 	return HttpResponse("Материал опубликован")
 
@@ -119,7 +109,7 @@ def read(request):
 	if Material.is_creator(user=request.user,material_id=material_id,course_id=course_id):
 		return redirect("/material/edit/?course_id="+course_id+"&material_id="+material_id)
 	if Utility.is_member(user=request.user,course_id=course_id):
-		context = Material.load(course_id=course_id, material_id=material_id)
+		context = load(course_id=course_id, material_id=material_id)
 		context["reading"] = True
 		context["type"]= "material"
 		return render(request, 'Pages/Material/read/exports.html', context)
