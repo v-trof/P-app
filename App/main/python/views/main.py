@@ -109,6 +109,12 @@ class Course_group():
 		context["course"]=Course.objects.get(id=course_id)
 		return render(request, 'Pages/Course/updates/exports.html', context)
 
+	def sources(request, course_id):
+		context={}
+		context=Course.objects.load_sources(course_id=course_id, user=request.user)
+		context["course"]=Course.objects.get(id=course_id)
+		return render(request, 'Pages/Course/sources/exports.html', context)
+
 	def requests(request, course_id):
 		pending_users=Course.objects.load_course_requests(course_id=course_id)
 		return render(request, 'Pages/Course/course_requests/exports.html', {"course_id": course_id, "pending_users": get_users_info(request, pending_users),

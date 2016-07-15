@@ -118,7 +118,7 @@ def read(request):
 		return redirect('/login')
 	if Material.is_creator(user=request.user,material_id=material_id,course_id=course_id):
 		return redirect("/material/edit/?course_id="+course_id+"&material_id="+material_id)
-	if Utility.is_member(user=request.user,material_id=material_id,course_id=course_id):
+	if Utility.is_member(user=request.user,course_id=course_id):
 		context = Material.read(user=request.user,course_id=course_id, material_id=material_id)
 		context["reading"] = True
 		context["type"]= "material"

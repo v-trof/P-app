@@ -54,7 +54,7 @@ material_patterns = [
     url(r'^unpublish/$', material.unpublish, name="unpublish_material"),
     url(r'^share/$', material.share, name="share_material"),
 
-    url(r'^attempt/$', material.read, name="read"),
+    url(r'^read/$', material.read, name="read"),
 ]
 
 func_patterns = [
@@ -100,6 +100,7 @@ course_patterns = [
     url(r'^(?P<course_id>[0-9]+)/requests/$', main.Course_group.requests, name="course_requests"),
     url(r'^(?P<course_id>[0-9]+)/$', main.Course_group.main, name="course"),
     url(r'^(?P<course_id>[0-9]+)/updates/$', main.Course_group.updates, name="updates"),
+    url(r'^(?P<course_id>[0-9]+)/sources/$', main.Course_group.sources, name='sources'),
 ]
 
 urlpatterns = [
@@ -115,7 +116,6 @@ urlpatterns = [
     url(r'^register/$', main.Auth_group.register, name="register"),
     url(r'^register/(?P<course_id>[0-9]+)/$', main.Auth_group.register, name="register+course"),
     url(r'^forgot_password/$', main.Auth_group.forgot_password, name="forgot_password"),
-
     url(r'^$', main.Main_group.home, name='home'),
     url(r'^profile/(?P<user_id>[0-9]+)/$', main.Main_group.profile, name="profile"),
     url(r'^run_test/$', testing_system.overall_test, name="overall_test")
