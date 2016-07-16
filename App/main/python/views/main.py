@@ -110,9 +110,11 @@ class Course_group():
 		return render(request, 'Pages/Course/updates/exports.html', context)
 
 	def sources(request, course_id):
+		course = Course.objects.get(id=course_id)
 		context={}
 		context["sources"]=Course.objects.load_sources(course_id=course_id, user=request.user)
 		context["course"]=Course.objects.get(id=course_id)
+		context["user_status"]=Course.objects.load_user_status(user=request.user, course=course)
 		return render(request, 'Pages/Course/sources/exports.html', context)
 
 	def requests(request, course_id):
@@ -130,8 +132,13 @@ class Course_group():
 	def groups(request, course_id):
 		if course_id:
 			course = Course.objects.get(id=course_id)
-			course_data=Course.objects.get_data(user=request.user, course=course)
-			course_data["group_list"]=list(course_data["groups"].keys())
+			course_data={}
+			course_data["user_status"]=Course.objects.load_user_status(user=request.user, course=course)
+			course_data["course_id"] = course.id
+			course_data["teachers"] = Course.objects.load_teachers(user=request.user, course=course)
+			course_data["status"] = Course.objects.get_status(course=course)
+			course_data["groups"]=Course.objects.load_groups(user=request.user, course=course)
+			course_data["group_list"]=Course.objects.get_group_list(course=course)
 			context = {"course": course, "course_data": course_data,
 					   "breadcrumbs": [{
 						   "href": "/course/" + str(course.id),

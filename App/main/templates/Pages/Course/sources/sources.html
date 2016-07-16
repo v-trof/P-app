@@ -1,4 +1,6 @@
-{% include "#&/linkbox/" %}
+{% if user_status == "moderator" or user_status == "administrator" or user_status == "teacher" %}
+	{% include "#&/linkbox/" %}
+{% endif %}
 <section class="sources">
 {% for file_id, file in sources.items %}
 	{% include "Elements/card/file/" %}

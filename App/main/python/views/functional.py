@@ -44,7 +44,7 @@ class User_views():
 			email = request.POST['email']
 			password = request.POST['password']
 			message = User.objects.login(request=request,email=email, password=password)
-			Course_views.register(request, course_id)
+			Course_views.register(request=request, course_id=course_id)
 		return redirect('/course/' + course_id + '/groups/')
 
 	def change_permission_level(request):
