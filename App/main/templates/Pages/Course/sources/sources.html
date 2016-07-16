@@ -1,6 +1,10 @@
 {% include "#&/linkbox/" %}
-{% for source_id, file in sources.items %}
+<section class="sources">
+{% for file_id, file in sources.items %}
 	{% include "Elements/card/file/" %}
 {% empty %}
-Источники ещё не добавляли
+<div class="--empty">
+	Источники ещё не добавляли
+</div>
 {% endfor %}
+</section>
