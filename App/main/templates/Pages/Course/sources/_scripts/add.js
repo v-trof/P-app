@@ -12,7 +12,7 @@ var upload_source =  function() {
 	form_data.append("size", file_to_upload.size);
 
 	$.ajax({
-		url: '/func/add_source',
+		url: '/func/add_source/',
 		type: 'POST',
 		data: form_data,
 		processData: false,
@@ -61,6 +61,8 @@ $("#add_source").click(function() {
 			.success(function(file_link) {
 				notification.show("success", "Файл загружен");
 				file_to_upload.link = file_link;
+				file_to_upload.name = $("#filename").val();
+				file_to_upload.size = Math.round(file_to_upload.catcher.files[0].size/1024/1024*100)/100+"Mb";
 				console.log("file", file_to_upload, "here");
 				upload_source();
 			})
