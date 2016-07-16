@@ -90,6 +90,7 @@ func_patterns = [
     url(r'^edit_source/$', functional.Course_views.edit_source, name="edit_source"),
     url(r'^delete_source/$', functional.Course_views.delete_source, name="delete_source"),
     url(r'^course_reg/(?P<course_id>[0-9]+)/$', functional.Course_views.register, name="register_on_course"),
+    url(r'^delete/$', functional.delete_file, name="delete_file"),
     url(r'^upload/$', functional.upload_file, name="upload_file"),
     url(r'^upload_by_url/$', functional.upload_file_by_url, name="upload_file_by_url"),
 ]

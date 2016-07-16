@@ -121,18 +121,12 @@ class Utility():
 		url='/media/'+custom_path+filename
 		return url
 
-	def upload_embmend(path,asset,course_id,test_id):
-		if not os.path.exists(path):
-			os.makedirs(path)
-		asset_id=1
-		list_dir = os.listdir(path)
-		for file in list_dir:
-			if file.endswith(".html"):
-				asset_id += 1
-		with open(path+asset_id+".html", 'wb+') as destination:
-			for chunk in asset.chunks():
-				destination.write(chunk)
-		return asset_id
+	def upload_file(file,path):
+		custom_path=path
+		path = 'main/files/media/'+path
+		if os.path.exists(path):
+			os.remove(path+file.name)
+			return 'ok'
 
 	def is_member(user,course_id):
 		with io.open('main/files/json/courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as info_file:

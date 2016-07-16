@@ -334,8 +334,15 @@ def upload_file_by_url(request):
 	if request.method == 'POST':
 		file_url=request.POST.get("file_url",None)
 		path=request.POST.get("path",None)
-		filepath=Utility.upload_file_by_url(url=file_url,path=path)
+		filepath=Utility.upload_file_by_
+		url(url=file_url,path=path)
 		return HttpResponse(filepath)
+
+def delete_file(request):
+	if request.method == 'POST':
+		path=request.POST.get("path",None)
+		status=Utility.upload_file_by_url(url=file_url,path=path)
+		return HttpResponse(status)
 
 def upload_downloadable(request):
 	if request.method == 'POST':
