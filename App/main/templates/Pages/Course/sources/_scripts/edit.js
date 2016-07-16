@@ -1,4 +1,3 @@
-
 $(".sources").on("click", ".card.--file", function(){
 	if(edit.editing) {
 		$source = $(this).parent();
@@ -25,7 +24,7 @@ $(".sources").on("click", ".card.--file", function(){
 				if(file_changed) {
 					upload_file(source_id);
 				} else {
-					file_to_upload.name = file_name;
+					file_to_upload.name = $("#filename").val();
 					file_to_upload.link = file_link;
 					upload_source(source_id);
 				}
@@ -39,6 +38,10 @@ edit.end = function() {
 	$(".sources .--card").each(function(index, el) {
 		$(this).replaceTag("<a>", true);
 	});
+
+	$(".sources .--card").each(function(index, el) {
+		$(this).attr("tip", "Нажмите, чтобы скачать");
+	});
 }
 
 edit.start = function() {
@@ -47,7 +50,7 @@ edit.start = function() {
 	});
 
 	$(".sources .--card").each(function(index, el) {
-		$(this).click();
+		$(this).attr("tip", "Нажмите, чтобы редактировать");
 	});
 
 	$(".sources .card").each(function(index, el) {
