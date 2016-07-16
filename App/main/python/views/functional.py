@@ -154,22 +154,24 @@ class Course_views():
 			size = request.POST["size"]
 			link = request.POST["link"]
 			course_id = request.POST["course_id"]
-			announcement_id = Course.objects.add_source(course_id=course_id, user=request.user, name=name, size=size, link=link)
-			return HttpResponse(announcement_id)
+			source_id = Course.objects.add_source(course_id=course_id, user=request.user, name=name, size=size, link=link)
+			return HttpResponse(source_id)
 
 	def edit_source(request):
 		if request.method == "POST":
-			#POST input
+			link = request.POST["link"]
+			name = request.POST["name"]
+			size = request.POST["size"]
 			source_id = request.POST["source_id"]
 			course_id = request.POST["course_id"]
-			announcement = Course.objects.edit_source(course_id=course_id, source_id=source_id, user=request.user)
+			source = Course.objects.edit_source(link=link, name=name, size=size, course_id=course_id, source_id=source_id, user=request.user)
 		return HttpResponse('ok')
 
 	def delete_source(request):
 		if request.method == "POST":
 			source_id = request.POST["source_id"]
 			course_id = request.POST["course_id"]
-			announcement = Course.objects.delete_source(course_id=course_id, source_id=source_id)
+			source = Course.objects.delete_source(course_id=course_id, source_id=source_id)
 		return HttpResponse('ok')
 
 	def add_section(request):
@@ -177,7 +179,7 @@ class Course_views():
 			section = request.POST["section"]
 			type = request.POST["type"]
 			course_id = request.POST["course_id"]
-			announcement_id = Course.objects.add_section(section=section,course_id=course_id, type=type)
+			section_id = Course.objects.add_section(section=section,course_id=course_id, type=type)
 			return HttpResponse('ok')
 
 	def edit_sections(request):
@@ -185,7 +187,7 @@ class Course_views():
 			sections = json.load(request.POST["sections"])
 			type = request.POST["type"]
 			course_id = request.POST["course_id"]
-			announcement_id = Course.objects.edit_sections(sections=sections,course_id=course_id, type=type)
+			section_id = Course.objects.edit_sections(sections=sections,course_id=course_id, type=type)
 			return HttpResponse('ok')
 
 	def add_announcement(request):
@@ -341,7 +343,7 @@ def upload_file_by_url(request):
 def delete_file(request):
 	if request.method == 'POST':
 		path=request.POST.get("path",None)
-		status=Utility.upload_file_by_url(url=file_url,path=path)
+		status=Utility.delete_file(path=path)
 		return HttpResponse(status)
 
 def upload_downloadable(request):

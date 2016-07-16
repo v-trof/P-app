@@ -3,7 +3,7 @@ $(".sources").on("click", ".card.--file", function(){
 	if(edit.editing) {
 		$source = $(this).parent();
 
-		var file_cahnged=false;
+		var file_changed=false;
 
 		popup.show('{% include "Pages/Course/sources/_popup_texts/add/exports.html" %}',
 		function() {
@@ -17,17 +17,17 @@ $(".sources").on("click", ".card.--file", function(){
 
 			file_to_upload.catcher = file_catcher.add($("#upload_file").parent());
 			$("#upload_file").change(function() {
-				file_cahnged=true;
+				file_changed=true;
 			});
 
 			$("#upload_source").click(function(event) {
 				console.log(source_id, full_link, file_link, file_name);
-				if(file_cahnged) {
-					upload_file(true, source_id);
+				if(file_changed) {
+					upload_file(source_id);
 				} else {
 					file_to_upload.name = file_name;
 					file_to_upload.link = file_link;
-					upload_source(true);
+					upload_source(source_id);
 				}
 			});
 		});

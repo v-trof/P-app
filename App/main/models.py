@@ -121,11 +121,11 @@ class Utility():
 		url='/media/'+custom_path+filename
 		return url
 
-	def upload_file(file,path):
+	def delete_file(path):
 		custom_path=path
 		path = 'main/files/media/'+path
 		if os.path.exists(path):
-			os.remove(path+file.name)
+			os.remove(path)
 			return 'ok'
 
 	def is_member(user,course_id):
@@ -281,12 +281,17 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		return len(data)
 
-	def edit_source(self, heading, text, course_id, announcement_id):
-		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
+	def edit_source(self,course_id,source_id,name,link,size,user=None):
+		with io.open('main/files/json/courses/' + str(course_id) + '/sources.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-		#edit source
-		data[announcement_id]={}
-		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
+		link='/media/courses/'+str(course_id)+'/sources/'+link
+		print("uss",link,data)
+		source_id=str(source_id)
+		if not link == data[source_id]["link"]:
+			Utility.delete_file(link=data[source_id]["link"])
+		else: size=data[source_id]["size"]
+		data[source_id]={"unseen_by":data[source_id]["unseen_by"],"name":name,"size":size,"link":link}
+		with io.open('main/files/json/courses/' + str(course_id) + '/sources.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return data
@@ -294,6 +299,7 @@ class CourseManager(models.Manager):
 	def delete_source(self, course_id, source_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/sources.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
+		Utility.delete_file(path=data[str(source_id)]["link"])
 		data.pop(str(source_id),None)
 		with io.open('main/files/json/courses/' + str(course_id) + '/sources.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
