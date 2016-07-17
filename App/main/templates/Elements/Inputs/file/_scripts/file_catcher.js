@@ -11,7 +11,8 @@ file_catcher.add = function($file_input) {
 	var container = {
 		button: $input_button,
 		value: $input_value,
-		text: $input_text
+		text: $input_text,
+		name: ""
 	};
 
 	$input_button.click(function(event) {
@@ -21,13 +22,16 @@ file_catcher.add = function($file_input) {
 	$input_value.change(function(event) {
 		container.files = event.target.files;
 		container.urls = []
-				
+		var file_name = $input_value.val().replace( "C:\\fakepath\\", '' );
+
 		for (var i = 0; i < container.files.length; i++) {
 			container.urls.push(
-				URL.createObjectURL(container.files[i]));
+				URL.createObjectURL(container.files[i])
+			);
+			container.name = file_name;
 		}
 
-		$input_text.text($input_value.val().replace( "C:\\fakepath\\", '' ));
+		$input_text.text(file_name);
 	});
 
 	return container;

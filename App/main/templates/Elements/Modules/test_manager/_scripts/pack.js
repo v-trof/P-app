@@ -9,6 +9,34 @@ Array.prototype.remove = function() {
     return this;
 };
 
+
+function upload_file(file_to_upload, task_index, index) {
+	var file_id = test_manager.upload_queue.length;
+	console.log("uplaodigng file ||| id:", file_id);
+	test_manager.upload_queue.push(file_id);
+
+	var form_data = new FormData();
+	form_data.append('file', file_to_upload);
+	form_data.append('path', 'courses/{{course.id}}/assets/{{type}}/');
+	form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+	$.ajax({
+		type:"POST",
+		url:"/func/upload/",
+		data: form_data,
+	    processData: false,
+	    contentType: false,
+		success:function(response) {
+			test_manager.packed_test.tasks[task_index][index].url=response;
+			test_manager.upload_queue.remove(file_id);
+
+			console.log("saved to:", task_index, index, 
+				test_manager.packed_test.tasks[task_index][index]);
+			console.log(response, "as", file_id);
+			console.log("removed", test_manager.upload_queue);
+		}
+	});
+}
+
 test_manager.pack = function() {
 	console.log("packing")
 	test_manager.packed_test = {
@@ -39,46 +67,19 @@ test_manager.pack = function() {
 
 					var src = $(this).attr('src');
 					var upload = false;
-					var upload_file;
 
 					//find file
 					for(var i=1;i<=assets.last_id;i++) {
 						if(typeof assets[i] != "undefined") {
 							if(assets[i].urls[0] == src) {
 								upload = true;
-								upload_file = assets[i].files;
+								file_to_upload = assets[i].files[0];
 							}
 						}
 					}
 
-					// console.log("file", upload);
-
 					if(upload) {
-
-						var file_id = test_manager.upload_queue.length;
-						console.log("uplaodigng file ||| id:", file_id);
-						test_manager.upload_queue.push(file_id);
-
-						var form_data = new FormData();
-						form_data.append('file', upload_file[0]);
-						form_data.append('path', 'courses/{{course.id}}/assets/{{type}}/');
-						form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-						$.ajax({
-							type:"POST",
-							url:"/func/upload/",
-							data: form_data,
-						    processData: false,
-						    contentType: false,
-							success:function(response) {
-								test_manager.packed_test.tasks[task_index][index].url=response;
-								test_manager.upload_queue.remove(file_id);
-
-								console.log("saved to:", task_index, index, 
-									test_manager.packed_test.tasks[task_index][index]);
-								console.log(response, "as", file_id);
-								console.log("removed", test_manager.upload_queue);
-							}
-						});
+						upload_file(file_to_upload, task_index, index);
 					}
 					
 				} else {
@@ -97,6 +98,13 @@ test_manager.pack = function() {
 					});
 				}
 				
+			});
+			$(this).find("a.--card").each(function(img_index, $element){
+				var file_id = $(this).attr("id");
+				var file_to_upload = generate.data.shared.assets[file_id].files[0];
+
+				console.log(file_id, file_to_upload);
+				upload_file(file_to_upload, task_index, index);
 			});
 		});
 

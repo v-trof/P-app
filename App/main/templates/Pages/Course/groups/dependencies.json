@@ -2,7 +2,7 @@
 	"elements": ["Modules/notification", "Modules/accordion",
 				 "Modules/popup","Modules/button_delete",
 				 "Modules/text_sort", "Modules/pull_put",
-				 "Modules/toggle_edit"],
+				 "Modules/toggle_edit", "Modules/replace"],
 	"scripts": [],
 	"styles": [],
 	"fixes": [],

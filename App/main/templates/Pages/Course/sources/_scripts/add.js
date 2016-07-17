@@ -5,6 +5,7 @@ function upload_source(source_id) {
 	var form_data = new FormData();
 	
 	if(source_id) {
+		console.log('ASADSAD',source_id)
 		form_data.append("source_id", source_id);
 		url = '/func/edit_source/';
 	} else {
@@ -19,6 +20,7 @@ function upload_source(source_id) {
 	form_data.append("name", file_to_upload.name);
 	form_data.append("link", file_to_upload.link);
 	form_data.append("size", file_to_upload.size);
+	console.log("file_link",file_to_upload);
 
 	$.ajax({
 		url: url,
@@ -31,7 +33,6 @@ function upload_source(source_id) {
 		notification.show("success", "Источник загружен");
 		$("sources>.--empty").remove();
 		popup.hide();
-		location.reload();
 	})
 	.fail(function() {
 		notification.show("error", "Произошла ошибка");
@@ -56,7 +57,7 @@ function upload_file(source_id) {
 		notification.show("success", "Файл загружен");
 		file_to_upload.link = file_link;
 		file_to_upload.name = $("#filename").val();
-		file_to_upload.size = Math.round(file_to_upload.catcher.files[0].size/1024/1024*100)/100+"МБ";
+		file_to_upload.size = Math.round(file_to_upload.catcher.files[0].size/1024/1024*100)/100+"Mb";
 		console.log("file", file_to_upload, "here");
 		upload_source(source_id);
 	})
