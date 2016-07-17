@@ -5,24 +5,26 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Регистрация</title>
 	<style> 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/../Pages/Account/_shared/footer/_styles/css/footer.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Elements/../Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
-		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
-		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
 		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Page_templates/central_box/_styles/css/central_box.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/../Pages/Account/_shared/modal/_styles/css/modal.css" %} 
 		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
 		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Page_templates/_styles/css/main.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Page_templates/central_box/_styles/css/central_box.css" %} 
+		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
+		{% include "Elements/card/_styles/css/link.css" %} 
+		{% include "Elements/../Pages/Account/_shared/modal/_styles/css/modal.css" %} 
+		{% include "Elements/../Pages/Account/_shared/footer/_styles/css/footer.css" %} 
+		{% include "Elements/../Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
 		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/Modules/test_manager/__popup_texts/__save/_styles/css/layout.css" %} 
+		{% include "Elements/../Elements/Modules/test_manager/__popup_texts/__save/_styles/css/layout.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Page_templates/_styles/css/main.css" %} 
 	</style>
 </head>
 <body>
@@ -32,12 +34,12 @@
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
 		{% include "Elements/Modules/verifier/_scripts/verifier.js" %} 
-		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
+		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
 		{% include "Pages/Account/registration/_scripts/registration.js" %} 
-		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
 		{% include "Pages/Account/registration/_scripts/verify_inputs.js" %} 
+		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
 	</script>
 </body>
 </html>

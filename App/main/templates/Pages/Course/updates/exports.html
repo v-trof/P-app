@@ -5,24 +5,25 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Оповещения</title>
 	<style> 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
-		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/card/user/_styles/css/user.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Pages/Course/updates/_extensions/request/_styles/css/layout.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
 		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Pages/Course/updates/_extensions/request/_styles/css/layout.css" %} 
+		{% include "Elements/card/user/_styles/css/user.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
+		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
+		{% include "Elements/card/_styles/css/link.css" %} 
 		{% include "Elements/button/flat/_styles/css/flat.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
 		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/Modules/test_manager/__popup_texts/__save/_styles/css/layout.css" %} 
 		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
 		{% include "Page_templates/_styles/css/main.css" %} 
 	</style>
 </head>
@@ -33,13 +34,13 @@
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
-		{% include "Elements/Layout/header/_scripts/header.js" %} 
-		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Elements/Modules/notification/_scripts/notification.js" %} 
 		{% include "Pages/Course/updates/requested/_scripts/request.js" %} 
 		{% include "Pages/Course/updates/_extensions/request/_scripts/request.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
+		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
 	</script>
 </body>
 </html>

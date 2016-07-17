@@ -101,10 +101,13 @@ test_manager.pack = function() {
 			});
 			$(this).find("a.--card").each(function(img_index, $element){
 				var file_id = $(this).attr("id");
-				var file_to_upload = generate.data.shared.assets[file_id].files[0];
+				if(typeof generate.data.shared.assets[file_id] !== "undefined") {
+					var file_to_upload = generate.data.shared.assets[file_id].files[0];
 
-				console.log(file_id, file_to_upload);
-				upload_file(file_to_upload, task_index, index);
+					console.log(file_id, file_to_upload);
+
+					upload_file(file_to_upload, task_index, index);
+				}
 			});
 		});
 

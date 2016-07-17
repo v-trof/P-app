@@ -15,12 +15,19 @@ generate.data["question--file"] = {
 			var file_template = $('{% include "Elements/card/file/exports.html" %}');
 
 			//turning link off
-			file_template.removeAttr('href');
-			file_template.removeAttr('download');
-
-			//d-disabled
+			if(typeof editor !== "undefined") {
+				file_template.removeAttr('href');
+				file_template.removeAttr('download');
+				file_template.find(".card").removeAttr('tip');
+				//d-disabled
+				file_template.attr("d-href", value.url);
+			} else {
+				file_template.attr("href", value.url);
+			}
+			
+		
 			file_template.find(".__name").text(value.name);
-			file_template.attr("d-href", value.url);
+			
 			file_template.find(".__size").text(value.size);
 			file_template.attr("id", value.id);
 			
