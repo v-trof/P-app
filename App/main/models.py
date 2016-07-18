@@ -225,14 +225,10 @@ class CourseManager(models.Manager):
 			data["groups"]["Нераспределенные"] = {}
 			data["pending_users"]["Нераспределенные"] = []
 			data["users"] = [creator.id]
-			data["tests"] = {}
-			data["tests"]["published"]={}
-			data["tests"]["published"]["Нераспределенные"] = []
-			data["tests"]["unpublished"] = []
-			data["materials"] = {}
-			data["materials"]["published"]={}
-			data["materials"]["published"]["Нераспределенные"] = []
-			data["materials"]["unpublished"] = []
+			data["sections"]={}
+			data["sections"]["unpublished"]=[]
+			data["sections"]["published"]={}
+			data["sections"]["published"]["Нераспределенные"]=[]
 			data["administrators"] = [creator.id]
 			data["teachers"] = {}
 			data["teachers"][creator.id] = {}
@@ -315,18 +311,18 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		return data
 
-	def add_section(self, course_id, section, type):
+	def add_section(self, course_id, section):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
-			data[type]["published"][section]=[]
+			data["published"][section]=[]
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w+', encoding='utf8') as data_file:
 			data_file.write(json.dumps(data, ensure_ascii=False))
 		return 0
 
-	def edit_sections(self, course_id, sections, type):
+	def edit_sections(self, course_id, sections):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
-			data[type]["published"]=sections
+			data["sections"]=sections
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w+', encoding='utf8') as data_file:
 			data_file.write(json.dumps(data, ensure_ascii=False))
 		return 0
@@ -540,9 +536,14 @@ class CourseManager(models.Manager):
 		test_list=[]
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data=json.load(data_file)
+		test_ids=[]
+		for section,value in data["sections"]["published"].items():
+			for element in value:
+				if element["type"] == "test":
+					test_ids.append(element["id"])
 		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/*.json'):
 			it = it + 1
-			if str(it) in data["tests"]["published"]:
+			if str(it) in test_ids:
 				with io.open(test, 'r', encoding='utf8') as data_file:
 					test_data = json.load(data_file)
 					test_preview = {}
@@ -557,9 +558,14 @@ class CourseManager(models.Manager):
 		material_list=[]
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data=json.load(data_file)
+		material_ids=[]
+		for section,value in data["sections"]["published"].items():
+			for element in value:
+				if element["type"] == "material":
+					material_ids.append(element["id"])
 		for material in glob.glob('main/files/json/courses/' + str(course.id) + '/materials/*.json'):
 			it = it + 1
-			if str(it) in data["materials"]["published"]:
+			if str(it) in material_ids:
 				with io.open(material, 'r', encoding='utf8') as data_file:
 					material_data = json.load(data_file)
 					material_preview = {}
@@ -811,52 +817,59 @@ class CourseManager(models.Manager):
 				teachers.append(User.objects.get(id=teacher_id))
 		return teachers
 		
-	def get_sections(self, course_id, material=False):
+	def get_sections(self, course_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
 			course_sections = []
-			if material:
-				for section in data["materials"]["published"].keys():
-					course_sections.append(section)
-			else:
-				for section in data["tests"]["published"].keys():
-					course_sections.append(section)
+			for section in data["sections"]["published"].keys():
+				course_sections.append(section)
 		return Utility.sort_by_alphabet(course_sections)
 
 	def get_tests(self, course_id):
 		tests={}
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
-			tests=data["tests"]["published"]
-		for section_name,value in tests.items():
+			tests=data["sections"]["published"]
+		for section_name,values in tests.items():
 			tests[section_name]=[]
-			for test_id in list(value):
-				with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
-					test_data=json.load(info_file)
-					tests[section_name].append({"title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
-		return tests
-
-	def get_tests_and_materials(self,course_id):
-		context={}
-		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
-			data = json.load(data_file)
-			tests=data["tests"]["published"]
-			materials=data["materials"]["published"]
-		test_sections=list(tests.keys())
-		material_sections=list(materials.keys())
-		sections=list(set(material_sections + test_sections))
-		for section in sections:
-			context[section]=[]
-			if section in test_sections:
-				for test_id in list(tests[section]):
+			for element in list(value):
+				if element["type"]=="test":
 					with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 						test_data=json.load(info_file)
-						context[section].append({"type":"test","title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
-			if section in material_sections:
-				for material_id in list(materials[section]):
+						tests[section_name].append({"title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
+		return tests
+
+	def get_sections(self,course_id):
+		context={}
+		context["published"]={}
+		context["unpublished"]=[]
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+		for section,elements in data["sections"]["published"].items():
+			context["published"][section]=[]
+			for element in elements:
+				if element["type"]=="test":
+					test_id=element["id"]
+					with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+						test_data=json.load(info_file)
+						context["published"][section].append({"type":"test","title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
+				else:
+					material_id=element["id"]
 					with io.open('main/files/json/courses/'+course_id+'/materials/'+material_id+'.json', 'r', encoding='utf8') as info_file:
 						material_data=json.load(info_file)
-						context[section].append({"type":"material","title":material_data["title"],"id":material_id, "link":'?course_id='+course_id+"&material_id="+material_id})
+						context["published"][section].append({"type":"material","title":material_data["title"],"id":material_id, "link":'?course_id='+course_id+"&material_id="+material_id})
+		for elements in data["sections"]["unpublished"]:
+			for element in elements:
+				if element["type"]=="test":
+					test_id=element["id"]
+					with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+						test_data=json.load(info_file)
+						context["unpublished"].append({"type":"test","title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
+				else:
+					material_id=element["id"]
+					with io.open('main/files/json/courses/'+course_id+'/materials/'+material_id+'.json', 'r', encoding='utf8') as info_file:
+						material_data=json.load(info_file)
+						context["unpublished"].append({"type":"material","title":material_data["title"],"id":material_id, "link":'?course_id='+course_id+"&material_id="+material_id})
 		return context
 
 	def load_course_requests(self,course_id):
@@ -926,11 +939,12 @@ class CourseManager(models.Manager):
 					course_data["new_sources"]+=1
 		course_data["tests_number"]=0
 		course_data["materials_number"]=0
-
-		for section,tests in data["tests"]["published"].items():
-			course_data["tests_number"]+=len(tests)
-		for section,materials in data["materials"]["published"].items():
-			course_data["materials_number"]+=len(materials)
+		for section,elements in data["sections"]["published"].items():
+			for element in elements:
+				if element["type"]=="test":
+					course_data["tests_number"]+=1
+				else:
+					course_data["materials_number"]+=1
 		return course_data
 
 	def load_results(self,course_id,user_id):
@@ -1379,10 +1393,14 @@ class Material():
 	def create(course_id):
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
 			course_info = json.load(data_file)
-			material_id=0
-			for section,materials in course_info['materials']['published'].items():
-				material_id+=len(materials)
-			material_id+=len(course_info['materials']['unpublished'])+1
+			material_id=1
+			for section,elements in course_info['sections']['published'].items():
+				for element in elements:
+					if element["type"]=="material":
+						material_id+=1
+			for unpublished in course_info['sections']['unpublished']:
+				if unpublished["type"]=="material":
+					material_id+=1
 		course = {"id": course_id}
 		material = {"id": str(material_id), "loaded": 0}
 		context = {"material": material, "course": course}
@@ -1393,12 +1411,19 @@ class Material():
 		os.remove('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json')
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
-			for section,materials in course_info['materials']['published'].items():
-				if material_id in materials:
-					del(materials[materials.index(material_id)])
 
-			if material_id in course_info['materials']['unpublished']:
-				course_info['materials']['unpublished'].remove(material_id)
+		sections=list(course_info['sections']['published'].keys())
+
+		for section in sections:
+			it=0
+			for element in section:
+				if material_id == course_info['sections']['published'][section][it]["id"] and course_info['sections']['published'][section][it]["type"]=="material":
+					del(course_info['sections']['published'][section][it])
+				it+=1
+
+		for unpublished in course_info['sections']['unpublished']:
+			if material_id == unpublished["id"] and unpublished["type"]=="material":
+				course_info['sections']['unpublished'].remove(unpublished)
 
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -1433,9 +1458,12 @@ class Material():
 			material_file.write(json.dumps(json_file, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
-		if not material_id in course_info['materials']['unpublished']:
-			course_info['materials']['unpublished'].append(material_id)
-		material_id=str(len(course_info['materials']['published'])+len(course_info['materials']['unpublished']) + 1)
+		material_unpublished=False
+		for unpublished in course_info['sections']['unpublished']:
+			if material_id == unpublished["id"] and unpublished["type"]=="material":
+				material_unpublished=True
+		if not material_unpublished:
+			course_info['sections']['unpublished'].append({"id":material_id,"type":"material"})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		return 0
@@ -1448,7 +1476,7 @@ class Material():
 					"id": material_id,
 					"loaded": 1,
 					"json": json.load(json_file),
-					"published": not material_id in course_info["materials"]["unpublished"]
+					"published": Material.is_published(material_id=material_id,course_id=course_id)
 				}
 		context={}
 		context["material"]=material
@@ -1471,12 +1499,12 @@ class Material():
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
-		if material_id in course_info['materials']['unpublished']:
-			course_info['materials']['unpublished'].remove(material_id)
-			if not section in course_info['materials']['published'].keys():
-				course_info['materials']['published'][section]=[]
-			course_info['materials']['published'][section].append(material_id)
-
+		for unpublished in course_info['sections']['unpublished']:
+			if material_id == unpublished["id"] and unpublished["type"]=="material":
+				course_info['sections']['unpublished'].remove(unpublished)
+		if not section in course_info['sections']['published'].keys():
+			course_info['sections']['published'][section]=[]
+		course_info['sections']['published'][section].append({"id":material_id,"type":"material"})
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 
@@ -1487,13 +1515,16 @@ class Material():
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
-		sections=list(course_info['materials']['published'].keys())
+		sections=list(course_info['sections']['published'].keys())
 
 		for section in sections:
-			if material_id in course_info['materials']['published'][section]:
-				course_info['materials']['published'][section].remove(material_id)
+			it=0
+			for element in section:
+				if material_id == course_info['sections']['published'][section][it]["id"] and course_info['sections']['published'][section][it]["type"]=="material":
+					del(course_info['sections']['published'][section][it])
+				it+=1
 
-		course_info['materials']['unpublished'].append(material_id)
+		course_info['sections']['unpublished'].append({"id":material_id, "type":"material"})
 
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -1512,17 +1543,28 @@ class Material():
 	def is_published(material_id,course_id):
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
-		return not material_id in course_info["materials"]["unpublished"]
+
+		sections=list(course_info['sections']['published'].keys())
+
+		for section in sections:
+			for element in course_info['sections']['published'][section]:
+				if material_id == element["id"] and element["type"]=="material":
+					return True
+		return False
 
 class Test():
 
 	def create(course_id):
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
 			course_info = json.load(data_file)
-			test_id=0
-			for section,tests in course_info['tests']['published'].items():
-				test_id+=len(tests)
-			test_id+=len(course_info['tests']['unpublished'])+1
+			test_id=1
+			for section,elements in course_info['sections']['published'].items():
+				for element in elements:
+					if elements["type"]=="test":
+						test_id+=1
+			for unpublished in course_info['sections']['unpublished']:
+				if unpublished["type"]=="test":
+					test_id+=1
 		course = {"id": course_id}
 		test = {"id": str(test_id), "loaded": 0}
 		context = {"test": test, "course": course}
@@ -1534,11 +1576,19 @@ class Test():
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
-			if test_id in course_info['tests']['published']:
-				course_info['tests']['published'].remove(test_id)
+		sections=list(course_info['sections']['published'].keys())
 
-			if test_id in course_info['tests']['unpublished']:
-				course_info['tests']['unpublished'].remove(test_id)
+		for section in sections:
+			it=0
+			for element in section:
+				if test_id == course_info['sections']['published'][section][it]["id"] and course_info['sections']['published'][section][it]["type"]=="test":
+					del(course_info['sections']['published'][section][it])
+				it+=1
+
+		for unpublished in course_info['sections']['unpublished']:
+			if test_id == unpublished["id"] and unpublished["type"]=="test":
+				course_info['sections']['unpublished'].remove(unpublished)
+
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		for assignment_path in glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*.json'):
@@ -1574,7 +1624,7 @@ class Test():
 				assignment_file.write(json.dumps(assignments_map, ensure_ascii=False))
 		return 0
 
-	def save(json_file,course_id, test_id,user):
+	def save(json_file,course_id,test_id,user):
 		json_file=json.loads(json_file)
 		json_file["allowed_mistakes"]=[]
 		json_file["creator"]=user.id
@@ -1589,9 +1639,12 @@ class Test():
 			test_file.write(json.dumps(json_file, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
-		if not test_id in course_info['tests']['unpublished']:
-			course_info['tests']['unpublished'].append(test_id)
-		test_id=str(len(course_info['tests']['published'])+len(course_info['tests']['unpublished']) + 1)
+		test_unpublished=False
+		for unpublished in course_info['sections']['unpublished']:
+			if test_id == unpublished["id"] and unpublished["type"]=="test":
+				test_unpublished=True
+		if not test_unpublished:
+			course_info['sections']['unpublished'].append({"id":test_id,"type":"test"})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		return 0
@@ -1604,7 +1657,7 @@ class Test():
 					"id": test_id,
 					"loaded": 1,
 					"json": json.load(json_file),
-					"published": not test_id in course_info["tests"]["unpublished"]
+					"published": Test.is_published(test_id=test_id,course_id=course_id)
 				}
 		return test
 		
@@ -1613,24 +1666,25 @@ class Test():
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
-		if test_id in course_info['tests']['unpublished']:
-			course_info['tests']['unpublished'].remove(test_id)
-			if not section in course_info['tests']['published'].keys():
-				course_info['tests']['published'][section]=[]
-			course_info['tests']['published'][section].append(test_id)
-			with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
-				info_file.write(json.dumps(course_info, ensure_ascii=False))
+		for unpublished in course_info['sections']['unpublished']:
+			if test_id == unpublished["id"] and unpublished["type"]=="test":
+				course_info['sections']['unpublished'].remove(unpublished)
+		if not section in course_info['sections']['published'].keys():
+			course_info['sections']['published'][section]=[]
+		course_info['sections']['published'][section].append({"id":test_id,"type":"test"})
+		with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
+			info_file.write(json.dumps(course_info, ensure_ascii=False))
 
-			with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
-				test_data=json.load(info_file)
+		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+			test_data=json.load(info_file)
 
-			test_data["allowed_mistakes"]=allowed_mistakes
+		test_data["allowed_mistakes"]=allowed_mistakes
 
-			for key in mark_setting:
-				test_data["mark_setting"][key]=mark_setting[key]
+		for key in mark_setting:
+			test_data["mark_setting"][key]=mark_setting[key]
 
-			with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'w', encoding='utf8') as info_file:
-				info_file.write(json.dumps(test_data, ensure_ascii=False))
+		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'w', encoding='utf8') as info_file:
+			info_file.write(json.dumps(test_data, ensure_ascii=False))
 
 		return 0
 
@@ -1639,13 +1693,16 @@ class Test():
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
-		sections=list(course_info['tests']['published'].keys())
+		sections=list(course_info['sections']['published'].keys())
 
 		for section in sections:
-			if test_id in course_info['tests']['published'][section]:
-				course_info['tests']['published'][section].remove(test_id)
+			it=0
+			for element in section:
+				if test_id == course_info['sections']['published'][section][it]["id"] and course_info['sections']['published'][section][it]["type"]=="test":
+					del(course_info['sections']['published'][section][it])
+				it+=1
 
-		course_info['tests']['unpublished'].append(test_id)
+		course_info['sections']['unpublished'].append({"id":test_id, "type":"test"})
 
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -1654,7 +1711,14 @@ class Test():
 	def is_published(test_id,course_id):
 		with io.open('main/files/json/courses/'+course_id+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
-		return not test_id in course_info["tests"]["unpublished"]
+
+		sections=list(course_info['sections']['published'].keys())
+
+		for section in sections:
+			for element in course_info['sections']['published'][section]:
+				if test_id == element["id"] and element["type"]=="test":
+					return True
+		return False
 
 	def build_question(item):
 		value={}

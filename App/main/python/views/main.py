@@ -95,7 +95,7 @@ class Course_group():
 		else: is_participant=False
 		sources=Course.objects.load_sources(course_id=course.id, user=request.user)
 		announcements=Course.objects.load_announcements(course_id=course.id, user=request.user)
-		sections=Course.objects.get_tests_and_materials(course_id=str(course.id))
+		sections=Course.objects.get_sections(course_id=str(course.id))
 		return render(request, 'Pages/Course/main/exports.html', {"sections":sections, "sources":sources, "is_participant": is_participant, "announcements": announcements, "course": course, "assignments": Course.objects.get_assignments(user=request.user, course=course),
 													 "breadcrumbs": [{
 														 "href": "#",
@@ -115,7 +115,16 @@ class Course_group():
 		context["sources"]=Course.objects.load_sources(course_id=course_id, user=request.user)
 		context["course"]=Course.objects.get(id=course_id)
 		context["user_status"]=Course.objects.load_user_status(user=request.user, course=course)
+		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Источники" }]
 		return render(request, 'Pages/Course/sources/exports.html', context)
+
+	def sections(request, course_id):
+		course = Course.objects.get(id=course_id)
+		context={}
+		context["course"]=course
+		context["sections"]=Course.objects.get_sections(course_id=str(course.id))
+		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Секции" }]
+		return render(request, 'Pages/Course/sections/exports.html', context)
 
 	def requests(request, course_id):
 		pending_users=Course.objects.load_course_requests(course_id=course_id)

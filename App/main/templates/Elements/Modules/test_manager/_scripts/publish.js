@@ -66,7 +66,9 @@ test_manager.publish = function() {
 					formData.append("section", $("#new_section_name").val());
 				} else {
 					console.log("o|", $('#course_section').val())
-					formData.append("section", $('#course_section').val());
+					if ($('#course_section').val() != "")
+						formData.append("section", $('#course_section').val());
+					else formData.append("section", "Нераспределенные");
 				}
 
 			
@@ -115,7 +117,9 @@ test_manager.publish_material = function() {
 				formData.append("section", $("#new_section_name").val());
 			} else {
 				console.log("o|", $('#course_section').val())
-				formData.append("section", $('#course_section').val());
+				if ($('#course_section').val() != "")
+					formData.append("section", $('#course_section').val());
+				else formData.append("section", "Нераспределенные");
 			}
 				
 			formData.append('csrfmiddlewaretoken', '{{csrf_token}}');

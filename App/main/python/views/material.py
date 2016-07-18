@@ -36,7 +36,7 @@ def create(request):
 			"href": "#",
 			"link": "Новый материал"
 		}]
-	context["sections"] = Course.objects.get_sections(course_id=course_id,material=True)
+	context["sections"] = Course.objects.get_sections(course_id=course_id)
 	context["type"]= "material"
 	return render(request, 'Pages/Material/editor/exports.html', context)
 
