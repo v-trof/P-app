@@ -817,7 +817,7 @@ class CourseManager(models.Manager):
 				teachers.append(User.objects.get(id=teacher_id))
 		return teachers
 		
-	def get_sections(self, course_id):
+	def get_sections_list(self, course_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
 			course_sections = []
@@ -858,18 +858,17 @@ class CourseManager(models.Manager):
 					with io.open('main/files/json/courses/'+course_id+'/materials/'+material_id+'.json', 'r', encoding='utf8') as info_file:
 						material_data=json.load(info_file)
 						context["published"][section].append({"type":"material","title":material_data["title"],"id":material_id, "link":'?course_id='+course_id+"&material_id="+material_id})
-		for elements in data["sections"]["unpublished"]:
-			for element in elements:
-				if element["type"]=="test":
-					test_id=element["id"]
-					with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
-						test_data=json.load(info_file)
-						context["unpublished"].append({"type":"test","title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
-				else:
-					material_id=element["id"]
-					with io.open('main/files/json/courses/'+course_id+'/materials/'+material_id+'.json', 'r', encoding='utf8') as info_file:
-						material_data=json.load(info_file)
-						context["unpublished"].append({"type":"material","title":material_data["title"],"id":material_id, "link":'?course_id='+course_id+"&material_id="+material_id})
+		for element in data["sections"]["unpublished"]:
+			if element["type"]=="test":
+				test_id=element["id"]
+				with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+					test_data=json.load(info_file)
+					context["unpublished"].append({"type":"test","title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
+			else:
+				material_id=element["id"]
+				with io.open('main/files/json/courses/'+course_id+'/materials/'+material_id+'.json', 'r', encoding='utf8') as info_file:
+					material_data=json.load(info_file)
+					context["unpublished"].append({"type":"material","title":material_data["title"],"id":material_id, "link":'?course_id='+course_id+"&material_id="+material_id})
 		return context
 
 	def load_course_requests(self,course_id):
@@ -1489,7 +1488,7 @@ class Material():
 				"href": "#",
 				"link": material["json"]["title"]
 			}]
-		context["sections"] = Course.objects.get_sections(course_id=course_id)
+		context["sections"] = Course.objects.get_sections_list(course_id=course_id)
 		context["type"]= "material"
 		context["read"]= True
 		return context
