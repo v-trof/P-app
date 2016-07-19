@@ -823,7 +823,7 @@ class CourseManager(models.Manager):
 			course_sections = []
 			for section in data["sections"]["published"].keys():
 				course_sections.append(section)
-		return Utility.sort_by_alphabet(course_sections)
+		return course_sections
 
 	def get_tests(self, course_id):
 		tests={}
