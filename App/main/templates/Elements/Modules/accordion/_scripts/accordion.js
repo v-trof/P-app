@@ -26,8 +26,6 @@ var accordion = (function() {
 			var $toggle = $(toggle_template);
 			$element.prepend($toggle);
 
-			console.log($indicator.height());
-
 			$toggle.css("top", $indicator.height()/2);
 
 			$toggle.click(function(event) {

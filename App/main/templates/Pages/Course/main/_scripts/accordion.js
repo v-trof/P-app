@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$(".main section:not(.linkbox)").each(function(index, el) {
+	$(".assignments, .tests-materials>section").each(function(index, el) {
 		accordion.add($(this), "h3");
 	});
 });

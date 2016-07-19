@@ -1,7 +1,8 @@
 {% if sections.published %}
-	{% for section,value in sections.published.items %}
+	<section class="tests-materials">
+	{% for section, value in sections.published.items %}
 	{% if value|length > 0 %}
-		<section>
+		<section class="course-part">
 			<h3>{{section}}</h3>
 			{% for element in value %}
 				{% if element.type == 'test' %}
@@ -13,4 +14,5 @@
 		</section>
 	{% endif %}
 	{% endfor %}
+	</section>
 {% endif %}

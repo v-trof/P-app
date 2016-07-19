@@ -42,8 +42,6 @@ pull_put.ui = (function() {
 				actions = []
 			}
 
-			pull_put.ui.proto_element = $element.clone();
-
 			if(card) {
 				$ui.__content.addClass('card');
 			} else {
@@ -71,8 +69,10 @@ pull_put.ui = (function() {
 			}
 
 			if(actions.indexOf("save")>-1) {
+				pull_put.ui.proto_element = $element.clone();
 				$ui.find(".__actions button.--save").parent().show();
 			} else {
+				pull_put.ui.proto_element = $element;
 				$ui.find(".__actions button.--save").parent().hide();
 			}
 
@@ -111,8 +111,9 @@ $(document).ready(function() {
 
 		//restoring defaut element
 		pull_put.ui.element = pull_put.ui.proto_element;
-		
-		generate.let_editing(pull_put.ui.element);
+		if(typeof generate != "undefined") {
+			generate.let_editing(pull_put.ui.element);
+		}
 
 		pull_put.puller.cancel();
 	});

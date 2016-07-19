@@ -64,6 +64,12 @@ def get(path):
 
 
 def add(page_dependencies, dependencies):
+	for element in dependencies["elements"]:
+		if element.startswith("Modules"):
+			if element in page_dependencies["priority"]:
+				page_dependencies["priority"][element] += 1
+			else:
+				page_dependencies["priority"][element] = 1
 	page_dependencies["elements"] |= dependencies["elements"]
 	page_dependencies["scripts"]  |= dependencies["scripts"]
 	page_dependencies["styles"]   |= dependencies["styles"]

@@ -29,7 +29,7 @@ edit.end = function() {
 	//enabling links
 	$(".students .--card").each(function(index, el) {
 		$(this).attr('style', '');
-		$(this).replaceTag("<a>", true);
+		$(this).replaceTag("a", true);
 	});
 
 
@@ -77,7 +77,7 @@ edit.start = function() {
 		
 	//disabling links
 	$(".students .--card").each(function(index, el) {
-		$(this).replaceTag("<div>", true);
+		$(this).replaceTag("div", true);
 	});
 	$(".students .--card").each(function() {
 		pull_put.puller.add(

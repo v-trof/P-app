@@ -9,7 +9,8 @@ var edit = (function(exports) {
 })();
 
 $(document).ready(function() {
-	$linkbox = $(".linkbox");
+	$linkbox = $(".linkbox").last();
+
 	$linkbox.append('<a class="--card">'
 		+ '<button class="--flat" id="edit_toggle">Редактировать'
 		+ '</button></a>');

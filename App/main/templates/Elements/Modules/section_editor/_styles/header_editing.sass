@@ -1,0 +1,11 @@
+@import "../../../../sass_vars/main.sass"
+
+h1, h2, h3, h4, h5, h6
+	&.--editable
+		display: inline-block
+		min-width: 3rem
+		border-bottom: $border--s dotted transparent
+	&.--editing
+		border-bottom-color: $font__color--grey
+		&:focus, &:hover
+			border-bottom-color: $font__color--accent

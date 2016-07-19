@@ -3,7 +3,7 @@
 edit.end = function() {
 	$(".--button-delete").remove();
 	$(".sources .--card").each(function(index, el) {
-		$(this).replaceTag("<a>", true);
+		$(this).replaceTag("a", true);
 	});
 
 	$(".sources .--card").each(function(index, el) {
@@ -13,7 +13,7 @@ edit.end = function() {
 
 edit.start = function() {
 	$(".sources .--card").each(function(index, el) {
-		$(this).replaceTag("<div>", true);
+		$(this).replaceTag("div", true);
 	});
 
 	$(".sources .--card").each(function(index, el) {

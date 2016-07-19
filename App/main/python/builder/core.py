@@ -11,7 +11,7 @@ def build_page(page_name):
 	page_path = path["page"] + page_name
 
 	page_dependencies = dependencies.get(page_path)
-
+	page_dependencies["priority"] = {}
 
 	if not "template" in page_dependencies:
 		print("READ FAILED:", page_name)
