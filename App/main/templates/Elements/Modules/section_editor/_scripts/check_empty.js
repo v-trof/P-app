@@ -1,6 +1,4 @@
 section_editor.check_empty = function($section) {
-
-	console.log($section);
 	//all
 	if($section === '_all') {
 		section_editor.$parent.find(section_editor.section_selector)
@@ -8,6 +6,7 @@ section_editor.check_empty = function($section) {
 			section_editor.check_empty($(this));
 		});
 		section_editor.move_unordered();
+		return false;
 	}
 
 	//one

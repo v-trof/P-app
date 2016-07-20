@@ -39,9 +39,9 @@ section_editor.start_section_editing = function($section) {
 		pull_put.put_zone.add($(this), function(event, $this, $put) {
 			$this.after($put)
 			pull_put.reset()
-		}, function() {
+		}, function($put_zone) {
 			section_editor.check_empty('_all')
-			section_editor._put_callback()
+			section_editor._put_callback($put_zone)
 		})
 	})
 }

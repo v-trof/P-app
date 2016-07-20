@@ -6,6 +6,5 @@ section_editor.move_unordered = function() {
 		if(section_editor.$unordered.children('.--empty').length > 0 ) {
 			section_editor.$parent.append(section_editor.$unordered)
 		}
-		return false
 	}
 }

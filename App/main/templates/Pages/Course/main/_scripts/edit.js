@@ -23,9 +23,6 @@ $(document).ready(function() {
 			});
 		},
 		unordered_heading: unordered_heading,
-		_save_callback: send_changes,
-		pull: {
-			actions: []
-		}
+		_save_callback: send_changes
 	})
 });

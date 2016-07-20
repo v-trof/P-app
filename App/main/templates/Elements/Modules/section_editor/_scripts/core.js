@@ -81,7 +81,7 @@ section_editor.init = function(arguments) {
 	}
 
 	//set edit_start
-	if( ! defined(arguments.order)) {
+	if( ! defined(arguments.edit_start)) {
 		section_editor.edit_start = function(){}
 	} else {
 		section_editor.edit_start = arguments.edit_start
@@ -89,7 +89,7 @@ section_editor.init = function(arguments) {
 
 
 	//set edit_end
-	if( ! defined(arguments.order)) {
+	if( ! defined(arguments.edit_end)) {
 		section_editor.edit_end = function(){}
 	} else {
 		section_editor.edit_end = arguments.edit_end
@@ -97,7 +97,7 @@ section_editor.init = function(arguments) {
 	
 
 	//set _save_callback
-	if( ! defined(arguments.order)) {
+	if( ! defined(arguments._save_callback)) {
 		section_editor._save_callback = function(){}
 	} else {
 		section_editor._save_callback = arguments._save_callback
@@ -105,7 +105,7 @@ section_editor.init = function(arguments) {
 
 
 	//set _put_callback
-	if( ! defined(arguments.order)) {
+	if( ! defined(arguments._put_callback)) {
 		section_editor._put_callback = function(){}
 	} else {
 		section_editor._put_callback = arguments._put_callback
@@ -124,21 +124,29 @@ section_editor.init = function(arguments) {
 	}
 
 	//find unordered
-	if(defined(arguments.unordered_finder)) {
-		section_editor.$unordered = arguments.unordered_finder()
-	}
+	section_editor.$parent.find(section_editor.section_selector)
+	.each(function(index, el) {
+		if($(this).find(section_editor.heading_selector)
+			.text() === unordered_heading) {
+			section_editor.$unordered = $(this)
 
-	if( ! defined(section_editor.$unordered)) {
-		section_editor.$unordered = section_editor.add_section()
+			section_editor.$parent.prepend(section_editor.$unoredered);
+		}
+	});
 
-		section_editor.$unordered.find(section_editor.heading_selector)
-			.text(arguments.unordered_heading)
+	setTimeout(function(){
+		if(!defined(section_editor.$unordered)) {
+			section_editor.$unordered = section_editor.add_section()
 
-		section_editor.end_section_editing(section_editor.$unordered)
-	} else {
-		section_editor.$parent.prepend($unordered)
-	}
+			section_editor.$unordered.find(section_editor.heading_selector)
+				.text(arguments.unordered_heading)
 
+			section_editor.end_section_editing(section_editor.$unordered)
+			
+		}
+
+	}, 100)
+	
 
 	//finish startup
 	section_editor.$add_button = $('<a class="--card">'
