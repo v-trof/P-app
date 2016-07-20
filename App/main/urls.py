@@ -104,7 +104,7 @@ course_patterns = [
     url(r'^(?P<course_id>[0-9]+)/$', main.Course_group.main, name="course"),
     url(r'^(?P<course_id>[0-9]+)/updates/$', main.Course_group.updates, name="updates"),
     url(r'^(?P<course_id>[0-9]+)/sources/$', main.Course_group.sources, name='sources'),
-    url(r'^(?P<course_id>[0-9]+)/sections/$', main.Course_group.sections, name='sections'),
+    url(r'^(?P<course_id>[0-9]+)/manage/$', main.Course_group.manage, name='manage'),
 ]
 
 urlpatterns = [

@@ -118,13 +118,13 @@ class Course_group():
 		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Источники" }]
 		return render(request, 'Pages/Course/sources/exports.html', context)
 
-	def sections(request, course_id):
+	def manage(request, course_id):
 		course = Course.objects.get(id=course_id)
 		context={}
 		context["course"]=course
 		context["sections"]=Course.objects.get_sections(course_id=str(course.id))
 		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Секции" }]
-		return render(request, 'Pages/Course/sections/exports.html', context)
+		return render(request, 'Pages/Course/manage/exports.html', context)
 
 	def requests(request, course_id):
 		pending_users=Course.objects.load_course_requests(course_id=course_id)

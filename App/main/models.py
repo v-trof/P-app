@@ -750,17 +750,21 @@ class CourseManager(models.Manager):
 						test=task["link"].split('&')[1].split('=')[1]
 						if not test in data[assignment_id]["done"]["tests"] and not test in data[assignment_id]["in_process"]["tests"] and not test in data[assignment_id]["in_process"]["unfinished_tests"]:
 							data[assignment_id]["in_process"]["tests"].append(test)
-					it=0
-					#for traditional in old_assignment["content"]["traditionals"]:
-					#	if not traditional in assignment["content"]["traditionals"]:
-					#		del(data[assignment_id]["traditionals"][data[assignment_id]["traditionals"].index(it)])
-					#	it+=1
-					#for traditional in assignment["content"]["traditionals"]:
-					#	if not traditional in old_assignment["content"]["traditionals"]:
-					#it = 0
-					#for task in assignment["content"]["traditionals"]:
-					#	it += 1
-					#	assignment_map["traditionals"].append(it)
+					it=1
+					equals=[]
+					for traditional in old_assignment["content"]["traditionals"]:
+						if it in data[str(assignment_id)]["done"]["traditionals"]:
+							if traditional in assignment["content"]["traditionals"]:
+								equals.append(assignment["content"]["traditionals"].index(it))
+						it+=1
+					data[str(assignment_id)]["done"]["traditionals"]=[]
+					data[str(assignment_id)]["in_process"]["traditionals"]=[]
+					it=1
+					for traditional in assignment["content"]["traditonals"]:
+						if it in equals:
+							data[str(assignment_id)]["done"]["traditionals"].append(it)
+						else: data[str(assignment_id)]["in_process"]["traditionals"].append(it)
+						it+=1
 					data[str(assignment_id)]["finished"]=False
 				with io.open('main/files/json/courses/' + str(course_id) + '/users/'+user_id+'/assignments.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(data, ensure_ascii=False)
