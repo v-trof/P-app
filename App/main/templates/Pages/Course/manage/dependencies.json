@@ -1,0 +1,10 @@
+{
+	"elements": ["Modules/section_editor", "Modules/accordion", "Modules/popup",
+				 "button", "Inputs/select", "Inputs/checkbox",
+				 "Inputs/text"],
+	"scripts": [],
+	"styles": [],
+	"fixes": [],
+	"title" : "Управление курсом",
+	"template": "default"
+}

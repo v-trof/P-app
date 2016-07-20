@@ -1,0 +1,21 @@
+{% if sections.published %}
+	<section class="tests-materials">
+	{% for section, value in sections.published.items %}
+	{% if value|length > 0 %}
+		<section class="course-part">
+			<h3>{{section}}</h3>
+			{% for element in value %}
+				{% include "#&/element/" %}
+			{% endfor %}
+		</section>
+	{% endif %}
+	{% endfor %}
+
+	<section class="course-part">
+		<h3>Неопубликованные</h3>
+		{% for element in sections.unpublished %}
+			{% include "#&/element/" %}
+		{% endfor %}
+	</section>
+	</section>
+{% endif %}

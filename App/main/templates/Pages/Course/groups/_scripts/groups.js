@@ -38,13 +38,13 @@ var send_changes = function() {
 		data: {
 		   'groups_data': JSON.stringify(groups),
 		   'csrfmiddlewaretoken': '{{ csrf_token }}',
-		   'course_id': "{{course.id}}",
+			'course_id': "{{course.id}}",
 		   'renames':JSON.stringify(renames)
 		  },
 		success: function() {
 		  notification.show('success', 'Группы изменены' );
 		  $('#groups_content').load('../groups_content/');
-		   }
+		}
 	});
 }
 

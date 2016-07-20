@@ -2,7 +2,6 @@
 	"elements": ["Modules/notification",
 				 "Modules/popup",
 				 "Modules/accordion",
-				 "Modules/section_editor",
 				 "card/test"],
 	"scripts": [],
 	"styles": [],

@@ -30,7 +30,6 @@ section_editor.init = function(arguments) {
 	edit_start         | fucntion      | additinal fucntion for edit start
 	edit_end           | fucntion      | additinal fucntion for edit end
 
-	unordered_finder   | function      | return unordered group for deletion cases
 	unordered_heading* | function      | if there is no unoredered create it
 	_save_callback     | function      | what to do on save_changes
 	_put_callback      | function      | what to do when item was moved
@@ -122,6 +121,7 @@ section_editor.init = function(arguments) {
 			actions: []
 		}
 	}
+	var unordered_heading = arguments.unordered_heading
 
 	//find unordered
 	section_editor.$parent.find(section_editor.section_selector)
@@ -139,10 +139,9 @@ section_editor.init = function(arguments) {
 			section_editor.$unordered = section_editor.add_section()
 
 			section_editor.$unordered.find(section_editor.heading_selector)
-				.text(arguments.unordered_heading)
+				.text(unordered_heading)
 
 			section_editor.end_section_editing(section_editor.$unordered)
-			
 		}
 
 	}, 100)
