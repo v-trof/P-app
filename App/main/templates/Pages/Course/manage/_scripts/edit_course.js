@@ -1,9 +1,8 @@
 var course_info = {
 	name: '{{course.name}}',
 	subject: '{{course.subject}}',
-	is_closed: false
+	is_closed: '{{is_closed}}',
 }
-
 $('#edit_course').click(function(event) {
 	popup.show(
 		'{% include "Pages/home/_popup_texts/create_course/exports.html" %}',
@@ -15,7 +14,8 @@ $('#edit_course').click(function(event) {
 
 			$name.val(course_info.name);
 			$subject.val(course_info.subject);
-			if(course_info.is_closed) {
+			console.log(course_info.is_closed)
+			if(course_info.is_closed=="True") {
 				$is_closed.prop('checked', 'true');
 			}
 
@@ -23,8 +23,14 @@ $('#edit_course').click(function(event) {
 			//send changes
 			$('#create_course_button').click(function() {
 				var name = $name.val()
-				var subject = $subject.val()
+				var subject = $subject.text()
 				var is_closed = $is_closed.is(':checked')
+				subject=$('.__display').text();
+				if (subject=="Выберите...")
+				{
+					subject="Неопределенный предмет"
+				}
+				console.log(name,subject,is_closed)
 
 				$.ajax({
 					url: '/func/edit_course/',
@@ -33,6 +39,9 @@ $('#edit_course').click(function(event) {
 					data: {
 						'csrfmiddlewaretoken': '{{ csrf_token }}',
 						'course_id': '{{course.id}}',
+						'course_name': name,
+						'subject': subject,
+						'is_closed': is_closed
 					},
 				})
 				.success(function() {
@@ -41,6 +50,8 @@ $('#edit_course').click(function(event) {
 						subject: subject,
 						is_closed: is_closed
 					}
+					popup.hide();
+					notification.show('success','Курс успешно изменен');
 				})
 			})
 		})

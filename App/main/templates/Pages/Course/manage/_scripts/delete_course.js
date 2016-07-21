@@ -9,6 +9,6 @@ $("#delete_course").click(function(event) {
 		},
 	})
 	.success(function() {
-		location.href("/");
+		window.location.href=("/");
 	})
 });

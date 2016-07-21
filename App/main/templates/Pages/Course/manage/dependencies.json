@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/section_editor", "Modules/accordion", "Modules/popup",
+	"elements": ["Modules/section_editor","Modules/notification", "Modules/accordion", "Modules/popup",
 				 "button", "Inputs/select", "Inputs/checkbox",
 				 "Inputs/text"],
 	"scripts": [],

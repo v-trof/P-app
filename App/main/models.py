@@ -63,6 +63,7 @@ from collections import OrderedDict
 from operator import itemgetter
 import operator
 from sortedcontainers import SortedListWithKey
+import shutil
 
 class MediaModel(models.Model):
 	media_file = models.FileField(upload_to='media')
@@ -248,6 +249,57 @@ class CourseManager(models.Manager):
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return course
+
+	def edit(self, name, subject, course, is_closed):
+		if is_closed=="false":
+			is_closed=False
+		if is_closed:
+			status="closed"
+		else: status="public"
+		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+		if not course.name == name:
+			setattr(course, 'name', name)
+		if not course.subject == subject and not subject == "Неопределенный предмет":
+			setattr(course, 'subject', subject)
+		if not data["status"] == status:
+			data["status"]=status
+		course.save()
+		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
+		return 0
+
+	def delete(self, course_id):
+		shutil.rmtree('main/files/json/courses/' + str(course_id))
+		shutil.rmtree('main/files/media/courses/' + str(course_id))
+		course=Course.objects.get(id=int(course_id))
+		for user_object in User.objects.all():
+			user_object=User.objects.get(username=str(user_object))
+			if isinstance(user_object.participation_list,str):
+				if course_id in user_object.participation_list.split(' '):
+					participation_list=user_object.participation_list.split(' ').remove(course_id)
+					if isinstance(user_object.participation_list,list):
+						participation_str=participation_list[:]
+					else: participation_str=''
+					setattr(user_object, 'participation_list', participation_str)
+			if isinstance(user_object.courses,str):
+				if course_id in user_object.courses.split(' '):
+					courses=user_object.courses.split(' ').remove(course_id)
+					if isinstance(user_object.courses,list):
+						courses_str=courses[:]
+					else: courses_str=''
+					setattr(user_object, 'courses', courses_str)	
+			user_object.save()
+		course.delete()
+		return 0
+
+	def is_closed(self, course):
+		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+		if data["status"]=="closed":
+			return True
+		else: return False
 
 	def edit_groups(self, course, groups_data,renames):
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -1563,7 +1615,7 @@ class Test():
 			test_id=1
 			for section,elements in course_info['sections']['published'].items():
 				for element in elements:
-					if elements["type"]=="test":
+					if element["type"]=="test":
 						test_id+=1
 			for unpublished in course_info['sections']['unpublished']:
 				if unpublished["type"]=="test":

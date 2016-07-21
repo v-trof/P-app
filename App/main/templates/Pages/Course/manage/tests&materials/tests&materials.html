@@ -10,7 +10,8 @@
 		</section>
 	{% endif %}
 	{% endfor %}
-
+{% endif %}
+{% if sections.unpublished %}
 	<section class="course-part">
 		<h3>Неопубликованные</h3>
 		{% for element in sections.unpublished %}

@@ -51,7 +51,8 @@ $(document).ready(function() {
 				'course_id': "{{course.id}}"
 			},
 			success: function() {
-			  notification.show('success', 'Секции курса изменены');
+				notification.show('success', 'Секции курса изменены');
+				popup.hide();
 			}
 		});
 	}

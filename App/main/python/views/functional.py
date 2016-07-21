@@ -148,6 +148,25 @@ class Course_views():
 			redirect_url = '/course/' + str(course.id) + '/'
 		return HttpResponse(redirect_url)
 
+	def edit(request):
+		if request.method == 'POST':
+			db = sqlite3.connect('db.sqlite3')
+			name = request.POST['course_name']
+			subject = request.POST['subject']
+			course = Course.objects.get(id=request.POST['course_id'])
+			is_closed = request.POST.get('is_closed', False)
+			course = Course.objects.edit(
+				name=name, subject=subject, course=course, is_closed=is_closed)
+			return HttpResponse('ok')
+		else: return HttpResponse('Нет полномочий')
+
+	def delete(request):
+		if request.method == 'POST':
+			course_id=request.POST['course_id']
+			Course.objects.delete(course_id=course_id)
+			return HttpResponse('ok')
+		else: return HttpResponse('Нет полномочий')
+
 	def add_source(request):
 		if request.method == "POST":
 			name = request.POST["name"]
@@ -184,10 +203,9 @@ class Course_views():
 
 	def edit_sections(request):
 		if request.method == "POST":
-			sections = json.load(request.POST["sections"])
-			type = request.POST["type"]
+			sections = json.loads(request.POST["sections"])
 			course_id = request.POST["course_id"]
-			section_id = Course.objects.edit_sections(sections=sections,course_id=course_id, type=type)
+			section_id = Course.objects.edit_sections(sections=sections,course_id=course_id)
 			return HttpResponse('ok')
 
 	def add_announcement(request):

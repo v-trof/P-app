@@ -29,7 +29,7 @@ class Main_group():
 			return render(request, 'Pages/home/exports.html')
 		context={}
 		with io.open('main/files/json/users/' + str(request.user.id) + '/settings.json', 'r', encoding='utf8') as settings_file:
-				user_settings = json.load(settings_file)
+			user_settings = json.load(settings_file)
 		context["subjects"]=["Русский язык","Математика","Английский язык"]
 		#sample_marks={"Русский язык":[{"course_marks":[{"test_id":1,"value":4,"quality":"positive","test_title":"Подготовка к ЕГЭ","right_answers":4,"questions_overall":6},{"test_id":2,"value":2,"quality":"negative","test_title":"Подготовка к ЕГЭ","right_answers":1,"questions_overall":6}],"course":Course.objects.get(id=1)}]}
 		if request.user.participation_list:
@@ -121,7 +121,9 @@ class Course_group():
 	def manage(request, course_id):
 		course = Course.objects.get(id=course_id)
 		context={}
+		context["subjects"]=["Русский язык","Математика","Английский язык"]
 		context["course"]=course
+		context["is_closed"]=Course.objects.is_closed(course=course)
 		context["sections"]=Course.objects.get_sections(course_id=str(course.id))
 		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Секции" }]
 		return render(request, 'Pages/Course/manage/exports.html', context)
