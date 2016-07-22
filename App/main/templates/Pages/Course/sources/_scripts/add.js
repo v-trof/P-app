@@ -33,6 +33,7 @@ function upload_source(source_id) {
 		notification.show("success", "Источник загружен");
 		$("sources>.--empty").remove();
 		popup.hide();
+		location.reload();
 	})
 	.fail(function() {
 		notification.show("error", "Произошла ошибка");

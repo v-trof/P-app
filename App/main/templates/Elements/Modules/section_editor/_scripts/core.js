@@ -44,7 +44,12 @@ section_editor.init = function(arguments) {
 
 	//accept required arguments
 	section_editor.$parent = arguments.$parent.first()
-	section_editor.$section_template = arguments.$section_template
+	if(defined(arguments.$section_template)) {
+		//maginificatn hotifx
+		section_editor.$section_template = arguments.$section_template
+	} else {
+		section_editor.$section_template = $('<section class="course-part"><h3>Новая секция</h3></section>')
+	}
 
 	section_editor.section_selector = arguments.section_selector
 	section_editor.heading_selector = arguments.heading_selector
