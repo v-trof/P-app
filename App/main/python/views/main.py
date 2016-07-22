@@ -96,7 +96,9 @@ class Course_group():
 		sources=Course.objects.load_sources(course_id=course.id, user=request.user)
 		announcements=Course.objects.load_announcements(course_id=course.id, user=request.user)
 		sections=Course.objects.get_sections(course_id=str(course.id))
-		return render(request, 'Pages/Course/main/exports.html', {"sections":sections, "sources":sources, "is_participant": is_participant, "announcements": announcements, "course": course, "assignments": Course.objects.get_assignments(user=request.user, course=course),
+		assignments=Course.objects.get_assignments(user=request.user, course=course)
+		print(Course.objects.get_assignments(user=request.user, course=course))
+		return render(request, 'Pages/Course/main/exports.html', {"sections":sections, "sources":sources, "is_participant": is_participant, "announcements": announcements, "course": course, "assignments": assignments,
 													 "breadcrumbs": [{
 														 "href": "#",
 														 "link": course.name
@@ -167,15 +169,10 @@ class Course_group():
 			course = Course.objects.get(id=course_id)
 			context={}
 			context["course"]={}
-			context["course"]["materials"]=Course.objects.get_tests(course_id=course_id)
+			context["course"]["materials"]=Course.objects.get_materials(course_id=course_id)
 			context["course"]["tests"]=Course.objects.get_tests(course_id=course_id)
 			context["course"]["object"]=course
 			context["course"]["group_list"]=Course.objects.get_group_list(course=course)
-			context["course"]["material_list"] = [
-				{
-					"title": "!How to make bugs!",
-					"href": "/1"
-				}]
 			context["breadcrumbs"] = [{
 				"href": "/course/" + str(course.id),
 				"link": course.name

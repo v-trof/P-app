@@ -888,12 +888,28 @@ class CourseManager(models.Manager):
 			tests=data["sections"]["published"]
 		for section_name,values in tests.items():
 			tests[section_name]=[]
-			for element in list(value):
+			for element in list(values):
 				if element["type"]=="test":
+					test_id=element["id"]
 					with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 						test_data=json.load(info_file)
 						tests[section_name].append({"title":test_data["title"],"id":test_id, "questions_number":test_data["questions_number"], "link":'?course_id='+course_id+"&test_id="+test_id})
 		return tests
+
+	def get_materials(self, course_id):
+		materials={}
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			materials=data["sections"]["published"]
+		for section_name,values in materials.items():
+			materials[section_name]=[]
+			for element in list(values):
+				if element["type"]=="material":
+					material_id=element["id"]
+					with io.open('main/files/json/courses/'+course_id+'/materials/'+material_id+'.json', 'r', encoding='utf8') as info_file:
+						material_data=json.load(info_file)
+						materials[section_name].append({"title":material_data["title"],"id":material_id, "link":'?course_id='+course_id+"&material_id="+material_id})
+		return materials
 
 	def get_sections(self,course_id):
 		context={}
