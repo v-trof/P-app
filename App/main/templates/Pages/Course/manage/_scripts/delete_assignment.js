@@ -13,7 +13,7 @@ $('.--assignment').each(function(index, el) {
 			}
 		})
 		.success(function() {
-			notification.show("Задание удалено")
+			notification.show("success","Задание удалено")
 		})
 		
 	});

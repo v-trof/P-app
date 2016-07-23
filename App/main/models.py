@@ -841,11 +841,11 @@ class CourseManager(models.Manager):
 		os.remove('main/files/json/courses/' + course_id + '/assignments/' + assignment_id + '.json')
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as json_file:
 			course_info=json.load(json_file)
-		for group in json.loads(group_list):
+		for group in group_list:
 			for user_id in course_info["groups"][group].keys():
 				with io.open('main/files/json/courses/' + course_id + '/users/' + user_id + '/assignments.json', 'r', encoding='utf8') as json_file:
 					data = json.load(json_file)
-					data.pop(assignment_id)
+					data.pop(assignment_id,None)
 				with io.open('main/files/json/courses/' + course_id + '/users/' + user_id + '/assignments.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(data, ensure_ascii=False)
 					json_file.write(saving_data)
@@ -2067,3 +2067,20 @@ class Test():
 		with io.open('main/files/json/courses/'+str(course_id)+'/tests/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
 			test_info=json.load(info_file)
 		return test_info["creator"]==user.id
+
+
+
+class Marks():
+
+	def for_test(course_id,test_id,group_list=None):
+		course=Course.objects.get(id=int(course_id))
+		marks={}
+		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
+			data=json.load(data_file)
+		if not group_list:
+			group_list=data["groups"].keys()
+		for group in group_list:
+			marks[group]={}
+			for user_id in data["groups"][group]:
+				marks[group][str(user_id)]=Test.get_results(course_id=course_id,test_id=test_id,user=User.objects.get(id=int(user_id)))
+		return marks

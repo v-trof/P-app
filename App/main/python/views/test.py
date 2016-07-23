@@ -164,7 +164,7 @@ def results(request):
 	context = {"course": Course.objects.get(id=course_id), 
 	"results": Test.get_results(user=user, course_id=course_id, test_id=test_id), 
 	"attempt": Test.get_attempt_info(user=user, course_id=course_id, test_id=test_id), 
-	"test": Test.get_test_info(course_id=course_id, test_id=test_id)}
+	"test": Test.get_test_info(course_id=course_id, test_id=test_id), "user_status": Course.object.load_user_status(course_id=course_id, user=request.user)}
 	test=Test.load(course_id=course_id, test_id=test_id)
 	context["test"]["json"]=test["json"]
 	context["is_results"] = True
