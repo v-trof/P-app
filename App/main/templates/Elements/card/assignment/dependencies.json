@@ -1,5 +1,5 @@
 {
-	"elements": ["Inputs/checkbox"],
+	"elements": ["Inputs/checkbox", "Modules/replace"],
 	"scripts": [],
 	"styles": []
 }

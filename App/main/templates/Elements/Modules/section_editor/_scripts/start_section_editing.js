@@ -1,4 +1,7 @@
 section_editor.start_section_editing = function($section) {
+	console.log(typeof $section, $section);
+	if(typeof $section === 'function') return;
+	
 	var $items = $section.children(section_editor.item_selector)
 
 	//start heading edition
@@ -10,6 +13,7 @@ section_editor.start_section_editing = function($section) {
 	//add button_delete
 	button_delete.add($section, function() {
 		section_editor.$unordered.append($items)
+		section_editor.check_empty(section_editor.$unordered)
 	})
 
 	$section.find('.--button-delete')
