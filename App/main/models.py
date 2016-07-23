@@ -823,7 +823,7 @@ class CourseManager(models.Manager):
 					data[str(assignment_id)]["done"]["traditionals"]=[]
 					data[str(assignment_id)]["in_process"]["traditionals"]=[]
 					it=1
-					for traditional in assignment["content"]["traditonals"]:
+					for traditional in assignment["content"]["traditionals"]:
 						if it in equals:
 							data[str(assignment_id)]["done"]["traditionals"].append(it)
 						else: data[str(assignment_id)]["in_process"]["traditionals"].append(it)
@@ -833,6 +833,25 @@ class CourseManager(models.Manager):
 					saving_data = json.dumps(data, ensure_ascii=False)
 					json_file.write(saving_data)
 		return 0
+
+	def delete_assignment(self, course_id, assignment_id):
+		with io.open('main/files/json/courses/' + course_id + '/assignments/' + assignment_id + '.json', 'r', encoding='utf8') as json_file:
+			assignment=json.load(json_file)
+		group_list=assignment["group_list"]
+		os.remove('main/files/json/courses/' + course_id + '/assignments/' + assignment_id + '.json')
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as json_file:
+			course_info=json.load(json_file)
+		for group in json.loads(group_list):
+			for user_id in course_info["groups"][group].keys():
+				with io.open('main/files/json/courses/' + course_id + '/users/' + user_id + '/assignments.json', 'r', encoding='utf8') as json_file:
+					data = json.load(json_file)
+					data.pop(assignment_id)
+				with io.open('main/files/json/courses/' + course_id + '/users/' + user_id + '/assignments.json', 'w', encoding='utf8') as json_file:
+					saving_data = json.dumps(data, ensure_ascii=False)
+					json_file.write(saving_data)
+		return 0
+
+
 
 	def get_group_list(self, course):
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:

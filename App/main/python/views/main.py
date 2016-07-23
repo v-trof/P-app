@@ -124,6 +124,7 @@ class Course_group():
 		context={}
 		context["subjects"]=["Русский язык","Математика","Английский язык"]
 		context["course"]=course
+		context["assignments"]=Course.objects.get_assignments(user=request.user, course=course)
 		context["is_closed"]=Course.objects.is_closed(course=course)
 		context["sections"]=Course.objects.get_sections(course_id=str(course.id))
 		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Секции" }]

@@ -317,6 +317,13 @@ class Course_views():
 											 material_list=material_list, traditionals_list=traditionals_list, due_date=due_date)
 		return HttpResponse("ok")
 
+	def delete_assignment(request):
+		if request.method == 'POST':
+			course_id = request.POST.get('course_id')
+			assignment_id = str(int(request.POST["assignment_id"]))
+			Course.objects.delete_assignment(course_id=course_id,assignment_id=assignment_id)
+		return HttpResponse("ok")
+
 class Task_views():
 
 	def set_done(request):

@@ -97,18 +97,19 @@ func_patterns = [
     url(r'^delete/$', functional.delete_file, name="delete_file"),
     url(r'^upload/$', functional.upload_file, name="upload_file"),
     url(r'^upload_by_url/$', functional.upload_file_by_url, name="upload_file_by_url"),
+    url(r'^(?P<course_id>[0-9]+)/manage/delete_task/$', functional.Course_views.delete_assignment, name="delete_task")
 ]
 
 course_patterns = [
     url(r'^(?P<course_id>[0-9]+)/groups/$', main.Course_group.groups, name="groups"),
     url(r'^(?P<course_id>[0-9]+)/groups_content/$', main.Course_group.Elements.groups_content, name="groups_content"),
     url(r'^(?P<course_id>[0-9]+)/give_task/$', main.Course_group.new_task, name="give_task"),
-    url(r'^(?P<course_id>[0-9]+)/edit_task/$', main.Course_group.edit_assignment, name="change_task"),
     url(r'^(?P<course_id>[0-9]+)/requests/$', main.Course_group.requests, name="course_requests"),
     url(r'^(?P<course_id>[0-9]+)/$', main.Course_group.main, name="course"),
     url(r'^(?P<course_id>[0-9]+)/updates/$', main.Course_group.updates, name="updates"),
     url(r'^(?P<course_id>[0-9]+)/sources/$', main.Course_group.sources, name='sources'),
     url(r'^(?P<course_id>[0-9]+)/manage/$', main.Course_group.manage, name='manage'),
+    url(r'^(?P<course_id>[0-9]+)/manage/edit_task/$', main.Course_group.edit_assignment, name="change_task")
 ]
 
 urlpatterns = [
