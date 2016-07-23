@@ -97,7 +97,6 @@ class Course_group():
 		announcements=Course.objects.load_announcements(course_id=course.id, user=request.user)
 		sections=Course.objects.get_sections(course_id=str(course.id))
 		assignments=Course.objects.get_assignments(user=request.user, course=course)
-		print(Course.objects.get_assignments(user=request.user, course=course))
 		return render(request, 'Pages/Course/main/exports.html', {"sections":sections, "sources":sources, "is_participant": is_participant, "announcements": announcements, "course": course, "assignments": assignments,
 													 "breadcrumbs": [{
 														 "href": "#",

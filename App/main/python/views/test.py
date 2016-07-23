@@ -144,6 +144,16 @@ def attempt_save(request):
 		Test.attempt_save(test_id=test_id, question_id=question_id, course_id=course_id, answer=answer, user=request.user)
 		return HttpResponse("ok")
 
+def change_answer_status(request):
+	if request.method == 'POST':
+		test_id = request.POST.get("test_id",None)
+		question_id = str(request.POST.get("question_id",None))
+		course_id = request.POST.get("course_id",None)
+		user=request.POST.get("user",None)
+		question_result=request.POST.get("question_status",None)
+		Test.change_answer_status(user=user,test_id=test_id,course_id=course_id,question_id=question_id,question_result=question_result)
+		return HttpResponse("ok")
+
 def results(request):
 	if request.user.is_anonymous():
 		return redirect('/login')

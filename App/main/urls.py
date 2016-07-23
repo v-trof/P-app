@@ -37,6 +37,8 @@ test_patterns = [
     url(r'^unpublish/$', test.unpublish, name="unpublish_test"),
     url(r'^share/$', test.share, name="share_test"),
 
+    url(r'^change_answer_status/$', test.change_answer_status, name="change_answer_status"),
+
     url(r'^attempt/$', test.attempt, name="attempt"),
     url(r'^attempt/save/$', test.attempt_save, name="save_attempt"),
     url(r'^attempt/check/$', test.attempt_check, name="check_attempt"),

@@ -623,7 +623,7 @@ class CourseManager(models.Manager):
 					material_preview = {}
 					material_preview["title"] = material_data["title"]
 					material_preview["link"] = '?course_id=' + \
-						str(course.id) + '&test_id=' + str(it)
+						str(course.id) + '&material_id=' + str(it)
 					material_list.append(material_preview)
 		return material_list
 						
@@ -634,6 +634,7 @@ class CourseManager(models.Manager):
 		for assignment in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*'):
 			with io.open(assignment, 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
+				data["id"]=assignment[:-5].split("/")[5][12:]
 				data.pop("course_id", None)
 				assignments.append(data)
 		return Utility.sort_by_date(object=assignments,indicator="due_date")
@@ -1853,7 +1854,7 @@ class Test():
 					"id": test_id,
 					"loaded": 1,
 					"json": json.load(json_file),
-					"published" : test_id in course_info["tests"]["published"]
+					"published" : Test.is_published(test_id=test_id,course_id=course_id)
 				}
 				it=0
 				for task in test["json"]["tasks"]:
@@ -1942,7 +1943,7 @@ class Test():
 		test_results["right"]=[]
 		test_results["mistakes"]=[]
 		test_results["forgiving"]=[]
-		test_results["missed"]=[]
+		test_results["missing"]=[]
 		test_results["unseen_by"]=[]
 		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 			test_data=json.load(info_file)
@@ -1953,7 +1954,7 @@ class Test():
 			for question_id,question in attempt_data.items():
 				if question["user_answer"] == None:
 					missed+=1
-					test_results["missed"].append(counter)
+					test_results["missing"].append(counter)
 					question["result"]="missing"
 				elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"])=="right":
 					right+=1
@@ -1995,6 +1996,27 @@ class Test():
 					content["finished"]=True
 		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/assignments.json', 'w+', encoding='utf8') as assignment:
 			assignment.write(json.dumps(assignment_map, ensure_ascii=False))
+		return 0
+
+	def change_answer_status(user,test_id,course_id,question_id,question_result):
+		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'r', encoding='utf8') as json_file:
+			attempt_data=json.load(json_file)
+		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as results_file:
+			test_results=json.load(results_file)
+		attempt_data[question_id]["result"]=question_result
+		if int(question_id) in test_results["right"]:
+			test_results["right"].remove(int(question_id))
+		elif int(question_id) in test_results["forgiving"]:
+			test_results["forgiving"].remove(int(question_id))
+		elif int(question_id) in test_results["missing"]:
+			test_results["missing"].remove(int(question_id))
+		else:
+			test_results["mistakes"].remove(int(question_id))
+		test_results[question_result].append(int(question_id))
+		with io.open('main/files/json/courses/'+course_id+'/users/'+str(user.id)+'/tests/attempts/'+test_id+'.json', 'w+', encoding='utf8') as json_file:
+			json_file.write(json.dumps(attempt_data, ensure_ascii=False))
+		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'w+', encoding='utf8') as results_file:
+			results_file.write(json.dumps(test_results, ensure_ascii=False))
 		return 0
 
 	def get_results(course_id,test_id,user):
