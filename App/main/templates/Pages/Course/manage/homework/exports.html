@@ -1,1 +1,1 @@
-{% if assignments %}	<section class="assignments">		<h3>Задания</h3>		{% for assignment in assignments %}		<div class="--card" href="edit_task/?task_id={{assignment.id}}">			{% include "Elements/card/assignment/exports.html" %}		</div>		{% endfor %}	</section>{% endif %}
+{% if assignments %}	<section class="assignments">		<h3>Задания</h3>		{% for assignment in assignments %}			{% include "Elements/card/assignment/exports.html" %}		{% endfor %}	</section>{% endif %}

@@ -8,6 +8,7 @@ function defined(variable) {
  
 section_editor = {}
 
+section_editor.init_done = false;
 section_editor.init = function(arguments) {
 	/*
 
@@ -41,6 +42,7 @@ section_editor.init = function(arguments) {
 	}
 	*/
 
+	console.log(arguments);
 
 	//accept required arguments
 	section_editor.$parent = arguments.$parent.first()
@@ -164,4 +166,5 @@ section_editor.init = function(arguments) {
 	});
 
 	section_editor.block_editing()
+	section_editor.init_done = true;
 }

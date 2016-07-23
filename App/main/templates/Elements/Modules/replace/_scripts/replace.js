@@ -1,19 +1,17 @@
-(function (a) {
-    a.fn.replaceTag = function (f) {
-        var g = [],
-            h = this.length;
-        while (h--) {
-            var k = document.createElement(f),
-                b = this[h],
-                d = b.attributes;
-            for (var c = d.length - 1; c >= 0; c--) {
-                var j = d[c];
-                k.setAttribute(j.name, j.value)
-            }
-            k.innerHTML = b.innerHTML;
-            a(b).after(k).remove();
-            g[h - 1] = k
+$.fn.replaceTag = function (f) {
+    var results = [],
+        queue_size = this.length;
+    while (queue_size--) {
+        var new_element = document.createElement(f),
+            source = this[queue_size],
+            attributes = source.attributes;
+        for (var c = attributes.length - 1; c >= 0; c--) {
+            var current_attr = attributes[c];
+            new_element.setAttribute(current_attr.name, current_attr.value)
         }
-        return a(g)
+        new_element.innerHTML = source.innerHTML;
+        $(source).after(new_element).remove();
+        results[queue_size - 1] = new_element
     }
-})(window.jQuery);
+    return $(results)
+}

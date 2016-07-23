@@ -20,6 +20,7 @@ var button_delete = (function() {
 			$element.append($button);
 			
 			$button.click(function(event) {
+				event.preventDefault();
 				if(_callback) {
 					_callback();
 				}
