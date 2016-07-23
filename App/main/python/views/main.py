@@ -188,7 +188,7 @@ class Course_group():
 		course = Course.objects.get(id=course_id)
 		task_id=request.GET['task_id']
 		context={}
-		context["task"]=Course.objects.get_assignments(user=request.user, course=course)[int(task_id)]
+		context["task"]=Course.objects.get_assignment(user=request.user, course=course,task_id=task_id)
 		context["course"]={}
 		context["edit"]=True
 		context["course"]["materials"]=Course.objects.get_tests(course_id=course_id)

@@ -639,6 +639,16 @@ class CourseManager(models.Manager):
 				assignments.append(data)
 		return Utility.sort_by_date(object=assignments,indicator="due_date")
 
+	def get_assignment(self, user, course, task_id):
+		if user.is_anonymous():
+			return assignment
+		with io.open('main/files/json/courses/' + str(course.id) + '/assignments/'+str(task_id)+'.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+			data["id"]=task_id
+			data.pop("course_id", None)
+			assignment=data
+		return assignment
+
 	def user_get_tasks(self, user, course):
 		tasks = {"done":[],"undone":[]}
 		if user.is_anonymous():
