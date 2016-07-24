@@ -97,7 +97,7 @@ func_patterns = [
     url(r'^delete/$', functional.delete_file, name="delete_file"),
     url(r'^upload/$', functional.upload_file, name="upload_file"),
     url(r'^upload_by_url/$', functional.upload_file_by_url, name="upload_file_by_url"),
-    url(r'^(?P<course_id>[0-9]+)/manage/delete_task/$', functional.Course_views.delete_assignment, name="delete_task")
+    url(r'^delete_assignment/$', functional.Course_views.delete_assignment, name="delete_assignment")
 ]
 
 course_patterns = [
