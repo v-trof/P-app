@@ -1,0 +1,8 @@
+{
+	"elements": ["card/test"],
+	"scripts": [],
+	"styles": [],
+	"fixes": [],
+	"title" : "Оценки за тесты",
+	"template": "default"
+}
