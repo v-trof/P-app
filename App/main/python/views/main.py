@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.template import Context
-from main.models import User, Course
+from main.models import *
 from main.python.views.functional import *
 from main.python.views.test import *
 import io
@@ -129,6 +129,39 @@ class Course_group():
 		context["sections"]=Course.objects.get_sections(course_id=str(course.id))
 		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Секции" }]
 		return render(request, 'Pages/Course/manage/exports.html', context)
+
+	def results(request, course_id):
+		course = Course.objects.get(id=course_id)
+		context={}
+		context["course"]=course
+		context["from_task"]=True
+		test_id=request.GET['test_id']
+		context["tasks"]=Marks.by_groups(course_id=course_id,test_id=test_id)
+		return render(request, 'Pages/Course/Marks/results/exports.html', context)
+
+	def marks(request, course_id):
+		course = Course.objects.get(id=course_id)
+		context={}
+		context["course"]=course
+		context["from_task"]=True
+		context["tasks"]=Marks.by_tasks(course_id=course_id)
+		return render(request, 'Pages/Course/Marks/main/exports.html', context)
+
+	def marks_by_groups(request, course_id):
+		course = Course.objects.get(id=course_id)
+		context={}
+		context["course"]=course
+		context["from_task"]=False
+		context["tasks"]=Marks.by_groups(course_id=course_id,test_id=test_id)
+		return render(request, 'Pages/Course/Marks/main/exports.html', context)
+
+	def marks_by_tests(request, course_id):
+		course = Course.objects.get(id=course_id)
+		context={}
+		context["course"]=course
+		context["from_task"]=False
+		context["tasks"]=Marks.by_tests(course_id=course_id)
+		return render(request, 'Pages/Course/Marks/main/exports.html', context)
 
 	def requests(request, course_id):
 		pending_users=Course.objects.load_course_requests(course_id=course_id)

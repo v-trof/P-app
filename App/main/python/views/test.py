@@ -164,7 +164,7 @@ def results(request):
 	context = {"course": Course.objects.get(id=course_id), 
 	"results": Test.get_results(user=user, course_id=course_id, test_id=test_id), 
 	"attempt": Test.get_attempt_info(user=user, course_id=course_id, test_id=test_id), 
-	"test": Test.get_test_info(course_id=course_id, test_id=test_id), "user_status": Course.object.load_user_status(course_id=course_id, user=request.user)}
+	"test": Test.get_test_info(course_id=course_id, test_id=test_id), "user_status": Course.objects.load_user_status(course=Course.objects.get(id=course_id), user=request.user)}
 	test=Test.load(course_id=course_id, test_id=test_id)
 	context["test"]["json"]=test["json"]
 	context["is_results"] = True
@@ -209,3 +209,12 @@ def load_asset_file(request, course_id, test_id, asset_name):
 	                      content_type='application/zip')
 	response['Content-Disposition']='attachment; filename=myfile.zip'
 	return response
+
+
+def get_results(request):
+	if request.method == 'POST':
+		course_id=request.POST["course_id"]
+		test_id=request.POST["test_id"]
+		user_id=request.POST["user_id"]
+		return Test.get_results(course_id=course_id,test_id=test_id,user=User.objects.get(id=int(user_id)))
+

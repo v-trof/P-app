@@ -43,7 +43,7 @@ test_patterns = [
     url(r'^attempt/save/$', test.attempt_save, name="save_attempt"),
     url(r'^attempt/check/$', test.attempt_check, name="check_attempt"),
     url(r'^attempt/results/$', test.results, name="test_results"),
-    
+    url(r'^get_results/$', test.get_results),
 ]
 
 material_patterns = [
@@ -108,6 +108,11 @@ course_patterns = [
     url(r'^(?P<course_id>[0-9]+)/$', main.Course_group.main, name="course"),
     url(r'^(?P<course_id>[0-9]+)/updates/$', main.Course_group.updates, name="updates"),
     url(r'^(?P<course_id>[0-9]+)/sources/$', main.Course_group.sources, name='sources'),
+    url(r'^(?P<course_id>[0-9]+)/results/$', main.Course_group.results, name='results'),
+    url(r'^(?P<course_id>[0-9]+)/marks/$', main.Course_group.marks, name='marks'),
+    url(r'^(?P<course_id>[0-9]+)/marks/by_groups/$', main.Course_group.marks_by_groups, name='marks_by_groups'),
+    url(r'^(?P<course_id>[0-9]+)/marks/by_tests/$', main.Course_group.marks_by_tests, name='marks_by_tests'),
+
     url(r'^(?P<course_id>[0-9]+)/manage/$', main.Course_group.manage, name='manage'),
     url(r'^(?P<course_id>[0-9]+)/manage/edit_task/$', main.Course_group.edit_assignment, name="change_task")
 ]

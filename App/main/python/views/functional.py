@@ -392,3 +392,4 @@ def upload_embmend(request):
 		asset_id=Utility.upload_embmend(
 		    path=path, asset=asset, course_id=course_id, test_id=test_id)
 		return HttpResponse(asset_id)
+

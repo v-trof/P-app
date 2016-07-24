@@ -550,8 +550,8 @@ class CourseManager(models.Manager):
 					os.makedirs('main/files/json/courses/' + str(course.id) +
 								'/users/' + str(user.id) + '/')
 					data = {}
-					assignment_id=1
 					for assignment_path in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*.json'):
+						assignment_id=assignment_path[:-5].split("/")[5][12:]
 						with io.open(assignment_path, 'r', encoding='utf8') as data_file:
 							assignment = json.load(data_file)
 							assignment_map={}
@@ -570,7 +570,6 @@ class CourseManager(models.Manager):
 							data[str(assignment_id)]["done"]["tests"]=[]
 							data[str(assignment_id)]["done"]["traditionals"]=[]
 							data[str(assignment_id)]["finished"]=False
-							assignment_id+=1
 					with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments.json', 'w+', encoding='utf8') as json_file:
 						saving_data = json.dumps(data, ensure_ascii=False)
 						json_file.write(saving_data)
@@ -1328,7 +1327,8 @@ class UserManager(UserManager):
 												new_data["relevant"]=False
 								else: new_data["relevant"]=True
 								if new_data["relevant"]==False:
-									updates[course_id]["irrelevant"].append(user_id)
+									if not user_id in updates[course_id]["irrelevant"]:
+										updates[course_id]["irrelevant"].append(user_id)
 					for test_result in glob.glob('main/files/json/courses/' + course_id + '/users/' + str(user_id) + '/tests/results/*.json'):
 						with io.open(test_result, 'r', encoding='utf8') as test_data_file:
 							result = json.load(test_data_file)
@@ -1972,7 +1972,7 @@ class Test():
 		test_results["right"]=[]
 		test_results["mistakes"]=[]
 		test_results["forgiving"]=[]
-		test_results["missing"]=[]
+		test_results["missed"]=[]
 		test_results["unseen_by"]=[]
 		with io.open('main/files/json/courses/'+course_id+'/tests/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 			test_data=json.load(info_file)
@@ -1983,8 +1983,8 @@ class Test():
 			for question_id,question in attempt_data.items():
 				if question["user_answer"] == None:
 					missed+=1
-					test_results["missing"].append(counter)
-					question["result"]="missing"
+					test_results["missed"].append(counter)
+					question["result"]="missed"
 				elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"])=="right":
 					right+=1
 					test_results["right"].append(counter)
@@ -2037,8 +2037,8 @@ class Test():
 			test_results["right"].remove(int(question_id))
 		elif int(question_id) in test_results["forgiving"]:
 			test_results["forgiving"].remove(int(question_id))
-		elif int(question_id) in test_results["missing"]:
-			test_results["missing"].remove(int(question_id))
+		elif int(question_id) in test_results["missed"]:
+			test_results["missed"].remove(int(question_id))
 		else:
 			test_results["mistakes"].remove(int(question_id))
 		test_results[question_result].append(int(question_id))
@@ -2049,9 +2049,12 @@ class Test():
 		return 0
 
 	def get_results(course_id,test_id,user):
-		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as info_file:
-			test_info=json.load(info_file)
-		return test_info
+		if os.path.exists('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json'):
+			with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+				test_info=json.load(info_file)
+			return test_info
+		else:
+			return None
 	
 	def get_test_info(course_id, test_id):
 		with io.open('main/files/json/courses/'+str(course_id)+'/tests/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
@@ -2072,7 +2075,7 @@ class Test():
 
 class Marks():
 
-	def for_test(course_id,test_id,group_list=None):
+	def by_groups(course_id,test_id,group_list=None):
 		course=Course.objects.get(id=int(course_id))
 		marks={}
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
@@ -2084,3 +2087,12 @@ class Marks():
 			for user_id in data["groups"][group]:
 				marks[group][str(user_id)]=Test.get_results(course_id=course_id,test_id=test_id,user=User.objects.get(id=int(user_id)))
 		return marks
+
+	def by_tasks(course_id,group_list=None):
+		course=Course.objects.get(id=int(course_id))
+		#neeeeeeeeeeeeeed!
+		marks={}
+		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
+			data=json.load(data_file)
+		return marks
+
