@@ -22,13 +22,12 @@ $(document).ready(function() {
 			          'contact_info': popup.$.find(".__contact-value").val()
 			            },
 			        success: function() {
-			                  notification.show('success','Контакт добавлен' );
-			                               }
-			            });
+	                  notification.show('success','Контакт добавлен' );
+	                  location.reload();
+	                }
+		        });
 					$("#contacts").append($new_contact);
 					popup.hide();
-
-					location.reload();
 				});
 			});
 		});
