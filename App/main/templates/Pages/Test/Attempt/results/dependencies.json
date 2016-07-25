@@ -5,6 +5,6 @@
 	"scripts": ["Pages/Test/Attempt/_shared/responsive"],
 	"styles": [],
 	"fixes": [],
-	"title" : "Резульататы",
+	"title" : "Результаты",
 	"template": "default"
 }

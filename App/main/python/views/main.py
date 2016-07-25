@@ -136,7 +136,7 @@ class Course_group():
 		context={}
 		context["course"]=course
 		context["from_task"]=True
-		context["results"]=True
+		context["read"]=True
 		if 'task_id' in request.GET:
 			print('task')
 			task_id=request.GET['task_id']

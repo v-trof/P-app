@@ -6,8 +6,7 @@ Array.prototype.has = function(value) {
 $(document).ready(function() {
 	var results = {{results|safe}};
 	var attempt = {{attempt|safe}};
-
-	console.log(attempt);
+	console.log(results);
 	var summary_template = function(index, value, quality) {
 		return '<div class="card --small sumfor_'
 			+ index + ' row">'
@@ -38,12 +37,12 @@ $(document).ready(function() {
 			} else {
 				index = task_index+1;
 			}
-
-			if(results.forgiving.has(answer_index+1)) {
+			console.log(results.mistakes,answer_index)
+			if(results.forgiving.has(answer_index)) {
 				quality = "neutral"
 			} 
-			if (results.missed.has(answer_index+1) ||
-				results.mistakes.has(answer_index+1)) {
+			if (results.missed.has(answer_index) ||
+				results.mistakes.has(answer_index)) {
 				quality = "negative"
 			}
 
