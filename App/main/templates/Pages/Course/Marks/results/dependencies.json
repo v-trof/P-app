@@ -1,8 +1,8 @@
 {
-	"elements": ["сard/user/extended"
-				 "Inputs/textarea"
-				 "Modules/accordion"
-				 "Modules/test_generate"
+	"elements": ["сard/user/extended",
+				 "Inputs/textarea",
+				 "Modules/accordion",
+				 "Modules/test_generate",
 				 "Modules/test_manager"],
 	"scripts": [],
 	"styles": [],

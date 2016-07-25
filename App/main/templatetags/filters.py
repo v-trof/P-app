@@ -15,3 +15,18 @@ def return_item(l, i):
 def get_obj(value,pk):
 	obj = Course.objects.get(pk=int(value))
 	return obj
+
+@register.filter
+def keyvalue(dict, key):    
+    return dict[key]
+
+@register.filter
+def makelist(dict):
+	dictlist=[]
+	for key, value in dict.items():
+	    dictlist.append(value)
+	return dictlist
+
+@register.filter
+def makeuser(user_id):
+	return User.objects.get(id=int(user_id))

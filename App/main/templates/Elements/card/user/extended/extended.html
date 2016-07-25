@@ -5,6 +5,8 @@
 		</div>
 	</a>
 	<div class="__extension">
-		{% include extension %}
+		{% if extension %}
+			{% include extension %}
+		{% endif %}
 	</div>
 </div>

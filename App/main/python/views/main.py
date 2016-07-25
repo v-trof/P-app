@@ -108,6 +108,7 @@ class Course_group():
 		context={}
 		context=Course.objects.load_updates(course=Course.objects.get(id=course_id), user=request.user)
 		context["course"]=Course.objects.get(id=course_id)
+		context["breadcrumbs"]=[{"href": "#","link": "Обновления" }]
 		return render(request, 'Pages/Course/updates/exports.html', context)
 
 	def sources(request, course_id):
@@ -136,16 +137,18 @@ class Course_group():
 		context["course"]=course
 		context["from_task"]=True
 		test_id=request.GET['test_id']
-		context["tasks"]=Marks.by_groups(course_id=course_id,test_id=test_id)
+		context["groups"]=Course.objects.load_groups(course=Course.objects.get(id=int(course_id)))
+		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Результаты" }]
 		return render(request, 'Pages/Course/Marks/results/exports.html', context)
 
 	def marks(request, course_id):
 		course = Course.objects.get(id=course_id)
 		context={}
-		context["course"]=course
 		context["from_task"]=True
 		context["tasks"]=Marks.by_tasks(course_id=course_id)
-		return render(request, 'Pages/Course/Marks/main/exports.html', context)
+		context["tasks_info"]=Marks.tasks_info(course_id=course_id)
+		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Результаты" }]
+		return render(request, 'Pages/Course/Marks/tasks/exports.html', context)
 
 	def marks_by_groups(request, course_id):
 		course = Course.objects.get(id=course_id)
@@ -153,7 +156,8 @@ class Course_group():
 		context["course"]=course
 		context["from_task"]=False
 		context["tasks"]=Marks.by_groups(course_id=course_id,test_id=test_id)
-		return render(request, 'Pages/Course/Marks/main/exports.html', context)
+		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Результаты" }]
+		return render(request, 'Pages/Course/Marks/tests/exports.html', context)
 
 	def marks_by_tests(request, course_id):
 		course = Course.objects.get(id=course_id)
@@ -161,7 +165,8 @@ class Course_group():
 		context["course"]=course
 		context["from_task"]=False
 		context["tasks"]=Marks.by_tests(course_id=course_id)
-		return render(request, 'Pages/Course/Marks/main/exports.html', context)
+		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Результаты" }]
+		return render(request, 'Pages/Course/Marks/tests/exports.html', context)
 
 	def requests(request, course_id):
 		pending_users=Course.objects.load_course_requests(course_id=course_id)

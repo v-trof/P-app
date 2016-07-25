@@ -44,6 +44,8 @@ test_patterns = [
     url(r'^attempt/check/$', test.attempt_check, name="check_attempt"),
     url(r'^attempt/results/$', test.results, name="test_results"),
     url(r'^get_results/$', test.get_results),
+    url(r'^get_test_info/$', test.get_test_info),
+    url(r'^get_attempt_info/$', test.get_attempt_info),
 ]
 
 material_patterns = [

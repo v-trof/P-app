@@ -1,3 +1,21 @@
+{% load keyvalue from filters %}
+{% load makelist from filters %}
+{% load makeuser from filters %}
 {% include "#&/linkbox/" %}
-
-{# Test sections forloop #}
+<section class='tasks'>
+	{% for task_id, task in tasks.items %}
+		<h3>Задание</h3> <br> {{tasks_info.task_id}}
+		{% include "Elements/card/assignment/" with assignment=tasks_info|keyvalue:task_id %}
+		{% for group_name, group_results in task.items %}
+			<h3>{{ group_name }}</h3>
+			<br>
+			{% for user_id, user_results in group_results.items %}
+				{% with user=user_id|makeuser %}
+					{% with results=user_results|makelist %}
+						{% include "Elements/card/user/extended/" with extension="Elements/card/marks/" %}
+					{% endwith %}
+				{% endwith %}
+			{% endfor %}
+		{% endfor %}
+	{% endfor %}
+</section>

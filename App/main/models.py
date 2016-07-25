@@ -883,7 +883,7 @@ class CourseManager(models.Manager):
 			else: user_status = "guest"
 		return user_status
 
-	def load_groups(self, user, course):
+	def load_groups(self, course, user=None):
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
 		groups={}
@@ -1110,6 +1110,7 @@ class CourseManager(models.Manager):
 					if user.id in result["unseen_by"]:
 						result_preview=result
 						result_preview["user"]=User.objects.get(id=user_id)
+						result_preview["course"]=course
 						updates["new_results"].append(result_preview)
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as data_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
@@ -2053,8 +2054,6 @@ class Test():
 			with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 				test_info=json.load(info_file)
 			return test_info
-		else:
-			return None
 	
 	def get_test_info(course_id, test_id):
 		with io.open('main/files/json/courses/'+str(course_id)+'/tests/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
@@ -2090,9 +2089,38 @@ class Marks():
 
 	def by_tasks(course_id,group_list=None):
 		course=Course.objects.get(id=int(course_id))
-		#neeeeeeeeeeeeeed!
 		marks={}
-		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
-			data=json.load(data_file)
+		for assignment in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*'):
+			with io.open(assignment, 'r', encoding='utf8') as data_file:
+				data = json.load(data_file)
+				id=assignment[:-5].split("/")[5][12:]
+				test_list=[]
+				for test in data["content"]["tests"]:
+					test_list.append(test["id"])
+				marks[str(id)]={}
+			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
+				data=json.load(data_file)
+			if not group_list:
+				group_list=data["groups"].keys()
+			for group in group_list:
+				marks[str(id)][group]={}
+				for user_id in data["groups"][group]:
+					marks[str(id)][group][str(user_id)]={}
+					for test in test_list:
+						result=Test.get_results(course_id=course_id,test_id=test,user=User.objects.get(id=int(user_id)))
+						if result:
+							result["course"]=Course.objects.get(id=int(course_id))
+							result["user"]=User.objects.get(id=int(user_id))
+							marks[str(id)][group][str(user_id)][str(test)]=result
 		return marks
+
+	def tasks_info(course_id):
+		tasks_info={}
+		for assignment in glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*'):
+			with io.open(assignment, 'r', encoding='utf8') as data_file:
+				data = json.load(data_file)
+				id=assignment[:-5].split("/")[5][12:]
+				tasks_info[id]=data
+		return tasks_info
+
 
