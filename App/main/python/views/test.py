@@ -185,13 +185,13 @@ def set_mark_quality(mark):
 	return Test.object.set_mark_quality(mark=mark)
 
 def get_results(request, course_id, test_id):
-	return Test.get_results(course_id=course_id, test_id=test_id)
+	return HttpResponse(json.dumps(Test.get_results(course_id=course_id, test_id=test_id),ensure_ascii=False))
 
 def get_test_info(request, course_id, test_id):
-	return Test.get_test_info(course_id=course_id, test_id=test_id)
+	return HttpResponse(json.dumps(Test.get_test_info(course_id=course_id, test_id=test_id),ensure_ascii=False))
 
 def get_attempt_info(request, course_id, test_id):
-	return Test.get_attempt_info(course_id=course_id, test_id=test_id, user=request.user)
+	return HttpResponse(json.dumps(Test.get_attempt_info(course_id=course_id, test_id=test_id, user=request.user),ensure_ascii=False))
 
 def load_embmend(request):
 	course_id=request.GET["course_id"]
@@ -217,5 +217,5 @@ def get_results(request):
 		course_id=request.POST["course_id"]
 		test_id=request.POST["test_id"]
 		user_id=request.POST["user_id"]
-		return Test.get_results(course_id=course_id,test_id=test_id,user=User.objects.get(id=int(user_id)))
+		return HttpResponse(json.dumps(Test.get_results(course_id=course_id,test_id=test_id,user=User.objects.get(id=int(user_id))),ensure_ascii=False))
 
