@@ -92,7 +92,6 @@ def publish(request):
 			if setting.startswith('min_for'):
 				if request.POST[setting]!='':
 					mark_setting[setting[-1]]=int(request.POST[setting])
-				else: mark_setting[setting[-1]]=101
 			elif setting.startswith('autocorrect_'):
 				if request.POST[setting]=="true":
 					allowed_mistakes.append(setting[12:])

@@ -4,7 +4,7 @@
 	{% endif %}
 	
 	{% for result in results %}
-		<a href="/test/attempt/results?course_id={{result.course.id}}&test_id={{result.test.id}}&user_id={{result.user.id}}"><button
+		<a href="/test/attempt/results?course_id={{result.course.id}}&test_id={{result.test.id}}{% if result.user.id %}&user_id={{result.user.id}}{% endif %}"><button
 			class="--ghost __mark --{{result.mark.quality}}"
 			id="c_{{result.course.name}}_m{{ forloop.counter }}"
 			tip='Тест:"{{result.test.title}}"<br><br>

@@ -21,7 +21,7 @@ class Main_group():
 				],
 				"contacts_view_allowed": contacts_view_allowed,
 				"contacts":User.objects.get_contacts(user=user),
-				"possible_contacts": ["Мобильный телефон","ВКонтакте","Facebook","Дневник.py"],
+				"possible_contacts": ["Мобильный телефон","ВКонтакте","Facebook","Дневник.py","email"],
 			})
 
 	def home(request):
@@ -136,6 +136,7 @@ class Course_group():
 		context={}
 		context["course"]=course
 		context["from_task"]=True
+		context["results"]=True
 		if 'task_id' in request.GET:
 			print('task')
 			task_id=request.GET['task_id']
