@@ -2114,6 +2114,14 @@ class Marks():
 							marks[str(id)][group][str(user_id)][str(test)]=result
 		return marks
 
+	def get_tests(course_id,task_id):
+		test_list=[]
+		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/'+str(task_id)+'.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+		for test in data["content"]["tests"]:
+			test_list.append(test["id"])
+		return test_list
+
 	def tasks_info(course_id):
 		tasks_info={}
 		for assignment in glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*'):

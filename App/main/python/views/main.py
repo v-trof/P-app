@@ -136,7 +136,8 @@ class Course_group():
 		context={}
 		context["course"]=course
 		context["from_task"]=True
-		test_id=request.GET['test_id']
+		task_id=request.GET['task_id']
+		context["tests"]=Marks.get_tests(course_id=course_id, task_id=task_id)
 		context["groups"]=Course.objects.load_groups(course=Course.objects.get(id=int(course_id)))
 		context["breadcrumbs"]=[{"href": "/course/" + str(course.id),"link": course.name},{"href": "#","link": "Результаты" }]
 		return render(request, 'Pages/Course/Marks/results/exports.html', context)
