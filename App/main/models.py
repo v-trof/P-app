@@ -1075,7 +1075,7 @@ class CourseManager(models.Manager):
 			for requesting_user_id in data["pending_users"]["Заявки"]:
 				updates["requesting_users"].append(User.objects.get(id=requesting_user_id))
 		updates["new_results"] = []
-		updates["irrelevant"]=[]
+		updates["expired"]={}
 		for user_id in data["users"]:
 			if os.path.exists('main/files/json/courses/' + str(course.id) + '/users/' + str(user_id) + '/assignments.json'):
 				with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user_id) + '/assignments.json', 'r', encoding='utf8') as json_file:
@@ -1103,7 +1103,7 @@ class CourseManager(models.Manager):
 										new_data["relevant"]=False
 						else: new_data["relevant"]=True
 						if new_data["relevant"]==False:
-							updates["irrelevant"].append(user_id)
+							updates["expired"][user_id]=task
 			for test_result in glob.glob('main/files/json/courses/' + str(course.id) + '/users/' + str(user_id) + '/tests/results/*.json'):
 				with io.open(test_result, 'r', encoding='utf8') as result_file:
 					result = json.load(result_file)
@@ -1114,8 +1114,7 @@ class CourseManager(models.Manager):
 						updates["new_results"].append(result_preview)
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as data_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
-			data_file.write(saving_data)
-		print(updates)	
+			data_file.write(saving_data)	
 		return updates
 
 class Course(models.Model):
@@ -1295,7 +1294,7 @@ class UserManager(UserManager):
 				data = json.load(data_file)
 				updates[course_id]["course"]=Course.objects.get(id=course_id)
 				updates[course_id]["new_students"] = []
-				updates[course_id]["irrelevant"]=[]
+				updates[course_id]["expired"]=[]
 				for user_id in data["teachers"][str(user.id)]["new_users"]:
 					updates[course_id]["new_students"].append(User.objects.get(id=user_id))
 				if data["status"] == "closed":
@@ -1328,8 +1327,8 @@ class UserManager(UserManager):
 												new_data["relevant"]=False
 								else: new_data["relevant"]=True
 								if new_data["relevant"]==False:
-									if not user_id in updates[course_id]["irrelevant"]:
-										updates[course_id]["irrelevant"].append(user_id)
+									if not user_id in updates[course_id]["expired"]:
+										updates[course_id]["expired"].append(user_id)
 					for test_result in glob.glob('main/files/json/courses/' + course_id + '/users/' + str(user_id) + '/tests/results/*.json'):
 						with io.open(test_result, 'r', encoding='utf8') as test_data_file:
 							result = json.load(test_data_file)

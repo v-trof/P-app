@@ -184,14 +184,23 @@ def give_mark(request, percentage, course_id, test_id):
 def set_mark_quality(mark):
 	return Test.object.set_mark_quality(mark=mark)
 
-def get_results(request, course_id, test_id):
-	return HttpResponse(json.dumps(Test.get_results(course_id=course_id, test_id=test_id),ensure_ascii=False))
+def get_results(request):
+	if request.method == 'POST':
+		test_id = request.POST.get("test_id",None)
+		course_id = request.POST.get("course_id",None)
+		return HttpResponse(json.dumps(Test.get_results(course_id=course_id, test_id=test_id),ensure_ascii=False))
 
-def get_test_info(request, course_id, test_id):
-	return HttpResponse(json.dumps(Test.get_test_info(course_id=course_id, test_id=test_id),ensure_ascii=False))
+def get_test_info(request):
+	if request.method == 'POST':
+		test_id = request.POST.get("test_id",None)
+		course_id = request.POST.get("course_id",None)
+		return HttpResponse(json.dumps(Test.get_test_info(course_id=course_id, test_id=test_id),ensure_ascii=False))
 
-def get_attempt_info(request, course_id, test_id):
-	return HttpResponse(json.dumps(Test.get_attempt_info(course_id=course_id, test_id=test_id, user=request.user),ensure_ascii=False))
+def get_attempt_info(request):
+	if request.method == 'POST':
+		test_id = request.POST.get("test_id",None)
+		course_id = request.POST.get("course_id",None)
+		return HttpResponse(json.dumps(Test.get_attempt_info(course_id=course_id, test_id=test_id, user=request.user),ensure_ascii=False))
 
 def load_embmend(request):
 	course_id=request.GET["course_id"]

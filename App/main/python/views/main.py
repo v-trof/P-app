@@ -107,6 +107,7 @@ class Course_group():
 	def updates(request, course_id):
 		context={}
 		context=Course.objects.load_updates(course=Course.objects.get(id=course_id), user=request.user)
+		context["tasks_info"]=Marks.tasks_info(course_id=course_id)
 		context["course"]=Course.objects.get(id=course_id)
 		context["breadcrumbs"]=[{"href": "#","link": "Обновления" }]
 		return render(request, 'Pages/Course/updates/exports.html', context)
