@@ -1,0 +1,12 @@
+<section class="students">
+	{% for group, members in groups.items %}
+		{% if members|length %}	
+		<div class="group">
+			<h3>{{group}}</h3>
+			{% for member in members %}
+				{% include "Elements/card/user/extended/" with extension="#&/marks/" user=member %}
+			{% endfor %}
+		</div>
+		{% endif %}
+	{% endfor %}
+</section>

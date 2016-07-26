@@ -1,0 +1,6 @@
+{
+	"elements": ["Modules/test_generate",
+				 "Modules/test_manager",
+				 "Modules/scroll",
+				 "Modules/panel"]
+}

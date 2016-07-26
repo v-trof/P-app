@@ -1,9 +1,9 @@
 {
 	"elements": ["сard/user/extended",
 				 "Inputs/textarea",
+				 "Modules/replace",
 				 "Modules/accordion",
-				 "Modules/test_generate",
-				 "Modules/test_manager"],
+				 "Modules/results_controls"],
 	"scripts": [],
 	"styles": [],
 	"fixes": [],
