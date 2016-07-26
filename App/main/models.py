@@ -2048,21 +2048,26 @@ class Test():
 			results_file.write(json.dumps(test_results, ensure_ascii=False))
 		return 0
 
-	def get_results(course_id,test_id,user):
-		if os.path.exists('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json'):
-			with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+	def get_results(course_id,test_id,user_id):
+		if os.path.exists('main/files/json/courses/'+str(course_id)+'/users/'+str(user_id)+'/tests/results/'+test_id+'.json'):
+			with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user_id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as info_file:
 				test_info=json.load(info_file)
 			return test_info
+		else: return "Тест не был выполнен"
 	
 	def get_test_info(course_id, test_id):
-		with io.open('main/files/json/courses/'+str(course_id)+'/tests/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
-			test_info = json.load(info_file)
-		return test_info
+		if os.path.exists('main/files/json/courses/'+str(course_id)+'/tests/'+str(test_id)+'.json'):
+			with io.open('main/files/json/courses/'+str(course_id)+'/tests/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
+				test_info = json.load(info_file)
+			return test_info
+		else: return "Тест не существует"
 		
-	def get_attempt_info(course_id, test_id, user):
-		with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user.id)+'/tests/attempts/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
-			attempt_info=json.load(info_file)
-		return attempt_info
+	def get_attempt_info(course_id, test_id, user_id):
+		if os.path.exists('main/files/json/courses/'+str(course_id)+'/users/'+str(user_id)+'/tests/attempts/'+str(test_id)+'.json'):
+			with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user_id)+'/tests/attempts/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
+				attempt_info=json.load(info_file)
+			return attempt_info
+		else: return "Попытка не существует"
 
 	def is_creator(user,test_id,course_id):
 		with io.open('main/files/json/courses/'+str(course_id)+'/tests/'+str(test_id)+'.json', 'r', encoding='utf8') as info_file:
