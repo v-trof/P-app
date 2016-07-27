@@ -222,11 +222,3 @@ def load_asset_file(request, course_id, test_id, asset_name):
 	response['Content-Disposition']='attachment; filename=myfile.zip'
 	return response
 
-
-def get_results(request):
-	if request.method == 'POST':
-		course_id=request.POST["course_id"]
-		test_id=request.POST["test_id"]
-		user_id=request.POST["user_id"]
-		return HttpResponse(json.dumps(Test.get_results(course_id=course_id,test_id=test_id,user=User.objects.get(id=int(user_id))),ensure_ascii=False))
-
