@@ -141,7 +141,6 @@ class Utility():
 	def is_member(user,course_id):
 		with io.open('main/files/json/courses/'+str(course_id)+'/info.json', 'r', encoding='utf8') as info_file:
 			course_info=json.load(info_file)
-		print(user.id,course_info["users"])
 		return user.id in course_info["users"]
 
 	def is_teacher(user,course_id):
@@ -195,7 +194,6 @@ class Utility():
 		return item["object"].name
 
 	def sort_by_alphabet(object,indicator=False):
-		print(object)
 		if (len(object) > 1):
 			if isinstance(object,dict):
 				if indicator:
@@ -204,10 +202,18 @@ class Utility():
 			else: object.sort(key=Utility.sort_by_name, reverse=False)
 		return object
 
+	def send_response(message,type=None):
+		if type:
+			response={"message":message,"type":type}
+			return HttpResponse(json.dumps(response), content_type = "application/json")
+		else: return HttpResponse(message)
+
+
+
 class CourseManager(models.Manager):
 
 	def create_course(self, name, subject, creator, is_closed):
-		if is_closed=="false":
+		if is_closed == "false":
 				is_closed=False
 		course = self.create(name=name, subject=subject, creator=creator.id)
 		course.save()
@@ -2134,5 +2140,44 @@ class Marks():
 				id=assignment[:-5].split("/")[5][12:]
 				tasks_info[id]=data
 		return tasks_info
+
+	def get_marks_by_test(course_id,test_id,group_list=None):
+		marks={}
+		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
+			data=json.load(data_file)
+		if not group_list:
+			group_list=data["groups"].keys()
+		for group in group_list:
+			marks[group]={}
+			for user_id in data["groups"][group]:
+				if os.path.exists('main/files/json/courses/'+str(course_id)+'/users/'+str(user_id)+'/tests/results/'+test_id+'.json'):
+					with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user_id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+						test_info=json.load(info_file)
+					marks[group][str(user_id)]=test_info["mark"]
+		return marks
+
+	def get_marks_by_task(course_id,task_id,group_list=None):
+		marks={}
+		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/'+task_id+'.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+		test_list=[]
+		for test in data["content"]["tests"]:
+			test_list.append(test["id"])
+
+		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
+			data=json.load(data_file)
+		if not group_list:
+			group_list=data["groups"].keys()
+		for group in group_list:
+			marks[group]={}
+			for user_id in data["groups"][group]:
+				marks[group][str(user_id)]=[]
+				for test_id in test_list:
+					if os.path.exists('main/files/json/courses/'+str(course_id)+'/users/'+str(user_id)+'/tests/results/'+test_id+'.json'):
+						with io.open('main/files/json/courses/'+str(course_id)+'/users/'+str(user_id)+'/tests/results/'+test_id+'.json', 'r', encoding='utf8') as info_file:
+							test_info=json.load(info_file)
+						marks[group][str(user_id)].append(test_info["mark"])
+		return marks
+
 
 

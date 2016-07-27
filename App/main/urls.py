@@ -104,9 +104,7 @@ func_patterns = [
 
 course_patterns = [
     url(r'^(?P<course_id>[0-9]+)/groups/$', main.Course_group.groups, name="groups"),
-    url(r'^(?P<course_id>[0-9]+)/groups_content/$', main.Course_group.Elements.groups_content, name="groups_content"),
     url(r'^(?P<course_id>[0-9]+)/give_task/$', main.Course_group.new_task, name="give_task"),
-    url(r'^(?P<course_id>[0-9]+)/requests/$', main.Course_group.requests, name="course_requests"),
     url(r'^(?P<course_id>[0-9]+)/$', main.Course_group.main, name="course"),
     url(r'^(?P<course_id>[0-9]+)/updates/$', main.Course_group.updates, name="updates"),
     url(r'^(?P<course_id>[0-9]+)/sources/$', main.Course_group.sources, name='sources'),
