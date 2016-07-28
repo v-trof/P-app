@@ -1,5 +1,15 @@
 <section class="students">
 	<h2>Ученики</h2>
+		{% if course.is_closed %}
+			<h3>Заявки</h3>
+			{% for user in course_data.requests %}
+				{% include "Elements/card/user/extended/" with
+				extension="#&/../_extensions/request/" %}
+				{% empty %}
+				<div class="--empty">Заявки отсутствуют</div>
+			{% endfor %}
+		{% endif %}
+
 		{% for group, members in course_data.groups.items %}
 			{% include "#&/group/" %}
 		{% endfor %}

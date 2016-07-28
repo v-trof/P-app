@@ -38,16 +38,16 @@ def create(request):
 		}]
 	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
 	context["type"]= "material"
-	print(context["sections"])
 	return render(request, 'Pages/Material/editor/exports.html', context)
 
 
 def delete(request):
 	# moves material to trash bin
-	course_id = request.POST.get("course_id",None)
-	material_id = request.POST.get("material_id",None)
-	Material.delete(course_id=course_id, material_id=material_id)
-	return HttpResponse("Материал удален")
+	if request.method == 'POST':
+		course_id = request.POST.get("course_id",None)
+		material_id = request.POST.get("material_id",None)
+		Material.delete(course_id=course_id, material_id=material_id)
+		return HttpResponse("Материал удален")
 
 def load(request):
 	# loads material file
@@ -75,8 +75,8 @@ def save(request):
 		json_file = request.POST.get("json_file",None)
 		course_id = request.POST.get("course_id",None)
 		material_id = request.POST.get("material_id",None)
-		Material.save(json_file=json_file, course_id=course_id, material_id=material_id, user=request.user)
-	return HttpResponse("Материал сохранен")
+		response = Material.save(json_file=json_file, course_id=course_id, material_id=material_id, user=request.user)
+		return HttpResponse(response)
 
 
 def publish(request):
@@ -85,15 +85,16 @@ def publish(request):
 		course_id = request.POST.get("course_id",None)
 		material_id = request.POST.get("material_id",None)
 		section = request.POST.get("section","Нераспределенные")
-		Material.publish(course_id=course_id, material_id=material_id,section=section)
-	return HttpResponse("Материал опубликован")
+		response = Material.publish(course_id=course_id, material_id=material_id,section=section)
+		return HttpResponse(response)
 
 
 def unpublish(request):
-	course_id = request.POST.get("course_id",None)
-	material_id = request.POST.get("material_id",None)
-	Material.unpublish(course_id=course_id, material_id=material_id)
-	return HttpResponse("Тест скрыт")
+	if request.method == 'POST':
+		course_id = request.POST.get("course_id",None)
+		material_id = request.POST.get("material_id",None)
+		response = Material.unpublish(course_id=course_id, material_id=material_id)
+		return HttpResponse(response)
 
 
 def share(request):
@@ -112,7 +113,7 @@ def read(request):
 		context["type"]= "material"
 		return render(request, 'Pages/Material/read/exports.html', context)
 	else:
-		return redirect('/')
+		return redirect('/', {"notifications": [{"type": "error", "message": "Доступ ограничен"}]})
 
 def upload_asset(request):
 	if request.method == 'POST':
@@ -121,7 +122,7 @@ def upload_asset(request):
 		material_id=request.POST.get("material_id",None)
 		path='main/files/media/courses/' + course_id + '/assets/' + material_id + "/"
 		filename=Material.upload_asset(
-		    asset=asset, course_id=course_id, material_id=material_id, path=path)
+			asset=asset, course_id=course_id, material_id=material_id, path=path)
 		return HttpResponse(filename)
 
 def upload_asset_by_url(request):
@@ -139,25 +140,25 @@ def upload_downloadable(request):
 		course_id=request.POST.get("course_id",None)
 		material_id=request.POST.get("material_id",None)
 		path='main/files/media/courses/' + course_id + '/assets/' + material_id + "/"
-		Material.upload_downloadable(
-		    asset=asset, course_id=course_id, material_id=material_id, path=path)
-	return HttpResponse("ok")
+		response = Material.upload_downloadable(
+			asset=asset, course_id=course_id, material_id=material_id, path=path)
+		return HttpResponse(response)
 
 # embmend
 def upload_embmend(request):
 	if request.method == 'POST':
-		asset=request.POST["code"]
-		course_id=request.POST["course_id"]
-		material_id=request.POST["material_id"]
+		asset=request.POST.get("code",None)
+		course_id=request.POST.get("course_id",None)
+		material_id=request.POST.get("material_id",None)
 		path='main/files/media/courses/' + course_id + '/assets/' + material_id + "/"
 		asset_id=Material.upload_embmend(
-		    path=path, asset=asset, course_id=course_id, material_id=material_id)
+			path=path, asset=asset, course_id=course_id, material_id=material_id)
 		return HttpResponse(asset_id)
 
 def load_embmend(request):
-	course_id=request.GET["course_id"]
-	material_id=request.GET["material_id"]
-	asset_id=request.GET["asset_id"]
+	course_id=request.GET.get("course_id",None)
+	material_id=request.GET.get("material_id",None)
+	asset_id=request.GET.get("asset_id",None)
 	path='main/files/media/courses/' + course_id + '/assets/' + material_id + "/"
 	f=open(path + asset_id + ".html", 'r')
 	asset=f.read()
@@ -168,6 +169,6 @@ def load_asset_file(request, course_id, material_id, asset_name):
 	f=open(path + asset_name, 'r')
 	asset=f.read()
 	response=HttpResponse(FileWrapper(asset.getvalue()),
-	                      content_type='application/zip')
+						  content_type='application/zip')
 	response['Content-Disposition']='attachment; filename=myfile.zip'
 	return response
