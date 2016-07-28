@@ -8,12 +8,14 @@ generate.let_editing = function($element) {
 		true
 	)
 
+	indicator.add($element, 'down', 1);
+
 	pull_put.put_zone.add($element, function(event, $element, $pulled) {
 		$element.after($pulled);
 		// generate.let_editing();
 		// console.log($pulled);
 		editor.check_self();
-
+		indicator.hide(1);
 		pull_put.reset();
 	});
 }

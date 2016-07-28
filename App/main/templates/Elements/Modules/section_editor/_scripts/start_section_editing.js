@@ -37,12 +37,18 @@ section_editor.start_section_editing = function($section) {
 		pull_put.puller.add(
 			$(this),
 			section_editor.pull.actions,
-			section_editor.pull.additional
+			section_editor.pull.additional,
+			function() {
+				indicator.show(1)
+			}
 		)
+
+		indicator.add($(this), 'down', 1)
 
 		pull_put.put_zone.add($(this), function(event, $this, $put) {
 			$this.after($put)
 			pull_put.reset()
+			indicator.hide(1)
 		}, function($put_zone) {
 			section_editor.check_empty('_all')
 			section_editor._put_callback($put_zone)

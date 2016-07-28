@@ -1,3 +1,7 @@
+Array.prototype.has = function(value) {
+	return (this.indexOf(value) > -1)
+}
+
 results_display.summary_template = function(index, value, quality) {
 	return '<div class="card --small sumfor_'
 		+ index + ' row">'

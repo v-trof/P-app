@@ -8,7 +8,7 @@ function defined(variable) {
  
 section_editor = {}
 
-section_editor.init_done = false;
+section_editor.init_done = false
 section_editor.init = function(arguments) {
 	/*
 
@@ -42,7 +42,7 @@ section_editor.init = function(arguments) {
 	}
 	*/
 
-	console.log(arguments);
+	console.log(arguments)
 
 	//accept required arguments
 	section_editor.$parent = arguments.$parent.first()
@@ -137,9 +137,9 @@ section_editor.init = function(arguments) {
 			.text() === unordered_heading) {
 			section_editor.$unordered = $(this)
 
-			section_editor.$parent.prepend(section_editor.$unoredered);
+			section_editor.$parent.prepend(section_editor.$unoredered)
 		}
-	});
+	})
 
 	setTimeout(function(){
 		if(!defined(section_editor.$unordered)) {
@@ -157,14 +157,19 @@ section_editor.init = function(arguments) {
 	//finish startup
 	section_editor.$add_button = $('<a class="--card">'
 		+ '<button class="--flat" id="edit_toggle">' + section_editor.add_button_text
-		+ '</button></a>');
+		+ '</button></a>')
 
-	$(".linkbox").last().append(section_editor.$add_button);
+	$(".linkbox").last().append(section_editor.$add_button)
 
 	section_editor.$add_button.click(function(event) {
-		section_editor.add_section();
-	});
+		section_editor.add_section()
+	})
 
 	section_editor.block_editing()
-	section_editor.init_done = true;
+	section_editor.init_done = true
+
+	$("body").on('click', '.pull_put_ui .__actions>div>button', function() {
+		console.log('hide')
+		indicator.hide(1)
+	})
 }

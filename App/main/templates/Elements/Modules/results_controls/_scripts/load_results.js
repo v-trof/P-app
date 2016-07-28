@@ -8,6 +8,8 @@ results_controls.load = function() {
 	var test_id = results_controls.active_test;
 	var user_id = results_controls.active_student;
 
+	console.log(results_controls);
+
 	function check_load() {
 		if(loaded.test && loaded.results.mark && loaded.results.attempt) {
 			results_controls.display();
@@ -50,6 +52,7 @@ results_controls.load = function() {
 	} else {
 		results_controls.loaded.results[test_id + "-" + user_id] = {}
 
+		console.log(user_id);
 		$.ajax({
 			url: '/test/get_results/',
 			type: 'POST',
@@ -65,6 +68,7 @@ results_controls.load = function() {
 			results_controls.loaded.results[test_id + "-" + user_id].mark = JSON.parse(json);
 		});
 
+		console.log(user_id);
 		$.ajax({
 			url: '/test/get_attempt_info/',
 			type: 'POST',

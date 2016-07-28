@@ -6,10 +6,12 @@ var editor = (function() {
 			
 			pull_put.put_zone.add($starter_element, function(e, $element, $pulled) {
 				$element.replaceWith($pulled);
+				indicator.hide(1);
 				editor.check_self();
 				pull_put.reset();
 			});
 
+			indicator.add($starter_element, 'add', 1);
 			material_content.append($starter_element);
 		}
 	}
@@ -40,6 +42,10 @@ $("body").on("click", ".--button-delete, .pull_put_ui .__actions button", functi
 	editor.check_self();
 });
 
+$("body").on('click', '.pull_put_ui __actions>div>button', function() {
+	console.log('hide');
+	indicator.hide(1);
+});
 $(document).ready(function() {
 	editor.check_self();
 });

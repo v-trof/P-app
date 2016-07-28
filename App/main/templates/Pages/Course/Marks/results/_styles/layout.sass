@@ -11,12 +11,16 @@ section.main
 	&>div
 		height: 100%
 .students
-	width: 22rem
+	min-width: 24rem
+	padding-right: $border--s + $padding--m
+	overflow-y: auto
+	overflow-x: hidden
 	.card.--user
 		.__extension
 			flex: 0
 .card.--divider
-	margin: -$padding--m $margin--m
+	margin: -$padding--m 0
+	margin-right: $padding--m
 	margin-top: -$margin--xl + $padding--m
 	border-radius: 0
 	width: 2rem
@@ -25,4 +29,5 @@ section.main
 	display: flex
 	flex-direction: column
 	width: 100%
-	padding-left: 1rem
+	margin-left: -1rem
+	padding-right: 16.25rem

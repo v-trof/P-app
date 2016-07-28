@@ -19,6 +19,7 @@ generate.edit = (function() {
 
 	var exports = {
 		start: function() {
+			indicator.show(1);
 			var $element = pull_put.ui.element;
 			
 			var element_class = $element
@@ -66,7 +67,7 @@ generate.edit = (function() {
 				_action($this, $pulled);
 				
 				pull_put.reset();
-
+				indicator.hide(1);
 				if(typeof editor !== "undefined") {
 					editor.check_self();
 				}

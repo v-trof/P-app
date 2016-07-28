@@ -31,10 +31,13 @@ generate.let_editing = function($element) {
 		$element,
 		["add", "save", "delete"],
 		generate.edit.edit_action,
-		undefined,
+		function() {
+			indicator.show(1);
+		},
 		false,
 		true);
 
+	indicator.add($element, 'down', 1);
 	generate.edit.add_put_zone($element, function($this, $pulled) {
 		$this.after($pulled);
 	})

@@ -12,6 +12,7 @@ var editor = (function() {
 				if($(this).children('.question--empty').length == 0) {
 					$empty = $("<div class='question--empty --empty'>Добавьте сюда вопрос</div>");
 				
+					indicator.add($empty, 'add', 1);
 					$(this).prepend($empty);
 
 					generate.edit.add_put_zone($empty, function($this, $pulled) {
@@ -30,6 +31,7 @@ var editor = (function() {
 				if($(this).children('.answer--empty').length == 0) {
 					var $empty = $("<div class='answer--empty --empty'>Добавьте сюда поле ответа</div>");
 
+					indicator.add($empty, 'add', 1);
 					$(this).append($empty);
 
 					generate.edit.add_put_zone($empty, function($this, $pulled) {
@@ -68,4 +70,10 @@ var editor = (function() {
 
 $("body").on("click", ".--button-delete, .pull_put_ui .__actions button", function() {
 	editor.check_self();
+});
+
+
+$("body").on('click', '.pull_put_ui .__actions>div>button', function() {
+	console.log('hide');
+	indicator.hide(1);
 });
