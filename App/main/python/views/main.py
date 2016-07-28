@@ -12,7 +12,8 @@ class Main_group():
 
 	def profile(request, user_id):
 		if not User.objects.filter(id=user_id).exists():
-			return redirect('/', {"notifications": [{"type": "error", "message": "Профиль не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Профиль не существует"}]
+			return redirect('/')
 		user = User.objects.get(id=user_id)
 		contacts_view_allowed = User.objects.get_view_permission(
 			user=user, requesting_user=request.user)
@@ -94,20 +95,22 @@ class Auth_group():
 		code = request.GET['code']
 		approve_info = User.objects.approve(code=code, type=type)
 		if approve_info == None:
-			return redirect('/', {"notifications": [{"type": "error", "message": "Код не подходит"}]})
+			request.session['notifications']=[{"type": "error", "message": "Код не подходит"}]
+			return redirect('/')
 		user_id = approve_info["user_id"]
 		requesting_data = approve_info["requesting_data"]
 		if User.objects.filter(id=int(user_id)).exists():
 			return render(request, 'Pages/Account/secure_entry/exports.html', {"user": User.objects.get(id=int(user_id)), "type": type, "code": code, "requesting_data": requesting_data})
 		else:
-			return redirect('/', {"notifications": [{"type": "error", "message": "Пользователь не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Пользователь не существует"}]
+			return redirect('/')
 
 
 class Course_group():
-
 	def main(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
-			return redirect('/', {"notifications": [{"type": "error", "message": "Курс не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
+			return redirect('/')
 		course = Course.objects.get(id=course_id)
 		if not request.user.is_anonymous():
 			is_participant = Course.objects.check_participance(
@@ -130,9 +133,11 @@ class Course_group():
 
 	def updates(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
-			return redirect('/', {"notifications": [{"type": "error", "message": "Курс не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
+			return redirect('/')
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
-			return redirect('/course/' + course_id + '/', {"notifications": [{"type": "error", "message": "Доступ ограничен"}]})
+			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
+			return redirect('/course/' + course_id + '/')
 		context = {}
 		context = Course.objects.load_updates(
 			course=Course.objects.get(id=course_id), user=request.user)
@@ -143,7 +148,8 @@ class Course_group():
 
 	def sources(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
-			return redirect('/', {"notifications": [{"type": "error", "message": "Курс не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
+			return redirect('/')
 		course = Course.objects.get(id=course_id)
 		context = {}
 		context["sources"] = Course.objects.load_sources(
@@ -157,9 +163,11 @@ class Course_group():
 
 	def manage(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
-			return redirect('/', {"notifications": [{"type": "error", "message": "Курс не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
+			return redirect('/')
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
-			return redirect('/course/' + course_id + '/', {"notifications": [{"type": "error", "message": "Доступ ограничен"}]})
+			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
+			return redirect('/course/' + course_id + '/')
 		course = Course.objects.get(id=course_id)
 		context = {}
 		context["subjects"] = ["Русский язык", "Математика", "Английский язык"]
@@ -175,9 +183,11 @@ class Course_group():
 
 	def results(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
-			return redirect('/', {"notifications": [{"type": "error", "message": "Курс не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
+			return redirect('/')
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
-			return redirect('/course/' + course_id + '/', {"notifications": [{"type": "error", "message": "Доступ ограничен"}]})
+			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
+			return redirect('/course/' + course_id + '/')
 		course = Course.objects.get(id=course_id)
 		context = {}
 		context["course"] = course
@@ -196,7 +206,8 @@ class Course_group():
 				course_id=course_id, test_id=test_id)
 			context["test_id"] = test_id
 		else:
-			return redirect('/', {"notifications": [{"type": "error", "message": "Недостаточно данных"}]})
+			request.session['notifications']=[{"type": "error", "message": "Недостаточно данных"}]
+			return redirect('/')
 		context["groups"] = Course.objects.load_groups(
 			course=Course.objects.get(id=int(course_id)))
 		context["breadcrumbs"] = [
@@ -215,9 +226,11 @@ class Course_group():
 
 	def marks_by_groups(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
-			return redirect('/', {"notifications": [{"type": "error", "message": "Курс не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
+			return redirect('/')
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
-			return redirect('/course/' + course_id + '/', {"notifications": [{"type": "error", "message": "Доступ ограничен"}]})
+			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
+			return redirect('/course/' + course_id + '/')
 		course = Course.objects.get(id=course_id)
 		context = {}
 		context["course"] = course
@@ -230,9 +243,11 @@ class Course_group():
 
 	def marks_by_tests(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
-			return redirect('/', {"notifications": [{"type": "error", "message": "Курс не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
+			return redirect('/')
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
-			return redirect('/course/' + course_id + '/', {"notifications": [{"type": "error", "message": "Доступ ограничен"}]})
+			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
+			return redirect('/course/' + course_id + '/')
 		course = Course.objects.get(id=course_id)
 		context = {}
 		context["course"] = course
@@ -244,7 +259,8 @@ class Course_group():
 
 	def groups(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
-			return redirect('/', {"notifications": [{"type": "error", "message": "Курс не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
+			return redirect('/')
 		course = Course.objects.get(id=course_id)
 		course_data = {}
 		course_data["user_status"] = Course.objects.load_user_status(
@@ -271,9 +287,11 @@ class Course_group():
 
 	def new_task(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
-			return redirect('/', {"notifications": [{"type": "error", "message": "Курс не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
+			return redirect('/')
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
-			return redirect('/course/' + course_id + '/', {"notifications": [{"type": "error", "message": "Доступ ограничен"}]})
+			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
+			return redirect('/course/' + course_id + '/')
 		course = Course.objects.get(id=course_id)
 		context = {}
 		context["course"] = {}
@@ -296,9 +314,11 @@ class Course_group():
 
 	def edit_assignment(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
-			return redirect('/', {"notifications": [{"type": "error", "message": "Курс не существует"}]})
+			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
+			return redirect('/')
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
-			return redirect('/course/' + course_id + '/', {"notifications": [{"type": "error", "message": "Доступ ограничен"}]})
+			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
+			return redirect('/course/' + course_id + '/')
 		course = Course.objects.get(id=course_id)
 		task_id = request.GET['task_id']
 		context = {}

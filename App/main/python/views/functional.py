@@ -387,3 +387,8 @@ def delete_file(request):
         path = request.POST.get("path", None)
         status = Utility.delete_file(path=path)
         return HttpResponse(status)
+
+def delete_notification(request):
+    if request.method == 'POST':
+        del request.session['notifications']
+        return HttpResponse('ok')

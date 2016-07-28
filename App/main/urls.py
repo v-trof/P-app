@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from .python.views import main
-from .python.views import functional
-from .python.views import test
-from .python.views import material
-from .python.views import testing_system
+import main.python.views
+from main.python.views import main
+from main.python.views import functional
+from main.python.views import test
+from main.python.views import material
+from main.python.views import testing_system
 from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import patterns
@@ -99,7 +100,8 @@ func_patterns = [
     url(r'^delete/$', functional.delete_file, name="delete_file"),
     url(r'^upload/$', functional.upload_file, name="upload_file"),
     url(r'^upload_by_url/$', functional.upload_file_by_url, name="upload_file_by_url"),
-    url(r'^delete_assignment/$', functional.Course_views.delete_assignment, name="delete_assignment")
+    url(r'^delete_assignment/$', functional.Course_views.delete_assignment, name="delete_assignment"),
+    url(r'^delete_notification/$', functional.delete_notification, name="delete_notification"),
 ]
 
 course_patterns = [

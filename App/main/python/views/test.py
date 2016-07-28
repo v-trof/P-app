@@ -14,8 +14,10 @@ def edit(request):
 	if request.GET['course_id']:
 		course_id = request.GET['course_id']
 		if request.user.is_anonymous():
-			return redirect('/login')
+			request.session['notifications']=[{"type": "error", "message": "Вы должны зайти в систему"}]
+			return redirect('/login/')
 		if not Utility.is_teacher(user=request.user, course_id=course_id):
+			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
 			return redirect('/course/' + course_id)
 		if "test_id" in request.GET:
 			return load(request)
@@ -36,7 +38,7 @@ def create(request):
 		"href": "#",
 		"link": "Новый тест"
 	}]
-	context["sections"] = Course.objects.get_sections(course_id=course_id)
+	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
 	context["type"] = "test"
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
@@ -77,7 +79,7 @@ def load(request):
 		"href": "#",
 		"link": test["json"]["title"]
 	}]
-	context["sections"] = Course.objects.get_sections(course_id=course_id)
+	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
 	context["type"] = "test"
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
@@ -122,6 +124,7 @@ def attempt(request):
 	course_id = request.GET.get("course_id", None)
 	test_id = request.GET.get("test_id", None)
 	if request.user.is_anonymous():
+		request.session['notifications']=[{"type": "error", "message": "Вы должны зайти в систему"}]
 		return redirect('/login')
 	if Test.is_creator(user=request.user, test_id=test_id, course_id=course_id):
 		return redirect("/test/edit/?course_id=" + course_id + "&test_id=" + test_id)
@@ -132,7 +135,8 @@ def attempt(request):
 		context["type"] = "test"
 		return render(request, 'Pages/Test/Attempt/main/exports.html', context)
 	else:
-		return redirect('/', {"notifications": [{"type": "error", "message": "Доступ ограничен"}]})
+		request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
+		return redirect('/')
 
 
 def check_question(request, item):
@@ -169,19 +173,21 @@ def results(request):
 	test_id = request.GET.get("test_id", None)
 	user_id = request.GET.get("user_id", request.user.id)
 	if Utility.is_teacher(user=request.user, course_id=course_id) or user_id == request.user.id:
-		if not User.objects.filter(id=course_id).exists(id=user_id):
-			return redirect('/', {"notifications": [{"type": "error", "message": "Пользователь не существует"}]})
+		if not User.objects.filter(id=user_id).exists():
+			request.session['notifications']=[{"type": "error", "message": "Пользователь не существует"}]
+			return redirect('/')
 		user = User.objects.get(id=user_id)
 		context = {"course": Course.objects.get(id=course_id),
-				   "results": Test.get_results(user=user, course_id=course_id, test_id=test_id),
-				   "attempt": Test.get_attempt_info(user=user, course_id=course_id, test_id=test_id),
+				   "results": Test.get_results(user_id=str(user.id), course_id=course_id, test_id=test_id),
+				   "attempt": Test.get_attempt_info(user_id=str(user.id), course_id=course_id, test_id=test_id),
 				   "test": Test.get_test_info(course_id=course_id, test_id=test_id), "user_status": Course.objects.load_user_status(course=Course.objects.get(id=course_id), user=request.user)}
 		test = Test.load(course_id=course_id, test_id=test_id)
 		context["test"]["json"] = test["json"]
 		context["is_results"] = True
 		return render(request, 'Pages/Test/Attempt/results/exports.html', context)
 	else:
-		return redirect('/', {"notifications": [{"type": "error", "message": "Доступ ограничен"}]})
+		request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
+		return redirect('/')
 
 
 def attempt_check(request):

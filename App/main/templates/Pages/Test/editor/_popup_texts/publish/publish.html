@@ -47,8 +47,7 @@
 		<div class="__course-section">
 			<h4 class="__heading">Секция курса</h4>
 				{% include "Elements/Inputs/select/" with
-					id="course_section"
-					options=course.sections
+					id="course_section" options=sections
 				%}
 
 				{% include "Elements/Inputs/text/" with
@@ -56,7 +55,7 @@
 					placeholder="Название новой секции"
 				%}
 		</div>
-		<button id="publish">Сделать доступным для порохождения</button>
+		<button id="publish">Сделать доступным для прохождения</button>
 	</div>
 
 		

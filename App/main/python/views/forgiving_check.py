@@ -54,6 +54,11 @@ def check(answer, answer_right, allowed):
 					return "forgiving"
 	return "false"
 
+def check_selected(answer, answer_right, allowed):
+	if answer == answer_right:
+		return "right"
+	else: return "false"
+
 def spaces(answer):
 	answer = answer.replace(" ", "")
 	return answer

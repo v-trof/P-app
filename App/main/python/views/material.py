@@ -14,6 +14,7 @@ def edit(request):
 	if request.GET['course_id']:
 		course_id=request.GET['course_id']
 		if request.user.is_anonymous():
+			request.session['notifications']=[{"type": "error", "message": "Вы должны зайти в систему"}]
 			return redirect('/login')
 		if not Utility.is_teacher(user=request.user,course_id=course_id):
 			return redirect('/course/'+course_id)
@@ -36,7 +37,7 @@ def create(request):
 			"href": "#",
 			"link": "Новый материал"
 		}]
-	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
+	context["sections"] = list(Course.objects.get_sections_list(course_id=course_id)['published'].keys())
 	context["type"]= "material"
 	return render(request, 'Pages/Material/editor/exports.html', context)
 
@@ -65,7 +66,7 @@ def load(request):
 			"href": "#",
 			"link": material["json"]["title"]
 		}]
-	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
+	context["sections"] = list(Course.objects.get_sections_list(course_id=course_id)['published'].keys())
 	context["type"]= "material"
 	return render(request, 'Pages/Material/editor/exports.html', context)
 
@@ -104,6 +105,7 @@ def read(request):
 	course_id = request.GET.get("course_id",None)
 	material_id = request.GET.get("material_id",None)
 	if request.user.is_anonymous():
+		request.session['notifications']=[{"type": "error", "message": "Вы должны зайти в систему"}]
 		return redirect('/login')
 	if Material.is_creator(user=request.user,material_id=material_id,course_id=course_id):
 		return redirect("/material/edit/?course_id="+course_id+"&material_id="+material_id)
@@ -113,7 +115,8 @@ def read(request):
 		context["type"]= "material"
 		return render(request, 'Pages/Material/read/exports.html', context)
 	else:
-		return redirect('/', {"notifications": [{"type": "error", "message": "Доступ ограничен"}]})
+		request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
+		return redirect('/')
 
 def upload_asset(request):
 	if request.method == 'POST':

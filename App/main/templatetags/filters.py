@@ -30,3 +30,7 @@ def makelist(dict):
 @register.filter
 def makeuser(user_id):
 	return User.objects.get(id=int(user_id))
+
+@register.filter
+def is_list(element):
+	return isinstance(element, list)
