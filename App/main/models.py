@@ -1145,7 +1145,7 @@ class CourseManager(models.Manager):
 		else:
 			updates["course"]["is_closed"] = False
 		for user_id in data["teachers"][str(user.id)]["new_users"]:
-			updates["new_students"].append(User.objects.get(id=user.id))
+			updates["new_students"].append(User.objects.get(id=user_id))
 		data["teachers"][str(user.id)]["new_users"] = []
 		if data["status"] == "closed":
 			updates["requesting_users"] = []

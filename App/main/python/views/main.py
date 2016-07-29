@@ -178,7 +178,7 @@ class Course_group():
 		context["sections"] = Course.objects.get_sections(
 			course_id=str(course.id))
 		context["breadcrumbs"] = [
-			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Секции"}]
+			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Управление курсом"}]
 		return render(request, 'Pages/Course/manage/exports.html', context)
 
 	def results(request, course_id):

@@ -248,7 +248,7 @@ class Course_views():
             course_id = request.POST.get("course_id", None)
             announcement = Course.objects.delete_announcement(
                 course_id=course_id, announcement_id=announcement_id)
-            return HttpResponse(message)
+            return HttpResponse(announcement)
 
     def edit_groups(request):
         if request.method == 'POST':

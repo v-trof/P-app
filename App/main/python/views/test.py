@@ -133,6 +133,10 @@ def attempt(request):
 			user=request.user, course_id=course_id, test_id=test_id)
 		context["attempt"] = True
 		context["type"] = "test"
+		context["breadcrumbs"] = [{
+		"href": "/course/" + str(course_id),
+		"link": Course.objects.get(id=course_id).name
+	}]
 		return render(request, 'Pages/Test/Attempt/main/exports.html', context)
 	else:
 		request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
@@ -181,6 +185,13 @@ def results(request):
 				   "results": Test.get_results(user_id=str(user.id), course_id=course_id, test_id=test_id),
 				   "attempt": Test.get_attempt_info(user_id=str(user.id), course_id=course_id, test_id=test_id),
 				   "test": Test.get_test_info(course_id=course_id, test_id=test_id), "user_status": Course.objects.load_user_status(course=Course.objects.get(id=course_id), user=request.user)}
+		context["breadcrumbs"] = [{
+		"href": "/course/" + str(course_id),
+		"link": Course.objects.get(id=course_id).name
+	}, {
+		"href": "#",
+		"link": context["test"]["title"]
+	}]
 		test = Test.load(course_id=course_id, test_id=test_id)
 		context["test"]["json"] = test["json"]
 		context["is_results"] = True
