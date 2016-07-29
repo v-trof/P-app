@@ -5,7 +5,7 @@
 	margin-left: -$base*0.75/2
 	left: 50%
 	z-index: 40
-	button.--icon
+	button.--ghost.--icon
 		+square('xs')
 		border-radius: 50%
 		background: $color--accent
@@ -13,6 +13,10 @@
 		svg
 			+square('xs')
 			fill: $font__color--white
+		&:hover
+			box-shadow: none
+			svg
+				fill: lighten($font__color--accent, $darkness-delta__focus--percent)
 	&.--add
 		margin-top: -$base*0.75/2
 		top: 50%

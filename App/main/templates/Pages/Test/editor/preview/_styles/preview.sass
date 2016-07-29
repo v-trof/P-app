@@ -8,6 +8,8 @@
 	overflow-y: scroll
 	padding: 0 $padding--m
 	margin-left: -16px !important
+	&>h2.__heading
+		margin-bottom: 0
 	&>.__heading
 		min-width: 4rem
 		text-align: center
@@ -19,5 +21,9 @@
 		width: 100%
 		max-width: 50rem + $padding--s*2
 		padding-left: 1rem
+		.__put-margin
+			height: $margin--l
+		.__task
+			margin: 0
 		.__task:last-child.--stand-out
 			transform: translateX(-$margin--l)

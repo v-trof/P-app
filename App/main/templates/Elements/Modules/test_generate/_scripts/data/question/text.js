@@ -2,16 +2,18 @@ generate.data["question--text"] = {
 	element: {
 		type: "question",
 		parse: function($original) {
+			var html = $original.children('.__text-content').html();
 			return {
-				text: $original.html(),
+				text: html,
 				class: "question--text",
 				type: "question"
 			}
 		},
 		build: function(value) {
 			var $question = $(generate.build.template.question("question--text"))
-			
-			return $question.html(value.text)
+			var $content = $("<div class='__text-content'></div>");
+			$content.html(value.text);
+			return $question.html($content);
 		},
 		value_sample: {
 			text: "Текстовый вопрос"
