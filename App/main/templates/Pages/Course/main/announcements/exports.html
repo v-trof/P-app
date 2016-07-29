@@ -1,1 +1,1 @@
-{% if announcements.items|length > 0 %}<section class="announcements">		<h3>Объявления</h3>		{% for id,announcement in announcements.items %}			{% include "Elements/card/announcement/exports.html" %}		{% endfor %}</section>{% endif %}
+<section class="announcements"  {% if announcements.items|length < 1 %}   style="display:none"  {% endif %}>		<h3>Объявления</h3>		{% for id,announcement in announcements.items %}			{% include "Elements/card/announcement/exports.html" %}		{% endfor %}</section>

@@ -11,8 +11,9 @@ function announcement_delete(id) {
 		success: function(response) {
 			notification.show("success", "Удалено");
 		},
-		error: function() {
+		error: function(data) {
+			console.log(data);
 			notification.show('error','Произошла ошибка');						
 		}
-				});
+	});
 }

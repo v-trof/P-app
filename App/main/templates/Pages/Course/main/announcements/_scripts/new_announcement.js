@@ -27,6 +27,8 @@ $(document).ready(function() {
 					$new_announcement.find(".__heading").text(new_heading);
 					$new_announcement.find(".__content").text(new_text);
 
+					$(".announcements").show();
+
 					button_delete.add($new_announcement, function() {
 						announcement_delete(response);
 					});
