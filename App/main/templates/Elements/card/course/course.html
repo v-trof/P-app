@@ -1,7 +1,13 @@
 {% load ext_humanize %}
 <div class="card --course">
-	{% include "#&/../__overall-info/" 
-		with heading=course.name %}
+	{% if course.is_closed %}
+		{% include "#&/../__overall-info/" with 
+			heading=course.name
+			icons_path="#&/__locked_icon/" %}
+	{% else %}
+		{% include "#&/../__overall-info/" 
+			with heading=course.name %}
+	{% endif %}
 	<p class="__content">
 		{% if materials_number %}
 			<strong>{{materials_number}}</strong>
