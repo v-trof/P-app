@@ -1,4 +1,4 @@
-var editor = (function() {
+/*var editor = (function() {
 	var check_numbers = function() {
 		$(".__task .__number").each(function(index, el) {
 			$(this).text(index+1)
@@ -67,13 +67,4 @@ var editor = (function() {
 	}
 	return exports;
 })();
-
-$("body").on("click", ".--button-delete, .pull_put_ui .__actions button", function() {
-	editor.check_self();
-});
-
-
-$("body").on('click', '.pull_put_ui .__actions>div>button', function() {
-	console.log('hide');
-	indicator.hide(1);
-});
+*/

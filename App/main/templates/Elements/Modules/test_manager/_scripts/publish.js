@@ -81,13 +81,13 @@ test_manager.publish = function() {
 					contentType: false,
 					success: function(data) {
 						notification.show('success', data);
+						$("#{{type}}_publish").hide();
+						console.log("#{{type}}_publish");
+						$("#{{type}}_unpublish").show();
+						popup.hide();
+						test_manager.save();
 					}
 				});
-
-				$("#{{type}}_publish").hide();
-				console.log("#{{type}}_publish");
-				$("#{{type}}_unpublish").show();
-				popup.hide();
 			});
 		});
 

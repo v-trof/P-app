@@ -1,7 +1,7 @@
 {
 	"elements": ["Modules/test_generate", "Modules/test_manager",
-				 "Modules/pull_put","Modules/notification", "Modules/popup",
-				 "Inputs/select"],
+				       "Modules/notification", "Modules/popup",
+				       "Inputs/select", "Modules/test_editor"],
 	"scripts": [],
 	"styles": [],
 	"fixes": [],

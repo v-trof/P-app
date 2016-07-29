@@ -29,8 +29,8 @@ generate.build.element = function(element_class, value, additional) {
 generate.let_editing = function($element) {
 	pull_put.puller.add(
 		$element,
-		["add", "save", "delete"],
-		generate.edit.edit_action,
+		this.editing_actions,
+		this.edit.edit_action,
 		function() {
 			indicator.show(1);
 		},
@@ -38,13 +38,14 @@ generate.let_editing = function($element) {
 		true);
 
 	indicator.add($element, 'down', 1);
-	generate.edit.add_put_zone($element, function($this, $pulled) {
+	this.edit.add_put_zone($element, function($this, $pulled) {
 		$this.after($pulled);
 	})
 
 	return $element;
 }
 {% endif %}
+
 generate.build.task = function($element) {
 	var $new_task = $(generate.build.template.task)
 	$('.preview>.__content').append($new_task)

@@ -8,14 +8,15 @@ $('#edit_course').click(function(event) {
 		'{% include "Pages/home/_popup_texts/create_course/exports.html" %}',
 		function() {
 			$name = $('[name="course_name"]')
-			$subject = $('.--select __value')
+			$subject = $('.--select .__value')
 			$is_closed = $('[name="is_closed"]')
 
 
 			$name.val(course_info.name);
 			$subject.val(course_info.subject);
-			console.log(course_info.is_closed)
-			if(course_info.is_closed=="True") {
+			$subject.parent().find('.__display').text(course_info.subject);
+
+			if(course_info.is_closed == "1") {
 				$is_closed.prop('checked', 'true');
 			}
 
@@ -30,7 +31,6 @@ $('#edit_course').click(function(event) {
 				{
 					subject="Неопределенный предмет"
 				}
-				console.log(name,subject,is_closed)
 
 				$.ajax({
 					url: '/func/edit_course/',

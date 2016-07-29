@@ -1,120 +1,193 @@
-generate.data.shared.assets = {}
-generate.data.shared.file_changed=false;
-
-generate.data.shared.assets.last_id = 0
-generate.data.shared.assets.get_id = function() {
-	generate.data.shared.assets.last_id++;
-	return generate.data.shared.assets.last_id;
-}
-
-generate.data.shared.catch_asset_file = function() {
-	generate.data.shared.file_changed = false;
-	$file_input = pull_put.ui.$.find(".input.--file");
-
-	new_id = generate.data.shared.assets.get_id();
-
-	generate.data.shared.assets[new_id] = file_catcher.add($file_input);
-
-	$file_input.change(function(event) {
-		generate.data.shared.file_changed = true;
-	});
-}
-generate.data.shared.options = {
+generate.data["question--empty"] = {
 	element: {
-		parse: function($original, type) {
-			var $items = $original.find(".--" + type);
-			var values = [];
-			$items.each(function(index, el) {
-				values.push($(this).children("label").text());
-			});
-
-			// getting answer
-			if ($original.attr('answer')) {
-				answer = $original.attr('answer').split(", ");
-			} else {
-				answer = [];
-			}
-
-			if(type === "radio" && answer) {
-					answer = answer[0];
-				}
-
+		type: "question",
+		nopull: true,
+		parse: function($original) {
 			return {
-				values: values,
-				answer: answer,
-				class: "answer--" + type,
-				type: "answer"
+				text: "Добавьте сюда вопрос",
+				class: "question--empty",
+				type: "question"
 			}
+		},
+		build: function(value) {
+			return $("<div class='--empty question--empty'>Добавьте сюда вопрос</div>");
+		},
+		value_sample: {
+			text: "Добавьте сюда вопрос"
+		}
+	},
+	edit: {}
+}
+generate.data["question--file"] = {
+	element: {
+		type: "question",
+		parse: function($original) {
+			return {
+				url: $original.find("a.--card").attr("d-href"),
+				class: "question--file",
+				id: $original.find("a.--card").attr("id"),
+				size: $original.find(".__size").text(),
+				name: $original.find(".__name").text(),
+				type: "question"
+			}
+		},
+		build: function(value) {
+			var file_template = $('{% include "Elements/card/file/exports.html" %}');
+
+			//turning link off
+			if(typeof editor !== "undefined") {
+				file_template.removeAttr('href');
+				file_template.removeAttr('download');
+				file_template.find(".card").removeAttr('tip');
+				//d-disabled
+				file_template.attr("d-href", value.url);
+			} else {
+				file_template.attr("href", value.url);
+			}
+			
+		
+			file_template.find(".__name").text(value.name);
+			
+			file_template.find(".__size").text(value.size);
+			file_template.attr("id", value.id);
+			
+
+			return $(generate.build.template.question("question--file"))
+				.append(file_template);
+		},
+		value_sample: {
+			name: "Файл для скачивания",
+			size: "3.21МБ",
+			id: undefined,
+			url: "http://science-all.com/images/wallpapers/hipster-wallpaper/hipster-wallpaper-21.jpg"
 		}
 	},
 	edit: {
-		parse : function(type) {
-
-			var $items = $(".options-edit").find(".--"+type);
-			var answer = [];
-			var values = [];
-
-			$items.each(function(index, el) {
-				var label = $(this).siblings().find(".__value").val();
-
-				values.push(label);
-				
-				if($(this).find("input").is(":checked")) {
-					answer.push(label);
+		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__file/exports.html" %}',
+		parse: function() {
+			var original_id = $("#new_file").attr("original-id");
+			var url, name, size, id;
+			if(generate.data.shared.file_changed) {
+				id = generate.data.shared.assets.last_id;
+			} else {
+				if(generate.data.shared.assets[original_id]) {
+					id = original_id;
+				} else {
+					var sample =  generate.data["question--file"]
+						.element.value_sample;
+					console.log("nofile", sample);
+					return sample;
 				}
-			});
+			}
 
+			name = $("#new_file_name").val();
+			url = generate.data.shared.assets[id].urls[0]
+			size = Math.floor(generate.data.shared.assets[id]
+				.files[0].size/1024/1024*100)/100 + "MB";
+
+			console.log(name);
 			return {
-				values: values,
-				answer: answer
+				url: url,
+				name: name,
+				size: size,
+				id: id
 			}
-		},
-		middleware: function(type) {
-			var middleware_text = {
-				radio : '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/__item/exports.html" %}',
-				checkbox : '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__checkbox/__item/exports.html" %}'
-			}
-			var empty_item = middleware_text[type];
-
-			generate.data.shared.add_item = function() {
-				var $new_item = $(empty_item);
-				
-				$(".options-edit .__items").append($new_item);
-				button_delete.add($new_item);
-			}
-
-			$(".options-edit .__add").click(function(event) {
-				generate.data.shared.add_item();
-			});
 		},
 		fill: function(value) {
-			value.values.forEach(function(label) {
-				generate.data.shared.add_item();
-				$(".options-edit .__items").children().last()
-					.find(".__value").val(label);
+			if(generate.data.shared.assets[value.id]) {
+				value.url = generate.data.shared.assets[value.id].name;
+			}
+			var full_link = value.url;
+			var file_link = full_link.split("/")[full_link.split("/").length-1];
 
-				
-				var checker = function() {return false};
-
-				if(typeof value.answer === "string") {
-					checker = function(answer, item) {
-						return item === answer;
-					}
-				} else if(typeof value.answer === "object") {
-					checker = function(answer, item) {
-						return (answer.indexOf(item) > -1);
-					}
-				}
-
-				if( checker(value.answer, label) ) {
-					console.log("ok")
-					$(".options-edit .__items").find("label input")
-						.last().prop("checked", true);
-				}
-			});
+			$("#new_file_name").val(value.name).focus();
+			$("#new_file").parent().find(".__text").text(file_link);
+			$("#new_file").attr("original-id", value.id);
+		},
+		middleware: function() {
+			generate.data.shared.catch_asset_file()
 		}
 	}
 }
+generate.data["question--image"] = {
+	element: {
+		type: "question",
+		parse: function($original) {
+			return {
+				url: $original.find("img").attr("src"),
+				class: "question--image",
+				type: "question"
+			}
+		},
+		build: function(value) {
+			return $(generate.build.template.question("question--image")).append("<img src="
+				+value.url+">")
+		},
+		value_sample: {
+			url: "http://science-all.com/images/wallpapers/hipster-wallpaper/hipster-wallpaper-21.jpg"
+		}
+	},
+	edit: {
+		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__image/exports.html" %}',
+		parse: function() {
+
+			var url;
+			console.log($("#new_element_file").val());
+
+			if($("#new_element_file").val() != "") {
+				url = generate.data.shared.assets[
+					generate.data.shared.assets.last_id
+				].urls[0];
+			} else {
+				url = $("#new_element_url").val();
+			}
+
+			return {
+				url: url 
+			}
+		},
+		fill: function(value) {
+			$("#new_element_url").val(value.url).focus()
+		},
+		middleware: function() {
+			generate.data.shared.catch_asset_file()
+		}
+	}
+}
+generate.data["question--text"] = {
+	element: {
+		type: "question",
+		parse: function($original) {
+			var html = $original.children('.__text-content').html();
+			return {
+				text: html,
+				class: "question--text",
+				type: "question"
+			}
+		},
+		build: function(value) {
+			var $question = $(generate.build.template.question("question--text"))
+			var $content = $("<div class='__text-content'></div>");
+			$content.html(value.text);
+			return $question.html($content);
+		},
+		value_sample: {
+			text: "Текстовый вопрос"
+		}
+	},
+	edit: {
+		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__text/exports.html" %}',
+		parse: function() {			
+			return {
+				text: $("#new_element_text").html()
+			}
+		},
+		fill: function(value) {
+			$("#new_element_text").html(value.text).focus();
+		}
+	}
+}
+
 generate.data["answer--checkbox"] = {
 	element: {
 		type: 'answer',
@@ -396,192 +469,120 @@ generate.data["answer--textarea"]= {
 		}
 	}
 }
-generate.data["question--empty"] = {
-	element: {
-		type: "question",
-		nopull: true,
-		parse: function($original) {
-			return {
-				text: "Добавьте сюда вопрос",
-				class: "question--empty",
-				type: "question"
-			}
-		},
-		build: function(value) {
-			return $("<div class='--empty question--empty'>Добавьте сюда вопрос</div>");
-		},
-		value_sample: {
-			text: "Добавьте сюда вопрос"
-		}
-	},
-	edit: {}
+generate.data.shared.assets = {}
+generate.data.shared.file_changed=false;
+
+generate.data.shared.assets.last_id = 0
+generate.data.shared.assets.get_id = function() {
+	generate.data.shared.assets.last_id++;
+	return generate.data.shared.assets.last_id;
 }
-generate.data["question--file"] = {
+
+generate.data.shared.catch_asset_file = function() {
+	generate.data.shared.file_changed = false;
+	$file_input = pull_put.ui.$.find(".input.--file");
+
+	new_id = generate.data.shared.assets.get_id();
+
+	generate.data.shared.assets[new_id] = file_catcher.add($file_input);
+
+	$file_input.change(function(event) {
+		generate.data.shared.file_changed = true;
+	});
+}
+generate.data.shared.options = {
 	element: {
-		type: "question",
-		parse: function($original) {
-			return {
-				url: $original.find("a.--card").attr("d-href"),
-				class: "question--file",
-				id: $original.find("a.--card").attr("id"),
-				size: $original.find(".__size").text(),
-				name: $original.find(".__name").text(),
-				type: "question"
-			}
-		},
-		build: function(value) {
-			var file_template = $('{% include "Elements/card/file/exports.html" %}');
+		parse: function($original, type) {
+			var $items = $original.find(".--" + type);
+			var values = [];
+			$items.each(function(index, el) {
+				values.push($(this).children("label").text());
+			});
 
-			//turning link off
-			if(typeof editor !== "undefined") {
-				file_template.removeAttr('href');
-				file_template.removeAttr('download');
-				file_template.find(".card").removeAttr('tip');
-				//d-disabled
-				file_template.attr("d-href", value.url);
+			// getting answer
+			if ($original.attr('answer')) {
+				answer = $original.attr('answer').split(", ");
 			} else {
-				file_template.attr("href", value.url);
+				answer = [];
 			}
-			
-		
-			file_template.find(".__name").text(value.name);
-			
-			file_template.find(".__size").text(value.size);
-			file_template.attr("id", value.id);
-			
 
-			return $(generate.build.template.question("question--file"))
-				.append(file_template);
-		},
-		value_sample: {
-			name: "Файл для скачивания",
-			size: "3.21МБ",
-			id: undefined,
-			url: "http://science-all.com/images/wallpapers/hipster-wallpaper/hipster-wallpaper-21.jpg"
-		}
-	},
-	edit: {
-		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__file/exports.html" %}',
-		parse: function() {
-			var original_id = $("#new_file").attr("original-id");
-			var url, name, size, id;
-			if(generate.data.shared.file_changed) {
-				id = generate.data.shared.assets.last_id;
-			} else {
-				if(generate.data.shared.assets[original_id]) {
-					id = original_id;
-				} else {
-					var sample =  generate.data["question--file"]
-						.element.value_sample;
-					console.log("nofile", sample);
-					return sample;
+			if(type === "radio" && answer) {
+					answer = answer[0];
 				}
-			}
 
-			name = $("#new_file_name").val();
-			url = generate.data.shared.assets[id].urls[0]
-			size = Math.floor(generate.data.shared.assets[id]
-				.files[0].size/1024/1024*100)/100 + "MB";
-
-			console.log(name);
 			return {
-				url: url,
-				name: name,
-				size: size,
-				id: id
+				values: values,
+				answer: answer,
+				class: "answer--" + type,
+				type: "answer"
 			}
-		},
-		fill: function(value) {
-			if(generate.data.shared.assets[value.id]) {
-				value.url = generate.data.shared.assets[value.id].name;
-			}
-			var full_link = value.url;
-			var file_link = full_link.split("/")[full_link.split("/").length-1];
-
-			$("#new_file_name").val(value.name).focus();
-			$("#new_file").parent().find(".__text").text(file_link);
-			$("#new_file").attr("original-id", value.id);
-		},
-		middleware: function() {
-			generate.data.shared.catch_asset_file()
-		}
-	}
-}
-generate.data["question--image"] = {
-	element: {
-		type: "question",
-		parse: function($original) {
-			return {
-				url: $original.find("img").attr("src"),
-				class: "question--image",
-				type: "question"
-			}
-		},
-		build: function(value) {
-			return $(generate.build.template.question("question--image")).append("<img src="
-				+value.url+">")
-		},
-		value_sample: {
-			url: "http://science-all.com/images/wallpapers/hipster-wallpaper/hipster-wallpaper-21.jpg"
 		}
 	},
 	edit: {
-		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__image/exports.html" %}',
-		parse: function() {
+		parse : function(type) {
 
-			var url;
-			console.log($("#new_element_file").val());
+			var $items = $(".options-edit").find(".--"+type);
+			var answer = [];
+			var values = [];
 
-			if($("#new_element_file").val() != "") {
-				url = generate.data.shared.assets[
-					generate.data.shared.assets.last_id
-				].urls[0];
-			} else {
-				url = $("#new_element_url").val();
-			}
+			$items.each(function(index, el) {
+				var label = $(this).siblings().find(".__value").val();
+
+				values.push(label);
+				
+				if($(this).find("input").is(":checked")) {
+					answer.push(label);
+				}
+			});
 
 			return {
-				url: url 
+				values: values,
+				answer: answer
 			}
+		},
+		middleware: function(type) {
+			var middleware_text = {
+				radio : '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/__item/exports.html" %}',
+				checkbox : '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__checkbox/__item/exports.html" %}'
+			}
+			var empty_item = middleware_text[type];
+
+			generate.data.shared.add_item = function() {
+				var $new_item = $(empty_item);
+				
+				$(".options-edit .__items").append($new_item);
+				button_delete.add($new_item);
+			}
+
+			$(".options-edit .__add").click(function(event) {
+				generate.data.shared.add_item();
+			});
 		},
 		fill: function(value) {
-			$("#new_element_url").val(value.url).focus()
-		},
-		middleware: function() {
-			generate.data.shared.catch_asset_file()
-		}
-	}
-}
-generate.data["question--text"] = {
-	element: {
-		type: "question",
-		parse: function($original) {
-			var html = $original.children('.__text-content').html();
-			return {
-				text: html,
-				class: "question--text",
-				type: "question"
-			}
-		},
-		build: function(value) {
-			var $question = $(generate.build.template.question("question--text"))
-			var $content = $("<div class='__text-content'></div>");
-			$content.html(value.text);
-			return $question.html($content);
-		},
-		value_sample: {
-			text: "Текстовый вопрос"
-		}
-	},
-	edit: {
-		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__text/exports.html" %}',
-		parse: function() {			
-			return {
-				text: $("#new_element_text").html()
-			}
-		},
-		fill: function(value) {
-			$("#new_element_text").html(value.text).focus();
+			value.values.forEach(function(label) {
+				generate.data.shared.add_item();
+				$(".options-edit .__items").children().last()
+					.find(".__value").val(label);
+
+				
+				var checker = function() {return false};
+
+				if(typeof value.answer === "string") {
+					checker = function(answer, item) {
+						return item === answer;
+					}
+				} else if(typeof value.answer === "object") {
+					checker = function(answer, item) {
+						return (answer.indexOf(item) > -1);
+					}
+				}
+
+				if( checker(value.answer, label) ) {
+					console.log("ok")
+					$(".options-edit .__items").find("label input")
+						.last().prop("checked", true);
+				}
+			});
 		}
 	}
 }

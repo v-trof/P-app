@@ -5,82 +5,82 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Управление курсом</title>
 	<style> 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
-		{% include "Elements/Modules/pull_put/_styles/css/layout.css" %} 
-		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
+		{% include "Page_templates/_styles/css/main.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/Modules/section_editor/_styles/css/empty.css" %} 
 		{% include "Elements/Modules/pull_put/_styles/css/placeholder.css" %} 
-		{% include "Elements/Modules/indicator/_styles/css/indicator.css" %} 
+		{% include "Elements/card/circle/_styles/css/shape.css" %} 
+		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
 		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/Modules/indicator/_styles/css/indicator.css" %} 
 		{% include "Elements/Modules/context_menu/_styles/css/context_menu.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/Inputs/select/_styles/css/select.css" %} 
-		{% include "Elements/Modules/section_editor/_styles/css/header_editing.css" %} 
-		{% include "Elements/Modules/button_delete/_styles/css/button_delete.css" %} 
+		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
 		{% include "Elements/button/flat/_styles/css/flat.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
+		{% include "Elements/card/assignment/_styles/css/assignment.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
+		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/Inputs/select/_styles/css/select.css" %} 
+		{% include "Elements/Modules/pull_put/_styles/css/layout.css" %} 
+		{% include "Elements/Modules/button_delete/_styles/css/button_delete.css" %} 
+		{% include "Elements/card/_styles/css/link.css" %} 
+		{% include "Elements/Modules/section_editor/_styles/css/header_editing.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
+		{% include "Elements/card/assignment/_styles/css/states.css" %} 
+		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
 		{% include "Elements/Modules/test_manager/__popup_texts/__save/_styles/css/layout.css" %} 
 		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
-		{% include "Elements/card/assignment/_styles/css/states.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
-		{% include "Elements/card/circle/_styles/css/shape.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Page_templates/_styles/css/main.css" %} 
-		{% include "Elements/card/assignment/_styles/css/assignment.css" %} 
-		{% include "Elements/Modules/section_editor/_styles/css/empty.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
-		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
 	</style>
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	{% include 'Pages/Course/manage/linkbox/exports.html' %}{% include 'Pages/Course/manage/homework/exports.html' %}{% include 'Pages/Course/manage/tests&materials/exports.html' %}
+	{% include 'Pages/Course/manage/linkbox/exports.html' %}<section class="linkbox"></section>{% include 'Pages/Course/manage/homework/exports.html' %}{% include 'Pages/Course/manage/tests&materials/exports.html' %}
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/indicator/_scripts/core.js" %} 
-		{% include "Elements/Modules/section_editor/_scripts/core.js" %} 
 		{% include "Elements/Modules/pull_put/_scripts/core.js" %} 
 		{% include "Elements/Modules/notification/_scripts/core.js" %} 
+		{% include "Elements/Modules/indicator/_scripts/core.js" %} 
 		{% include "Elements/Modules/toggle_edit/_scripts/core.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/pull.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/ui.js" %} 
-		{% include "Elements/Modules/section_editor/_scripts/start.js" %} 
-		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
-		{% include "Elements/Modules/section_editor/_scripts/end.js" %} 
-		{% include "Elements/Modules/section_editor/_scripts/add_section.js" %} 
-		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
-		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
-		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
-		{% include "Elements/Modules/section_editor/_scripts/move_unordered.js" %} 
-		{% include "Elements/Modules/notification/_scripts/deffered.js" %} 
-		{% include "Elements/Modules/replace/_scripts/replace.js" %} 
-		{% include "Elements/Modules/section_editor/_scripts/end_section_editing.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/put.js" %} 
-		{% include "Elements/Modules/section_editor/_scripts/check_empty.js" %} 
+		{% include "Elements/Modules/section_editor/_scripts/core.js" %} 
 		{% include "Elements/Modules/section_editor/_scripts/start_section_editing.js" %} 
+		{% include "Elements/Modules/replace/_scripts/replace.js" %} 
+		{% include "Elements/Modules/section_editor/_scripts/add_section.js" %} 
+		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
+		{% include "Elements/Modules/section_editor/_scripts/move_unordered.js" %} 
+		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
+		{% include "Elements/Modules/notification/_scripts/deffered.js" %} 
+		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
 		{% include "Elements/Modules/section_editor/_scripts/block_editing.js" %} 
 		{% include "Elements/Modules/context_menu/_scripts/context_menu.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/pull.js" %} 
+		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
+		{% include "Elements/Modules/section_editor/_scripts/end_section_editing.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/ui.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/put.js" %} 
 		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
-		{% include "Pages/Course/manage/_scripts/delete_assignment.js" %} 
-		{% include "Pages/Course/manage/_scripts/edit_sections.js" %} 
-		{% include "Pages/Course/manage/_scripts/delete_course.js" %} 
+		{% include "Elements/Modules/section_editor/_scripts/start.js" %} 
+		{% include "Elements/Modules/section_editor/_scripts/check_empty.js" %} 
+		{% include "Elements/Modules/section_editor/_scripts/end.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
-		{% include "Elements/Layout/header/_scripts/header.js" %} 
 		{% include "Pages/Course/manage/_scripts/edit_course.js" %} 
 		{% include "Elements/Inputs/select/_scripts/select.js" %} 
-		{% include "Pages/Course/manage/_scripts/edit_assignment_links.js" %} 
 		{% include "Elements/card/assignment/_scripts/show_state.js" %} 
+		{% include "Pages/Course/manage/_scripts/edit_assignment_links.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
+		{% include "Pages/Course/manage/_scripts/delete_course.js" %} 
+		{% include "Pages/Course/manage/_scripts/edit_sections.js" %} 
+		{% include "Pages/Course/manage/_scripts/delete_assignment.js" %} 
 	</script>
 </body>
 </html>
