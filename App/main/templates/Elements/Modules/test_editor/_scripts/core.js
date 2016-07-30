@@ -1,3 +1,7 @@
+/**
+ * editor UI fixes
+ * @type {module}
+ */
 var editor = {
   empty: {
     question: {

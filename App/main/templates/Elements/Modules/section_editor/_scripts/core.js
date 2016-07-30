@@ -27,7 +27,8 @@ section_editor.init = function(arguments) {
 
 	replace            | bool(false)   | turn items into divs for blocking actions
 	accordion          | bool(true)    | adds accordion to new_group
-	
+	no_publish         | bool(false)   | items in urorderd cannout be moved elsewhere
+
 	edit_start         | fucntion      | additinal fucntion for edit start
 	edit_end           | fucntion      | additinal fucntion for edit end
 
@@ -76,6 +77,12 @@ section_editor.init = function(arguments) {
 		section_editor.replace = false
 	} else {
 		section_editor.replace = arguments.replace
+	}
+
+	if( ! defined(arguments.no_publish)) {
+		section_editor.no_publish = false
+	} else {
+		section_editor.no_publish = arguments.no_publish
 	}
 
 
@@ -153,6 +160,10 @@ section_editor.init = function(arguments) {
 
 	}, 100)
 	
+	if(section_editor.no_publish) {
+		section_editor.$unordered.find(section_editor.item_selector)
+			.addClass('--was-unpublished')
+	}
 
 	//finish startup
 	section_editor.$add_button = $('<a class="--card">'
@@ -166,10 +177,14 @@ section_editor.init = function(arguments) {
 	})
 
 	section_editor.block_editing()
-	section_editor.init_done = true
 
-	$("body").on('click', '.pull_put_ui .__actions>div>button', function() {
-		console.log('hide')
-		indicator.hide(1)
-	})
+	//repalceing native empties
+	section_editor.$parent
+		.find('.--empty').remove();
+
+	section_editor.check_empty('_all');
+
+	pull_put.cancel_action = indicator.hide;
+	
+	section_editor.init_done = true
 }

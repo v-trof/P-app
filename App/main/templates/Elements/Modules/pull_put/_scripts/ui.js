@@ -107,7 +107,6 @@ $(document).ready(function() {
 	$("body").append(pull_put.ui.$)
 
 	$(".pull_put_ui .__actions .--cancel").click(function(event) {
-		console.log(pull_put.ui.proto_element.children().children());
 
 		//restoring defaut element
 		pull_put.ui.element = pull_put.ui.proto_element;

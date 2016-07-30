@@ -1,4 +1,4 @@
-section_editor.add_section = function() {
+section_editor.add_section = function(edit_start) {
 	if( ! section_editor.init_done) return;
 	$new_section = section_editor.$section_template.clone()
 

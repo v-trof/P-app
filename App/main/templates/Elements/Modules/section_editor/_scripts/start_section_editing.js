@@ -1,5 +1,5 @@
 section_editor.start_section_editing = function($section) {
-	console.log(typeof $section, $section);
+	// console.log(typeof $section, $section);
 	if(typeof $section === 'function') return;
 	
 	var $items = $section.children(section_editor.item_selector)
@@ -31,24 +31,43 @@ section_editor.start_section_editing = function($section) {
 		$items = $section.children(section_editor.item_selector)
 	}
 
+	console.log(
+		$section !== section_editor.$unordered,
+		$section,
+		section_editor.$unordered)
+
 	//pull_put things for items
 	$items.each(function(index, el) {
+		var was_unpublished = $(this).hasClass('--was-unpublished');
 		//add pullers
+		console.log(this);
 		pull_put.puller.add(
 			$(this),
 			section_editor.pull.actions,
 			section_editor.pull.additional,
 			function() {
-				indicator.show(1)
+				console.log('2')
+				indicator.show(2);
+				if(!was_unpublished) {
+					console.log('1')
+					indicator.show(1)
+				}
 			}
 		)
 
-		indicator.add($(this), 'down', 1)
+		if(was_unpublished) {
+			 indicator.add($(this), 'down', 2)
+		} else {
+			 indicator.add($(this), 'down', 1)
+		}
 
 		pull_put.put_zone.add($(this), function(event, $this, $put) {
+			if($put.hasClass('--was-unpublished')) {
+				console.log("WUNP", $this.parent() === section_editor.$unordered);
+				if(!was_unpublished) return;
+			}
 			$this.after($put)
 			pull_put.reset()
-			indicator.hide(1)
 		}, function($put_zone) {
 			section_editor.check_empty('_all')
 			section_editor._put_callback($put_zone)

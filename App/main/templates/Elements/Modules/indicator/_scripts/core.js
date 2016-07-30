@@ -24,7 +24,7 @@ var indicator = (function() {
 	}
 
 	var hide = function(group) {
-		if(typeof group === undefined) {
+		if(typeof group === "undefined") {
 			$('.indicator').hide();
 		} else {
 			$('.indicator.g' + group).hide();
@@ -32,7 +32,7 @@ var indicator = (function() {
 	}
 
 	var show = function(group) {
-		if(typeof group === undefined) {
+		if(typeof group === "undefined") {
 			$('.indicator').show();
 		} else {
 			$('.indicator.g' + group).show();

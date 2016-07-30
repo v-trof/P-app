@@ -34,8 +34,6 @@ section_editor.create_empty = function() {
 	pull_put.put_zone.add($empty, function(event, $this, $put) {
 		$this.after($put)
 		pull_put.reset()
-
-		indicator.hide(1)
 		section_editor.check_empty('_all')
 	}, section_editor._put_callback)
 

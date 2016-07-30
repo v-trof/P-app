@@ -10,7 +10,8 @@ section_editor.end_section_editing = function($section, dont_replace) {
 	$section.find('.--button-delete').remove()
 
 	//replace_tags
-	if(section_editor.replace && (defined(dont_replace) && ! dont_replace) ) {
+	if(section_editor.replace 
+		 && ( ! defined(dont_replace) || !dont_replace) ) {
 		$items.replaceTag(section_editor.items_old_tag, true)
 	}
 }

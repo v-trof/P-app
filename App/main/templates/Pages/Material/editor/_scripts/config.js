@@ -4,6 +4,7 @@ pull_put.delete_action = function() {
   }
 }
 
+pull_put.cancel_action = indicator.hide;
 
 generate.editing_actions = ['delete', 'save']
 

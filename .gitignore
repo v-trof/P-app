@@ -63,3 +63,4 @@ Chaches
 >>>>>>> parent of ba03811... Update .gitignore
 *.chache
 *.pyc
+*.tern_project

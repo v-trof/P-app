@@ -64,6 +64,7 @@ $(document).ready(function() {
 		heading_selector: heading_selector,
 		item_selector: item_selector,
 		replace: true,
+		no_publish: true,
 		unordered_heading: unordered_heading,
 		_save_callback: send_changes
 	});
