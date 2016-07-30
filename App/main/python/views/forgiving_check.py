@@ -36,11 +36,14 @@ def check(answer, answer_right, allowed):
 	if "word_order" in allowed:
 		if forgiving["word_order"](answer=answer,answer_right=answer_right):
 			return "forgiving"
+	#print(allowed)
 	for mistake in allowed:
 		prev_answer=answer
+		print(mistake)
 		#simple replacements
 		if mistake != "word_order":
 			if mistake == "typo":
+				print(mistake, forgiving[mistake](answer=answer,answer_right=answer_right))
 				answer = forgiving[mistake](answer=answer,answer_right=answer_right)
 				if answer == answer_right:
 					return "forgiving"
@@ -85,9 +88,11 @@ def e(answer):
 	return answer
 
 def single_delta(letter,right_letter):
-	with io.open('main/python/other/delta_table.json', 'r', encoding='utf8') as info_file:
-		delta_table=json.load(info_file)
-		return letter in delta_table[right_letter]
+	if not right_letter == " ":
+		with io.open('main/python/other/delta_table.json', 'r', encoding='utf8') as info_file:
+			delta_table=json.load(info_file)
+			return letter in delta_table[right_letter]
+	else: return True
 
 def full_delta(answer, answer_right):
 	k=answer

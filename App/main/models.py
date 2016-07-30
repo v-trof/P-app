@@ -1851,6 +1851,11 @@ class Test():
 					questions_number += 1
 		json_file["questions_number"] = questions_number
 		json_file["mark_setting"] = {"2": 0, "3": 25, "4": 50, "5": 75}
+		if os.path.exists('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json'):
+			with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as test_file:
+				data=json.load(test_file)
+				if data["allowed_mistakes"]:
+					json_file["allowed_mistakes"]=data["allowed_mistakes"]
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
 			test_file.write(json.dumps(json_file, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
@@ -1880,6 +1885,7 @@ class Test():
 
 	def publish(course_id, test_id, section, allowed_mistakes, mark_setting):
 		# makes test visible in course screen
+		print(allowed_mistakes)
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
@@ -1900,7 +1906,7 @@ class Test():
 
 		for key in mark_setting:
 			test_data["mark_setting"][key] = mark_setting[key]
-
+		print(test_data)
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as info_file:
 			info_file.write(json.dumps(test_data, ensure_ascii=False))
 
@@ -1943,28 +1949,39 @@ class Test():
 	def build_question(item):
 		value = {}
 		type = item["class"]
+		item["worth"]=int(item["worth"])
 		value["type"] = type.split("--")[1]
 		if type == "answer--text":
 			value["answer"] = item["answer"]
 			value["user_answer"] = None
+			value["worth"] = item["worth"]
+			value["user_score"] = 0
 		elif type == "answer--textarea":
 			value["user_answer"] = None
+			value["worth"] = item["worth"]
+			value["user_score"] = 0
 			# textarea
 		elif type == "answer--select":
 			value["options"] = []
 			value["options"] = item["values"]
 			value["answer"] = item["answer"]
 			value["user_answer"] = None
+			value["worth"] = item["worth"]
+			value["user_score"] = 0
 		elif type == "answer--radio":
 			value["options"] = []
 			value["options"] = item["values"]
 			value["answer"] = item["answer"]
 			value["user_answer"] = None
+			value["worth"] = item["worth"]
+			value["user_score"] = 0
 		elif type == "answer--checkbox":
 			value["options"] = []
 			value["options"] = item["values"]
 			value["answer"] = item["answer"]
 			value["user_answer"] = None
+			value["worth"] = item["worth"]
+			value["user_score"] = 0
 		return value
 
 	def build_answer(item, data):
@@ -2095,6 +2112,8 @@ class Test():
 		missed = 0
 		mistakes = 0
 		forgiving = 0
+		score=0
+		overall_score=0
 		test_results = {}
 		test_results["right"] = []
 		test_results["mistakes"] = []
@@ -2108,22 +2127,29 @@ class Test():
 			attempt_data = json.load(json_file)
 			counter = 0
 			for question_id, question in attempt_data.items():
+				overall_score += question["worth"]
 				if question["user_answer"] == None:
 					missed += 1
 					test_results["missed"].append(counter)
 					question["result"] = "missed"
+					question["user_score"] = 0 
 				elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "right":
 					right += 1
+					score+= question["worth"]
 					test_results["right"].append(counter)
 					question["result"] = "right"
+					question["user_score"] = question["worth"]
 				elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "forgiving":
 					forgiving += 1
 					test_results["forgiving"].append(counter)
 					question["result"] = "forgiving"
+					question["user_score"] = question["worth"]
+					score+= question["worth"]
 				else:
 					mistakes += 1
 					test_results["mistakes"].append(counter)
 					question["result"] = "false"
+					question["user_score"] = 0
 				counter += 1
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			course_data = json.load(data_file)
@@ -2132,10 +2158,11 @@ class Test():
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
 			json_file.write(json.dumps(attempt_data, ensure_ascii=False))
 		test_results["mark"] = {}
-		test_results["mark"]["value"] = Test.give_mark(percentage=(right + forgiving) / (
-			right + mistakes + missed + forgiving) * 100, course_id=course_id, test_id=test_id)
+		test_results["mark"]["value"] = Test.give_mark(percentage=(score) / (overall_score) * 100, course_id=course_id, test_id=test_id)
 		test_results["mark"]["quality"] = Test.set_mark_quality(test_results[
 																"mark"])
+		test_results["score"]=score
+		test_results["overall_score"]=overall_score
 		test_results["right_answers"] = right + forgiving
 		test_results["questions_overall"] = right + \
 			mistakes + missed + forgiving
