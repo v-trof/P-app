@@ -29,7 +29,7 @@ def humanize_date(value):
 
 def of(value, max_value):
     percent = round((int(value)/max_value)*100)
-    return str(percent)+"%<span>("+str(value)+" из "+str(max_value)+")</span>";
+    return str(percent)+"% верно <span class='--grey'>("+str(value)+" из "+str(max_value)+")</span>";
 
 
 def form_for_num(num, forms):
@@ -55,6 +55,7 @@ def form_for_num(num, forms):
     else:
         form = many
     return " "+form
+
 register.filter('of', of)
 register.filter('humanize_date', humanize_date)
 register.filter('form_for_num', form_for_num)
