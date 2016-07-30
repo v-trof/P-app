@@ -6,13 +6,17 @@ generate.data["answer--textarea"]= {
 			return {
 				label: $original.find('label').html(),
 				class: "answer--textarea",
-				type: "answer"
+				type: "answer",
+				worth: generate.data.shared.worth.element.parse($original)
 			}
 		},
 		build: function(value) {
 			$element = $(generate.build.template.answer("answer--textarea"))
 			$element.html('{% include "Elements/Inputs/text/textarea/exports.html" %}')
 			$element.find("label").text(value.label)
+
+			generate.data.shared.worth.element.build($element, value.worth);
+
 			return $element 
 		},
 		getter: function($element, _action) {
@@ -49,11 +53,16 @@ generate.data["answer--textarea"]= {
 		text: '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__textarea/exports.html" %}',
 		parse: function() {
 			return {
-				label: $("#new_element_label").val()
+				label: $("#new_element_label").val(),
+				worth: generate.data.shared.worth.edit.parse()
 			}
+		},
+		middleware: function() {
+			generate.data.shared.worth.edit.middleware();
 		},
 		fill: function(value) {
 			$("#new_element_label").val(value.label).focus();
+			generate.data.shared.worth.edit.fill(value.worth);
 		}
 	}
 }

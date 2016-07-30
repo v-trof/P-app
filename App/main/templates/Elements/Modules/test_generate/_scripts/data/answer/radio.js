@@ -3,8 +3,11 @@ generate.data["answer--radio"] = {
 		type: 'answer',
 		
 		parse: function($original) {
-			return generate.data.shared
-				.options.element.parse($original, "radio");
+			var result = generate.data.shared
+											.options.element.parse($original, "radio");
+
+			result.worth = generate.data.shared.worth.element.parse($original);
+			return result;
 		},
 
 		build: function(value) {
@@ -18,6 +21,8 @@ generate.data["answer--radio"] = {
 					.attr("name", "r_"+generate.counter.radio);
 				$element.append($new_option);
 			});
+
+			generate.data.shared.worth.element.build($element, value.worth);
 			generate.counter.radio++;
 
 			return $element 
@@ -48,6 +53,7 @@ generate.data["answer--radio"] = {
 		parse: function() {
 			var result = generate.data.shared.options.edit.parse("radio");
 
+			result.worth = generate.data.shared.worth.edit.parse();
 			if(result.answer) {
 				result.answer = result.answer[0]
 			}
@@ -55,9 +61,11 @@ generate.data["answer--radio"] = {
 		},
 		middleware: function() {
 			generate.data.shared.options.edit.middleware("radio");
+			generate.data.shared.worth.edit.middleware();
 		},
 		fill: function(value) {
 			generate.data.shared.options.edit.fill(value);
+			generate.data.shared.worth.edit.fill(value.worth);
 		}
 	}
 }

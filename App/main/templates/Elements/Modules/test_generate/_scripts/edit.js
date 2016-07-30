@@ -32,7 +32,7 @@ generate.edit = (function() {
 			pull_put.ui.$.find(".__content")
 				.html(blueprints.edit.text);
 
-			// console.log(blueprints.edit.middleware);
+			
 
 			if(typeof blueprints.edit.middleware !== "undefined") {
 				blueprints.edit.middleware();

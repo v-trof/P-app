@@ -31,7 +31,7 @@ results_controls.load = function() {
 			},
 		})
 		.success(function(test_json) {
-			results_controls.loaded.tests[test_id] = JSON.parse(test_json);
+			results_controls.loaded.tests[test_id] = test_json;
 			loaded.test = true;
 		});
 	}
@@ -65,7 +65,7 @@ results_controls.load = function() {
 		})
 		.success(function(json) {
 			loaded.results.mark = true;
-			results_controls.loaded.results[test_id + "-" + user_id].mark = JSON.parse(json);
+			results_controls.loaded.results[test_id + "-" + user_id].mark = json;
 		});
 
 		console.log(user_id);
@@ -82,7 +82,7 @@ results_controls.load = function() {
 		.success(function(json) {
 			loaded.results.attempt = true;
 			results_controls.loaded
-				.results[test_id + "-" + user_id].attempt = JSON.parse(json);
+				.results[test_id + "-" + user_id].attempt = json;
 		});
 	}
 

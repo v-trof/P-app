@@ -1,5 +1,5 @@
 editor.check_self = function() {
-  this.check_numbers();
-  this.check_empty();
-  this.check_pullers();
+  editor.check_numbers();
+  editor.check_empty();
+  editor.check_pullers();
 }

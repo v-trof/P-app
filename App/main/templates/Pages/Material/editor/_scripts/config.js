@@ -13,8 +13,9 @@ editor.number_selector = '.__task .__number';
 editor.content_selector = '.__content>.card';
 editor.active_types = ['question'];
 
-editor.empty.question.template = $('<div class="--empty ' 
-                                    + editor.empty.question.class+'">'
-                                    + 'Добавьте сюда что-нибуть'
-                                  + '</div>'
-                                  );
+editor.empty.question.template = $(
+'<div class="question--empty --empty ' 
+  + editor.empty.question.class+'">'
+  + 'Добавьте сюда элемент материала'
++ '</div>'
+);

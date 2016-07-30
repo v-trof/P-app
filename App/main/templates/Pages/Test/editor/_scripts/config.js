@@ -13,14 +13,16 @@ editor.number_selector = '.__task .__number';
 editor.content_selector = '.__task .__content';
 editor.active_types = ['question', 'answer'];
 
-editor.empty.answer.template = $('<div class="--empty ' 
-                                  + editor.empty.answer.class+'">'
-                                  + 'Добавьте сюда поле ответа'
-                                + '</div>'
-                                );
+editor.empty.answer.template = $(
+  '<div class="answer--empty --empty ' 
+    + editor.empty.answer.class+'">'
+    + 'Добавьте сюда поле ответа'
+  + '</div>'
+);
 
-editor.empty.question.template = $('<div class="--empty ' 
-                                    + editor.empty.question.class+'">'
-                                    + 'Добавьте сюда вопрос'
-                                  + '</div>'
-                                  );
+editor.empty.question.template = $(
+'<div class="question--empty --empty ' 
+  + editor.empty.question.class+'">'
+  + 'Добавьте сюда вопрос'
++ '</div>'
+);

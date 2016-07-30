@@ -7,15 +7,19 @@ generate.data["answer--text"] = {
 				label: $original.find('label').html(),
 				answer: $original.attr('answer'),
 				class: "answer--text",
-				type: "answer"
+				type: "answer",
+				worth: generate.data.shared.worth.element.parse($original)
 			}
 		},
 
 		build: function(value) {
-			$element = $(generate.build.template.answer('answer--text'))
-			$element.html('{% include "Elements/Inputs/text/exports.html" %}')
-			$element.find('label').text(value.label)
-			return $element 
+			$element = $(generate.build.template.answer('answer--text'));
+			$element.html('{% include "Elements/Inputs/text/exports.html" %}');
+			$element.find('label').text(value.label);
+
+			generate.data.shared.worth.element.build($element, value.worth);
+
+			return $element;
 		},
 
 		fill: function($element, answer) {
@@ -55,13 +59,18 @@ generate.data["answer--text"] = {
 			var answer = $('#new_element_answer').val()
 
 			return {
-				'label': label,
-				'answer': answer
+				label: label,
+				answer: answer,
+				worth: generate.data.shared.worth.edit.parse()
 			}
+		},
+		middleware: function() {
+			generate.data.shared.worth.edit.middleware();
 		},
 		fill: function(value) {
 			$('#new_element_answer').val(value.answer).focus();			
 			$('#new_element_label').val(value.label).focus();
+			generate.data.shared.worth.edit.fill(value.worth);
 		}
 	}
 }

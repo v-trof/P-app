@@ -38,7 +38,6 @@ function upload_file(file_to_upload, task_index, index) {
 }
 
 test_manager.pack = function() {
-	console.log("packing")
 	test_manager.packed_test = {
 		"title": $("h2").text(),
 		tasks: []
@@ -53,9 +52,10 @@ test_manager.pack = function() {
 
 		$(this).children().each(function(index, $element) {
 			//this == .task.child
-			console.log(this);
 			var element_class = $(this)
 				.attr('class').split(' ')[0];
+
+			console.log("packing:", this);
 
 			test_manager.packed_test.tasks[task_index].push(
 				generate.read(element_class).element.parse($(this))

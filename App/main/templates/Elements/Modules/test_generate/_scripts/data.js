@@ -3,8 +3,11 @@ generate.data["answer--checkbox"] = {
 		type: 'answer',
 		
 		parse: function($original) {
-			return generate.data.shared
-				.options.element.parse($original, "checkbox");
+			var result = generate.data.shared.options
+											.element.parse($original, "checkbox");
+
+			result.worth = generate.data.shared.worth.element.parse($original);
+			return result;
 		},
 
 		build: function(value) {
@@ -12,8 +15,8 @@ generate.data["answer--checkbox"] = {
 				value.answer = value.answer.join(', ');
 			}
 			
-			$element = $(generate.build.template.answer('answer--checkbox'))
-			
+			$element = $(generate.build.template.answer('answer--checkbox'));
+
 			value.values.forEach(function(label) {
 				var $new_option = $('{% include "Elements/Inputs/checkbox/exports.html" %}');
 				$new_option.children("label").text(label);
@@ -23,9 +26,10 @@ generate.data["answer--checkbox"] = {
 				$element.append($new_option);
 			});
 
+			generate.data.shared.worth.element.build($element, value.worth);
 			generate.counter.checkbox++;
 
-			return $element 
+			return $element;
 		},
 
 		fill: function($element, checked) {
@@ -58,18 +62,24 @@ generate.data["answer--checkbox"] = {
 	edit: {
 		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__checkbox/exports.html" %}',
 		parse: function() {
-			var result = generate.data.shared.options.edit.parse("checkbox");
+			var result = generate.data.shared
+											.options.edit.parse("checkbox");
 
-			return result
+			result.worth = generate.data.shared.worth.edit.parse();
+
+			return result;
 		},
 		middleware: function() {
 			generate.data.shared.options.edit.middleware("checkbox");
+			generate.data.shared.worth.edit.middleware();
 		},
 		fill: function(value) {
 			generate.data.shared.options.edit.fill(value);
+			generate.data.shared.worth.edit.fill(value.worth);
 		}
 	}
 }
+
 generate.data["answer--empty"] = {
 	element: {
 		type: "answer",
@@ -95,8 +105,11 @@ generate.data["answer--radio"] = {
 		type: 'answer',
 		
 		parse: function($original) {
-			return generate.data.shared
-				.options.element.parse($original, "radio");
+			var result = generate.data.shared
+											.options.element.parse($original, "radio");
+
+			result.worth = generate.data.shared.worth.element.parse($original);
+			return result;
 		},
 
 		build: function(value) {
@@ -110,6 +123,8 @@ generate.data["answer--radio"] = {
 					.attr("name", "r_"+generate.counter.radio);
 				$element.append($new_option);
 			});
+
+			generate.data.shared.worth.element.build($element, value.worth);
 			generate.counter.radio++;
 
 			return $element 
@@ -140,6 +155,7 @@ generate.data["answer--radio"] = {
 		parse: function() {
 			var result = generate.data.shared.options.edit.parse("radio");
 
+			result.worth = generate.data.shared.worth.edit.parse();
 			if(result.answer) {
 				result.answer = result.answer[0]
 			}
@@ -147,12 +163,15 @@ generate.data["answer--radio"] = {
 		},
 		middleware: function() {
 			generate.data.shared.options.edit.middleware("radio");
+			generate.data.shared.worth.edit.middleware();
 		},
 		fill: function(value) {
 			generate.data.shared.options.edit.fill(value);
+			generate.data.shared.worth.edit.fill(value.worth);
 		}
 	}
 }
+
 generate.data["answer--text"] = {
 	element: {
 		type: 'answer',
@@ -162,15 +181,19 @@ generate.data["answer--text"] = {
 				label: $original.find('label').html(),
 				answer: $original.attr('answer'),
 				class: "answer--text",
-				type: "answer"
+				type: "answer",
+				worth: generate.data.shared.worth.element.parse($original)
 			}
 		},
 
 		build: function(value) {
-			$element = $(generate.build.template.answer('answer--text'))
-			$element.html('{% include "Elements/Inputs/text/exports.html" %}')
-			$element.find('label').text(value.label)
-			return $element 
+			$element = $(generate.build.template.answer('answer--text'));
+			$element.html('{% include "Elements/Inputs/text/exports.html" %}');
+			$element.find('label').text(value.label);
+
+			generate.data.shared.worth.element.build($element, value.worth);
+
+			return $element;
 		},
 
 		fill: function($element, answer) {
@@ -210,16 +233,22 @@ generate.data["answer--text"] = {
 			var answer = $('#new_element_answer').val()
 
 			return {
-				'label': label,
-				'answer': answer
+				label: label,
+				answer: answer,
+				worth: generate.data.shared.worth.edit.parse()
 			}
+		},
+		middleware: function() {
+			generate.data.shared.worth.edit.middleware();
 		},
 		fill: function(value) {
 			$('#new_element_answer').val(value.answer).focus();			
 			$('#new_element_label').val(value.label).focus();
+			generate.data.shared.worth.edit.fill(value.worth);
 		}
 	}
 }
+
 generate.data["answer--textarea"]= {
 	element: {
 		type: "answer",
@@ -228,13 +257,17 @@ generate.data["answer--textarea"]= {
 			return {
 				label: $original.find('label').html(),
 				class: "answer--textarea",
-				type: "answer"
+				type: "answer",
+				worth: generate.data.shared.worth.element.parse($original)
 			}
 		},
 		build: function(value) {
 			$element = $(generate.build.template.answer("answer--textarea"))
 			$element.html('{% include "Elements/Inputs/text/textarea/exports.html" %}')
 			$element.find("label").text(value.label)
+
+			generate.data.shared.worth.element.build($element, value.worth);
+
 			return $element 
 		},
 		getter: function($element, _action) {
@@ -271,11 +304,166 @@ generate.data["answer--textarea"]= {
 		text: '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__textarea/exports.html" %}',
 		parse: function() {
 			return {
-				label: $("#new_element_label").val()
+				label: $("#new_element_label").val(),
+				worth: generate.data.shared.worth.edit.parse()
 			}
+		},
+		middleware: function() {
+			generate.data.shared.worth.edit.middleware();
 		},
 		fill: function(value) {
 			$("#new_element_label").val(value.label).focus();
+			generate.data.shared.worth.edit.fill(value.worth);
+		}
+	}
+}
+
+generate.data.shared.worth = {
+  element: {
+    parse: function($original) {
+      return $original.attr('worth');
+    },
+    build: function($new_element, value) {
+      $new_element.attr('worth',  value);
+    }
+  },
+  edit: {
+    parse: function() {
+      var worth = parseInt($('#max_mark').val());
+      if( ! worth > 0) {
+        worth = 1;
+      }
+      
+      return worth;
+    },
+    middleware: function() {
+        setTimeout(function() {
+         if($('#max_mark').val() === '') {
+            $('#max_mark').val(1);
+          }
+        }, 100);
+      $('#max_mark').parent().find('label').addClass('--top');
+    },
+    fill: function(value) {
+      $('#max_mark').val(value);
+    }
+  }
+}
+
+generate.data.shared.assets = {}
+generate.data.shared.file_changed=false;
+
+generate.data.shared.assets.last_id = 0
+generate.data.shared.assets.get_id = function() {
+	generate.data.shared.assets.last_id++;
+	return generate.data.shared.assets.last_id;
+}
+
+generate.data.shared.catch_asset_file = function() {
+	generate.data.shared.file_changed = false;
+	$file_input = pull_put.ui.$.find(".input.--file");
+
+	new_id = generate.data.shared.assets.get_id();
+
+	generate.data.shared.assets[new_id] = file_catcher.add($file_input);
+
+	$file_input.change(function(event) {
+		generate.data.shared.file_changed = true;
+	});
+}
+generate.data.shared.options = {
+	element: {
+		parse: function($original, type) {
+			var $items = $original.find(".--" + type);
+			var values = [];
+			$items.each(function(index, el) {
+				values.push($(this).children("label").text());
+			});
+
+			// getting answer
+			if ($original.attr('answer')) {
+				answer = $original.attr('answer').split(", ");
+			} else {
+				answer = [];
+			}
+
+			if(type === "radio" && answer) {
+					answer = answer[0];
+				}
+
+			return {
+				values: values,
+				answer: answer,
+				class: "answer--" + type,
+				type: "answer"
+			}
+		}
+	},
+	edit: {
+		parse : function(type) {
+
+			var $items = $(".options-edit").find(".--"+type);
+			var answer = [];
+			var values = [];
+
+			$items.each(function(index, el) {
+				var label = $(this).siblings().find(".__value").val();
+
+				values.push(label);
+				
+				if($(this).find("input").is(":checked")) {
+					answer.push(label);
+				}
+			});
+
+			return {
+				values: values,
+				answer: answer
+			}
+		},
+		middleware: function(type) {
+			var middleware_text = {
+				radio : '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/__item/exports.html" %}',
+				checkbox : '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__checkbox/__item/exports.html" %}'
+			}
+			var empty_item = middleware_text[type];
+
+			generate.data.shared.add_item = function() {
+				var $new_item = $(empty_item);
+				
+				$(".options-edit .__items").append($new_item);
+				button_delete.add($new_item);
+			}
+
+			$(".options-edit .__add").click(function(event) {
+				generate.data.shared.add_item();
+			});
+		},
+		fill: function(value) {
+			value.values.forEach(function(label) {
+				generate.data.shared.add_item();
+				$(".options-edit .__items").children().last()
+					.find(".__value").val(label);
+
+				
+				var checker = function() {return false};
+
+				if(typeof value.answer === "string") {
+					checker = function(answer, item) {
+						return item === answer;
+					}
+				} else if(typeof value.answer === "object") {
+					checker = function(answer, item) {
+						return (answer.indexOf(item) > -1);
+					}
+				}
+
+				if( checker(value.answer, label) ) {
+					console.log("ok")
+					$(".options-edit .__items").find("label input")
+						.last().prop("checked", true);
+				}
+			});
 		}
 	}
 }
@@ -465,124 +653,6 @@ generate.data["question--text"] = {
 		},
 		fill: function(value) {
 			$("#new_element_text").html(value.text).focus();
-		}
-	}
-}
-
-generate.data.shared.assets = {}
-generate.data.shared.file_changed=false;
-
-generate.data.shared.assets.last_id = 0
-generate.data.shared.assets.get_id = function() {
-	generate.data.shared.assets.last_id++;
-	return generate.data.shared.assets.last_id;
-}
-
-generate.data.shared.catch_asset_file = function() {
-	generate.data.shared.file_changed = false;
-	$file_input = pull_put.ui.$.find(".input.--file");
-
-	new_id = generate.data.shared.assets.get_id();
-
-	generate.data.shared.assets[new_id] = file_catcher.add($file_input);
-
-	$file_input.change(function(event) {
-		generate.data.shared.file_changed = true;
-	});
-}
-generate.data.shared.options = {
-	element: {
-		parse: function($original, type) {
-			var $items = $original.find(".--" + type);
-			var values = [];
-			$items.each(function(index, el) {
-				values.push($(this).children("label").text());
-			});
-
-			// getting answer
-			if ($original.attr('answer')) {
-				answer = $original.attr('answer').split(", ");
-			} else {
-				answer = [];
-			}
-
-			if(type === "radio" && answer) {
-					answer = answer[0];
-				}
-
-			return {
-				values: values,
-				answer: answer,
-				class: "answer--" + type,
-				type: "answer"
-			}
-		}
-	},
-	edit: {
-		parse : function(type) {
-
-			var $items = $(".options-edit").find(".--"+type);
-			var answer = [];
-			var values = [];
-
-			$items.each(function(index, el) {
-				var label = $(this).siblings().find(".__value").val();
-
-				values.push(label);
-				
-				if($(this).find("input").is(":checked")) {
-					answer.push(label);
-				}
-			});
-
-			return {
-				values: values,
-				answer: answer
-			}
-		},
-		middleware: function(type) {
-			var middleware_text = {
-				radio : '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/__item/exports.html" %}',
-				checkbox : '{% include "Elements/Modules/test_generate/__edit_texts/__answer/__checkbox/__item/exports.html" %}'
-			}
-			var empty_item = middleware_text[type];
-
-			generate.data.shared.add_item = function() {
-				var $new_item = $(empty_item);
-				
-				$(".options-edit .__items").append($new_item);
-				button_delete.add($new_item);
-			}
-
-			$(".options-edit .__add").click(function(event) {
-				generate.data.shared.add_item();
-			});
-		},
-		fill: function(value) {
-			value.values.forEach(function(label) {
-				generate.data.shared.add_item();
-				$(".options-edit .__items").children().last()
-					.find(".__value").val(label);
-
-				
-				var checker = function() {return false};
-
-				if(typeof value.answer === "string") {
-					checker = function(answer, item) {
-						return item === answer;
-					}
-				} else if(typeof value.answer === "object") {
-					checker = function(answer, item) {
-						return (answer.indexOf(item) > -1);
-					}
-				}
-
-				if( checker(value.answer, label) ) {
-					console.log("ok")
-					$(".options-edit .__items").find("label input")
-						.last().prop("checked", true);
-				}
-			});
 		}
 	}
 }
