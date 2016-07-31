@@ -1856,6 +1856,25 @@ class Test():
 				data=json.load(test_file)
 				if data["allowed_mistakes"]:
 					json_file["allowed_mistakes"]=data["allowed_mistakes"]
+			for attempt in glob.glob('main/files/json/courses/' + course_id + '/users/*/tests/attempts/' + test_id + '.json'):
+				with io.open(attempt, 'r', encoding='utf8') as attempt_file:
+					attempt_data=json.load(attempt_file)
+				test = {}
+				question_id = 0
+				for task in json_file["tasks"]:
+					if task in data["tasks"]:
+						test[str(question_id)] = attempt_data[str(data["tasks"].index(task))]
+						question_id+=1
+					else:			
+						for item in task:
+							if item["type"] == "question":
+								current_question = item
+							else:
+								value = Test.build_question(item=item)
+								test[str(question_id)] = value
+								question_id += 1
+				with io.open(attempt, 'w', encoding='utf8') as attempt_file:
+					attempt_file.write(json.dumps(test, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
 			test_file.write(json.dumps(json_file, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:

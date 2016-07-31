@@ -107,6 +107,8 @@ def full_delta(answer, answer_right):
 			if single_delta(letter.lower(),answer_right[it].lower()):
 				k=k[:it] + answer_right[it] + k[it+1:]
 			it+=1
+	if common_chars_percentage(answer,k) < 65:
+		return answer
 	return k
 
 def register(answer):
@@ -204,9 +206,29 @@ def typo(answer, right_answer, delta):
 	if correctness(replacement(k,right_answer,delta),right_answer,delta)>max:
 		max=correctness(replacement(k,right_answer,delta),right_answer,delta)
 		k=replacement(k,right_answer,delta)
+	print("1")
+	if common_chars_percentage(answer,k) > 35:
+		return answer
 	return k
 
 
+def common_chars_percentage(first_string,second_string):
+	common_chars=0
+	it=0
+	if len(first_string) < len(second_string):
+		for char in first_string:
+			if char==second_string[it]:
+				common_chars+=1
+			it+=1
+		percentage=common_chars/len(second_string)*100
+	else:
+		for char in second_string:
+			if char==first_string[it]:
+				common_chars+=1
+			it+=1
+		percentage=common_chars/len(first_string)*100
+	print("2",percentage)
+	return percentage
 
 def html_specialchars(answer):
 	answer = answer.replace("&shy;","")
