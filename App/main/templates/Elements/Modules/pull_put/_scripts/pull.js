@@ -7,6 +7,8 @@ pull_put.puller = (function() {
 			pull_put.puller.cancel();
 		}
 
+		$placeholder.html('');
+
 		$placeholder.css({
 			width: $element.outerWidth(),
 			height: $element.outerHeight(),

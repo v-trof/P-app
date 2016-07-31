@@ -38,7 +38,7 @@ var ripple = (function() {
 
 $(document).ready(function() {
 	$("body").on(
-		"mousedown", "button", function(e) {
+		"mousedown", "button:not(.--no-ripple)", function(e) {
 			var element_rect = this.getBoundingClientRect();
 			var position = {
 				left: e.clientX - element_rect.left,

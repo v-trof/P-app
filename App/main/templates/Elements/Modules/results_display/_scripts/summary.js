@@ -62,7 +62,12 @@ results_display.create_summary = function(attempt, results) {
 			results_display.replace_answer(
 				$(this), 
 				value, attempt[answer_index].answer,
-				quality
+				quality,
+				answer_index,
+				{
+					answer: attempt[answer_index].user_score,
+					max: attempt[answer_index].worth
+				}
 			)
 
 			scroll.wire($new_summary, $(this).parent().parent());

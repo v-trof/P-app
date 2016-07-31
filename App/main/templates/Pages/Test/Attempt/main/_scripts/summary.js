@@ -1,8 +1,9 @@
 $(document).ready(function() {
-	var summary_template = function(index,value="Пусто") {
+	var summary_template = function(index, 
+		show_index, value="Пусто") {
 		return '<div class="card --small sumfor_'
 			+ index + ' row">'
-			+'<div class="__number">' + index + ':</div>'
+			+'<div class="__number">' + show_index + ':</div>'
 			+'<div class="__value">' + value + '</div></div>';
 	}
 
@@ -50,9 +51,9 @@ $(document).ready(function() {
 			}
 			
 			if(use_full_format) {
-				index = "" + (task_index+1) + "." + (index+1);
+				show_index = "" + (task_index+1) + "." + (index+1);
 			} else {
-				index = task_index+1;
+				show_index = task_index+1;
 			}
 
 			if (test_json.tasks[task_index][item_it].value) {
@@ -61,7 +62,9 @@ $(document).ready(function() {
 				value = "Пусто";
 			}
 
-			$new_summary = $(summary_template(index, value));
+			index++;
+
+			$new_summary = $(summary_template(index, show_index, value));
 
 			panel.content.append($new_summary);
 

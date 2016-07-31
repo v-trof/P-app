@@ -1,3 +1,5 @@
 {
-	"elements": ["Modules/results_display"]
+	"elements": ["Modules/results_display",
+               "button/ghost/icon",
+               "Modules/notification"]
 }
