@@ -177,7 +177,7 @@ def change_score(request):
 		user_id = request.POST.get("user_id", None)
 		score = request.POST.get("score", None)
 		response = Test.change_score(user_id=user_id, test_id=test_id, course_id=course_id, answer_id=answer_id, score=score)
-		return response
+		return HttpResponse(json.dumps(response, ensure_ascii=False), content_type="application/json")
 
 
 def results(request):
