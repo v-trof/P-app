@@ -5,35 +5,38 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Оценки за тесты</title>
 	<style> 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
-		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Page_templates/_styles/css/main.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
-		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/button/flat/_styles/css/flat.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Elements/Modules/results_controls/__set_mark/_styles/css/set_mark.css" %} 
 		{% include "Elements/Modules/test_manager/__popup_texts/__save/_styles/css/layout.css" %} 
+		{% include "Elements/card/_styles/css/link.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Elements/Modules/results_controls/__answer_display/_styles/css/answer_display.css" %} 
+		{% include "Elements/button/flat/_styles/css/flat.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
+		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
+		{% include "Page_templates/_styles/css/main.css" %} 
 	</style>
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	{% include "Pages/Course/Marks/tests/linkbox/exports.html" %}{# Test sections forloop #}
+	{% load keyvalue from filters %}{% load makelist from filters %}{% load makeuser from filters %}{% include "Pages/Course/Marks/tests/linkbox/exports.html" %}<section class='tests'>	{% for test_id, test in tests.items %}		<a class="--card" href="/course/{{course.id}}/results/?test_id={{test_id}}"> {% include "Elements/card/test/exports.html" %} </a>	{% endfor %}</section>
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
+		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
+		{% include "Elements/Modules/results_controls/__answer_display/_scripts/stepper.js" %} 
 		{% include "Elements/Layout/header/_scripts/header.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
 	</script>

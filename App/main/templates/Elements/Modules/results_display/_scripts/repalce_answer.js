@@ -55,7 +55,8 @@ $(document).ready(function() {
 				worth.answer,
 				worth.max,
 				function(mark) {
-					results_controls.send_mark(index, mark)
+					results_controls.send_mark(index, mark, 
+						worth.max, $result_tempalte)
 				}
 			)
 

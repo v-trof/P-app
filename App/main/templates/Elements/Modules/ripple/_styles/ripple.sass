@@ -1,19 +1,10 @@
 @import "../../../../sass_vars/main.sass"
 
-@keyframes ripple 
-	0%
-		transform: scale(0)
-	70%
-		opacity: $darkness-delta__focus
-	100%
-		opacity: 0
-		transform: scale(1)
-
-
 .ripple_target
 	overflow: hidden
 
 #ripple_effect
+	pointer-events: none
 	position: absolute
 	border-radius: 50%
 	background: $grey--semidark
@@ -21,4 +12,10 @@
 	transform: scale(0)
 
 	&.--shown
-		animation: ripple $time--l
+		transition: $time--l
+		opacity: $darkness-delta__focus
+		transform: scale(1)
+		&.--hide
+			transition: $time--l
+			opacity: 0
+			transform: scale(1.5)

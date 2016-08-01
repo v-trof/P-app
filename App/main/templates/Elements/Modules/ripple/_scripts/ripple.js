@@ -3,8 +3,11 @@ var ripple = (function() {
 	
 	function reset() {
 		$ripple.removeAttr('style');
+		$ripple.removeClass('--hide').removeClass('--shown');
 		$(".ripple_target").removeClass("ripple_target");
 	}
+
+
 
 	exports = {
 		$: $ripple,
@@ -30,6 +33,9 @@ var ripple = (function() {
 			}
 
 			$ripple.addClass('--shown');
+		},
+		hide: function() {
+			$ripple.addClass('--hide');
 		}
 	}
 	return exports;
@@ -37,13 +43,17 @@ var ripple = (function() {
 
 
 $(document).ready(function() {
-	$("body").on(
-		"mousedown", "button:not(.--no-ripple)", function(e) {
+	$("body").on({
+		"mousedown": function(e) {
 			var element_rect = this.getBoundingClientRect();
 			var position = {
 				left: e.clientX - element_rect.left,
 				top: e.clientY - element_rect.top
 			}
 			ripple.show($(this), position);
-	});
+		},
+		"mouseup": function() {
+			ripple.hide();
+		}
+	}, "button, a.--card .card");
 });
