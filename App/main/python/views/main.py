@@ -35,7 +35,7 @@ class Main_group():
 		context = {}
 		with io.open('main/files/json/users/' + str(request.user.id) + '/settings.json', 'r', encoding='utf8') as settings_file:
 			user_settings = json.load(settings_file)
-		context["subjects"] = ["Русский язык", "Математика", "Английский язык"]
+		context["subjects"] = {"Гуманитарные науки":["Литература","История","Обществознание"],"Языки":["Русский язык","Английский язык","Немецкий язык","Французский язык","Испанский язык"],"Точные науки":["Математика","Информатика"], "Естественные":["Физика","Химия","Биология","География"]}
 		if request.user.participation_list:
 			context["marks"] = User.objects.load_marks(
 				string_array=request.user.participation_list, user_id=request.user.id)
@@ -197,14 +197,13 @@ class Course_group():
 			task_id = request.GET['task_id']
 			context["marks"] = Marks.get_marks_by_task(
 				course_id=course_id, task_id=task_id)
-			context["tests"] = Marks.get_tests(
-				course_id=course_id, task_id=task_id)
 			print('marks', context["marks"])
 		elif 'test_id' in request.GET:
 			test_id = request.GET['test_id']
-			context["marks"] = Marks.get_marks_by_test(
-				course_id=course_id, test_id=test_id)
+			context["marks"] = Marks.get_marks_for_test_list(
+				course_id=course_id, test_list=[test_id])
 			context["test_id"] = test_id
+			print('marks', context["marks"])
 		else:
 			request.session['notifications']=[{"type": "error", "message": "Недостаточно данных"}]
 			return redirect('/')
