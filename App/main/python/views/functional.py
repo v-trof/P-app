@@ -392,3 +392,24 @@ def delete_notification(request):
     if request.method == 'POST':
         del request.session['notifications']
         return HttpResponse('ok')
+
+class Universal_views():
+
+    def share(request):
+        if request.method == 'POST':
+            course_id = request.POST.get("course_id", None)
+            item_id = request.POST.get("item_id", None)
+            name=request.POST.get("name", None)
+            type=request.POST.get("type", None)
+            response= Sharing.share(course_id=course_id,item_id=item_id,type=type,name=name)
+            return HttpResponse(response)
+
+    def unshare(request):
+        if request.method == 'POST':
+            course_id = request.POST.get("course_id", None)
+            item_id = request.POST.get("item_id", None)
+            shared_id=request.POST.get("shared_id", None)
+            type=request.POST.get("type", None)
+            response= Sharing.unshare(course_id=course_id,item_id=item_id,type=type,shared_id=shared_id)
+            return HttpResponse(response)
+

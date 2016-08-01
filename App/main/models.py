@@ -1766,16 +1766,16 @@ class Test():
 	def create(course_id):
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
 			course_info = json.load(data_file)
-			test_id = 1
+			max=0
 			for section, elements in course_info['sections']['published'].items():
 				for element in elements:
-					if element["type"] == "test":
-						test_id += 1
+					if element["type"] == "test" and int(element["id"])>max:
+						max=int(element["id"])
 			for unpublished in course_info['sections']['unpublished']:
-				if unpublished["type"] == "test":
-					test_id += 1
+				if unpublished["type"] == "test" and int(unpublished["id"])>max:
+					max=int(unpublished["id"])
 		course = {"id": course_id}
-		test = {"id": str(test_id), "loaded": 0}
+		test = {"id": str(max+1), "loaded": 0}
 		context = {"test": test, "course": course}
 		return context
 
@@ -1788,9 +1788,9 @@ class Test():
 
 		sections = list(course_info['sections']['published'].keys())
 
-		for section in sections:
+		for section, elements in course_info['sections']['published'].items():
 			it = 0
-			for element in section:
+			for element in elements:
 				if test_id == course_info['sections']['published'][section][it]["id"] and course_info['sections']['published'][section][it]["type"] == "test":
 					del(course_info['sections']['published'][section][it])
 				it += 1
@@ -1904,7 +1904,6 @@ class Test():
 
 	def publish(course_id, test_id, section, allowed_mistakes, mark_setting):
 		# makes test visible in course screen
-		print(allowed_mistakes)
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
@@ -1925,7 +1924,6 @@ class Test():
 
 		for key in mark_setting:
 			test_data["mark_setting"][key] = mark_setting[key]
-		print(test_data)
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as info_file:
 			info_file.write(json.dumps(test_data, ensure_ascii=False))
 
@@ -1941,7 +1939,6 @@ class Test():
 		for section in sections:
 			it = 0
 			for element in course_info["sections"]["published"][section]:
-				print(section, it)
 				if test_id == course_info['sections']['published'][section][it]["id"] and course_info['sections']['published'][section][it]["type"] == "test":
 					del(course_info['sections']['published'][section][it])
 				it += 1
@@ -1951,6 +1948,7 @@ class Test():
 
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
+
 		return "Тест был скрыт"
 
 	def is_published(test_id, course_id):
@@ -2205,10 +2203,10 @@ class Test():
 			assignment.write(json.dumps(assignment_map, ensure_ascii=False))
 		return "Попытка проверена"
 
-	def change_answer_status(user, test_id, course_id, question_id, question_result):
-		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
+	def change_answer_status(user_id, test_id, course_id, question_id, question_result):
+		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user_id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 			attempt_data = json.load(json_file)
-		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json', 'r', encoding='utf8') as results_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/' + test_id + '.json', 'r', encoding='utf8') as results_file:
 			test_results = json.load(results_file)
 		attempt_data[question_id]["result"] = question_result
 		if int(question_id) in test_results["right"]:
@@ -2220,11 +2218,51 @@ class Test():
 		else:
 			test_results["mistakes"].remove(int(question_id))
 		test_results[question_result].append(int(question_id))
-		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
+		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user_id) + '/tests/attempts/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
 			json_file.write(json.dumps(attempt_data, ensure_ascii=False))
-		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json', 'w+', encoding='utf8') as results_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/' + test_id + '.json', 'w+', encoding='utf8') as results_file:
 			results_file.write(json.dumps(test_results, ensure_ascii=False))
 		return "Статус ответа изменен"
+
+	def change_score(user_id, test_id, course_id, answer_id, score):
+		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user_id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
+			attempt_data = json.load(json_file)
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/' + test_id + '.json', 'r', encoding='utf8') as results_file:
+			test_results = json.load(results_file)
+
+		test_results["score"]-=attempt_data[answer_id]["user_score"]
+		test_results["score"]+=int(score)
+		answer_id=int(answer_id)
+		if answer_id in test_results["right"]:
+			test_results["right"].remove(answer_id)
+		elif answer_id in test_results["forgiving"]:
+			test_results["forgiving"].remove(answer_id)
+		elif answer_id in test_results["missed"]:
+			test_results["missed"].remove(answer_id)
+		else:
+			test_results["mistakes"].remove(answer_id)
+		attempt_data[str(answer_id)]["user_score"]=int(score)
+		if attempt_data[str(answer_id)]["user_score"]==attempt_data[str(answer_id)]["worth"]:
+			test_results["right"].append(answer_id)
+			attempt_data[str(answer_id)]["result"]="right"
+		elif attempt_data[str(answer_id)]["user_score"]==0:
+			test_results["mistakes"].append(answer_id)
+			attempt_data[str(answer_id)]["result"]="false"
+		else: 
+			test_results["forgiving"].append(answer_id)
+			attempt_data[str(answer_id)]["result"]="forgiving"
+
+		test_results["mark"]["value"] = Test.give_mark(percentage=(test_results["score"]) / (test_results["overall_score"]) * 100, course_id=course_id, test_id=test_id)
+		test_results["mark"]["quality"] = Test.set_mark_quality(test_results[
+																"mark"])
+		print(test_results["mark"]["value"])
+
+		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user_id) + '/tests/attempts/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
+			json_file.write(json.dumps(attempt_data, ensure_ascii=False))
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/' + test_id + '.json', 'w+', encoding='utf8') as results_file:
+			results_file.write(json.dumps(test_results, ensure_ascii=False))	
+
+		return "Балл изменен"
 
 	def get_results(course_id, test_id, user_id):
 		if os.path.exists('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/' + test_id + '.json'):
@@ -2302,6 +2340,19 @@ class Marks():
 								str(test)] = result
 		return marks
 
+	def by_tests(course_id):
+		course = Course.objects.get(id=int(course_id))
+		marks = {}
+		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/*'):
+			test_id=test[:-5].split("/")[5][6:]
+			print(test_id)
+			with io.open(test, 'r', encoding='utf8') as info_file:
+				test_info = json.load(info_file)
+			item=test_info
+			item["marks"]=Marks.get_marks_by_test(course_id=course_id,test_id=test_id)
+			marks[test_id]=item
+		return marks
+
 	def get_tests(course_id, task_id):
 		test_list = []
 		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + str(task_id) + '.json', 'r', encoding='utf8') as data_file:
@@ -2356,3 +2407,61 @@ class Marks():
 							test_info = json.load(info_file)
 						marks[group][str(user_id)].append(test_info["mark"])
 		return marks
+
+class Sharing():
+
+	def share(course_id, item_id, type, name=None):
+		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+			shared_table = json.load(shared_file)
+		course=Course.objects.get(id=course_id)
+		shared_item={}
+		shared_item["course_id"]=course_id
+		shared_item["id"]=item_id
+		shared_item["type"]=type
+		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/'+item_id+'.json', 'r', encoding='utf8') as info_file:
+			item_info = json.load(info_file)
+		if len(shared_table[course.subject].keys()):
+			maximum = max(k for k, v in shared_table[course.subject].items())
+		else:
+			maximum = 0
+		shared_id=maximum+1
+		item_info["shared"]=True
+		item_info["shared_id"]=shared_id
+		if name:
+			shared_item["name"]=name
+		else: shared_item["name"]=item_info["name"]
+		if not course.subject in shared_table.keys():
+			shared_table[course.subject]={}
+		shared_table[course.subject][shared_id]=shared_item
+		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/'+item_id+'.json', 'w', encoding='utf8') as info_file:
+			saving_data = json.dumps(item_info, ensure_ascii=False)
+			info_file.write(saving_data)
+		with io.open('main/files/json/shared.json', 'w', encoding='utf8') as shared_file:
+			saving_data = json.dumps(item_info, ensure_ascii=False)
+			shared_file_file.write(saving_data)
+		return 'Успешно'
+
+	def unshare(course_id, item_id, shared_id, type):
+		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+			shared_table = json.load(shared_file)
+		course=Course.objects.get(id=course_id)
+		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/'+item_id+'.json', 'r', encoding='utf8') as info_file:
+			item_info = json.load(info_file)
+		item_info["shared"]=False
+		item_info.pop("shared_id",None)
+		shared_table.pop(shared_id,None)
+		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/'+item_id+'.json', 'w', encoding='utf8') as info_file:
+			saving_data = json.dumps(item_info, ensure_ascii=False)
+			info_file.write(saving_data)
+		with io.open('main/files/json/shared.json', 'w', encoding='utf8') as shared_file:
+			saving_data = json.dumps(item_info, ensure_ascii=False)
+			shared_file_file.write(saving_data)
+		return 'Успешно'
+
+	#def load_shared_by_name(search_string):
+	#	shared={}
+	#	shared[""]
+	#	with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+	#		shared_table = json.load(shared_file)
+	#	for id, shared in shared_table.items():
+	#		if shared["name"]

@@ -49,7 +49,7 @@ def delete(request):
 		course_id = request.POST.get("course_id", None)
 		test_id = request.POST.get("test_id", None)
 		response = Test.delete(course_id=course_id, test_id=test_id)
-		return HttpResponse("response")
+		return HttpResponse(response)
 
 
 def save(request):
@@ -163,10 +163,23 @@ def change_answer_status(request):
 		test_id = request.POST.get("test_id", None)
 		question_id = str(request.POST.get("question_id", None))
 		course_id = request.POST.get("course_id", None)
-		user = request.POST.get("user", None)
+		user_id = request.POST.get("user_id", None)
 		question_result = request.POST.get("question_status", None)
 		response = Test.change_answer_status(
-			user=user, test_id=test_id, course_id=course_id, question_id=question_id, question_result=question_result)
+			user_id=user_id, test_id=test_id, course_id=course_id, question_id=question_id, question_result=question_result)
+		return HttpResponse(response)
+
+def change_score(request):
+	if request.method == 'POST':
+		print("ppppp")
+		test_id = request.POST.get("test_id", None)
+		answer_id = str(request.POST.get("answer_id", None))
+		course_id = request.POST.get("course_id", None)
+		user_id = request.POST.get("user_id", None)
+		print(user_id)
+		score = request.POST.get("score", None)
+		response = Test.change_score(user_id=user_id, test_id=test_id, course_id=course_id, answer_id=answer_id, score=score)
+		print(response)
 		return HttpResponse(response)
 
 

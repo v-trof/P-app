@@ -36,9 +36,9 @@ test_patterns = [
 
     url(r'^publish/$', test.publish, name="publish_test"),
     url(r'^unpublish/$', test.unpublish, name="unpublish_test"),
-    url(r'^share/$', test.share, name="share_test"),
 
     url(r'^change_answer_status/$', test.change_answer_status, name="change_answer_status"),
+    url(r'^change_score/$', test.change_score, name="change_score"),
 
     url(r'^attempt/$', test.attempt, name="attempt"),
     url(r'^attempt/save/$', test.attempt_save, name="save_attempt"),
@@ -57,7 +57,6 @@ material_patterns = [
 
     url(r'^publish/$', material.publish, name="publish_material"),
     url(r'^unpublish/$', material.unpublish, name="unpublish_material"),
-    url(r'^share/$', material.share, name="share_material"),
 
     url(r'^read/$', material.read, name="read"),
 ]
@@ -102,6 +101,8 @@ func_patterns = [
     url(r'^upload_by_url/$', functional.upload_file_by_url, name="upload_file_by_url"),
     url(r'^delete_assignment/$', functional.Course_views.delete_assignment, name="delete_assignment"),
     url(r'^delete_notification/$', functional.delete_notification, name="delete_notification"),
+    url(r'^share/$', functional.Universal_views.share, name="share"),
+    url(r'^unshare/$', functional.Universal_views.unshare, name="unshare"),
 ]
 
 course_patterns = [
@@ -112,8 +113,8 @@ course_patterns = [
     url(r'^(?P<course_id>[0-9]+)/sources/$', main.Course_group.sources, name='sources'),
     url(r'^(?P<course_id>[0-9]+)/results/$', main.Course_group.results, name='results'),
     url(r'^(?P<course_id>[0-9]+)/marks/$', main.Course_group.marks, name='marks'),
-    url(r'^(?P<course_id>[0-9]+)/marks/by_groups/$', main.Course_group.marks_by_groups, name='marks_by_groups'),
-    url(r'^(?P<course_id>[0-9]+)/marks/by_tests/$', main.Course_group.marks_by_tests, name='marks_by_tests'),
+    url(r'^(?P<course_id>[0-9]+)/marks/groups/$', main.Course_group.marks_by_groups, name='marks_by_groups'),
+    url(r'^(?P<course_id>[0-9]+)/marks/tests/$', main.Course_group.marks_by_tests, name='marks_by_tests'),
 
     url(r'^(?P<course_id>[0-9]+)/manage/$', main.Course_group.manage, name='manage'),
     url(r'^(?P<course_id>[0-9]+)/manage/edit_task/$', main.Course_group.edit_assignment, name="change_task")
