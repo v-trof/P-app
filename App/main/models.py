@@ -1666,7 +1666,8 @@ class Material():
 		for unpublished in course_info['sections']['unpublished']:
 			if material_id == unpublished["id"] and unpublished["type"] == "material":
 				material_unpublished = True
-		if not material_unpublished:
+		material_published = Material.is_published(material_id=material_id)
+		if not material_unpublished and not material_published:
 			course_info['sections']['unpublished'].append(
 				{"id": material_id, "type": "material"})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
@@ -1883,7 +1884,8 @@ class Test():
 		for unpublished in course_info['sections']['unpublished']:
 			if test_id == unpublished["id"] and unpublished["type"] == "test":
 				test_unpublished = True
-		if not test_unpublished:
+		test_published = Test.is_published(test_id=test_id)
+		if not test_unpublished and not test_published:
 			course_info['sections']['unpublished'].append(
 				{"id": test_id, "type": "test"})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
@@ -1907,9 +1909,12 @@ class Test():
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
-		for unpublished in course_info['sections']['unpublished']:
-			if test_id == unpublished["id"] and unpublished["type"] == "test":
-				course_info['sections']['unpublished'].remove(unpublished)
+		it=0
+		for element in course_info['sections']['unpublished']:
+			if element["id"] == str(test_id) and element["type"] == "test":
+				del(course_info['sections']['unpublished'][it])
+			it+=1
+
 		if not section in course_info['sections']['published'].keys():
 			course_info['sections']['published'][section] = []
 		course_info['sections']['published'][
@@ -2255,14 +2260,13 @@ class Test():
 		test_results["mark"]["value"] = Test.give_mark(percentage=(test_results["score"]) / (test_results["overall_score"]) * 100, course_id=course_id, test_id=test_id)
 		test_results["mark"]["quality"] = Test.set_mark_quality(test_results[
 																"mark"])
-		print(test_results["mark"]["value"])
 
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user_id) + '/tests/attempts/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
 			json_file.write(json.dumps(attempt_data, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/' + test_id + '.json', 'w+', encoding='utf8') as results_file:
 			results_file.write(json.dumps(test_results, ensure_ascii=False))	
 
-		return "Балл изменен"
+		return test_results["mark"]
 
 	def get_results(course_id, test_id, user_id):
 		if os.path.exists('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/' + test_id + '.json'):
@@ -2317,43 +2321,26 @@ class Marks():
 			with io.open(assignment, 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
 				id = assignment[:-5].split("/")[5][12:]
-				test_list = []
-				for test in data["content"]["tests"]:
-					test_list.append(test["id"])
-				marks[str(id)] = {}
-			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
-				data = json.load(data_file)
-			if not group_list:
-				group_list = data["groups"].keys()
-			for group in group_list:
-				marks[str(id)][group] = {}
-				for user_id in data["groups"][group]:
-					marks[str(id)][group][str(user_id)] = {}
-					for test in test_list:
-						result = Test.get_results(
-							course_id=course_id, test_id=test, user=User.objects.get(id=int(user_id)))
-						if result:
-							result["course"] = Course.objects.get(
-								id=int(course_id))
-							result["user"] = User.objects.get(id=int(user_id))
-							marks[str(id)][group][str(user_id)][
-								str(test)] = result
+				marks[id]=Marks.get_marks_by_task(course_id=course_id,task_id=id)
 		return marks
 
 	def by_tests(course_id):
 		course = Course.objects.get(id=int(course_id))
-		marks = {}
 		test_list=[]
-		test_info=[]
 		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/*'):
 			test_id=test[:-5].split("/")[5][6:]
 			test_list.append(test_id)
-			with io.open(test, 'r', encoding='utf8') as info_file:
-				test_info[test_id]=json.load(info_file)
-		marks=Marks.get_marks_for_test_list(course_id=course_id, test_list=test_list)
-		for test in marks[group][str(user_id)]["tests"]:
-			marks[group][str(user_id)]["tests"][test]["info"]=test_info[test]
+		marks=Marks.get_marks_for_test_list(course_id=course_id, test_list=test_list, with_info=True)
 		return marks
+
+	def tests_info(course_id):
+		tests_info={}
+		for test in glob.glob('main/files/json/courses/' + str(course_id) + '/tests/*'):
+			with io.open(test, 'r', encoding='utf8') as data_file:
+				data = json.load(data_file)
+				test_id=test[:-5].split("/")[5][6:]
+				tests_info[test_id]=data
+		return tests_info
 
 	def get_tests(course_id, task_id):
 		test_list = []
@@ -2372,7 +2359,7 @@ class Marks():
 				tasks_info[id] = data
 		return tasks_info
 
-	def get_marks_for_test_list(course_id, test_list, group_list=None):
+	def get_marks_for_test_list(course_id, test_list, group_list=None, with_info=False):
 		marks = {}
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
@@ -2387,6 +2374,10 @@ class Marks():
 						with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 							test_info = json.load(info_file)
 						marks[group][str(user_id)]["tests"][test_id] = test_info["mark"]
+						if with_info:
+							with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+								test_info = json.load(info_file)
+							marks[group][str(user_id)]["tests"][test_id]["info"]=test_info
 		return marks
 
 
@@ -2398,7 +2389,7 @@ class Marks():
 			test_list.append(test["id"])
 		if not group_list:
 			group_list = data["group_list"]
-		marks=Marks.get_marks_for_test_list(course_id=course_id,test_id=test_id, test_list=test_list)
+		marks=Marks.get_marks_for_test_list(course_id=course_id,test_list=test_list, group_list=group_list)
 		print("marks:", marks)
 		return marks
 

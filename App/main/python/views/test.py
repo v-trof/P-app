@@ -171,16 +171,13 @@ def change_answer_status(request):
 
 def change_score(request):
 	if request.method == 'POST':
-		print("ppppp")
 		test_id = request.POST.get("test_id", None)
 		answer_id = str(request.POST.get("answer_id", None))
 		course_id = request.POST.get("course_id", None)
 		user_id = request.POST.get("user_id", None)
-		print(user_id)
 		score = request.POST.get("score", None)
 		response = Test.change_score(user_id=user_id, test_id=test_id, course_id=course_id, answer_id=answer_id, score=score)
-		print(response)
-		return HttpResponse(response)
+		return response
 
 
 def results(request):

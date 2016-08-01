@@ -3,10 +3,9 @@
 {% load makeuser from filters %}
 {% include "#&/linkbox/" %}
 <section class='tasks'>
-	{% for task_id, task in tasks.items %}
-		<h3>Задание</h3> <br> {{tasks_info.task_id}}
-		{% include "Elements/card/assignment/" with assignment=tasks_info|keyvalue:task_id %}
-		{% for group_name, group_results in task.items %}
+	{% for task_id, task in tasks_info.items %}
+		<a class="--card" href="/course/{{course.id}}/results/?task_id={{task_id}}"> {% include "Elements/card/assignment/" with assignment=tasks_info|keyvalue:task_id %}</a>
+	{#	{% for group_name, group_results in task.items %}
 			<h3>{{ group_name }}</h3>
 			<br>
 			{% for user_id, user_results in group_results.items %}
@@ -16,6 +15,6 @@
 					{% endwith %}
 				{% endwith %}
 			{% endfor %}
-		{% endfor %}
+		{% endfor %} #}
 	{% endfor %}
 </section>

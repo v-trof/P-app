@@ -1,3 +1,9 @@
+{% load keyvalue from filters %}
+{% load makelist from filters %}
+{% load makeuser from filters %}
 {% include "#&/linkbox/" %}
-
-{# Test sections forloop #}
+<section class='tests'>
+	{% for test_id, test in tests.items %}
+		<a class="--card" href="/course/{{course.id}}/results/?test_id={{test_id}}"> {% include "Elements/card/test/" %} </a>
+	{% endfor %}
+</section>

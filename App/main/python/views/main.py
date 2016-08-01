@@ -197,6 +197,8 @@ class Course_group():
 			task_id = request.GET['task_id']
 			context["marks"] = Marks.get_marks_by_task(
 				course_id=course_id, task_id=task_id)
+			context["breadcrumbs"] = [
+			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "/course/" + str(course.id) + "/marks/tasks/", "link": "Задания"}, {"href": "#", "link": "Результаты"}]
 			print('marks', context["marks"])
 		elif 'test_id' in request.GET:
 			test_id = request.GET['test_id']
@@ -204,23 +206,24 @@ class Course_group():
 				course_id=course_id, test_list=[test_id])
 			context["test_id"] = test_id
 			print('marks', context["marks"])
+			context["breadcrumbs"] = [
+			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "/course/" + str(course.id) + "/marks/tests/", "link": "Тесты"}, {"href": "#", "link": "Результаты"}]
 		else:
 			request.session['notifications']=[{"type": "error", "message": "Недостаточно данных"}]
 			return redirect('/')
 		context["groups"] = Course.objects.load_groups(
 			course=Course.objects.get(id=int(course_id)))
-		context["breadcrumbs"] = [
-			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Результаты"}]
 		return render(request, 'Pages/Course/Marks/results/exports.html', context)
 
 	def marks(request, course_id):
 		course = Course.objects.get(id=course_id)
 		context = {}
 		context["from_task"] = True
+		context["course"] = course
 		context["tasks"] = Marks.by_tasks(course_id=course_id)
 		context["tasks_info"] = Marks.tasks_info(course_id=course_id)
 		context["breadcrumbs"] = [
-			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Результаты"}]
+			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Задания"}]
 		return render(request, 'Pages/Course/Marks/tasks/exports.html', context)
 
 	def marks_by_groups(request, course_id):
@@ -251,9 +254,9 @@ class Course_group():
 		context = {}
 		context["course"] = course
 		context["from_task"] = False
-		context["tests"] = Marks.by_tests(course_id=course_id)
+		context["tests"] = Marks.tests_info(course_id=course_id)
 		context["breadcrumbs"] = [
-			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Результаты"}]
+			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Тесты"}]
 		return render(request, 'Pages/Course/Marks/tests/exports.html', context)
 
 	def groups(request, course_id):
