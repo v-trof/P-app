@@ -32,6 +32,7 @@ def get(path):
 				dependencies_json[kind][n] = \
 					dependencies_json[kind][n].replace('#&', real_path)
 
+
 	dependencies_json["elements"] = set(dependencies_json["elements"])
 	dependencies_json["scripts"]  = set(dependencies_json["scripts"])
 	dependencies_json["styles"]   = set(dependencies_json["styles"])

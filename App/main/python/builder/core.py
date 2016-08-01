@@ -39,7 +39,7 @@ def build_page(page_name):
 		elements_current = page_dependencies["elements"] \
 							- elements_done
 
-		print("Todos", page_dependencies["elements"] - elements_done)
+		print("Todos", elements_current)
 
 		for element in elements_current:
 			element_path = path["elements"] + element
@@ -49,6 +49,12 @@ def build_page(page_name):
 			
 			element_arr = element.split("/")
 			element_l = len(element_arr)
+
+
+			if(element_l == 1 and element_arr[0][0].isupper()):
+				print("NOBLOCK:", element_arr[0])
+				continue
+
 			for i in range(element_l-1):
 				proto = "/".join(element_arr[:-i-1])
 				element_dependencies["elements"].add(proto)
@@ -64,7 +70,7 @@ def build_page(page_name):
 				if not block_name.startswith("__"):
 					continue
 				
-
+				
 				build.dev_file(block_path)
 
 				block_dependencies = dependencies.get(block_path)
