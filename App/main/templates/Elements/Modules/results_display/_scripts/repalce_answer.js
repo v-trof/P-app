@@ -29,7 +29,7 @@ results_display.replace_answer = function($answer,
 $(document).ready(function() {
 	if(typeof results_controls !== 'undefined') {
 
-		console.log("reloc");
+		// console.log("reloc");
 
 		results_display.replace_answer = function($answer,
 			user_answer, right_answer, quality, index, worth) {

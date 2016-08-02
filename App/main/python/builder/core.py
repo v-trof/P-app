@@ -51,7 +51,8 @@ def build_page(page_name):
 			element_l = len(element_arr)
 
 
-			if(element_l == 1 and element_arr[0][0].isupper()):
+			if(element_l == 1 and (element_arr[0][0].isupper() 
+				or element[0][0] == '.')):
 				print("NOBLOCK:", element_arr[0])
 				continue
 

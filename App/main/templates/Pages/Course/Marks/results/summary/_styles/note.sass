@@ -1,15 +1,12 @@
 @import "../../../../../../sass_vars/main.sass"
 
 .summary
-	display: flex
-	flex-direction: column
-	align-items: center
-	padding-left: 1rem
-	padding-right: 1rem + $border--m
+	width: 100%
+	max-width: 50rem
+	padding: $border--s
 	.card
 		width: 100%
-		max-width: 50rem
-	.__note
+	.__note, .__test
 		margin-bottom: $margin--s
 		&:last-child
 			margin-bottom: 0

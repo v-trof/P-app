@@ -7,14 +7,14 @@ results_controls.bind_stepper = function(
   var $dec = $element.find('.dec_mark');
   var $current = $element.find('.__current');
 
-  console.log(max_value);
+  // console.log(max_value);
 
   //display
   $element.find('.__max').text(max_value);
   $current.text(current_value);
 
   $inc.click(function(event) {
-    console.log(current_value < max_value, current_value, max_value);
+    // console.log(current_value < max_value, current_value, max_value);
     if(current_value < max_value) {
       current_value++;
       $current.text(current_value);

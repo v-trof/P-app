@@ -12,7 +12,8 @@ section.main
 		height: 100%
 .students
 	min-width: 24rem
-	padding-right: $border--s + $padding--m
+	margin-left: -$padding--m
+	padding: $border--s + $padding--m
 	overflow-y: auto
 	overflow-x: hidden
 	.card.--user
@@ -22,6 +23,11 @@ section.main
 			button
 				margin: 0
 			flex: 0
+	@media screen and (max-width: 1025px)
+		min-width: 30%
+		@media screen and (max-width: 769px)
+			.__extension
+				flex-wrap: wrap
 .card.--divider
 	margin: -$padding--m 0
 	margin-right: $padding--m
@@ -32,6 +38,20 @@ section.main
 .tests
 	display: flex
 	flex-direction: column
+	align-items: center
 	width: 100%
-	margin-left: -1rem
-	padding-right: 16.25rem
+	padding-right: 16.5rem
+	.linkbox
+		max-width: 50rem
+
+	@media screen and (max-width: 1025px)
+		padding-right: 20%
+
+.panel
+	@media screen and (max-width: 1025px)
+		max-width: 20%
+		min-width: 20%
+
+.card.panel
+	div.__actions
+		display: none

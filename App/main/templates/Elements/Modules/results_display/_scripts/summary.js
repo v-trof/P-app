@@ -18,7 +18,11 @@ results_display.create_summary = function(attempt, results) {
 	$(".preview .__task>.__content").each(function(task_index, el) {
 		var use_full_format = false;
 
+		//set number
+		$(this).siblings('.__number').text(task_index+1);
+		
 		var $answer_fileds = $(this).find(".__answer-field");
+
 
 		//if 2 answers per task
 		if($answer_fileds.length > 1) {

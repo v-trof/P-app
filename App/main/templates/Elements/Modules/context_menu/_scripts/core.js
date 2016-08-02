@@ -25,7 +25,7 @@ var context_menu = (function() {
 		}
 	}
 	exports = {
-		show: function(options, el, chosen) {
+		show: function(options, el, chosen, sectioned) {
 			$("body").append($menu);
 			if(is_shown) {
 				context_menu.hide();

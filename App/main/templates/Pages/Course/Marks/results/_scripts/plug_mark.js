@@ -1,12 +1,14 @@
-$(document).ready(function() {
-	$(".card.--user button").click(function(event) {
+function plug_marks_init($group) {
+	$group.on('click', '.card.--user button', function(event) {
 		$('.--active').removeClass('--active');
 		$(this).parent().parent().addClass('--active');
 		results_controls.active_student = $(this)
       .parent().parent().attr('id');
-		{% if not test_id %}
-			results_controls.active_test = $(this).attr('id');
-		{% endif %}
+
+    //TEST
+		var id = $(this).attr('id');
+		results_controls.active_test = id;
+		show_active_test(id);
 		results_controls.load();
 	});
-});
+}

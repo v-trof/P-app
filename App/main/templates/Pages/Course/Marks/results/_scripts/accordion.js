@@ -7,5 +7,7 @@ $(document).ready(function() {
 			$(this).parent().attr('id', id);
 			$(this).replaceTag('div');
 		});
+
+    show_marks($(this));
 	});
 });

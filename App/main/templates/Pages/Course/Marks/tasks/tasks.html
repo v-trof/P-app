@@ -4,7 +4,9 @@
 {% include "#&/linkbox/" %}
 <section class='tasks'>
 	{% for task_id, task in tasks_info.items %}
-		<a class="--card" href="/course/{{course.id}}/results/?task_id={{task_id}}"> {% include "Elements/card/assignment/" with assignment=tasks_info|keyvalue:task_id %}</a>
+		<div class="--card" href="/course/{{course.id}}/results/?task_id={{task_id}}"> 
+		{% include "Elements/card/assignment/" with assignment=tasks_info|keyvalue:task_id %}
+	</a>
 	{#	{% for group_name, group_results in task.items %}
 			<h3>{{ group_name }}</h3>
 			<br>

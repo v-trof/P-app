@@ -5,47 +5,40 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Оценки за задания</title>
 	<style> 
-		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements//Modules/results_controls/__set_mark/_styles/css/set_mark.css" %} 
-		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
-		{% include "Elements//Modules/results_controls/__answer_display/_styles/css/answer_display.css" %} 
-		{% include "Elements/Modules/test_manager/__popup_texts/__save/_styles/css/layout.css" %} 
-		{% include "Elements/card/user/_styles/css/user.css" %} 
-		{% include "Elements/Modules/results_controls/__answer_display/_styles/css/answer_display.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements//Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
 		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/card/marks/_styles/css/marks.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/button/flat/_styles/css/flat.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
 		{% include "Page_templates/_styles/css/main.css" %} 
 		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/Modules/results_controls/__set_mark/_styles/css/set_mark.css" %} 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
 		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
 		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Elements//Modules/test_manager/__popup_texts/__save/_styles/css/layout.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Elements/card/_styles/css/link.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/card/assignment/_styles/css/assignment.css" %} 
+		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
+		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/button/flat/_styles/css/flat.css" %} 
+		{% include "Elements/card/assignment/_styles/css/states.css" %} 
 	</style>
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	{% load keyvalue from filters %}{% load makelist from filters %}{% load makeuser from filters %}{% include "Pages/Course/Marks/tasks/linkbox/exports.html" %}<section class='tasks'>	{% for task_id, task in tasks_info.items %}		<a class="--card" href="/course/{{course.id}}/results/?task_id={{task_id}}"> {% include "Elements/card/assignment/exports.html" with assignment=tasks_info|keyvalue:task_id %}</a>	{#	{% for group_name, group_results in task.items %}			<h3>{{ group_name }}</h3>			<br>			{% for user_id, user_results in group_results.items %}				{% with user=user_id|makeuser %}					{% with results=user_results|makelist %}						{% include "Elements/card/user/extended/exports.html" with extension="Elements/card/marks/exports.html" %}					{% endwith %}				{% endwith %}			{% endfor %}		{% endfor %} #}	{% endfor %}</section>
+	{% load keyvalue from filters %}{% load makelist from filters %}{% load makeuser from filters %}{% include "Pages/Course/Marks/tasks/linkbox/exports.html" %}<section class='tasks'>	{% for task_id, task in tasks_info.items %}		<div class="--card" href="/course/{{course.id}}/results/?task_id={{task_id}}"> 		{% include "Elements/card/assignment/exports.html" with assignment=tasks_info|keyvalue:task_id %}	</a>	{#	{% for group_name, group_results in task.items %}			<h3>{{ group_name }}</h3>			<br>			{% for user_id, user_results in group_results.items %}				{% with user=user_id|makeuser %}					{% with results=user_results|makelist %}						{% include "Elements/card/user/extended/exports.html" with extension="Elements/card/marks/exports.html" %}					{% endwith %}				{% endwith %}			{% endfor %}		{% endfor %} #}	{% endfor %}</section>
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
+		{% include "Elements/Modules/replace/_scripts/replace.js" %} 
 		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
-		{% include "Elements/Modules/results_controls/__answer_display/_scripts/stepper.js" %} 
-		{% include "Elements/Layout/header/_scripts/header.js" %} 
-		{% include "Elements//Modules/results_controls/__answer_display/_scripts/stepper.js" %} 
+		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Elements/card/assignment/_scripts/show_state.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
+		{% include "Pages/Course/Marks/tasks/_scripts/replace_container.js" %} 
 	</script>
 </body>
 </html>

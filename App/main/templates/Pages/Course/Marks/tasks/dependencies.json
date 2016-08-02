@@ -1,5 +1,5 @@
 {
-	"elements": ["card/test","card/marks", "card/user/extended"],
+	"elements": ["card/assignment", "Modules/replace"],
 	"scripts": [],
 	"styles": [],
 	"fixes": [],
