@@ -2284,6 +2284,18 @@ class Test():
 		else:
 			return "Тест не существует"
 
+	def get_tests_in_task_info(course_id, task_id):
+		test_list = []
+		tests_info={}
+		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + str(task_id) + '.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+		for test in data["content"]["tests"]:
+			test_list.append(test["id"])
+		for test in test_list:
+			tests_info[test]=Test.get_test_info(test_id=test,course_id=course_id)
+		return tests_info
+
+
 	def get_attempt_info(course_id, test_id, user_id):
 		if os.path.exists('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/attempts/' + str(test_id) + '.json'):
 			with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/attempts/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:

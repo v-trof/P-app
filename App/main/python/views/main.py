@@ -197,7 +197,9 @@ class Course_group():
 			task_id = request.GET['task_id']
 			context["marks"] = Marks.get_marks_by_task(
 				course_id=course_id, task_id=task_id)
-			context["summary"] = Statistics.get_task_statistics(task_id=test_id,course_id=course_id)
+			context["summary"] = Statistics.get_task_statistics(task_id=task_id,course_id=course_id)
+			context["tests"] = Test.get_tests_in_task_info(task_id=task_id,course_id=course_id)
+			print(context["tests"])
 			context["breadcrumbs"] = [
 			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "/course/" + str(course.id) + "/marks/tasks/", "link": "Задания"}, {"href": "#", "link": "Результаты"}]
 		elif 'test_id' in request.GET:
@@ -206,7 +208,7 @@ class Course_group():
 				course_id=course_id, test_list=[test_id])
 			context["test_id"] = test_id
 			context["summary"] = Statistics.get_test_statistics(test_id=test_id,course_id=course_id)
-			print(context["summary"])
+			context["tests"] = {str(test_id):Test.get_test_info(course_id=course_id,test_id=test_id)}
 			context["breadcrumbs"] = [
 			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "/course/" + str(course.id) + "/marks/tests/", "link": "Тесты"}, {"href": "#", "link": "Результаты"}]
 		else:
