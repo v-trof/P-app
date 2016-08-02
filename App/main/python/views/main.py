@@ -202,7 +202,7 @@ class Course_group():
 				context["tests"][test]["summary"]=Statistics.get_test_statistics(test_id=test,course_id=course_id)
 				print(context["tests"][test]["summary"])
 			context["breadcrumbs"] = [
-			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "/course/" + str(course.id) + "/marks/tasks/", "link": "Задания"}, {"href": "#", "link": "Результаты"}]
+			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "/course/" + str(course.id) + "/marks", "link": "Задания"}, {"href": "#", "link": "Результаты"}]
 		elif 'test_id' in request.GET:
 			test_id = request.GET['test_id']
 			context["marks"] = Marks.get_marks_for_test_list(
