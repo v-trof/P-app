@@ -3,9 +3,8 @@
 	<div>Тесты:</div>
 	<div class="__links">
 	{% for test in task.tests %}
-		<a href='/test/attempt/{{test.link}}' id='{{forloop.counter}}' class='--block {% if test.done %} --done {% endif %} --test'>
+		<a href='/test/attempt/{{test.link}}' id='{{forloop.counter}}' class='--block {% if test.done %} --done {% endif %} --test {% if test.unfinished %} --unfinished {% endif %}'>
 		{{test.title}}</a>{% if not forloop.last %},{% endif %}
-		{% if test.unfinished %} <div>Вы начали, но не завершили попытку!</div> {% endif %}
 	{% endfor %}
 	</div>
 </div>

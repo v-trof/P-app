@@ -746,11 +746,11 @@ class CourseManager(models.Manager):
 					new_data["relevant"] = True
 				tasks["undone"].append(new_data)
 			else:
+				new_data["relevant"] = True
+				new_data["urgent"] = False
 				tasks["done"].append(new_data)
 		tasks["undone"] = Utility.sort_by_date(
 			object=tasks["undone"], indicator="due_date")
-		tasks["done"] = Utility.sort_by_date(
-			object=tasks["done"], indicator="due_date")
 		return tasks
 
 	def get_users_info(self, user_ids):
@@ -1012,7 +1012,7 @@ class CourseManager(models.Manager):
 													   "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
 		return materials
 
-	def get_sections(self, course_id):
+	def get_sections(self, course_id, user=None):
 		context = {}
 		context["published"] = {}
 		context["unpublished"] = []
@@ -1025,8 +1025,17 @@ class CourseManager(models.Manager):
 					test_id = element["id"]
 					with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 						test_data = json.load(info_file)
-						context["published"][section].append({"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
-															 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
+					test={"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
+															 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id}
+					if user:
+						started=Test.is_started(course_id=course_id,user_id=str(user.id), test_id=test_id)
+						finished=Test.is_finished(course_id=course_id,user_id=str(user.id), test_id=test_id)
+						print(started,finished)
+						if finished:
+							test["done"]=True
+						elif started:
+							test["unfinished"]=True
+					context["published"][section].append(test)
 				else:
 					material_id = element["id"]
 					with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
@@ -2088,6 +2097,7 @@ class Test():
 		return context
 
 	def attempt_save(test_id, question_id, course_id, answer, user):
+		print(question_id)
 		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as assignments_file:
 			assignment_map = json.load(assignments_file)
 		for assignment_id, content in assignment_map.items():
@@ -2151,32 +2161,30 @@ class Test():
 		test_results["test"] = {"id": test_id, "title": test_data["title"]}
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 			attempt_data = json.load(json_file)
-			counter = 0
 			for question_id, question in attempt_data.items():
 				overall_score += question["worth"]
 				if question["user_answer"] == None:
 					missed += 1
-					test_results["missed"].append(counter)
+					test_results["missed"].append(int(question_id))
 					question["result"] = "missed"
 					question["user_score"] = 0 
 				elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "right":
 					right += 1
 					score+= question["worth"]
-					test_results["right"].append(counter)
+					test_results["right"].append(int(question_id))
 					question["result"] = "right"
 					question["user_score"] = question["worth"]
 				elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "forgiving":
 					forgiving += 1
-					test_results["forgiving"].append(counter)
+					test_results["forgiving"].append(int(question_id))
 					question["result"] = "forgiving"
 					question["user_score"] = question["worth"]
 					score+= question["worth"]
 				else:
 					mistakes += 1
-					test_results["mistakes"].append(counter)
+					test_results["mistakes"].append(int(question_id))
 					question["result"] = "wrong"
 					question["user_score"] = 0
-				counter += 1
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			course_data = json.load(data_file)
 		for teacher in course_data["teachers"]:
@@ -2313,6 +2321,11 @@ class Test():
 			test_info = json.load(info_file)
 		return test_info["creator"] == user.id
 
+	def is_started(user_id,test_id,course_id):
+		return os.path.exists('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/attempts/' + test_id + '.json')
+
+	def is_finished(user_id, test_id, course_id):
+		return os.path.exists('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/' + test_id + '.json')
 
 class Marks():
 
@@ -2476,10 +2489,6 @@ class Statistics():
 	def get_test_statistics(course_id,test_id):
 		summary={}
 		summary["frequent_mistakes"]=Statistics.frequent_mistakes(course_id=course_id,test_id=test_id)
-		return summary
-
-	def get_task_statistics(course_id,task_id):
-		summary={}
 		return summary
 
 	def frequent_mistakes(course_id,test_id):

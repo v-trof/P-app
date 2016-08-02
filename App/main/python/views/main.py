@@ -121,7 +121,7 @@ class Course_group():
 			course_id=course.id, user=request.user)
 		announcements = Course.objects.load_announcements(
 			course_id=course.id, user=request.user)
-		sections = Course.objects.get_sections(course_id=str(course.id))
+		sections = Course.objects.get_sections(course_id=str(course.id), user=request.user)
 		assignments = Course.objects.get_assignments(
 			user=request.user, course=course)
 		return render(request, 'Pages/Course/main/exports.html', {"sections": sections, "sources": sources, "is_participant": is_participant, "announcements": announcements, "course": course, "assignments": assignments,
@@ -197,9 +197,10 @@ class Course_group():
 			task_id = request.GET['task_id']
 			context["marks"] = Marks.get_marks_by_task(
 				course_id=course_id, task_id=task_id)
-			context["summary"] = Statistics.get_task_statistics(task_id=task_id,course_id=course_id)
 			context["tests"] = Test.get_tests_in_task_info(task_id=task_id,course_id=course_id)
-			print(context["tests"])
+			for test in context["tests"]:
+				context["tests"][test]["summary"]=Statistics.get_test_statistics(test_id=test,course_id=course_id)
+				print(context["tests"][test]["summary"])
 			context["breadcrumbs"] = [
 			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "/course/" + str(course.id) + "/marks/tasks/", "link": "Задания"}, {"href": "#", "link": "Результаты"}]
 		elif 'test_id' in request.GET:
