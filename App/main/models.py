@@ -1666,7 +1666,7 @@ class Material():
 		for unpublished in course_info['sections']['unpublished']:
 			if material_id == unpublished["id"] and unpublished["type"] == "material":
 				material_unpublished = True
-		material_published = Material.is_published(material_id=material_id)
+		material_published = Material.is_published(material_id=material_id, course_id=course_id)
 		if not material_unpublished and not material_published:
 			course_info['sections']['unpublished'].append(
 				{"id": material_id, "type": "material"})
@@ -1884,7 +1884,7 @@ class Test():
 		for unpublished in course_info['sections']['unpublished']:
 			if test_id == unpublished["id"] and unpublished["type"] == "test":
 				test_unpublished = True
-		test_published = Test.is_published(test_id=test_id)
+		test_published = Test.is_published(test_id=test_id, course_id=course_id)
 		if not test_unpublished and not test_published:
 			course_info['sections']['unpublished'].append(
 				{"id": test_id, "type": "test"})
@@ -1922,14 +1922,16 @@ class Test():
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 
-		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
-			test_data = json.load(info_file)
-
+		if os.path.exists('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json'):
+			with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+				test_data = json.load(info_file)
+		else:
+			test_data={}
 		test_data["allowed_mistakes"] = allowed_mistakes
 
 		for key in mark_setting:
 			test_data["mark_setting"][key] = mark_setting[key]
-		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as info_file:
+		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(test_data, ensure_ascii=False))
 
 		return "Тест был опубликован"
