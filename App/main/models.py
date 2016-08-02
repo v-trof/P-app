@@ -2018,7 +2018,7 @@ class Test():
 			item["value"] = data["user_answer"].split(', ')
 			item["filled"] = data["user_answer"]
 		elif type == "answer--radio":
-			item["value"] = data["user_answer"].split(', ')
+			item["value"] = data["user_answer"]
 		elif type == "answer--checkbox":
 			item["value"] = data["user_answer"].split(', ')
 		return item
@@ -2127,8 +2127,10 @@ class Test():
 		return mark_quality
 
 	def check_question_correctness(question, allowed_mistakes):
-		if question["type"]=="select" or question["type"]=="radio" or question["type"]=="checkbox":
+		if question["type"]=="checkbox":
 			return check_selected(answer_right=question["answer"], answer=question["user_answer"].split(', '), allowed=allowed_mistakes)
+		elif question["type"]=="select" or question["type"]=="radio":
+			return check_selected(answer_right=str(question["answer"]), answer=str(question["user_answer"]), allowed=allowed_mistakes)
 		return check(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 
 	def attempt_check(user, test_id, course_id):

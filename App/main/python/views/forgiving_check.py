@@ -31,6 +31,7 @@ def numbers(answer):
 	return romanResult
 
 def check(answer, answer_right, allowed):
+	print(answer,answer_right)
 	if answer == answer_right:
 		return "right"
 	if "word_order" in allowed:
@@ -58,6 +59,7 @@ def check(answer, answer_right, allowed):
 	return "false"
 
 def check_selected(answer, answer_right, allowed):
+	print(answer,answer_right)
 	if answer == answer_right:
 		return "right"
 	else: return "false"

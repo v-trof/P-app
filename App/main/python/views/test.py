@@ -136,6 +136,9 @@ def attempt(request):
 		context["breadcrumbs"] = [{
 		"href": "/course/" + str(course_id),
 		"link": Course.objects.get(id=course_id).name
+	},{
+		"href": "#",
+		"link": "Попытка"
 	}]
 		return render(request, 'Pages/Test/Attempt/main/exports.html', context)
 	else:
@@ -199,8 +202,11 @@ def results(request):
 		"href": "/course/" + str(course_id),
 		"link": Course.objects.get(id=course_id).name
 	}, {
-		"href": "#",
+		"href": "/test/attempt/?course_id="+course_id+"&test_id="+test_id,
 		"link": context["test"]["title"]
+	},{
+		"href": "#",
+		"link": "Результаты"
 	}]
 		test = Test.load(course_id=course_id, test_id=test_id)
 		context["test"]["json"] = test["json"]
