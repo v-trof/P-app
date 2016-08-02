@@ -74,7 +74,11 @@ results_display.create_summary = function(attempt, results) {
 				}
 			)
 
-			scroll.wire($new_summary, $(this).parent().parent());
+			if(typeof results_controls === 'undefined') {
+				scroll.wire($new_summary, $(this).parent().parent());
+			} else {
+				scroll.wire($new_summary, $(this), $('.preview'));
+			}
 			answer_index+=1
 		});	
 	});

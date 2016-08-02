@@ -8,13 +8,12 @@ $(document).ready(function() {
     if(results_controls.active_student) {
       show_active_test(test_id);
       results_controls.load();
-      var $task = $(
+      var $question = $(
           $(".preview .answer_display ")[question_id-1]
-        ).parent();
-
-      console.log($task);
+        );
+      
       setTimeout(function() {
-        $(".preview").scrollTo($task, 300);
+        $(".preview").scrollTo($question, 300);
       }, 100);
     }
   });
