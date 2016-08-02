@@ -2170,7 +2170,7 @@ class Test():
 				else:
 					mistakes += 1
 					test_results["mistakes"].append(counter)
-					question["result"] = "false"
+					question["result"] = "wrong"
 					question["user_score"] = 0
 				counter += 1
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -2252,7 +2252,7 @@ class Test():
 			attempt_data[str(answer_id)]["result"]="right"
 		elif attempt_data[str(answer_id)]["user_score"]==0:
 			test_results["mistakes"].append(answer_id)
-			attempt_data[str(answer_id)]["result"]="false"
+			attempt_data[str(answer_id)]["result"]="wrong"
 		else: 
 			test_results["forgiving"].append(answer_id)
 			attempt_data[str(answer_id)]["result"]="forgiving"
@@ -2335,11 +2335,14 @@ class Marks():
 
 	def tests_info(course_id):
 		tests_info={}
-		for test in glob.glob('main/files/json/courses/' + str(course_id) + '/tests/*'):
-			with io.open(test, 'r', encoding='utf8') as data_file:
-				data = json.load(data_file)
-				test_id=test[:-5].split("/")[5][6:]
-				tests_info[test_id]=data
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data = json.load(data_file)
+		for section in course_data["sections"]["published"]:
+			tests_info[section]={}
+			for test in course_data["sections"]["published"][section]:
+				with io.open('main/files/json/courses/' + str(course_id) + '/tests/'+test["id"]+'.json', 'r', encoding='utf8') as data_file:
+					data = json.load(data_file)
+					tests_info[section][test["id"]]=data
 		return tests_info
 
 	def get_tests(course_id, task_id):
@@ -2450,3 +2453,38 @@ class Sharing():
 	#		shared_table = json.load(shared_file)
 	#	for id, shared in shared_table.items():
 	#		if shared["name"]
+
+
+class Statistics():
+
+	def get_test_statistics(course_id,test_id):
+		summary={}
+		summary["frequent_mistakes"]=Statistics.frequent_mistakes(course_id=course_id,test_id=test_id)
+		return summary
+
+	def get_task_statistics(course_id,task_id):
+		summary={}
+		return summary
+
+	def frequent_mistakes(course_id,test_id):
+		questions={}
+		most_frequent={}
+		results_count=0
+		for results in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/' + test_id + '.json'):
+			results_count+=1
+			with io.open(results, 'r', encoding='utf8') as info_file:
+				test_info = json.load(info_file)
+			for question_id,question in test_info.items():
+				if question["result"] == "forgiving" or question["result"] == "wrong" or question["result"] == "missed":
+					question_id=str(int(question_id)+1)
+					if not question_id in questions.keys():
+						questions[question_id]=0
+					questions[question_id]+=1
+
+		for question_id,frequency in questions.items():
+			if results_count/frequency*100 > 50:
+				most_frequent[question_id]=int(results_count/frequency*100)
+		return most_frequent
+			#user_id= results[:-5].split("/")[5][6:]
+			#user=User.objects.get(id=user_id)
+

@@ -3,7 +3,12 @@
 {% load makeuser from filters %}
 {% include "#&/linkbox/" %}
 <section class='tests'>
-	{% for test_id, test in tests.items %}
-		<a class="--card" href="/course/{{course.id}}/results/?test_id={{test_id}}"> {% include "Elements/card/test/" %} </a>
+	{% for section_name, section in tests.items %}
+		{% if section|length > 0 %}
+			<h3>{{section_name}}</h3>
+			{% for test_id,test in section.items %}
+				<a class="--card" href="/course/{{course.id}}/results/?test_id={{test_id}}"> {% include "Elements/card/test/" %} </a>
+			{% endfor %}
+		{% endif %}
 	{% endfor %}
 </section>

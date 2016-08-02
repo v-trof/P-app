@@ -197,15 +197,16 @@ class Course_group():
 			task_id = request.GET['task_id']
 			context["marks"] = Marks.get_marks_by_task(
 				course_id=course_id, task_id=task_id)
+			context["summary"] = Statistics.get_task_statistics(task_id=test_id,course_id=course_id)
 			context["breadcrumbs"] = [
 			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "/course/" + str(course.id) + "/marks/tasks/", "link": "Задания"}, {"href": "#", "link": "Результаты"}]
-			print('marks', context["marks"])
 		elif 'test_id' in request.GET:
 			test_id = request.GET['test_id']
 			context["marks"] = Marks.get_marks_for_test_list(
 				course_id=course_id, test_list=[test_id])
 			context["test_id"] = test_id
-			print('marks', context["marks"])
+			context["summary"] = Statistics.get_test_statistics(test_id=test_id,course_id=course_id)
+			print(context["summary"])
 			context["breadcrumbs"] = [
 			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "/course/" + str(course.id) + "/marks/tests/", "link": "Тесты"}, {"href": "#", "link": "Результаты"}]
 		else:
@@ -223,7 +224,7 @@ class Course_group():
 		context["tasks"] = Marks.by_tasks(course_id=course_id)
 		context["tasks_info"] = Marks.tasks_info(course_id=course_id)
 		context["breadcrumbs"] = [
-			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Задания"}]
+			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Оценки за задания"}]
 		return render(request, 'Pages/Course/Marks/tasks/exports.html', context)
 
 	def marks_by_groups(request, course_id):
@@ -256,7 +257,7 @@ class Course_group():
 		context["from_task"] = False
 		context["tests"] = Marks.tests_info(course_id=course_id)
 		context["breadcrumbs"] = [
-			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Тесты"}]
+			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Оценки за тесты"}]
 		return render(request, 'Pages/Course/Marks/tests/exports.html', context)
 
 	def groups(request, course_id):
