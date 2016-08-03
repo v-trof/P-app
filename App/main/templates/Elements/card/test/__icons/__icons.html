@@ -1,0 +1,16 @@
+{% if test.unfinished %}
+<div class="__warning">
+  {% include "Elements/Icons/in_progress.svg" with
+    class="__unfinished"
+    tip="Попытка не закончена" %}
+</div>
+{% endif %}
+
+
+{% if test.done %}
+<div class="__positive">
+  {% include "Elements/Icons/done.svg" with
+    class="__done"
+    tip="Тест вып" %}
+</div>
+{% endif %}

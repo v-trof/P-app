@@ -1,6 +1,7 @@
 {% load ext_humanize %}
 {% include "#&/../../__overall-info/" 
-	with heading=test.title %}
+	with heading=test.title
+	icons_path="#&/../__icons/" %}
 <p class="__content">
 	Тест, 
 	{% ifnotequal 0 test.questions_number %}
