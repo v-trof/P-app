@@ -7,9 +7,20 @@
 	background: $white
 	border-radius: $border--m
 	transition: $time--s
+	background: $grey--light
 	transition-property: opacity, transform
 	+box-shadow(3)
 	z-index: 30
+
+	h3
+		padding: $padding--s $padding--m
+
+	section
+		.__option
+			display: none
+		&.--show
+			.__option
+				display: block
 
 	.__option
 		padding: $padding--m

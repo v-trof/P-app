@@ -26,7 +26,7 @@ var accordion = (function() {
 			var $toggle = $(toggle_template);
 			$element.prepend($toggle);
 
-			$toggle.css("top", $indicator.height()/2);
+			$toggle.css("top", $indicator.outerHeight()/2);
 
 			$toggle.click(function(event) {
 				if($(this).hasClass('--accordion-minimized')) {

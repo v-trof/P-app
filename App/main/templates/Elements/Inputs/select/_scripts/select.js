@@ -1,19 +1,23 @@
-function add_menu_caller(select) {
-
+function select_init(select) {
 	$(select).append('<option value="">Выберите...</option>')
 
-	var last_option = $(select).children('option').last();
-	
-	setTimeout(function() {
-		var max_w = 0;
-		$(select).children('option').each(function(index, el) {
-			max_w = Math.max($(this).outerWidth(), max_w);
-		});
-		$(select).children('.__display').css('min-width', max_w + "px");
-	},300);
-	
-	$(select).children('input').val(last_option.attr("value"));
-	$(select).children(".__display").text(last_option.text());
+  var last_option = $(select).find('option').last();
+  
+  setTimeout(function() {
+    var max_w = 0;
+    $(select).find('option').each(function(index, el) {
+      max_w = Math.max($(this).outerWidth(), max_w);
+    });
+    $(select).children('.__display').css('min-width', max_w + "px");
+  }, 300);
+  
+  $(select).children('input').val(last_option.attr("value"));
+  $(select).children(".__display").text(last_option.text());
+}
+
+function add_menu_caller(select) {
+
+	select_init(select);
 	
 	$(select).click(function(e) {
 		var options = [];
@@ -37,9 +41,7 @@ function add_menu_caller(select) {
 				}
 			}
 		});
-		if(!chosen) {
-			chosen = options[0]
-		}
+
 		if(is_disabled != "disabled" && is_disabled !="true") {
 			context_menu.show(options, this, chosen);
 		}
@@ -47,7 +49,7 @@ function add_menu_caller(select) {
 }
 
 $(document).ready(function() {
-	$(".--select").each(function(index, el) {
+	$(".--select:not(.--sectioned)").each(function(index, el) {
 		add_menu_caller(this);
 	});
 });

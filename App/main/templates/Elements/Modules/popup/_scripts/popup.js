@@ -9,6 +9,10 @@ var popup = (function() {
 			$popup.find(".--select").each(function(index, el) {
 				add_menu_caller(this);
 			});
+
+			$popup.find(".--sectioned").each(function(index, el) {
+				add_menu_caller_sectioned(this);
+			});
 			$popup.find("input").first().focus();
 
 			if(css) {

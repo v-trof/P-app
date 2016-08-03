@@ -1,6 +1,6 @@
 var context_menu = (function() {
-	var $menu = $("<div id='context_menu' class='--hidden --hiding'></div>")
-	var is_shown = false
+	var $menu = $("<div id='context_menu' class='--hidden --hiding'></div>");
+	var is_shown = false;
 
 	var build = function(options, el, chosen) {
 		$menu.html("");
@@ -12,19 +12,24 @@ var context_menu = (function() {
 				$menu.append("<div class='__option' value='" + option.value + "'>" + option.text + "</div>");
 			});
 
-			$menu.children(".__option").click(function(event) {
-				context_menu.hide();
-				$(el).find('input').val($(this).attr('value')).change();
-				$(el).children('.__display').text($(this).text());
-				($(el).find('input').val(), $(el).find('input'));
-			});
+			
 		} else {
 			options.forEach(function(option) {
 				$menu.append("<div class='__option' onclick='" + option.func + "()'>" + option.text + "</div>");
 			});
 		}
+		context_menu.bind_selects(el);
 	}
 	exports = {
+		$: $menu,
+		bind_selects: function(el) {
+			$menu.find(".__option").click(function(event) {
+				context_menu.hide();
+				$(el).find('input').val($(this).attr('value')).change();
+				$(el).children('.__display').text($(this).text());
+				($(el).find('input').val(), $(el).find('input'));
+			});
+		},
 		show: function(options, el, chosen, sectioned) {
 			$("body").append($menu);
 			if(is_shown) {
@@ -33,7 +38,11 @@ var context_menu = (function() {
 
 			c_rect = el.getBoundingClientRect();
 
-			build(options, el, chosen);
+			if(sectioned) {
+				context_menu.build_section_select(options, el, chosen);
+			} else {
+				build(options, el, chosen);
+			}
 
 			$menu.css({
 				"top": c_rect.top + "px",

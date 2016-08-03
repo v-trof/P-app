@@ -2,11 +2,9 @@
 {% load makelist from filters %}
 {% load makeuser from filters %}
 {% for user_id,task in expired.items %}
-	<a class="--card" href="/profile/{{user.id}}/">
-		{% with user=user_id|makeuser %}
-		{% with assignment=tasks_info|keyvalue:task %}
-			{% include "Elements/card/user/extended/" with extension="Elements/card/assignment/" %}
-		{% endwith %}
-		{% endwith %}
-	</a>
+	{% with user=user_id|makeuser %}
+	{% with assignment=tasks_info|keyvalue:task %}
+		{% include "Elements/card/user/extended/" with extension="Elements/card/assignment/" %}
+	{% endwith %}
+	{% endwith %}
 {% endfor %}
