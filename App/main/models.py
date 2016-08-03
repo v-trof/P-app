@@ -171,6 +171,11 @@ class Utility():
 		else:
 			return item
 
+	def transform_date(date):
+		date=date.split("-")
+		new_date=date[2]+"-"+date[1]+"-"+date[0]
+		return new_date
+
 	def sort_by_date(object, indicator, raising=True):
 		items = []
 		sorted_list = []
@@ -179,6 +184,7 @@ class Utility():
 			for item in object:
 				if isinstance(item, dict):
 					if not item[indicator] == "":
+						print(item[indicator])
 						items.append(item[indicator])
 					else:
 						no_date_list.append(item)
@@ -187,13 +193,16 @@ class Utility():
 				items.sort(key=Utility.sort_by_month)
 				items.sort(key=Utility.sort_by_year)
 			else:
+				#print(items.sort(key=Utility.sort_by_day, reverse=True),items.sort(key=Utility.sort_by_day))
 				items.sort(key=Utility.sort_by_day, reverse=True)
 				items.sort(key=Utility.sort_by_month, reverse=True)
 				items.sort(key=Utility.sort_by_year, reverse=True)
 			for placing_item in items:
 				for item in object:
+					print(item,placing_item)
 					if item[indicator] == placing_item:
 						sorted_list.append(item)
+						object.remove(item)
 						break
 			sorted_list += no_date_list
 			return sorted_list
@@ -796,6 +805,7 @@ class CourseManager(models.Manager):
 	def create_assignment(self, course_id, group_list, test_list, material_list, traditionals_list, due_date):
 		assignment = {}
 		assignment["due_date"] = due_date
+		assignment["publish_date"]=Utility.transform_date(date=str(datetime.datetime.now())[:10])
 		assignment["group_list"] = json.loads(group_list)
 		assignment["content"] = {}
 		assignment["course_id"] = course_id
@@ -1026,11 +1036,10 @@ class CourseManager(models.Manager):
 					with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 						test_data = json.load(info_file)
 					test={"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
-															 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id}
+															 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id, "publish_date": element["publish_date"]}
 					if user:
 						started=Test.is_started(course_id=course_id,user_id=str(user.id), test_id=test_id)
 						finished=Test.is_finished(course_id=course_id,user_id=str(user.id), test_id=test_id)
-						print(started,finished)
 						if finished:
 							test["done"]=True
 						elif started:
@@ -1041,20 +1050,22 @@ class CourseManager(models.Manager):
 					with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 						material_data = json.load(info_file)
 						context["published"][section].append({"type": "material", "title": material_data[
-															 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
+															 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id, "publish_date": element["publish_date"]})
+			context["published"][section]=Utility.sort_by_date(object=context["published"][section],indicator="publish_date",raising=False)
 		for element in data["sections"]["unpublished"]:
 			if element["type"] == "test":
 				test_id = element["id"]
 				with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 					test_data = json.load(info_file)
 					context["unpublished"].append({"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
-												  "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
+												  "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id, "unpublish_date": element["unpublish_date"]})
 			else:
 				material_id = element["id"]
 				with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 					material_data = json.load(info_file)
 					context["unpublished"].append({"type": "material", "title": material_data[
-												  "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
+												  "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id, "unpublish_date": element["unpublish_date"]})
+		context["unpublished"]=Utility.sort_by_date(object=context["unpublished"], indicator="unpublish_date",raising=False)
 		return context
 
 	def load_course_requests(self, course_id):
@@ -1721,7 +1732,7 @@ class Material():
 		if not section in course_info['sections']['published'].keys():
 			course_info['sections']['published'][section] = []
 		course_info['sections']['published'][section].append(
-			{"id": material_id, "type": "material"})
+			{"id": material_id, "type": "material", "publish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 
@@ -1733,16 +1744,18 @@ class Material():
 			course_info = json.load(info_file)
 
 		sections = list(course_info['sections']['published'].keys())
-
 		for section in sections:
 			it = 0
-			for element in section:
-				if material_id == course_info['sections']['published'][section][it]["id"] and course_info['sections']['published'][section][it]["type"] == "material":
+			for element in course_info['sections']['published'][section]:
+				print(element,section)
+				if material_id == element["id"] and element["type"] == "material":
+					print("haleluia", course_info['sections']['published'][section][it])
 					del(course_info['sections']['published'][section][it])
-				it += 1
+					break
+				it+=1
 
 		course_info['sections']['unpublished'].append(
-			{"id": material_id, "type": "material"})
+			{"id": material_id, "type": "material", "unpublish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
 
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -1927,7 +1940,7 @@ class Test():
 		if not section in course_info['sections']['published'].keys():
 			course_info['sections']['published'][section] = []
 		course_info['sections']['published'][
-			section].append({"id": test_id, "type": "test"})
+			section].append({"id": test_id, "type": "test", "publish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 
@@ -1960,7 +1973,7 @@ class Test():
 				it += 1
 
 		course_info['sections']['unpublished'].append(
-			{"id": test_id, "type": "test"})
+			{"id": test_id, "type": "test", "unpublish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
 
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -2372,6 +2385,8 @@ class Marks():
 				with io.open('main/files/json/courses/' + str(course_id) + '/tests/'+test["id"]+'.json', 'r', encoding='utf8') as data_file:
 					data = json.load(data_file)
 					tests_info[section][test["id"]]=data
+					tests_info[section][test["id"]]["publish_date"]=test["publish_date"]
+			tests_info[section]=Utility.sort_by_date(object=tests_info[section],indicator="publish_date",raising=False)
 		return tests_info
 
 	def get_tests(course_id, task_id):
@@ -2500,11 +2515,12 @@ class Statistics():
 			with io.open(results, 'r', encoding='utf8') as info_file:
 				test_info = json.load(info_file)
 			for question_id,question in test_info.items():
-				if question["result"] == "forgiving" or question["result"] == "wrong" or question["result"] == "missed":
-					question_id=str(int(question_id)+1)
-					if not question_id in questions.keys():
-						questions[question_id]=0
-					questions[question_id]+=1
+				if "result" in question.keys():
+					if question["result"] == "forgiving" or question["result"] == "wrong" or question["result"] == "missed":
+						question_id=str(int(question_id)+1)
+						if not question_id in questions.keys():
+							questions[question_id]=0
+						questions[question_id]+=1
 
 		for question_id,frequency in questions.items():
 			if results_count/frequency*100 > 50:
