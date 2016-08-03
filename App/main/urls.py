@@ -64,6 +64,7 @@ material_patterns = [
 func_patterns = [
     url(r'^login/$', functional.User_views.login, name="func_login"),
     url(r'^login/(?P<course_id>[0-9]+)/$', functional.User_views.login_with_reg, name="login_with_reg"),
+    url(r'^login/(?P<course_id>[0-9]+)/exit/$', functional.Course_views.exit, name="exit"),
     url(r'^reg/$', functional.User_views.reg, name="reg"),
     url(r'^create_course/$', functional.Course_views.create, name="create_course"),
     url(r'^edit_course/$', functional.Course_views.edit, name="edit_course"),
@@ -103,6 +104,7 @@ func_patterns = [
     url(r'^delete_notification/$', functional.delete_notification, name="delete_notification"),
     url(r'^share/$', functional.Universal_views.share, name="share"),
     url(r'^unshare/$', functional.Universal_views.unshare, name="unshare"),
+    url(r'^exit/(?P<course_id>[0-9]+)/$', functional.Course_views.exit, name="exit"),
 ]
 
 course_patterns = [

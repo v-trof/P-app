@@ -280,7 +280,16 @@ class Course_views():
         if request.user.is_anonymous():
             return redirect('/login/' + course_id)
         course = Course.objects.get(id=course_id)
-        Course.objects.reg_user(user=request.user, course=course)
+        message = Course.objects.reg_user(user=request.user, course=course)
+        request.session['notifications']=[message]
+        return redirect('/course/' + str(course_id) + '/groups/')
+
+    def exit(request, course_id):
+        if request.user.is_anonymous():
+            return redirect('/login/' + course_id+'/exit/')
+        course = Course.objects.get(id=course_id)
+        message = Course.objects.exit(user=request.user, course=course)
+        request.session['notifications']=[message]
         return redirect('/course/' + str(course_id) + '/groups/')
 
     def accept_request(request):

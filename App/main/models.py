@@ -542,27 +542,35 @@ class CourseManager(models.Manager):
 		return "Учитель приглашен"
 
 	def reg_user(self, course, user):
+
+		request=False
+
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
-			if user.id not in data["users"]:
+
+			#Пользователь уже зарегистрирован в курсе
+			if not user.id in data["users"]:
+
+				#Пользователь уже отправил заявку
 				if not user.email in data["pending_users"]["Заявки"]:
-					checker = 0
 					is_invited = False
+
+					#Проверка: ученик был приглашен
 					for group in data["pending_users"]:
 						if user.email in data["pending_users"][group]:
 							is_invited = True
-							checker = 1
 							if group == "teachers":
 								if user.id in data["teachers"]:
-									return redirect('/login/')
+									return {"type":"error","message":'Вы уже являетесь учителем в этом курсе'}
 								data["teachers"][str(user.id)] = {}
+								data["users"].append(user.id)
 								data["teachers"][str(user.id)][
 									"new_users"] = []
 								data["pending_users"][
 									"teachers"].remove(user.email)
 							else:
 								if user.id in data["groups"][group].keys():
-									return redirect('/login/')
+									return {"type":"error","message":'Вы уже состоите в этом курсе'}
 								data["users"].append(user.id)
 								data["groups"][group][str(user.id)] = {}
 								data["pending_users"][group].remove(user.email)
@@ -571,7 +579,9 @@ class CourseManager(models.Manager):
 								for teacher in data["teachers"]:
 									data["teachers"][teacher][
 										"new_users"].append(user.id)
-					if not data["status"] == "closed" and not checker and not is_invited:
+
+					#Проверка: открытый вход в группу
+					if not course.is_closed and not is_invited:
 						group = "Нераспределенные"
 						data["groups"][group][str(user.id)] = {}
 						data["groups"][group][str(user.id)][
@@ -586,8 +596,13 @@ class CourseManager(models.Manager):
 						else:
 							setattr(user, 'participation_list', str(course.id))
 						user.save()
-					elif data["status"] == "closed":
+
+					#Создание заявки
+					elif course.is_closed:
+						request=True
 						data["pending_users"]["Заявки"].append(user.id)
+
+					#Пользователь был приглашен
 					else:
 						if user.participation_list:
 							setattr(user, 'participation_list',
@@ -595,47 +610,83 @@ class CourseManager(models.Manager):
 						else:
 							setattr(user, 'participation_list', str(course.id))
 						user.save()
-				with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
-					saving_data = json.dumps(data, ensure_ascii=False)
-					json_file.write(saving_data)
-				if not os.path.exists('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/'):
-					os.makedirs('main/files/json/courses/' + str(course.id) +
-								'/users/' + str(user.id) + '/')
-					data = {}
-					for assignment_path in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*.json'):
-						assignment_id = assignment_path[:-5].split("/")[5][12:]
-						with io.open(assignment_path, 'r', encoding='utf8') as data_file:
-							assignment = json.load(data_file)
-							assignment_map = {}
-							data[str(assignment_id)] = {}
-							assignment_map["unfinished_tests"] = []
-							assignment_map["tests"] = []
-							assignment_map["traditionals"] = []
-							for task in assignment["content"]["tests"]:
-								assignment_map["tests"].append(
-									task["link"].split('&')[1].split('=')[1])
-							it = 0
-							for task in assignment["content"]["traditionals"]:
-								it += 1
-								assignment_map["traditionals"].append(it)
-							data[str(assignment_id)][
-								"in_process"] = assignment_map
-							data[str(assignment_id)]["done"] = {}
-							data[str(assignment_id)]["done"]["tests"] = []
-							data[str(assignment_id)]["done"][
-								"traditionals"] = []
-							data[str(assignment_id)]["finished"] = False
-					with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments.json', 'w+', encoding='utf8') as json_file:
+
+					with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
 						saving_data = json.dumps(data, ensure_ascii=False)
 						json_file.write(saving_data)
-					with io.open('main/files/json/courses/' + str(course.id) + '/announcements.json', 'r', encoding='utf8') as data_file:
-						data = json.load(data_file)
-						for id, announcement in data.items():
-							announcement["unseen_by"].append(user.id)
-					with io.open('main/files/json/courses/' + str(course.id) + '/announcements.json', 'w+', encoding='utf8') as data_file:
-						saving_data = json.dumps(data, ensure_ascii=False)
-						data_file.write(saving_data)
-		return "Вы были успешно зарегистрированы в курсе"
+
+					if not os.path.exists('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/'):
+
+						os.makedirs('main/files/json/courses/' + str(course.id) +
+									'/users/' + str(user.id) + '/')
+						data = {}
+						for assignment_path in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*.json'):
+							assignment_id = assignment_path[:-5].split("/")[5][12:]
+							with io.open(assignment_path, 'r', encoding='utf8') as data_file:
+								assignment = json.load(data_file)
+								assignment_map = {}
+								data[str(assignment_id)] = {}
+								assignment_map["unfinished_tests"] = []
+								assignment_map["tests"] = []
+								assignment_map["traditionals"] = []
+								for task in assignment["content"]["tests"]:
+									assignment_map["tests"].append(
+										task["link"].split('&')[1].split('=')[1])
+								it = 0
+								for task in assignment["content"]["traditionals"]:
+									it += 1
+									assignment_map["traditionals"].append(it)
+								data[str(assignment_id)][
+									"in_process"] = assignment_map
+								data[str(assignment_id)]["done"] = {}
+								data[str(assignment_id)]["done"]["tests"] = []
+								data[str(assignment_id)]["done"][
+									"traditionals"] = []
+								data[str(assignment_id)]["finished"] = False
+						with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments.json', 'w+', encoding='utf8') as json_file:
+							saving_data = json.dumps(data, ensure_ascii=False)
+							json_file.write(saving_data)
+						with io.open('main/files/json/courses/' + str(course.id) + '/announcements.json', 'r', encoding='utf8') as data_file:
+							data = json.load(data_file)
+							for id, announcement in data.items():
+								announcement["unseen_by"].append(user.id)
+						with io.open('main/files/json/courses/' + str(course.id) + '/announcements.json', 'w+', encoding='utf8') as data_file:
+							saving_data = json.dumps(data, ensure_ascii=False)
+							data_file.write(saving_data)
+
+				else: return {"type":"error","message":"Вы уже отправили заявку в этот курс"}
+
+			else: return {"type":"error","message":"Вы уже состоите в этом курсе"}
+
+		if request:
+			return {"message":"Вы успешно отправили заявку на вступление в курс"}
+
+		return {"type":"error","message":"Вы были успешно зарегистрированы в курсе"}
+
+
+	def exit(self,course,user):
+
+		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
+			data = json.load(data_file)
+
+		if user.id in data["users"]:
+			data["users"].remove(user.id)
+			for teacher_id,content in data["teachers"].items():
+				if str(user.id)==teacher_id:
+					data["teachers"].pop(teacher_id,None)
+				elif user.id in content["new_users"]:
+					content["new_users"].remove(user.id)
+			for group_name,content in data["groups"].items():
+				if str(user.id) in content.keys():
+					content.pop(str(user.id),None)
+
+			with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as data_file:
+				saving_data = json.dumps(data, ensure_ascii=False)
+				data_file.write(saving_data)
+
+			return {"message":"Вы успешно покинули курс"}
+
+		else: return {"type":"error","message":"Вы не состоите в этом курсе"}
 
 	def get_test_list(self, course):
 		it = 0
@@ -809,8 +860,14 @@ class CourseManager(models.Manager):
 		assignment["group_list"] = json.loads(group_list)
 		assignment["content"] = {}
 		assignment["course_id"] = course_id
-		assignment_id = str(len(
-			glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*')) + 1)
+		ids=[]
+		paths=glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*')
+		for path in paths:
+			ids.append(path[:-5].split("/")[5][12:])
+		if len(ids)>0:
+			assignment_id = max(k for k in ids)
+		else:
+			assignment_id = 1
 		assignment["content"]["tests"] = []
 		assignment["content"]["materials"] = []
 		assignment["content"]["traditionals"] = []
@@ -875,34 +932,68 @@ class CourseManager(models.Manager):
 			for user_id in course_info["groups"][group].keys():
 				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + user_id + '/assignments.json', 'r', encoding='utf8') as json_file:
 					data = json.load(json_file)
-					for task in assignment["content"]["tests"]:
-						test = task["link"].split('&')[1].split('=')[1]
-						if not test in data[assignment_id]["done"]["tests"] and not test in data[assignment_id]["in_process"]["tests"] and not test in data[assignment_id]["in_process"]["unfinished_tests"]:
-							data[assignment_id]["in_process"][
-								"tests"].append(test)
-					it = 1
-					equals = []
-					for traditional in old_assignment["content"]["traditionals"]:
-						if it in data[str(assignment_id)]["done"]["traditionals"]:
-							if traditional in assignment["content"]["traditionals"]:
-								equals.append(assignment["content"][
-											  "traditionals"].index(it))
-						it += 1
-					data[str(assignment_id)]["done"]["traditionals"] = []
-					data[str(assignment_id)]["in_process"]["traditionals"] = []
-					it = 1
-					for traditional in assignment["content"]["traditionals"]:
-						if it in equals:
-							data[str(assignment_id)]["done"][
-								"traditionals"].append(it)
-						else:
-							data[str(assignment_id)]["in_process"][
-								"traditionals"].append(it)
-						it += 1
-					data[str(assignment_id)]["finished"] = False
+					if assignment_id in data.keys():
+						for task in assignment["content"]["tests"]:
+							test = task["link"].split('&')[1].split('=')[1]
+							if not test in data[assignment_id]["done"]["tests"] and not test in data[assignment_id]["in_process"]["tests"] and not test in data[assignment_id]["in_process"]["unfinished_tests"]:
+								data[assignment_id]["in_process"][
+									"tests"].append(test)
+						it = 0
+						equals = []
+						for traditional in old_assignment["content"]["traditionals"]:
+							if it in data[str(assignment_id)]["done"]["traditionals"]:
+								if traditional in assignment["content"]["traditionals"]:
+									print(assignment["content"][
+												  "traditionals"])
+									equals.append(assignment["content"][
+												  "traditionals"][it])
+							it += 1
+						data[str(assignment_id)]["done"]["traditionals"] = []
+						data[str(assignment_id)]["in_process"]["traditionals"] = []
+						it = 1
+						for traditional in assignment["content"]["traditionals"]:
+							if it in equals:
+								data[str(assignment_id)]["done"][
+									"traditionals"].append(it)
+							else:
+								data[str(assignment_id)]["in_process"][
+									"traditionals"].append(it)
+							it += 1
+						data[str(assignment_id)]["finished"] = False
+					else:
+						assignment_map = {}
+						data[assignment_id] = {}
+						assignment_map["unfinished_tests"] = []
+						assignment_map["tests"] = []
+						assignment_map["traditionals"] = []
+						for task in assignment["content"]["tests"]:
+							assignment_map["tests"].append(
+								task["link"].split('&')[1].split('=')[1])
+						it = 0
+						for task in assignment["content"]["traditionals"]:
+							it += 1
+							assignment_map["traditionals"].append(it)
+						data[assignment_id]["in_process"] = assignment_map
+						data[assignment_id]["done"] = {}
+						data[assignment_id]["done"]["tests"] = []
+						data[assignment_id]["done"]["traditionals"] = []
+						data[assignment_id]["finished"] = False
 				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + user_id + '/assignments.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(data, ensure_ascii=False)
 					json_file.write(saving_data)
+
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as json_file:
+			course_info = json.load(json_file)
+		for group in course_info["groups"]:
+			if not group in group_list:
+				for user_id in course_info["groups"][group].keys():
+					with io.open('main/files/json/courses/' + course_id + '/users/' + user_id + '/assignments.json', 'r', encoding='utf8') as json_file:
+						data = json.load(json_file)
+						data.pop(assignment_id, None)
+					with io.open('main/files/json/courses/' + course_id + '/users/' + user_id + '/assignments.json', 'w', encoding='utf8') as json_file:
+						saving_data = json.dumps(data, ensure_ascii=False)
+						json_file.write(saving_data)
+
 		return "Задание изменено"
 
 	def delete_assignment(self, course_id, assignment_id):
@@ -2110,7 +2201,6 @@ class Test():
 		return context
 
 	def attempt_save(test_id, question_id, course_id, answer, user):
-		print(question_id)
 		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as assignments_file:
 			assignment_map = json.load(assignments_file)
 		for assignment_id, content in assignment_map.items():

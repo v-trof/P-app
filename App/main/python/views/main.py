@@ -294,7 +294,7 @@ class Course_group():
 	def new_task(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
-			return redirect('/')
+			return redirect('/')     
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
 			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
 			return redirect('/course/' + course_id + '/')
