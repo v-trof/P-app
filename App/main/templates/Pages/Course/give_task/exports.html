@@ -5,32 +5,33 @@
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Выдать задание</title>
 	<style> 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Page_templates/_styles/css/main.css" %} 
-		{% include "Elements/Inputs/text/textarea/_styles/css/height_fix.css" %} 
-		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Pages/Course/give_task/_styles/css/layout.css" %} 
 		{% include "Elements/card/small/_styles/css/small.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/Inputs/Text/_styles/css/reset.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
 		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/Modules/panel/_styles/css/panel.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
 		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/Inputs/Text/_styles/css/text.css" %} 
-		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
+		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
 		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
+		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
+		{% include "Elements/button/_styles/css/button.css" %} 
+		{% include "Elements/Modules/pickmeup/_styles/css/picker.css" %} 
+		{% include "Elements/Inputs/text/textarea/_styles/css/height_fix.css" %} 
 		{% include "Pages/Course/give_task/due_date/_styles/css/due_date.css" %} 
-		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
+		{% include "Elements/Layout/header/_styles/css/header.css" %} 
+		{% include "Elements/Modules/panel/_styles/css/panel.css" %} 
+		{% include "Page_templates/_styles/css/main.css" %} 
 		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
+		{% include "Elements/card/_styles/css/card.css" %} 
+		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
+		{% include "Elements/Inputs/Text/_styles/css/reset.css" %} 
+		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
+		{% include "Pages/Course/give_task/_styles/css/layout.css" %} 
+		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
+		{% include "Elements/Inputs/Text/_styles/css/text.css" %} 
+		{% include "Elements/card/_styles/css/link.css" %} 
+		{% include "Page_templates/default/_styles/css/default.css" %} 
+		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
+		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
+		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
 	</style>
 </head>
 <body>
@@ -40,21 +41,23 @@
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
+		{% include "Elements/Modules/pickmeup/_scripts/core.js" %} 
 		{% include "Elements/Modules/notification/_scripts/core.js" %} 
 		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
 		{% include "Elements/Modules/notification/_scripts/deffered.js" %} 
-		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
+		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
 		{% include "Elements/Modules/panel/_scripts/panel.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
-		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
-		{% include "Pages/Course/give_task/_scripts/edit.js" %} 
-		{% include "Pages/Course/give_task/_scripts/ajax_edit.js" %} 
-		{% include "Pages/Course/give_task/_scripts/give_task.js" %} 
+		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
+		{% include "Pages/Course/give_task/_scripts/date_picker.js" %} 
+		{% include "Pages/Course/give_task/_scripts/give_task.js" %} 
+		{% include "Pages/Course/give_task/_scripts/ajax_create.js" %} 
+		{% include "Pages/Course/give_task/_scripts/edit.js" %} 
 		{% include "Elements/Inputs/Text/_scripts/emptyness_checker.js" %} 
 		{% include "Pages/Course/give_task/_scripts/panel_control.js" %} 
-		{% include "Elements/Layout/header/_scripts/header.js" %} 
-		{% include "Pages/Course/give_task/_scripts/ajax_create.js" %} 
+		{% include "Pages/Course/give_task/_scripts/ajax_edit.js" %} 
 		{% include "Pages/Course/give_task/_scripts/parse_assignment.js" %} 
 	</script>
 </body>
