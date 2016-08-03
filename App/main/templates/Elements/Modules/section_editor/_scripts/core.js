@@ -158,12 +158,12 @@ section_editor.init = function(arguments) {
 			section_editor.end_section_editing(section_editor.$unordered)
 		}
 
+		if(section_editor.no_publish) {
+			section_editor.$unordered.find(section_editor.item_selector)
+				.addClass('--was-unpublished')
+		}
 	}, 100)
 	
-	if(section_editor.no_publish) {
-		section_editor.$unordered.find(section_editor.item_selector)
-			.addClass('--was-unpublished')
-	}
 
 	//finish startup
 	section_editor.$add_button = $('<a class="--card">'

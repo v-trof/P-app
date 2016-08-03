@@ -1,7 +1,7 @@
 {
 	"elements": ["Modules/section_editor","Modules/notification", "Modules/accordion", "Modules/popup",
 				 "button", "Inputs/select", "Inputs/checkbox",
-				 "Inputs/text"],
+				 "Inputs/text", "Inputs/select/sectioned"],
 	"scripts": [],
 	"styles": [],
 	"fixes": [],
