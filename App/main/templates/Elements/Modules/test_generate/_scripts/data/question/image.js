@@ -13,7 +13,7 @@ generate.data["question--image"] = {
 				+value.url+">")
 		},
 		value_sample: {
-			url: "http://science-all.com/images/wallpapers/hipster-wallpaper/hipster-wallpaper-21.jpg"
+			url: "/media/samples/image.jpg"
 		}
 	},
 	edit: {

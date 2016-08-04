@@ -6,6 +6,7 @@ editor.check_empty = function() {
   }
 
   //loop through questions
+  console.log(this.content_selector);
   $('.preview ' + this.content_selector).each(function(index, el) {
     var $task = $(this);
     editor.active_types.forEach(function(type) {

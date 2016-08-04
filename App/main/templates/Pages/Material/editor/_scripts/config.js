@@ -7,6 +7,7 @@ pull_put.delete_action = function() {
 pull_put.cancel_action = indicator.hide;
 
 generate.editing_actions = ['delete', 'save']
+generate.data['question--text'].element.value_sample = {text: "Текст"}
 
 //editor setup
 editor.number_selector = '.__task .__number';

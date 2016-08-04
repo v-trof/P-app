@@ -42,6 +42,8 @@ pull_put.ui = (function() {
 				actions = []
 			}
 
+			$ui.removeAttr('style');
+
 			if(card) {
 				$ui.__content.addClass('card');
 			} else {
@@ -55,6 +57,8 @@ pull_put.ui = (function() {
 			$ui.__content.css("width", element_width)
 
 			pull_put.ui.element = $element;
+
+			
 
 			if(actions.indexOf("delete")>-1) {
 				$ui.find(".__actions button.--delete").parent().show();
@@ -85,8 +89,18 @@ pull_put.ui = (function() {
 				$(".__task:last-child").addClass("--stand-out");
 			}
 			$ui.removeClass('--hidden');
+
 			setTimeout(function() {
 				pull_put.is_pulled = true;
+
+				var screen_width = window.innerWidth;
+				var dropout = ($ui.width() - element_width/2) -screen_width/2;
+				console.log($ui.width(), element_width/2, screen_width/2, dropout)
+
+				if(dropout > 0) {
+					$ui.css('right', '16px');
+				}
+
 			}, 300)
 			
 		},
