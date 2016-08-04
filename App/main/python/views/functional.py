@@ -176,6 +176,7 @@ class Course_views():
         if request.method == 'POST':
             course_id = request.POST.get('course_id', None)
             message = Course.objects.delete(course_id=course_id)
+            request.session['notifications']=[{"type":"success","message":message}]
             return HttpResponse(message)
         else:
             return HttpResponse('Нет полномочий')
