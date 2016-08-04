@@ -11,7 +11,7 @@ import json
 class Main_group():
 
 	def profile(request, user_id):
-		if not User.objects.filter(id=user_id).exists():
+		if not User.objects.filter(id=int(user_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Профиль не существует"}]
 			return redirect('/')
 		user = User.objects.get(id=user_id)
@@ -107,6 +107,7 @@ class Auth_group():
 
 
 class Course_group():
+	
 	def main(request, course_id):
 		if not Course.objects.filter(id=course_id).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
@@ -170,7 +171,7 @@ class Course_group():
 			return redirect('/course/' + course_id + '/')
 		course = Course.objects.get(id=course_id)
 		context = {}
-		context["subjects"] = ["Русский язык", "Математика", "Английский язык"]
+		context["subjects"] = {"Гуманитарные науки":["Литература","История","Обществознание"],"Языки":["Русский язык","Английский язык","Немецкий язык","Французский язык","Испанский язык"],"Точные науки":["Математика","Информатика"], "Естественные":["Физика","Химия","Биология","География"]}
 		context["course"] = course
 		context["assignments"] = Course.objects.get_assignments(
 			user=request.user, course=course)
@@ -182,7 +183,7 @@ class Course_group():
 		return render(request, 'Pages/Course/manage/exports.html', context)
 
 	def results(request, course_id):
-		if not Course.objects.filter(id=course_id).exists():
+		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
@@ -231,7 +232,7 @@ class Course_group():
 		return render(request, 'Pages/Course/Marks/tasks/exports.html', context)
 
 	def marks_by_groups(request, course_id):
-		if not Course.objects.filter(id=course_id).exists():
+		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
@@ -248,7 +249,7 @@ class Course_group():
 		return render(request, 'Pages/Course/Marks/tests/exports.html', context)
 
 	def marks_by_tests(request, course_id):
-		if not Course.objects.filter(id=course_id).exists():
+		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
@@ -264,7 +265,7 @@ class Course_group():
 		return render(request, 'Pages/Course/Marks/tests/exports.html', context)
 
 	def groups(request, course_id):
-		if not Course.objects.filter(id=course_id).exists():
+		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
 		course = Course.objects.get(id=course_id)
@@ -292,7 +293,7 @@ class Course_group():
 		return render(request, 'Pages/Course/groups/exports.html', context)
 
 	def new_task(request, course_id):
-		if not Course.objects.filter(id=course_id).exists():
+		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')     
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
@@ -319,7 +320,7 @@ class Course_group():
 		return render(request, 'Pages/Course/give_task/exports.html', context)
 
 	def edit_assignment(request, course_id):
-		if not Course.objects.filter(id=course_id).exists():
+		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
 		if request.user.is_anonymous() or not Utility.is_teacher(user=request.user, course_id=course_id):
