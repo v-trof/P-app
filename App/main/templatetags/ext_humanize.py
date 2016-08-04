@@ -24,7 +24,7 @@ def humanize_date(value):
         month = month_sting[int(value.split("-")[1])]
         if len(value.split("-")) > 2:
             year = value.split("-")[2]
-        return day + " " + month + " " + year
+        return day + " " + month
     else: return value
 
 def of(value, max_value):

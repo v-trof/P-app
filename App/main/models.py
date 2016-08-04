@@ -552,7 +552,7 @@ class CourseManager(models.Manager):
 			if not user.id in data["users"]:
 
 				#Пользователь уже отправил заявку
-				if not user.email in data["pending_users"]["Заявки"]:
+				if not user.id in data["pending_users"]["Заявки"]:
 					is_invited = False
 
 					#Проверка: ученик был приглашен
@@ -561,16 +561,16 @@ class CourseManager(models.Manager):
 							is_invited = True
 							if group == "teachers":
 								if user.id in data["teachers"]:
-									return {"type":"error","message":'Вы уже являетесь учителем в этом курсе'}
+									return [{"type":"error","message":'Вы уже являетесь учителем в этом курсе'}]
 								data["teachers"][str(user.id)] = {}
 								data["users"].append(user.id)
 								data["teachers"][str(user.id)][
-									"new_users"] = []
+									"new_users"] = []  
 								data["pending_users"][
 									"teachers"].remove(user.email)
 							else:
 								if user.id in data["groups"][group].keys():
-									return {"type":"error","message":'Вы уже состоите в этом курсе'}
+									return [{"type":"error","message":'Вы уже состоите в этом курсе'}]
 								data["users"].append(user.id)
 								data["groups"][group][str(user.id)] = {}
 								data["pending_users"][group].remove(user.email)
@@ -654,14 +654,14 @@ class CourseManager(models.Manager):
 							saving_data = json.dumps(data, ensure_ascii=False)
 							data_file.write(saving_data)
 
-				else: return {"type":"error","message":"Вы уже отправили заявку в этот курс"}
+				else: return [{"type":"error","message":"Вы уже отправили заявку в этот курс"}]
 
-			else: return {"type":"error","message":"Вы уже состоите в этом курсе"}
+			else: return [{"type":"error","message":"Вы уже состоите в этом курсе"}]
 
 		if request:
-			return {"message":"Вы успешно отправили заявку на вступление в курс"}
+			return [{"type":"success","message":"Вы успешно отправили заявку на вступление в курс"}]
 
-		return {"type":"error","message":"Вы были успешно зарегистрированы в курсе"}
+		return [{"type":"success","message":"Вы были успешно зарегистрированы в курсе"}]
 
 
 	def exit(self,course,user):
@@ -679,14 +679,21 @@ class CourseManager(models.Manager):
 			for group_name,content in data["groups"].items():
 				if str(user.id) in content.keys():
 					content.pop(str(user.id),None)
-
+			list=user.participation_list.split(' ')
+			list.remove(str(course.id))
+			string=""
+			for element in list:
+				string+=element+' '
+			print(string)
+			setattr(user, 'participation_list', string)
+			user.save()
 			with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as data_file:
 				saving_data = json.dumps(data, ensure_ascii=False)
 				data_file.write(saving_data)
 
-			return {"message":"Вы успешно покинули курс"}
+			return [{"type":"success","message":"Вы успешно покинули курс"}]
 
-		else: return {"type":"error","message":"Вы не состоите в этом курсе"}
+		else: return [{"type":"error","message":"Вы не состоите в этом курсе"}]
 
 	def get_test_list(self, course):
 		it = 0
@@ -694,7 +701,7 @@ class CourseManager(models.Manager):
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
 		test_ids = []
-		for section, value in data["sections"]["published"].items():
+		for section, value in sdata["sections"]["published"].items():
 			for element in value:
 				if element["type"] == "test":
 					test_ids.append(element["id"])
@@ -761,7 +768,7 @@ class CourseManager(models.Manager):
 		with io.open('main/files/json/courses/' + str(course.id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as json_file:
 			assignments_data = json.load(json_file)
 		for task, content in assignments_data.items():
-			with io.open('main/files/json/courses/' + str(course.id) + '/assignments/' + task + '.json', 'r', encoding='utf8') as data_file:
+			with io.open('main/files/json/courses/' + str(course.id) + '/assignments/' + str(task) + '.json', 'r', encoding='utf8') as data_file:
 				new_data = json.load(data_file)
 				for test in new_data["content"]["tests"]:
 					if test["id"] in assignments_data[task]["done"]["tests"]:
@@ -868,6 +875,7 @@ class CourseManager(models.Manager):
 			assignment_id = max(k for k in ids)
 		else:
 			assignment_id = 1
+		assignment_id=str(assignment_id)
 		assignment["content"]["tests"] = []
 		assignment["content"]["materials"] = []
 		assignment["content"]["traditionals"] = []
@@ -876,14 +884,14 @@ class CourseManager(models.Manager):
 			test["id"] = test["link"].split('&')[1].split('=')[1]
 		assignment["content"]["materials"] = json.loads(material_list)
 		assignment["content"]["traditionals"] = json.loads(traditionals_list)
-		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + assignment_id + '.json', 'w+', encoding='utf8') as json_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + str(assignment_id) + '.json', 'w+', encoding='utf8') as json_file:
 			saving_data = json.dumps(assignment, ensure_ascii=False)
 			json_file.write(saving_data)
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as json_file:
 			course_info = json.load(json_file)
 		for group in json.loads(group_list):
 			for user_id in course_info["groups"][group].keys():
-				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + user_id + '/assignments.json', 'r', encoding='utf8') as json_file:
+				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'r', encoding='utf8') as json_file:
 					data = json.load(json_file)
 				assignment_map = {}
 				data[assignment_id] = {}
@@ -902,7 +910,7 @@ class CourseManager(models.Manager):
 				data[str(assignment_id)]["done"]["tests"] = []
 				data[str(assignment_id)]["done"]["traditionals"] = []
 				data[str(assignment_id)]["finished"] = False
-				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + user_id + '/assignments.json', 'w', encoding='utf8') as json_file:
+				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(data, ensure_ascii=False)
 					json_file.write(saving_data)
 		return "Задание создано"
@@ -921,16 +929,16 @@ class CourseManager(models.Manager):
 			test["id"] = test["link"].split('&')[1].split('=')[1]
 		assignment["content"]["materials"] = json.loads(material_list)
 		assignment["content"]["traditionals"] = json.loads(traditionals_list)
-		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + assignment_id + '.json', 'r', encoding='utf8') as json_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + str(assignment_id) + '.json', 'r', encoding='utf8') as json_file:
 			old_assignment = json.load(json_file)
-		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + assignment_id + '.json', 'w+', encoding='utf8') as json_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + str(assignment_id) + '.json', 'w+', encoding='utf8') as json_file:
 			saving_data = json.dumps(assignment, ensure_ascii=False)
 			json_file.write(saving_data)
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as json_file:
 			course_info = json.load(json_file)
 		for group in json.loads(group_list):
 			for user_id in course_info["groups"][group].keys():
-				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + user_id + '/assignments.json', 'r', encoding='utf8') as json_file:
+				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'r', encoding='utf8') as json_file:
 					data = json.load(json_file)
 					if assignment_id in data.keys():
 						for task in assignment["content"]["tests"]:
@@ -978,7 +986,7 @@ class CourseManager(models.Manager):
 						data[assignment_id]["done"]["tests"] = []
 						data[assignment_id]["done"]["traditionals"] = []
 						data[assignment_id]["finished"] = False
-				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + user_id + '/assignments.json', 'w', encoding='utf8') as json_file:
+				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(data, ensure_ascii=False)
 					json_file.write(saving_data)
 
@@ -987,29 +995,29 @@ class CourseManager(models.Manager):
 		for group in course_info["groups"]:
 			if not group in group_list:
 				for user_id in course_info["groups"][group].keys():
-					with io.open('main/files/json/courses/' + course_id + '/users/' + user_id + '/assignments.json', 'r', encoding='utf8') as json_file:
+					with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'r', encoding='utf8') as json_file:
 						data = json.load(json_file)
 						data.pop(assignment_id, None)
-					with io.open('main/files/json/courses/' + course_id + '/users/' + user_id + '/assignments.json', 'w', encoding='utf8') as json_file:
+					with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'w', encoding='utf8') as json_file:
 						saving_data = json.dumps(data, ensure_ascii=False)
 						json_file.write(saving_data)
 
 		return "Задание изменено"
 
 	def delete_assignment(self, course_id, assignment_id):
-		with io.open('main/files/json/courses/' + course_id + '/assignments/' + assignment_id + '.json', 'r', encoding='utf8') as json_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/assignments/' + str(assignment_id) + '.json', 'r', encoding='utf8') as json_file:
 			assignment = json.load(json_file)
 		group_list = assignment["group_list"]
-		os.remove('main/files/json/courses/' + course_id +
-				  '/assignments/' + assignment_id + '.json')
+		os.remove('main/files/json/courses/' + str(course_id) +
+				  '/assignments/' + str(assignment_id) + '.json')
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as json_file:
 			course_info = json.load(json_file)
 		for group in group_list:
 			for user_id in course_info["groups"][group].keys():
-				with io.open('main/files/json/courses/' + course_id + '/users/' + user_id + '/assignments.json', 'r', encoding='utf8') as json_file:
+				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'r', encoding='utf8') as json_file:
 					data = json.load(json_file)
 					data.pop(assignment_id, None)
-				with io.open('main/files/json/courses/' + course_id + '/users/' + user_id + '/assignments.json', 'w', encoding='utf8') as json_file:
+				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(data, ensure_ascii=False)
 					json_file.write(saving_data)
 		return "Задание удалено"
@@ -1091,7 +1099,7 @@ class CourseManager(models.Manager):
 			for element in list(values):
 				if element["type"] == "test":
 					test_id = element["id"]
-					with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+					with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 						test_data = json.load(info_file)
 						tests[section_name].append({"title": test_data["title"], "id": test_id, "questions_number": test_data[
 												   "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
@@ -1142,7 +1150,9 @@ class CourseManager(models.Manager):
 						material_data = json.load(info_file)
 						context["published"][section].append({"type": "material", "title": material_data[
 															 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id, "publish_date": element["publish_date"]})
-			context["published"][section]=Utility.sort_by_date(object=context["published"][section],indicator="publish_date",raising=False)
+			if len(context["published"][section]) > 0:
+				context["published"][section]=Utility.sort_by_date(object=context["published"][section],indicator="publish_date",raising=False)
+			else: context["published"].pop(section,None)
 		for element in data["sections"]["unpublished"]:
 			if element["type"] == "test":
 				test_id = element["id"]
@@ -1436,6 +1446,7 @@ class UserManager(UserManager):
 			course_array = string_array.split(" ")
 			marks = {}
 			for course_id in course_array:
+				print(course_id)
 				course = Course.objects.get(id=course_id)
 				if not course.subject in marks.keys():
 					marks[course.subject] = {}
@@ -1822,7 +1833,13 @@ class Material():
 				course_info['sections']['unpublished'].remove(unpublished)
 		if not section in course_info['sections']['published'].keys():
 			course_info['sections']['published'][section] = []
-		course_info['sections']['published'][section].append(
+		is_published=False
+		for section,elements in course_info['sections']['published'].items():
+			for element in elements:
+				if element["id"] == material_id and element["type"] == "material":
+					is_published=True
+		if not is_published:
+			course_info['sections']['published'][section].append(
 			{"id": material_id, "type": "material", "publish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -1838,15 +1855,17 @@ class Material():
 		for section in sections:
 			it = 0
 			for element in course_info['sections']['published'][section]:
-				print(element,section)
 				if material_id == element["id"] and element["type"] == "material":
-					print("haleluia", course_info['sections']['published'][section][it])
 					del(course_info['sections']['published'][section][it])
-					break
 				it+=1
+		is_unpublished=False
+		for section,element in course_info['sections']['unpublished'].items():
+			if element["id"] == material_id and element["type"] == "material":
+				is_unpublished=True
 
-		course_info['sections']['unpublished'].append(
-			{"id": material_id, "type": "material", "unpublish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
+		if not is_unpublished:
+			course_info['sections']['unpublished'].append(
+				{"id": material_id, "type": "material", "unpublish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
 
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -2030,8 +2049,16 @@ class Test():
 
 		if not section in course_info['sections']['published'].keys():
 			course_info['sections']['published'][section] = []
-		course_info['sections']['published'][
-			section].append({"id": test_id, "type": "test", "publish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
+
+		is_published=False
+
+		for section,elements in course_info['sections']['published'].items():
+			for element in elements:
+				if element["id"] == test_id and element["type"] == "test":
+					is_published=True
+		if not is_published:
+			course_info['sections']['published'][
+				section].append({"id": test_id, "type": "test", "publish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 
@@ -2041,9 +2068,10 @@ class Test():
 		else:
 			test_data={}
 		test_data["allowed_mistakes"] = allowed_mistakes
-
-		for key in mark_setting:
-			test_data["mark_setting"][key] = mark_setting[key]
+		if "marks_setting" in test_data.keys():
+			for key in mark_setting:
+				test_data["mark_setting"][key] = mark_setting[key]
+		else: test_data["mark_setting"]=mark_setting
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(test_data, ensure_ascii=False))
 
@@ -2063,8 +2091,13 @@ class Test():
 					del(course_info['sections']['published'][section][it])
 				it += 1
 
-		course_info['sections']['unpublished'].append(
-			{"id": test_id, "type": "test", "unpublish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
+		is_unpublished=False
+		for element in course_info['sections']['unpublished']:
+			if element["id"] == str(test_id) and element["type"] == "test":
+				is_unpublished=True
+		if not is_unpublished:
+			course_info['sections']['unpublished'].append(
+				{"id": test_id, "type": "test", "unpublish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
 
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -2515,6 +2548,7 @@ class Marks():
 							with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 								test_info = json.load(info_file)
 							marks[group][str(user_id)]["tests"][test_id]["info"]=test_info
+					else: marks[group][str(user_id)]["tests"][test_id]=0
 		return marks
 
 
@@ -2527,7 +2561,6 @@ class Marks():
 		if not group_list:
 			group_list = data["group_list"]
 		marks=Marks.get_marks_for_test_list(course_id=course_id,test_list=test_list, group_list=group_list)
-		print("marks:", marks)
 		return marks
 
 class Sharing():

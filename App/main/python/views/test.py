@@ -129,6 +129,8 @@ def attempt(request):
 	if Test.is_creator(user=request.user, test_id=test_id, course_id=course_id):
 		return redirect("/test/edit/?course_id=" + course_id + "&test_id=" + test_id)
 	if Utility.is_member(user=request.user, course_id=course_id) and Test.is_published(test_id=test_id, course_id=course_id):
+		if Test.is_finished(user_id=request.user.id, test_id=test_id, course_id=course_id):
+			return redirect("/test/attempt/results/?course_id=" + course_id + "&test_id=" + test_id)
 		context = Test.attempt(
 			user=request.user, course_id=course_id, test_id=test_id)
 		context["attempt"] = True

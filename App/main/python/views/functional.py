@@ -104,13 +104,14 @@ class User_views():
         if request.method == 'POST':
             new_email = request.POST['new_email']
             if User.objects.change_email(user=request.user, new_email=new_email):
+                request.session['notifications']=[{"message": "Электронная почта успешно изменена"}]
                 return HttpResponse("success")
             else:
                 return HttpResponse("Email занят")
 
     def approve_email(request):
         if request.method == 'POST':
-            if not User.objects.filter(id=user_id).exists():
+            if not User.objects.filter(id=int(user_id)).exists():
                 return HttpResponse("Несуществующий пользователь")
 
             user = User.objects.get(id=int(request.POST['user_id']))
@@ -119,6 +120,7 @@ class User_views():
                     setattr(user, 'username', request.POST['requesting_data'])
                     setattr(user, 'email', request.POST['requesting_data'])
                     user.save()
+                    User.objects.login(request=request, email=request.POST['requesting_data'], password=request.POST['password'])
                     return HttpResponse("success")
             else:
                 return HttpResponse("Неправильный пароль")
@@ -130,6 +132,7 @@ class User_views():
                 setattr(user, 'password', strip_tags(
                     make_password(request.POST['new_password'])))
                 user.save()
+                User.objects.login(request=request, email=user.email, password=request.POST['new_password'])
                 return HttpResponse("success")
             else:
                 return HttpResponse("Ошибка")
@@ -281,21 +284,21 @@ class Course_views():
             return redirect('/login/' + course_id)
         course = Course.objects.get(id=course_id)
         message = Course.objects.reg_user(user=request.user, course=course)
-        request.session['notifications']=[message]
-        return redirect('/course/' + str(course_id) + '/groups/')
+        request.session['notifications']=message
+        return redirect('/course/' + str(course_id) + '/')
 
     def exit(request, course_id):
         if request.user.is_anonymous():
             return redirect('/login/' + course_id+'/exit/')
         course = Course.objects.get(id=course_id)
         message = Course.objects.exit(user=request.user, course=course)
-        request.session['notifications']=[message]
-        return redirect('/course/' + str(course_id) + '/groups/')
+        request.session['notifications']=message
+        return redirect('/course/' + str(course_id) + '/')
 
     def accept_request(request):
         if request.method == 'POST':
             user_id = request.POST.get('user_id', None)
-            if not User.objects.filter(id=user_id).exists():
+            if not User.objects.filter(id=int(user_id)).exists():
                 return HttpResponse('Пользователь не существует')
             user = User.objects.get(id=user_id)
             course_id = request.POST.get('course_id', None)
@@ -306,7 +309,7 @@ class Course_views():
     def decline_request(request):
         if request.method == 'POST':
             user_id = request.POST.get('user_id', None)
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(id=int(user_id))
             course_id = request.POST.get('course_id', None)
             message = Course.objects.decline_request(
                 user=user, course_id=course_id)

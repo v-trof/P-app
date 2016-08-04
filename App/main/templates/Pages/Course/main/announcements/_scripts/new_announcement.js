@@ -23,6 +23,7 @@ $(document).ready(function() {
 
 					var $new_announcement = $('{% include "Elements/card/exports.html" %}');
 					$(".announcements").append($new_announcement);
+					$(".no_announcements").hide();
 					$new_announcement.attr("id",response);
 					$new_announcement.find(".__heading").text(new_heading);
 					$new_announcement.find(".__content").text(new_text);

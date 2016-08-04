@@ -1,6 +1,5 @@
 $('#confirm').click(function() {
 		{% if type == "email" %}
-			console.log("{{type}}");
 			$.ajax({
 					type:"POST",
 					url:"/func/approve_email/",
