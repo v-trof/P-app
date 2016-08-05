@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db import models
 import sqlite3
@@ -1842,11 +1844,12 @@ class Material():
 		if not section in course_info['sections']['published'].keys():
 			course_info['sections']['published'][section] = []
 		is_published=False
-		for section,elements in course_info['sections']['published'].items():
+		for section_name,elements in course_info['sections']['published'].items():
 			for element in elements:
 				if element["id"] == material_id and element["type"] == "material":
 					is_published=True
 		if not is_published:
+			print(section)
 			course_info['sections']['published'][section].append(
 			{"id": material_id, "type": "material", "publish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
@@ -1867,7 +1870,7 @@ class Material():
 					del(course_info['sections']['published'][section][it])
 				it+=1
 		is_unpublished=False
-		for section,element in course_info['sections']['unpublished'].items():
+		for element in course_info['sections']['unpublished']:
 			if element["id"] == material_id and element["type"] == "material":
 				is_unpublished=True
 
@@ -2060,7 +2063,7 @@ class Test():
 
 		is_published=False
 
-		for section,elements in course_info['sections']['published'].items():
+		for section_name,elements in course_info['sections']['published'].items():
 			for element in elements:
 				if element["id"] == test_id and element["type"] == "test":
 					is_published=True

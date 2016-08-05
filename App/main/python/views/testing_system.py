@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
 from django.test import Client
 from django.shortcuts import render, render_to_response, redirect
 from django.contrib.auth.hashers import make_password, check_password
