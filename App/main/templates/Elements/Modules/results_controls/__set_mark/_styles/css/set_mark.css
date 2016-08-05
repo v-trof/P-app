@@ -1,0 +1,14 @@
+.set_mark {
+  display: flex;
+  flex-direction: row;
+  align-items: center; }
+  .set_mark .__display {
+    display: flex;
+    flex-direction: row;
+    font-size: 1.25rem;
+    font-weight: 300; }
+    .set_mark .__display .__divider {
+      background: #303030;
+      width: 0.0625rem;
+      margin: 0 0.375rem;
+      transform: rotate(15deg); }

@@ -1,0 +1,34 @@
+.pull_put_ui {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  margin-bottom: 1.5rem;
+  transition: 0.3s cubic-bezier(0.4, 0, 0.5, 1);
+  transition-property: transform;
+  z-index: 15; }
+  .pull_put_ui > .__content {
+    max-height: 17.5rem;
+    overflow-y: auto;
+    padding: 0.75rem; }
+    .pull_put_ui > .__content.card {
+      margin-bottom: 0;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); }
+    .pull_put_ui > .__content:not(.card) > * {
+      margin-bottom: 0;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); }
+  .pull_put_ui .__actions {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start; }
+    .pull_put_ui .__actions .card {
+      margin: 0 0.375rem;
+      height: auto;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); }
+  .pull_put_ui.--hidden {
+    bottom: -100%;
+    transform: translateY(4.5rem); }
+
+.--pullable {
+  cursor: pointer; }

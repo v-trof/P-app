@@ -1,0 +1,6 @@
+@media all and (max-width: 600px) {
+  #popup#popup {
+    padding: 0.75rem; }
+    #popup#popup > .__modal {
+      min-width: 0;
+      width: 100%; } }

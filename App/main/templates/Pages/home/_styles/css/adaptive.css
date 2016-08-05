@@ -1,0 +1,8 @@
+@media all and (max-width: 769px) {
+  section.main {
+    flex-direction: column;
+    margin-right: 0; }
+    section.main .homework {
+      order: -2; }
+    section.main .marks {
+      order: -1; } }

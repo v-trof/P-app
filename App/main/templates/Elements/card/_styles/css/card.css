@@ -1,0 +1,66 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+  padding: 0.75rem;
+  color: #303030;
+  background: #fafafa;
+  border-radius: 0.25rem;
+  transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }
+  .card > *:last-child, .card .__content > *:last-child {
+    margin-bottom: 0; }
+  .card .card {
+    box-shadow: none;
+    border: 0.125rem solid #E0E0E0; }
+  .card .__heading {
+    color: #303030;
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin: 0;
+    margin-bottom: 0.75rem; }
+  .card .__overall-info {
+    display: flex;
+    flex-direction: row; }
+    .card .__overall-info .__heading {
+      flex: 1; }
+    .card .__overall-info .__icons {
+      display: flex;
+      flex: 0;
+      flex-wrap: nowrap;
+      flex-direction: row; }
+      .card .__overall-info .__icons svg {
+        min-height: 1.5rem;
+        max-height: 1.5rem;
+        min-width: 1.5rem;
+        max-width: 1.5rem; }
+      .card .__overall-info .__icons > div {
+        display: flex;
+        flex-direction: row;
+        align-items: center; }
+      .card .__overall-info .__icons .__positive svg {
+        fill: #419645; }
+      .card .__overall-info .__icons .__neutral svg {
+        fill: #303030; }
+      .card .__overall-info .__icons .__warning svg {
+        fill: #f22314; }
+  .card .__content {
+    margin: 0; }
+    .card .__content > *:last-child {
+      margin-bottom: 0; }
+
+.--extended {
+  display: flex;
+  flex-direction: row; }
+  .--extended > * {
+    width: 100%; }
+  .--extended a {
+    color: inherit; }
+  .--extended .__extension > *:last-child {
+    margin-bottom: 0; }
+  .--extended .__extension a {
+    color: #0c84e4; }
+
+.--selected {
+  box-shadow: 0 0 0 0.125rem #2196F3; }

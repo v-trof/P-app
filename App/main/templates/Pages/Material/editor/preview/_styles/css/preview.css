@@ -1,0 +1,23 @@
+.preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  overflow-y: scroll;
+  padding: 0;
+  padding-left: 0.75rem;
+  padding-right: 17.25rem; }
+  @media screen and (max-width: 1367px) {
+    .preview {
+      padding-right: 1.75rem; } }
+  .preview > .__heading {
+    min-width: 4rem;
+    text-align: center;
+    border-bottom: 0.125rem solid #E0E0E0;
+    transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1); }
+    .preview > .__heading:hover, .preview > .__heading:focus {
+      border-bottom: 0.125rem solid #0c84e4; }
+  .preview > .__content {
+    width: 100%;
+    max-width: 50rem;
+    margin-left: 1rem; }

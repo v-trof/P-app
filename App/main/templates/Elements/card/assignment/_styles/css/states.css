@@ -1,0 +1,24 @@
+@keyframes show_icon {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+.card.--assignment .__icons svg {
+  display: none;
+  opacity: 0; }
+
+.card.--assignment.--irrelevant .__icons .__late {
+  display: block;
+  animation: show_icon 0.3s cubic-bezier(0.4, 0, 0.5, 1) forwards; }
+
+.card.--assignment.--done .__icons .__done {
+  display: block;
+  animation: show_icon 0.3s cubic-bezier(0.4, 0, 0.5, 1) forwards; }
+
+.card.--assignment.--done .__icons svg.__soon, .card.--assignment.--done .__icons svg.__late {
+  display: none; }
+
+.card.--assignment.--urgent .__icons .__soon {
+  display: block;
+  animation: show_icon 0.3s cubic-bezier(0.4, 0, 0.5, 1) forwards; }

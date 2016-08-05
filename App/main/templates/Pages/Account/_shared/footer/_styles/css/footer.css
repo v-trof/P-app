@@ -1,0 +1,7 @@
+.footer {
+  position: fixed;
+  bottom: 1.5rem;
+  min-width: 20rem;
+  text-align: center; }
+  .footer a {
+    margin: 0 0.75rem; }

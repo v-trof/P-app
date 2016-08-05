@@ -1,0 +1,14 @@
+button.--ghost.--icon.--accordion-toggle {
+  position: absolute;
+  right: 0.375rem;
+  margin-top: -1rem;
+  z-index: 5;
+  border-radius: 50%; }
+  button.--ghost.--icon.--accordion-toggle svg {
+    border-radius: 50%;
+    transform: rotate(180deg); }
+  button.--ghost.--icon.--accordion-toggle.--accordion-minimized svg {
+    transform: rotate(0); }
+
+.--accordion-hidden {
+  display: none !important; }

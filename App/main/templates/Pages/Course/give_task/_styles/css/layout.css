@@ -1,0 +1,20 @@
+.row {
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 3rem; }
+  .row h4.__heading {
+    margin: 0; }
+  .row .card.--small {
+    margin: 0;
+    margin-left: 0.375rem; }
+
+#assignment--new__traditional .__heading {
+  margin: 0; }
+
+#assignment--new__traditional .card {
+  margin-bottom: 0.75rem; }
+  #assignment--new__traditional .card:last-child {
+    margin: 0; }
+
+.card.--small {
+  cursor: pointer; }

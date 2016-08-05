@@ -1,0 +1,11 @@
+a.--card {
+  font-weight: normal;
+  display: block; }
+  a.--card > .card:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23); }
+
+.card a.--card > .card {
+  margin-bottom: 0; }
+  .card a.--card > .card:hover {
+    border-color: #0c84e4;
+    box-shadow: none; }

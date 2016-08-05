@@ -1,0 +1,18 @@
+.card.--assignment .__tests, .card.--assignment .__materials {
+  display: flex;
+  flex-direction: row;
+  align-items: top;
+  margin-bottom: 0.75rem; }
+  .card.--assignment .__tests div, .card.--assignment .__materials div {
+    display: flex; }
+  .card.--assignment .__tests .__links, .card.--assignment .__materials .__links {
+    flex-wrap: wrap; }
+    .card.--assignment .__tests .__links a, .card.--assignment .__materials .__links a {
+      margin-left: 0.375rem; }
+      .card.--assignment .__tests .__links a.--done, .card.--assignment .__materials .__links a.--done {
+        color: #4CAF50; }
+        .card.--assignment .__tests .__links a.--done:hover, .card.--assignment .__tests .__links a.--done:focus, .card.--assignment .__materials .__links a.--done:hover, .card.--assignment .__materials .__links a.--done:focus {
+          color: #95d198; }
+
+.card.--assignment .__traditional label:last-child {
+  margin-bottom: 0; }

@@ -1,0 +1,23 @@
+.card.panel {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 16.5rem;
+  padding-top: 5.25rem;
+  overflow-y: auto; }
+  .card.panel .__content {
+    flex: 1;
+    padding-bottom: 2.25rem; }
+  .card.panel .__actions {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 16.5rem;
+    padding: 0.75rem;
+    border-top: 0.125rem solid #E0E0E0;
+    background: #fafafa; }

@@ -1,0 +1,14 @@
+.linkbox {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem; }
+  .linkbox > a.--card {
+    margin-right: 0.75rem;
+    margin-bottom: 0.75rem; }
+    .linkbox > a.--card .card {
+      margin: 0; }
+      .linkbox > a.--card .card:active {
+        background: #E0E0E0; }
+    .linkbox > a.--card:last-child {
+      margin-right: 0; }
