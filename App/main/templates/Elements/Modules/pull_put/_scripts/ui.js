@@ -86,7 +86,8 @@ pull_put.ui = (function() {
 		},
 		show: function() {
 			if(typeof editor !== "undefined") {
-				$(".__task:last-child").addClass("--stand-out");
+				$(".__task").slice(-2).addClass("--stand-out");
+				$(".__put-margin").last().addClass("--stand-out");
 			}
 			$ui.removeClass('--hidden');
 

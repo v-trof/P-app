@@ -20,9 +20,12 @@ $show: show_icon $time--m forwards
 			animation: $show
 
 	&.--done
-		.__icons .__done
-			display: block
-			animation: $show
+		.__icons 
+			.__done
+				display: block
+				animation: $show
+			svg.__soon, svg.__late
+				display: none
 
 	&.--urgent
 		.__icons .__soon

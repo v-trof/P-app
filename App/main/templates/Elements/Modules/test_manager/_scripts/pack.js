@@ -82,7 +82,7 @@ test_manager.pack = function() {
 						upload_file(file_to_upload, task_index, index);
 					}
 					
-				} else {
+				} else if($(this).attr('src') !== '/media/samples/image.jpg') {
 					var form_data = new FormData();
 					form_data.append('file_url',$(this).attr('src'));
 					form_data.append('path', 'courses/{{course.id}}/assets/{{type}}/');

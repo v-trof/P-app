@@ -9,7 +9,7 @@ var	concat = require('gulp-concat');
 
 gulp.task('sass_to_css', function () {
 	//converts sass to css, prefixes, and minificates css
-	gulp.src('../main/templates/**/*.sass')
+	gulp.src(['../main/templates/**/*.sass', '../main/templates/**/*.scss'])
 		.pipe(sass().on('error', sass.logError))
 		.pipe(rename(function (path) {
 			path.dirname += "/css";
@@ -44,6 +44,7 @@ gulp.task('concat_test_generate', function() {
 
 gulp.task('watch', function() {
   gulp.watch("../main/templates/**/*.sass", ['sass_to_css']);
+  gulp.watch("../main/templates/**/*.scss", ['sass_to_css']);
   gulp.watch('../main/templates/Elements/Modules/test_generate/_scripts/**/*.js', ['concat_test_generate']);
 });
 

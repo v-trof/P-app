@@ -24,7 +24,7 @@ var indicator = (function() {
 
 		var $new_indicator = build(icon);
 		$new_indicator.addClass('g' + group)
-		$parent.append($new_indicator);
+		$parent.prepend($new_indicator);
 		$new_indicator.hide();
 	}
 

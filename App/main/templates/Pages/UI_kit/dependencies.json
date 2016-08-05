@@ -10,7 +10,8 @@
 				"Inputs/checkbox", "Inputs/radio",
 				"Inputs/select", "Inputs/file",
 				"Modules/panel",
-				"card/file"
+				"card/file",
+				"Modules/plyr"
 				],
 	"scripts": [],
 	"styles": [],
