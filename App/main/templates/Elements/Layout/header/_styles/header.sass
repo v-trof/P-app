@@ -17,6 +17,8 @@
 	background: $color--main
 	z-index: 10	
 	+box-shadow(2)
+	@media all and (max-width: 769px)
+		overflow-x: scroll
 	
 	&>*
 		height: $base*2 + $padding--s * 2
