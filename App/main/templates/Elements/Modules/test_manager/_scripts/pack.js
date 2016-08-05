@@ -42,11 +42,7 @@ test_manager.pack = function() {
 		"title": $("h2").text(),
 		tasks: []
 	}
-	$(".preview"
-		+ "{% if type == 'test' %} .__task{% endif %}"
-		+ ">.__content" 
-		+ "{% if type != 'test' %}>.card{% endif %}"
-	).each(function(index, el) {
+	$(".preview .__task>.__content").each(function(index, el) {
 		var task_index = index;
 		test_manager.packed_test.tasks[task_index] = []
 

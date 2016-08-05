@@ -10,8 +10,8 @@ generate.editing_actions = ['delete', 'save']
 generate.data['question--text'].element.value_sample = {text: "Текст"}
 
 //editor setup
-editor.number_selector = '.__task .__number';
-editor.content_selector = '.__content>.card';
+editor.number_selector = '#element-nerver-used';
+editor.content_selector = '.__task .__content';
 editor.active_types = ['question'];
 
 editor.empty.question.template = $(

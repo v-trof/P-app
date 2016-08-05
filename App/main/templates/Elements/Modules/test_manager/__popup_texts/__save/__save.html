@@ -1,4 +1,11 @@
 <div class="save_progress_popup">
 	{% include "Elements/Icons/spinner.svg" %}
-	<div>Тест сохраняется</div>
+	<div>
+  {% if type == "test" %}
+    Тест
+  {% else %}
+    Материал
+  {% endif %}
+  сохраняется
+  </div>
 </div>
