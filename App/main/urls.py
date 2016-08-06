@@ -24,7 +24,6 @@ from main.python.views import material
 from main.python.views import testing_system
 from django.conf.urls.static import static
 from django.conf import settings
-from django.conf.urls import patterns
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 import sys
 

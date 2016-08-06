@@ -1356,7 +1356,7 @@ class UserManager(UserManager):
 				email=email,
 				password=password,
 				name=name_last_name,
-				is_teacher=is_teacher,
+				is_teacher=is_teacher == True,
 				avatar='Avatars/default_avatar.png',
 				permission_level="0")
 			os.makedirs('main/files/json/users/' + str(user.id) + '/')
@@ -2291,7 +2291,7 @@ class Test():
 		return check(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 
 	def attempt_check(user, test_id, course_id):
-		if not os.path.exists('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/' + test_id + '.json'):
+		if not os.path.exists('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
 			right = 0
 			missed = 0
 			mistakes = 0
