@@ -23,6 +23,7 @@
 		transition: $time--s	
 
 	.__modal
+		opacity: 1
 		min-width: 25rem
 		+box-shadow(5)
 		z-index: 2
@@ -33,11 +34,15 @@
 			right: $padding--s
 			z-index: 3
 
-	&.--hidden
-		transform: scale(0)
-		transition: 0
-		.__overlay
-			opacity: 0
+	&.--hiding
 		.__modal
 			opacity: 0
 			transform: translateY(-$margin--s)
+		.__overlay
+			opacity: 0
+
+
+	&.--hidden
+		transition: none
+		transform: scale(0)
+		

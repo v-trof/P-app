@@ -4,14 +4,13 @@ function upload(formData, url, success) {
     if(typeof success === "undefined") {
         success = "Выполнено";
     }
-
     $.ajax({
         type:"POST",
         url: url,
         data: formData,
         processData: false,
         contentType: false,
-        success: function() {
+        success: function(data) {
             notification.show('success', success);
         },
         error: function() {

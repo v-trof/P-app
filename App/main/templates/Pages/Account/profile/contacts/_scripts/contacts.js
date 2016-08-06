@@ -1,4 +1,4 @@
-{% if request.user.id = user.id %}
+{% if request.user.id == user.id %}
 
 function delete_contact($contact) {
 	$.ajax({

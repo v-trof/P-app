@@ -24,7 +24,7 @@ var popup = (function() {
 			}
 		},
 		hide: function() {
-			$popup.addClass('--hidden');
+			$popup.addClass('--hiding');
 			$popup.find('__modal').removeAttr('style');
 
 			if(typeof tooltip !== 'undefined') {
@@ -33,6 +33,11 @@ var popup = (function() {
 			if(typeof context_menu !== 'undefined') {
 				context_menu.hide()
 			}
+
+			setTimeout(function() {
+				$popup.removeClass('--hiding');
+				$popup.addClass('--hidden');
+			}, 150);
 		}
 	}
 	return exports;
