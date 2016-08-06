@@ -1,5 +1,5 @@
 {
 	"elements" : [],
-	"styles": ["Page_templates/_styles/css/main"],
+	"styles": ["Page_templates/_styles/main.css"],
 	"scripts": []
 }

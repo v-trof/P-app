@@ -1,5 +1,3 @@
 {
-	"elements": ["Inputs/checkbox"],
-	"scripts": [],
-	"styles": []
+	"elements": ["Inputs/checkbox"]
 }

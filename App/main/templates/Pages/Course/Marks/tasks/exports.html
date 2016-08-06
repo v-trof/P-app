@@ -4,26 +4,21 @@
 	{% include "Page_templates/_shared/fixes/charset.html" %}
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Оценки за задания</title>
-	<style> 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/button/flat/_styles/css/flat.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Page_templates/_styles/css/main.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
-		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/card/assignment/_styles/css/states.css" %} 
-		{% include "Elements/card/assignment/_styles/css/assignment.css" %} 
-	</style>
+	{% load staticfiles %}<link rel="stylesheet" href="{% static "Page_templates/default/_styles/default.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/ripple/_styles/ripple.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/states.css" %}"> 
+<link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Layout/linkbox/_styles/linkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/tooltip/_styles/tooltip.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/assignment.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
+
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
@@ -32,13 +27,12 @@
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
-		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/replace/_scripts/replace.js" %} 
-		{% include "Pages/Course/Marks/tasks/_scripts/replace_container.js" %} 
+		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
+		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
 		{% include "Elements/card/assignment/_scripts/show_state.js" %} 
 		{% include "Elements/Layout/header/_scripts/header.js" %} 
-		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Pages/Course/Marks/tasks/_scripts/replace_container.js" %} 
 	</script>
 </body>
 </html>

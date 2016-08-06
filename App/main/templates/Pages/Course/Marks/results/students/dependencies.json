@@ -1,5 +1,3 @@
 {
-	"elements" : ["card/user", "button/ghost"],
-	"styles": [],
-	"scripts": []
+	"elements" : ["card/user", "button/ghost"]
 }

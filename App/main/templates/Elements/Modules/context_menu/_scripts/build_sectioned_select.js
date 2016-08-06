@@ -38,9 +38,13 @@ context_menu.build_section_select = function(sections, el, chosen) {
   context_menu.$.find('section').each(function(index, el) {
     accordion.add($(this), 'h3');
     $(this).addClass('--show');
-  });
-  
+  });  
 
   context_menu.$.find('.--accordion-toggle').click();
+
+  context_menu.$.find('.--accordion-toggle').click(function() {
+    context_menu.reposition(el);
+  });
+
   context_menu.bind_selects(el);
 }

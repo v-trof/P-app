@@ -1,5 +1,3 @@
 {
-	"elements": ["button/flat"],
-	"scripts": [],
-	"styles": []
+	"elements": ["button/flat"]
 }

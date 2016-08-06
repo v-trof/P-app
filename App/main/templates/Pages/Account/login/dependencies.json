@@ -1,8 +1,7 @@
 {
-	"elements": ["Modules/notification"],
-	"scripts": [],
-	"styles": [],
-	"fixes": [],
+	"elements": ["Modules/notification"],	
+  "styles": [],
+  "scripts": [],
 	"title" : "Вход",
 	"template": "central_box"
 }

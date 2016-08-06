@@ -1,5 +1,4 @@
 {
-	"elements": ["card/course","card/create_course","Inputs","card/update"],
-	"scripts": [],
-	"styles": []
+	"elements": ["card/course", "card/create_course",
+               "Inputs", "card/update"]
 }

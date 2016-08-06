@@ -1,9 +1,8 @@
 {
-	"elements": ["card/user", 
-				"Modules/upload", "Modules/notification", "Modules/verifier"],
-	"scripts": [],
-	"styles": [],
-	"fixes": [],
+	"elements": ["card/user", "Modules/upload",
+               "Modules/notification", "Modules/verifier"],
+  "styles": [],
+  "scripts": [],
 	"title" : "Профиль",
 	"template": "default"
 }

@@ -20,8 +20,38 @@ var context_menu = (function() {
 		}
 		context_menu.bind_selects(el);
 	}
+
+	function reposition(el) {
+		c_rect = el.getBoundingClientRect();
+		$menu.removeAttr('style');
+
+		$menu.css({
+			"top": c_rect.top + "px",
+			"left": c_rect.left + "px",
+			"width": c_rect.width + "px",
+		});
+
+		menu_rect = $menu[0].getBoundingClientRect();
+
+
+		if(menu_rect.top + menu_rect.height > $(window).height()) {
+			$menu.css({
+				"bottom": 0,
+				"top": "auto",
+			})
+		}
+
+		if(menu_rect.left + menu_rect.width > $(window).width()) {
+			$menu.css({
+				"right": 0,
+				"left": "auto",
+			})
+		}
+	}
+
 	exports = {
 		$: $menu,
+		reposition: reposition,
 		bind_selects: function(el) {
 			$menu.find(".__option").click(function(event) {
 				context_menu.hide();
@@ -36,35 +66,13 @@ var context_menu = (function() {
 				context_menu.hide();
 			}
 
-			c_rect = el.getBoundingClientRect();
-
 			if(sectioned) {
 				context_menu.build_section_select(options, el, chosen);
 			} else {
 				build(options, el, chosen);
 			}
 
-			$menu.css({
-				"top": c_rect.top + "px",
-				"left": c_rect.left + "px",
-				"width": c_rect.width + "px",
-			});
-
-			menu_rect = $menu[0].getBoundingClientRect();
-
-			if(menu_rect.top + menu_rect.height > $(window).height()) {
-				$menu.css({
-					"bottom": 0,
-					"top": "auto",
-				})
-			}
-
-			if(menu_rect.left + menu_rect.width > $(window).width()) {
-				$menu.css({
-					"right": 0,
-					"left": "auto",
-				})
-			}
+			reposition(el);
 
 			$menu.removeClass('--hidden')
 			$menu.removeClass('--hiding')

@@ -1,6 +1,4 @@
 {
-	"elements": ["button", "Inputs/select/sectioned", "Inputs/checkbox",
-				 "Inputs/text"],
-	"scripts": [],
-	"styles": []
+	"elements": ["button", "Inputs/select/sectioned",
+               "Inputs/checkbox", "Inputs/text"]
 }

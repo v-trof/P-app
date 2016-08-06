@@ -1,5 +1,3 @@
 {
-	"elements": ["card","Modules/popup","Inputs"],
-	"scripts": [],
-	"styles": []
+	"elements": ["card", "Modules/popup", "Inputs"]
 }

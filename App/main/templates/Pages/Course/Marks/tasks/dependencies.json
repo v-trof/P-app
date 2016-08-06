@@ -1,8 +1,7 @@
 {
 	"elements": ["card/assignment", "Modules/replace"],
-	"scripts": [],
-	"styles": [],
-	"fixes": [],
+  "scripts": [],
+  "styles": [],
 	"title" : "Оценки за задания",
 	"template": "default"
 }

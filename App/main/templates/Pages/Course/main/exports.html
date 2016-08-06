@@ -4,36 +4,33 @@
 	{% include "Page_templates/_shared/fixes/charset.html" %}
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Курс</title>
-	<style> 
-		{% include "Elements/Modules/button_delete/_styles/css/button_delete.css" %} 
-		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
-		{% include "Elements/card/announcement/_styles/css/announcement.css" %} 
-		{% include "Elements/Modules/accordion/_styles/css/accordion.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Page_templates/_styles/css/main.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements/Layout/linkbox/_styles/css/linkbox.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Inputs/text/textarea/_styles/css/height_fix.css" %} 
-		{% include "Elements/card/assignment/_styles/css/states.css" %} 
-		{% include "Elements/card/assignment/_styles/css/assignment.css" %} 
-		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
-		{% include "Pages/Course/main/announcements/_styles/css/cursor.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/button/flat/_styles/css/flat.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/Modules/popup/_styles/css/adaptive.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/Modules/popup/_styles/css/popup.css" %} 
-	</style>
+	{% load staticfiles %}<link rel="stylesheet" href="{% static "Pages/Course/main/announcements/_styles/cursor.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/ripple/_styles/ripple.css" %}"> 
+<link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/popup/_styles/adaptive.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/accordion/_styles/accordion.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/announcement/_styles/announcement.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/ghost/icon/_styles/icon.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/tooltip/_styles/tooltip.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}"> 
+<link rel="stylesheet" href="{% static "Page_templates/default/_styles/default.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/button_delete/_styles/button_delete.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/textarea/_styles/height_fix.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/states.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/notification/_styles/notification.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Layout/linkbox/_styles/linkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/popup/_styles/popup.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/assignment.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
+
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
@@ -43,19 +40,19 @@
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
 		{% include "Elements/Modules/notification/_scripts/core.js" %} 
-		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
-		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
-		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
-		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
 		{% include "Elements/Modules/notification/_scripts/deffered.js" %} 
+		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
+		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
+		{% include "Elements/Modules/popup/_scripts/popup.js" %} 
+		{% include "Elements/Modules/accordion/_scripts/accordion.js" %} 
 		{% include "Pages/Course/main/_scripts/accordion.js" %} 
 		{% include "Pages/Course/main/announcements/_scripts/edit.js" %} 
+		{% include "Pages/Course/main/announcements/_scripts/new_announcement.js" %} 
+		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
 		{% include "Pages/Course/main/announcements/_scripts/delete.js" %} 
 		{% include "Elements/card/assignment/_scripts/show_state.js" %} 
-		{% include "Pages/Course/main/announcements/_scripts/new_announcement.js" %} 
 		{% include "Elements/Layout/header/_scripts/header.js" %} 
-		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
 	</script>
 </body>
 </html>

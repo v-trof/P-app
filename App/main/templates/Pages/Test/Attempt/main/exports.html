@@ -4,47 +4,43 @@
 	{% include "Page_templates/_shared/fixes/charset.html" %}
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Попытка</title>
-	<style> 
-		{% include "Pages/Test/Attempt/main/_styles/css/summary.css" %} 
-		{% include "Elements/Modules/button_delete/_styles/css/button_delete.css" %} 
-		{% include "Elements/Modules/test_generate/_styles/css/answer-item.css" %} 
-		{% include "Elements/Modules/indicator/_styles/css/indicator.css" %} 
-		{% include "Elements/button/ghost/_styles/css/ghost.css" %} 
-		{% include "Elements/Modules/test_generate/_styles/css/answer-field.css" %} 
-		{% include "Elements/Modules/plyr/_styles/css/plyr.css" %} 
-		{% include "Elements/Modules/tooltip/_styles/css/tooltip.css" %} 
-		{% include "Elements/card/_styles/css/link.css" %} 
-		{% include "Elements/Inputs/file/_styles/css/file.css" %} 
-		{% include "Page_templates/_styles/css/main.css" %} 
-		{% include "Elements/Modules/plyr/_styles/css/mixins.css" %} 
-		{% include "Elements/Inputs/text/filled/_styles/css/filled.css" %} 
-		{% include "Page_templates/default/_styles/css/default.css" %} 
-		{% include "Elements/Modules/test_generate/_styles/css/task.css" %} 
-		{% include "Elements/Inputs/text/filled/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Inputs/text/textarea/_styles/css/height_fix.css" %} 
-		{% include "Elements/Modules/plyr/_styles/css/variables.css" %} 
-		{% include "Elements/Modules/notification/_styles/css/notification.css" %} 
-		{% include "Elements/card/file/_styles/css/file.css" %} 
-		{% include "Elements/Modules/ripple/_styles/css/ripple.css" %} 
-		{% include "Elements/card/small/_styles/css/small.css" %} 
-		{% include "Elements/Modules/test_manager/__popup_texts/__save/_styles/css/layout.css" %} 
-		{% include "Elements/Inputs/checkbox/_styles/css/checkbox.css" %} 
-		{% include "Elements/card/_styles/css/card.css" %} 
-		{% include "Elements/Inputs/radio/_styles/css/radio.css" %} 
-		{% include "Elements/button/flat/_styles/css/flat.css" %} 
-		{% include "Elements/Layout/header/_styles/css/header.css" %} 
-		{% include "Elements/Modules/test_generate/_styles/css/image.css" %} 
-		{% include "Elements/Inputs/_shared/_styles/css/toggle.css" %} 
-		{% include "Elements/Modules/panel/_styles/css/panel.css" %} 
-		{% include "Elements/button/ghost/icon/_styles/css/icon.css" %} 
-		{% include "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/css/input_fix.css" %} 
-		{% include "Elements/Modules/pull_put/_styles/css/layout.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/reset.css" %} 
-		{% include "Elements/Inputs/text/_styles/css/text.css" %} 
-		{% include "Elements/button/_styles/css/button.css" %} 
-		{% include "Elements/card/circle/_styles/css/shape.css" %} 
-		{% include "Elements/Modules/pull_put/_styles/css/placeholder.css" %} 
-	</style>
+	{% load staticfiles %}<link rel="stylesheet" href="{% static "Elements/Modules/test_manager/__popup_texts/__save/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/pull_put/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/ripple/_styles/ripple.css" %}"> 
+<link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/small/_styles/small.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/file/_styles/file.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/radio/_styles/radio.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/indicator/_styles/indicator.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/ghost/icon/_styles/icon.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/plyr/_styles/mixins.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/tooltip/_styles/tooltip.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/plyr/_styles/plyr.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/plyr/_styles/variables.css" %}"> 
+<link rel="stylesheet" href="{% static "Page_templates/default/_styles/default.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/Attempt/main/_styles/summary.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/textarea/_styles/height_fix.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/button_delete/_styles/button_delete.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/css/toggle.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/file/_styles/file.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/notification/_styles/notification.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/test_generate/_styles/image.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/test_generate/__edit_texts/__answer/__radio/_styles/input_fix.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/panel/_styles/panel.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/test_generate/_styles/task.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/circle/_styles/shape.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/test_generate/_styles/answer-field.css" %}"> 
+
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
@@ -53,40 +49,40 @@
 </section>
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
-		{% include "Elements/Modules/pull_put/_scripts/core.js" %} 
-		{% include "Elements/Modules/notification/_scripts/core.js" %} 
-		{% include "Elements/Modules/indicator/_scripts/core.js" %} 
-		{% include "Elements/Modules/scroll/_scripts/core.js" %} 
 		{% include "Elements/Modules/test_manager/_scripts/core.js" %} 
+		{% include "Elements/Modules/indicator/_scripts/core.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/core.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/core.js" %} 
-		{% include "Elements/Modules/test_generate/_scripts/counter.js" %} 
+		{% include "Elements/Modules/notification/_scripts/core.js" %} 
+		{% include "Elements/Modules/scroll/_scripts/core.js" %} 
 		{% include "Elements/Modules/pull_put/_scripts/pull.js" %} 
-		{% include "Elements/Modules/scroll/_scripts/wire.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/put.js" %} 
-		{% include "Elements/Modules/test_generate/_scripts/data.js" %} 
-		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Elements/Modules/plyr/_scripts/plyr.js" %} 
-		{% include "Elements/Modules/test_manager/_scripts/delete.js" %} 
-		{% include "Elements/Modules/test_manager/_scripts/save.js" %} 
+		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
 		{% include "Elements/Modules/test_manager/_scripts/unpublish.js" %} 
 		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
-		{% include "Elements/Modules/test_generate/_scripts/edit.js" %} 
 		{% include "Elements/Modules/test_manager/_scripts/load.js" %} 
-		{% include "Elements/Modules/test_manager/_scripts/publish.js" %} 
 		{% include "Elements/Modules/test_manager/_scripts/pack.js" %} 
-		{% include "Elements/Modules/button_delete/_scripts/button_delete.js" %} 
-		{% include "Elements/Modules/panel/_scripts/panel.js" %} 
-		{% include "Elements/Modules/notification/_scripts/deffered.js" %} 
-		{% include "Elements/Modules/pull_put/_scripts/ui.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/build.js" %} 
+		{% include "Elements/Modules/test_generate/_scripts/edit.js" %} 
+		{% include "Elements/Modules/test_manager/_scripts/delete.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/read.js" %} 
-		{% include "Elements/Layout/header/_scripts/header.js" %} 
-		{% include "Pages/Test/Attempt/_shared/responsive.js" %} 
-		{% include "Pages/Test/Attempt/main/_scripts/get_results.js" %} 
-		{% include "Elements/Inputs/file/_scripts/file_catcher.js" %} 
-		{% include "Pages/Test/Attempt/main/_scripts/summary.js" %} 
+		{% include "Elements/Modules/notification/_scripts/deffered.js" %} 
+		{% include "Elements/Modules/test_generate/_scripts/counter.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/put.js" %} 
+		{% include "Elements/Modules/pull_put/_scripts/ui.js" %} 
+		{% include "Elements/Modules/test_manager/_scripts/publish.js" %} 
+		{% include "Elements/Modules/scroll/_scripts/wire.js" %} 
+		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
+		{% include "Elements/Modules/panel/_scripts/panel.js" %} 
+		{% include "Elements/Modules/test_generate/_scripts/data.js" %} 
+		{% include "Elements/Modules/test_manager/_scripts/save.js" %} 
 		{% include "Pages/Test/Attempt/main/_scripts/numbering.js" %} 
+		{% include "Pages/Test/Attempt/main/_scripts/summary.js" %} 
+		{% include "Pages/Test/Attempt/_shared/responsive.js" %} 
+		{% include "Elements/Layout/header/_scripts/header.js" %} 
+		{% include "Elements/Inputs/file/_scripts/file_catcher.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+		{% include "Pages/Test/Attempt/main/_scripts/get_results.js" %} 
 	</script>
 </body>
 </html>

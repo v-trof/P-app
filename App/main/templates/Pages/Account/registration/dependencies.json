@@ -1,8 +1,7 @@
 {
 	"elements": ["Modules/notification", "Modules/verifier"],
-	"scripts": [],
-	"styles": [],
-	"fixes": [],
+  "scripts": [],
+  "styles": [],
 	"title" : "Регистрация",
 	"template": "central_box"
 }

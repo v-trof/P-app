@@ -1,5 +1,3 @@
 {
-	"elements": ["Inputs/radio", "card", "button/ghost"],
-	"scripts": [],
-	"styles": []
+	"elements": ["Inputs/radio", "card", "button/ghost"]		
 }

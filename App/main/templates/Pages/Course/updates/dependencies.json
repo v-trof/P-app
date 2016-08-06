@@ -1,9 +1,8 @@
 {
 	"elements": ["card/user/extended"],
-	"scripts": [],
-	"styles": [
+  "scripts": [],
+  "styles": [
       "Elements/Modules/results_display/_styles/css/color_quality"],
-	"fixes": [],
 	"title" : "Оповещения",
 	"template": "default"
 }

@@ -1,5 +1,3 @@
 {
-	"elements": ["card/assignment"],
-	"scripts": [],
-	"styles": []
+	"elements": ["card/assignment"]
 }

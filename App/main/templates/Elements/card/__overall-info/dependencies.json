@@ -1,6 +1,3 @@
 {
-	"elements": ["card"],
-	"scripts": [],
-	"styles": [],
-	"expected": []
+	"elements": ["card"]
 }

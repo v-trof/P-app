@@ -1,5 +1,5 @@
 {
 	"elements": ["Modules/accordion", "Modules/button_delete",
-				 "Modules/pull_put", "Modules/replace", 
-				 "Modules/toggle_edit", "Modules/indicator"]
+      				 "Modules/pull_put", "Modules/replace", 
+      				 "Modules/toggle_edit", "Modules/indicator"]
 }

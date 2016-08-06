@@ -1,8 +1,0 @@
-.input.--file {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-  margin-bottom: 0.75rem; }
-  .input.--file .__text {
-    margin-left: 0.375rem; }

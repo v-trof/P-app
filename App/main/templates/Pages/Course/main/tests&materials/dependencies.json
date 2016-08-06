@@ -1,5 +1,3 @@
 {
-	"elements": ["card/test", "card/material"],
-	"scripts": [],
-	"styles": []
+	"elements": ["card/test", "card/material"]		
 }

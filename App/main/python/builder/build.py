@@ -45,10 +45,11 @@ def template(dependencies, page_path):
 		page_dev_html_lines[n] = "	"+page_dev_html_lines[n]
 	page_dev_html = "\n".join(page_dev_html_lines)
 
-	styles_html = "<style> \n"
+	styles_html="{% load staticfiles %}"
+
 	for style in dependencies["styles"]:
-		styles_html += '		{% include "' + style +'.css" %} \n'
-	styles_html += "	</style>"
+		style = '{% static "' + style + '" %}'
+		styles_html += '<link rel="stylesheet" href="' + style +'"> \n'
 
 	scripts_critical= "<script> \n"
 	scripts_html = ""

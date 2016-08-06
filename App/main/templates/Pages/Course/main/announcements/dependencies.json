@@ -1,5 +1,3 @@
 {
-	"elements": ["card/announcement", "Modules/button_delete"],
-	"scripts": [],
-	"styles": []
+	"elements": ["card/announcement", "Modules/button_delete"]		
 }

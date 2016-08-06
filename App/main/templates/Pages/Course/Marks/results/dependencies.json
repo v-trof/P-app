@@ -1,12 +1,11 @@
 {
 	"elements": ["сard/user/extended",
-				 "Inputs/textarea",
-				 "Modules/replace",
-				 "Modules/accordion",
-				 "Modules/results_controls"],
-	"scripts": [],
-	"styles": [],
-	"fixes": [],
+			       	 "Inputs/textarea",
+			       	 "Modules/replace",
+		      		 "Modules/accordion",
+		      		 "Modules/results_controls"],
+  "styles": [],
+  "scripts": [],
 	"title" : "Результаты выполнения",
 	"template": "default"
 }

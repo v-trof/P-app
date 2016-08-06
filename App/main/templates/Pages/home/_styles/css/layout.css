@@ -1,9 +1,0 @@
-section.main {
-  width: 100%;
-  display: flex;
-  flex-direction: row; }
-  section.main > section {
-    width: 100%;
-    margin-right: 2.25rem; }
-    section.main > section:last-child {
-      margin-right: 0; }

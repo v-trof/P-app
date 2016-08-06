@@ -1,10 +1,9 @@
 {
 	"elements": ["Modules/notification", "Modules/accordion",
-				 "Modules/popup",
-				 "Modules/text_sort", "Modules/section_editor"],
-	"scripts": [],
-	"styles": [],
-	"fixes": [],
+				       "Modules/popup",
+			       	 "Modules/text_sort", "Modules/section_editor"],
+  "styles": [],
+  "scripts": [],
 	"title" : "Группы",
 	"template": "default"
 }

@@ -20,6 +20,10 @@ def get(path):
 
 	real_path = path[len("../../templates/"):]
 
+	if not "elements" in dependencies_json:
+		dependencies_json["elements"] = []
+
+
 	if not "styles" in dependencies_json:
 		dependencies_json["styles"] = []
 
@@ -41,12 +45,16 @@ def get(path):
 	
 	filename = build.get_filename(path)	
 
-	if os.path.isdir(path + "/_styles/css"):
-		styles = [file for file in os.listdir(path + "/_styles/css")]
+	# print(path, real_path)
+	style_path = "../../files/static/" + real_path + "/_styles/"
+	# print(style_path)
+
+	if os.path.isdir(style_path):
+		styles = [file for file in os.listdir(style_path)]
 		for style in styles:
 			if len(style.split(".")) > 1:
-				style = real_path + "/_styles/css/" + style
-				dependencies_json["styles"].add(".".join(style.split(".")[:-1]))
+				style = real_path + "/_styles/" + style
+				dependencies_json["styles"].add(style)
 
 	if os.path.isdir(path + "/_scripts"):
 		scripts = [file for file in os.listdir(path + "/_scripts")]

@@ -1,5 +1,3 @@
 {
-	"elements": ["Modules/context_menu"],
-	"styles": [],
-	"scripts": []
+	"elements": ["Modules/context_menu"]
 }

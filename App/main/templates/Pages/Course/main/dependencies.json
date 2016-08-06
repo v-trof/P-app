@@ -1,11 +1,8 @@
 {
 	"elements": ["Modules/notification",
-				 "Modules/popup",
-				 "Modules/accordion",
-				 "card/test"],
-	"scripts": [],
-	"styles": [],
-	"fixes": [],
+			       	 "Modules/popup",
+		      		 "Modules/accordion",
+		      		 "card/test"],
 	"title" : "Курс",
 	"template": "default"
 }

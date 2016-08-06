@@ -1,6 +1,6 @@
 {
 	"elements": ["Modules/button_delete", "Modules/pull_put",
-				"Inputs/radio", "Inputs/checkbox", "button/flat",
-				"Inputs/text/textarea", "Inputs/file", "card/file",
-				 "Modules/indicator", "Modules/plyr"]
+        			 "Inputs/radio", "Inputs/checkbox", "button/flat",
+               "Inputs/text/textarea", "Inputs/file", "card/file",
+        			 "Modules/indicator", "Modules/plyr"]
 }

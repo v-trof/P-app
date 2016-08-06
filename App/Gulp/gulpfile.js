@@ -1,50 +1,58 @@
 'use strict';
 
+
 var gulp = require('gulp');
 	//things sass & css need
 var	sass = require('gulp-sass'); //compiles sass into css
 var	rename = require('gulp-rename');
+var uglify = require('gulp-uglify');
 	//js needs
 var	concat = require('gulp-concat');
+var cleanCSS = require('gulp-clean-css');
+var autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('sass_to_css', function () {
 	//converts sass to css, prefixes, and minificates css
 	gulp.src(['../main/templates/**/*.sass', '../main/templates/**/*.scss'])
 		.pipe(sass().on('error', sass.logError))
-		.pipe(rename(function (path) {
-			path.dirname += "/css";
-		}))
-		.pipe(gulp.dest(function(file) {
-			return file.base;
-		}));
+    .pipe(autoprefixer({
+      browsers: ['> 5%'],
+      cascade: false
+    }))
+		.pipe(cleanCSS())
+    .pipe(gulp.dest('../main/files/static/'));
 });
 
+gulp.task('min_js', ['concat_test_generate'], function() {
+  gulp.src('../main/templates/**/*.js')
+    .pipe(uglify())
+    .pipe(gulp.dest('../main/files/static/'));
+});
 
 gulp.task('concat_test_generate', function() {
   gulp.src(['../main/templates/Elements/Modules/test_generate/_scripts/data/**/*.js'])
     .pipe(concat('data.js'))
     .pipe(rename(function (path) {
-		console.log(path.dirname)
-		path.dirname = "../";
-	}))
+		  path.dirname = "../";
+	   }))
     .pipe(gulp.dest(function(file) {
-		return file.base;
+		  return file.base;
 	}));
 
 	gulp.src(['../main/templates/Elements/Modules/test_generate/_scripts/build/**/*.js'])
     .pipe(concat('build.js'))
     .pipe(rename(function (path) {
-		console.log(path.dirname)
-		path.dirname = "../";
-	}))
+		  path.dirname = "../";
+    }))
     .pipe(gulp.dest(function(file) {
-		return file.base;
+		  return file.base;
 	}));
 });
 
 gulp.task('watch', function() {
   gulp.watch("../main/templates/**/*.sass", ['sass_to_css']);
   gulp.watch("../main/templates/**/*.scss", ['sass_to_css']);
+  // gulp.watch('../main/templates/**/*.js', ['min_js'])
   gulp.watch('../main/templates/Elements/Modules/test_generate/_scripts/**/*.js', ['concat_test_generate']);
 });
 

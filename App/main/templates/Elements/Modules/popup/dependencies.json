@@ -1,5 +1,3 @@
 {
-	"elements": ["button/ghost/icon"],
-	"styles": [],
-	"scripts": []
+	"elements": ["button/ghost/icon"]
 }

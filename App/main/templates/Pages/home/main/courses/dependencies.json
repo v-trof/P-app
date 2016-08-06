@@ -1,5 +1,3 @@
 {
-	"elements": ["card/course"],
-	"scripts": [],
-	"styles": []
+	"elements": ["card/course"]
 }

@@ -1,5 +1,3 @@
 {
-	"elements": ["Layout/linkbox", "button/ghost"],
-	"scripts": [],
-	"styles": []
+	"elements": ["Layout/linkbox", "button/ghost"]		
 }

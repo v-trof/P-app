@@ -1,5 +1,3 @@
 {
-	"elements": ["button", "Inputs/text/textarea"],
-	"scripts": [],
-	"styles": []
+	"elements": ["button", "Inputs/text/textarea"]		
 }

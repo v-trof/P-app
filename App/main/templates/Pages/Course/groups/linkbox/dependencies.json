@@ -1,5 +1,3 @@
 {
-	"elements" : ["Layout/linkbox"],
-	"styles": [],
-	"scripts": []
+	"elements": ["Layout/linkbox"]
 }

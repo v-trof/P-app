@@ -1,8 +1,8 @@
 {
-	"elements": ["Modules/notification","Modules/header","Modules/popup","Modules/accordion"],
+	"elements": ["Modules/notification", "Modules/header",
+               "Modules/popup", "Modules/accordion"],
 	"scripts": [],
-	"styles": [],
-	"fixes": [],
-	"title" : "Главная",
+  "styles": [],
+  "title" : "Главная",
 	"template": "default"
 }

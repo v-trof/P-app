@@ -1,5 +1,3 @@
 {
-	"elements": ["../Pages/Account/_shared/footer"],
-	"scripts": [],
-	"styles": []
+	"elements": ["../Pages/Account/_shared/footer"]		
 }
