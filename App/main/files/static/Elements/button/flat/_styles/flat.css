@@ -1,0 +1,1 @@
+button.--flat{-webkit-transition:.15s cubic-bezier(.4,0,.5,1);transition:.15s cubic-bezier(.4,0,.5,1)}button.--flat:enabled:hover{box-shadow:none;background:#54aef6}button.--flat.--negative:enabled:hover{background:#f77269}button.--flat.--positive:enabled:hover{background:#70c173}

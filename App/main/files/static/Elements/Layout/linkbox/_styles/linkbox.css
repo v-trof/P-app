@@ -1,0 +1,1 @@
+.linkbox{display:-webkit-box;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;flex-wrap:wrap;margin-bottom:.75rem}.linkbox>a.--card{margin-right:.75rem;margin-bottom:.75rem}.linkbox>a.--card .card{margin:0}.linkbox>a.--card .card:active{background:#E0E0E0}.linkbox>a.--card:last-child{margin-right:0}

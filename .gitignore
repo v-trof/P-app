@@ -46,20 +46,18 @@ Temporary Items
 Frontend
 Backend/Dev/courses
 Backend/Dev/main/files
-App/courses
 App/Gulp/node_modules
-App/main/files
+App/main/files/json
+App/main/files/collected_static
 #-------------------
+
 #sublime files
 *.sublime-project
 *.sublime-workspace
 *.sublime-workspace
 
-<<<<<<< HEAD
-Chaches
-=======
+#-------------------
 #Chaches
->>>>>>> parent of ba03811... Update .gitignore
 *.chache
 *.pyc
 *.tern_project

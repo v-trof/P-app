@@ -1,0 +1,1 @@
+body,html{height:100%}body>.main,html>.main{display:-webkit-box;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;height:100%;width:100%;padding:0;margin:0}body>.main>section,html>.main>section{padding-top:4.5rem;height:100%;margin:0}.item-list{min-width:16.5rem;max-width:16.5rem;z-index:2}.item-list>.card:hover{border-color:#0c84e4}
