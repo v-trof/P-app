@@ -42,14 +42,46 @@ def template(dependencies, page_path):
 	#for readability add tabs in lines
 	page_dev_html_lines = page_dev_html.split("\n")
 	for n in range(1, len(page_dev_html_lines)):
-		page_dev_html_lines[n] = "	"+page_dev_html_lines[n]
+		page_dev_html_lines[n] = "	" + page_dev_html_lines[n]
 	page_dev_html = "\n".join(page_dev_html_lines)
+
+	def make_link(style, critical):
+		style = '{% static "' + style + '" %}'
+
+		async_attr = "if(media!='all')media='all'"
+
+		if critical:
+			tag = '<link rel="stylesheet" href="' + style + \
+			'"> \n'
+		else:
+			tag= '<link rel="stylesheet" href="' + style + \
+			'" media="none" onload="' + async_attr + '"> \n'
+
+		return tag
 
 	styles_html="{% load staticfiles %}"
 
+	styles_critical = []
+	styles_secondary = []
+
 	for style in dependencies["styles"]:
-		style = '{% static "' + style + '" %}'
-		styles_html += '<link rel="stylesheet" href="' + style +'"> \n'
+		#check if is critical
+		if(style.lower().find("layout") > -1 or 
+			 style.lower().find("adaptive") > -1 or
+			 style.lower().find("card") > -1 or
+			 style.lower().find("main") > -1):
+			styles_critical.append(style)
+		else:
+			styles_secondary.append(style)
+
+	print(styles_critical)
+
+	for style in styles_critical:
+		styles_html += make_link(style, True)
+
+	for style in styles_secondary:
+		styles_html += make_link(style, False)
+		
 
 	scripts_critical= "<script> \n"
 	scripts_html = ""

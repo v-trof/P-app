@@ -18,7 +18,7 @@ function header_build() {
 }
 
 $(window).resize(function(event) {
-	header_build();
+	// header_build();
 	
 	try {
 		tooltip.hide();
@@ -30,5 +30,5 @@ $(window).resize(function(event) {
 });
 
 $(document).ready(function() {
-	header_build();
+	// header_build();
 })

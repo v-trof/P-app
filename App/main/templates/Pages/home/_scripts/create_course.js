@@ -12,19 +12,20 @@ $(document).ready(function() {
 			{
 				subject="Неопределенный предмет"
 			}
+			$(this).attr('disabled', 'disabled');
   			$.ajax({
-	            type:"POST",
-	            url:"/func/create_course/",
-	            data: {
-	                   'csrfmiddlewaretoken': '{{ csrf_token }}',
-	                   'course_name': $("input[name=course_name]").val(),
-	                   'is_closed': $("input[name=is_closed]").is(":checked"),
-	                   'subject': subject,
-	                  },
-	            success: function(response) {
-	                  window.location.href = response;
-	                   }
-	            });
-		});
+          type:"POST",
+          url:"/func/create_course/",
+          data: {
+                 'csrfmiddlewaretoken': '{{ csrf_token }}',
+                 'course_name': $("input[name=course_name]").val(),
+                 'is_closed': $("input[name=is_closed]").is(":checked"),
+                 'subject': subject,
+                },
+          success: function(response) {
+                window.location.href = response;
+                 }
+          });
+			});
 		});
 });

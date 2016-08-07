@@ -4,14 +4,16 @@
 	{% include "Page_templates/_shared/fixes/charset.html" %}
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>{ ###title }</title>
-	{ **#styles }
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
 	{ *#*content }
 </section>
-	{% include "JS_libs/jQuery.html" %}
+  <div class="_styles">
+  { **#styles }
+  </div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	{ ##*js }
 </body>
 </html>

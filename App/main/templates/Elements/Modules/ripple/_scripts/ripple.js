@@ -54,6 +54,9 @@ $(document).ready(function() {
 		},
 		"mouseup": function() {
 			ripple.hide();
+		},
+		"mouseout": function() {
+			ripple.hide();
 		}
 	}, "button, a.m--card .card");
 });

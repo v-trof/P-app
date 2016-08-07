@@ -11,4 +11,12 @@
 			{% endfor %}
 		{% endif %}
 	{% endfor %}
+  {% if tests.items|length == 1 %}
+    {% for section_name, section in tests.items %}
+      {% for test_id,test in section.items %}
+      {% empty %}
+        У вас нет выданных задний
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
 </section>

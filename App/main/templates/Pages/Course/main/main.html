@@ -3,5 +3,8 @@
 {% else %}
 	{% include '#&/linkbox/student/exports.html' %}
 {% endif %}
-{% include '#&/announcements/exports.html' %}
-{% include '#&/tests&materials/exports.html' %}
+
+{% if is_participant or request.user.id == course.creator or not course.is_closed %}
+  {% include '#&/announcements/exports.html' %}
+  {% include '#&/tests&materials/exports.html' %}
+{% endif %}
