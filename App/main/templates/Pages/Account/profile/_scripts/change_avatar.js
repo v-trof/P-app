@@ -14,3 +14,4 @@ $(document).ready(function() {
 			upload(formData, "/func/upload_avatar/", "Изображение профиля изменено");
 	});
 });
+	

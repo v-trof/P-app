@@ -1,10 +1,10 @@
 <section class="students">
 	<h2>Ученики</h2>
-		{% if course.is_closed %}
+		{% if course.is_closed and course_data.requests|length > 0 %}
 			<h3>Заявки</h3>
 			{% for user in course_data.requests %}
 				{% include "Elements/card/user/extended/" with
-				extension="#&/../_extensions/request/" %}
+					extension="Elements/Layout/request/"	 %}
 				{% empty %}
 				<div class="--empty">Заявки отсутствуют</div>
 			{% endfor %}

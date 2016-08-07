@@ -1,3 +1,4 @@
 {
-	"elements": ["card/user"]
+	"elements": ["card/user", 
+               "Layout/request"]
 }

@@ -39,7 +39,7 @@ def build_page(page_name):
 		elements_current = page_dependencies["elements"] \
 							- elements_done
 
-		print("Todos", elements_current)
+		print("....\n", "Todos", elements_current, "\n ....")
 
 		for element in elements_current:
 			element_path = path["elements"] + element
@@ -50,10 +50,12 @@ def build_page(page_name):
 			element_arr = element.split("/")
 			element_l = len(element_arr)
 
-
-			if(element_l == 1 and (element_arr[0][0].isupper() 
-				or element[0][0] == '.')):
-				print("NOBLOCK:", element_arr[0])
+			if((element_l == 1 and 
+						(element_arr[0][0].isupper() or element[0][0] == '.')
+					)
+					or (element_l>1 and element_arr[1] == "Pages")
+				):
+				print("NOBLOCK:", element_arr)
 				continue
 
 			for i in range(element_l-1):

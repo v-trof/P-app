@@ -1,7 +1,7 @@
 <section class="requests">
 {% for user in requesting_users %}	
 		{% include "Elements/card/user/extended/" with
-		extension="#&/../_extensions/request/" %}
+		  extension="Elements/Layout/request/" %}
 {% empty %}
 	Никто не подавал заявки в курс за последнее время
 {% endfor %}
