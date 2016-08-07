@@ -13,7 +13,14 @@ $(document).ready(function() {
 				$new_contact.find(".__value")
 					.text(popup.$.find(".__contact-value").val());
 
-				$.ajax({
+				if(popup.$.find(".__contact-value").val().length == 0) {
+					tooltip.show(popup.$.find(".__contact-value"),
+					 "Введите контактную информацию");
+					popup.$.find(".__contact-value").keydown(function(event) {
+						tooltip.hide();
+					});
+				} else {
+					$.ajax({
 			        type:"POST",
 			        url:"/func/create_contact/",
 			        data: {
@@ -28,6 +35,8 @@ $(document).ready(function() {
 		        });
 					$("#contacts").append($new_contact);
 					popup.hide();
+				}
+
 				});
 			});
 		});
