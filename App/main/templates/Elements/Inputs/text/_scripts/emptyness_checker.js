@@ -3,15 +3,15 @@ function check_if_filled($input) {
 		$input.val().length || 
 		($input.text().length)
 	) {
-		$input.siblings('label').addClass('--top')
+		$input.siblings('label').addClass('m--top')
 	} else {
-		$input.siblings('label').removeClass('--top')
+		$input.siblings('label').removeClass('m--top')
 	}
 }
 
 $(document).ready(function() {
 	$("body").on(
-		"keydown change blur", ".--text>.__value", function() {
+		"keydown change blur", ".m--text>.__value", function() {
 		 check_if_filled($(this));
 	});
 	$("input").each(function(index, el) {

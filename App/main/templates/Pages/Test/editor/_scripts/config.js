@@ -14,14 +14,14 @@ editor.content_selector = '.__task .__content';
 editor.active_types = ['question', 'answer'];
 
 editor.empty.answer.template = $(
-  '<div class="answer--empty --empty ' 
+  '<div class="answer--empty m--empty ' 
     + editor.empty.answer.class+'">'
     + 'Добавьте сюда поле ответа'
   + '</div>'
 );
 
 editor.empty.question.template = $(
-'<div class="question--empty --empty ' 
+'<div class="question--empty m--empty ' 
   + editor.empty.question.class+'">'
   + 'Добавьте сюда вопрос'
 + '</div>'

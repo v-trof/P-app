@@ -5,7 +5,7 @@ sort_by_text($(".students"), "h3");
 
 var section_selector = '.group'
 	heading_selector = 'h3'
-	item_selector = '.--card';
+	item_selector = '.m--card';
 	unordered_heading = 'Нераспределенные'
 
 $(".students").children(section_selector).each(function(index, el) {

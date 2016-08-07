@@ -15,7 +15,7 @@ editor.content_selector = '.__task .__content';
 editor.active_types = ['question'];
 
 editor.empty.question.template = $(
-'<div class="question--empty --empty ' 
+'<div class="question--empty m--empty ' 
   + editor.empty.question.class+'">'
   + 'Добавьте сюда элемент материала'
 + '</div>'

@@ -7,7 +7,7 @@
 		{% if section|length > 0 %}
 			<h3>{{section_name}}</h3>
 			{% for test_id,test in section.items %}
-				<a class="--card" href="/course/{{course.id}}/results/?test_id={{test_id}}"> {% include "Elements/card/test/" %} </a>
+				<a class="m--card" href="/course/{{course.id}}/results/?test_id={{test_id}}"> {% include "Elements/card/test/" %} </a>
 			{% endfor %}
 		{% endif %}
 	{% endfor %}

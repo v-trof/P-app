@@ -1,15 +1,15 @@
 @import "../../../../sass_vars/main.sass"
 
-button.--flat
+button.m--flat
 	transition: $time--s
 	&:enabled:hover
 		box-shadow: none
 		background: lighten($color--accent, $darkness-delta__focus--percent/2)
 
-	&.--negative
+	&.m--negative
 		&:enabled:hover
 			background: lighten($red, $darkness-delta__focus--percent/2)
 
-	&.--positive
+	&.m--positive
 		&:enabled:hover
 			background: lighten($green, $darkness-delta__focus--percent/2)

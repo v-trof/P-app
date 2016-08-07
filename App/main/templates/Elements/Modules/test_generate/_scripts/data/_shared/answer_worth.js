@@ -22,7 +22,7 @@ generate.data.shared.worth = {
             $('#max_mark').val(1);
           }
         }, 100);
-      $('#max_mark').parent().find('label').addClass('--top');
+      $('#max_mark').parent().find('label').addClass('m--top');
     },
     fill: function(value) {
       $('#max_mark').val(value);

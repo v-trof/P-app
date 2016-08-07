@@ -1,22 +1,22 @@
 
 
 edit.end = function() {
-	$(".--button-delete").remove();
-	$(".sources .--card").each(function(index, el) {
+	$(".m--button-delete").remove();
+	$(".sources .m--card").each(function(index, el) {
 		$(this).replaceTag("a", true);
 	});
 
-	$(".sources .--card").each(function(index, el) {
+	$(".sources .m--card").each(function(index, el) {
 		$(this).attr("tip", "Нажмите, чтобы скачать");
 	});
 }
 
 edit.start = function() {
-	$(".sources .--card").each(function(index, el) {
+	$(".sources .m--card").each(function(index, el) {
 		$(this).replaceTag("div", true);
 	});
 
-	$(".sources .--card").each(function(index, el) {
+	$(".sources .m--card").each(function(index, el) {
 		$(this).attr("tip", "Нажмите, чтобы редактировать");
 	});
 

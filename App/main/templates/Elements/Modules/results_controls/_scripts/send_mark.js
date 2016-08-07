@@ -3,16 +3,16 @@
 results_controls.change_score_view = function(
   index, mark, score, max, $field) {
   var reset_class = function($element) {
-    $element.removeClass('--negative');
-    $element.removeClass('--neutral');
-    $element.removeClass('--positive');
+    $element.removeClass('m--negative');
+    $element.removeClass('m--neutral');
+    $element.removeClass('m--positive');
   }
 
-  var $mark = $('.--user#' + results_controls.active_student)
+  var $mark = $('.m--user#' + results_controls.active_student)
                 .find("button#" + results_controls.active_test);
   
   reset_class($mark);
-  $mark.addClass('--' + mark.quality)
+  $mark.addClass('m--' + mark.quality)
     .text(mark.value);
 
   var $answer = $field.find(".__student_answer");
@@ -22,14 +22,14 @@ results_controls.change_score_view = function(
   reset_class($number);
 
   if(score === max) {
-    $answer.addClass('--positive')
-    $number.addClass('--positive')
+    $answer.addClass('m--positive')
+    $number.addClass('m--positive')
   } else if(score > 0) {
-    $answer.addClass('--neutral')
-    $number.addClass('--neutral')
+    $answer.addClass('m--neutral')
+    $number.addClass('m--neutral')
   } else {
-    $answer.addClass('--negative')
-    $number.addClass('--negative')
+    $answer.addClass('m--negative')
+    $number.addClass('m--negative')
   }
 
 

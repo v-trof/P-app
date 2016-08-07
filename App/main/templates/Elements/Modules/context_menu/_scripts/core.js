@@ -1,5 +1,5 @@
 var context_menu = (function() {
-	var $menu = $("<div id='context_menu' class='--hidden --hiding'></div>");
+	var $menu = $("<div id='context_menu' class='m--hidden m--hiding'></div>");
 	var is_shown = false;
 
 	var build = function(options, el, chosen) {
@@ -74,14 +74,14 @@ var context_menu = (function() {
 
 			reposition(el);
 
-			$menu.removeClass('--hidden')
-			$menu.removeClass('--hiding')
+			$menu.removeClass('m--hidden')
+			$menu.removeClass('m--hiding')
 		},
 
 		hide: function() {
-			$menu.addClass('--hiding')
+			$menu.addClass('m--hiding')
 			setTimeout(function() {
-				$menu.addClass('--hidden')
+				$menu.addClass('m--hidden')
 				$menu.removeAttr('style')
 			}, 150);
 		}

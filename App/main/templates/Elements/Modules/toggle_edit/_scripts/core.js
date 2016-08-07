@@ -11,11 +11,11 @@ var edit = (function(exports) {
 $(document).ready(function() {
 	$linkbox = $(".linkbox").last();
 
-	$linkbox.append('<a class="--card">'
-		+ '<button class="--flat" id="edit_toggle">Редактировать'
+	$linkbox.append('<a class="m--card">'
+		+ '<button class="m--flat" id="edit_toggle">Редактировать'
 		+ '</button></a>');
-	$linkbox.append('<a class="--card">'
-		+ '<button class="--flat" id="edit_discard">Отмена'
+	$linkbox.append('<a class="m--card">'
+		+ '<button class="m--flat" id="edit_discard">Отмена'
 		+ '</button></a>');
 	$("#edit_discard").hide()
 

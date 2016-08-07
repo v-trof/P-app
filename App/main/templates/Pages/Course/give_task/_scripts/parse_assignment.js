@@ -8,14 +8,14 @@ function parse_assignment() {
     }
     var task;
 
-    $("#assignment--new__materials .card.--small").each(function(index, el) {
+    $("#assignment--new__materials .card.m--small").each(function(index, el) {
         task={};
 
         task.link=$(this).attr('href');
         task.title=$(this).html();
         res.material_list.push(task);
     });
-    $("#assignment--new__tests .card.--small").each(function(index, el) {
+    $("#assignment--new__tests .card.m--small").each(function(index, el) {
         task={};
 
         task.link=$(this).attr('href');
@@ -23,7 +23,7 @@ function parse_assignment() {
         task.done=false;
         res.test_list.push(task);
     });
-    $("#assignment--new__traditional .card.--small").each(function(index, el) {
+    $("#assignment--new__traditional .card.m--small").each(function(index, el) {
         task={};
 
         task.done=false;

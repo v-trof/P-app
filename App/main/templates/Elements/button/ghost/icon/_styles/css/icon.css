@@ -1,4 +1,4 @@
-button.--ghost.--icon {
+button.m--ghost.m--icon {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,7 +7,7 @@ button.--ghost.--icon {
   height: 2.025rem;
   width: 2.025rem;
   border-radius: 50%; }
-  button.--ghost.--icon svg {
+  button.m--ghost.m--icon svg {
     border-radius: 50%;
     fill: #0c84e4;
     transition: 0.15s cubic-bezier(0.4, 0, 0.5, 1);
@@ -15,15 +15,15 @@ button.--ghost.--icon {
     max-height: 1.5rem;
     min-width: 1.5rem;
     max-width: 1.5rem; }
-  button.--ghost.--icon.--l-2 {
+  button.m--ghost.m--icon.m--l-2 {
     margin-right: 1.75rem; }
-  button.--ghost.--icon.--top-centered {
+  button.m--ghost.m--icon.m--top-centered {
     margin-top: -1rem; }
-  button.--ghost.--icon.--negative svg {
+  button.m--ghost.m--icon.m--negative svg {
     fill: #f22314; }
-  button.--ghost.--icon.--negative:enabled:hover svg {
+  button.m--ghost.m--icon.m--negative:enabled:hover svg {
     fill: #f8827a; }
-  button.--ghost.--icon.--positive svg {
+  button.m--ghost.m--icon.m--positive svg {
     fill: #419645; }
-  button.--ghost.--icon.--positive:enabled:hover svg {
+  button.m--ghost.m--icon.m--positive:enabled:hover svg {
     fill: #7cc67f; }

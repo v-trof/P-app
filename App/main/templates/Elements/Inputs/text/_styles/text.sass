@@ -16,10 +16,10 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active
 	transition: background-color 5000s ease-in-out 0s
 
-input[type="text"], input[type="email"], input[type="password"], .input.--text, .input.--filled
+input[type="text"], input[type="email"], input[type="password"], .input.m--text, .input.m--filled
 	width: 100%
 
-.input.--text
+.input.m--text
 	display: flex
 	flex-direction: column
 	align-items: center
@@ -37,7 +37,7 @@ input[type="text"], input[type="email"], input[type="password"], .input.--text, 
 		color: $font__color--grey
 		transition: $time--s
 		z-index: 0
-		&.--top, &.--top-fixed
+		&.m--top, &.m--top-fixed
 			font-size: $font__size--s
 			transform: translateY(-$padding--l)
 
@@ -59,10 +59,10 @@ input[type="text"], input[type="email"], input[type="password"], .input.--text, 
 			& ~ .__indicator
 				width: 100%
 			& ~ label
-				@extend label.--top
+				@extend label.m--top
 				color: $font__color--accent
 			
-		&.--valid
+		&.m--valid
 			& ~ label
 				color: $font__color--positive
 			&:focus:not([disabled="disabled"])
@@ -72,7 +72,7 @@ input[type="text"], input[type="email"], input[type="password"], .input.--text, 
 					background: $font__color--positive
 			
 			
-		&.--invalid
+		&.m--invalid
 			& ~ label
 					color: $font__color--negative
 			&:focus:not([disabled="disabled"])
@@ -81,7 +81,7 @@ input[type="text"], input[type="email"], input[type="password"], .input.--text, 
 				& ~ .__indicator
 					background: $font__color--negative
 				
-		&.--short
+		&.m--short
 			width: 5rem
 		&[disabled="disabled"]
 			border-bottom-style: dotted

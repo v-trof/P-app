@@ -4,13 +4,13 @@ var popup = (function() {
 		$: $popup,
 		show: function(content, _callback, css) {
 			$popup.find(".__content").html(content);
-			$popup.removeClass('--hidden');
+			$popup.removeClass('m--hidden');
 			
-			$popup.find(".--select").each(function(index, el) {
+			$popup.find(".m--select").each(function(index, el) {
 				add_menu_caller(this);
 			});
 
-			$popup.find(".--sectioned").each(function(index, el) {
+			$popup.find(".m--sectioned").each(function(index, el) {
 				add_menu_caller_sectioned(this);
 			});
 			$popup.find("input").first().focus();
@@ -24,7 +24,7 @@ var popup = (function() {
 			}
 		},
 		hide: function() {
-			$popup.addClass('--hiding');
+			$popup.addClass('m--hiding');
 			$popup.find('__modal').removeAttr('style');
 
 			if(typeof tooltip !== 'undefined') {
@@ -35,8 +35,8 @@ var popup = (function() {
 			}
 
 			setTimeout(function() {
-				$popup.removeClass('--hiding');
-				$popup.addClass('--hidden');
+				$popup.removeClass('m--hiding');
+				$popup.addClass('m--hidden');
 			}, 150);
 		}
 	}

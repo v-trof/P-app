@@ -1,9 +1,9 @@
 <div class="__traditional">
 {% for traditional in task.traditionals %}
 	{% if traditional.done %}
-		{% include "Elements/Inputs/checkbox/" with label=traditional.text class="--green" id=forloop.counter checked=True %}
+		{% include "Elements/Inputs/checkbox/" with label=traditional.text class="m--green" id=forloop.counter checked=True %}
 	{% else %}
-		{% include "Elements/Inputs/checkbox/" with label=traditional.text class="--green" id=forloop.counter %}
+		{% include "Elements/Inputs/checkbox/" with label=traditional.text class="m--green" id=forloop.counter %}
 	{% endif %}
 {% endfor %}
 </div>

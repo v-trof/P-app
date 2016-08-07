@@ -1,5 +1,5 @@
 function assignment_check_done($assignment) {
-	var $checkboxes = $assignment.find(".--checkbox input");
+	var $checkboxes = $assignment.find(".m--checkbox input");
 	var $links = $assignment.find("a");
 	
 	// console.log($checkboxes, $links)
@@ -15,23 +15,23 @@ function assignment_check_done($assignment) {
 	var all_finished = true
 	$links.each(function(index, el) {
 		console.log(this);
-		if( ! $(this).hasClass('--done') ) {
+		if( ! $(this).hasClass('m--done') ) {
 			all_finished = false;
 		}
 	});
 
 	console.log(all_checked, all_finished);
 	if(all_checked && all_finished) {
-		$assignment.addClass("--done");
+		$assignment.addClass("m--done");
 	} else {
-		$assignment.removeClass('--done');
+		$assignment.removeClass('m--done');
 	}
 }
 
 $(document).ready(function() {
-	$(".card.--assignment").each(function(index, el) {
+	$(".card.m--assignment").each(function(index, el) {
 		var $assignment = $(this);
-		$(this).on("click", ".--checkbox", function() {
+		$(this).on("click", ".m--checkbox", function() {
 			assignment_check_done($assignment);
 		});
 

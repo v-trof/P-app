@@ -52,7 +52,7 @@ function add_menu_caller_sectioned(select) {
 }
 
 $(document).ready(function() {
-  $(".--sectioned").each(function(index, el) {
+  $(".m--sectioned").each(function(index, el) {
     add_menu_caller_sectioned(this);
   });
 });

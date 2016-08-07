@@ -6,9 +6,9 @@ pull_put.ui = (function() {
 	$ui.__content = $ui.find(".__content");
 
 	function make_button(icon, tip, _action) {
-		var $button = $('<div class="card --circle" tip="'
+		var $button = $('<div class="card m--circle" tip="'
 			+ tip + '">'
-			+'<button class="--ghost --icon">'
+			+'<button class="m--ghost m--icon">'
 			+ icon
 			+'</button></div>');
 		$button.click(function(event) {
@@ -61,23 +61,23 @@ pull_put.ui = (function() {
 			
 
 			if(actions.indexOf("delete")>-1) {
-				$ui.find(".__actions button.--delete").parent().show();
+				$ui.find(".__actions button.m--delete").parent().show();
 			} else {
-				$ui.find(".__actions button.--delete").parent().hide();
+				$ui.find(".__actions button.m--delete").parent().hide();
 			}
 
 			if(actions.indexOf("add")>-1) {
-				$ui.find(".__actions button.--add").parent().show();
+				$ui.find(".__actions button.m--add").parent().show();
 			} else {
-				$ui.find(".__actions button.--add").parent().hide();
+				$ui.find(".__actions button.m--add").parent().hide();
 			}
 
 			if(actions.indexOf("save")>-1) {
 				pull_put.ui.proto_element = $element.clone();
-				$ui.find(".__actions button.--save").parent().show();
+				$ui.find(".__actions button.m--save").parent().show();
 			} else {
 				pull_put.ui.proto_element = $element;
-				$ui.find(".__actions button.--save").parent().hide();
+				$ui.find(".__actions button.m--save").parent().hide();
 			}
 
 			if(_callback) {
@@ -86,10 +86,10 @@ pull_put.ui = (function() {
 		},
 		show: function() {
 			if(typeof editor !== "undefined") {
-				$(".__task").slice(-2).addClass("--stand-out");
-				$(".__put-margin").last().addClass("--stand-out");
+				$(".__task").slice(-2).addClass("m--stand-out");
+				$(".__put-margin").last().addClass("m--stand-out");
 			}
-			$ui.removeClass('--hidden');
+			$ui.removeClass('m--hidden');
 
 			setTimeout(function() {
 				pull_put.is_pulled = true;
@@ -107,9 +107,9 @@ pull_put.ui = (function() {
 		},
 		hide: function() {
 			if(typeof editor !== "undefined") {
-				$(".--stand-out").removeClass("--stand-out");
+				$(".m--stand-out").removeClass("m--stand-out");
 			}
-			$ui.addClass('--hidden');
+			$ui.addClass('m--hidden');
 			setTimeout(function() {
 				pull_put.is_pulled = false;
 			}, 300)
@@ -121,7 +121,7 @@ pull_put.ui = (function() {
 $(document).ready(function() {
 	$("body").append(pull_put.ui.$)
 
-	$(".pull_put_ui .__actions .--cancel").click(function(event) {
+	$(".pull_put_ui .__actions .m--cancel").click(function(event) {
 
 		//restoring defaut element
 		pull_put.ui.element = pull_put.ui.proto_element;
@@ -132,17 +132,17 @@ $(document).ready(function() {
 		pull_put.puller.cancel();
 	});
 
-	$(".pull_put_ui .__actions .--save").click(function(event) {
+	$(".pull_put_ui .__actions .m--save").click(function(event) {
 		pull_put.puller.cancel();
 	});
 
-	$(".pull_put_ui .__actions .--delete").click(function(event) {
+	$(".pull_put_ui .__actions .m--delete").click(function(event) {
 		pull_put.ui.element = "";
 		pull_put.reset();
 		pull_put.delete_action();
 	});
 
-	$(".pull_put_ui .__actions .--add").click(function(event) {
+	$(".pull_put_ui .__actions .m--add").click(function(event) {
 		generate.build.task(pull_put.ui.element);
 		pull_put.reset();
 	});

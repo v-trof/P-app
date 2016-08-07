@@ -1,4 +1,4 @@
-$('.--assignment').each(function(index, el) {
+$('.m--assignment').each(function(index, el) {
 	var id = $(this).attr("id").split("_")[1];
 
 	button_delete.add($(this), function() {
@@ -18,5 +18,5 @@ $('.--assignment').each(function(index, el) {
 		
 	});
 
-	$(this).find('.--button-delete').addClass('--l-2');
+	$(this).find('.m--button-delete').addClass('m--l-2');
 });

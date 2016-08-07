@@ -13,10 +13,10 @@ var used_links = []
 
 
 $(document).ready(function() {
-	panel.actions.html('<button class="--ghost" id="cancel">Отмена</button><button class="--ghost --negative" id="delete">Удалить</button>');
+	panel.actions.html('<button class="m--ghost" id="cancel">Отмена</button><button class="m--ghost m--negative" id="delete">Удалить</button>');
 		$("#delete").css('color', '#F44336');
 
-	panel.content.on("click", ".card.--small", function(event) {
+	panel.content.on("click", ".card.m--small", function(event) {
 		if(as_g.original) {
 			as_g.original.replaceWith($(this))
 			used_links.push( $(this).attr("href") );

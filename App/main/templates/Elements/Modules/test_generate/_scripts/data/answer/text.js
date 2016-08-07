@@ -25,7 +25,7 @@ generate.data["answer--text"] = {
 		fill: function($element, answer) {
 			// console.log(answer);
 			$element.find('input').val(answer);
-			$element.find('label').addClass('--top');
+			$element.find('label').addClass('m--top');
 		},
 
 		getter: function($element, _action) {

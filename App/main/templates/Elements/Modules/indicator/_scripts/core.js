@@ -12,7 +12,7 @@ var indicator = (function() {
 
 		$new_indicator.find('button').html(icons[icon]);
 
-		$new_indicator.addClass('--' + icon);
+		$new_indicator.addClass('m--' + icon);
 		return $new_indicator;
 	};
 

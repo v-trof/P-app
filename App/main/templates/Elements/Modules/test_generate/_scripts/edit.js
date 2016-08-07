@@ -89,7 +89,7 @@ $(document).ready(function() {
 	);
 	$(document).on(
 		"click",
-		".--button-delete",
+		".m--button-delete",
 		function() {
 			if($(this).parent().hasClass('__item')) {
 				console.log("re")
@@ -99,7 +99,7 @@ $(document).ready(function() {
 	)
 	$(document).on(
 		"click",
-		".--enpty",
+		".m--enpty",
 		function() {
 			console.log("e");
 			editor.check_self();

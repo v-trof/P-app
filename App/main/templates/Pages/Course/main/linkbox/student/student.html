@@ -1,33 +1,33 @@
 {% if is_participant %}
 	<section class="linkbox">
-		<a class="--card" href="groups/ ">
-			<button class="--flat">
+		<a class="m--card" href="groups/ ">
+			<button class="m--flat">
 				Группы и учителя
 			</button>
 		</a>
-		<a class="--card" href="sources/ ">
-			<button class="--flat">
+		<a class="m--card" href="sources/ ">
+			<button class="m--flat">
 				Источники
 			</button>
 		</a>
-		<a class="--card" href="/func/exit/{{course.id}}/ ">
-			<button class="--ghost --negative">
+		<a class="m--card" href="/func/exit/{{course.id}}/ ">
+			<button class="m--ghost m--negative">
 				Покинуть курс
 			</button>
 		</a>
 	</section>
 {% elif course.is_closed %}
 	<section class="linkbox">
-		<a class="--card" href="/func/course_reg/{{course.id}}/ ">
-			<button class="--flat">
+		<a class="m--card" href="/func/course_reg/{{course.id}}/ ">
+			<button class="m--flat">
 				Подать заявку
 			</button>
 		</a>
 	</section>
 {% else %}
 	<section class="linkbox">
-		<a class="--card" href="/func/course_reg/{{course.id}}/ ">
-			<button class="--flat">
+		<a class="m--card" href="/func/course_reg/{{course.id}}/ ">
+			<button class="m--flat">
 				Присоединиться
 			</button>
 		</a>

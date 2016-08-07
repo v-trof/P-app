@@ -95,7 +95,7 @@ test_manager.pack = function() {
 				}
 				
 			});
-			$(this).find("a.--card").each(function(img_index, $element){
+			$(this).find("a.m--card").each(function(img_index, $element){
 				var file_id = $(this).attr("id");
 				if(typeof generate.data.shared.assets[file_id] !== "undefined") {
 					var file_to_upload = generate.data.shared.assets[file_id].files[0];

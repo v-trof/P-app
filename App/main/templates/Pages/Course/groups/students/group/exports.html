@@ -1,1 +1,1 @@
-<div class="group">	<h3>{{group}}</h3>	{% for member in members %}		<a class="--card" href='/profile/{{member.id}}/'>			{% include "Elements/card/user/exports.html" with user=member %}		</a>	{% empty %}	<div class="--empty">Пустая группа</div>	{% endfor %}</div>
+<div class="group">	<h3>{{group}}</h3>	{% for member in members %}		<a class="m--card" href='/profile/{{member.id}}/'>			{% include "Elements/card/user/exports.html" with user=member %}		</a>	{% empty %}	<div class="m--empty">Пустая группа</div>	{% endfor %}</div>

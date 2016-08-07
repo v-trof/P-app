@@ -9,16 +9,16 @@ var verifier = (function() {
 	function verify($input, expression) {
 		if($input.val()) {
 			if( expression.test($input.val()) ) {
-				$input.addClass('--valid');
-				$input.removeClass('--invalid');
+				$input.addClass('m--valid');
+				$input.removeClass('m--invalid');
 				return true
 			} else {
-				$input.removeClass('--valid');
-				$input.addClass('--invalid');
+				$input.removeClass('m--valid');
+				$input.addClass('m--invalid');
 			}
 		} else {
-			$input.removeClass('--valid');
-			$input.removeClass('--invalid');
+			$input.removeClass('m--valid');
+			$input.removeClass('m--invalid');
 		}
 		return false
 	}

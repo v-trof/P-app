@@ -1,5 +1,5 @@
 <div id="actions">
-	<button class="--ghost --icon" id="test_save" 
+	<button class="m--ghost m--icon" id="test_save" 
 		{% if  test.published %}
 		tip="Cохранить изменения"
 		{% else %}
@@ -9,23 +9,23 @@
 		{% include "Elements/Icons/save.svg" %}
 	</button>
 	{% if not test.loaded or not test.published %}
-		<button class="--ghost --icon" id="test_publish" tip="Сделать доступным для прохождения">
+		<button class="m--ghost m--icon" id="test_publish" tip="Сделать доступным для прохождения">
 			{% include "Elements/Icons/visibility.svg" %}
 		</button>
-		<button class="--ghost --icon" id="test_unpublish"  tip="Сделать недоступным для прохождения" style="display:none">
+		<button class="m--ghost m--icon" id="test_unpublish"  tip="Сделать недоступным для прохождения" style="display:none">
 			{% include "Elements/Icons/visibility_off.svg" %}
 		</button>
 
 	{% else %}
-		<button class="--ghost --icon" id="test_publish" tip="Сделать доступным для прохождения" style="display:none">
+		<button class="m--ghost m--icon" id="test_publish" tip="Сделать доступным для прохождения" style="display:none">
 			{% include "Elements/Icons/visibility.svg" %}
 		</button>
-		<button class="--ghost --icon" id="test_unpublish"  tip="Сделать недоступным для прохождения" >
+		<button class="m--ghost m--icon" id="test_unpublish"  tip="Сделать недоступным для прохождения" >
 			{% include "Elements/Icons/visibility_off.svg" %}
 		</button>
 	{% endif %}
 
-	<button class="--ghost --icon --negative" id="test_delete"  tip="Удалить">
+	<button class="m--ghost m--icon m--negative" id="test_delete"  tip="Удалить">
 		{% include "Elements/Icons/delete.svg" %}
 	</button>
 </div>

@@ -1,7 +1,7 @@
 function show_marks($group) {
    function create_mark(mark, id) {
     return $('<button id="' + id + '"'
-              + 'class="--ghost --' 
+              + 'class="m--ghost m--' 
               + mark.quality + '">'
               + mark.value + '</button>');
   }
@@ -15,10 +15,10 @@ function show_marks($group) {
     var student_marks = marks_info[group_name]
       [student_id].tests;
     for(mark_id in student_marks) {
-      var $user_card = $(".--user#" + student_id);
+      var $user_card = $(".m--user#" + student_id);
       if( ! results_controls.active_student) {
         results_controls.active_student = student_id;
-        $user_card.addClass('--active');
+        $user_card.addClass('m--active');
       }
 
       $user_card.find('.__extension')

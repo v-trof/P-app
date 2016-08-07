@@ -5,15 +5,15 @@ $("#invite_students").click(function(event) {
 	$(".student__email").focus();
 	verifier.add($(".student__email"), "email");
 	$("#add_student").click(function(e) {
-		$(".__content .--text").last().after('<div class="input --text"><input class="student__email __value" type="email"><label>Email</label><div class="__indicator"></div></div>');
-  		verifier.add($(".--text").last().children(".student__email"), "email");
+		$(".__content .m--text").last().after('<div class="input m--text"><input class="student__email __value" type="email"><label>Email</label><div class="__indicator"></div></div>');
+  		verifier.add($(".m--text").last().children(".student__email"), "email");
 	});
 	$("#invite_students_button").click(function(e) {
 			var email_list=[];
 			$(".student__email").each(function(index, el) {
 				email_list.push($(this).val());
 			});
-			var group=$(".--select").children(".__display").text();
+			var group=$(".m--select").children(".__display").text();
 			if (group=="Выберите...")
 				group="Нераспределенные";
 			$.ajax({

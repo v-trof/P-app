@@ -23,7 +23,7 @@ test_manager.add_section_binding = function() {
 }
 
 test_manager.publish = function() {
-	var no_empty = ($(".preview .--empty").length === 0);
+	var no_empty = ($(".preview .m--empty").length === 0);
 	var answers_everywhere = true;
 
 	console.log(no_empty, answers_everywhere, no_empty && answers_everywhere);
@@ -49,13 +49,13 @@ test_manager.publish = function() {
 				
 				formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
 				
-				$(".--publish-popup .__mark-settigns")
+				$(".m--publish-popup .__mark-settigns")
 					.find("input").each(function(index, el) {
 					// console.log("m:", $(this).attr("id"), $(this).val());
 					formData.append($(this).attr("id"), $(this).val())
 				});
 
-				$(".--publish-popup .__forgive")
+				$(".m--publish-popup .__forgive")
 					.find("input").each(function(index, el) {
 					// console.log("ac:", $(this).attr("id"), $(this).is(":checked"));
 					formData.append($(this).attr("id"), $(this).is(":checked"))

@@ -1,19 +1,19 @@
 <section class="linkbox">
-	<a class="--card" id="invite_students">
-		<button class="--flat">
+	<a class="m--card" id="invite_students">
+		<button class="m--flat">
 		Пригласить учеников
 		</button>
 	</a>
 	{% if course_data.user_status == "administrator" %}
-		<a class="--card" id="invite_teacher">
-			<button class="--flat">
+		<a class="m--card" id="invite_teacher">
+			<button class="m--flat">
 			Пригласить преподавателя
 			</button>
 		</a>
 		
 		{% if course_data.status == "closed" %}
-			<a class="--card" href="/course/{{course_data.course_id}}/requests/">
-				<button class="--flat">
+			<a class="m--card" href="/course/{{course_data.course_id}}/requests/">
+				<button class="m--flat">
 					Заявки на курс
 				</button>
 			</a>

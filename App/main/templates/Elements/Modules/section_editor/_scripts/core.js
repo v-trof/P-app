@@ -160,14 +160,14 @@ section_editor.init = function(arguments) {
 
 		if(section_editor.no_publish) {
 			section_editor.$unordered.find(section_editor.item_selector)
-				.addClass('--was-unpublished')
+				.addClass('m--was-unpublished')
 		}
 	}, 100)
 	
 
 	//finish startup
-	section_editor.$add_button = $('<a class="--card">'
-		+ '<button class="--flat" id="edit_toggle">' + section_editor.add_button_text
+	section_editor.$add_button = $('<a class="m--card">'
+		+ '<button class="m--flat" id="edit_toggle">' + section_editor.add_button_text
 		+ '</button></a>')
 
 	$(".linkbox").last().append(section_editor.$add_button)
@@ -180,7 +180,7 @@ section_editor.init = function(arguments) {
 
 	//repalceing native empties
 	section_editor.$parent
-		.find('.--empty').remove();
+		.find('.m--empty').remove();
 
 	section_editor.check_empty('_all');
 

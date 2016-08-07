@@ -1,6 +1,6 @@
 {% load ext_humanize %}
 {% if update.new_students|length > 0 or update.new_results > 0 or update.requesting_users|length > 0 or update.irrelevant|length > 0%}
-<a class="--card" href='/course/{{update.course.id}}/updates'>
+<a class="m--card" href='/course/{{update.course.id}}/updates'>
 	<div class="card">
 		<h4  class="__heading">В курсе {{ update.course.name}}</h4>
 		{% if update.new_results > 0 %}

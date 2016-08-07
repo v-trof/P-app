@@ -1,5 +1,5 @@
 var tooltip = (function() {
-	$tooltip = $('<div id="tooltip" class="--hidden"><div class="__content"></div></div>');
+	$tooltip = $('<div id="tooltip" class="m--hidden"><div class="__content"></div></div>');
 	function directions(element) {
 		//disabling jQuery
 		element = $(element)[0]
@@ -11,36 +11,36 @@ var tooltip = (function() {
 			top: {
 				top: element_rect.top - tooltip_rect.height + 'px',
 				left: element_rect.left + 'px',
-				class: '--top'
+				class: 'm--top'
 			},
 			top_centered: {
 				top: element_rect.top - tooltip_rect.height + 'px',
 				left: element_rect.left - 
 					(tooltip_rect.width/2 - element_rect.width/2) + 'px',
-				class: '--top'
+				class: 'm--top'
 			},
 			right: {
 				height: element_rect.height + 'px',
 				top: element_rect.top + 'px',
 				left: element_rect.left + element_rect.width + 'px',
-				class: '--right'
+				class: 'm--right'
 			},
 			left: {
 				height: element_rect + 'px',
 				top: element_rect.top + 'px',
 				left: element_rect.left - tooltip_rect.width + 'px',
-				class: '--left'
+				class: 'm--left'
 			},
 			bottom: {
 				top: element_rect.top + element_rect.height + 'px',
 				left: element_rect.left + 'px',
-				class: '--bottom'
+				class: 'm--bottom'
 			},
 			bottom_centered: {
 				top: element_rect.top + element_rect.height + 'px',
 				left: element_rect.left - 
 					(tooltip_rect.width/2 - element_rect.width/2) + 'px',
-				class: '--bottom'
+				class: 'm--bottom'
 			}
 		}
 
@@ -82,10 +82,10 @@ var tooltip = (function() {
 	}
 
 	function reset_class() {
-		$tooltip.removeClass("--left");
-		$tooltip.removeClass("--right");
-		$tooltip.removeClass("--top");
-		$tooltip.removeClass("--bottom");
+		$tooltip.removeClass("m--left");
+		$tooltip.removeClass("m--right");
+		$tooltip.removeClass("m--top");
+		$tooltip.removeClass("m--bottom");
 	}
 
 	exports = {
@@ -108,10 +108,10 @@ var tooltip = (function() {
 
 			prevent_edge_breaking();
 
-			$tooltip.removeClass('--hidden');
+			$tooltip.removeClass('m--hidden');
 		},
 		hide: function() {
-			$tooltip.addClass('--hidden');
+			$tooltip.addClass('m--hidden');
 			$tooltip.removeAttr('style');
 		}
 	}

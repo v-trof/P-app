@@ -4,12 +4,12 @@ results_display.replace_answer = function($answer,
 	user_answer, right_answer, quality) {
 	$answer.html('');
 	if(quality === "positive") {
-		$answer.append("<div>Ваш ответ: <b class='--positive'>" 
+		$answer.append("<div>Ваш ответ: <b class='m--positive'>" 
 			+ user_answer + "</b></div>");
 	}
 
 	if(quality === "neutral") {
-		$answer.append("<div>Ваш ответ: <b class='--neutral'>" 
+		$answer.append("<div>Ваш ответ: <b class='m--neutral'>" 
 			+ user_answer + "</b></div>");
 		$answer.append("<div>Верный ответ: <b>" 
 			+ right_answer
@@ -17,7 +17,7 @@ results_display.replace_answer = function($answer,
 	}
 
 	if(quality === "negative") {
-		$answer.append("<div>Ваш ответ: <b class='--negative'>" 
+		$answer.append("<div>Ваш ответ: <b class='m--negative'>" 
 			+ user_answer + "</b></div>");
 		$answer.append("<div>Верный ответ: <b>" + 
 				right_answer + 
@@ -37,7 +37,7 @@ $(document).ready(function() {
 			var $result_tempalte = $('{% include "Elements/Modules/results_controls/__answer_display/exports.html" %}');
 
 			$result_tempalte.find(".__student_answer")
-				.addClass('--' + quality)
+				.addClass('m--' + quality)
 				.html(user_answer);
 
 			if(quality === "positive") {

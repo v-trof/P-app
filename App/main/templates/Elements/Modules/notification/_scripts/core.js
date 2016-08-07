@@ -1,6 +1,6 @@
 var notification = (function() {
 	var template = {
-		notification : '<div class="notification --hidden"><div class="__icon"></div><div class="__text"></div></div>',
+		notification : '<div class="notification m--hidden"><div class="__icon"></div><div class="__text"></div></div>',
 		icon : {
 			error: '{% include "Elements/Icons/cancel.svg" %}',
 			warning: '{% include "Elements/Icons/warning.svg" %}',
@@ -10,7 +10,7 @@ var notification = (function() {
 	}
 	function build (type, content) {
 		var $new_notification = $(template.notification);
-		$new_notification.addClass('--'+type);
+		$new_notification.addClass('m--'+type);
 		
 		$new_notification.find('.__icon').html(template.icon[type]);
 		$new_notification.find('.__text').html(content);
@@ -29,7 +29,7 @@ var notification = (function() {
 			var $new_notification = build(type, content);
 			$('body').append($new_notification);
 			setTimeout(function() {
-				$new_notification.removeClass('--hidden');
+				$new_notification.removeClass('m--hidden');
 			}, 10)
 
 			$new_notification.click(function() {
@@ -44,7 +44,7 @@ var notification = (function() {
 		},
 
 		hide: function($notification) {
-			$notification.addClass('--hidden');
+			$notification.addClass('m--hidden');
 			setTimeout(function() {
 				$notification.remove();
 				reposition();	

@@ -10,7 +10,7 @@
 			if($(this).children(".__question-element").length == 0
 				) {
 				if($(this).children('.question--empty').length == 0) {
-					$empty = $("<div class='question--empty --empty'>Добавьте сюда вопрос</div>");
+					$empty = $("<div class='question--empty m--empty'>Добавьте сюда вопрос</div>");
 				
 					indicator.add($empty, 'add', 1);
 					$(this).prepend($empty);
@@ -29,7 +29,7 @@
 				$(this).children(".__answer-field").length == 0
 			) {
 				if($(this).children('.answer--empty').length == 0) {
-					var $empty = $("<div class='answer--empty --empty'>Добавьте сюда поле ответа</div>");
+					var $empty = $("<div class='answer--empty m--empty'>Добавьте сюда поле ответа</div>");
 
 					indicator.add($empty, 'add', 1);
 					$(this).append($empty);
@@ -49,9 +49,9 @@
 		$(".__task>.__content").children().each(function(index, el) {
 			if(
 				(
-					   ! $(this).hasClass('--pullable')
-					|| ! $(this).hasClass('--put-zone')
-				) && ! $(this).hasClass('--empty')
+					   ! $(this).hasClass('m--pullable')
+					|| ! $(this).hasClass('m--put-zone')
+				) && ! $(this).hasClass('m--empty')
 			) {
 				generate.let_editing($(this));
 			}

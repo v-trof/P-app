@@ -3,7 +3,7 @@ var ripple = (function() {
 	
 	function reset() {
 		$ripple.removeAttr('style');
-		$ripple.removeClass('--hide').removeClass('--shown');
+		$ripple.removeClass('m--hide').removeClass('m--shown');
 		$(".ripple_target").removeClass("ripple_target");
 	}
 
@@ -32,10 +32,10 @@ var ripple = (function() {
 				$ripple.css(css);
 			}
 
-			$ripple.addClass('--shown');
+			$ripple.addClass('m--shown');
 		},
 		hide: function() {
-			$ripple.addClass('--hide');
+			$ripple.addClass('m--hide');
 		}
 	}
 	return exports;
@@ -55,5 +55,5 @@ $(document).ready(function() {
 		"mouseup": function() {
 			ripple.hide();
 		}
-	}, "button, a.--card .card");
+	}, "button, a.m--card .card");
 });

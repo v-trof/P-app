@@ -8,7 +8,7 @@ $('#edit_course').click(function(event) {
 		'{% include "Pages/home/_popup_texts/create_course/exports.html" %}',
 		function() {
 			$name = $('[name="course_name"]')
-			$subject = $('.--select .__value')
+			$subject = $('.m--select .__value')
 			$is_closed = $('[name="is_closed"]')
 
 

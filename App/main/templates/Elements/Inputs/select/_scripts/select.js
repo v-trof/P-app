@@ -49,7 +49,7 @@ function add_menu_caller(select) {
 }
 
 $(document).ready(function() {
-	$(".--select:not(.--sectioned)").each(function(index, el) {
+	$(".m--select:not(.m--sectioned)").each(function(index, el) {
 		add_menu_caller(this);
 	});
 });

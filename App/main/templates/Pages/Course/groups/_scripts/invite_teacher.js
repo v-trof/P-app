@@ -3,7 +3,7 @@ $("#invite_teacher").click(function(event) {
 	$(".teacher__email").focus();
 	verifier.add($(".teacher__email"), "email");
 	$("#invite_teacher_button").click(function(e) {
-			var group=$(".--select").children(".__display").text();
+			var group=$(".m--select").children(".__display").text();
 			if (group=="Выберите...")
 				group="Нераспределенные";
 			$.ajax({

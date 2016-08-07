@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	var summary_template = function(index, 
 		show_index, value="Пусто") {
-		return '<div class="card --small sumfor_'
+		return '<div class="card m--small sumfor_'
 			+ index + ' row">'
 			+'<div class="__number">' + show_index + ':</div>'
 			+'<div class="__value">' + value + '</div></div>';

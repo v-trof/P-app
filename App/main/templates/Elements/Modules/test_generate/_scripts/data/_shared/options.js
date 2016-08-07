@@ -1,7 +1,7 @@
 generate.data.shared.options = {
 	element: {
 		parse: function($original, type) {
-			var $items = $original.find(".--" + type);
+			var $items = $original.find(".m--" + type);
 			var values = [];
 			$items.each(function(index, el) {
 				values.push($(this).children("label").text());
@@ -29,7 +29,7 @@ generate.data.shared.options = {
 	edit: {
 		parse : function(type) {
 
-			var $items = $(".options-edit").find(".--"+type);
+			var $items = $(".options-edit").find(".m--"+type);
 			var answer = [];
 			var values = [];
 

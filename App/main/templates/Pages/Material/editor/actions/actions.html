@@ -1,5 +1,5 @@
 <div id="actions">
-	<button class="--ghost --icon" id="material_save" 
+	<button class="m--ghost m--icon" id="material_save" 
 		{% if  material.published %}
 		tip="Cохранить изменения"
 		{% else %}
@@ -9,23 +9,23 @@
 		{% include "Elements/Icons/save.svg" %}
 	</button>
 	{% if not material.loaded or not material.published %}
-		<button class="--ghost --icon" id="material_publish" tip="Сделать доступным для просмотра">
+		<button class="m--ghost m--icon" id="material_publish" tip="Сделать доступным для просмотра">
 			{% include "Elements/Icons/visibility.svg" %}
 		</button>
-		<button class="--ghost --icon" id="material_unpublish"  tip="Скрыть" style="display:none">
+		<button class="m--ghost m--icon" id="material_unpublish"  tip="Скрыть" style="display:none">
 			{% include "Elements/Icons/visibility_off.svg" %}
 		</button>
 
 	{% else %}
-		<button class="--ghost --icon" id="material_publish" tip="Сделать доступным для просмотра" style="display:none">
+		<button class="m--ghost m--icon" id="material_publish" tip="Сделать доступным для просмотра" style="display:none">
 			{% include "Elements/Icons/visibility.svg" %}
 		</button>
-		<button class="--ghost --icon" id="material_unpublish"  tip="Скрыть" >
+		<button class="m--ghost m--icon" id="material_unpublish"  tip="Скрыть" >
 			{% include "Elements/Icons/visibility_off.svg" %}
 		</button>
 	{% endif %}
 
-	<button class="--ghost --icon --negative" id="material_delete"  tip="Удалить">
+	<button class="m--ghost m--icon m--negative" id="material_delete"  tip="Удалить">
 		{% include "Elements/Icons/delete.svg" %}
 	</button>
 </div>

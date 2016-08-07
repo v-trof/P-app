@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     var make_card_small = function(text) {
        var $new_card = $('{% include "Elements/card/exports.html" %}');
-       $new_card.addClass('--small');
+       $new_card.addClass('m--small');
        $new_card.text(text);
        return $new_card;
     };

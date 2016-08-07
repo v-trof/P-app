@@ -3,11 +3,11 @@ section_editor.end_section_editing = function($section, dont_replace) {
 
 	//end heading edition
 	$section.find(section_editor.heading_selector)
-		.removeClass('--editing')
+		.removeClass('m--editing')
 		.attr('contenteditable', 'false')
 
 	//remove button_delete
-	$section.find('.--button-delete').remove()
+	$section.find('.m--button-delete').remove()
 
 	//replace_tags
 	if(section_editor.replace 

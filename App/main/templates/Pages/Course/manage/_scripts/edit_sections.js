@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	var section_selector = '.course-part'
 		heading_selector = 'h3'
-		item_selector = '.--card';
+		item_selector = '.m--card';
 		unordered_heading = 'Неопубликованные'
 
 	var send_changes = function() {

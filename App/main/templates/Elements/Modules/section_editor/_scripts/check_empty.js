@@ -12,19 +12,19 @@ section_editor.check_empty = function($section) {
 	//one
 	if( $section.children(section_editor.item_selector).length == 0 ) {
 		//is_empty
-		if( $section.children('.--empty').length == 0 ) {
+		if( $section.children('.m--empty').length == 0 ) {
 			//empty state is not displayed
 			$section.append(section_editor.create_empty())
 		}
 	} else {
 		//is not empty
-		$section.children('.--empty').remove()
+		$section.children('.m--empty').remove()
 	}
 }
 
 
 section_editor.create_empty = function() {
-	var $empty = $('<div class="--empty">'
+	var $empty = $('<div class="m--empty">'
 					+ section_editor.empty_message
 				+ '</div>')
 

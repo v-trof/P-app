@@ -10,7 +10,7 @@ generate.data["question--empty"] = {
 			}
 		},
 		build: function(value) {
-			return $("<div class='--empty question--empty'>Добавьте сюда вопрос</div>");
+			return $("<div class='m--empty question--empty'>Добавьте сюда вопрос</div>");
 		},
 		value_sample: {
 			text: "Добавьте сюда вопрос"

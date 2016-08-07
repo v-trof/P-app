@@ -1,6 +1,6 @@
 <section>
 	<h2>Cards</h2>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item">
 			{% include "Elements/card/" with heading="Sample card" content="The most default card in the world!" %}
 		</div>
@@ -11,91 +11,91 @@
 			<strong>Usage:</strong> When there is no special card
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item">
 			{% include "Elements/card/course/"%}
 		</div>
 		<div class="__description">
-			<strong>Classes:</strong> .card .--course<br>
+			<strong>Classes:</strong> .card .m--course<br>
 			<strong>Blocks:</strong> -<br>
 			<strong>Dependencies:</strong> - <br>
 			<strong>Usage:</strong> Display info about course
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item">
 			{% include "Elements/card/user/" %}
 			{% include "Elements/card/user/extended/" with extension="#&/_extension/" %}
 		</div>
 		<div class="__description">
-			<strong>Classes:</strong> .card .--user (.--extended)<br>
+			<strong>Classes:</strong> .card .m--user (.m--extended)<br>
 			<strong>Blocks:</strong> __info <br>
 			<strong>Dependencies:</strong> - <br>
 			<strong>Usage:</strong> Display info about user and optional information
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item">
 			{% include "Elements/card/announcement/"%}
 		</div>
 		<div class="__description">
-			<strong>Classes:</strong> .card .--announcement <br>
+			<strong>Classes:</strong> .card .m--announcement <br>
 			<strong>Blocks:</strong> - <br>
 			<strong>Dependencies:</strong> - <br>
 			<strong>Usage:</strong> Display announcement in course
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item">
 		</div>
 		<div class="__description">
-			<strong>Classes:</strong> .card .--assignment <br>
+			<strong>Classes:</strong> .card .m--assignment <br>
 			<strong>Blocks:</strong> - <br>
 			<strong>Dependencies:</strong> checkbox <br>
 			<strong>Usage:</strong> Display assignment
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		{# <div class="__item">
 			{% include "Elements/card/test/"%}
 			{% include "Elements/card/test/extended/" with extension="#&/_extension/" %}
 		</div>
 		<div class="__description">
-			<strong>Classes:</strong> .card .--test (.--extended) <br>
+			<strong>Classes:</strong> .card .m--test (.m--extended) <br>
 			<strong>Blocks:</strong> - <br>
 			<strong>Dependencies:</strong> - <br>
 			<strong>Usage:</strong> Display info about test
 		</div> #}
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 	{# 	<div class="__item">
 			{% include "Elements/card/material/"%}
 			{% include "Elements/card/material/extended/" with extension="#&/_extension/" %}
 		</div>
 		<div class="__description">
-			<strong>Classes:</strong> .card .--material (.--extended) <br>
+			<strong>Classes:</strong> .card .m--material (.m--extended) <br>
 			<strong>Blocks:</strong> - <br>
 			<strong>Dependencies:</strong> - <br>
 			<strong>Usage:</strong> Display info about material
 		</div> #}
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item">
 			{% include "Elements/card/marks/"%}
 		</div>
 		<div class="__description">
-			<strong>Classes:</strong> .card .--marks <br>
+			<strong>Classes:</strong> .card .m--marks <br>
 			<strong>Blocks:</strong> - <br>
 			<strong>Dependencies:</strong> Modules/tooltip <br>
 			<strong>Usage:</strong> Display info about marks
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item">
 			{% include "Elements/card/file/"%}
 		</div>
 		<div class="__description">
-			<strong>Classes:</strong> .card .--file <br>
+			<strong>Classes:</strong> .card .m--file <br>
 			<strong>Blocks:</strong> - <br>
 			<strong>Dependencies:</strong> Downloadable file <br>
 			<strong>Usage:</strong> Display info about marks
@@ -105,33 +105,33 @@
 
 <section>
 	<h2>Buttons</h2>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item row">
 			{% include "Elements/button/" %}
-			{% include "Elements/button/" with class="--positive" %}
-			{% include "Elements/button/" with class="--negative" %}
+			{% include "Elements/button/" with class="m--positive" %}
+			{% include "Elements/button/" with class="m--negative" %}
 			{% include "Elements/button/" with disabled="disabled" %}
 		</div>
 		<div class="__description" tip="Yet useful">
 			<strong>Usage:</strong> Default button
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item row">
 			{% include "Elements/button/flat/" %}
-			{% include "Elements/button/flat/" with class="--positive" %}
-			{% include "Elements/button/flat/" with class="--negative" %}
+			{% include "Elements/button/flat/" with class="m--positive" %}
+			{% include "Elements/button/flat/" with class="m--negative" %}
 			{% include "Elements/button/flat/" with disabled="disabled" %}
 		</div>
 		<div class="__description">
 			<strong>Usage:</strong> If rising looks quite unestetic
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item row">
 			{% include "Elements/button/ghost/" %}
-			{% include "Elements/button/ghost/" with class="--positive" %}
-			{% include "Elements/button/ghost/" with class="--negative" %}
+			{% include "Elements/button/ghost/" with class="m--positive" %}
+			{% include "Elements/button/ghost/" with class="m--negative" %}
 			{% include "Elements/button/ghost/" with disabled="disabled" %}
 		</div>
 		<div class="__description">
@@ -142,28 +142,28 @@
 
 <section>
 	<h2>Inputs</h2>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item">
 			{% include "Elements/Inputs/text/" with placeholder="Main" %}
-			{% include "Elements/Inputs/text/" with placeholder="--valid" class="--valid" %}
-			{% include "Elements/Inputs/text/" with placeholder="--invalid" class="--invalid" %}
+			{% include "Elements/Inputs/text/" with placeholder="m--valid" class="m--valid" %}
+			{% include "Elements/Inputs/text/" with placeholder="m--invalid" class="m--invalid" %}
 			{% include "Elements/Inputs/text/" with placeholder="[disabled]" disabled="disabled" %}
 		</div>
 		<div class="__description">
 			<strong>Usage:</strong> Default text input
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item">
 			{%include "Elements/Inputs/checkbox/" with label="default" %}
-			{%include "Elements/Inputs/checkbox/" with label="--green" class="--green" %}
+			{%include "Elements/Inputs/checkbox/" with label="m--green" class="m--green" %}
 			{%include "Elements/Inputs/checkbox/" with label="disabled" disabled="disabled" %}
 		</div>
 		<div class="__description">
 			<strong>Usage:</strong> Multiple chices
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item">
 			{% include "Elements/Inputs/radio/" with label="default" name="sample_radio" %}
 
@@ -175,7 +175,7 @@
 			<strong>Usage:</strong> One choice
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal --colored-bg">
+	<div class="UI_kit-box m--horizontal m--colored-bg">
 		<div class="__item">
 			{% include "Elements/Inputs/text/Filled/" with placeholder="Filled" %}
 		</div>
@@ -183,7 +183,7 @@
 			<strong>Usage:</strong> Displayed on colored background
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal">
+	<div class="UI_kit-box m--horizontal">
 		<div class="__item">
 			{% include "Elements/Inputs/text/textarea/" with placeholder="Textarea" %}
 		</div>
@@ -191,8 +191,8 @@
 			<strong>Usage:</strong> Big amounts of text
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal card">
-		<div class="__item --flex">
+	<div class="UI_kit-box m--horizontal card">
+		<div class="__item m--flex">
 			{% include "Elements/Inputs/select/" %}
 			{% include "Elements/Inputs/select/" %}
 		</div>
@@ -200,8 +200,8 @@
 			<strong>Usage:</strong> More options then free space
 		</div>
 	</div>
-	<div class="UI_kit-box --horizontal card">
-		<div class="__item --flex">
+	<div class="UI_kit-box m--horizontal card">
+		<div class="__item m--flex">
 			{% include "Elements/Inputs/file/" %}
 		</div>
 		<div class="__description">

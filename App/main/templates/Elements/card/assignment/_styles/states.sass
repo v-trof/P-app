@@ -8,18 +8,18 @@
 
 $show: show_icon $time--m forwards
 
-.card.--assignment
+.card.m--assignment
 	.__icons
 		svg
 			display: none
 			opacity: 0
 			// transition: $time--m
-	&.--irrelevant
+	&.m--irrelevant
 		.__icons .__late
 			display: block
 			animation: $show
 
-	&.--done
+	&.m--done
 		.__icons 
 			.__done
 				display: block
@@ -27,7 +27,7 @@ $show: show_icon $time--m forwards
 			svg.__soon, svg.__late
 				display: none
 
-	&.--urgent
+	&.m--urgent
 		.__icons .__soon
 			display: block
 			animation: $show

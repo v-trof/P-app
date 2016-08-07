@@ -92,7 +92,7 @@ generate.data["answer--empty"] = {
 			}
 		},
 		build: function(value) {
-			return $("<div class='--empty answer--empty'>Добавьте сюда поле ответа</div>");
+			return $("<div class='m--empty answer--empty'>Добавьте сюда поле ответа</div>");
 		},
 		value_sample: {
 			text: "answer"
@@ -100,6 +100,7 @@ generate.data["answer--empty"] = {
 	},
 	edit: {}
 }
+
 generate.data["answer--radio"] = {
 	element: {
 		type: 'answer',
@@ -199,7 +200,7 @@ generate.data["answer--text"] = {
 		fill: function($element, answer) {
 			// console.log(answer);
 			$element.find('input').val(answer);
-			$element.find('label').addClass('--top');
+			$element.find('label').addClass('m--top');
 		},
 
 		getter: function($element, _action) {
@@ -293,7 +294,7 @@ generate.data["answer--textarea"]= {
 		fill: function($element, answer) {
 			console.log(answer);
 			$element.find('input').val(answer);
-			$element.find('label').addClass('--top');
+			$element.find('label').addClass('m--top');
 		},
 
 		value_sample: {
@@ -330,7 +331,7 @@ generate.data["question--empty"] = {
 			}
 		},
 		build: function(value) {
-			return $("<div class='--empty question--empty'>Добавьте сюда вопрос</div>");
+			return $("<div class='m--empty question--empty'>Добавьте сюда вопрос</div>");
 		},
 		value_sample: {
 			text: "Добавьте сюда вопрос"
@@ -338,14 +339,15 @@ generate.data["question--empty"] = {
 	},
 	edit: {}
 }
+
 generate.data["question--file"] = {
 	element: {
 		type: "question",
 		parse: function($original) {
 			return {
-				url: $original.find("a.--card").attr("d-href"),
+				url: $original.find("a.m--card").attr("d-href"),
 				class: "question--file",
-				id: $original.find("a.--card").attr("id"),
+				id: $original.find("a.m--card").attr("id"),
 				size: $original.find(".__size").text(),
 				name: $original.find(".__name").text(),
 				type: "question"
@@ -429,6 +431,7 @@ generate.data["question--file"] = {
 		}
 	}
 }
+
 generate.data["question--image"] = {
 	element: {
 		type: "question",
@@ -533,7 +536,7 @@ generate.data.shared.worth = {
             $('#max_mark').val(1);
           }
         }, 100);
-      $('#max_mark').parent().find('label').addClass('--top');
+      $('#max_mark').parent().find('label').addClass('m--top');
     },
     fill: function(value) {
       $('#max_mark').val(value);
@@ -552,7 +555,7 @@ generate.data.shared.assets.get_id = function() {
 
 generate.data.shared.catch_asset_file = function() {
 	generate.data.shared.file_changed = false;
-	$file_input = pull_put.ui.$.find(".input.--file");
+	$file_input = pull_put.ui.$.find(".input.m--file");
 
 	new_id = generate.data.shared.assets.get_id();
 
@@ -562,10 +565,11 @@ generate.data.shared.catch_asset_file = function() {
 		generate.data.shared.file_changed = true;
 	});
 }
+
 generate.data.shared.options = {
 	element: {
 		parse: function($original, type) {
-			var $items = $original.find(".--" + type);
+			var $items = $original.find(".m--" + type);
 			var values = [];
 			$items.each(function(index, el) {
 				values.push($(this).children("label").text());
@@ -593,7 +597,7 @@ generate.data.shared.options = {
 	edit: {
 		parse : function(type) {
 
-			var $items = $(".options-edit").find(".--"+type);
+			var $items = $(".options-edit").find(".m--"+type);
 			var answer = [];
 			var values = [];
 

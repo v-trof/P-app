@@ -31,7 +31,7 @@ function upload_source(source_id) {
 	})
 	.success(function() {
 		notification.show("success", "Источник загружен");
-		$("sources>.--empty").remove();
+		$("sources>.m--empty").remove();
 		popup.hide();
 		location.reload();
 	})

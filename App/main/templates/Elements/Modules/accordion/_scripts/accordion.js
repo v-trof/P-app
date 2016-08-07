@@ -1,22 +1,22 @@
 var accordion = (function() {
 	
-	toggle_template = '<button class="--ghost --icon --accordion-toggle">'
+	toggle_template = '<button class="m--ghost m--icon m--accordion-toggle">'
 		+'{% include "Elements/Icons/angle_down.svg" %}</button>';
 
 	function expand($element, $indicator) {
-		$element.children().removeClass('--accordion-hidden');
-		$element.children('.--accordion-toggle').first()
-			.removeClass('--accordion-minimized')
+		$element.children().removeClass('m--accordion-hidden');
+		$element.children('.m--accordion-toggle').first()
+			.removeClass('m--accordion-minimized')
 	}
 
 	function minimize($element, $indicator) {
-		$element.children().addClass('--accordion-hidden');
+		$element.children().addClass('m--accordion-hidden');
 		
-		$indicator.removeClass('--accordion-hidden');
+		$indicator.removeClass('m--accordion-hidden');
 
-		$element.children('.--accordion-toggle').first()
-			.removeClass('--accordion-hidden')
-			.addClass('--accordion-minimized');
+		$element.children('.m--accordion-toggle').first()
+			.removeClass('m--accordion-hidden')
+			.addClass('m--accordion-minimized');
 	}
 
 	exports = {
@@ -29,7 +29,7 @@ var accordion = (function() {
 			$toggle.css("top", $indicator.outerHeight()/2);
 
 			$toggle.click(function(event) {
-				if($(this).hasClass('--accordion-minimized')) {
+				if($(this).hasClass('m--accordion-minimized')) {
 					expand($element, $indicator);
 				} else {
 					minimize($element, $indicator);

@@ -1,6 +1,6 @@
 function show_active_test(id) {
-  $('.linkbox').find('.--active').removeClass('--active');
-  $('.linkbox').find('#'+id).addClass('--active');
+  $('.linkbox').find('.m--active').removeClass('m--active');
+  $('.linkbox').find('#'+id).addClass('m--active');
 
   //preview \ summary
   var $summary = $('.summary');

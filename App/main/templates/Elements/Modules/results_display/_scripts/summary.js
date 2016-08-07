@@ -3,9 +3,9 @@ Array.prototype.has = function(value) {
 }
 
 results_display.summary_template = function(index, value, quality) {
-	return '<div class="card --small sumfor_'
+	return '<div class="card m--small sumfor_'
 		+ index + ' row">'
-		+'<button class="__number --flat --' + quality + '">' 
+		+'<button class="__number m--flat m--' + quality + '">' 
 		+ index + '</button>'
 		+'<div class="__value">'+value+'</div></div>';
 }

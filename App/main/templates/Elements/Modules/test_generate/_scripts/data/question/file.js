@@ -3,9 +3,9 @@ generate.data["question--file"] = {
 		type: "question",
 		parse: function($original) {
 			return {
-				url: $original.find("a.--card").attr("d-href"),
+				url: $original.find("a.m--card").attr("d-href"),
 				class: "question--file",
-				id: $original.find("a.--card").attr("id"),
+				id: $original.find("a.m--card").attr("id"),
 				size: $original.find(".__size").text(),
 				name: $original.find(".__name").text(),
 				type: "question"

@@ -6,8 +6,8 @@ section_editor.start_section_editing = function($section) {
 
 	//start heading edition
 	$section.find(section_editor.heading_selector)
-		.addClass('--editable')
-		.addClass('--editing')
+		.addClass('m--editable')
+		.addClass('m--editing')
 		.attr('contenteditable', 'true')
 
 	//add button_delete
@@ -16,10 +16,10 @@ section_editor.start_section_editing = function($section) {
 		section_editor.check_empty(section_editor.$unordered)
 	})
 
-	$section.find('.--button-delete')
-		.addClass('--l-2')
-		.addClass('--top-centered')
-		.css('top', $section.find('.--accordion-toggle').css('top'))
+	$section.find('.m--button-delete')
+		.addClass('m--l-2')
+		.addClass('m--top-centered')
+		.css('top', $section.find('.m--accordion-toggle').css('top'))
 
 	//replace_tags
 	if(section_editor.replace) {
@@ -38,7 +38,7 @@ section_editor.start_section_editing = function($section) {
 
 	//pull_put things for items
 	$items.each(function(index, el) {
-		var was_unpublished = $(this).hasClass('--was-unpublished');
+		var was_unpublished = $(this).hasClass('m--was-unpublished');
 		//add pullers
 		console.log(this);
 		pull_put.puller.add(
@@ -62,7 +62,7 @@ section_editor.start_section_editing = function($section) {
 		}
 
 		pull_put.put_zone.add($(this), function(event, $this, $put) {
-			if($put.hasClass('--was-unpublished')) {
+			if($put.hasClass('m--was-unpublished')) {
 				console.log("WUNP", $this.parent() === section_editor.$unordered);
 				if(!was_unpublished) return;
 			}

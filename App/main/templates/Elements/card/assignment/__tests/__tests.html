@@ -3,7 +3,7 @@
 	<div>Тесты:</div>
 	<div class="__links">
 	{% for test in task.tests %}
-		<a href='/test/attempt/{{test.link}}' id='{{forloop.counter}}' class='--block {% if test.done %} --done {% endif %} --test {% if test.unfinished %} --unfinished {% endif %}'>
+		<a href='/test/attempt/{{test.link}}' id='{{forloop.counter}}' class='m--block {% if test.done %} m--done {% endif %} m--test {% if test.unfinished %} m--unfinished {% endif %}'>
 		{{test.title}}</a>{% if not forloop.last %},{% endif %}
 	{% endfor %}
 	</div>

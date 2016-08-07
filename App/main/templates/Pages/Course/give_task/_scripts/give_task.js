@@ -14,7 +14,7 @@ as_g.current_type = ""
 as_g.original = $()
 
 as_g.card_template = function(el) { 
-	return '<div class="card --small" href="'+el.link+'">'+el.title+'</div>'
+	return '<div class="card m--small" href="'+el.link+'">'+el.title+'</div>'
 }
 
 as_g.material_list = {{course.materials|safe}}
@@ -65,11 +65,11 @@ $(document).ready(function() {
 		as_g.show_list("material");
 	});
 
-	$("#assignment--new__materials").on("click", ".card.--small", function(event) {
+	$("#assignment--new__materials").on("click", ".card.m--small", function(event) {
 			as_g.show_list("material", $(this))
 	});
 
-	$("#assignment--new__tests").on("click", ".card.--small", function(event) {
+	$("#assignment--new__tests").on("click", ".card.m--small", function(event) {
 			as_g.show_list("test", $(this))
 	});
 	setTimeout(function() {
@@ -90,11 +90,11 @@ $("#assignment--new__add_traditional").click(function(event) {
 		popup.hide()
 	})
 });
-$("#assignment--new__traditional").on("click", ".card.--small", function(event) {
+$("#assignment--new__traditional").on("click", ".card.m--small", function(event) {
 	as_g.original = $(this)
 	popup.show('{% include "Pages/Course/give_task/_popup_texts/add_traditional/exports.html" %}');
 	$("#new_el_value").html(as_g.original.html()).focus();
-	popup.$.find(".row").append('<button id="delete_el" class="button --ghost --negative">Удалить</button>')
+	popup.$.find(".row").append('<button id="delete_el" class="button m--ghost m--negative">Удалить</button>')
 	$("#add_el").click(function(event) {
 		// console.log(el_data)
 		popup.hide()

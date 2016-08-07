@@ -1,6 +1,6 @@
 pull_put.puller = (function() {
 
-	$placeholder = $("<div class='--pull_put_empty'></div>")
+	$placeholder = $("<div class='m--pull_put_empty'></div>")
 
 	function replace($element) {
 		if(pull_put.ui.element) {
@@ -34,7 +34,7 @@ pull_put.puller = (function() {
 			
 			$element = $($element).first(); //fault-tolerance
 			
-			$element.addClass('--pullable');
+			$element.addClass('m--pullable');
 
 			$element.click(function(event) {
 				if( ! pull_put.is_pulled) {

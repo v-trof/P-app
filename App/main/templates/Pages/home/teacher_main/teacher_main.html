@@ -4,7 +4,7 @@
 	<div class="subject">
 		<h3>{{subject}}</h3>
 		{% for course in value %}
-			<a class="--card" href='course/{{course.object.id}}'>{% include "Elements/card/course/" with course=course.object 
+			<a class="m--card" href='course/{{course.object.id}}'>{% include "Elements/card/course/" with course=course.object 
 			materials_number=course.materials_number tests_number=course.tests_number %}</a>
 		{% endfor %}
 	</div>
@@ -20,6 +20,6 @@
 	{% endfor %}
 </section>
 
-<section class="--learning">
+<section class="m--learning">
 	{% include 'Pages/home/main/exports.html' %}
 </section>
