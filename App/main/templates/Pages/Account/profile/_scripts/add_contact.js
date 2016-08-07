@@ -21,20 +21,20 @@ $(document).ready(function() {
 					});
 				} else {
 					$.ajax({
-			        type:"POST",
-			        url:"/func/create_contact/",
-			        data: {
-			          'contact_type': popup.$.find(".__contact-type").val(),
-			          'csrfmiddlewaretoken': '{{ csrf_token }}',
-			          'contact_info': popup.$.find(".__contact-value").val()
-			            },
-			        success: function() {
-	                  notification.show('success','Контакт добавлен' );
-	                  location.reload();
-	                }
-		        });
+		        type:"POST",
+		        url:"/func/create_contact/",
+		        data: {
+		          'contact_type': popup.$.find(".__contact-type").val(),
+		          'csrfmiddlewaretoken': '{{ csrf_token }}',
+		          'contact_info': popup.$.find(".__contact-value").val()
+		            },
+		        success: function() {
+                  notification.show('success','Контакт добавлен' );
+                  location.reload();
+                }
+	        });
 					$("#contacts").append($new_contact);
-					popup.hide();
+					popup.hide();	
 				}
 
 				});
