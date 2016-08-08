@@ -1,12 +1,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style id="svgfix">
+  * {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -ms-transition: none !important;
+    -o-transition: none !important;
+  }
   svg, .m--hidden {
     display: none;
   }
 </style>
 
 <script>
+
   window.onload = function() {
-    document.getElementById("svgfix").innerHTML = '';
+    console.log('load');
+    setTimeout(function() {
+      document.getElementById("svgfix").innerHTML = '';
+    }, 100);
   };
 </script>
