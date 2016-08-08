@@ -19,6 +19,12 @@ var tooltip = (function() {
 					(tooltip_rect.width/2 - element_rect.width/2) + 'px',
 				class: 'm--top'
 			},
+			top_right: {
+				top: element_rect.top - tooltip_rect.height + 'px',
+				left: element_rect.left + element_rect.width - 
+					tooltip_rect.width*2 + 'px',
+				class: 'm--top'
+			},
 			right: {
 				height: element_rect.height + 'px',
 				top: element_rect.top + 'px',
@@ -56,28 +62,55 @@ var tooltip = (function() {
 
 		return exports;
 	}
-	function prevent_edge_breaking() {
-		tooltip_rect = $tooltip[0].getBoundingClientRect();
+	function prevent_edge_breaking(element, position) {
+		var re_position = false;
 
-		if( $tooltip.css('left')[0]=='-') {
-			$tooltip.css('left', '0');
+		var tooltip_rect = $tooltip[0].getBoundingClientRect();
+
+		if($tooltip.css('left')[0]=='-') {
+			if(position.class == 'm--left') {
+				re_position = directions(element).top_right;
+			} else {
+				$tooltip.css('left', 0);
+			}
 		}
+
 		if( $tooltip.css('top')[0]=='-') {
-			$tooltip.css('top', '0');
+			if(position.class == 'm--top') {
+				re_position = directions(element).bottom;
+			} else {
+				$tooltip.css('top', 0);
+			}
 		}
 		
 		if(tooltip_rect.top + tooltip_rect.height > $(window).height()) {
-			$tooltip.css({
-				'bottom': 0,
-				'top': 'auto',
-			});
+			if(position.class == 'm--bottom') {
+				re_position = directions(element).top;
+			} else {
+				$tooltip.css({
+					'bottom': 0,
+					'top': 'auto',
+				});
+			}
 		}
 
 		if(tooltip_rect.left + tooltip_rect.width > $(window).width()) {
-			$tooltip.css({
-				'right': 0,
-				'left': 'auto',
-			});
+			if(position.class == 'm--right') {
+				re_position = directions(element).top_right;
+			} else {
+				$tooltip.css({
+					'right': 0,
+					'left': 'auto',
+				});
+			}
+		}
+
+		if(re_position) {
+			$tooltip.css(re_position);
+			
+			reset_class();
+
+			$tooltip.addClass(re_position.class);
 		}
 	}
 
@@ -90,6 +123,7 @@ var tooltip = (function() {
 
 	exports = {
 		$: $tooltip,
+		input_made: false,
 		show: function(element, content, direction) {
 			var position;
 
@@ -104,9 +138,9 @@ var tooltip = (function() {
 			
 			reset_class();
 
-			$tooltip.addClass(position.class)
+			$tooltip.addClass(position.class);
 
-			prevent_edge_breaking();
+			prevent_edge_breaking(element, position);
 
 			$tooltip.removeClass('m--hidden');
 		},
@@ -122,15 +156,22 @@ $(document).ready(function() {
 	$('body').append(tooltip.$);
 	$('body').on({
 		focus: function() {
+			tooltip.input_made = true;
 			tooltip.show(this,  $(this).attr('tip'));
 		},
 		mouseenter: function() {
-			tooltip.show(this,  $(this).attr('tip'));
+			if( ! tooltip.input_made) {
+				tooltip.show(this,  $(this).attr('tip'));
+			}
 		},
 		mouseleave: function() {
-			tooltip.hide();
+			if( ! tooltip.input_made) {
+				console.log('tooltip, leave');
+				tooltip.hide();
+			}
 		},
 		blur: function() {
+			tooltip.input_made = false;
 			tooltip.hide();
 		}
 	}, '[tip]');

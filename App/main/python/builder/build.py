@@ -50,12 +50,12 @@ def template(dependencies, page_path):
 
 		async_attr = "if(media!='all')media='all'"
 
-		if critical:
-			tag = '<link rel="stylesheet" href="' + style + \
+		# if critical:
+		tag = '<link rel="stylesheet" href="' + style + \
 			'"> \n'
-		else:
-			tag= '<link rel="stylesheet" href="' + style + \
-			'" media="none" onload="' + async_attr + '"> \n'
+		# else:
+		# 	tag= '<link rel="stylesheet" href="' + style + \
+		# 	'" media="none" onload="' + async_attr + '"> \n'
 
 		return tag
 

@@ -12,31 +12,31 @@
 </section>
   <div class="_styles">
   {% load staticfiles %}<link rel="stylesheet" href="{% static "Page_templates/default/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/Layout/request/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
-<link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/user/_styles/user.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}" media="none" onload="if(media!='all')media='all'"> 
-<link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}" media="none" onload="if(media!='all')media='all'"> 
-<link rel="stylesheet" href="{% static "Elements/Modules/tooltip/_styles/tooltip.css" %}" media="none" onload="if(media!='all')media='all'"> 
-<link rel="stylesheet" href="{% static "Elements/Modules/ripple/_styles/ripple.css" %}" media="none" onload="if(media!='all')media='all'"> 
-<link rel="stylesheet" href="{% static "Elements/Modules/results_display/_styles/css/color_quality" %}" media="none" onload="if(media!='all')media='all'"> 
-<link rel="stylesheet" href="{% static "Elements/Modules/notification/_styles/notification.css" %}" media="none" onload="if(media!='all')media='all'"> 
-<link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}" media="none" onload="if(media!='all')media='all'"> 
-<link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}" media="none" onload="if(media!='all')media='all'"> 
+<link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Layout/request/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/ripple/_styles/ripple.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/notification/_styles/notification.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/results_display/_styles/css/color_quality" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/tooltip/_styles/tooltip.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
 
   </div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script> 
 		{% include "Elements/Modules/notification/_scripts/core.js" %} 
-		{% include "Elements/Modules/notification/_scripts/deffered.js" %} 
 		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
+		{% include "Elements/Modules/notification/_scripts/deffered.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
 		{% include "Pages/Course/updates/requested/_scripts/request.js" %} 
-		{% include "Elements/Layout/request/_scripts/request.js" %} 
 		{% include "Elements/Layout/header/_scripts/header.js" %} 
+		{% include "Elements/Layout/request/_scripts/request.js" %} 
 	</script>
 </body>
 </html>
