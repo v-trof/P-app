@@ -8,10 +8,9 @@ function request_email_change(email) {
 			'csrfmiddlewaretoken': '{{ csrf_token }}',
 			'new_email': email
 			},
-		success: function(response) {
-			if (response=="success")
-				notification.show('success','Email изменен');
-			else notification.show('error','Email неверный');
+		success: function(data) {
+			console.log(data)
+			notification.show(data["type"], data["message"]);
 		},
 		error: function(data) {
 			notification.show('error', data);

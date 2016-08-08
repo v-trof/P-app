@@ -50,8 +50,8 @@ def delete(request):
 	if request.method == 'POST':
 		course_id = request.POST.get("course_id", None)
 		test_id = request.POST.get("test_id", None)
-		response = Test.delete(course_id=course_id, test_id=test_id)
-		return HttpResponse(response)
+		message = Test.delete(course_id=course_id, test_id=test_id)
+		return HttpResponse(json.dumps(message), content_type="application/json")
 
 
 def save(request):
@@ -60,9 +60,9 @@ def save(request):
 		json_file = request.POST.get("json_file", None)
 		course_id = request.POST.get("course_id", None)
 		test_id = request.POST.get("test_id", None)
-		response = Test.save(
+		message = Test.save(
 			json_file=json_file, course_id=course_id, test_id=test_id, user=request.user)
-		return HttpResponse(response)
+		return HttpResponse(json.dumps(message), content_type="application/json")
 
 
 def load(request):
@@ -101,9 +101,9 @@ def publish(request):
 			elif setting.startswith('autocorrect_'):
 				if request.POST[setting] == "true":
 					allowed_mistakes.append(setting[12:])
-		response = Test.publish(course_id=course_id, test_id=test_id,
+		message = Test.publish(course_id=course_id, test_id=test_id,
 								allowed_mistakes=allowed_mistakes, mark_setting=mark_setting, section=section)
-		return HttpResponse(response)
+		return HttpResponse(json.dumps(message), content_type="application/json")
 
 
 def unpublish(request):
@@ -111,8 +111,8 @@ def unpublish(request):
 	if request.method == 'POST':
 		course_id = request.POST.get("course_id", None)
 		test_id = request.POST.get("test_id", None)
-		response = Test.unpublish(course_id=course_id, test_id=test_id)
-		return HttpResponse(response)
+		message = Test.unpublish(course_id=course_id, test_id=test_id)
+		return HttpResponse(json.dumps(message), content_type="application/json")
 
 
 def share(request):
@@ -160,9 +160,9 @@ def attempt_save(request):
 		question_id = int(request.POST.get("question", None))
 		course_id = request.POST.get("course_id", None)
 		answer = request.POST.get("answer", None)
-		Test.attempt_save(test_id=test_id, question_id=question_id,
+		message=Test.attempt_save(test_id=test_id, question_id=question_id,
 						  course_id=course_id, answer=answer, user=request.user)
-		return HttpResponse("ok")
+		return HttpResponse(json.dumps(message), content_type="application/json")
 
 
 def change_answer_status(request):
@@ -172,9 +172,9 @@ def change_answer_status(request):
 		course_id = request.POST.get("course_id", None)
 		user_id = request.POST.get("user_id", None)
 		question_result = request.POST.get("question_status", None)
-		response = Test.change_answer_status(
+		message = Test.change_answer_status(
 			user_id=user_id, test_id=test_id, course_id=course_id, question_id=question_id, question_result=question_result)
-		return HttpResponse(response)
+		return HttpResponse(json.dumps(message), content_type="application/json")
 
 def change_score(request):
 	if request.method == 'POST':
@@ -225,9 +225,9 @@ def attempt_check(request):
 	if request.method == 'POST':
 		test_id = request.POST.get("test_id", None)
 		course_id = request.POST.get("course_id", None)
-		response = Test.attempt_check(
+		message = Test.attempt_check(
 			test_id=test_id, course_id=course_id, user=request.user)
-		return HttpResponse(response)
+		return HttpResponse(json.dumps(message), content_type="application/json")
 
 
 def give_mark(request, percentage, course_id, test_id):

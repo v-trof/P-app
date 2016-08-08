@@ -33,11 +33,12 @@ class Main_group():
 		if request.user.is_anonymous():
 			return render(request, 'Pages/home/exports.html')
 		context = {}
+		user_settings={}
 		if os.path.isfile('main/files/json/users/' + str(request.user.id) + '/settings.json'):
 			with io.open('main/files/json/users/' + str(request.user.id) + '/settings.json', 'r', encoding='utf8') as settings_file:
 				user_settings = json.load(settings_file)
 		else: user_settings["assignments"]["sort_method"] == "by_date"
-		context["subjects"] = {"Гуманитарные науки":["Литература","История","Обществознание"],"Языки":["Русский язык","Английский язык","Немецкий язык","Французский язык","Испанский язык"],"Точные науки":["Математика","Информатика"], "Естественные":["Физика","Химия","Биология","География"]}
+		context["subjects"] = {"Гуманитарные науки":["Литература","История","Обществознание"],"Языки":["Русский язык","Английский язык","Немецкий язык","Французский язык","Испанский язык"],"Точные науки":["Математика","Информатика"], "Естественные науки":["Физика","Химия","Биология","География"]}
 		if request.user.participation_list:
 			context["marks"] = User.objects.load_marks(
 				string_array=request.user.participation_list, user_id=request.user.id)
@@ -85,7 +86,8 @@ class Auth_group():
 		if not request.user.is_anonymous():
 			logout(request)
 		if Course.objects.filter(id=course_id).exists():
-			return render(request, 'Pages/Account/registration/exports.html', {"course": Course.objects.get(id=course_id)})
+			code=request.GET.get('code',None)
+			return render(request, 'Pages/Account/registration/exports.html', {"course": Course.objects.get(id=course_id),"code":code})
 		else:
 			return render(request, 'Pages/Account/registration/exports.html', {"notifications": [{"type": "error", "message": "Курс не существует"}]})
 
@@ -127,7 +129,7 @@ class Course_group():
 		sections = Course.objects.get_sections(course_id=str(course.id), user=request.user)
 		assignments = Course.objects.get_assignments(
 			user=request.user, course=course)
-		return render(request, 'Pages/Course/main/exports.html', {"sections": sections, "sources": sources, "is_participant": is_participant, "announcements": announcements, "course": course, "assignments": assignments,
+		return render(request, 'Pages/Course/main/exports.html', {"user_status":Course.objects.load_user_status(user=request.user, course=course),"sections": sections, "sources": sources, "is_participant": is_participant, "announcements": announcements, "course": course, "assignments": assignments,
 																  "breadcrumbs": [{
 																	  "href": "#",
 																	  "link": course.name
@@ -173,7 +175,7 @@ class Course_group():
 			return redirect('/course/' + course_id + '/')
 		course = Course.objects.get(id=course_id)
 		context = {}
-		context["subjects"] = {"Гуманитарные науки":["Литература","История","Обществознание"],"Языки":["Русский язык","Английский язык","Немецкий язык","Французский язык","Испанский язык"],"Точные науки":["Математика","Информатика"], "Естественные":["Физика","Химия","Биология","География"]}
+		context["subjects"] = {"Гуманитарные науки":["Литература","История","Обществознание"],"Языки":["Русский язык","Английский язык","Немецкий язык","Французский язык","Испанский язык"],"Точные науки":["Математика","Информатика"], "Естественные науки":["Физика","Химия","Биология","География"]}
 		context["course"] = course
 		context["assignments"] = Course.objects.get_assignments(
 			user=request.user, course=course)

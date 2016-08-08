@@ -1,4 +1,4 @@
-{% if request.user.id == course.creator %}
+{% if user_status == "administrator" or user_status == "teacher" %}
 	{% include '#&/linkbox/teacher/exports.html' %}
 {% else %}
 	{% include '#&/linkbox/student/exports.html' %}

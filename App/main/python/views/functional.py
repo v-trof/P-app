@@ -38,22 +38,23 @@ class User_views():
             password = request.POST['password']
             message = User.objects.login(
                 request=request, email=email, password=password)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def login_with_reg(request, course_id):
         if request.method == 'POST':
             email = request.POST['email']
             password = request.POST['password']
+            code=request.GET.get('code',None)
             message = User.objects.login(
                 request=request, email=email, password=password)
-            Course_views.register(request=request, course_id=course_id)
-            return HttpResponse(message)
+            Course_views.register(request=request, course_id=course_id, code=code)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def change_permission_level(request):
         if request.method == 'POST':
             message = User.objects.change_permission_level(
                 user=request.user, permission_level=request.POST['permission_level'])
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def logout(request):
         logout(request)
@@ -63,19 +64,20 @@ class User_views():
         if request.method == 'POST':
             course_id = request.POST.get('course_id', False)
             email = request.POST['email']
+            code=request.POST.get('code',None)
             is_teacher = request.POST.get('is_teacher', False)
             password = request.POST['password']
             name_last_name = request.POST['name_last_name']
-            message = User.objects.reg(request=request, course_id=course_id, email=email,
+            message = User.objects.reg(request=request, code=code, course_id=course_id, email=email,
                                        is_teacher=is_teacher, password=password, name_last_name=name_last_name)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def change_data(request):
         if request.method == 'POST':
             data_list = json.loads(request.POST["data_list"])
             message = User.objects.change_profile_data(
                 user=request.user, data_list=data_list)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def create_contact(request):
         if request.method == 'POST':
@@ -83,7 +85,7 @@ class User_views():
             contact_info = request.POST['contact_info']
             message = User.objects.create_contact(
                 contact_type=contact_type, user=request.user, contact_info=contact_info)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def delete_contact(request):
         if request.method == 'POST':
@@ -104,10 +106,9 @@ class User_views():
         if request.method == 'POST':
             new_email = request.POST['new_email']
             if User.objects.change_email(user=request.user, new_email=new_email):
-                request.session['notifications']=[{"message": "Электронная почта успешно изменена"}]
-                return HttpResponse("success")
+                return HttpResponse(json.dumps({"type":"success","message":"Письмо для подтверждения отправлено вам на новую почту"}), content_type="application/json")
             else:
-                return HttpResponse("Email занят")
+                return HttpResponse(json.dumps({"type":"error","message":"Email занят"}), content_type="application/json")
 
     def approve_email(request):
         if request.method == 'POST':
@@ -168,7 +169,7 @@ class Course_views():
             is_closed = request.POST.get('is_closed', False)
             message = Course.objects.edit(
                 name=name, subject=subject, course=course, is_closed=is_closed)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
         else:
             return HttpResponse('Нет полномочий')
 
@@ -200,7 +201,7 @@ class Course_views():
             course_id = request.POST.get("course_id", None)
             message = Course.objects.edit_source(
                 link=link, name=name, size=size, course_id=course_id, source_id=source_id, user=request.user)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def delete_source(request):
         if request.method == "POST":
@@ -208,7 +209,7 @@ class Course_views():
             course_id = request.POST.get("course_id", None)
             message = Course.objects.delete_source(
                 course_id=course_id, source_id=source_id)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def add_section(request):
         if request.method == "POST":
@@ -217,7 +218,7 @@ class Course_views():
             course_id = request.POST.get("course_id", None)
             message = Course.objects.add_section(
                 section=section, course_id=course_id, type=type)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def edit_sections(request):
         if request.method == "POST":
@@ -225,7 +226,7 @@ class Course_views():
             course_id = request.POST.get("course_id", None)
             message = Course.objects.edit_sections(
                 sections=sections, course_id=course_id)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def add_announcement(request):
         if request.method == "POST":
@@ -244,7 +245,7 @@ class Course_views():
             course_id = request.POST.get("course_id", None)
             message = Course.objects.edit_announcement(
                 text=text, heading=heading, course_id=course_id, announcement_id=announcement_id, user=request.user)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def delete_announcement(request):
         if request.method == "POST":
@@ -261,7 +262,7 @@ class Course_views():
             course = Course.objects.get(id=request.POST.get("course_id", None))
             message = Course.objects.edit_groups(
                 course=course, groups_data=groups_data, renames=renames)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def invite_students(request):
         if request.method == 'POST':
@@ -270,7 +271,7 @@ class Course_views():
             course = Course.objects.get(id=request.POST.get('course_id', None))
             message = Course.objects.invite_students(
                 email_list=email_list, group=group, course=course, user=request.user)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def invite_teacher(request):
         if request.method == 'POST':
@@ -278,13 +279,14 @@ class Course_views():
             course = Course.objects.get(id=request.POST.get('course_id', None))
             message = Course.objects.invite_teacher(
                 user=request.user, course=course, email=email)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def register(request, course_id):
         if request.user.is_anonymous():
             return redirect('/login/' + course_id)
+        code=request.GET.get('code',None)
         course = Course.objects.get(id=course_id)
-        message = Course.objects.reg_user(user=request.user, course=course)
+        message = Course.objects.reg_user(user=request.user, course=course, code=code)
         request.session['notifications']=message
         return redirect('/course/' + str(course_id) + '/')
 
@@ -305,7 +307,7 @@ class Course_views():
             course_id = request.POST.get('course_id', None)
             message = Course.objects.accept_request(
                 user=user, course_id=course_id)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def decline_request(request):
         if request.method == 'POST':
@@ -314,7 +316,7 @@ class Course_views():
             course_id = request.POST.get('course_id', None)
             message = Course.objects.decline_request(
                 user=user, course_id=course_id)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def create_assignment(request):
         if request.method == 'POST':
@@ -326,7 +328,7 @@ class Course_views():
             due_date = request.POST.get('due_date', None)
             message = Course.objects.create_assignment(course_id=course_id, test_list=test_list, group_list=group_list,
                                                        material_list=material_list, traditionals_list=traditionals_list, due_date=due_date)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def edit_assignment(request):
         if request.method == 'POST':
@@ -339,7 +341,7 @@ class Course_views():
             due_date = request.POST.get('due_date', None)
             message = Course.objects.edit_assignment(course_id=course_id, assignment_id=assignment_id, test_list=test_list, group_list=group_list,
                                                      material_list=material_list, traditionals_list=traditionals_list, due_date=due_date)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def delete_assignment(request):
         if request.method == 'POST':
@@ -347,7 +349,7 @@ class Course_views():
             assignment_id = request.POST.get("assignment_id", None)
             message = Course.objects.delete_assignment(
                 course_id=course_id, assignment_id=assignment_id)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
 
 class Task_views():
@@ -359,7 +361,7 @@ class Task_views():
             course_id = int(request.POST.get("course_id", None))
             message = Course.objects.task_set_done(
                 assignment_id=assignment_id, traditional_id=traditional_id, course_id=course_id, user=request.user)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def set_undone(request):
         if request.method == "POST":
@@ -368,14 +370,14 @@ class Task_views():
             course_id = int(request.POST.get("course_id", None))
             message = Course.objects.task_set_undone(
                 assignment_id=assignment_id, traditional_id=traditional_id, course_id=course_id, user=request.user)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
 
 def get_group_list(request, course_id=None):
     if request.method:
         course = Course.objects.get(id=course_id)
         message = Course.objects.get_group_list(course=course)
-        return HttpResponse(message)
+        return HttpResponse(json.dumps(message), content_type="application/json")
 
 
 def upload_file(request):

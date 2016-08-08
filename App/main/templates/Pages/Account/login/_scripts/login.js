@@ -10,13 +10,13 @@ $('#login').click(function() {
 			          'csrfmiddlewaretoken' : '{{ csrf_token }}'
 			            },
 			        success: function(response) {
-			                  if (response == "success")
+			                  if (response["type"] == "success")
 			                  {
 			                  	window.location.href='/'
 			                  }
 			                  else
 			                  {
-			                  	notification.show('error',response);
+			                  	notification.show('error',response["message"]);
 			                  }
 			                               }
 			            });

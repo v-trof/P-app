@@ -1,6 +1,6 @@
 <section class="students">
 	<h2>Ученики</h2>
-		{% if course.is_closed and course_data.requests|length > 0 %}
+		{% if course.is_closed and course_data.requests|length > 0 and course_data.user_status == "teacher" or course_data.user_status == "administrator"%}
 			<h3>Заявки</h3>
 			{% for user in course_data.requests %}
 				{% include "Elements/card/user/extended/" with
