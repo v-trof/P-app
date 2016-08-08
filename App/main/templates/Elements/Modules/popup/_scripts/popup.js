@@ -5,6 +5,7 @@ var popup = (function() {
 		show: function(content, _callback, css) {
 			$popup.find(".__content").html(content);
 			$popup.removeClass('m--hidden');
+			$popup.removeClass('m--hiding');
 			
 			$popup.find(".m--select").each(function(index, el) {
 				add_menu_caller(this);
@@ -35,9 +36,8 @@ var popup = (function() {
 			}
 
 			setTimeout(function() {
-				$popup.removeClass('m--hiding');
 				$popup.addClass('m--hidden');
-			}, 150);
+			}, 300);
 		}
 	}
 	return exports;

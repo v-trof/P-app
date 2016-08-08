@@ -14,9 +14,13 @@ $(document).ready(function() {
 					'heading': new_heading,
 					'course_id': "{{course.id}}",
 				},
-				success: function(response) {
+				 success: function(response) {
+            if(response && response["type"]) {
+              notification.show(response["type"], response["message"]);
+            } else {
+							notification.show('success','Объявление добавлено');
+						}
 					popup.hide();
-					notification.show('success','Объявление добавлено');
 					if($(".announcements .card").length === 0) {
 						$(".announcements").html($(".announcements h3"));
 					}

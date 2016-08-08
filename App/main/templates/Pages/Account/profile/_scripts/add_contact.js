@@ -21,17 +21,21 @@ $(document).ready(function() {
 					});
 				} else {
 					$.ajax({
-		        type:"POST",
-		        url:"/func/create_contact/",
+		        type: "POST",
+		        url: "/func/create_contact/",
 		        data: {
 		          'contact_type': popup.$.find(".__contact-type").val(),
 		          'csrfmiddlewaretoken': '{{ csrf_token }}',
 		          'contact_info': popup.$.find(".__contact-value").val()
-		            },
-		        success: function() {
-                  notification.show('success','Контакт добавлен' );
-                  location.reload();
-                }
+		        },
+		        success: function(response) {
+		        	if(response && response["type"]) {
+		        		notification.show(response["type"], response["message"]);
+		        	}	else {
+	              notification.show('success','Контакт добавлен' );
+		        	}		        	
+              location.reload();
+            }
 	        });
 					$("#contacts").append($new_contact);
 					popup.hide();	

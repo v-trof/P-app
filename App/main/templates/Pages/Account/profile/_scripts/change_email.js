@@ -8,9 +8,9 @@ function request_email_change(email) {
 			'csrfmiddlewaretoken': '{{ csrf_token }}',
 			'new_email': email
 			},
-		success: function(data) {
-			console.log(data)
-			notification.show(data["type"], data["message"]);
+		success: function(response) {
+			console.log(response)
+			notification.show(response["type"], response["message"]);
 		},
 		error: function(data) {
 			notification.show('error', data);

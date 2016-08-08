@@ -50,9 +50,16 @@ $(document).ready(function() {
 				'csrfmiddlewaretoken': '{{ csrf_token }}',
 				'course_id': "{{course.id}}"
 			},
-			success: function() {
-				notification.show('success', 'Секции курса изменены');
-				popup.hide();
+			 success: function(response) {
+        if(response && response["type"]) {
+        	if(response.type == "success") {
+        		popup.hide();
+        	}
+          notification.show(response["type"], response["message"]);
+        } else {
+					popup.hide();
+					notification.show('success', 'Секции курса изменены');
+				}
 			}
 		});
 	}

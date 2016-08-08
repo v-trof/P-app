@@ -41,8 +41,12 @@ var send_changes = function() {
 			'course_id': "{{course.id}}",
 		   'renames':JSON.stringify(renames)
 		  },
-		success: function() {
-		  notification.show('success', 'Группы изменены' );
+		 success: function(response) {
+      if(response && response["type"]) {
+          notification.show(response["type"], response["message"]);
+      } else {
+			  notification.show('success', 'Группы изменены' );
+			}
 		  $('#groups_content').load('../groups_content/');
 		}
 	});
@@ -70,6 +74,9 @@ section_editor.init({
 				renames[prev_heading]=$(this).html();
 			});
 		});
+	},
+	pull: {
+		actions: ["delete"]	
 	}
 	});
 {% endif %}

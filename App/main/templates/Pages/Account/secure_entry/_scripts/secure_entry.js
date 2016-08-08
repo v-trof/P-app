@@ -12,17 +12,14 @@ $('#confirm').click(function() {
 					'csrfmiddlewaretoken' : '{{ csrf_token }}'
 						},
 					success: function(response) {
-							if (response == "success")
-							{
-								notification.show('success','Email успешно изменен');
+							notification.show(response["type"], response["message"]);
+							if (response["type"] == "success") {
 								window.location.href = '/';
-							}
-							else
-							{
+							}	else {
 								notification.show('error',response);
 							}
-										}
-						});
+					}
+				});
 		{% else %}
 				$.ajax({
 					type:"POST",
@@ -35,16 +32,13 @@ $('#confirm').click(function() {
 					'csrfmiddlewaretoken' : '{{ csrf_token }}'
 						},
 					success: function(response) {
-							if (response == "success")
-							{
-								notification.show('success','Пароль успешно изменен');
+							notification.show(response["type"], response["message"]);
+							if (response["type"] == "success") {
 								window.location.href = '/';
-							}
-							else
-							{
+							}	else {
 								notification.show('error',response);
 							}
-										}
+					}
 						});
 		{% endif %}
 		});

@@ -8,10 +8,14 @@ $( "#button_accept" ).click(function() {
 			   'csrfmiddlewaretoken': '{{ csrf_token }}',
 			   'course_id': "{{course.id}}"
 			  },
-		success: function() {
-			  notification.show('success', 'Заявка принята' );
-			  $("#create_group").hide();
-			   }
+		 success: function(response) {
+      if(response && response["type"]) {
+        notification.show(response["type"], response["message"]);
+      } else {
+				notification.show('success', 'Заявка принята' );
+			}
+		  $("#create_group").hide();
+		}
 	});
 	$("#create_group").hide();
 });
@@ -24,9 +28,13 @@ $( "#button_decline" ).click(function() {
 			   'csrfmiddlewaretoken': '{{ csrf_token }}',
 			   'course_id': "{{course.id}}",
 			  },
-		success: function() {
+		success: function(response) {
+      if(response && response["type"]) {
+        notification.show(response["type"], response["message"]);
+      } else {
 			  notification.show('success', 'Заявка отклонена' );
-			  $("#create_group").hide();
-			   }
+			}
+		  $("#create_group").hide();
+		}
 	});
 });

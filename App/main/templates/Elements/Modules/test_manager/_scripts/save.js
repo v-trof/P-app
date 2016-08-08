@@ -22,8 +22,8 @@ test_manager.upload_test = function(test_packed) {
 		data: formData,
 		processData: false,
 		contentType: false,
-		success: function(data) {
-			notification.show('success', data);
+		success: function(response) {
+			notification.show(response["type"], response["message"]);
 			{% if type == 'test' %}	
 				window.history.pushState('Test {{test.id}}', 'Test {{test.id}}', '/test/edit/?course_id={{course.id}}&test_id={{test.id}}');
 			{% else %}

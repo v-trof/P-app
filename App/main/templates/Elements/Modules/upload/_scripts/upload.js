@@ -1,4 +1,4 @@
-function upload(formData, url, success) {
+function upload(formData, url, _callback) {
     formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
     
     if(typeof success === "undefined") {
@@ -10,10 +10,12 @@ function upload(formData, url, success) {
         data: formData,
         processData: false,
         contentType: false,
-        success: function(data) {
-            notification.show('success', success);
+        success: function(response) {
+            _callback(response);
+            // notification.show(response["type"], response["message"]);
         },
-        error: function() {
+        error: function(response) {
+            _callback(response);
             notification.show('error', "Произошла ошибка");
         },
     });

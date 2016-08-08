@@ -11,7 +11,12 @@ $(document).ready(function() {
 		var file = e.target.files[0];
 	    var formData = new FormData();
 	    formData.append('new_avatar', file);
-			upload(formData, "/func/upload_avatar/", "Изображение профиля изменено");
+			upload(
+				formData,
+				"/func/upload_avatar/",
+				function(response) {
+					$(".__user-avatar, .__avatar").attr('src', response);
+			});
 	});
 });
 	

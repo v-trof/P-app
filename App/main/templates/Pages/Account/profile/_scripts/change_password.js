@@ -9,12 +9,10 @@ $(document).ready(function() {
 			'email': '{{request.user.username}}'
 			},
 		success: function(response) {
-			if (response=="success")
-				notification.show('success','Ссылка для подтверждения смены пароля отправлена вам на почту');
-			else notification.show('error','Произошла ошибка');
+			notification.show(response["type"], response["message"]);
 		},
 		error: function(data) {
-			notification.show('error', data);
+			notification.show('error', 'Произошла ошибка');
 		}
 	});
 });

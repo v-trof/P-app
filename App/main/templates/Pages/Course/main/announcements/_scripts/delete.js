@@ -9,7 +9,11 @@ function announcement_delete(id) {
 			'announcement_id': id,
 		},
 		success: function(response) {
-			notification.show("success", "Удалено");
+      if(response && response["type"]) {
+        notification.show(response["type"], response["message"]);
+      } else {
+				notification.show("success", "Удалено");
+			}
 		},
 		error: function(data) {
 			console.log(data);

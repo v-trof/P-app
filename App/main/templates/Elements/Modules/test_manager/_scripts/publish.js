@@ -79,8 +79,8 @@ test_manager.publish = function() {
 					data: formData,
 					processData: false,
 					contentType: false,
-					success: function(data) {
-						notification.show('success', data);
+					success: function(response) {
+						notification.show(response["type"], response["message"]);
 						$("#{{type}}_publish").hide();
 						console.log("#{{type}}_publish");
 						$("#{{type}}_unpublish").show();
@@ -134,8 +134,8 @@ test_manager.publish_material = function() {
 				data: formData,
 				processData: false,
 				contentType: false,
-				success: function(data) {
-					notification.show('success', data);
+				success: function(response) {
+					notification.show(response["type"], response["message"]);
 				}
 			});
 		});

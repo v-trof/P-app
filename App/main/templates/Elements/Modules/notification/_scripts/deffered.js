@@ -12,8 +12,6 @@
 	url:"/func/delete_notification/",
 	data: {
 	   'csrfmiddlewaretoken': '{{ csrf_token }}'
-	},
-	success: function(response) {
 	}
 	});
 {% endfor %}

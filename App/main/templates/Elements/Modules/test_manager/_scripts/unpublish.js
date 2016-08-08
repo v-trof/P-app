@@ -14,8 +14,8 @@ test_manager.unpublish = function() {
 		data: formData,
 		processData: false,
 		contentType: false,
-		success: function(data) {
-			notification.show('success', data);
+		success: function(response) {
+			notification.show(response["type"], response["message"]);
 		}
 	});
 	$("#{{type}}_publish").show();

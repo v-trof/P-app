@@ -9,7 +9,10 @@ $(document).on("click", "#button_accept", function() {
 			   'csrfmiddlewaretoken': '{{ csrf_token }}',
 			   'course_id': "{{course.id}}"
 			  },
-		success: function() {
+		success: function(response) {
+			if(response && response["type"]) {
+				notification.show(response["type"], response["message"]);
+			}
 			notification.show('success', 'Заявка принята' );
 		},
 		error: function(data) {
@@ -29,11 +32,14 @@ $(document).on("click", "#button_decline", function() {
 			   'csrfmiddlewaretoken': '{{ csrf_token }}',
 			   'course_id': "{{course.id}}",
 			  },
-		success: function() {
-			  notification.show('success', 'Заявка отклонена' );
+		success: function(response) {
+			if(response && response["type"]) {
+				notification.show(response["type"], response["message"]);
+			}
+		  notification.show('success', 'Заявка отклонена' );
 		},
-		error: function(data) {
-			notification.show('error', data);
+		error: function(response) {
+			notification.show(response["type"], response["message"]);
 		}
 	});
 	$(this).closest(".card").hide();

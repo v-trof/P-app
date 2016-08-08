@@ -11,14 +11,12 @@ $('input:checkbox').change(
 			formData.append('traditional_id', this.id);
 			formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 			formData.append('tasks', '{{ course.tasks }}');
-           	$.ajax({
+       	$.ajax({
 					type:"POST",
 					url:"/func/set_done/",
 					data: formData,
 					processData: false,
-					contentType: false,
-					success: function() {
-					},
+					contentType: false
         });
     }
     else{
@@ -29,14 +27,12 @@ $('input:checkbox').change(
 			formData.append('traditional_id', this.id);
 			formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 			formData.append('tasks', '{{ course.tasks }}');
-           	$.ajax({
+        $.ajax({
 					type:"POST",
 					url:"/func/set_undone/",
 					data: formData,
 					processData: false,
-					contentType: false,
-					success: function() {
-					},
+					contentType: false
         });
     };
 });

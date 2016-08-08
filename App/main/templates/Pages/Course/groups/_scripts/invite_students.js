@@ -25,9 +25,17 @@ $("#invite_students").click(function(event) {
 					'course_id':"{{course.id}}",
 					'group':group,
 				},
-				success: function() {
-					popup.hide();
-					notification.show('success','Ученики приглашены, ждем от них подтверждения' );
+				 success: function(response) {
+            if(response && response["type"]) {
+            	if(response.type == "success") {
+            		popup.hide();
+            	}
+              notification.show(response["type"], response["message"]);
+            } else {
+							popup.hide();
+							notification.show('success', 
+								'Ученики приглашены, ждем от них подтверждения' );
+						}
 				},
 		});
 		});

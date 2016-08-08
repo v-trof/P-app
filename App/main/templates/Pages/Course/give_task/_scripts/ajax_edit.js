@@ -5,8 +5,12 @@ function ajax_edit(data) {
         type:"POST",
         url:"/func/edit_assignment/",
         data: data,
-        success: function() {
-            notification.show('success','Задание измененно' );
+        success: function(response) {
+            if(response && response["type"]) {
+                notification.show(response["type"], response["message"]);
+            }   else {
+                notification.show('success','Задание измененно' );
+            }
         }
     });
 }

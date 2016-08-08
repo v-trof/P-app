@@ -29,10 +29,14 @@ $(document).ready(function() {
 						'announcement_id': id,
 					},
 					success: function(response) {
-						popup.hide();
-						$original.find(".__content").html(new_text);
-						$original.find(".__heading").html(new_heading);
-						notification.show("success", "Сохранено");
+            if(response && response["type"]) {
+              notification.show(response["type"], response["message"]);
+            } else {
+							notification.show("success", "Сохранено");
+							popup.hide();
+							$original.find(".__content").html(new_text);
+							$original.find(".__heading").html(new_heading);
+						}
 					},
 					error: function() {
 						notification.show('error','Произошла ошибка');						

@@ -6,8 +6,11 @@ $(document).on('click', '[name="contacts_see"]', function () {
              data: {'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'permission_level':this.id.substr(this.id.length - 1),
                     },
-             success: function() {
-                 notification.show('success','Разрешения были успешно изменены' );
+             success: function(response) {
+                if(response) {
+                    notification.show(response["type"], response["message"]);
+                }
+                notification.show('success','Разрешения были успешно изменены' );
              }
         });
     });

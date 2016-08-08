@@ -7,7 +7,7 @@ $('#reset_password').click(function() {
 			          'csrfmiddlewaretoken' : '{{ csrf_token }}'
 			            },
 			        success: function(response) {
-			                  if (response == "success")
+			                  if (response["type"] == "success")
 			                  {
 			                  	notification.show('success','Ссылка на сброс пароля отправлена вам на почту');
 			                  }

@@ -8,8 +8,12 @@ function delete_contact($contact) {
 			'contact_type': $contact.closest( ".__item" ).attr('id'),
 			'csrfmiddlewaretoken': '{{ csrf_token }}',
 		},
-		success: function() {
-			notification.show('success','Контакт удален' );
+		success: function(response) {
+			if(response && response["type"]) {
+    		notification.show(response["type"], response["message"]);
+    	}	else {
+				notification.show('success','Контакт удален' );
+			}
 		}
 	});
 }

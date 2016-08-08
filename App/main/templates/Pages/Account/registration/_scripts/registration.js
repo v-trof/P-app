@@ -11,14 +11,14 @@ $('#register').click(function() {
 			  'csrfmiddlewaretoken' : '{{ csrf_token }}'
 				},
 			success: function(response) {
-					  if (response == "success" || response == "groups")
+					  if (response["type"] == "success" || response["type"] == "groups")
 					  {
 						window.location.href='/'
 					  }
 					  else
 					  {
-						notification.show('error',response);
+						notification.show(response["type"], response["message"]);
 					  }
-								   }
+	   }
 				});
 		});
