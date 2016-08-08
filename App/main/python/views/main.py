@@ -113,6 +113,8 @@ class Auth_group():
 class Course_group():
 	
 	def main(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/')
 		if not Course.objects.filter(id=course_id).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
@@ -137,6 +139,8 @@ class Course_group():
 																  ]})
 
 	def updates(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/')
 		if not Course.objects.filter(id=course_id).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
@@ -152,6 +156,8 @@ class Course_group():
 		return render(request, 'Pages/Course/updates/exports.html', context)
 
 	def sources(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/')
 		if not Course.objects.filter(id=course_id).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
@@ -167,6 +173,8 @@ class Course_group():
 		return render(request, 'Pages/Course/sources/exports.html', context)
 
 	def manage(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/')
 		if not Course.objects.filter(id=course_id).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
@@ -187,6 +195,8 @@ class Course_group():
 		return render(request, 'Pages/Course/manage/exports.html', context)
 
 	def results(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/')
 		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
@@ -225,6 +235,8 @@ class Course_group():
 		return render(request, 'Pages/Course/Marks/results/exports.html', context)
 
 	def marks(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/')
 		course = Course.objects.get(id=course_id)
 		context = {}
 		context["from_task"] = True
@@ -236,6 +248,8 @@ class Course_group():
 		return render(request, 'Pages/Course/Marks/tasks/exports.html', context)
 
 	def marks_by_groups(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/')
 		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
@@ -253,6 +267,8 @@ class Course_group():
 		return render(request, 'Pages/Course/Marks/tests/exports.html', context)
 
 	def marks_by_tests(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/')
 		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
@@ -269,6 +285,8 @@ class Course_group():
 		return render(request, 'Pages/Course/Marks/tests/exports.html', context)
 
 	def groups(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/')
 		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
@@ -282,6 +300,8 @@ class Course_group():
 		course_data["status"] = Course.objects.get_status(course=course)
 		course_data["groups"] = Course.objects.load_groups(
 			user=request.user, course=course)
+		if course_data["user_status"] == "guest":
+			return redirect('/')
 		if course.is_closed:
 			course_data["requests"]=Course.objects.load_requests(course=course)
 		course_data["group_list"] = Course.objects.get_group_list(
@@ -297,6 +317,8 @@ class Course_group():
 		return render(request, 'Pages/Course/groups/exports.html', context)
 
 	def new_task(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/')
 		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')     
@@ -324,6 +346,8 @@ class Course_group():
 		return render(request, 'Pages/Course/give_task/exports.html', context)
 
 	def edit_assignment(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/')
 		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')

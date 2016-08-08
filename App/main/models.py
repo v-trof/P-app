@@ -1344,9 +1344,9 @@ class UserManager(UserManager):
 		if user is not None:
 			auth(request, user)
 			request.session.set_expiry(36000)
-			return 'success'
+			return {"type":"success","message":'Вы были успешно авторизированы'}
 		else:
-			return 'Неверный логин или пароль'
+			return {"type":"error","message":'Неверный логин или пароль'}
 
 	def reg(self, request, course_id, email, is_teacher, password, name_last_name,code=None):
 		if not User.objects.filter(email=email):
@@ -1375,7 +1375,7 @@ class UserManager(UserManager):
 				saving_data = json.dumps(data, ensure_ascii=False)
 				settings_file.write(saving_data)
 		else:
-			return 'Данный email уже зарегистрирован'
+			return {"type":"error","message":'Данный email уже зарегистрирован'}
 		if user is not None:
 			user.save()
 			user = authenticate(username=email, password=password)
@@ -1385,9 +1385,9 @@ class UserManager(UserManager):
 				course = Course.objects.get(id=course_id)
 				Course.objects.reg_user(course=course, user=user,code=code)
 				return 'groups'
-			return 'success'
+			return {"type":"success","message":'Вы были успешно зарегистрированы'}
 		else:
-			return 'Неверный логин или пароль'
+			return {"type":"error","message":'Неверный логин или пароль'}
 
 	# change profile visibility settings
 	def change_permission_level(self, user, permission_level):
@@ -1421,7 +1421,8 @@ class UserManager(UserManager):
 	def get_contacts(self, user):
 		with io.open('main/files/json/users/' + str(user.id) + '/info.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-			return data["contacts"]
+
+			return Utility.sort_by_alphabet(data["contacts"])
 
 	# password change
 
