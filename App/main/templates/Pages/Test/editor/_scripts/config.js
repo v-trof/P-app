@@ -4,7 +4,16 @@ pull_put.delete_action = function() {
 	}
 }
 
+pull_put.reset_sync = true;
+
+pull_put.pre_reset = function(_callback) {
+  // console.log("Pre reset", pull_put.ui.element);
+  generate.let_editing(pull_put.ui.element);
+  _callback();
+}
+
 pull_put.cancel_action = indicator.hide;
+pull_put.ui.additional_margin = 24
 
 generate.editing_actions = ['delete', 'add', 'save']
 

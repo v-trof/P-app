@@ -25,7 +25,6 @@ pull_put.puller = (function() {
 	exports = {
 		had_clone: false,
 		cancel: function() {
-
 			$placeholder.replaceWith(pull_put.ui.element);
 			pull_put.reset();
 		},
@@ -38,8 +37,8 @@ pull_put.puller = (function() {
 
 			$element.click(function(event) {
 				if( ! pull_put.is_pulled) {
-					element_width = $(this).outerWidth();
-
+					var element_width = this.getBoundingClientRect().width;
+					
 					if (clone) {	
 						var $element = $(this).clone();
 						pull_put.puller.had_clone = true;
@@ -57,8 +56,6 @@ pull_put.puller = (function() {
 							action_additional._action
 						);
 					}
-
-					pull_put.ui.show();
 				}
 			});
 		}

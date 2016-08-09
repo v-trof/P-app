@@ -397,26 +397,32 @@ generate.data["question--file"] = {
 				} else {
 					var sample =  generate.data["question--file"]
 						.element.value_sample;
-					console.log("nofile", sample);
 					return sample;
 				}
 			}
 
 			name = $("#new_file_name").val();
-			url = generate.data.shared.assets[id].urls[0]
-			size = Math.floor(generate.data.shared.assets[id]
-				.files[0].size/1024/1024*100)/100 + "MB";
+			if(url = generate.data.shared.assets[id].urls) {
+				url = generate.data.shared.assets[id].urls[0]
+				size = Math.floor(generate.data.shared.assets[id]
+					.files[0].size/1024/1024*100)/100 + "MB";
 
-			console.log(name);
-			return {
-				url: url,
-				name: name,
-				size: size,
-				id: id
+				console.log(name);
+				return {
+					url: url,
+					name: name,
+					size: size,
+					id: id
+				}
+			} else {
+				var sample =  generate.data["question--file"]
+						.element.value_sample;
+					return sample;
 			}
 		},
 		fill: function(value) {
-			if(generate.data.shared.assets[value.id]) {
+			console.log(value);
+			if((! value.url) && generate.data.shared.assets[value.id]) {
 				value.url = generate.data.shared.assets[value.id].name;
 			}
 			var full_link = value.url;

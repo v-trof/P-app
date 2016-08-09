@@ -19,6 +19,7 @@ generate.edit = (function() {
 
 	var exports = {
 		start: function() {
+			pull_put.ui.$.find(".__content").attr('state', 'edit'); 
 			indicator.show(1);
 			var $element = pull_put.ui.element;
 			
@@ -49,16 +50,14 @@ generate.edit = (function() {
 					element_class, value
 				);
 
-				generate.let_editing($new_element);
-
 				pull_put.ui.element = $new_element;
 			}
 		},
 		stop: function() {
+			pull_put.ui.$.find(".__content").attr('state', 'preview');
 			if(pull_put.is_pulled) {
 				pull_put.ui.$.find(".__content")
 					.html(pull_put.ui.element);
-
 				pull_put.ui.add_action(edit_action);
 			}
 		},
@@ -84,7 +83,9 @@ $(document).ready(function() {
 		"keyup click change", 
 		"button, input, .__value",
 		function() {
-			pull_put.ui.rebuild_element();		
+			if(pull_put.ui.$.find(".__content").attr('state') == 'edit') {
+				pull_put.ui.rebuild_element();		
+			}
 		}
 	);
 	$(document).on(
@@ -95,14 +96,6 @@ $(document).ready(function() {
 				console.log("re")
 				pull_put.ui.rebuild_element();
 			}
-		}
-	)
-	$(document).on(
-		"click",
-		".m--enpty",
-		function() {
-			console.log("e");
-			editor.check_self();
 		}
 	)
 });

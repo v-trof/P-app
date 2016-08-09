@@ -24,6 +24,7 @@ pull_put.ui = (function() {
 		$: $ui,
 		element: undefined,
 		proto_element: undefined,
+		additional_margin: 0,
 		add_action: function(icon, tip, _action) {
 			
 			if(typeof icon === "object") {
@@ -53,8 +54,10 @@ pull_put.ui = (function() {
 			$ui.__content.html($element);
 			$ui.__actions__additional.html("");
 
-			$ui.css("margin-left", -element_width/2)
-			$ui.__content.css("width", element_width)
+			$ui.css("margin-left", -element_width/2 
+					+ pull_put.ui.additional_margin)
+			$ui.__content.css("width", element_width 
+					- pull_put.ui.additional_margin)
 
 			pull_put.ui.element = $element;
 
@@ -83,8 +86,10 @@ pull_put.ui = (function() {
 			if(_callback) {
 				_callback();
 			}
+
+			pull_put.ui.show(element_width);
 		},
-		show: function() {
+		show: function(element_width) {
 			if(typeof editor !== "undefined") {
 				$(".__task").slice(-2).addClass("m--stand-out");
 				$(".__put-margin").last().addClass("m--stand-out");
@@ -95,8 +100,8 @@ pull_put.ui = (function() {
 				pull_put.is_pulled = true;
 
 				var screen_width = window.innerWidth;
-				var dropout = ($ui.width() - element_width/2) -screen_width/2;
-				console.log($ui.width(), element_width/2, screen_width/2, dropout)
+				var dropout = ($ui.width() - element_width/2
+					 + pull_put.ui.additional_margin) -screen_width/2;
 
 				if(dropout > 0) {
 					$ui.css('right', '16px');
@@ -125,9 +130,6 @@ $(document).ready(function() {
 
 		//restoring defaut element
 		pull_put.ui.element = pull_put.ui.proto_element;
-		if(typeof generate != "undefined") {
-			generate.let_editing(pull_put.ui.element);
-		}
 
 		pull_put.puller.cancel();
 	});
@@ -137,7 +139,7 @@ $(document).ready(function() {
 	});
 
 	$(".pull_put_ui .__actions .m--delete").click(function(event) {
-		pull_put.ui.element = "";
+		pull_put.ui.element = $("");
 		pull_put.reset();
 		pull_put.delete_action();
 	});

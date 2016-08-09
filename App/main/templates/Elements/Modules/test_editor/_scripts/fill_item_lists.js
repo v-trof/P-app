@@ -22,9 +22,9 @@ editor.add_to_item_list = function(element_class, $list, pull_actions) {
     function() {
       var preview_width = $(".preview .__content").width();
 
-      pull_put.ui.$.css("margin-left", -preview_width/2);
+      pull_put.ui.$.css("margin-left", -preview_width/2 + pull_put.ui.additional_margin);
       pull_put.ui.$.find(".__content").css("width",
-        preview_width
+        preview_width-pull_put.ui.additional_margin
       );
       
       generate.edit.start();

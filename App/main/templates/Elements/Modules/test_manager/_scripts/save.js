@@ -4,7 +4,7 @@ test_manager.packed_test = []
 
 test_manager.upload_test = function(test_packed) {
 
-	console.log(JSON.stringify(test_manager.packed_test));
+	console.log(test_manager.packed_test);
 
 	var formData = new FormData();
 	formData.append("json_file", JSON.stringify(test_manager.packed_test));

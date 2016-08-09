@@ -13,6 +13,9 @@ generate.build.task = function($element) {
 
 		button_delete.add($new_task, $bunch, function() {
 			setTimeout(editor.check_self, 100);
+			if(pull_put.is_pulled) {
+				pull_put.reset();
+			}
 		})
 	{% endif %}
 

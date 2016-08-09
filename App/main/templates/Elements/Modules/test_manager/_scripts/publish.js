@@ -7,7 +7,7 @@ test_manager.add_section_binding = function() {
 	$new_section_name = $("#new_section_name").parent();
 	$new_section_name.hide();
 
-	var new_value = "new_section00";
+	var new_value = "new_section";
 	var $new_section_option = $("<option value="+new_value+">Другая</option>")
 	$('#course_section').parent().append($new_section_option);
 
