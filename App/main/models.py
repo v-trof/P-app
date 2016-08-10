@@ -2730,9 +2730,9 @@ class Search():
 			users=Utility.sort_by_conformity(object=users, indicator="conformity")
 		for user in users:
 			content={}
-			content["id"]=user.id
-			content["name"]=user.name
-			content["is_teacher"]=user.is_teacher
+			content["id"]=user["object"].id
+			content["name"]=user["object"].name
+			content["is_teacher"]=user["object"].is_teacher
 			cards.append({"type":"user","content":content,"conformity":user["conformity"]})
 		return cards
 
