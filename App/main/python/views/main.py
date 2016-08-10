@@ -32,6 +32,7 @@ class Main_group():
 	def home(request):
 		if request.user.is_anonymous():
 			return render(request, 'Pages/home/exports.html')
+		print("fgghf",Search.in_courses(search_query="123"))
 		context = {}
 		user_settings={}
 		if os.path.isfile('main/files/json/users/' + str(request.user.id) + '/settings.json'):
@@ -378,6 +379,14 @@ class Course_group():
 			"link": "Изменить задание"
 		}]
 		return render(request, 'Pages/Course/give_task/exports.html', context)
+
+def search(request):
+	search_query=request.GET.get('query','')
+	course=request.GET.get('course',None)
+	if course:
+		context["search_results"]=Search.in_courses_materials(search_query=search_query, user=request.user, course=course)
+	else: context["search_results"]=Search.complex(search_query=search_query, user=request.user)
+	return render(request, 'Pages/search/exports.html', context)
 
 
 def ui_kit(request):

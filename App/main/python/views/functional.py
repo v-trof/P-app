@@ -408,6 +408,13 @@ def delete_notification(request):
         del request.session['notifications']
         return HttpResponse('ok')
 
+def search(request):
+    if request.method == "POST":
+        search_query=request.POST.get("search_query","")
+        search_types=request.POST.get("search_types",None)
+        cards=Search.complex(search_query=search_query,search_type=search_types,user=request.user)
+        return HttpResponse(json.dumps(cards), content_type="application/json")
+
 class Universal_views():
 
     def share(request):

@@ -103,6 +103,7 @@ func_patterns = [
     url(r'^delete_notification/$', functional.delete_notification, name="delete_notification"),
     url(r'^share/$', functional.Universal_views.share, name="share"),
     url(r'^unshare/$', functional.Universal_views.unshare, name="unshare"),
+    url(r'^search/$', functional.search, name="search"),
     url(r'^exit/(?P<course_id>[0-9]+)/$', functional.Course_views.exit, name="exit"),
 ]
 
@@ -122,6 +123,7 @@ course_patterns = [
 ]
 
 urlpatterns = [
+    url(r'^search/$', main.search),
     url(r'^uikit/$', main.ui_kit),
     url(r'^course/', include(course_patterns)),
     url(r'^func/', include(func_patterns)),

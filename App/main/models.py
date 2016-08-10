@@ -95,6 +95,13 @@ class FileForm(forms.Form):
 
 class Utility():
 
+	def compare(str1,str2):
+		str1=str1.replace(" ", "").lower()
+		str2=str2.replace(" ", "").lower()
+		conformity=0
+		#Boyer-Moore
+		return conformity
+
 	def upload_file(file, path):
 		custom_path = path
 		path = 'main/files/media/' + path
@@ -214,7 +221,7 @@ class Utility():
 		return item["object"].name
 
 	def sort_by_alphabet(object, indicator=False):
-		if (len(object) > 1):
+		if len(object) > 1 or isinstance(object, dict):
 			if isinstance(object, dict):
 				if indicator:
 					object[indictator] = collections.OrderedDict(
@@ -224,6 +231,18 @@ class Utility():
 			else:
 				object.sort(key=Utility.sort_by_name, reverse=False)
 		return object
+
+	def sort_by_conformity(object, indicator=False):
+		if len(object) > 1 or isinstance(object, dict):
+			if isinstance(object, dict):
+				if indicator:
+					object[indictator] = collections.OrderedDict(
+						sorted(object[indictator].items()))
+				else:
+					object = collections.OrderedDict(sorted(object.items()))
+			else: sorted(object, key=lambda k: k[indicator]) 
+		return object
+
 
 	def send_response(message, type=None):
 		if type:
@@ -1822,7 +1841,7 @@ class Material():
 		material_published = Material.is_published(material_id=material_id, course_id=course_id)
 		if not material_unpublished and not material_published:
 			course_info['sections']['unpublished'].append(
-				{"id": material_id, "type": "material"})
+				{"id": material_id, "type": "material", "unpublish_date":Utility.transform_date(date=str(datetime.datetime.now())[:10])})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		return {"type":"success","message":"Материал сохранен"}
@@ -2050,7 +2069,7 @@ class Test():
 		test_published = Test.is_published(test_id=test_id, course_id=course_id)
 		if not test_unpublished and not test_published:
 			course_info['sections']['unpublished'].append(
-				{"id": test_id, "type": "test"})
+				{"id": test_id, "type": "test", "unpublish_date":Utility.transform_date(date=str(datetime.datetime.now())[:10])})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		return {"type":"success","message":"Тест сохранен"}
@@ -2684,3 +2703,138 @@ class Statistics():
 			#user_id= results[:-5].split("/")[5][6:]
 			#user=User.objects.get(id=user_id)
 
+class Search():
+# {"type" : "{{card_type}}","content":{{content}} }
+	def complex(search_query, search_types=None, user=None):
+		if not search_types:
+			seach_types={}
+			for type in types:
+				search_types[type]={}
+		cards=[]
+		for type in search_types:
+			if type=="users":
+				if "course" in search_types[type].keys():
+					cards.extend(types[type](search_query=search_query, course=search_types[type]["course"]))
+				else: cards.extend(types[type](search_query=search_query, course=None))
+			elif type=="elements":
+				if "course" in search_types[type].keys():
+					course=search_types[type]["course"]
+				else: course=None
+				if "type" in search_types[type].keys():
+					type=search_types[type]["type"]
+				else: type=None
+				cards.extend(types[type](search_query=search_query, course=course, user=user, type=type))
+			elif type=="courses":
+				if "user" in search_types[type].keys():
+					cards.extend(types[type](search_query=search_query))
+				else: cards.extend(types[type](search_query=search_query))
+		cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
+		return cards
+
+
+	def in_users(search_query,course=None):
+		cards=[]
+		users=[]
+		for user in User.objects.all():
+			user_object = User.objects.get(username=str(user))
+			if course and len(user.participation_list) > 0:
+				if str(course) in user.participation_list.split(' '):
+					conformity=len(set(user_object.name.split(' ')) & set(search_query.split(' ')))/2*100
+					if conformity >= 50:
+						users.append({"object":user_object,"conformity":conformity})
+			elif course and len(user.courses) > 0:
+				if str(course) in user.courses.split(' '):
+					conformity=len(set(user_object.name.split(' ')) & set(search_query.split(' ')))/2*100
+					if conformity >= 50:
+						users.append({"object":user_object,"conformity":conformity})
+			elif course==None:
+				conformity=len(set(user_object.name.split(' ')) & set(search_query.split(' ')))/2*100
+				if conformity >= 50:
+					users.append({"object":user_object,"conformity":conformity})
+		if len(users) > 0:
+			users=Utility.sort_by_conformity(object=users, indicator="conformity")
+		for user in users:
+			cards.append({"type":"user","content":user["object"],"conformity":user["conformity"]})
+		return cards
+
+	def in_courses(search_query,user=None):
+		cards=[]
+		courses=[]
+		courses_all=[]
+		if user:
+			user=User.objects.get(id=user)
+		if user and len(user.courses) > 0:
+			for course in user.courses.split(' '):
+				courses_all.append(Course.objects.get(id=course))
+		if user and len(user.participation_list) > 0:
+			for course in user.participation_list.split(' '):
+				courses_all.append(Course.objects.get(id=course))
+		if len(courses_all) == 0:
+			courses_all=Course.objects.all()
+
+		for course in courses_all:
+			if not course.is_closed:
+				conformity=len(set(course.name.split(' ')) & set(search_query.split(' ')))/2*100
+				if conformity >= 33:
+					courses.append({"object":course,"conformity":conformity})
+		if len(courses) > 0:
+			courses=Utility.sort_by_conformity(object=courses, indicator="conformity")
+		for course in courses:
+			cards.append({"type":"course","content":course["object"],"conformity":course["conformity"]})
+		return cards
+
+#В своих курсах и посещаемых курсах
+	def in_courses_materials(search_query,user,type=None,course=None):
+		cards=[]
+		courses=[]
+		elements=[]
+		if not course:
+			if len(user.courses)>0:
+				courses=user.courses.split(' ')
+			if len(user.participation_list)>0:
+				courses.extend(user.participation_list.split(' '))
+		else: courses.append(course)
+		for course_id in courses:
+			with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+				course_data = json.load(data_file)
+			for section in course_data["sections"]["published"]:
+				for element in course_data["sections"]["published"][section]:
+					if type and element["type"]==type or type==None:
+						if element["type"] == "test":
+							test_id = element["id"]
+							with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+								test_data = json.load(info_file)
+							conformity=len(set(test_data["title"].split(' ')) & set(search_query.split(' ')))/2*100
+							test={"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
+																	 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id, "publish_date": element["publish_date"]}
+							if user:
+								started=Test.is_started(course_id=course_id,user_id=str(user.id), test_id=test_id)
+								finished=Test.is_finished(course_id=course_id,user_id=str(user.id), test_id=test_id)
+								if finished:
+									test["done"]=True
+								elif started:
+									test["unfinished"]=True
+							content=test
+						else:
+							material_id = element["id"]
+							with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
+								material_data = json.load(info_file)
+							conformity=len(set(material_data["title"].split(' ')) & set(search_query.split(' ')))/2*100
+							content={"type": "material", "title": material_data[
+																	 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id, "publish_date": element["publish_date"]}
+						elements.append({"content":course_object,"conformity":conformity,"type":element["type"]})
+		if len(elements) > 0:
+			elements=Utility.sort_by_conformity(object=elements, indicator="conformity")
+		for element in elements:
+			cards.append({"type":element["type"],"content":element["content"],"conformity":element["conformity"]})
+
+		return cards
+
+	def in_shared_materials(search_query):
+		pass
+
+	types = {
+		"users":in_users,
+		"courses":in_courses,
+		"elements":in_courses_materials
+	}
