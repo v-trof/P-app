@@ -2708,7 +2708,7 @@ class Search():
 	def complex(search_query, search_types=None, user=None):
 		if not search_types:
 			seach_types={}
-			for type in types:
+			for type in seach_types:
 				search_types[type]={}
 		cards=[]
 		for type in search_types:
