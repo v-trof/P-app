@@ -1,9 +1,18 @@
 @import "../../../../../sass_vars/main.sass"
 
 .header > .__search
-	display: flex
-	align-items: center
-	margin: 0 $margin--l
-	width: 100%
-	max-width: 50rem
-	padding: -$padding--s 0
+  min-height: $base * 1.75
+  max-height: $base * 1.75
+  min-width: $base * 1.75
+  max-width: $base * 1.75
+  button.m--ghost.m--icon
+    min-height: $base * 1.75
+    max-height: $base * 1.75
+    min-width: $base * 1.75
+    max-width: $base * 1.75
+    border: $border--s solid darken($color--main, $darkness-delta__focus--percent)
+    svg
+      fill: $font__color--white
+    &:hover
+      background: rgba($white, $darkness-delta__focus)
+      border-color: $white

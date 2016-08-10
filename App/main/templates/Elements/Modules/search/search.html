@@ -1,0 +1,39 @@
+<section class="search m--hidden">
+  <div class="__field">
+    <input type="text" class="__query" placeholder="Искать...">
+    <div class="__icon">
+      {% include "Elements/Icons/search.svg" %}
+    </div>
+
+    <button class="__icon m--ghost m--icon m--close">
+      {% include "Elements/Icons/close.svg" %}
+    </div>
+  </div>
+  <div class="__results row">
+    <div class="__links"></div>
+    <div>
+      <div class="__filters card">
+      {% include "Elements/Inputs/checkbox/" with
+        label="Открытые курсы"
+        class="filter-courses"
+      %}
+
+      {% include "Elements/Inputs/checkbox/" with
+        label="Тесты"
+        class="filter-tests"
+      %}
+
+      {% include "Elements/Inputs/checkbox/" with
+        label="Материалы"
+        class="filter-materials"
+      %}
+
+      {% include "Elements/Inputs/checkbox/" with
+        label="Люди"  
+        class="filter-users"
+      %}
+      </div>
+    </div>
+  </div>
+  <div class="__bg"></div>
+</section>

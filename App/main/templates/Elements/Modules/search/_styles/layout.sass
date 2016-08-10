@@ -1,0 +1,92 @@
+@import "../../../../sass_vars/main.sass"
+
+$appbar-height: $padding--l*2 + $base
+
+.search
+  display: flex
+  flex-direction: column
+  align-items: center
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100vh
+  margin-top: $appbar-height
+  z-index: 2
+  transition: 0ms
+  &>.__field
+    width: 100%
+    background: $grey--light
+    transition: $time--m
+
+    &>.__query
+      width: 100%
+      height: $appbar-height
+      padding: $padding--m
+      padding-left: $padding--l*2 + $base
+      background: $white
+      transition: $time--m
+      transform: translateY(0)
+      z-index: 1
+      border-bottom: $border--s solid $grey--semilight
+      &:focus, &:hover
+        border-bottom: $border--s solid $font__color--accent
+
+    &>.__icon
+      position: fixed
+      top: $padding--l + $appbar-height
+      left: $padding--l
+      +square('s')
+      transition: $time--s
+      transition-delay: 250ms
+      transform: scale(1)
+      z-index: 2
+      &>svg
+        +square('s')
+        fill: $font__color--dark
+
+      &.m--close
+        left: auto
+        right: $padding--m
+        &>svg
+          fill: $font__color--accent
+        &:hover>svg
+          fill: lighten($font__color--accent, $darkness-delta__focus--percent)
+
+  .__results
+    padding: $padding--m
+    justify-content: center
+    align-items: top
+    flex: 1
+    width: 100%
+    background: $grey--light
+    transition: $time--m
+    opacity: 1
+
+    .__links
+      flex: 1
+      max-width: 50rem
+      margin-right: $margin--m
+      overflow-y: auto
+
+    &>.__links, &>div>.__filters
+      transition: $time--m
+      transform: translateY(0)
+
+
+.search.m--hidden
+  transition: 0ms
+  transition-delay: 300ms
+  transform: scale(0)
+  &>.__field
+    background: transparent
+    &>.__query
+      transform: translateY(-$appbar-height)
+    &>.__icon
+      transform: scale(0)
+      transition-delay: 0ms
+  &>.__results
+    opacity: 0
+    &>.__links, &>div>.__filters
+      transform: translateY($margin--xl)
+
