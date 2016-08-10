@@ -9,9 +9,7 @@ search.request = function() {
     data: {
       'csrfmiddlewaretoken': '{{ csrf_token }}',
       'search_query': query,
-      'search_types': {
-        'courses': {}
-      }
+      'search_types': JSON.stringify({'courses': {}})
     },
   })
   .success(function(data) {

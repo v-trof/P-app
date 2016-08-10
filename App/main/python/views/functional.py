@@ -410,8 +410,11 @@ def delete_notification(request):
 
 def search(request):
     if request.method == "POST":
-        search_query=json.loads(request.POST.get("search_query",""))
-        search_types=json.loads(request.POST.get("search_types",None))
+        search_query=request.POST.get("search_query","")
+        print("123123",request.POST)
+        if "search_types" in request.POST.keys():
+            search_types=json.loads(request.POST["search_types"])
+        else: search_types=None
         cards=Search.complex(search_query=search_query,search_types=search_types,user=request.user)
         return HttpResponse(json.dumps(cards), content_type="application/json")
 
