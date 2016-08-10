@@ -2705,31 +2705,6 @@ class Statistics():
 
 class Search():
 # {"type" : "{{card_type}}","content":{{content}} }
-	def complex(search_query, search_types=None, user=None):
-		if not search_types:
-			seach_types={}
-			for type in seach_types:
-				search_types[type]={}
-		cards=[]
-		for type in search_types:
-			if type=="users":
-				if "course" in search_types[type].keys():
-					cards.extend(types[type](search_query=search_query, course=search_types[type]["course"]))
-				else: cards.extend(types[type](search_query=search_query, course=None))
-			elif type=="elements":
-				if "course" in search_types[type].keys():
-					course=search_types[type]["course"]
-				else: course=None
-				if "type" in search_types[type].keys():
-					type=search_types[type]["type"]
-				else: type=None
-				cards.extend(types[type](search_query=search_query, course=course, user=user, type=type))
-			elif type=="courses":
-				if "user" in search_types[type].keys():
-					cards.extend(types[type](search_query=search_query))
-				else: cards.extend(types[type](search_query=search_query))
-		cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
-		return cards
 
 
 	def in_users(search_query,course=None):
@@ -2833,8 +2808,36 @@ class Search():
 	def in_shared_materials(search_query):
 		pass
 
+	def complex(search_query, search_types=None, user=None):
+
+		if not search_types:
+			search_types={}
+			types=["users","courses","elements"]
+			for type in types:
+				search_types[type]={}
+		cards=[]
+		for type in search_types:
+			if type=="users":
+				if "course" in search_types[type].keys():
+					cards.extend(Search.types[type](search_query=search_query, course=search_types[type]["course"]))
+				else: cards.extend(Search.types[type](search_query=search_query, course=None))
+			elif type=="elements":
+				if "course" in search_types[type].keys():
+					course=search_types[type]["course"]
+				else: course=None
+				if "type" in search_types[type].keys():
+					type=search_types[type]["type"]
+				else: in_type=None
+				cards.extend(Search.types[type](search_query=search_query, course=course, user=user, type=in_type))
+			elif type=="courses":
+				if "user" in search_types[type].keys():
+					cards.extend(Search.types[type](search_query=search_query))
+				else: cards.extend(Search.types[type](search_query=search_query))
+		cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
+		return cards
+
 	types = {
 		"users":in_users,
 		"courses":in_courses,
 		"elements":in_courses_materials
-	}
+		}
