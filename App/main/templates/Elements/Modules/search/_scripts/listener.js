@@ -2,7 +2,7 @@ search.enable_query_listener = function() {
   var timer;
   var typing_interval = 500;
 
-  var $input = search.$.find('input');
+  var $input = search.$.find('.__query');
 
   $input.keydown(function() {
     clearTimeout(timer); 

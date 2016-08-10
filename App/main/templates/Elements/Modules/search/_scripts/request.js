@@ -1,5 +1,7 @@
 search.request = function() {
-  var query = search.$.find('input').val();
+  var query = search.$.find('.__query').val();
+
+  console.log(query);
 
   $.ajax({
     url: '/func/search/',
