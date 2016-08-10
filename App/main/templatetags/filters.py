@@ -17,6 +17,16 @@ def get_obj(value,pk):
 	return obj
 
 @register.filter
+def get_course_obj_by_id(value):
+	obj = Course.objects.get(id=int(value))
+	return obj
+
+@register.filter
+def get_user_obj_by_id(value):
+	obj = User.objects.get(id=int(value))
+	return obj
+
+@register.filter
 def keyvalue(dict, key):    
     return dict[key]
 

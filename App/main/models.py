@@ -2713,12 +2713,12 @@ class Search():
 		for user in User.objects.all():
 			user_object = User.objects.get(username=str(user))
 			if course and len(user.participation_list) > 0:
-				if str(course) in user.participation_list.split(' '):
+				if str(course) in user.participation_list.split(' ') or str(course) == user.participation_list:
 					conformity=len(set(user_object.name.split(' ')) & set(search_query.split(' ')))/2*100
 					if conformity >= 50:
 						users.append({"object":user_object,"conformity":conformity})
 			elif course and len(user.courses) > 0:
-				if str(course) in user.courses.split(' '):
+				if str(course) in user.courses.split(' ') or str(course) == user.courses:
 					conformity=len(set(user_object.name.split(' ')) & set(search_query.split(' ')))/2*100
 					if conformity >= 50:
 						users.append({"object":user_object,"conformity":conformity})
@@ -2729,33 +2729,38 @@ class Search():
 		if len(users) > 0:
 			users=Utility.sort_by_conformity(object=users, indicator="conformity")
 		for user in users:
-			cards.append({"type":"user","content":user["object"],"conformity":user["conformity"]})
+			cards.append({"type":"user","content":user["object"].id,"conformity":user["conformity"]})
 		return cards
 
 	def in_courses(search_query,user=None):
 		cards=[]
 		courses=[]
 		courses_all=[]
-		if user:
+		if not user == None:
 			user=User.objects.get(id=user)
-		if user and len(user.courses) > 0:
-			for course in user.courses.split(' '):
-				courses_all.append(Course.objects.get(id=course))
-		if user and len(user.participation_list) > 0:
-			for course in user.participation_list.split(' '):
-				courses_all.append(Course.objects.get(id=course))
+		if not user == None and len(user.courses) > 0:
+			if len(user.courses.split(' ')) > 0:
+				for course in user.courses.split(' '):
+					courses_all.append(Course.objects.get(id=course))
+			else: courses_all.append(Course.objects.get(id=user.courses))
+		if not user == None and len(user.participation_list) > 0:
+			if len(user.participation_list.split(' ')) > 0:
+				for course in user.participation_list.split(' '):
+					courses_all.append(Course.objects.get(id=course))
+			else: courses_all.append(Course.objects.get(id=user.participation_list))
 		if len(courses_all) == 0:
 			courses_all=Course.objects.all()
 
 		for course in courses_all:
 			if not course.is_closed:
 				conformity=len(set(course.name.split(' ')) & set(search_query.split(' ')))/2*100
+				print(course.name.split(' '))
 				if conformity >= 33:
 					courses.append({"object":course,"conformity":conformity})
 		if len(courses) > 0:
 			courses=Utility.sort_by_conformity(object=courses, indicator="conformity")
 		for course in courses:
-			cards.append({"type":"course","content":course["object"],"conformity":course["conformity"]})
+			cards.append({"type":"course","content":course["object"].id,"conformity":course["conformity"]})
 		return cards
 
 #В своих курсах и посещаемых курсах
@@ -2765,9 +2770,13 @@ class Search():
 		elements=[]
 		if not course:
 			if len(user.courses)>0:
-				courses=user.courses.split(' ')
+				if len(user.courses.split(' '))>0:
+					courses=user.courses.split(' ')
+				else: courses=user.courses
 			if len(user.participation_list)>0:
-				courses.extend(user.participation_list.split(' '))
+				if len(user.participation_list.split(' '))>0:
+					courses.extend(user.participation_list.split(' '))
+				else: courses.append(user.participation_list)
 		else: courses.append(course)
 		for course_id in courses:
 			with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -2797,7 +2806,7 @@ class Search():
 							conformity=len(set(material_data["title"].split(' ')) & set(search_query.split(' ')))/2*100
 							content={"type": "material", "title": material_data[
 																	 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id, "publish_date": element["publish_date"]}
-						elements.append({"content":course_object,"conformity":conformity,"type":element["type"]})
+						elements.append({"content":course_object.id,"conformity":conformity,"type":element["type"]})
 		if len(elements) > 0:
 			elements=Utility.sort_by_conformity(object=elements, indicator="conformity")
 		for element in elements:
