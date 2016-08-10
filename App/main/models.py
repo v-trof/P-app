@@ -2851,7 +2851,7 @@ class Search():
 					course=search_types[type]["course"]
 				else: course=None
 				if "type" in search_types[type].keys():
-					type=search_types[type]["type"]
+					in_type=search_types[type]["type"]
 				else: in_type=None
 				cards.extend(Search.types[type](search_query=search_query, course=course, user=user, type=in_type))
 			elif type=="courses":
