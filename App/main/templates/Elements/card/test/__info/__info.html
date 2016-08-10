@@ -4,10 +4,11 @@
 	icons_path="#&/../__icons/" %}
 <p class="__content">
 	Тест, 
-	{% ifnotequal 0 test.questions_number %}
+	{% if test.questions_number %}
 		<strong>{{test.questions_number}}</strong>
 		{{test.questions_number|form_for_num:"вопрос вопроса вопросов"}}
 	{% else %}
 		Вопросов <strong>нет</strong>
-	{% endifnotequal %}
+	{% endif %}
 </p>
+

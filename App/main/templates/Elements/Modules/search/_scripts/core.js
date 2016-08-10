@@ -5,7 +5,6 @@ var search = (function(){
   var exports = {
     $: $search,
     is_shown: false,
-    everywhere: false,
     show: function() {
       $search.removeClass('m--hidden');
       $search.find('input').focus();
@@ -39,6 +38,7 @@ $(document).ready(function() {
   search.$.find('.m--close').click(function(event) {
     search.hide();
   });
+  
   search.enable_query_listener();
   search.enable_checkbox_listener();
 });

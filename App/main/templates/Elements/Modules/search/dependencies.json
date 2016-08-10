@@ -1,3 +1,5 @@
 {
-  "elements": ["button/ghost/icon"]
+  "elements": ["button/ghost/icon",
+               "card/course", "card/user",
+               "card/test", "card/material"]
 }
