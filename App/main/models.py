@@ -2729,7 +2729,11 @@ class Search():
 		if len(users) > 0:
 			users=Utility.sort_by_conformity(object=users, indicator="conformity")
 		for user in users:
-			cards.append({"type":"user","content":user["object"].id,"conformity":user["conformity"]})
+			content={}
+			content["id"]=user.id
+			content["name"]=user.name
+			content["is_teacher"]=user.is_teacher
+			cards.append({"type":"user","content":content,"conformity":user["conformity"]})
 		return cards
 
 	def in_courses(search_query,user=None):
@@ -2754,13 +2758,25 @@ class Search():
 		for course in courses_all:
 			if not course.is_closed:
 				conformity=len(set(course.name.split(' ')) & set(search_query.split(' ')))/2*100
-				print(course.name.split(' '))
 				if conformity >= 33:
 					courses.append({"object":course,"conformity":conformity})
 		if len(courses) > 0:
 			courses=Utility.sort_by_conformity(object=courses, indicator="conformity")
 		for course in courses:
-			cards.append({"type":"course","content":course["object"].id,"conformity":course["conformity"]})
+			with io.open('main/files/json/courses/' + str(course["object"].id) + '/info.json', 'r', encoding='utf8') as data_file:
+				data = json.load(data_file)
+			course_data={}
+			course_data["is_closed"]=course["object"].is_closed
+			course_data["name"]=course["object"].name
+			course_data["tests_number"] = 0
+			course_data["materials_number"] = 0
+			for section, elements in data["sections"]["published"].items():
+				for element in elements:
+					if element["type"] == "test":
+						course_data["tests_number"] += 1
+					else:
+						course_data["materials_number"] += 1
+			cards.append({"type":"course","content":course_data,"conformity":course["conformity"]})
 		return cards
 
 #В своих курсах и посещаемых курсах
@@ -2806,7 +2822,7 @@ class Search():
 							conformity=len(set(material_data["title"].split(' ')) & set(search_query.split(' ')))/2*100
 							content={"type": "material", "title": material_data[
 																	 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id, "publish_date": element["publish_date"]}
-						elements.append({"content":course_object.id,"conformity":conformity,"type":element["type"]})
+						elements.append({"content":content,"conformity":conformity,"type":element["type"]})
 		if len(elements) > 0:
 			elements=Utility.sort_by_conformity(object=elements, indicator="conformity")
 		for element in elements:
