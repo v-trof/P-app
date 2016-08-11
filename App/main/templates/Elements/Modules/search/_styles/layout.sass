@@ -58,6 +58,7 @@ $appbar-height: $padding--l*2 + $base
     justify-content: center
     align-items: top
     flex: 1
+    max-height: calc(100% - #{$appbar-height})
     width: 100%
     background: $grey--light
     transition: $time--m
@@ -65,6 +66,7 @@ $appbar-height: $padding--l*2 + $base
 
     .__links
       flex: 1
+      max-height: 100%
       max-width: 50rem
       margin-right: $margin--m
       padding: $border--s
