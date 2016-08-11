@@ -23,6 +23,7 @@ test_manager.add_section_binding = function() {
 }
 
 test_manager.publish = function() {
+	console.log("publ");
 	var no_empty = ($(".preview .m--empty").length === 0);
 	var answers_everywhere = true;
 
@@ -102,6 +103,7 @@ test_manager.publish = function() {
 }
 
 test_manager.publish_material = function() {
+	console.log("publ");
 	popup.show('{% include "Pages/Material/editor/_popup_texts/publish/exports.html" %}',
 		function() {
 
@@ -128,6 +130,7 @@ test_manager.publish_material = function() {
 			console.log("#{{type}}_publish");
 			$("#{{type}}_unpublish").show();
 
+			console.log("ajax");
 			$.ajax({
 				type:"POST",
 				url:"/{{type}}/publish/",
@@ -135,7 +138,9 @@ test_manager.publish_material = function() {
 				processData: false,
 				contentType: false,
 				success: function(response) {
+					popup.hide();
 					notification.show(response["type"], response["message"]);
+					test_manager.save();
 				}
 			});
 		});

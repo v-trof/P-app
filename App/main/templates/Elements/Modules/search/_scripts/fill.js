@@ -3,8 +3,12 @@ search.fill = function(data) {
   var $links = search.$.find('.__links')
   $links.html('');
   data.forEach(function(item) {
+    var $new_link = $('<a class="m--card m--'
+      + item.type + '" href="' 
+      + item.content.link + '"></a>');
     $new_item = search.build[item.type](item.content);
-    $links.append($new_item);
+    $new_link.append($new_item);
+    $links.append($new_link);
   });
   search.filter();
 }

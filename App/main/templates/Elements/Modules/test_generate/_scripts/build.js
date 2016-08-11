@@ -27,25 +27,25 @@ generate.build.element = function(element_class, value, additional) {
 }
 {% if not attempt and not read %}
 generate.let_editing = function($element) {
-	if(! $element.hasClass('m--pullable')) {
-		pull_put.puller.add(
-			$element,
-			this.editing_actions,
-			this.edit.edit_action,
-			function() {
-				indicator.show(1);
-			},
-			false,
-			true);
-	}
+	// if(! $element.hasClass('m--pullable')) {
+	pull_put.puller.add(
+		$element,
+		this.editing_actions,
+		this.edit.edit_action,
+		function() {
+			indicator.show(1);
+		},
+		false,
+		true);
+	// }
 	
-	if(! $element.hasClass('m--put-zone')) {
-		indicator.add($element, 'down', 1);
-		this.edit.add_put_zone($element, function($this, $pulled) {
-			$this.after($pulled);
-			generate.let_editing($pulled);
-		})
-	}
+	// if(! $element.hasClass('m--put-zone')) {
+	indicator.add($element, 'down', 1);
+	this.edit.add_put_zone($element, function($this, $pulled) {
+		$this.after($pulled);
+	});
+	// generate.let_editing($pulled);
+	// }
 
 	return $element;
 }
@@ -62,7 +62,7 @@ generate.build.task = function($element) {
 
 		var $bunch = $new_task.add($margin);
 
-		console.log($bunch);
+		// console.log($bunch);
 
 		button_delete.add($new_task, $bunch, function() {
 			setTimeout(editor.check_self, 100);
@@ -75,7 +75,7 @@ generate.build.task = function($element) {
 	$new_task.find('.__content').append($element);
 
 	{% if not attempt and not read %}
-		generate.let_editing($element);
+		// generate.let_editing($element);
 		editor.check_self();
 	{% endif %}
 

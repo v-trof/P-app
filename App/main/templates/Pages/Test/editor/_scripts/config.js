@@ -8,7 +8,7 @@ pull_put.reset_sync = true;
 
 pull_put.pre_reset = function(_callback) {
   // console.log("Pre reset", pull_put.ui.element);
-  generate.let_editing(pull_put.ui.element);
+  // generate.let_editing(pull_put.ui.element);
   _callback();
 }
 

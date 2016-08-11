@@ -1,15 +1,14 @@
 search.request = function() {
   var query = search.$.find('.__query').val();
 
-  console.log(search.types_active);
-  //comstricting types
+  //constructing types
   var search_types = {}
 
-  if(search.types_active.indexOf("courses") !== -1) {
+  if(search.types_active.indexOf("course") !== -1) {
     search_types.courses = {}
   }
 
-  if(search.types_active.indexOf("users") !== -1) {
+  if(search.types_active.indexOf("user") !== -1) {
     if(search.course_id) {
       search_types.users = {
         course_id: search.course_id
@@ -19,8 +18,8 @@ search.request = function() {
     }
   }
 
-  var add_tasks = (search.types_active.indexOf("tests") !== -1);
-  var add_material = (search.types_active.indexOf("materials") !== -1);
+  var add_tasks = (search.types_active.indexOf("test") !== -1);
+  var add_material = (search.types_active.indexOf("material") !== -1);
 
   if(add_tasks && add_material) {
     search_types.elements = {}

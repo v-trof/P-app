@@ -27,7 +27,7 @@ search.build.course = function(data) {
   
   //heading
   $new_course.find('.__heading').text(data.name);
-  
+  $new_course.find('.__content').html("");
   //closed class
   if(data.is_closed) {
     $new_course.addClass('m--closed');
@@ -46,8 +46,8 @@ search.build.course = function(data) {
     amount = "Нет";
   }
 
-  $new_course.find('.__cointent').append('<b>' + amount + '</b>'
-    + form);
+  $new_course.find('.__content').append('<b>' + amount + '</b> '
+    + form + "<br>");
 
   form = search.build.num_form(data.tests_number, {
     one: "тест",
@@ -61,104 +61,49 @@ search.build.course = function(data) {
     amount = "Нет";
   }
 
-  $new_course.find('.__cointent').append('<b>' + amount + '</b>'
+  $new_course.find('.__content').append('<b>' + amount + '</b> '
     + form);
 
   return $new_course;
 }
 
 search.build.test = function(data) {
-  var $new_course = $(search.template.test);
+  var $new_test = $(search.template.test);
   var form = "";
   var amount = "";
   
   //heading
-  $new_course.find('.__heading').text(data.name);
-  
-  //closed class
-  if(data.is_closed) {
-    $new_course.addClass('m--closed');
-  }
+  $new_test.find('.__heading').text(data.title);
 
-  //amount of tests
-  form = search.build.num_form(data.materials_number, {
-    one: "материал",
-    few: "материала",
-    many: "материалов"
+  //amount of tasks
+  $new_test.find('.__content').html("");
+  form = search.build.num_form(data.questions_number, {
+    one: "вопрос",
+    few: "вопроса",
+    many: "вопросов"
   });
 
-  if(data.materials_number > 0) {
-    amount = data.materials_number;
+  if(data.questions_number > 0) {
+    amount = data.questions_number;
   } else {
     amount = "Нет";
   }
 
-  $new_course.find('.__cointent').append('<b>' + amount + '</b>'
+  $new_test.find('.__content').append('<b>' + amount + '</b> '
     + form);
 
-  form = search.build.num_form(data.tests_number, {
-    one: "тест",
-    few: "теста",
-    many: "тестов"
-  });
-
-  if(data.tests_number > 0) {
-    amount = data.tests_number;
-  } else {
-    amount = "Нет";
-  }
-
-  $new_course.find('.__cointent').append('<b>' + amount + '</b>'
-    + form);
-
-  return $new_course;
+  return $new_test;
 }
 
 search.build.material = function(data) {
-  var $new_course = $(search.template.material);
+  var $new_material = $(search.template.material);
   var form = "";
   var amount = "";
   
   //heading
-  $new_course.find('.__heading').text(data.name);
-  
-  //closed class
-  if(data.is_closed) {
-    $new_course.addClass('m--closed');
-  }
+  $new_material.find('.__heading').text(data.title);
 
-  //amount of tests
-  form = search.build.num_form(data.materials_number, {
-    one: "материал",
-    few: "материала",
-    many: "материалов"
-  });
-
-  if(data.materials_number > 0) {
-    amount = data.materials_number;
-  } else {
-    amount = "Нет";
-  }
-
-  $new_course.find('.__cointent').append('<b>' + amount + '</b>'
-    + form);
-
-  form = search.build.num_form(data.tests_number, {
-    one: "тест",
-    few: "теста",
-    many: "тестов"
-  });
-
-  if(data.tests_number > 0) {
-    amount = data.tests_number;
-  } else {
-    amount = "Нет";
-  }
-
-  $new_course.find('.__cointent').append('<b>' + amount + '</b>'
-    + form);
-
-  return $new_course;
+  return $new_material;
 }
 
 search.build.user = function(data) {

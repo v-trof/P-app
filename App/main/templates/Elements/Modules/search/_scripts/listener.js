@@ -17,10 +17,11 @@ search.enable_query_listener = function() {
 search.enable_checkbox_listener = function() {
   search.$.find('input[type="checkbox"]').each(function(index, el) {
     var type = $(this).attr('class').slice(7);
+    this.checked = true;
     $(this).change(function() {
       if(this.checked) {
         search.types_active.push(type);
-        search.filter();
+        search.request();
       } else {
         search.types_active.remove(type);
         search.filter();
