@@ -2730,8 +2730,10 @@ class Search():
 			users=Utility.sort_by_conformity(object=users, indicator="conformity")
 		for user in users:
 			content={}
-			content["id"]=user["object"].id
+			content["link"]="/course/"+str(course["object"].id)+'/'
+			content["id"]="/profile/"+str(user["object"].id)+'/'
 			content["name"]=user["object"].name
+			content["avatar"]=user["object"].avatar.url
 			content["is_teacher"]=user["object"].is_teacher
 			cards.append({"type":"user","content":content,"conformity":user["conformity"]})
 		return cards
@@ -2766,6 +2768,7 @@ class Search():
 			with io.open('main/files/json/courses/' + str(course["object"].id) + '/info.json', 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
 			course_data={}
+			course_data["link"]="/course/"+str(course["object"].id)+'/'
 			course_data["is_closed"]=course["object"].is_closed
 			course_data["name"]=course["object"].name
 			course_data["tests_number"] = 0
@@ -2822,7 +2825,8 @@ class Search():
 							conformity=len(set(material_data["title"].split(' ')) & set(search_query.split(' ')))/2*100
 							content={"type": "material", "title": material_data[
 																	 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id, "publish_date": element["publish_date"]}
-						elements.append({"content":content,"conformity":conformity,"type":element["type"]})
+						if conformity>=33:
+							elements.append({"content":content,"conformity":conformity,"type":element["type"]})
 		if len(elements) > 0:
 			elements=Utility.sort_by_conformity(object=elements, indicator="conformity")
 		for element in elements:
@@ -2859,6 +2863,7 @@ class Search():
 					cards.extend(Search.types[type](search_query=search_query))
 				else: cards.extend(Search.types[type](search_query=search_query))
 		cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
+		print(cards)
 		return cards
 
 	types = {

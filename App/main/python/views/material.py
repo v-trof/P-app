@@ -49,8 +49,8 @@ def delete(request):
 	if request.method == 'POST':
 		course_id = request.POST.get("course_id",None)
 		material_id = request.POST.get("material_id",None)
-		Material.delete(course_id=course_id, material_id=material_id)
-		return HttpResponse("Материал удален")
+		response=Material.delete(course_id=course_id, material_id=material_id)
+		return HttpResponse(json.dumps(response), content_type="application/json")
 
 def load(request):
 	# loads material file
@@ -79,7 +79,7 @@ def save(request):
 		course_id = request.POST.get("course_id",None)
 		material_id = request.POST.get("material_id",None)
 		response = Material.save(json_file=json_file, course_id=course_id, material_id=material_id, user=request.user)
-		return HttpResponse(response)
+		return HttpResponse(json.dumps(response), content_type="application/json")
 
 
 def publish(request):
@@ -89,7 +89,7 @@ def publish(request):
 		material_id = request.POST.get("material_id",None)
 		section = request.POST.get("section","Нераспределенные")
 		response = Material.publish(course_id=course_id, material_id=material_id,section=section)
-		return HttpResponse(response)
+		return HttpResponse(json.dumps(response), content_type="application/json")
 
 
 def unpublish(request):
@@ -97,7 +97,7 @@ def unpublish(request):
 		course_id = request.POST.get("course_id",None)
 		material_id = request.POST.get("material_id",None)
 		response = Material.unpublish(course_id=course_id, material_id=material_id)
-		return HttpResponse(response)
+		return HttpResponse(json.dumps(response), content_type="application/json")
 
 
 def share(request):
@@ -148,7 +148,7 @@ def upload_downloadable(request):
 		path='main/files/media/courses/' + course_id + '/assets/' + material_id + "/"
 		response = Material.upload_downloadable(
 			asset=asset, course_id=course_id, material_id=material_id, path=path)
-		return HttpResponse(response)
+		return HttpResponse(json.dumps(response), content_type="application/json")
 
 # embmend
 def upload_embmend(request):
@@ -177,4 +177,4 @@ def load_asset_file(request, course_id, material_id, asset_name):
 	response=HttpResponse(FileWrapper(asset.getvalue()),
 						  content_type='application/zip')
 	response['Content-Disposition']='attachment; filename=myfile.zip'
-	return response
+	return HttpResponse(json.dumps(response), content_type="application/json")
