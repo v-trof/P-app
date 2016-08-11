@@ -2726,16 +2726,16 @@ class Search():
 			if course and len(user.participation_list) > 0:
 				if str(course) in user.participation_list.split(' ') or str(course) == user.participation_list:
 					conformity=Utility.compare(str1=search_query,str2=user.name)
-					if conformity > 10:
+					if conformity > 20:
 						users.append({"object":user_object,"conformity":conformity})
 			elif course and len(user.courses) > 0:
 				if str(course) in user.courses.split(' ') or str(course) == user.courses:
 					conformity=Utility.compare(str1=search_query,str2=user.name)
-					if conformity > 10:
+					if conformity > 20:
 						users.append({"object":user_object,"conformity":conformity})
 			elif course==None:
 				conformity=Utility.compare(str1=search_query,str2=user.name)
-				if conformity > 10:
+				if conformity > 20:
 					users.append({"object":user_object,"conformity":conformity})
 		if len(users) > 0:
 			users=Utility.sort_by_conformity(object=users, indicator="conformity")
@@ -2771,7 +2771,7 @@ class Search():
 		for course in courses_all:
 			if not course.is_closed:
 				conformity=Utility.compare(str1=search_query,str2=course.name)
-				if conformity > 10:
+				if conformity > 20:
 					courses.append({"object":course,"conformity":conformity})
 		if len(courses) > 0:
 			print("do",courses)
@@ -2838,7 +2838,7 @@ class Search():
 							conformity=Utility.compare(str1=search_query,str2=material_data["title"])
 							content={"type": "material", "title": material_data[
 																	 "title"], "id": material_id, "link": '/material/read/?course_id=' + course_id + "&material_id=" + material_id, "publish_date": element["publish_date"]}
-						if conformity>10:
+						if conformity>20:
 							elements.append({"content":content,"conformity":conformity,"type":element["type"]})
 		if len(elements) > 0:
 			print("do", elements)

@@ -101,6 +101,7 @@ func_patterns = [
     url(r'^upload_by_url/$', functional.upload_file_by_url, name="upload_file_by_url"),
     url(r'^delete_assignment/$', functional.Course_views.delete_assignment, name="delete_assignment"),
     url(r'^delete_notification/$', functional.delete_notification, name="delete_notification"),
+    url(r'^delete_last_page/$', functional.delete_last_page, name="delete_last_page"),
     url(r'^share/$', functional.Universal_views.share, name="share"),
     url(r'^unshare/$', functional.Universal_views.unshare, name="unshare"),
     url(r'^search/$', functional.search, name="search"),

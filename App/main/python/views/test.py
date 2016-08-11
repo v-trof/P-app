@@ -189,7 +189,7 @@ def change_score(request):
 
 def results(request):
 	if request.user.is_anonymous():
-		return redirect('/login')
+		return redirect('/login/')
 	course_id = request.GET.get("course_id", None)
 	test_id = request.GET.get("test_id", None)
 	user_id = request.GET.get("user_id", request.user.id)

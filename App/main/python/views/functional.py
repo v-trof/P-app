@@ -410,6 +410,11 @@ def delete_notification(request):
         del request.session['notifications']
         return HttpResponse('ok')
 
+def delete_last_page(request):
+    if request.method == 'POST':
+        del request.session['last_page']
+        return HttpResponse('ok')
+
 def search(request):
     if request.method == "POST":
         search_query=request.POST.get("search_query","")

@@ -13,7 +13,20 @@ $('#register').click(function() {
 			success: function(response) {
 					  if (response["type"] == "success" || response["type"] == "groups")
 					  {
-						window.location.href='/'
+						if (response["type"] == "success")
+			                  {
+			                  	{% if request.session.last_page %}
+			                  		window.location.href='{{request.session.last_page}}'
+			                  		$.ajax({
+										type:"POST",
+										url:"/func/delete_last_page/",
+										data: {
+										   'csrfmiddlewaretoken': '{{ csrf_token }}'
+										}
+										});
+			                  	{% else %}
+			                  		window.location.href='/'
+			                  	{% endif %}
 					  }
 					  else
 					  {
