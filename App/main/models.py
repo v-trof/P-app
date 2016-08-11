@@ -99,7 +99,17 @@ class Utility():
 		str1=str1.replace(" ", "").lower()
 		str2=str2.replace(" ", "").lower()
 		conformity=0
-		#Boyer-Moore
+		if len(str1)>len(str2):
+			return 0
+		for char in str2:
+			if char=="ё":
+				char="е"
+		for char in str2:
+			if char=="ё":
+				char="е"	
+		if not str2.find(str1) == -1:
+			conformity=len(str1)/len(str2)*100
+
 		return conformity
 
 	def upload_file(file, path):
@@ -236,11 +246,12 @@ class Utility():
 		if len(object) > 1 or isinstance(object, dict):
 			if isinstance(object, dict):
 				if indicator:
+					print(object[indictator].items())
 					object[indictator] = collections.OrderedDict(
 						sorted(object[indictator].items()))
 				else:
 					object = collections.OrderedDict(sorted(object.items()))
-			else: sorted(object, key=lambda k: k[indicator]) 
+			else: object = sorted(object, key=lambda k: k[indicator], reverse=True) 
 		return object
 
 
@@ -2714,24 +2725,24 @@ class Search():
 			user_object = User.objects.get(username=str(user))
 			if course and len(user.participation_list) > 0:
 				if str(course) in user.participation_list.split(' ') or str(course) == user.participation_list:
-					conformity=len(set(user_object.name.split(' ')) & set(search_query.split(' ')))/2*100
-					if conformity >= 50:
+					conformity=Utility.compare(str1=search_query,str2=user.name)
+					if conformity > 10:
 						users.append({"object":user_object,"conformity":conformity})
 			elif course and len(user.courses) > 0:
 				if str(course) in user.courses.split(' ') or str(course) == user.courses:
-					conformity=len(set(user_object.name.split(' ')) & set(search_query.split(' ')))/2*100
-					if conformity >= 50:
+					conformity=Utility.compare(str1=search_query,str2=user.name)
+					if conformity > 10:
 						users.append({"object":user_object,"conformity":conformity})
 			elif course==None:
-				conformity=len(set(user_object.name.split(' ')) & set(search_query.split(' ')))/2*100
-				if conformity >= 50:
+				conformity=Utility.compare(str1=search_query,str2=user.name)
+				if conformity > 10:
 					users.append({"object":user_object,"conformity":conformity})
 		if len(users) > 0:
 			users=Utility.sort_by_conformity(object=users, indicator="conformity")
 		for user in users:
 			content={}
-			content["link"]="/course/"+str(course["object"].id)+'/'
-			content["id"]="/profile/"+str(user["object"].id)+'/'
+			content["link"]="/profile/"+str(user["object"].id)+'/'
+			content["id"]=user["object"].id
 			content["name"]=user["object"].name
 			content["avatar"]=user["object"].avatar.url
 			content["is_teacher"]=user["object"].is_teacher
@@ -2759,11 +2770,13 @@ class Search():
 
 		for course in courses_all:
 			if not course.is_closed:
-				conformity=len(set(course.name.split(' ')) & set(search_query.split(' ')))/2*100
-				if conformity >= 33:
+				conformity=Utility.compare(str1=search_query,str2=course.name)
+				if conformity > 10:
 					courses.append({"object":course,"conformity":conformity})
 		if len(courses) > 0:
+			print("do",courses)
 			courses=Utility.sort_by_conformity(object=courses, indicator="conformity")
+			print("posle",courses)
 		for course in courses:
 			with io.open('main/files/json/courses/' + str(course["object"].id) + '/info.json', 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
@@ -2807,9 +2820,9 @@ class Search():
 							test_id = element["id"]
 							with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 								test_data = json.load(info_file)
-							conformity=len(set(test_data["title"].split(' ')) & set(search_query.split(' ')))/2*100
+							conformity=Utility.compare(str1=search_query,str2=test_data["title"])
 							test={"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
-																	 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id, "publish_date": element["publish_date"]}
+																	 "questions_number"], "link": '/test/attempt/?course_id=' + course_id + "&test_id=" + test_id, "publish_date": element["publish_date"]}
 							if user:
 								started=Test.is_started(course_id=course_id,user_id=str(user.id), test_id=test_id)
 								finished=Test.is_finished(course_id=course_id,user_id=str(user.id), test_id=test_id)
@@ -2822,13 +2835,15 @@ class Search():
 							material_id = element["id"]
 							with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 								material_data = json.load(info_file)
-							conformity=len(set(material_data["title"].split(' ')) & set(search_query.split(' ')))/2*100
+							conformity=Utility.compare(str1=search_query,str2=material_data["title"])
 							content={"type": "material", "title": material_data[
-																	 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id, "publish_date": element["publish_date"]}
-						if conformity>=33:
+																	 "title"], "id": material_id, "link": '/material/read/?course_id=' + course_id + "&material_id=" + material_id, "publish_date": element["publish_date"]}
+						if conformity>10:
 							elements.append({"content":content,"conformity":conformity,"type":element["type"]})
 		if len(elements) > 0:
+			print("do", elements)
 			elements=Utility.sort_by_conformity(object=elements, indicator="conformity")
+			print("posle",elements)
 		for element in elements:
 			cards.append({"type":element["type"],"content":element["content"],"conformity":element["conformity"]})
 

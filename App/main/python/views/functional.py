@@ -62,6 +62,8 @@ class User_views():
 
     def reg(request):
         if request.method == 'POST':
+            if not request.user.is_anonymous():
+                logout(request)
             course_id = request.POST.get('course_id', False)
             email = request.POST['email']
             code=request.POST.get('code',None)

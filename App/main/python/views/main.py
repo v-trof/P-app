@@ -83,8 +83,6 @@ class Auth_group():
 		return render(request, 'Pages/Account/login/exports.html')
 
 	def register(request, course_id=None):
-		if not request.user.is_anonymous():
-			logout(request)
 		if Course.objects.filter(id=course_id).exists():
 			code=request.GET.get('code',None)
 			return render(request, 'Pages/Account/registration/exports.html', {"course": Course.objects.get(id=course_id),"code":code})
