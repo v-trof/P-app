@@ -1,16 +1,18 @@
 //students
 
 results_display.replace_answer = function($answer,
-	user_answer, right_answer, quality) {
+	user_answer, right_answer, quality, time) {
+	
+	var time = '<span class="m--grey m--time">' + time + '</span>';
 	$answer.html('');
 	if(quality === "positive") {
 		$answer.append("<div>Ваш ответ: <b class='m--positive'>" 
-			+ user_answer + "</b></div>");
+			+ user_answer + "</b>" + time + "</div>");
 	}
 
 	if(quality === "neutral") {
 		$answer.append("<div>Ваш ответ: <b class='m--neutral'>" 
-			+ user_answer + "</b></div>");
+			+ user_answer + "</b>" + time + "</div>");
 		$answer.append("<div>Верный ответ: <b>" 
 			+ right_answer
 		+ "</b></div>");
@@ -18,7 +20,7 @@ results_display.replace_answer = function($answer,
 
 	if(quality === "negative") {
 		$answer.append("<div>Ваш ответ: <b class='m--negative'>" 
-			+ user_answer + "</b></div>");
+			+ user_answer + "</b>" + time + "</div>");
 		$answer.append("<div>Верный ответ: <b>" + 
 				right_answer + 
 			"</b></div>");
@@ -32,13 +34,15 @@ $(document).ready(function() {
 		// console.log("reloc");
 
 		results_display.replace_answer = function($answer,
-			user_answer, right_answer, quality, index, worth) {
+			user_answer, right_answer, quality, time, index, worth) {
 
 			var $result_tempalte = $('{% include "Elements/Modules/results_controls/__answer_display/exports.html" %}');
 
+			var time = '<span class="m--grey m--time">' + time + '</span>';
+
 			$result_tempalte.find(".__student_answer")
 				.addClass('m--' + quality)
-				.html(user_answer);
+				.html(user_answer + times);
 
 			if(quality === "positive") {
 			 	$result_tempalte.find(".__right_answer").hide();
@@ -60,6 +64,8 @@ $(document).ready(function() {
 				}
 			)
 
+			$result_tempalte.append('<div class="m--grey">'
+				 + time + '</div>');
 			$answer.html($result_tempalte);
 		}
 	}

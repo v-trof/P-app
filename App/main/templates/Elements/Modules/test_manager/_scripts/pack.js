@@ -57,6 +57,7 @@ test_manager.pack = function() {
 				generate.read(element_class).element.parse($(this))
 			);
 			$(this).find("img").each(function(img_index, $element) {
+
 				if($(this).attr('src').indexOf("blob") == 0){
 					//file upload
 					var assets = generate.data.shared.assets;
@@ -64,10 +65,12 @@ test_manager.pack = function() {
 					var src = $(this).attr('src');
 					var upload = false;
 
+					console.log(assets);
+
 					//find file
-					for(var i=1;i<=assets.last_id;i++) {
-						if(typeof assets[i] != "undefined") {
-							if(assets[i].urls[0] == src) {
+					for(var i=0;i<=assets.last_id;i++) {
+						if(typeof assets[i] !== "undefined") {
+							if(assets[i].urls[0] === src) {
 								upload = true;
 								file_to_upload = assets[i].files[0];
 							}
@@ -78,7 +81,7 @@ test_manager.pack = function() {
 						upload_file(file_to_upload, task_index, index);
 					}
 					
-				} else if($(this).attr('src') !== '/media/samples/image.jpg') {
+				} else if($(this).attr('src')[0] !== '/') {
 					var form_data = new FormData();
 					form_data.append('file_url',$(this).attr('src'));
 					form_data.append('path', 'courses/{{course.id}}/assets/{{type}}/');

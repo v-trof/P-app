@@ -44,6 +44,7 @@ test_manager.publish = function() {
 			test_manager.add_section_binding();
 
 			$("#publish").click(function() {
+				var data_is_ok = true;
 				var formData = new FormData();
 				formData.append("course_id", "{{course.id}}");
 				formData.append("test_id", "{{test.id}}");
@@ -54,6 +55,12 @@ test_manager.publish = function() {
 					.find("input").each(function(index, el) {
 					// console.log("m:", $(this).attr("id"), $(this).val());
 					formData.append($(this).attr("id"), $(this).val())
+					if(( ! $(this).val()) || parseInt($(this).val) < 1) {
+						notification.show("warning", 
+							"Введите минимальное кол-во баллов для всех оценок");
+						data_is_ok = false;
+						return false;
+					}
 				});
 
 				$(".m--publish-popup .__forgive")
@@ -72,7 +79,9 @@ test_manager.publish = function() {
 					else formData.append("section", "Нераспределенные");
 				}
 
-			
+				if(!data_is_ok) {
+					return false;
+				}
 
 				$.ajax({
 					type:"POST",

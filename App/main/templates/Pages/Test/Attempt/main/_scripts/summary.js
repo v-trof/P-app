@@ -1,6 +1,9 @@
 $(document).ready(function() {
 	var summary_template = function(index, 
-		show_index, value="Пусто") {
+		show_index, value) {
+		if(!value) {
+			value = "Пусто";
+		}
 		return '<div class="card m--small sumfor_'
 			+ index + ' row">'
 			+'<div class="__number">' + show_index + ':</div>'

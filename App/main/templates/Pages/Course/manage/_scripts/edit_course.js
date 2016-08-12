@@ -16,8 +16,10 @@ $('#edit_course').click(function(event) {
 			$subject.val(course_info.subject);
 			$subject.parent().find('.__display').text(course_info.subject);
 
+			console.log(course_info.is_closed);
+
 			if(course_info.is_closed == "1") {
-				$is_closed.prop('checked', 'true');
+				$is_closed[0].checked = true;
 			}
 
 			$('#create_course_button').text('Сохранить изменения');

@@ -3,7 +3,7 @@ test_manager.upload_queue = []
 test_manager.packed_test = []
 
 test_manager.upload_test = function(test_packed) {
-
+	console.log('upload');
 	console.log(test_manager.packed_test);
 
 	var formData = new FormData();

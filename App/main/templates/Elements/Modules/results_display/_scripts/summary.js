@@ -80,6 +80,7 @@ results_display.create_summary = function(attempt, results) {
 				$(this), 
 				value, attempt[answer_index].answer,
 				quality,
+				attempt[answer_index].time,
 				answer_index,
 				{
 					answer: attempt[answer_index].user_score,
