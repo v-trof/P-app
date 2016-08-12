@@ -1217,7 +1217,7 @@ class CourseManager(models.Manager):
 					with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 						test_data = json.load(info_file)
 					test={"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
-															 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id, "publish_date": element["publish_date"]}
+															 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id}
 					if user:
 						started=Test.is_started(course_id=course_id,user_id=str(user.id), test_id=test_id)
 						finished=Test.is_finished(course_id=course_id,user_id=str(user.id), test_id=test_id)
@@ -1231,24 +1231,22 @@ class CourseManager(models.Manager):
 					with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 						material_data = json.load(info_file)
 						context["published"][section].append({"type": "material", "title": material_data[
-															 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id, "publish_date": element["publish_date"]})
-			if len(context["published"][section]) > 0:
-				context["published"][section]=Utility.sort_by_date(object=context["published"][section],indicator="publish_date",raising=False)
-			else: context["published"].pop(section,None)
+															 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
+			if not len(context["published"][section]) > 0:
+				context["published"].pop(section,None)
 		for element in data["sections"]["unpublished"]:
 			if element["type"] == "test":
 				test_id = element["id"]
 				with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 					test_data = json.load(info_file)
 					context["unpublished"].append({"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
-												  "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id, "unpublish_date": element["unpublish_date"]})
+												  "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
 			else:
 				material_id = element["id"]
 				with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 					material_data = json.load(info_file)
 					context["unpublished"].append({"type": "material", "title": material_data[
-												  "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id, "unpublish_date": element["unpublish_date"]})
-		context["unpublished"]=Utility.sort_by_date(object=context["unpublished"], indicator="unpublish_date",raising=False)
+												  "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
 		return context
 
 	def load_course_requests(self, course_id):
@@ -1392,7 +1390,7 @@ class CourseManager(models.Manager):
 					if user.id in result["unseen_by"]:
 						result_preview = result
 						result_preview["user"] = User.objects.get(id=user_id)
-						result_preview["course"] = course
+						result_preview["course_id"] = str(course.id)
 						updates["new_results"].append(result_preview)
 						result["unseen_by"].remove(user.id)
 				with io.open(test_result, 'w', encoding='utf8') as result_file:
@@ -1897,7 +1895,7 @@ class Material():
 		material_published = Material.is_published(material_id=material_id, course_id=course_id)
 		if not material_unpublished and not material_published:
 			course_info['sections']['unpublished'].append(
-				{"id": material_id, "type": "material", "unpublish_date":Utility.transform_date(date=str(datetime.datetime.now())[:10])})
+				{"id": material_id, "type": "material"})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		return {"type":"success","message":"Материал сохранен"}
@@ -1946,7 +1944,7 @@ class Material():
 					is_published=True
 		if not is_published:
 			course_info['sections']['published'][section].append(
-			{"id": material_id, "type": "material", "publish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
+			{"id": material_id, "type": "material"})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 
@@ -1971,7 +1969,7 @@ class Material():
 
 		if not is_unpublished:
 			course_info['sections']['unpublished'].append(
-				{"id": material_id, "type": "material", "unpublish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
+				{"id": material_id, "type": "material"})
 
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -2125,7 +2123,7 @@ class Test():
 		test_published = Test.is_published(test_id=test_id, course_id=course_id)
 		if not test_unpublished and not test_published:
 			course_info['sections']['unpublished'].append(
-				{"id": test_id, "type": "test", "unpublish_date":Utility.transform_date(date=str(datetime.datetime.now())[:10])})
+				{"id": test_id, "type": "test"})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		return {"type":"success","message":"Тест сохранен"}
@@ -2164,7 +2162,7 @@ class Test():
 					is_published=True
 		if not is_published:
 			course_info['sections']['published'][
-				section].append({"id": test_id, "type": "test", "publish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
+				section].append({"id": test_id, "type": "test"})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 
@@ -2203,7 +2201,7 @@ class Test():
 				is_unpublished=True
 		if not is_unpublished:
 			course_info['sections']['unpublished'].append(
-				{"id": test_id, "type": "test", "unpublish_date": Utility.transform_date(date=str(datetime.datetime.now())[:10])})
+				{"id": test_id, "type": "test"})
 
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
@@ -2628,8 +2626,6 @@ class Marks():
 				with io.open('main/files/json/courses/' + str(course_id) + '/tests/'+test["id"]+'.json', 'r', encoding='utf8') as data_file:
 					data = json.load(data_file)
 					tests_info[section][test["id"]]=data
-					tests_info[section][test["id"]]["publish_date"]=test["publish_date"]
-			tests_info[section]=Utility.sort_by_date(object=tests_info[section],indicator="publish_date",raising=False)
 		return tests_info
 
 	def get_tests(course_id, task_id):
@@ -2873,14 +2869,14 @@ class Search():
 				course_data = json.load(data_file)
 			for section in course_data["sections"]["published"]:
 				for element in course_data["sections"]["published"][section]:
+					course=Course.objects.get(id=course_id)
 					if type and element["type"]==type or type==None:
 						if element["type"] == "test":
 							test_id = element["id"]
 							with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 								test_data = json.load(info_file)
 							conformity=Utility.compare(str1=search_query,str2=test_data["title"])
-							test={"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
-																	 "questions_number"], "link": '/test/attempt/?course_id=' + course_id + "&test_id=" + test_id, "publish_date": element["publish_date"]}
+							test={"type": "test","course_name": str(course.name),"title": test_data["title"], "id": test_id, "questions_number": test_data["questions_number"], "link": '/test/attempt/?course_id=' + course_id + "&test_id=" + test_id }
 							if user:
 								started=Test.is_started(course_id=course_id,user_id=str(user.id), test_id=test_id)
 								finished=Test.is_finished(course_id=course_id,user_id=str(user.id), test_id=test_id)
@@ -2894,14 +2890,12 @@ class Search():
 							with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 								material_data = json.load(info_file)
 							conformity=Utility.compare(str1=search_query,str2=material_data["title"])
-							content={"type": "material", "title": material_data[
-																	 "title"], "id": material_id, "link": '/material/read/?course_id=' + course_id + "&material_id=" + material_id, "publish_date": element["publish_date"]}
+							content={"type": "material","course_name":str(course.name),"title": material_data[
+																	 "title"], "id": material_id, "link": '/material/read/?course_id=' + course_id + "&material_id=" + material_id}
 						if conformity>20:
 							elements.append({"content":content,"conformity":conformity,"type":element["type"]})
 		if len(elements) > 0:
-			print("do", elements)
 			elements=Utility.sort_by_conformity(object=elements, indicator="conformity")
-			print("posle",elements)
 		for element in elements:
 			cards.append({"type":element["type"],"content":element["content"],"conformity":element["conformity"]})
 

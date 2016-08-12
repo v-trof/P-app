@@ -200,7 +200,7 @@ class Course_group():
 		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
 			return redirect('/')
-		if Utility.is_teacher(user=request.user, course_id=course_id):
+		if not Utility.is_teacher(user=request.user, course_id=course_id):
 			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
 			return redirect('/course/' + course_id + '/')
 		course = Course.objects.get(id=course_id)
