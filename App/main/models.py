@@ -95,6 +95,7 @@ class FileForm(forms.Form):
 
 class Utility():
 
+
 	def compare(str1,str2):
 		str1=str1.replace(" ", "").lower()
 		str2=str2.replace(" ", "").lower()
@@ -194,6 +195,50 @@ class Utility():
 		date=date.split("-")
 		new_date=date[2]+"-"+date[1]+"-"+date[0]
 		return new_date
+
+	def time_delta(date1,date2):
+
+		time_delta=0
+		year1=int(date1[:4])
+		year2=int(date2[:4])
+		month1=int(date1[5:7])
+		month2=int(date2[5:7])
+		day1=int(date1[8:10])
+		day2=int(date2[8:10])
+		hour1=int(date1[11:13])
+		hour2=int(date2[11:13])
+		minute1=int(date1[14:16])
+		minute2=int(date2[14:16])
+		second1=int(date1[17:19])
+		second2=int(date2[17:19])
+
+		time_delta+=(year1-year2)*365*24*60*60
+		time_delta+=(month1-month2)*30*24*60*60
+		time_delta+=(day1-day2)*24*60*60
+		time_delta+=(hour1-hour2)*60*60
+		time_delta+=(minute1-minute2)*60
+		time_delta+=(second1-second2)
+
+		time_delta_h=0
+		time_delta_m=0
+		time_delta_s=0
+		time_delta=abs(time_delta)
+		if time_delta>=3600:
+			time_delta_h=int(time_delta/3600)
+			time_delta-=time_delta_h*3600
+		if time_delta>=60:
+			time_delta_m=int(time_delta/60)
+			time_delta-=time_delta_m*60
+		time_delta_s=int(time_delta)
+		if len(str(time_delta_h))<2:
+			time_delta_h='0'+str(time_delta_h)
+		if len(str(time_delta_m))<2:
+			time_delta_m='0'+str(time_delta_m)
+		if len(str(time_delta_s))<2:
+			time_delta_s='0'+str(time_delta_s)
+		time_delta=str(time_delta_h)+":"+str(time_delta_m)+":"+str(time_delta_s)
+
+		return time_delta
 
 	def sort_by_date(object, indicator, raising=True):
 		items = []
@@ -2295,6 +2340,18 @@ class Test():
 		return context
 
 	def attempt_save(test_id, question_id, course_id, answer, user):
+		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+			test_info = json.load(info_file)
+		time_now=str(datetime.datetime.now())
+		if "start_time" in test_info.keys():
+			time=Utility.time_delta(test_info["start_time"][str(user.id)],str(time_now))
+		else:
+			time="00:00:00"
+			test_info["start_time"]={}
+			test_info["start_time"][str(user.id)]=time_now
+		print(time)
+		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'w', encoding='utf8') as info_file:
+			info_file.write(json.dumps(test_info, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as assignments_file:
 			assignment_map = json.load(assignments_file)
 		for assignment_id, content in assignment_map.items():
@@ -2307,6 +2364,7 @@ class Test():
 			data = json.load(json_file)
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
 			data[str(question_id - 1)]["user_answer"] = answer
+			data[str(question_id-1)]["time"]=time
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return {"type":"success","message":"Ответ сохранен"}

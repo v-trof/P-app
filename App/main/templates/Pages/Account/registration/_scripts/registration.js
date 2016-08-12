@@ -28,6 +28,7 @@ $('#register').click(function() {
 			                  		window.location.href='/'
 			                  	{% endif %}
 					  }
+					}
 					  else
 					  {
 						notification.show(response["type"], response["message"]);

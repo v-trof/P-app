@@ -94,15 +94,15 @@ class User_views():
             contact_type = request.POST['contact_type']
             message = User.objects.delete_contact(
                 contact_type=contact_type, user=request.user)
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def reset_password(request):
         if request.method == 'POST':
             email = request.POST['email']
             if User.objects.reset_password(email=email):
-                return HttpResponse("success")
+                return HttpResponse(json.dumps({"type":"success","message":"Письмо для подтверждения отправлено вам на почту"}), content_type="application/json")
             else:
-                return HttpResponse("Введен несуществующий email")
+                return HttpResponse(json.dumps({"type":"error","message":"Введен несуществующий email"}), content_type="application/json")
 
     def change_email(request):
         if request.method == 'POST':
@@ -115,7 +115,7 @@ class User_views():
     def approve_email(request):
         if request.method == 'POST':
             if not User.objects.filter(id=int(user_id)).exists():
-                return HttpResponse("Несуществующий пользователь")
+                return HttpResponse(json.dumps({"type":"error","message":"Несуществующий пользователь"}), content_type="application/json")
 
             user = User.objects.get(id=int(request.POST['user_id']))
             if user.check_password(request.POST['password']):
@@ -124,9 +124,9 @@ class User_views():
                     setattr(user, 'email', request.POST['requesting_data'])
                     user.save()
                     User.objects.login(request=request, email=request.POST['requesting_data'], password=request.POST['password'])
-                    return HttpResponse("success")
+                    return HttpResponse(json.dumps({"type":"success","message":"Email успешно изменен"}), content_type="application/json")
             else:
-                return HttpResponse("Неправильный пароль")
+                return HttpResponse(json.dumps({"type":"error","message":"Неправильный пароль"}), content_type="application/json")
 
     def approve_password(request):
         if request.method == 'POST':
@@ -136,9 +136,9 @@ class User_views():
                     make_password(request.POST['new_password'])))
                 user.save()
                 User.objects.login(request=request, email=user.email, password=request.POST['new_password'])
-                return HttpResponse("success")
+                return HttpResponse(json.dumps({"type":"success","message":"Пароль успешно изменен"}), content_type="application/json")
             else:
-                return HttpResponse("Ошибка")
+                return HttpResponse(json.dumps({"type":"error","message":"Ошибка"}), content_type="application/json")
 
     def upload_avatar(request):
         if request.method == 'POST':
@@ -173,16 +173,16 @@ class Course_views():
                 name=name, subject=subject, course=course, is_closed=is_closed)
             return HttpResponse(json.dumps(message), content_type="application/json")
         else:
-            return HttpResponse('Нет полномочий')
+            return HttpResponse(json.dumps({"type":"error","message":"Нет полномочий"}, content_type="application/json"))
 
     def delete(request):
         if request.method == 'POST':
             course_id = request.POST.get('course_id', None)
             message = Course.objects.delete(course_id=course_id)
             request.session['notifications']=[{"type":"success","message":message}]
-            return HttpResponse(message)
+            return HttpResponse(json.dumps(message), content_type="application/json")
         else:
-            return HttpResponse('Нет полномочий')
+            return HttpResponse(json.dumps({"type":"error","message":"Нет полномочий"}, content_type="application/json"))
 
     def add_source(request):
         if request.method == "POST":
