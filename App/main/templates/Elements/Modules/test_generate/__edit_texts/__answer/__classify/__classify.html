@@ -1,0 +1,11 @@
+<div class="m--classify">
+  <button class="m--ghost m--icon __new-item" style="display: none">
+    {% include "Elements/Icons/add.svg" with tip="Добавть элемент" %}
+  </button>
+  <button class="m--ghost m--icon __new-class">
+    {% include "Elements/Icons/add.svg" with tip="Добавть класс" %}
+  </button>
+  {% include "Elements/Inputs/text/" with
+   placeholder="Макс. балл (число)"
+   id="max_mark" %}
+</div>

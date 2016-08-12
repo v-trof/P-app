@@ -4,22 +4,22 @@
 	{% include "Page_templates/_shared/fixes/charset.html" %}
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>Вход</title>
-	{% load staticfiles %}<link rel="stylesheet" href="{% static "Page_templates/central_box/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
+	{% load staticfiles %}<link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/user/_styles/user.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Page_templates/central_box/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/../Pages/Account/_shared/footer/_styles/footer.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Account/login_info/account_info_box/_styles/account_info_box.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/tooltip/_styles/tooltip.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/notification/_styles/notification.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/../Pages/Account/_shared/modal/_styles/modal.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/ripple/_styles/ripple.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/Modules/notification/_styles/notification.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Account/login_info/account_info_box/_styles/account_info_box.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/../Pages/Account/_shared/footer/_styles/footer.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}"> 
 
 </head>
 <body>
@@ -29,9 +29,9 @@
 	{% include "JS_libs/jQuery.html" %}
 	<script> 
 		{% include "Elements/Modules/notification/_scripts/core.js" %} 
+		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
 		{% include "Elements/Modules/notification/_scripts/deffered.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
-		{% include "Elements/Modules/tooltip/_scripts/tooltip.js" %} 
 		{% include "Elements/../Pages/Account/_shared/modal/_scripts/enter_press.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
 	</script>

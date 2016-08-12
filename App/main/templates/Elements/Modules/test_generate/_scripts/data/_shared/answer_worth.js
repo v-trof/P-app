@@ -1,7 +1,7 @@
 generate.data.shared.worth = {
   element: {
     parse: function($original) {
-      return $original.attr('worth');
+      return $original.attr('worth') || "1";
     },
     build: function($new_element, value) {
       $new_element.attr('worth',  value);
@@ -25,7 +25,7 @@ generate.data.shared.worth = {
       $('#max_mark').parent().find('label').addClass('m--top');
     },
     fill: function(value) {
-      $('#max_mark').val(value);
+      $('#max_mark').val(value).focus();
     }
   }
 }

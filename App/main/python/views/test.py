@@ -138,12 +138,12 @@ def attempt(request):
 		context["attempt"] = True
 		context["type"] = "test"
 		context["breadcrumbs"] = [{
-		"href": "/course/" + str(course_id),
-		"link": Course.objects.get(id=course_id).name
-	},{
-		"href": "#",
-		"link": "Попытка"
-	}]
+			"href": "/course/" + str(course_id),
+			"link": Course.objects.get(id=course_id).name
+		},{
+			"href": "#",
+			"link": "Попытка"
+		}]
 		return render(request, 'Pages/Test/Attempt/main/exports.html', context)
 	else:
 		request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]

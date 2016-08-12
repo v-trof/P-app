@@ -1,0 +1,53 @@
+@import "../../../../sass_vars/main.sass"
+
+.m--classify
+  height: auto
+  &>.__class
+    display: flex
+    flex-direction: column
+    
+    width: 100%
+    padding: $padding--s
+    padding-bottom: 0
+    margin-bottom: $margin--s
+    border-radius: $border--m
+    border: $border--s solid $grey--semidark
+    &:last-child
+      margin: 0
+    .__items
+      display: flex
+      flex-direction: column
+      align-items: center
+      width: 100%
+    .__item
+      box-sizing: conent-box
+      width: 100%
+      padding: 0 $padding--s
+      border-radius: $border--m
+      margin-bottom: $padding--s
+      background: $white
+      border: $border--s solid $grey--semilight
+      transition: $time--s
+      // +box-shadow(1)
+      &.m--input
+        margin-bottom: $padding--m
+      &:hover
+        border-color: $font__color--accent
+        cursor: default
+
+
+    .m--empty
+      width: 100%
+      margin-bottom: $padding--s   
+
+    &.m--unordered
+      display: flex
+      flex-direction: row
+      align-items: center
+      flex-wrap: wrap
+      min-height: $base + $padding--s*2
+      .__item
+        width: auto
+        margin-right: $padding--s
+        &:last-child
+          margin-right: 0
