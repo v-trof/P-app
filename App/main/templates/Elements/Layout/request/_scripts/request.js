@@ -1,6 +1,6 @@
 //accept request
 $(document).on("click", "#button_accept", function() {
-	console.log("accpt")
+	// console.log("accpt")
 	$.ajax({
 		type:"POST",
 		url:"/func/accept_request/",

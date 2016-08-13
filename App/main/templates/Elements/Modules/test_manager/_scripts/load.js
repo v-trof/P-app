@@ -20,7 +20,7 @@ test_manager.load.test = function(test_json) {
 			
 			{% if attempt %}
 				if(material_data[i].value) {
-					console.log(material_data[i].value);
+					// console.log(material_data[i].value);
 					generate.data[element_class].element.fill($element, material_data[i].value);
 				}
 			{% endif %}
@@ -61,7 +61,7 @@ $(document).ready(function() {
 });
 
 {% elif material.json %}
-console.log({{material.json|safe}});
+// console.log({{material.json|safe}});
 $(document).ready(function() {
 	test_manager.load.material({{material.json|safe}});
 });

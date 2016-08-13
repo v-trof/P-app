@@ -31,7 +31,7 @@ editor.add_to_item_list = function(element_class, $list, pull_actions) {
     },
     true,
     true);
-
+  $finished.attr('tip', 'Кликните, чтобы создать элемент этого типа');
   $list.append($finished);
 }
 

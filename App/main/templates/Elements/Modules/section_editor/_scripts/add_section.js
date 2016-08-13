@@ -1,5 +1,5 @@
 section_editor.add_section = function(edit_start) {
-	console.log('resutn');
+	// console.log('resutn');
 	$new_section = section_editor.$section_template.clone()
 
 	section_editor.$parent.append($new_section)

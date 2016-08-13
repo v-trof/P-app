@@ -1,6 +1,9 @@
 section_editor.end_section_editing = function($section, dont_replace) {
 	var $items = $section.children(section_editor.item_selector)
-
+	$itemes.each(function(index, el) {
+		$(this).removeAttr("tip");
+	});
+	
 	//end heading edition
 	$section.find(section_editor.heading_selector)
 		.removeClass('m--editing')

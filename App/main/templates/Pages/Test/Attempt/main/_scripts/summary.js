@@ -54,7 +54,7 @@ $(document).ready(function() {
 			use_full_format = true;
 		}
 
-		console.log($answer_fileds);
+		// console.log($answer_fileds);
 		$answer_fileds.each(function(index, el) {
 			answer_pos++;
 			var value;
@@ -89,7 +89,7 @@ $(document).ready(function() {
 			var blueprints = generate.read(element_class);
 
 			// blueprints.element.fill($(this), value);
-			console.log(answer_pos, el);
+			// console.log(answer_pos, el);
 			var hui = answer_pos;
 			blueprints.element.getter($(this), function(value, data) {
 				show_value($new_summary, value, hui, data);

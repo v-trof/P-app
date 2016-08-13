@@ -15,12 +15,12 @@ var pull_put = {
     if(pull_put.reset_sync) {
       pull_put.pre_reset(pull_put.reset_default);
     } else {
-      console.log('default_reset');
+      // console.log('default_reset');
       pull_put.reset_default()
     }
 	},
   pre_reset: function() {
-    console.log("default_pre_reset");
+    // console.log("default_pre_reset");
     pull_put.reset_default();
   },
   cancel_action: function() {}

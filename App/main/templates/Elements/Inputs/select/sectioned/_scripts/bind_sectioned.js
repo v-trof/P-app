@@ -45,7 +45,7 @@ function add_menu_caller_sectioned(select) {
     
     if(is_disabled != "disabled" && is_disabled !="true") {
 
-      console.log(sections);
+      // console.log(sections);
       context_menu.show(sections, this, chosen, true);
     }
   });

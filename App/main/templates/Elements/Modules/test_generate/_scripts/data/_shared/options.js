@@ -86,7 +86,7 @@ generate.data.shared.options = {
 				}
 
 				if( checker(value.answer, label) ) {
-					console.log("ok")
+					// console.log("ok")
 					$(".options-edit .__items").find("label input")
 						.last().prop("checked", true);
 				}

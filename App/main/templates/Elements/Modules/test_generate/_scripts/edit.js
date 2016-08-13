@@ -93,7 +93,7 @@ $(document).ready(function() {
 		".m--button-delete",
 		function() {
 			if($(this).parent().hasClass('__item')) {
-				console.log("re")
+				// console.log("re")
 				pull_put.ui.rebuild_element();
 			}
 		}

@@ -145,8 +145,10 @@ var tooltip = (function() {
 			$tooltip.removeClass('m--hidden');
 		},
 		hide: function() {
+			// console.log('hidden');
 			$tooltip.addClass('m--hidden');
 			$tooltip.removeAttr('style');
+			$('header').click();
 		}
 	}
 	return exports;
@@ -156,23 +158,28 @@ $(document).ready(function() {
 	$('body').append(tooltip.$);
 	$('body').on({
 		focus: function() {
-			tooltip.input_made = true;
+			// console.log(this.tagName);
+			if(! (this.tagName === 'BUTTON' 
+				|| this.tagName === 'A'
+				|| this.tagName === 'DIV')) {
+				tooltip.input_made = true;
+			}
 			tooltip.show(this,  $(this).attr('tip'));
 		},
 		mouseenter: function() {
 			if( ! tooltip.input_made) {
+				// console.log('shown');
 				tooltip.show(this,  $(this).attr('tip'));
 			}
 		},
 		mouseleave: function() {
 			if( ! tooltip.input_made) {
-				console.log('tooltip, leave');
 				tooltip.hide();
 			}
 		},
-		blur: function() {
+		blur: function() {		
 			tooltip.input_made = false;
-			tooltip.hide();
+			tooltip.hide();	
 		}
 	}, '[tip]');
 	$(document).scroll(function(event) {

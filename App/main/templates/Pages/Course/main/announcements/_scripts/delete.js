@@ -1,5 +1,5 @@
 function announcement_delete(id) {
-	console.log("dsf");
+	// console.log("dsf");
 	$.ajax({
 		type:"POST",
 		url:"/func/delete_announcement/",
@@ -16,7 +16,7 @@ function announcement_delete(id) {
 			}
 		},
 		error: function(data) {
-			console.log(data);
+			// console.log(data);
 			notification.show('error','Произошла ошибка');						
 		}
 	});

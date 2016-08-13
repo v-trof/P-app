@@ -65,7 +65,7 @@ generate.data["question--file"] = {
 				size = Math.floor(generate.data.shared.assets[id]
 					.files[0].size/1024/1024*100)/100 + "MB";
 
-				console.log(name);
+				// console.log(name);
 				return {
 					url: url,
 					name: name,
@@ -79,7 +79,7 @@ generate.data["question--file"] = {
 			}
 		},
 		fill: function(value) {
-			console.log(value);
+			// console.log(value);
 			if((! value.url) && generate.data.shared.assets[value.id]) {
 				value.url = generate.data.shared.assets[value.id].name;
 			}

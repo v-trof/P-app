@@ -2,9 +2,9 @@ $('input:checkbox').change(
     function() {
         if ($(this).is(':checked')) {
         	id=this.closest(".card").id.split("_");
-        	console.log('course_id',id[id.length-2]);
-        	console.log('assignment_id', id[id.length-1]);
-        	console.log('traditional_id', this.id);
+        	// console.log('course_id',id[id.length-2]);
+        	// console.log('assignment_id', id[id.length-1]);
+        	// console.log('traditional_id', this.id);
 			var formData = new FormData();
 			formData.append('course_id', id[id.length-2]);
 			formData.append('assignment_id', id[id.length-1]);

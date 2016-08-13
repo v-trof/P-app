@@ -23,11 +23,11 @@ test_manager.add_section_binding = function() {
 }
 
 test_manager.publish = function() {
-	console.log("publ");
+	// console.log("publ");
 	var no_empty = ($(".preview .m--empty").length === 0);
 	var answers_everywhere = true;
 
-	console.log(no_empty, answers_everywhere, no_empty && answers_everywhere);
+	// console.log(no_empty, answers_everywhere, no_empty && answers_everywhere);
 
 	$(".preview .__answer-field").each(function(index, el) {
 		if( ! $(this).attr('answer')) {
@@ -70,10 +70,10 @@ test_manager.publish = function() {
 				});
 
 				if(test_manager.use_new_section) {
-					console.log("n|", $("#new_section_name").val())
+					// console.log("n|", $("#new_section_name").val())
 					formData.append("section", $("#new_section_name").val());
 				} else {
-					console.log("o|", $('#course_section').val())
+					// console.log("o|", $('#course_section').val())
 					if ($('#course_section').val() != "")
 						formData.append("section", $('#course_section').val());
 					else formData.append("section", "Нераспределенные");
@@ -114,7 +114,7 @@ test_manager.publish = function() {
 }
 
 test_manager.publish_material = function() {
-	console.log("publ");
+	// console.log("publ");
 	popup.show('{% include "Pages/Material/editor/_popup_texts/publish/exports.html" %}',
 		function() {
 
@@ -126,10 +126,10 @@ test_manager.publish_material = function() {
 			formData.append("material_id", "{{material.id}}");
 
 			if(test_manager.use_new_section) {
-				console.log("n|", $("#new_section_name").val())
+				// console.log("n|", $("#new_section_name").val())
 				formData.append("section", $("#new_section_name").val());
 			} else {
-				console.log("o|", $('#course_section').val())
+				// console.log("o|", $('#course_section').val())
 				if ($('#course_section').val() != "")
 					formData.append("section", $('#course_section').val());
 				else formData.append("section", "Нераспределенные");
@@ -138,10 +138,10 @@ test_manager.publish_material = function() {
 			formData.append('csrfmiddlewaretoken', '{{csrf_token}}');
 
 			$("#{{type}}_publish").hide();
-			console.log("#{{type}}_publish");
+			// console.log("#{{type}}_publish");
 			$("#{{type}}_unpublish").show();
 
-			console.log("ajax");
+			// console.log("ajax");
 			$.ajax({
 				type:"POST",
 				url:"/{{type}}/publish/",

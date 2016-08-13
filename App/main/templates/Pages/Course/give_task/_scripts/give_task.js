@@ -115,7 +115,7 @@ $("#give_task").click(function(e) {
 	data.csrfmiddlewaretoken = '{{csrf_token}}';
 	data.course_id = '{{course.object.id}}';
 	
-	console.log(data);
+	// console.log(data);
 	
 	if(loaded) {
 		ajax_edit(data);

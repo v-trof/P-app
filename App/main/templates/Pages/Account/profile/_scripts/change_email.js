@@ -9,7 +9,7 @@ function request_email_change(email) {
 			'new_email': email
 			},
 		success: function(response) {
-			console.log(response)
+			// console.log(response)
 			notification.show(response["type"], response["message"]);
 		},
 		error: function(data) {

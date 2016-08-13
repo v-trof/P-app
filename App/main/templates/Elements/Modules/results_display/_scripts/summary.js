@@ -15,7 +15,7 @@ results_display.create_summary = function(attempt, results) {
 	answer_index = 0;
 
 	if(typeof attempt === 'string') {
-		console.log(attempt);
+		// console.log(attempt);
 		$('.preview .__task').remove();
 
 		var error_text = '<div class="card">'+ results +'</div>';
@@ -26,7 +26,7 @@ results_display.create_summary = function(attempt, results) {
 		return;
 	}
 
-	console.log(attempt);
+	// console.log(attempt);
 	//loop through tasks
 	$(".preview .__task>.__content").each(function(task_index, el) {
 		var use_full_format = false;

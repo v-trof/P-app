@@ -12,7 +12,7 @@ Array.prototype.remove = function() {
 
 function upload_file(file_to_upload, task_index, index) {
 	var file_id = test_manager.upload_queue.length;
-	console.log("uplaodigng file ||| id:", file_id);
+	console.log("uplaoding file ||| id:", file_id);
 	test_manager.upload_queue.push(file_id);
 
 	var form_data = new FormData();
@@ -91,7 +91,7 @@ test_manager.pack = function() {
 						url:"/func/upload_by_url/",
 						data: form_data,
 						success:function(response) {
-							console.log(response);
+							// console.log(response);
 							test_manager.packed_test.tasks[task_index][index].url=response;
 						}
 					});
@@ -103,7 +103,7 @@ test_manager.pack = function() {
 				if(typeof generate.data.shared.assets[file_id] !== "undefined") {
 					var file_to_upload = generate.data.shared.assets[file_id].files[0];
 
-					console.log(file_id, file_to_upload);
+					// console.log(file_id, file_to_upload);
 
 					upload_file(file_to_upload, task_index, index);
 				}

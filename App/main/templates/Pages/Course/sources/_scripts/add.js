@@ -5,14 +5,14 @@ function upload_source(source_id) {
 	var form_data = new FormData();
 	
 	if(source_id) {
-		console.log('ASADSAD',source_id)
+		// console.log('ASADSAD',source_id)
 		form_data.append("source_id", source_id);
 		url = '/func/edit_source/';
 	} else {
 		url = '/func/add_source/';
 	}
 	
-	console.log("source");
+	// console.log("source");
 
 	
 	form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');

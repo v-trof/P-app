@@ -26,7 +26,7 @@ var search = (function(){
 })();
 
 $(document).ready(function() {
-  console.log(search.$)
+  // console.log(search.$)
   $('body').append(search.$);
   $('.header>.__search>button').click(function() {
     if( ! search.is_shown) {

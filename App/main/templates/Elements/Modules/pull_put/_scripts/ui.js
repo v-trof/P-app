@@ -117,6 +117,7 @@ pull_put.ui = (function() {
 			$ui.addClass('m--hidden');
 			setTimeout(function() {
 				pull_put.is_pulled = false;
+				setTimeout(tooltip.hide, 100);
 			}, 300)
 		}
 	}

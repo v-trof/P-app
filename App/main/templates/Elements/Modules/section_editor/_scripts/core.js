@@ -43,7 +43,7 @@ section_editor.init = function(arguments) {
 	}
 	*/
 
-	console.log(arguments)
+	// console.log(arguments)
 
 	//accept required arguments
 	section_editor.$parent = arguments.$parent.first()

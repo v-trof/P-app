@@ -18,7 +18,7 @@ $(document).ready(function() {
 
   var tests = {{tests|safe}}
 
-  console.log(tests);
+  // console.log(tests);
   var first_id = undefined;
 
   for(var test_id in tests) {

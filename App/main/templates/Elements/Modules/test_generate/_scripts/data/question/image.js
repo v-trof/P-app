@@ -21,7 +21,7 @@ generate.data["question--image"] = {
 		parse: function() {
 
 			var url;
-			console.log($("#new_element_file").val());
+			// console.log($("#new_element_file").val());
 
 			if($("#new_element_file").val() != "") {
 				url = generate.data.shared.assets[

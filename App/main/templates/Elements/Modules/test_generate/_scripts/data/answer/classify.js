@@ -128,7 +128,7 @@ generate.data["answer--classify"] = {
              answer[title].push($(this).text());
           });
         });
-        console.log(answer)
+        // console.log(answer)
         _action("(Вопрос)Классификация", JSON.stringify(answer));
       }
 
@@ -248,7 +248,7 @@ generate.data["answer--classify"] = {
 
     fill: function(value) {
       var $element = $(".pull_put_ui .m--classify");
-      console.log(value)
+      // console.log(value)
       
       if( ! value.answer) {
         value.answer = {

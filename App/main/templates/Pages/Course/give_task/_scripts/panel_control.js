@@ -22,7 +22,7 @@ $(document).ready(function() {
 			used_links.push( $(this).attr("href") );
 			used_links.remove( as_g.original.attr("href") );
 		} else {
-			console.log($(this));
+			// console.log($(this));
 			$("#assignment--new__add_"+as_g.current_type).before($(this))
 		}
 		used_links.push( $(this).attr("href") )

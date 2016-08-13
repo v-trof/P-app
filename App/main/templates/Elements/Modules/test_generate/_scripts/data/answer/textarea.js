@@ -40,7 +40,7 @@ generate.data["answer--textarea"]= {
 		},
 
 		fill: function($element, answer) {
-			console.log(answer);
+			// console.log(answer);
 			$element.find('input').val(answer);
 			$element.find('label').addClass('m--top');
 		},
