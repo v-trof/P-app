@@ -15,7 +15,8 @@ $(document).ready(function() {
 
 	function show_value($summary, value, index, data) {
 		$summary.children(".__value").html(value);
-
+		console.log("sent:", index, value);
+		
 		if( ! data) {
 			data = value;
 		}
@@ -38,7 +39,7 @@ $(document).ready(function() {
 
 	test_json={{test.json|safe}};
 
-	var answer_pos = -1;
+	var answer_pos = 0;
 
 	$(".preview .__task>.__content").each(function(task_index, el) {
 		var item_it = -1; //for no repeat later
@@ -50,6 +51,7 @@ $(document).ready(function() {
 			use_full_format = true;
 		}
 
+		console.log($answer_fileds);
 		$answer_fileds.each(function(index, el) {
 			answer_pos++;
 			var value;
@@ -75,7 +77,6 @@ $(document).ready(function() {
 			index++;
 
 			$new_summary = $(summary_template(answer_pos, show_index, value));
-
 			panel.content.append($new_summary);
 
 			var element_class = $(this)
@@ -84,9 +85,10 @@ $(document).ready(function() {
 			var blueprints = generate.read(element_class);
 
 			// blueprints.element.fill($(this), value);
-			console.log(item_it, el);
+			console.log(answer_pos, el);
+			var hui = answer_pos;
 			blueprints.element.getter($(this), function(value, data) {
-				show_value($new_summary, value, answer_pos, data);
+				show_value($new_summary, value, hui, data);
 			});
 
 			scroll.wire($new_summary, $(this).parent().parent());
