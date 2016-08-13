@@ -38,6 +38,7 @@ section_editor.start_section_editing = function($section) {
 */
 	//pull_put things for items
 	$items.each(function(index, el) {
+		$(this).attr("tip", "Кликните, чтобы перемещать");
 		var was_unpublished = $(this).hasClass('m--was-unpublished');
 		//add pullers
 		// console.log(this);
