@@ -13,6 +13,10 @@ generate.build.element = function(element_class, value, additional) {
 	});
 	{% if not attempt  %}
 		if(value.answer) {
+			if(typeof value.answer === 'object') {
+				console.log(value.answer);
+				value.answer = JSON.stringify(value.answer);
+			}
 			$element.attr('answer', value.answer);
 			if (typeof blueprint.fill === "undefined") {
 				console.error("NOFILL", element_class);
@@ -25,6 +29,7 @@ generate.build.element = function(element_class, value, additional) {
 
 	return $element;
 }
+
 {% if not attempt and not read %}
 generate.let_editing = function($element) {
 	// if(! $element.hasClass('m--pullable')) {

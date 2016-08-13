@@ -92,6 +92,10 @@ search.build.test = function(data) {
   $new_test.find('.__content').append('Тест, <b>' + amount + '</b> '
     + form);
 
+  $new_test.find('.__content').append(
+    '<div class="m--grey">Из курса '
+    + data.course_name + '</div>');
+
   return $new_test;
 }
 
@@ -102,6 +106,9 @@ search.build.material = function(data) {
   
   //heading
   $new_material.find('.__heading').text(data.title);
+  $new_material.find('.__content').append(
+    '<div class="m--grey">Из курса '
+    + data.course_name + '</div>');
 
   return $new_material;
 }
