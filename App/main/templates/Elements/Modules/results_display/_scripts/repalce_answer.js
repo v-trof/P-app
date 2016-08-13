@@ -61,8 +61,8 @@ $(document).ready(function() {
 			user_answer, right_answer, quality, time, element_class, index, worth) {
 
 			if(typeof user_answer === 'object') {
-				user_answer = parse_json_value(element_class, user_answer);
-				right_answer = parse_json_value(element_class, right_answer);
+				user_answer = parse_json_value(element_class, user_answer).html();
+				right_answer = parse_json_value(element_class, right_answer).html();
 			}
 
 			var $result_tempalte = $('{% include "Elements/Modules/results_controls/__answer_display/exports.html" %}');
