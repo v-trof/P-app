@@ -131,7 +131,11 @@ $(document).ready(function() {
 
 		//restoring defaut element
 		pull_put.ui.element = pull_put.ui.proto_element;
-
+		
+		pull_put.ui.element.removeClass('m--pullable');
+		pull_put.ui.element.removeClass('m--put-zone');
+		console.log(pull_put.ui.element);
+		
 		pull_put.puller.cancel();
 	});
 
