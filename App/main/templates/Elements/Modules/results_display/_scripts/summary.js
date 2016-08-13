@@ -2,7 +2,18 @@ Array.prototype.has = function(value) {
 	return (this.indexOf(value) > -1)
 }
 
-results_display.summary_template = function(index, value, quality) {
+
+results_display.replace_json_value = function(element_class, value) {
+	if(element_class === 'answer--classify') {
+		return "(Вопрос)Классификация"
+	}
+}
+
+results_display.summary_template = function(index, value, quality, element_class) {
+	if(typeof value == 'object') {
+		value = results_display.replace_json_value(element_class, value);
+	}
+
 	return '<div class="card m--small sumfor_'
 		+ index + ' row">'
 		+'<button class="__number m--flat m--' + quality + '">' 
@@ -49,6 +60,7 @@ results_display.create_summary = function(attempt, results) {
 			var $new_summary
 			var index = index;
 
+			var element_class = this.classList[0];
 			//for better visualization
 			if(use_full_format) {
 				index = "" + (task_index+1) + "." + (index+1);
@@ -73,7 +85,7 @@ results_display.create_summary = function(attempt, results) {
 			}
 
 			$new_summary = $(results_display.
-				summary_template(index, value, quality));
+				summary_template(index, value, quality, element_class));
 			panel.content.append($new_summary);
 
 			results_display.replace_answer(
@@ -81,6 +93,7 @@ results_display.create_summary = function(attempt, results) {
 				value, attempt[answer_index].answer,
 				quality,
 				attempt[answer_index].time,
+				element_class,
 				answer_index,
 				{
 					answer: attempt[answer_index].user_score,
