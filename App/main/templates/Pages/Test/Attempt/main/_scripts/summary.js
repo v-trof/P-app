@@ -1,6 +1,9 @@
 $(document).ready(function() {
 	var summary_template = function(index, 
-		show_index, value) {
+		show_index, value, element_class) {
+		if(element_class === "answer--classify") {
+			value = "(Вопрос)Классификация";
+		}
 		if(!value) {
 			value = "Пусто";
 		}
@@ -15,7 +18,7 @@ $(document).ready(function() {
 
 	function show_value($summary, value, index, data) {
 		$summary.children(".__value").html(value);
-		console.log("sent:", index, value);
+		console.log("sent:", index, value, data);
 		
 		if( ! data) {
 			data = value;
@@ -75,12 +78,13 @@ $(document).ready(function() {
 			}
 
 			index++;
-
-			$new_summary = $(summary_template(answer_pos, show_index, value));
-			panel.content.append($new_summary);
-
 			var element_class = $(this)
 					.attr('class').split(' ')[0];
+
+			$new_summary = $(summary_template(answer_pos, show_index, 
+				value, element_class));
+			panel.content.append($new_summary);
+
 
 			var blueprints = generate.read(element_class);
 

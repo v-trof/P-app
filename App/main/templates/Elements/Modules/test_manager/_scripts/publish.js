@@ -39,8 +39,8 @@ test_manager.publish = function() {
 		popup.show('{% include "Pages/Test/editor/_popup_texts/publish/exports.html" %}',
 			function() {
 			
-			popup.$.find(".__max_ponts").text(test_manager.calculate_max_points());
-			
+			var max_points = test_manager.calculate_max_points();
+			popup.$.find(".__max_ponts").text(max_points);
 			test_manager.add_section_binding();
 
 			$("#publish").click(function() {
@@ -78,6 +78,8 @@ test_manager.publish = function() {
 						formData.append("section", $('#course_section').val());
 					else formData.append("section", "Нераспределенные");
 				}
+
+				formData.append('max_score', max_points);
 
 				if(!data_is_ok) {
 					return false;

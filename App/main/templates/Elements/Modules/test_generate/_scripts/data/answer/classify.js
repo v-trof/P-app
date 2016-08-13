@@ -129,7 +129,7 @@ generate.data["answer--classify"] = {
           });
         });
         console.log(answer)
-        _action(JSON.stringify(answer));
+        _action("(Вопрос)Классификация", JSON.stringify(answer));
       }
 
       function check() {
