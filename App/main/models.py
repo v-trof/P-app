@@ -1389,7 +1389,7 @@ class CourseManager(models.Manager):
 					result = json.load(result_file)
 					if user.id in result["unseen_by"]:
 						result_preview = result
-						result_preview["user"] = User.objects.get(id=user_id)
+						result_preview["user_id"] = user_id
 						result_preview["course_id"] = str(course.id)
 						updates["new_results"].append(result_preview)
 						result["unseen_by"].remove(user.id)
@@ -2087,12 +2087,13 @@ class Test():
 				if question["type"] == "answer":
 					questions_number += 1
 		json_file["questions_number"] = questions_number
-		json_file["mark_setting"] = {"2": 0, "3": 25, "4": 50, "5": 75}
 		if os.path.exists('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json'):
 			with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as test_file:
 				data=json.load(test_file)
 				if data["allowed_mistakes"]:
 					json_file["allowed_mistakes"]=data["allowed_mistakes"]
+				if data["mark_setting"]:
+					json_file["mark_setting"]=data["mark_setting"]
 			for attempt in glob.glob('main/files/json/courses/' + course_id + '/users/*/tests/attempts/' + test_id + '.json'):
 				with io.open(attempt, 'r', encoding='utf8') as attempt_file:
 					attempt_data=json.load(attempt_file)
@@ -2172,7 +2173,7 @@ class Test():
 		else:
 			test_data={}
 		test_data["allowed_mistakes"] = allowed_mistakes
-		if "marks_setting" in test_data.keys():
+		if "mark_setting" in test_data.keys():
 			for key in mark_setting:
 				test_data["mark_setting"][key] = mark_setting[key]
 		else: test_data["mark_setting"]=mark_setting
@@ -2227,11 +2228,11 @@ class Test():
 		value["type"] = type.split("--")[1]
 		if type == "answer--text":
 			value["answer"] = item["answer"]
-			value["user_answer"] = None
+			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
 		elif type == "answer--textarea":
-			value["user_answer"] = None
+			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
 			# textarea
@@ -2239,21 +2240,27 @@ class Test():
 			value["options"] = []
 			value["options"] = item["values"]
 			value["answer"] = item["answer"]
-			value["user_answer"] = None
+			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
 		elif type == "answer--radio":
 			value["options"] = []
 			value["options"] = item["values"]
 			value["answer"] = item["answer"]
-			value["user_answer"] = None
+			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
 		elif type == "answer--checkbox":
 			value["options"] = []
 			value["options"] = item["values"]
 			value["answer"] = item["answer"]
-			value["user_answer"] = None
+			value["user_answer"] = False
+			value["worth"] = item["worth"]
+			value["user_score"] = 0
+		elif type == "answer--classify":
+			value["answer"] = item["answer"]
+			print(value["answer"],item["answer"])
+			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
 		return value
@@ -2271,6 +2278,9 @@ class Test():
 			item["value"] = data["user_answer"]
 		elif type == "answer--checkbox":
 			item["value"] = data["user_answer"].split(', ')
+		elif type == "answer--classify":
+			item["value"] = data["user_answer"]
+
 		return item
 
 	def attempt(course_id, user, test_id):
@@ -2300,7 +2310,7 @@ class Test():
 				it = 0
 				for task in test["json"]["tasks"]:
 					for item in task:
-						if not data == None and item["type"] == "answer" and str(it) in data and not data[str(it)]["user_answer"] == None:
+						if not data == None and item["type"] == "answer" and str(it) in data and not data[str(it)]["user_answer"] == False:
 							item = Test.build_answer(
 								item=item, data=data[str(it)])
 							it += 1
@@ -2338,8 +2348,21 @@ class Test():
 		return context
 
 	def attempt_save(test_id, question_id, course_id, answer, user):
+		if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
+			return {"type":"error","message":"Тест уже был выполнен"}
+		print(question_id,answer)
 		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 			test_info = json.load(info_file)
+		it=0
+		for task in test_info["tasks"]:
+			for question in task:
+				if question["type"]=="answer":
+					it+=1
+				if it==int(question_id):
+					if question["class"]=="answer--classify":
+						print(answer)
+						answer=json.loads(answer)
+					break
 		time_now=str(datetime.datetime.now())
 		if "start_time" in test_info.keys():
 			time=Utility.time_delta(test_info["start_time"][str(user.id)],str(time_now))
@@ -2397,81 +2420,82 @@ class Test():
 		return check(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 
 	def attempt_check(user, test_id, course_id):
-		if not os.path.exists('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
-			right = 0
-			missed = 0
-			mistakes = 0
-			forgiving = 0
-			score=0
-			overall_score=0
-			test_results = {}
-			test_results["right"] = []
-			test_results["mistakes"] = []
-			test_results["forgiving"] = []
-			test_results["missed"] = []
-			test_results["unseen_by"] = []
-			with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
-				test_data = json.load(info_file)
-			test_results["test"] = {"id": test_id, "title": test_data["title"]}
-			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
-				attempt_data = json.load(json_file)
-				for question_id, question in attempt_data.items():
-					overall_score += question["worth"]
-					if question["user_answer"] == None:
-						missed += 1
-						test_results["missed"].append(int(question_id))
-						question["result"] = "missed"
-						question["user_score"] = 0 
-					elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "right":
-						right += 1
-						score+= question["worth"]
-						test_results["right"].append(int(question_id))
-						question["result"] = "right"
-						question["user_score"] = question["worth"]
-					elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "forgiving":
-						forgiving += 1
-						test_results["forgiving"].append(int(question_id))
-						question["result"] = "forgiving"
-						question["user_score"] = question["worth"]
-						score+= question["worth"]
-					else:
-						mistakes += 1
-						test_results["mistakes"].append(int(question_id))
-						question["result"] = "wrong"
-						question["user_score"] = 0
-			with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
-				course_data = json.load(data_file)
-			for teacher in course_data["teachers"]:
-				test_results["unseen_by"].append(int(teacher))
-			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
-				json_file.write(json.dumps(attempt_data, ensure_ascii=False))
-			test_results["mark"] = {}
-			test_results["mark"]["value"] = Test.give_mark(percentage=(score) / (overall_score) * 100, course_id=course_id, test_id=test_id)
-			test_results["mark"]["quality"] = Test.set_mark_quality(test_results[
-																	"mark"])
-			test_results["score"]=score
-			test_results["overall_score"]=overall_score
-			test_results["right_answers"] = right + forgiving
-			test_results["questions_overall"] = right + \
-				mistakes + missed + forgiving
-			with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
-				saving_data = json.dumps(test_results, ensure_ascii=False)
-				json_file.write(saving_data)
-			with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as assignment_map:
-				assignment_map = json.load(assignment_map)
-				for assignment_id, content in assignment_map.items():
-					if test_id in content["in_process"]["tests"]:
-						del content["in_process"]["tests"][
-							content["in_process"]["tests"].index(test_id)]
-						content["done"]["tests"].append(test_id)
-					if test_id in content["in_process"]["unfinished_tests"]:
-						del content["in_process"]["unfinished_tests"][
-							content["in_process"]["unfinished_tests"].index(test_id)]
-						content["done"]["tests"].append(test_id)
-					if len(content["in_process"]["tests"]) + len(content["in_process"]["unfinished_tests"]) + len(content["in_process"]["traditionals"]) == 0:
-						content["finished"] = True
-			with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'w+', encoding='utf8') as assignment:
-				assignment.write(json.dumps(assignment_map, ensure_ascii=False))
+		if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
+			return {"type":"error","message":"Тест уже был выполнен"}
+		right = 0
+		missed = 0
+		mistakes = 0
+		forgiving = 0
+		score=0
+		overall_score=0
+		test_results = {}
+		test_results["right"] = []
+		test_results["mistakes"] = []
+		test_results["forgiving"] = []
+		test_results["missed"] = []
+		test_results["unseen_by"] = []
+		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+			test_data = json.load(info_file)
+		test_results["test"] = {"id": test_id, "title": test_data["title"]}
+		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
+			attempt_data = json.load(json_file)
+			for question_id, question in attempt_data.items():
+				overall_score += question["worth"]
+				if question["user_answer"] == False:
+					missed += 1
+					test_results["missed"].append(int(question_id))
+					question["result"] = "missed"
+					question["user_score"] = 0 
+				elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "right":
+					right += 1
+					score+= question["worth"]
+					test_results["right"].append(int(question_id))
+					question["result"] = "right"
+					question["user_score"] = question["worth"]
+				elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "forgiving":
+					forgiving += 1
+					test_results["forgiving"].append(int(question_id))
+					question["result"] = "forgiving"
+					question["user_score"] = question["worth"]
+					score+= question["worth"]
+				else:
+					mistakes += 1
+					test_results["mistakes"].append(int(question_id))
+					question["result"] = "wrong"
+					question["user_score"] = 0
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data = json.load(data_file)
+		for teacher in course_data["teachers"]:
+			test_results["unseen_by"].append(int(teacher))
+		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
+			json_file.write(json.dumps(attempt_data, ensure_ascii=False))
+		test_results["mark"] = {}
+		test_results["mark"]["value"] = Test.give_mark(percentage=(score) / (overall_score) * 100, course_id=course_id, test_id=test_id)
+		test_results["mark"]["quality"] = Test.set_mark_quality(test_results[
+																"mark"])
+		test_results["score"]=score
+		test_results["overall_score"]=overall_score
+		test_results["right_answers"] = right + forgiving
+		test_results["questions_overall"] = right + \
+			mistakes + missed + forgiving
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
+			saving_data = json.dumps(test_results, ensure_ascii=False)
+			json_file.write(saving_data)
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as assignment_map:
+			assignment_map = json.load(assignment_map)
+			for assignment_id, content in assignment_map.items():
+				if test_id in content["in_process"]["tests"]:
+					del content["in_process"]["tests"][
+						content["in_process"]["tests"].index(test_id)]
+					content["done"]["tests"].append(test_id)
+				if test_id in content["in_process"]["unfinished_tests"]:
+					del content["in_process"]["unfinished_tests"][
+						content["in_process"]["unfinished_tests"].index(test_id)]
+					content["done"]["tests"].append(test_id)
+				if len(content["in_process"]["tests"]) + len(content["in_process"]["unfinished_tests"]) + len(content["in_process"]["traditionals"]) == 0:
+					content["finished"] = True
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'w+', encoding='utf8') as assignment:
+			assignment.write(json.dumps(assignment_map, ensure_ascii=False))
 		return {"type":"success","message":"Попытка проверена"}
 
 	def change_answer_status(user_id, test_id, course_id, question_id, question_result):
