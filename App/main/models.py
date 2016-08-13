@@ -2141,7 +2141,7 @@ class Test():
 				}
 		return test
 
-	def publish(course_id, test_id, section, allowed_mistakes, mark_setting):
+	def publish(course_id, test_id, section, allowed_mistakes, mark_setting, max_score=False):
 		# makes test visible in course screen
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
@@ -2173,6 +2173,9 @@ class Test():
 		else:
 			test_data={}
 		test_data["allowed_mistakes"] = allowed_mistakes
+		if max_score:
+			for mark in mark_setting:
+				mark_setting[mark]=int(max_score)/mark_setting[mark]*100
 		if "mark_setting" in test_data.keys():
 			for key in mark_setting:
 				test_data["mark_setting"][key] = mark_setting[key]
@@ -2354,17 +2357,17 @@ class Test():
 		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 			test_info = json.load(info_file)
 		it=0
+		print(question_id)
 		for task in test_info["tasks"]:
 			for question in task:
 				if question["type"]=="answer":
 					it+=1
 				if it==int(question_id):
 					if question["class"]=="answer--classify":
-						print(answer)
 						answer=json.loads(answer)
 					break
 		time_now=str(datetime.datetime.now())
-		if "start_time" in test_info.keys():
+		if "start_time" in test_info.keys() and str(user.id) in test_info["start_time"].keys():
 			time=Utility.time_delta(test_info["start_time"][str(user.id)],str(time_now))
 		else:
 			time="00:00:00"
