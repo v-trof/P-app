@@ -7,13 +7,17 @@ generate.data["answer--classify"] = {
         class: "answer--classify",
         type: "answer",
         worth: generate.data.shared.worth.element.parse($original),
-        answer: $original.attr("answer"),
+        answer: false,
         values: {
           classes: [],
           items: []
         }
       }
       
+      if($original.attr('answer')) {
+        result.answer = JSON.parse($original.attr("answer"));
+      }
+
       $original.children('.__class').each(function(index, el) {
         result.values.classes.push($(this).find('h3').text());
         $(this).find('.__item').each(function(index, el) {
@@ -238,8 +242,6 @@ generate.data["answer--classify"] = {
         value.answer = {
           "Название": []
         };
-      } else {
-        value.answer = JSON.parse(value.answer);
       }
 
 
