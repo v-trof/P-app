@@ -40,7 +40,7 @@ test_manager.load.material = function(material_json) {
 	$("h2").text(material_json.title);
 	var material_data = material_json.tasks[0]
 		// console.log(material_data);
-	$content = $(editor.content_selector);
+	$content = $(".__task .__content");
 
 	for (var i = 0; i < material_data.length; i++) {
 		var element_class = material_data[i].class;
@@ -53,6 +53,7 @@ test_manager.load.material = function(material_json) {
 	{% if not attempt and not read %}
 		editor.check_self();
 	{% endif %}
+	$('.__task .__number').remove();
 }
 
 {% if test.json %}
