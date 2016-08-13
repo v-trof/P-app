@@ -19,16 +19,10 @@ test_manager.load.test = function(test_json) {
 								element(element_class, material_data[i])
 			
 			{% if attempt %}
-				if (material_data[i].class == "answer--checkbox")
-				{
-					$(material_data[i].value).each(function( index ) {
-						  $element.find("input[value='"+this+"']").attr('checked', true);
-						});
+				if(material_data[i].value) {
+					console.log(material_data[i].value);
+					generate.data[element_class].element.fill($element, material_data[i].value);
 				}
-				else if (material_data[i].class == "answer--radio")
-					$element.find("input[value='"+material_data[i].value+"']").attr('checked', true);
-				else $element.find('.__value').attr('value', material_data[i].value);
-
 			{% endif %}
 
 			$task.find(".__content").append($element);

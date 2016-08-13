@@ -145,10 +145,10 @@ generate.data["answer--classify"] = {
         $element.append(create_class(title));
       });
 
-      $element.append('<div class="__class m--unordered"></div>');
+      $element.append('<div class="__class m--unordered"><div class="__items"></div></div>');
 
       value.values.items.forEach(function(text){
-        $element.find('.m--unordered').append(
+        $element.find('.m--unordered .__items').append(
           self._shared.create_item(text));
       });
 
@@ -195,7 +195,12 @@ generate.data["answer--classify"] = {
       }
     },
 
+    counter: 1,
     getter: function($element, _action) {
+      var self=this;
+      indicator_index = self.counter;
+      self.counter += 1;
+
       function update() {
         var answer = {};
         $element.children('.__class').each(function(index, el) {
@@ -208,6 +213,7 @@ generate.data["answer--classify"] = {
         console.log(answer)
         _action(JSON.stringify(answer));
       }
+
       function check() {
         $('.__items').each(function() {
           if($(this).children('.__item').length === 0) {
@@ -223,25 +229,31 @@ generate.data["answer--classify"] = {
         }
         update();
       }
+
       //add putzones
-      
       $element.find('.__class:not(.m--unordered)').each(function(index, el) {
         pull_put.put_zone.add($(this), function(event, $this, $pulled) {
-          $this.find('.__items').append($pulled);
-          pull_put.reset();
-          check();
+          if($pulled.hasClass('classy_item_'+indicator_index)) {
+            $this.find('.__items').append($pulled);
+            pull_put.reset();
+            indicator.hide(indicator_index);
+            check();
+          }
         });
+        indicator.add($(this).find('.__items'), 'add', indicator_index);
+        // console.log(indicator_index);
       });
 
-      indicator.add($(this).find('.__items'), 'add', 1);
-      
       //add pullers
       $element.find('.__item').each(function(index, el) {
+        $(this).addClass('classy_item_'+indicator_index)
         pull_put.puller.add(
           $(this), //element
           [], //actions 
           undefined, //additional
-          undefined,
+          function() {
+            indicator.show(indicator_index);
+          },
           false,
           true
         )
@@ -251,7 +263,7 @@ generate.data["answer--classify"] = {
     value_sample: {
       values: {
         classes:  ["Глаголы", "Существительные"],
-        items: ["Ручка", "Стол", "Писать"]
+        items: ["Дом", "Стол", "Писать"]
       }
     }
   },

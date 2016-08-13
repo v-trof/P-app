@@ -15,7 +15,7 @@ var search = (function(){
       search.is_shown = false;
     },
     types: ['user', 'course', 'test', 'material'],
-    types_active: ['user', 'course', 'test', 'material']
+    types_active: ['test', 'material']
   };
 
   if(url.indexOf('course') > -1 ) {

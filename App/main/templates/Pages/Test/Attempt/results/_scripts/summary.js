@@ -1,5 +1,7 @@
 
 $(document).ready(function() {
+  var False = false;
+  var True = true;
 	var results = {{results|safe}};
 	var attempt = {{attempt|safe}};
 

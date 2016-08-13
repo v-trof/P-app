@@ -38,6 +38,8 @@ $(document).ready(function() {
 
 	test_json={{test.json|safe}};
 
+	var answer_pos = -1;
+
 	$(".preview .__task>.__content").each(function(task_index, el) {
 		var item_it = -1; //for no repeat later
 		var use_full_format = false;
@@ -49,7 +51,7 @@ $(document).ready(function() {
 		}
 
 		$answer_fileds.each(function(index, el) {
-
+			answer_pos++;
 			var value;
 			var $new_summary;
 
@@ -72,7 +74,7 @@ $(document).ready(function() {
 
 			index++;
 
-			$new_summary = $(summary_template(index, show_index, value));
+			$new_summary = $(summary_template(answer_pos, show_index, value));
 
 			panel.content.append($new_summary);
 
@@ -82,9 +84,9 @@ $(document).ready(function() {
 			var blueprints = generate.read(element_class);
 
 			// blueprints.element.fill($(this), value);
-
+			console.log(item_it, el);
 			blueprints.element.getter($(this), function(value, data) {
-				show_value($new_summary, value, index, data);
+				show_value($new_summary, value, answer_pos, data);
 			});
 
 			scroll.wire($new_summary, $(this).parent().parent());

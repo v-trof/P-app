@@ -17,13 +17,13 @@ var indicator = (function() {
 	};
 
 	var add = function($parent, icon, group) {
-
 		if($parent.children('.indicator.g' + group).length > 0) {
 			return;
 		}
 
 		var $new_indicator = build(icon);
 		$new_indicator.addClass('g' + group)
+		// console.log($parent, $new_indicator);
 		$parent.prepend($new_indicator);
 		$new_indicator.hide();
 	}

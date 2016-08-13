@@ -7,11 +7,11 @@
     flex-direction: column
     
     width: 100%
-    padding: $padding--s
+    // padding: $padding--s
     padding-bottom: 0
     margin-bottom: $margin--s
     border-radius: $border--m
-    border: $border--s solid $grey--semidark
+    // border: $border--s solid $grey--semidark
     &:last-child
       margin: 0
     .__items
@@ -19,16 +19,21 @@
       flex-direction: column
       align-items: center
       width: 100%
+      +box_shadow_inset(1)
+      background: $grey--light
+      padding: $padding--m
+      border-radius: $border--s
+      padding-bottom: 0
     .__item
       box-sizing: conent-box
       width: 100%
-      padding: 0 $padding--s
+      padding: $padding--s
       border-radius: $border--m
-      margin-bottom: $padding--s
+      margin-bottom: $padding--m
       background: $white
-      border: $border--s solid $grey--semilight
+      // border: $border--s/2 solid $grey--semilight
       transition: $time--s
-      // +box-shadow(1)
+      +box-shadow(1)
       &.m--input
         margin-bottom: $padding--m
       &:hover
@@ -38,9 +43,10 @@
 
     .m--empty
       width: 100%
-      margin-bottom: $padding--s   
+      margin-bottom: $padding--s
+      box-shadow: none
 
-    &.m--unordered
+    &.m--unordered>.__items
       display: flex
       flex-direction: row
       align-items: center
@@ -48,6 +54,6 @@
       min-height: $base + $padding--s*2
       .__item
         width: auto
-        margin-right: $padding--s
+        margin-right: $padding--m
         &:last-child
           margin-right: 0
