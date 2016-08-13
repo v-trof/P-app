@@ -613,8 +613,8 @@ class CourseManager(models.Manager):
 	def reg_user(self, course, user, code=None):
 
 		request=False
-
-		if not code:
+		print(code)
+		if code == None:
 			group="Нераспределенные"
 
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -655,7 +655,10 @@ class CourseManager(models.Manager):
 									data["teachers"][teacher][
 										"new_users"].append(user.id)
 					#Проверка: открытый вход в группу
-					if not course.is_closed and not is_invited and code==None:
+					print(code)
+					print(not course.is_closed,not is_invited,code==None,code)
+					if not course.is_closed and not is_invited:
+						print("okk")
 						group = "Нераспределенные"
 						data["groups"][group][str(user.id)] = {}
 						data["groups"][group][str(user.id)][
@@ -672,7 +675,7 @@ class CourseManager(models.Manager):
 						user.save()
 
 					#Создание заявки
-					elif course.is_closed:
+					elif course.is_closed and not is_invited:
 						request=True
 						data["pending_users"]["Заявки"].append(user.id)
 
@@ -1457,7 +1460,6 @@ class UserManager(UserManager):
 			if course_id:
 				course = Course.objects.get(id=course_id)
 				Course.objects.reg_user(course=course, user=user,code=code)
-				return 'groups'
 			return {"type":"success","message":'Вы были успешно зарегистрированы'}
 		else:
 			return {"type":"error","message":'Неверный логин или пароль'}
@@ -2090,9 +2092,9 @@ class Test():
 		if os.path.exists('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json'):
 			with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as test_file:
 				data=json.load(test_file)
-				if data["allowed_mistakes"]:
+				if "allowed_mistakes" in data.keys():
 					json_file["allowed_mistakes"]=data["allowed_mistakes"]
-				if data["mark_setting"]:
+				if "mark_setting" in data.keys():
 					json_file["mark_setting"]=data["mark_setting"]
 			for attempt in glob.glob('main/files/json/courses/' + course_id + '/users/*/tests/attempts/' + test_id + '.json'):
 				with io.open(attempt, 'r', encoding='utf8') as attempt_file:
@@ -2941,11 +2943,11 @@ class Search():
 		cards=[]
 		for type in search_types:
 			if type=="users":
-				if "course" in search_types[type].keys():
+				if "course_id" in search_types[type].keys():
 					cards.extend(Search.types[type](search_query=search_query, course=search_types[type]["course"]))
 				else: cards.extend(Search.types[type](search_query=search_query, course=None))
 			elif type=="elements":
-				if "course" in search_types[type].keys():
+				if "course_id" in search_types[type].keys():
 					course=search_types[type]["course"]
 				else: course=None
 				if "type" in search_types[type].keys():

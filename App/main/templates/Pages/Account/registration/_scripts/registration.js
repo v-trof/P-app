@@ -11,24 +11,21 @@ $('#register').click(function() {
 			  'csrfmiddlewaretoken' : '{{ csrf_token }}'
 				},
 			success: function(response) {
-					  if (response["type"] == "success" || response["type"] == "groups")
+					  if (response["type"] == "success")
 					  {
-						if (response["type"] == "success")
-			                  {
-			                  	{% if request.session.last_page %}
-			                  		window.location.href='{{request.session.last_page}}'
-			                  		$.ajax({
-										type:"POST",
-										url:"/func/delete_last_page/",
-										data: {
-										   'csrfmiddlewaretoken': '{{ csrf_token }}'
-										}
-										});
-			                  	{% else %}
-			                  		window.location.href='/'
-			                  	{% endif %}
+	                  	{% if request.session.last_page %}
+	                  		window.location.href='{{request.session.last_page}}'
+	                  		$.ajax({
+								type:"POST",
+								url:"/func/delete_last_page/",
+								data: {
+								   'csrfmiddlewaretoken': '{{ csrf_token }}'
+								}
+								});
+	                  	{% else %}
+	                  		window.location.href='/'
+	                  	{% endif %}
 					  }
-					}
 					  else
 					  {
 						notification.show(response["type"], response["message"]);

@@ -67,6 +67,9 @@ class User_views():
             course_id = request.POST.get('course_id', False)
             email = request.POST['email']
             code=request.POST.get('code',None)
+            if code == "":
+                code=None
+            print(code)
             is_teacher = request.POST.get('is_teacher', False)
             password = request.POST['password']
             name_last_name = request.POST['name_last_name']
