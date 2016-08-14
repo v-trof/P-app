@@ -8,6 +8,10 @@ results_display.summary_template = function(index, value, quality, element_class
 		value = test_manager.replace_json_value(element_class, value);
 	}
 
+	if(value.length > 40) {
+		value = value.substring(0, 40);
+	}
+
 	return '<div class="card m--small sumfor_'
 		+ index + ' row">'
 		+'<button class="__number m--flat m--' + quality + '">' 

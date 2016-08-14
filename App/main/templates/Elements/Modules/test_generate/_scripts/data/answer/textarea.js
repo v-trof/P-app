@@ -14,7 +14,7 @@ generate.data["answer--textarea"]= {
 			$element = $(generate.build.template.answer("answer--textarea"))
 			$element.html('{% include "Elements/Inputs/text/textarea/exports.html" %}')
 			$element.find("label").text(value.label)
-
+			$element.attr('answer', 'Оценка выставляется преподавателем');
 			generate.data.shared.worth.element.build($element, value.worth);
 
 			return $element 
@@ -23,25 +23,30 @@ generate.data["answer--textarea"]= {
 			var timer;
 			var typing_interval = 1000;
 
-			$element.on("change", function() {
-				var value = $element.find(".__value").text().substring(0, 17);
-				_action(value);
+			$element.change(function() {
+				var data = $element.find(".__value").text();
+				var value = data.substring(0, 40);
+				_action(value, data);
 			});
 			
 			$element.keydown(function(event) {
 				$element.keydown(function() {
 					clearTimeout(timer); 
 					timer = setTimeout(function() {
-						var value = $element.find(".__value").text().substring(0, 17);
-						_action(value);
+						var data = $element.find(".__value").text();
+						var value = data.substring(0, 40);
+						_action(value, data);
 					}, typing_interval);
 				});
 			});
+			var data = $element.find(".__value").text();
+			var value = data.substring(0, 40);
+			_action(value, data);
 		},
 
 		fill: function($element, answer) {
-			// console.log(answer);
-			$element.find('input').val(answer);
+			console.log(answer);
+			$element.find('.__value').html(answer);
 			$element.find('label').addClass('m--top');
 		},
 
