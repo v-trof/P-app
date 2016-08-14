@@ -44,7 +44,7 @@ generate.data["answer--checkbox"] = {
 				$element.find(":checked").each(function(index, el) {
 					values.push( $(this).val() );
 				});;
-				_action(values.join(", "), values);
+				_action(values.join(", "));
 			});
 			
 		},
