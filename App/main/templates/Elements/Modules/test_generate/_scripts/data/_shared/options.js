@@ -8,15 +8,18 @@ generate.data.shared.options = {
 			});
 
 			// getting answer
-			if ($original.attr('answer')) {
-				answer = $original.attr('answer').split(", ");
+			var answer_attr = $original.attr('answer');
+			console.log(answer_attr);
+			if(answer_attr) {
+				if(type === "radio") {
+					answer = answer_attr;
+				} else {
+					answer = JSON.parse(answer_attr);
+				}
 			} else {
 				answer = [];
 			}
 
-			if(type === "radio" && answer) {
-					answer = answer[0];
-				}
 
 			return {
 				values: values,
@@ -42,6 +45,8 @@ generate.data.shared.options = {
 					answer.push(label);
 				}
 			});
+
+			console.log(answer, typeof answer)
 
 			return {
 				values: values,

@@ -1,8 +1,8 @@
 $(document).ready(function() {
 	var summary_template = function(index, 
 		show_index, value, element_class) {
-		if(element_class === "answer--classify") {
-			value = "(Вопрос)Классификация";
+		if(typeof value === 'object') {
+			value = test_manager.replace_json_value(element_class, value);
 		}
 		if(!value) {
 			value = "Пусто";
@@ -17,6 +17,9 @@ $(document).ready(function() {
 	panel.actions.hide();
 
 	function show_value($summary, value, index, data) {
+		if(typeof value === 'object') {
+			value = test_manager.replace_json_value(element_class, value);
+		}
 		$summary.children(".__value").html(value);
 		console.log("sent:", index, value, data);
 		
@@ -90,9 +93,10 @@ $(document).ready(function() {
 
 			// blueprints.element.fill($(this), value);
 			// console.log(answer_pos, el);
-			var hui = answer_pos;
+			var unbound = answer_pos;
 			blueprints.element.getter($(this), function(value, data) {
-				show_value($new_summary, value, hui, data);
+				show_value($new_summary, value, 
+					unbound, data, element_class);
 			});
 
 			scroll.wire($new_summary, $(this).parent().parent());

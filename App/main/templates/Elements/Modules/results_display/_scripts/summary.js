@@ -3,15 +3,9 @@ Array.prototype.has = function(value) {
 }
 
 
-results_display.replace_json_value = function(element_class, value) {
-	if(element_class === 'answer--classify') {
-		return "(Вопрос)Классификация"
-	}
-}
-
 results_display.summary_template = function(index, value, quality, element_class) {
 	if(typeof value == 'object') {
-		value = results_display.replace_json_value(element_class, value);
+		value = test_manager.replace_json_value(element_class, value);
 	}
 
 	return '<div class="card m--small sumfor_'

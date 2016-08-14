@@ -10,11 +10,7 @@ generate.data["answer--checkbox"] = {
 			return result;
 		},
 
-		build: function(value) {
-			if (value.answer) {
-				value.answer = value.answer.join(', ');
-			}
-			
+		build: function(value) {			
 			$element = $(generate.build.template.answer('answer--checkbox'));
 
 			value.values.forEach(function(label) {
@@ -33,8 +29,6 @@ generate.data["answer--checkbox"] = {
 		},
 
 		fill: function($element, checked) {
-			checked = checked.split(", ");
-
 			$element.find("input").each(function(index, el) {
 				var value = $(this).val();
 
