@@ -13,18 +13,25 @@ results_display.parse_json_value = function(element_class, value) {
 			});
 			line+='</div>';
 			$element.append(line);
+			return $element;
 		}
+	} else  if(value.join) {
+		return $('<div>' + value.join(', ') + '</div>');
 	}
-	return $element;
 };
 
 
 results_display.replace_answer = function($answer,
 	user_answer, right_answer, quality, time, element_class) {
-	
+
+	if(typeof right_answer === 'object') {				
+		right_answer = results_display.parse_json_value(element_class,
+			right_answer).html();
+	}
+
 	if(typeof user_answer === 'object') {
-		user_answer = results_display.parse_json_value(element_class, user_answer).html();
-		right_answer = results_display.parse_json_value(element_class, right_answer).html();
+		user_answer = results_display.parse_json_value(element_class,
+			user_answer).html();
 	}
 
 	var time = '<span class="m--grey m--time">' + time + '</span>';
@@ -58,11 +65,17 @@ $(document).ready(function() {
 		// console.log("reloc");
 
 		results_display.replace_answer = function($answer,
-			user_answer, right_answer, quality, time, element_class, index, worth) {
+			user_answer, right_answer, quality, time,
+			element_class, index, worth) {
+
+			if(typeof right_answer === 'object') {				
+				right_answer = results_display.parse_json_value(element_class,
+					right_answer).html();
+			}
 
 			if(typeof user_answer === 'object') {
-				user_answer = parse_json_value(element_class, user_answer).html();
-				right_answer = parse_json_value(element_class, right_answer).html();
+				user_answer = results_display.parse_json_value(element_class,
+					user_answer).html();
 			}
 
 			var $result_tempalte = $('{% include "Elements/Modules/results_controls/__answer_display/exports.html" %}');
@@ -71,7 +84,7 @@ $(document).ready(function() {
 
 			$result_tempalte.find(".__student_answer")
 				.addClass('m--' + quality)
-				.html(user_answer + times);
+				.html(user_answer + time);
 
 			if(quality === "positive") {
 			 	$result_tempalte.find(".__right_answer").hide();
@@ -93,8 +106,8 @@ $(document).ready(function() {
 				}
 			)
 
-			$result_tempalte.append('<div class="m--grey">'
-				 + time + '</div>');
+		/*	$result_tempalte.append('<div class="m--grey">'
+				 + time + '</div>');*/
 			$answer.html($result_tempalte);
 		}
 	}
