@@ -614,7 +614,7 @@ class CourseManager(models.Manager):
 
 		request=False
 		print(code)
-		if code == None:
+		if code is None:
 			group="Нераспределенные"
 
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -655,10 +655,9 @@ class CourseManager(models.Manager):
 									data["teachers"][teacher][
 										"new_users"].append(user.id)
 					#Проверка: открытый вход в группу
-					print(code)
-					print(not course.is_closed,not is_invited,code==None,code)
-					if not course.is_closed and not is_invited:
-						print("okk")
+
+					if not course.is_closed and not is_invited and code is None:
+						print("1")
 						group = "Нераспределенные"
 						data["groups"][group][str(user.id)] = {}
 						data["groups"][group][str(user.id)][
@@ -675,12 +674,14 @@ class CourseManager(models.Manager):
 						user.save()
 
 					#Создание заявки
-					elif course.is_closed and not is_invited:
+					elif course.is_closed and code is None:
+						print("2")
 						request=True
 						data["pending_users"]["Заявки"].append(user.id)
 
 					#Пользователь был приглашен
 					elif code in data["pending_users"][group] and not group == "teachers":
+						print("3")
 						if user.participation_list:
 							setattr(user, 'participation_list',
 									user.participation_list + " " + str(course.id))
@@ -689,6 +690,7 @@ class CourseManager(models.Manager):
 						user.save()
 
 					elif code in data["pending_users"][group] and group == "teachers":
+						print("4")
 						setattr(user, 'is_teacher', True)
 						if user.courses:
 							setattr(user, 'courses',
@@ -1127,16 +1129,17 @@ class CourseManager(models.Manager):
 				user_status = "guest"
 			elif user.id in data["administrators"]:
 				user_status = "administrator"
-			elif user.id in data["teachers"]:
+			elif str(user.id) in data["teachers"].keys():
 				user_status = "teacher"
 			# elif str(user.id) in data["moderators"]:
 			#	user_status = "moderator"
 			# elif str(user.id) in data["spectators"]:
 			#	user_status = "spectator"
-			elif str(user.id) in data["users"]:
+			elif int(user.id) in data["users"]:
 				user_status = "user"
 			else:
 				user_status = "guest"
+			print(user_status)
 		return user_status
 
 	def load_groups(self, course, user=None):
@@ -2177,7 +2180,7 @@ class Test():
 		test_data["allowed_mistakes"] = allowed_mistakes
 		if max_score:
 			for mark in mark_setting:
-				mark_setting[mark]=int(max_score)/mark_setting[mark]*100
+				mark_setting[mark]=mark_setting[mark]/int(max_score)*100
 		if "mark_setting" in test_data.keys():
 			for key in mark_setting:
 				test_data["mark_setting"][key] = mark_setting[key]
@@ -2315,7 +2318,7 @@ class Test():
 				it = 0
 				for task in test["json"]["tasks"]:
 					for item in task:
-						if not data == None and item["type"] == "answer" and str(it) in data and not data[str(it)]["user_answer"] == False:
+						if item is not None and item["type"] == "answer" and str(it) in data and not data[str(it)]["user_answer"] == False:
 							item = Test.build_answer(
 								item=item, data=data[str(it)])
 							it += 1
@@ -2334,7 +2337,7 @@ class Test():
 			for item in element:
 				if item["type"] == "answer":
 					item.pop("answer", None)
-		if data == None:
+		if data is None:
 			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
 				test = {}
 				question_id = 0
@@ -2836,14 +2839,14 @@ class Search():
 		cards=[]
 		courses=[]
 		courses_all=[]
-		if not user == None:
+		if user is not None:
 			user=User.objects.get(id=user)
-		if not user == None and len(user.courses) > 0:
+		if user is not None and len(user.courses) > 0:
 			if len(user.courses.split(' ')) > 0:
 				for course in user.courses.split(' '):
 					courses_all.append(Course.objects.get(id=course))
 			else: courses_all.append(Course.objects.get(id=user.courses))
-		if not user == None and len(user.participation_list) > 0:
+		if user is not None and len(user.participation_list) > 0:
 			if len(user.participation_list.split(' ')) > 0:
 				for course in user.participation_list.split(' '):
 					courses_all.append(Course.objects.get(id=course))

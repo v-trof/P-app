@@ -305,6 +305,7 @@ class Course_group():
 		course_data["groups"] = Course.objects.load_groups(
 			user=request.user, course=course)
 		if course_data["user_status"] == "guest":
+			print("dsfddfs")
 			return redirect('/')
 		if course.is_closed:
 			course_data["requests"]=Course.objects.load_requests(course=course)

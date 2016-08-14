@@ -45,9 +45,9 @@ class User_views():
             email = request.POST['email']
             password = request.POST['password']
             code=request.GET.get('code',None)
-            message = User.objects.login(
+            User.objects.login(
                 request=request, email=email, password=password)
-            Course_views.register(request=request, course_id=course_id, code=code)
+            message = Course.objects.reg_user(course=Course.objects.get(id=course_id), user=User.objects.get(email=email), code=code)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
     def change_permission_level(request):
