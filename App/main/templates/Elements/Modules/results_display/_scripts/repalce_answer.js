@@ -14,7 +14,7 @@ results_display.parse_json_value = function(element_class, value) {
 			line+='</div>';
 			$element.append(line);
 		}
-		console.log($element);
+		// console.log($element);
 		return $element;
 	} else  if(value.join) {
 		return $('<div>' + value.join(', ') + '</div>');
@@ -80,8 +80,11 @@ $(document).ready(function() {
 			}
 
 			var $result_tempalte = $('{% include "Elements/Modules/results_controls/__answer_display/exports.html" %}');
-
-			var time = '<span class="m--grey m--time">' + time + '</span>';
+			if(time) {
+				var time = '<span class="m--grey m--time">' + time + '</span>';
+			} else {
+				time = '';
+			}
 
 			$result_tempalte.find(".__student_answer")
 				.addClass('m--' + quality)
