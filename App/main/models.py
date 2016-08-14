@@ -1346,11 +1346,7 @@ class CourseManager(models.Manager):
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
 		updates["new_students"] = []
-		updates["course"] = {}
-		if data["status"] == "closed":
-			updates["course"]["is_closed"] = True
-		else:
-			updates["course"]["is_closed"] = False
+		updates["course"] = course
 		for user_id in data["teachers"][str(user.id)]["new_users"]:
 			updates["new_students"].append(User.objects.get(id=user_id))
 		data["teachers"][str(user.id)]["new_users"] = []
@@ -1395,13 +1391,15 @@ class CourseManager(models.Manager):
 					result = json.load(result_file)
 					if user.id in result["unseen_by"]:
 						result_preview = result
-						result_preview["user_id"] = user_id
-						result_preview["course_id"] = str(course.id)
+						result_preview["user"] = User.objects.get(id=user_id)
+						result_preview["course"] = course
 						updates["new_results"].append(result_preview)
+						with io.open(test_result, 'r', encoding='utf8') as result_file:
+							result = json.load(result_file)
 						result["unseen_by"].remove(user.id)
-				with io.open(test_result, 'w', encoding='utf8') as result_file:
-					saving_data = json.dumps(result, ensure_ascii=False)
-					result_file.write(saving_data)
+						with io.open(test_result, 'w', encoding='utf8') as result_file:
+							saving_data = json.dumps(result, ensure_ascii=False)
+							result_file.write(saving_data)
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as data_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			data_file.write(saving_data)
@@ -2377,6 +2375,8 @@ class Test():
 						answer=json.loads(answer)
 					elif question["class"]=="answer--checkbox" and answer.find(',')>0:
 						answer=answer.split(', ')
+					elif question["class"]=="answer--checkbox":
+						answer=[answer]
 					break
 		time_now=str(datetime.datetime.now())
 		if "start_time" in test_info.keys() and str(user.id) in test_info["start_time"].keys():

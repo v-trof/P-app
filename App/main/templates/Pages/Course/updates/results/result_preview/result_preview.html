@@ -1,5 +1,4 @@
-{% include filters %}
 {% include "Elements/card/user/extended/" with
-	user=result.user|get_user_obj_by_id
+	user=result.user
 	extension="#&/../../_extensions/result_preview/"
 %}
