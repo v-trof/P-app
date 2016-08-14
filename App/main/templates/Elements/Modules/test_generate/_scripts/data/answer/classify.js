@@ -40,6 +40,7 @@ generate.data["answer--classify"] = {
 
     build: function(value) {
       var self = this;
+      // console.log(value);
 
       var create_class = function(title) {
         var $new_class =  $('<div class="__class">'
@@ -77,7 +78,9 @@ generate.data["answer--classify"] = {
 
     fill: function($element, answer) {
       var self = this;
-      answer = JSON.parse(answer)
+      if(typeof answer !== 'object'){
+        answer = JSON.parse(answer)
+      }
       // console.log(answer);
       // .remove();
 

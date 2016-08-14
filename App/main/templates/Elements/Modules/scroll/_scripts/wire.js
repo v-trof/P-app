@@ -9,7 +9,7 @@ scroll = {
       $parent = $(document);
     }
 
-    console.log($parent)
+    // console.log($parent)
 
 		$trigger.click(function(event) {
 			$parent.scrollTo($destination, 300, {offset:-margin});

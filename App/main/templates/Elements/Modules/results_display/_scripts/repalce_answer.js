@@ -8,13 +8,14 @@ results_display.parse_json_value = function(element_class, value) {
 			 + class_title + ":</div>";
 			value[class_title].forEach(function(item_text) {
 				line += "<div class='card m--small'"
-				+ "style='margin-bottom: 0.375rem; margin-left: 0.375rem; font-weight: normal'>"
+				+ "style='margin-bottom: 0.375rem; margin-left: 0.375rem; font-weight: normal; padding-top: 0; padding-bottom: 0;'>"
 				 + item_text + "</div>"
 			});
 			line+='</div>';
 			$element.append(line);
-			return $element;
 		}
+		console.log($element);
+		return $element;
 	} else  if(value.join) {
 		return $('<div>' + value.join(', ') + '</div>');
 	}
