@@ -44,6 +44,7 @@
 <link rel="stylesheet" href="{% static "Elements/Modules/plyr/_styles/plyr.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/button_delete/_styles/button_delete.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/medium_editor/_styles/core.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/test_generate/_styles/task.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/test_generate/_styles/image.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
@@ -52,6 +53,7 @@
 <link rel="stylesheet" href="{% static "Elements/Modules/plyr/_styles/variables.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/icon/_styles/icon.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/medium_editor/_styles/default.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/test_generate/_styles/classify.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/plyr/_styles/mixins.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/indicator/_styles/indicator.css" %}"> 
@@ -59,6 +61,7 @@
   </div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script> 
+		{% include "Elements/Modules/medium_editor/_scripts/core.js" %} 
 		{% include "Elements/Modules/test_manager/_scripts/core.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/core.js" %} 
 		{% include "Elements/Modules/results_display/_scripts/core.js" %} 
@@ -99,6 +102,7 @@
 		{% include "Elements/Modules/test_manager/_scripts/parse_json_value.js" %} 
 		{% include "Pages/Test/Attempt/results/_scripts/summary.js" %} 
 		{% include "Pages/Test/Attempt/_shared/responsive.js" %} 
+		{% include "Elements/Inputs/text/textarea/_scripts/add_handlers.js" %} 
 		{% include "Pages/Test/Attempt/results/_scripts/display_mark.js" %} 
 		{% include "Elements/Inputs/file/_scripts/file_catcher.js" %} 
 		{% include "Elements/Layout/header/_scripts/header.js" %} 

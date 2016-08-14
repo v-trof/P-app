@@ -26,6 +26,9 @@ generate.data["question--text"] = {
 				text: $("#new_element_text").html()
 			}
 		},
+		middleware: function() {
+			inline_editor.start($('#new_element_text')[0]);
+		},
 		fill: function(value) {
 			$("#new_element_text").html(value.text).focus();
 		}

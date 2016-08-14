@@ -17,31 +17,33 @@ generate.data["answer--textarea"]= {
 			$element.attr('answer', 'Оценка выставляется преподавателем');
 			generate.data.shared.worth.element.build($element, value.worth);
 
+			inline_editor.start($element.find('.__value')[0]);
 			return $element 
 		},
 		getter: function($element, _action) {
+			
+			function upload_value() {
+				var data = $element.find(".__value").html();
+				var value = $element.find(".__value").text().substring(0, 40);
+				_action(value, data);
+			}
+
 			var timer;
 			var typing_interval = 1000;
 
 			$element.change(function() {
-				var data = $element.find(".__value").text();
-				var value = data.substring(0, 40);
-				_action(value, data);
+				upload_value();
 			});
 			
 			$element.keydown(function(event) {
 				$element.keydown(function() {
 					clearTimeout(timer); 
 					timer = setTimeout(function() {
-						var data = $element.find(".__value").text();
-						var value = data.substring(0, 40);
-						_action(value, data);
+						upload_value();
 					}, typing_interval);
 				});
 			});
-			var data = $element.find(".__value").text();
-			var value = data.substring(0, 40);
-			_action(value, data);
+			upload_value();
 		},
 
 		fill: function($element, answer) {

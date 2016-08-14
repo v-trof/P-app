@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="{% static "Elements/card/announcement/_styles/announcement.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/search/_styles/layout.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/popup/_styles/adaptive.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/medium_editor/_styles/core.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/button_delete/_styles/button_delete.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/accordion/_styles/accordion.css" %}"> 
@@ -35,6 +36,7 @@
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/icon/_styles/icon.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/medium_editor/_styles/default.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/ripple/_styles/ripple.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/tooltip/_styles/tooltip.css" %}"> 
@@ -43,6 +45,7 @@
   </div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script> 
+		{% include "Elements/Modules/medium_editor/_scripts/core.js" %} 
 		{% include "Elements/Modules/search/_scripts/core.js" %} 
 		{% include "Elements/Modules/notification/_scripts/core.js" %} 
 		{% include "Elements/Modules/ripple/_scripts/ripple.js" %} 
@@ -58,6 +61,7 @@
 		{% include "Elements/Modules/search/_scripts/request.js" %} 
 		{% include "Elements/card/assignment/_scripts/show_state.js" %} 
 		{% include "Pages/Course/main/announcements/_scripts/delete.js" %} 
+		{% include "Elements/Inputs/text/textarea/_scripts/add_handlers.js" %} 
 		{% include "Elements/Layout/header/_scripts/header.js" %} 
 		{% include "Pages/Course/main/announcements/_scripts/edit.js" %} 
 		{% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 

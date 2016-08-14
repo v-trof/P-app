@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="{% static "Elements/card/file/_styles/file.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/plyr/_styles/plyr.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/button_delete/_styles/button_delete.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/medium_editor/_styles/core.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/test_generate/__edit_texts/__answer/__classify/_styles/classify.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/test_generate/_styles/task.css" %}"> 
@@ -43,6 +44,7 @@
 <link rel="stylesheet" href="{% static "Elements/Modules/indicator/_styles/indicator.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/medium_editor/_styles/default.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/test_generate/_styles/classify.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/file/_styles/file.css" %}"> 
@@ -55,6 +57,7 @@
   </div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 	<script> 
+		{% include "Elements/Modules/medium_editor/_scripts/core.js" %} 
 		{% include "Elements/Modules/test_manager/_scripts/core.js" %} 
 		{% include "Elements/Modules/test_generate/_scripts/core.js" %} 
 		{% include "Elements/Modules/search/_scripts/core.js" %} 
@@ -91,6 +94,7 @@
 		{% include "Elements/Modules/test_manager/_scripts/parse_json_value.js" %} 
 		{% include "Pages/Test/Attempt/main/_scripts/confing.js" %} 
 		{% include "Pages/Test/Attempt/_shared/responsive.js" %} 
+		{% include "Elements/Inputs/text/textarea/_scripts/add_handlers.js" %} 
 		{% include "Pages/Test/Attempt/main/_scripts/get_results.js" %} 
 		{% include "Elements/Inputs/file/_scripts/file_catcher.js" %} 
 		{% include "Pages/Test/Attempt/main/_scripts/summary.js" %} 
