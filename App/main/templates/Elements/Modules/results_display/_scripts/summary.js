@@ -25,18 +25,6 @@ results_display.create_summary = function(attempt, results) {
 	panel.show("");
 	answer_index = 0;
 
-	if(typeof attempt === 'string') {
-		// console.log(attempt);
-		$('.preview .__task').remove();
-
-		var error_text = '<div class="card">'+ results +'</div>';
-
-		$('.preview .__content').html(error_text);
-
-		panel.content.html(error_text);
-		return;
-	}
-
 	// console.log(attempt);
 	//loop through tasks
 	$(".preview .__task>.__content").each(function(task_index, el) {

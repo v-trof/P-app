@@ -1,5 +1,10 @@
 function show_marks($group) {
    function create_mark(mark, id) {
+    if (mark == 0) {
+      mark = {};
+      mark.quality = 'grey';
+      mark.value = '–';
+    }
     return $('<button id="' + id + '"'
               + 'class="m--ghost m--' 
               + mark.quality + '">'
