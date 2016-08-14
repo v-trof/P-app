@@ -2280,12 +2280,12 @@ class Test():
 		elif type == "answer--textarea":
 			item["value"] = data["user_answer"]
 		elif type == "answer--select":
-			item["value"] = data["user_answer"].split(', ')
+			item["value"] = data["user_answer"]
 			item["filled"] = data["user_answer"]
 		elif type == "answer--radio":
 			item["value"] = data["user_answer"]
 		elif type == "answer--checkbox":
-			item["value"] = data["user_answer"].split(', ')
+			item["value"] = data["user_answer"]
 		elif type == "answer--classify":
 			item["value"] = data["user_answer"]
 
@@ -2316,9 +2316,15 @@ class Test():
 					"published": Test.is_published(test_id=test_id, course_id=course_id)
 				}
 				it = 0
+				time_now=str(datetime.datetime.now())
+				if not "start_time" in test["json"].keys() and not str(user.id) in test["json"]["start_time"].keys():
+					time="00:00:00"
+					test_info["start_time"]={}
+					test_info["start_time"][str(user.id)]=time_now
+
 				for task in test["json"]["tasks"]:
 					for item in task:
-						if item is not None and item["type"] == "answer" and str(it) in data and not data[str(it)]["user_answer"] == False:
+						if data is not None and item["type"] == "answer" and str(it) in data and not data[str(it)]["user_answer"] == False:
 							item = Test.build_answer(
 								item=item, data=data[str(it)])
 							it += 1
@@ -2362,7 +2368,6 @@ class Test():
 		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 			test_info = json.load(info_file)
 		it=0
-		print(question_id)
 		for task in test_info["tasks"]:
 			for question in task:
 				if question["type"]=="answer":
@@ -2392,7 +2397,8 @@ class Test():
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
-			data[str(question_id - 1)]["user_answer"] = answer
+			print(answer)
+			data[str(question_id-1)]["user_answer"] = answer
 			data[str(question_id-1)]["time"]=time
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -2422,7 +2428,7 @@ class Test():
 
 	def check_question_correctness(question, allowed_mistakes):
 		if question["type"]=="checkbox":
-			return check_selected(answer_right=question["answer"], answer=question["user_answer"].split(', '), allowed=allowed_mistakes)
+			return check_selected(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 		elif question["type"]=="select" or question["type"]=="radio":
 			return check_selected(answer_right=str(question["answer"]), answer=str(question["user_answer"]), allowed=allowed_mistakes)
 		return check(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
@@ -2450,6 +2456,7 @@ class Test():
 			for question_id, question in attempt_data.items():
 				overall_score += question["worth"]
 				if question["user_answer"] == False:
+					question["time"] = "-"
 					missed += 1
 					test_results["missed"].append(int(question_id))
 					question["result"] = "missed"
@@ -2697,6 +2704,7 @@ class Marks():
 								test_info = json.load(info_file)
 							marks[group][str(user_id)]["tests"][test_id]["info"]=test_info
 					else: marks[group][str(user_id)]["tests"][test_id]=0
+		print(marks)
 		return marks
 
 
