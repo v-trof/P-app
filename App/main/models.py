@@ -655,7 +655,7 @@ class CourseManager(models.Manager):
 									data["teachers"][teacher][
 										"new_users"].append(user.id)
 					#Проверка: открытый вход в группу
-
+					print(code is "None")
 					if not course.is_closed and not is_invited and code is None:
 						print("1")
 						group = "Нераспределенные"
@@ -2230,6 +2230,7 @@ class Test():
 		return False
 
 	def build_question(item):
+		print(item)
 		value = {}
 		type = item["class"]
 		item["worth"]=int(item["worth"])
@@ -2245,21 +2246,18 @@ class Test():
 			value["user_score"] = 0
 			# textarea
 		elif type == "answer--select":
-			value["options"] = []
 			value["options"] = item["values"]
 			value["answer"] = item["answer"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
 		elif type == "answer--radio":
-			value["options"] = []
 			value["options"] = item["values"]
 			value["answer"] = item["answer"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
 		elif type == "answer--checkbox":
-			value["options"] = []
 			value["options"] = item["values"]
 			value["answer"] = item["answer"]
 			value["user_answer"] = False
@@ -2317,10 +2315,13 @@ class Test():
 				}
 				it = 0
 				time_now=str(datetime.datetime.now())
-				if not "start_time" in test["json"].keys() and not str(user.id) in test["json"]["start_time"].keys():
+				if not "start_time" in test["json"].keys():
 					time="00:00:00"
-					test_info["start_time"]={}
-					test_info["start_time"][str(user.id)]=time_now
+					test["json"]["start_time"]={}
+					test["json"]["start_time"][str(user.id)]=time_now
+				elif not str(user.id) in test["json"]["start_time"].keys():
+					time="00:00:00"
+					test["json"]["start_time"][str(user.id)]=time_now
 
 				for task in test["json"]["tasks"]:
 					for item in task:
@@ -2364,7 +2365,6 @@ class Test():
 	def attempt_save(test_id, question_id, course_id, answer, user):
 		if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
 			return {"type":"error","message":"Тест уже был выполнен"}
-		print(question_id,answer)
 		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 			test_info = json.load(info_file)
 		it=0
@@ -2375,6 +2375,8 @@ class Test():
 				if it==int(question_id):
 					if question["class"]=="answer--classify":
 						answer=json.loads(answer)
+					elif question["class"]=="answer--checkbox" and answer.find(',')>0:
+						answer=answer.split(', ')
 					break
 		time_now=str(datetime.datetime.now())
 		if "start_time" in test_info.keys() and str(user.id) in test_info["start_time"].keys():

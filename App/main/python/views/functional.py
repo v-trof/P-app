@@ -182,7 +182,7 @@ class Course_views():
         if request.method == 'POST':
             course_id = request.POST.get('course_id', None)
             message = Course.objects.delete(course_id=course_id)
-            request.session['notifications']=[{"type":"success","message":message}]
+            request.session['notifications']=message
             return HttpResponse(json.dumps(message), content_type="application/json")
         else:
             return HttpResponse(json.dumps({"type":"error","message":"Нет полномочий"}, content_type="application/json"))
