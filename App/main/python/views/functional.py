@@ -44,7 +44,7 @@ class User_views():
         if request.method == 'POST':
             email = request.POST['email']
             password = request.POST['password']
-            code=request.GET.get('code',None)
+            code=request.GET.get('code',False)
             User.objects.login(
                 request=request, email=email, password=password)
             message = Course.objects.reg_user(course=Course.objects.get(id=course_id), user=User.objects.get(email=email), code=code)
@@ -66,14 +66,18 @@ class User_views():
                 logout(request)
             course_id = request.POST.get('course_id', False)
             email = request.POST['email']
-            code=request.POST.get('code',None)
+            code=request.POST.get('code',False)
             if code == "":
-                code=None
+                code=False
             print(code)
             is_teacher = request.POST.get('is_teacher', False)
             password = request.POST['password']
             name_last_name = request.POST['name_last_name']
-            message = User.objects.reg(request=request, code=code, course_id=course_id, email=email,
+            print(request.POST.get('course_reg',False))
+            if request.POST.get('course_reg',False) == True:
+                message = User.objects.reg(request=request, code=code, course_id=course_id, email=email,
+                                       is_teacher=is_teacher, password=password, name_last_name=name_last_name)
+            else: message = User.objects.reg(request=request, email=email,
                                        is_teacher=is_teacher, password=password, name_last_name=name_last_name)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
