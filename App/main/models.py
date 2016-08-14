@@ -610,11 +610,11 @@ class CourseManager(models.Manager):
 					  from_email, [email], fail_silently=False)
 		return [{"type":"success","message":"Учитель приглашен"}]
 
-	def reg_user(self, course, user, code=None):
+	def reg_user(self, course, user, code=False):
 
 		request=False
-		print(code)
-		if code is None:
+
+		if not code:
 			group="Нераспределенные"
 
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -655,8 +655,8 @@ class CourseManager(models.Manager):
 									data["teachers"][teacher][
 										"new_users"].append(user.id)
 					#Проверка: открытый вход в группу
-					print(code is "None")
-					if not course.is_closed and not is_invited and code is None:
+
+					if not course.is_closed and not is_invited and not code:
 						print("1")
 						group = "Нераспределенные"
 						data["groups"][group][str(user.id)] = {}
@@ -674,7 +674,7 @@ class CourseManager(models.Manager):
 						user.save()
 
 					#Создание заявки
-					elif course.is_closed and code is None:
+					elif course.is_closed and not code:
 						print("2")
 						request=True
 						data["pending_users"]["Заявки"].append(user.id)
@@ -1425,7 +1425,7 @@ class UserManager(UserManager):
 		else:
 			return {"type":"error","message":'Неверный логин или пароль'}
 
-	def reg(self, request, course_id, email, is_teacher, password, name_last_name,code=None):
+	def reg(self, request, email, is_teacher, password, name_last_name,code=False,course_id=False):
 		if not User.objects.filter(email=email):
 			if is_teacher == "false":
 				is_teacher = False
@@ -2101,19 +2101,23 @@ class Test():
 				with io.open(attempt, 'r', encoding='utf8') as attempt_file:
 					attempt_data=json.load(attempt_file)
 				test = {}
-				question_id = 0
+				question_id = -1
+				replaced=False
 				for task in json_file["tasks"]:
-					if task in data["tasks"]:
-						test[str(question_id)] = attempt_data[str(data["tasks"].index(task))]
-						question_id+=1
-					else:			
-						for item in task:
-							if item["type"] == "question":
-								current_question = item
+					for element in task:
+						if element["type"]=="answer":
+							question_id+=1
+							for question in attempt_data:
+								if attempt_data[question]["answer"]==element["answer"]:
+									test[str(question_id)]=attempt_data[question]
+									replaced=True
+									break
+						if not replaced:
+							if element["type"] == "question":
+								current_question = element
 							else:
 								value = Test.build_question(item=item)
 								test[str(question_id)] = value
-								question_id += 1
 				with io.open(attempt, 'w', encoding='utf8') as attempt_file:
 					attempt_file.write(json.dumps(test, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
@@ -2429,6 +2433,8 @@ class Test():
 		return mark_quality
 
 	def check_question_correctness(question, allowed_mistakes):
+		if question["type"]=="textarea":
+			return False
 		if question["type"]=="checkbox":
 			return check_selected(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 		elif question["type"]=="select" or question["type"]=="radio":
