@@ -15,8 +15,14 @@ html, body
 			margin: 0
 
 .item-list
+	display: block
+	overflow-y: scroll
 	min-width: 15rem + $padding--m*2
 	max-width: 15rem + $padding--m*2
 	z-index: 2
-	& > .card:hover
-		border-color: $font__color--accent
+	& > .card
+		display: block
+		&:hover
+			border-color: $font__color--accent
+		&:last-child
+			margin-bottom: $margin--xl

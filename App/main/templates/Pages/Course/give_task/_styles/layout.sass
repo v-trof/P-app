@@ -1,14 +1,16 @@
 @import "../../../../sass_vars/main.sass"
 
 .row
-	align-items: center
+	align-items: top
 	flex-wrap: wrap
 	min-height: $base*2
 	h4.__heading
 		margin: 0
 	.card.m--small
-		margin: 0
+		margin-bottom: $padding--s
 		margin-left: $padding--s
+	&.m--nowrap
+		flex-wrap: nowrap
 
 #assignment--new__traditional
 	.__heading

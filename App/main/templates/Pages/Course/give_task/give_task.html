@@ -9,15 +9,21 @@
 </div>
 
 <div class="card assignment--new">
-	<div class="row" id="assignment--new__materials">
-		<h4 class="__heading">Материалы:</h4>
-		<button class="m--ghost m--icon" id="assignment--new__add_material" tip="Добавить материал в задание">{% include "Elements/Icons/add.svg" %}</button>
+	<div>
+		<div class="row m--nowrap">
+			<h4 class="__heading">Материалы:</h4>
+			<div class="row" id="assignment--new__materials">
+				<button class="m--ghost m--icon" id="assignment--new__add_material" tip="Добавить материал в задание">{% include "Elements/Icons/add.svg" %}</button>
+			</div>
+		</div>
 	</div>
-	<div class="row" id="assignment--new__tests">
+	<div class="row m--nowrap">
 		<h4 class="__heading">Тесты:</h4>
-		<button class="m--ghost m--icon" id="assignment--new__add_test" tip="Добавить тест в задание">
-			{% include 'Elements/Icons/add.svg' %}
-		</button>
+		<div class="row" id="assignment--new__tests">
+			<button class="m--ghost m--icon" id="assignment--new__add_test" tip="Добавить тест в задание">
+				{% include 'Elements/Icons/add.svg' %}
+			</button>
+		</div>
 	</div>
 	<div id="assignment--new__traditional">
 		<h4 class="__heading">Задания вне Pileus</h4>
