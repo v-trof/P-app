@@ -79,6 +79,11 @@ generate.edit = (function() {
 })();
 
 $(document).ready(function() {
+	$('body').on('click', '.medium-editor-toolbar', function() {
+		if(pull_put.ui.$.find(".__content").attr('state') == 'edit') {
+			pull_put.ui.rebuild_element();		
+		}
+	});
 	pull_put.ui.$.find(".__content").on(
 		"keyup click change", 
 		"button, input, .__value",

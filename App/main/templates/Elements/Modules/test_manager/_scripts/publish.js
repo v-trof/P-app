@@ -22,8 +22,8 @@ test_manager.add_section_binding = function() {
 	});
 }
 
-test_manager.publish = function() {
-	// console.log("publ");
+test_manager.verify_test = function() {
+	console.log('verify_test')
 	var no_empty = ($(".preview .m--empty").length === 0);
 	var answers_everywhere = true;
 
@@ -34,8 +34,17 @@ test_manager.publish = function() {
 			answers_everywhere = false;
 		}
 	});
+	console.log((no_empty && answers_everywhere), 
+		no_empty, answers_everywhere)
+	return (no_empty && answers_everywhere)
+}
 
-	if(no_empty && answers_everywhere) {
+test_manager.publish = function() {
+	test_manager.is_published = true;
+	// console.log("publ");
+
+
+	if (test_manager.verify_test()){
 		popup.show('{% include "Pages/Test/editor/_popup_texts/publish/exports.html" %}',
 			function() {
 			
@@ -102,7 +111,6 @@ test_manager.publish = function() {
 				});
 			});
 		});
-
 	} else {
 		popup.show('{% include "Pages/Test/editor/_popup_texts/no_publish/exports.html" %}',
 			function() {

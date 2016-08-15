@@ -20,5 +20,6 @@ test_manager.unpublish = function() {
 	});
 	$("#{{type}}_publish").show();
 	$("#{{type}}_unpublish").hide();
+	test_manager.is_published = false;
 }
 {% endif %}

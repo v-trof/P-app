@@ -35,6 +35,18 @@ test_manager.upload_test = function(test_packed) {
 
 
 test_manager.save = function() {
+	if(test_manager.is_published) {
+		if(! test_manager.verify_test()) {
+			popup.show('{% include "Pages/Test/editor/_popup_texts/no_publish/exports.html" %}',
+			function() {
+				$(".__ok").click(function(event) {
+					popup.hide();
+				});
+			});
+			console.log('dropout');
+			return;
+		}
+	}
 	test_manager.pack();
 	
 	if(test_manager.upload_queue.length !== 0) {

@@ -1,4 +1,10 @@
 $(document).ready(function() {
+
+	{% if test.published %}
+		console.log('back');
+		test_manager.is_published = true;
+	{% endif %}
+
 	$("#test_save").click(function(event) {
 		if(pull_put.is_pulled) {
 			pull_put.puller.cancel();
