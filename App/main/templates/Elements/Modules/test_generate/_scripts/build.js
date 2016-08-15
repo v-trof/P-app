@@ -67,14 +67,20 @@ generate.build.task = function($element) {
 
 		var $bunch = $new_task.add($margin);
 
-		// console.log($bunch);
-
 		button_delete.add($new_task, $bunch, function() {
 			setTimeout(editor.check_self, 100);
 			if(pull_put.is_pulled) {
 				pull_put.reset();
 			}
-		})
+		});
+
+		//add indicator for adding to beggining
+		var $add_to_beginning= $new_task.find('.__add_to_beginning');
+		indicator.add($add_to_beginning, 'add', 1);
+		generate.edit.add_put_zone(
+			$add_to_beginning, function($this, $pulled) {
+			$this.after($pulled);
+		});
 	{% endif %}
 
 	$new_task.find('.__content').append($element);

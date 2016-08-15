@@ -9,13 +9,8 @@ generate.data.shared.options = {
 
 			// getting answer
 			var answer_attr = $original.attr('answer');
-			console.log(answer_attr);
 			if(answer_attr) {
-				if(type === "radio") {
-					answer = answer_attr;
-				} else {
-					answer = JSON.parse(answer_attr);
-				}
+				answer = JSON.parse(answer_attr);
 			} else {
 				answer = [];
 			}
@@ -27,7 +22,30 @@ generate.data.shared.options = {
 				class: "answer--" + type,
 				type: "answer"
 			}
-		}
+		},
+		fill: function($element, checked) {
+			$element.find("input").each(function(index, el) {
+				for(var i=0;i<answer.length;i++) {
+					answer[i] = parseInt(answer[i]);
+				}
+
+				if(checked.indexOf(index) > -1) {
+					this.checked = true;	
+				}
+			});
+		},
+
+		getter: function($element, _action) {
+			$element.change(function(event) {
+				var values = [];
+				$element.find("input").each(function(index, el) {
+					if(this.checked) {
+						values.push(index);
+					}
+				});
+				_action(JSON.stringify(values));
+			});
+		},
 	},
 	edit: {
 		parse : function(type) {
@@ -45,9 +63,7 @@ generate.data.shared.options = {
 					answer.push(index);
 				}
 			});
-
-			console.log(answer, typeof answer)
-
+			
 			return {
 				values: values,
 				answer: answer
@@ -72,6 +88,8 @@ generate.data.shared.options = {
 			});
 		},
 		fill: function(value) {
+			console.log(value.answer, typeof value.answer)
+
 			var counter = 0;
 			value.values.forEach(function(label) {
 				generate.data.shared.add_item();
@@ -86,8 +104,8 @@ generate.data.shared.options = {
 						return counter === parseInt(answer);
 					}
 				} else if(typeof value.answer === "object") {
-					for(var i=0;i<answer.length;i++) {
-						answer[i] = parseInt(answer[i]);
+					for(var i=0;i<value.answer.length;i++) {
+						value.answer[i] = parseInt(value.answer[i]);
 					}
 					checker = function(answer, item) {
 						return (answer.indexOf(counter) > -1);

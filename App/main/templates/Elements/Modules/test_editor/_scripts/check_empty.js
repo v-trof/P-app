@@ -19,7 +19,7 @@ editor.check_empty = function() {
           var $empty = editor.create_empty(type);
 
           if(type === "question") {
-            $task.prepend($empty);
+            $task.find('.__add_to_beginning').after($empty);
           } else {
             $task.append($empty);
           }

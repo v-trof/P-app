@@ -29,28 +29,13 @@ generate.data["answer--checkbox"] = {
 		},
 
 		fill: function($element, checked) {
-			$element.find("input").each(function(index, el) {
-				var value = $(this).val();
-
-				for(var i=0;i<answer.length;i++) {
-					answer[i] = parseInt(answer[i]);
-				}
-
-				if(checked.indexOf(index) > -1) {
-					$(this).prop('checked', true);	
-				}
-			});
+			generate.data.shared.options
+				.element.fill($element, checked);
 		},
 
 		getter: function($element, _action) {
-			$element.change(function(event) {
-				var values = [];
-				$element.find(":checked").each(function(index, el) {
-					values.push( $(this).val() );
-				});;
-				_action(values.join(", "));
-			});
-			
+			generate.data.shared.options
+				.element.getter($element);
 		},
 		
 		value_sample: {

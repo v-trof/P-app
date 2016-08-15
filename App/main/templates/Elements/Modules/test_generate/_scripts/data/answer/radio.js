@@ -27,21 +27,14 @@ generate.data["answer--radio"] = {
 
 			return $element 
 		},
-		getter: function($element, _action) {
-			$element.change(function(event) {
-				var value = $element.find(":checked").val();
-				_action(value);
-			});
+		fill: function($element, checked) {
+			generate.data.shared.options
+				.element.fill($element, checked);
 		},
 
-		fill: function($element, checked) {
-			$element.find("input").each(function(index, el) {
-				var value = $(this).val();
-
-				if(index === parseInt(checked)) {
-					$(this).prop('checked', true);	
-				}
-			});
+		getter: function($element, _action) {
+			generate.data.shared.options
+				.element.getter($element);
 		},
 
 		value_sample: {
@@ -54,9 +47,6 @@ generate.data["answer--radio"] = {
 			var result = generate.data.shared.options.edit.parse("radio");
 
 			result.worth = generate.data.shared.worth.edit.parse();
-			if(result.answer) {
-				result.answer = result.answer[0]
-			}
 			return result
 		},
 		middleware: function() {
