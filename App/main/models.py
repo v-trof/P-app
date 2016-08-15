@@ -985,17 +985,19 @@ class CourseManager(models.Manager):
 				assignment_map["unfinished_tests"] = []
 				assignment_map["tests"] = []
 				assignment_map["traditionals"] = []
+				data[str(assignment_id)]["done"] = {}
+				data[str(assignment_id)]["done"]["tests"] = []
+				data[str(assignment_id)]["done"]["traditionals"] = []
 				for task in assignment["content"]["tests"]:
-					assignment_map["tests"].append(
-						task["link"].split('&')[1].split('=')[1])
+					id=task["link"].split('&')[1].split('=')[1]
+					if os.path.exists('main/files/json/courses/' + str(course_id) + '/users/'+user_id+'/tests/results/'+id+'.json'):
+						data[str(assignment_id)]["done"]["tests"].append(id)
+					else: assignment_map["tests"].append(id)
 				it = 0
 				for task in assignment["content"]["traditionals"]:
 					it += 1
 					assignment_map["traditionals"].append(it)
 				data[assignment_id]["in_process"] = assignment_map
-				data[str(assignment_id)]["done"] = {}
-				data[str(assignment_id)]["done"]["tests"] = []
-				data[str(assignment_id)]["done"]["traditionals"] = []
 				data[str(assignment_id)]["finished"] = False
 				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(data, ensure_ascii=False)
