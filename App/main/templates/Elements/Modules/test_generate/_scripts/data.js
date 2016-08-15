@@ -35,7 +35,7 @@ generate.data["answer--checkbox"] = {
 
 		getter: function($element, _action) {
 			generate.data.shared.options
-				.element.getter($element);
+				.element.getter($element, _action);
 		},
 		
 		value_sample: {
@@ -408,7 +408,7 @@ generate.data["answer--radio"] = {
 
 		getter: function($element, _action) {
 			generate.data.shared.options
-				.element.getter($element);
+				.element.getter($element, _action);
 		},
 
 		value_sample: {
@@ -881,15 +881,38 @@ generate.data.shared.options = {
 		},
 
 		getter: function($element, _action) {
-			$element.change(function(event) {
+			function upload() {
 				var values = [];
+				var data = [];
+				var is_big = false;
 				$element.find("input").each(function(index, el) {
 					if(this.checked) {
-						values.push(index);
+						data.push(index);
+						var text = $(this).siblings('label').text();
+						console.log(text);
+						if(text.length > 20) {
+							is_big = true;
+							text = text.substring(0, 18) + '&hellip;';
+						}
+						values.push(text);
 					}
 				});
-				_action(JSON.stringify(values));
+
+				if(is_big) {
+					values = values.join('<br>');
+				} else {
+					values = values.join(', ');
+				}
+
+				console.log(values);
+
+				_action(values, JSON.stringify(data));
+			}
+
+			$element.change(function(event) {
+				upload();
 			});
+			upload();
 		},
 	},
 	edit: {

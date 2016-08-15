@@ -35,7 +35,7 @@ generate.data["answer--checkbox"] = {
 
 		getter: function($element, _action) {
 			generate.data.shared.options
-				.element.getter($element);
+				.element.getter($element, _action);
 		},
 		
 		value_sample: {
