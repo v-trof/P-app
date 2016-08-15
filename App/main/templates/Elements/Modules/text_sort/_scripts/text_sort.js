@@ -10,9 +10,6 @@ function sort_by_text($parent, key) {
 
 	keyarr.sort();
 
-	console.log(keyarr);
-
-
 	while(keyarr.length > 0) {
 
 		$children.each(function(index, el) {

@@ -31,6 +31,8 @@ generate.data.shared.options = {
 
 				if(checked.indexOf(index) > -1) {
 					this.checked = true;	
+				} else {
+					this.checked = false;	
 				}
 			});
 		},
@@ -44,7 +46,7 @@ generate.data.shared.options = {
 					if(this.checked) {
 						data.push(index);
 						var text = $(this).siblings('label').text();
-						console.log(text);
+						// console.log(text);
 						if(text.length > 20) {
 							is_big = true;
 							text = text.substring(0, 18) + '&hellip;';
@@ -59,7 +61,7 @@ generate.data.shared.options = {
 					values = values.join(', ');
 				}
 
-				console.log(values);
+				// console.log(values);
 
 				_action(values, JSON.stringify(data));
 			}

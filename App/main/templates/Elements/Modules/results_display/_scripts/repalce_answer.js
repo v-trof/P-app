@@ -1,7 +1,10 @@
 //students
 
-results_display.parse_json_value = function(element_class, value) {
+results_display.parse_json_value = function(element_class,
+ value, element_parsed) {
 	var $element = $("<div class='json_answer'></div>");
+	
+	//classify
 	if(element_class === 'answer--classify') {
 		for(class_title in value) {
 			var line = "<div class='row' style='flex-wrap: wrap'><div>"
@@ -16,7 +19,32 @@ results_display.parse_json_value = function(element_class, value) {
 		}
 		// console.log($element);
 		return $element;
-	} else  if(value.join) {
+	} 
+
+	//optons
+	if(element_class === 'answer--radio' ||
+		 element_class === 'answer--checkbox') {
+		value = value.slice();
+		var values = element_parsed.values.slice();
+		var is_big = false;
+		// console.log("I", value, values);
+
+		for(var i = 0; i<value.length; i++) {
+			value[i] = values[value[i]];
+			if(value[i].length > 20) {
+				is_big = true;
+			}
+		}
+		if(is_big) {
+			value = value.join('<br><br>');
+		} else {
+			value = value.join(', ');
+		} 
+		return $('<div>' + value + '</div>');
+	}
+
+	//default
+	if(value.join) {
 		return $('<div>' + value.join(', ') + '</div>');
 	}
 };
@@ -25,14 +53,19 @@ results_display.parse_json_value = function(element_class, value) {
 results_display.replace_answer = function($answer,
 	user_answer, right_answer, quality, time, element_class) {
 
+	var element_parsed = generate.data[element_class]
+													.element.parse($answer);
+
+	var current_el = $.extend(true, {}, element_parsed);
+
 	if(typeof right_answer === 'object') {				
 		right_answer = results_display.parse_json_value(element_class,
-			right_answer).html();
+			right_answer, current_el).html();
 	}
 
 	if(typeof user_answer === 'object') {
 		user_answer = results_display.parse_json_value(element_class,
-			user_answer).html();
+			user_answer, current_el).html();
 	}
 
 	var time = '<span class="m--grey m--time">' + time + '</span>';
@@ -69,14 +102,21 @@ $(document).ready(function() {
 			user_answer, right_answer, quality, time,
 			element_class, index, worth) {
 
+
+			// console.log('repl', user_answer, right_answer);
+			var element_parsed = generate.data[element_class]
+													.element.parse($answer);
+
+			var current_el = $.extend(true, {}, element_parsed);
+
 			if(typeof right_answer === 'object') {				
 				right_answer = results_display.parse_json_value(element_class,
-					right_answer).html();
+					right_answer, current_el).html();
 			}
 
 			if(typeof user_answer === 'object') {
 				user_answer = results_display.parse_json_value(element_class,
-					user_answer).html();
+					user_answer, current_el).html();
 			}
 
 			var $result_tempalte = $('{% include "Elements/Modules/results_controls/__answer_display/exports.html" %}');

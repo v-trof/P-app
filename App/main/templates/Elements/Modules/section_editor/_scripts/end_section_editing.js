@@ -1,6 +1,6 @@
 section_editor.end_section_editing = function($section, dont_replace) {
 	var $items = $section.children(section_editor.item_selector)
-	$itemes.each(function(index, el) {
+	$items.each(function(index, el) {
 		$(this).removeAttr("tip");
 	});
 	

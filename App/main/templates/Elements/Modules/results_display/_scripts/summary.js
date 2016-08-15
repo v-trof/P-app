@@ -20,6 +20,13 @@ results_display.summary_template = function(index, value, quality, element_class
 }
 
 results_display.create_summary = function(attempt, results) {
+	function show_value($summary, value, index, data) {
+		if(typeof value === 'object') {
+			value = test_manager.replace_json_value(element_class, value);
+		}
+		$summary.children(".__value").html(value);
+	}
+
 	panel.show("");
 	answer_index = 0;
 
@@ -73,6 +80,14 @@ results_display.create_summary = function(attempt, results) {
 			$new_summary = $(results_display.
 				summary_template(index, value, quality, element_class));
 			panel.content.append($new_summary);
+
+			generate.read(element_class).element.fill($(this), value.slice());
+			
+			generate.read(element_class).element.getter($(this),
+			function(value, data) {
+				show_value($new_summary, value, 
+					0, data);
+			});
 
 			results_display.replace_answer(
 				$(this), 

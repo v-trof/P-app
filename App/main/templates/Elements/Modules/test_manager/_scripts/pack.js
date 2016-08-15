@@ -52,6 +52,7 @@ test_manager.pack = function() {
 			if(element_class == '__add_to_beginning') {
 				return;
 			}
+			index-=1;
 			console.log("packing:", this);
 
 			test_manager.packed_test.tasks[task_index].push(
@@ -70,7 +71,9 @@ test_manager.pack = function() {
 
 					//find file
 					for(var i=0;i<=assets.last_id;i++) {
-						if(typeof assets[i] !== "undefined") {
+						if(
+							typeof assets[i] !== "undefined" &&
+							typeof assets[i].urls !== "undefined") {
 							if(assets[i].urls[0] === src) {
 								upload = true;
 								file_to_upload = assets[i].files[0];
@@ -79,6 +82,7 @@ test_manager.pack = function() {
 					}
 
 					if(upload) {
+						console.log(task_index, index, img_index);
 						upload_file(file_to_upload, task_index, index);
 					}
 					
