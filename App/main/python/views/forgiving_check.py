@@ -33,20 +33,16 @@ def numbers(answer):
 	return romanResult
 
 def check(answer, answer_right, allowed):
-	print(answer,answer_right)
 	if answer == answer_right:
 		return "right"
 	if "word_order" in allowed:
 		if forgiving["word_order"](answer=answer,answer_right=answer_right):
 			return "forgiving"
-	#print(allowed)
 	for mistake in allowed:
 		prev_answer=answer
-		print(mistake)
 		#simple replacements
 		if mistake != "word_order":
 			if mistake == "typo":
-				print(mistake, forgiving[mistake](answer=answer,answer_right=answer_right))
 				answer = forgiving[mistake](answer=answer,answer_right=answer_right)
 				if answer == answer_right:
 					return "forgiving"
@@ -61,7 +57,6 @@ def check(answer, answer_right, allowed):
 	return "false"
 
 def check_selected(answer, answer_right, allowed):
-	print(answer,answer_right)
 	if set(answer) == set(answer_right):
 		return "right"
 	else: return "false"
@@ -210,7 +205,6 @@ def typo(answer, right_answer, delta):
 	if correctness(replacement(k,right_answer,delta),right_answer,delta)>max:
 		max=correctness(replacement(k,right_answer,delta),right_answer,delta)
 		k=replacement(k,right_answer,delta)
-	print("1")
 	if common_chars_percentage(answer,k) > 35:
 		return answer
 	return k
@@ -231,7 +225,6 @@ def common_chars_percentage(first_string,second_string):
 				common_chars+=1
 			it+=1
 		percentage=common_chars/len(first_string)*100
-	print("2",percentage)
 	return percentage
 
 def html_specialchars(answer):

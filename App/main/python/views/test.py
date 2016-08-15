@@ -136,7 +136,6 @@ def attempt(request):
 			return redirect("/test/attempt/results/?course_id=" + course_id + "&test_id=" + test_id)
 		context = Test.attempt(
 			user=request.user, course_id=course_id, test_id=test_id)
-		print(context)
 		context["attempt"] = True
 		context["type"] = "test"
 		context["breadcrumbs"] = [{

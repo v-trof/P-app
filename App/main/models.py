@@ -248,7 +248,6 @@ class Utility():
 			for item in object:
 				if isinstance(item, dict):
 					if not item[indicator] == "":
-						print(item[indicator])
 						items.append(item[indicator])
 					else:
 						no_date_list.append(item)
@@ -257,13 +256,11 @@ class Utility():
 				items.sort(key=Utility.sort_by_month)
 				items.sort(key=Utility.sort_by_year)
 			else:
-				#print(items.sort(key=Utility.sort_by_day, reverse=True),items.sort(key=Utility.sort_by_day))
 				items.sort(key=Utility.sort_by_day, reverse=True)
 				items.sort(key=Utility.sort_by_month, reverse=True)
 				items.sort(key=Utility.sort_by_year, reverse=True)
 			for placing_item in items:
 				for item in object:
-					print(item,placing_item)
 					if item[indicator] == placing_item:
 						sorted_list.append(item)
 						object.remove(item)
@@ -284,14 +281,15 @@ class Utility():
 				else:
 					object = collections.OrderedDict(sorted(object.items()))
 			else:
-				object.sort(key=Utility.sort_by_name, reverse=False)
+				try:
+					object.sort(key=Utility.sort_by_name, reverse=False)
+				except: object.sort()
 		return object
 
 	def sort_by_conformity(object, indicator=False):
 		if len(object) > 1 or isinstance(object, dict):
 			if isinstance(object, dict):
 				if indicator:
-					print(object[indictator].items())
 					object[indictator] = collections.OrderedDict(
 						sorted(object[indictator].items()))
 				else:
@@ -309,6 +307,27 @@ class Utility():
 
 
 class CourseManager(models.Manager):
+
+	def load_sample(self,course,user):
+		shutil.rmtree('main/files/json/courses/' + str(course.id)+'/')
+		shutil.rmtree('main/files/media/courses/'+str(course.id)+'/')
+		shutil.copytree('main/files/json/courses/sample/', 'main/files/json/courses/' + str(course.id)+'/')
+		shutil.copytree('main/files/media/courses/sample/', 'main/files/media/courses/'+str(course.id)+'/')
+		bot_ids=[3,4,5,6]
+		for bot_id in bot_ids:
+			bot=User.objects.get(id=bot_id)
+			string=bot.participation_list+str(course.id)+" "
+			setattr(bot, 'participation_list', string)
+		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as json_file:
+			data = json.load(json_file)
+			print(data)
+			data["users"].append(user.id)
+			data["administrators"].append(user.id)
+			data["teachers"][str(user.id)]={"new_users": [6, 3, 4, 5]}
+		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
+		return course
 
 	def create_course(self, name, subject, creator, is_closed):
 		if is_closed == "false":
@@ -657,7 +676,6 @@ class CourseManager(models.Manager):
 					#Проверка: открытый вход в группу
 
 					if not course.is_closed and not is_invited and not code:
-						print("1")
 						group = "Нераспределенные"
 						data["groups"][group][str(user.id)] = {}
 						data["groups"][group][str(user.id)][
@@ -675,13 +693,11 @@ class CourseManager(models.Manager):
 
 					#Создание заявки
 					elif course.is_closed and not code:
-						print("2")
 						request=True
 						data["pending_users"]["Заявки"].append(user.id)
 
 					#Пользователь был приглашен
 					elif code in data["pending_users"][group] and not group == "teachers":
-						print("3")
 						if user.participation_list:
 							setattr(user, 'participation_list',
 									user.participation_list + " " + str(course.id))
@@ -690,7 +706,6 @@ class CourseManager(models.Manager):
 						user.save()
 
 					elif code in data["pending_users"][group] and group == "teachers":
-						print("4")
 						setattr(user, 'is_teacher', True)
 						if user.courses:
 							setattr(user, 'courses',
@@ -772,7 +787,6 @@ class CourseManager(models.Manager):
 			string=""
 			for element in list:
 				string+=element+' '
-			print(string)
 			setattr(user, 'participation_list', string)
 			user.save()
 			with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as data_file:
@@ -1040,8 +1054,6 @@ class CourseManager(models.Manager):
 						for traditional in old_assignment["content"]["traditionals"]:
 							if it in data[str(assignment_id)]["done"]["traditionals"]:
 								if traditional in assignment["content"]["traditionals"]:
-									print(assignment["content"][
-												  "traditionals"])
 									equals.append(assignment["content"][
 												  "traditionals"][it])
 							it += 1
@@ -1141,7 +1153,6 @@ class CourseManager(models.Manager):
 				user_status = "user"
 			else:
 				user_status = "guest"
-			print(user_status)
 		return user_status
 
 	def load_groups(self, course, user=None):
@@ -1537,7 +1548,6 @@ class UserManager(UserManager):
 			course_array = string_array.split(" ")
 			marks = {}
 			for course_id in course_array:
-				print(course_id)
 				course = Course.objects.get(id=course_id)
 				if not course.subject in marks.keys():
 					marks[course.subject] = {}
@@ -1759,7 +1769,6 @@ class UserManager(UserManager):
 			os.remove(user.avatar.path)
 		setattr(user, 'avatar', new_avatar)
 		user.save()
-		print('/media/'+str(user.avatar))
 		return '/media/'+str(user.avatar)
 
 
@@ -1844,9 +1853,9 @@ class Material():
 
 		sections = list(course_info['sections']['published'].keys())
 
-		for section in sections:
+		for section, elements in course_info['sections']['published'].items():
 			it = 0
-			for element in section:
+			for element in elements:
 				if material_id == course_info['sections']['published'][section][it]["id"] and course_info['sections']['published'][section][it]["type"] == "material":
 					del(course_info['sections']['published'][section][it])
 				it += 1
@@ -2234,7 +2243,6 @@ class Test():
 		return False
 
 	def build_question(item):
-		print(item)
 		value = {}
 		type = item["class"]
 		item["worth"]=int(item["worth"])
@@ -2269,7 +2277,6 @@ class Test():
 			value["user_score"] = 0
 		elif type == "answer--classify":
 			value["answer"] = item["answer"]
-			print(value["answer"],item["answer"])
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
@@ -2367,6 +2374,7 @@ class Test():
 		return context
 
 	def attempt_save(test_id, question_id, course_id, answer, user):
+		print(answer)
 		if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
 			return {"type":"error","message":"Тест уже был выполнен"}
 		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
@@ -2379,10 +2387,8 @@ class Test():
 				if it==int(question_id):
 					if question["class"]=="answer--classify":
 						answer=json.loads(answer)
-					elif question["class"]=="answer--checkbox" and answer.find(',')>0:
-						answer=answer.split(', ')
-					elif question["class"]=="answer--checkbox":
-						answer=[answer]
+					elif question["class"]=="answer--checkbox" or question["class"]=="answer--radio":
+						answer=json.loads(answer)
 					break
 		time_now=str(datetime.datetime.now())
 		if "start_time" in test_info.keys() and str(user.id) in test_info["start_time"].keys():
@@ -2391,7 +2397,6 @@ class Test():
 			time="00:00:00"
 			test_info["start_time"]={}
 			test_info["start_time"][str(user.id)]=time_now
-		print(time)
 		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'w', encoding='utf8') as info_file:
 			info_file.write(json.dumps(test_info, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as assignments_file:
@@ -2405,7 +2410,6 @@ class Test():
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
-			print(answer)
 			data[str(question_id-1)]["user_answer"] = answer
 			data[str(question_id-1)]["time"]=time
 			saving_data = json.dumps(data, ensure_ascii=False)
@@ -2672,9 +2676,10 @@ class Marks():
 		for section in course_data["sections"]["published"]:
 			tests_info[section]={}
 			for test in course_data["sections"]["published"][section]:
-				with io.open('main/files/json/courses/' + str(course_id) + '/tests/'+test["id"]+'.json', 'r', encoding='utf8') as data_file:
-					data = json.load(data_file)
-					tests_info[section][test["id"]]=data
+				if test["type"]=="test":
+					with io.open('main/files/json/courses/' + str(course_id) + '/tests/'+test["id"]+'.json', 'r', encoding='utf8') as data_file:
+						data = json.load(data_file)
+						tests_info[section][test["id"]]=data
 		return tests_info
 
 	def get_tests(course_id, task_id):
@@ -2714,7 +2719,6 @@ class Marks():
 								test_info = json.load(info_file)
 							marks[group][str(user_id)]["tests"][test_id]["info"]=test_info
 					else: marks[group][str(user_id)]["tests"][test_id]=0
-		print(marks)
 		return marks
 
 
@@ -2805,7 +2809,7 @@ class Statistics():
 				test_info = json.load(info_file)
 			for question_id,question in test_info.items():
 				if "result" in question.keys():
-					if question["result"] == "forgiving" or question["result"] == "wrong" or question["result"] == "missed":
+					if question["result"] == "wrong" or question["result"] == "missed":
 						question_id=str(int(question_id)+1)
 						if not question_id in questions.keys():
 							questions[question_id]=0
@@ -2878,9 +2882,7 @@ class Search():
 				if conformity > 20:
 					courses.append({"object":course,"conformity":conformity})
 		if len(courses) > 0:
-			print("do",courses)
 			courses=Utility.sort_by_conformity(object=courses, indicator="conformity")
-			print("posle",courses)
 		for course in courses:
 			with io.open('main/files/json/courses/' + str(course["object"].id) + '/info.json', 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
@@ -2980,7 +2982,6 @@ class Search():
 					cards.extend(Search.types[type](search_query=search_query))
 				else: cards.extend(Search.types[type](search_query=search_query))
 		cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
-		print(cards)
 		return cards
 
 	types = {

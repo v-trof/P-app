@@ -215,7 +215,6 @@ class Course_group():
 			context["tests"] = Test.get_tests_in_task_info(task_id=task_id,course_id=course_id)
 			for test in context["tests"]:
 				context["tests"][test]["summary"]=Statistics.get_test_statistics(test_id=test,course_id=course_id)
-				print(context["tests"][test]["summary"])
 			context["breadcrumbs"] = [
 			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "/course/" + str(course.id) + "/marks/", "link": "Задания"}, {"href": "#", "link": "Результаты"}]
 		elif 'test_id' in request.GET:
@@ -225,7 +224,6 @@ class Course_group():
 			context["test_id"] = test_id
 			context["summary"] = Statistics.get_test_statistics(test_id=test_id,course_id=course_id)
 			context["tests"] = {str(test_id):Test.get_test_info(course_id=course_id,test_id=test_id)}
-			print(context["tests"])
 			context["breadcrumbs"] = [
 			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "/course/" + str(course.id) + "/marks/tests/", "link": "Тесты"}, {"href": "#", "link": "Результаты"}]
 		else:
@@ -306,7 +304,6 @@ class Course_group():
 		course_data["groups"] = Course.objects.load_groups(
 			user=request.user, course=course)
 		if course_data["user_status"] == "guest":
-			print("dsfddfs")
 			return redirect('/')
 		if course.is_closed:
 			course_data["requests"]=Course.objects.load_requests(course=course)

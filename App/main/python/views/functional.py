@@ -69,11 +69,9 @@ class User_views():
             code=request.POST.get('code',False)
             if code == "":
                 code=False
-            print(code)
             is_teacher = request.POST.get('is_teacher', False)
             password = request.POST['password']
             name_last_name = request.POST['name_last_name']
-            print(request.POST.get('course_reg',False))
             if request.POST.get('course_reg',False) == True:
                 message = User.objects.reg(request=request, code=code, course_id=course_id, email=email,
                                        is_teacher=is_teacher, password=password, name_last_name=name_last_name)
@@ -161,12 +159,19 @@ class Course_views():
             if not request.user.is_teacher:
                 request.user.is_teacher = True
                 request.user.save()
-            subject = request.POST.get('subject', None)
             creator = User.objects.get(id=request.user.id)
-            is_closed = request.POST.get('is_closed', False)
-            course = Course.objects.create_course(
-                name=name, subject=subject, creator=creator, is_closed=is_closed)
-            redirect_url = '/course/' + str(course.id) + '/'
+            if name=="--s":
+                course = Course.objects.create_course(
+                    name="Русский язык 9-11 класс", subject="Русский язык", creator=creator, is_closed=False)
+                print(course)
+                response = Course.objects.load_sample(course=course,user=request.user)
+                redirect_url = '/course/' + str(course.id) + '/'
+            else:
+                subject = request.POST.get('subject', None)
+                is_closed = request.POST.get('is_closed', False)
+                course = Course.objects.create_course(
+                    name=name, subject=subject, creator=creator, is_closed=is_closed)
+                redirect_url = '/course/' + str(course.id) + '/'
             return HttpResponse(redirect_url)
 
     def edit(request):
@@ -425,7 +430,6 @@ def delete_last_page(request):
 def search(request):
     if request.method == "POST":
         search_query=request.POST.get("search_query","")
-        print("123123",request.POST)
         if "search_types" in request.POST.keys():
             search_types=json.loads(request.POST["search_types"])
         else: search_types=None
