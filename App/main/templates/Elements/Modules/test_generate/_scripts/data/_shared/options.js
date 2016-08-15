@@ -42,7 +42,7 @@ generate.data.shared.options = {
 				values.push(label);
 				
 				if($(this).find("input").is(":checked")) {
-					answer.push(label);
+					answer.push(index);
 				}
 			});
 
@@ -72,6 +72,7 @@ generate.data.shared.options = {
 			});
 		},
 		fill: function(value) {
+			var counter = 0;
 			value.values.forEach(function(label) {
 				generate.data.shared.add_item();
 				$(".options-edit .__items").children().last()
@@ -82,11 +83,14 @@ generate.data.shared.options = {
 
 				if(typeof value.answer === "string") {
 					checker = function(answer, item) {
-						return item === answer;
+						return counter === parseInt(answer);
 					}
 				} else if(typeof value.answer === "object") {
+					for(var i=0;i<answer.length;i++) {
+						answer[i] = parseInt(answer[i]);
+					}
 					checker = function(answer, item) {
-						return (answer.indexOf(item) > -1);
+						return (answer.indexOf(counter) > -1);
 					}
 				}
 
@@ -95,6 +99,7 @@ generate.data.shared.options = {
 					$(".options-edit .__items").find("label input")
 						.last().prop("checked", true);
 				}
+				counter++;
 			});
 		}
 	}

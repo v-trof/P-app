@@ -32,7 +32,11 @@ generate.data["answer--checkbox"] = {
 			$element.find("input").each(function(index, el) {
 				var value = $(this).val();
 
-				if(checked.indexOf(value) > -1) {
+				for(var i=0;i<answer.length;i++) {
+					answer[i] = parseInt(answer[i]);
+				}
+
+				if(checked.indexOf(index) > -1) {
 					$(this).prop('checked', true);	
 				}
 			});

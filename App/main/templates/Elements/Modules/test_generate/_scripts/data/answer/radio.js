@@ -38,7 +38,7 @@ generate.data["answer--radio"] = {
 			$element.find("input").each(function(index, el) {
 				var value = $(this).val();
 
-				if(value === checked) {
+				if(index === parseInt(checked)) {
 					$(this).prop('checked', true);	
 				}
 			});
