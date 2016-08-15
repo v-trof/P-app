@@ -25,8 +25,8 @@ generate.data.shared.options = {
 		},
 		fill: function($element, checked) {
 			$element.find("input").each(function(index, el) {
-				for(var i=0;i<answer.length;i++) {
-					answer[i] = parseInt(answer[i]);
+				for(var i=0;i<checked.length;i++) {
+					checked[i] = parseInt(checked[i]);
 				}
 
 				if(checked.indexOf(index) > -1) {

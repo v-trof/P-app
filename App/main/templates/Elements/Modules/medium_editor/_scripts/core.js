@@ -26,20 +26,24 @@ var inline_editor = {
             contentDefault: '<i>К</i>',
           },
           {
-              name: 'h1',
-              action: 'append-h4',
-              aria: 'Заголовок',
-              tagNames: ['h4'],
-              contentDefault: '<b>З</b>',
-              classList: ['__heading'],
+            name: 'h1',
+            action: 'append-h4',
+            aria: 'Заголовок',
+            tagNames: ['h4'],
+            contentDefault: '<b>З</b>',
+            classList: ['__heading'],
           },
           {
-              name: 'orderedlist',
-              aria: 'Нумерованный список',
+            name: 'orderedlist',
+            aria: 'Нумерованный список',
           },
           {
-              name: 'anchor',
-              aria: 'Добавить ссылку',
+            name: 'quote',
+            aria: 'Выделить абзац '
+          },
+          {
+            name: 'anchor',
+            aria: 'Добавить ссылку',
           },
         ]
       }

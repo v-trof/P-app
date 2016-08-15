@@ -48,9 +48,10 @@ test_manager.pack = function() {
 
 		$(this).children().each(function(index, $element) {
 			//this == .task.child
-			var element_class = $(this)
-				.attr('class').split(' ')[0];
-
+			var element_class = this.classList[0];
+			if(element_class == '__add_to_beginning') {
+				return;
+			}
 			console.log("packing:", this);
 
 			test_manager.packed_test.tasks[task_index].push(
