@@ -1,3 +1,3 @@
 {
-	"elements" : ["card/user", "button/ghost"]
+	"elements" : ["card/user", "button/ghost", "Modules/text_sort"]
 }

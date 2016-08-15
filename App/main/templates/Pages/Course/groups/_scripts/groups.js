@@ -2,6 +2,7 @@ var renames = {};
 
 $(document).ready(function() {
 sort_by_text($(".students"), "h3");
+sort_by_text($(".students .group"), ".__name");
 
 var section_selector = '.group'
 	heading_selector = 'h3'
