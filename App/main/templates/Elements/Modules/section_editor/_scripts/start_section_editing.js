@@ -52,6 +52,7 @@ section_editor.start_section_editing = function($section) {
 				if(!was_unpublished) {
 					// console.log('1')
 					indicator.show(1)
+					section_editor.pull.func();
 				}
 			}
 		)

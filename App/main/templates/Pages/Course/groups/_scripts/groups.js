@@ -54,6 +54,7 @@ var send_changes = function() {
 }
 
 {% if course_data.user_status == "administrator" %}
+pull_put.ui.additional_margin = 24;
 section_editor.init({
 	$parent: $('.students'),
 	$section_template: $('<section class="group"><h3>Новая группа</h3></section>'),
@@ -66,6 +67,7 @@ section_editor.init({
 	unordered_heading: unordered_heading,
 	_put_callback: function($item) {
 		sort_by_text($item.parent(), ".__name");
+		$('.m--sided').removeClass('m--sided');
 	},
 	_save_callback: send_changes,
 	edit_start: function() {
@@ -77,7 +79,10 @@ section_editor.init({
 		});
 	},
 	pull: {
-		actions: ["delete"]	
+		actions: ["delete"],
+		func: function() {
+			$('.indicator').slice(-2).addClass('m--sided');
+		}
 	}
 	});
 {% endif %}

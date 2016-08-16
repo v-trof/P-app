@@ -40,6 +40,7 @@ section_editor.init = function(arguments) {
 	pull {
 		actions        | array   ([])  | default pull put actions
 		additional     | object        | pull_put additional action | if needed
+		func           | function      | 
 	}
 	*/
 
@@ -124,17 +125,22 @@ section_editor.init = function(arguments) {
 		section_editor._put_callback = arguments._put_callback
 	}
 
+
 	if(defined(arguments.pull)) {
 		if( ! defined(arguments.pull.actions)) {
 			section_editor.pull.actions = []
 		} else {
 			section_editor.pull = arguments.pull
 		}
+		section_editor.pull.func = arguments.pull.func || function(){};
 	} else {
 		section_editor.pull = {
-			actions: []
+			actions: [],
+			func: function() {}
 		}
 	}
+	//pull func
+	
 	var unordered_heading = arguments.unordered_heading
 
 	//find unordered
