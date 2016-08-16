@@ -81,7 +81,10 @@ results_display.create_summary = function(attempt, results) {
 				summary_template(index, value, quality, element_class));
 			panel.content.append($new_summary);
 
-			generate.read(element_class).element.fill($(this), value.slice());
+			if(element_class === 'answer--radio' ||
+				 element_class === 'answer--checkbox') {
+				generate.read(element_class).element.fill($(this), value.slice());
+			}
 			
 			generate.read(element_class).element.getter($(this),
 			function(value, data) {

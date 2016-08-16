@@ -4,6 +4,7 @@ results_display.parse_json_value = function(element_class,
  value, element_parsed) {
 	var $element = $("<div class='json_answer'></div>");
 	
+	console.log(element_class);
 	//classify
 	if(element_class === 'answer--classify') {
 		for(class_title in value) {
@@ -51,10 +52,11 @@ results_display.parse_json_value = function(element_class,
 
 
 results_display.replace_answer = function($answer,
-	user_answer, right_answer, quality, time, element_class) {
+			user_answer, right_answer, quality, time,
+			element_class, index, worth) {
 
 	var element_parsed = generate.data[element_class]
-													.element.parse($answer);
+							.element.parse($answer);
 
 	var current_el = $.extend(true, {}, element_parsed);
 
@@ -68,7 +70,22 @@ results_display.replace_answer = function($answer,
 			user_answer, current_el).html();
 	}
 
-	var time = '<span class="m--grey m--time">' + time + '</span>';
+	if(typeof right_answer === 'undefined') {
+		right_answer = "Такие ответы проверяются учителем";
+	}
+
+	if(time) {
+		var time = '<span class="m--grey m--time">' + time + '</span>';
+	} else {
+		time = '';
+	}
+	results_display.finish_answer($answer, user_answer, right_answer, 
+		quality, time,element_class, index, worth); 
+}
+
+results_display.finish_answer = function($answer,
+			user_answer, right_answer, quality, time,
+			element_class, index, worth) {
 	$answer.html('');
 	if(quality === "positive") {
 		$answer.append("<div>Ваш ответ: <b class='m--positive'>" 
@@ -96,16 +113,12 @@ results_display.replace_answer = function($answer,
 $(document).ready(function() {
 	if(typeof results_controls !== 'undefined') {
 
-		// console.log("reloc");
-
-		results_display.replace_answer = function($answer,
+		results_display.finish_answer = function($answer,
 			user_answer, right_answer, quality, time,
 			element_class, index, worth) {
-
-
 			// console.log('repl', user_answer, right_answer);
 			var element_parsed = generate.data[element_class]
-													.element.parse($answer);
+									.element.parse($answer);
 
 			var current_el = $.extend(true, {}, element_parsed);
 
@@ -150,7 +163,7 @@ $(document).ready(function() {
 				}
 			)
 
-		/*	$result_tempalte.append('<div class="m--grey">'
+			/*	$result_tempalte.append('<div class="m--grey">'
 				 + time + '</div>');*/
 			$answer.html($result_tempalte);
 		}

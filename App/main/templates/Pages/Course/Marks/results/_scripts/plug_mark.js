@@ -17,12 +17,13 @@ function plug_marks_init($group) {
 		var id = $(this).attr('id');
 
 		if(results_controls.active_test != id) {
-  		results_controls.active_test = id;
-  		changed=true;
-    }
+	  		results_controls.active_test = id;
+	  		changed=true;
+	    }
 		
 		if(changed) {
 			results_controls.load();
 		}
+		show_active_test(id);
 	});
 }

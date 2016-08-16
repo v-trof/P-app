@@ -79,7 +79,8 @@ generate.edit = (function() {
 })();
 
 $(document).ready(function() {
-	$('body').on('click', '.medium-editor-toolbar', function() {
+	$(document).on('mousedown', '.medium-editor-action', function() {
+		console.log('cll0');
 		if(pull_put.ui.$.find(".__content").attr('state') == 'edit') {
 			pull_put.ui.rebuild_element();		
 		}

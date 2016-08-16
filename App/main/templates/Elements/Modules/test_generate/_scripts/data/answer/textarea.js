@@ -7,6 +7,7 @@ generate.data["answer--textarea"]= {
 				label: $original.find('label').html(),
 				class: "answer--textarea",
 				type: "answer",
+				answer: 'Оценка выставляется преподавателем',
 				worth: generate.data.shared.worth.element.parse($original)
 			}
 		},
