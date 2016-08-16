@@ -197,7 +197,6 @@ class Utility():
 		return new_date
 
 	def time_delta(date1,date2):
-
 		time_delta=0
 		year1=int(date1[:4])
 		year2=int(date2[:4])
@@ -318,12 +317,14 @@ class CourseManager(models.Manager):
 			bot=User.objects.get(id=bot_id)
 			string=bot.participation_list+str(course.id)+" "
 			setattr(bot, 'participation_list', string)
+			bot.save
+
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-			print(data)
 			data["users"].append(user.id)
 			data["administrators"].append(user.id)
 			data["teachers"][str(user.id)]={"new_users": [6, 3, 4, 5]}
+
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -429,7 +430,7 @@ class CourseManager(models.Manager):
 			user_object.save()
 		course = Course.objects.get(id=int(course_id))
 		course.delete()
-		return {"type":"success","message":"Курс удален"}
+		return [{"type":"success","message":"Курс удален"}]
 
 	def is_closed(self, course):
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -458,7 +459,7 @@ class CourseManager(models.Manager):
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-		return {"type":"success","message":"Группы изменены"}
+		return [{"type":"success","message":"Группы изменены"}]
 
 	def add_source(self, course_id, name, link, size, user=None):
 		with io.open('main/files/json/courses/' + str(course_id) + '/sources.json', 'r', encoding='utf8') as json_file:
@@ -971,9 +972,10 @@ class CourseManager(models.Manager):
 		ids=[]
 		paths=glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*')
 		for path in paths:
+			print(path)
 			ids.append(path[:-5].split("/")[5][12:])
 		if len(ids)>0:
-			assignment_id = max(k for k in ids)
+			assignment_id = int(max(k for k in ids))+1
 		else:
 			assignment_id = 1
 		assignment_id=str(assignment_id)
@@ -2119,15 +2121,16 @@ class Test():
 						if element["type"]=="answer":
 							question_id+=1
 							for question in attempt_data:
-								if attempt_data[question]["answer"]==element["answer"]:
-									test[str(question_id)]=attempt_data[question]
-									replaced=True
-									break
+								if "answer" in attempt_data[question].keys() and "answer" in element.keys():
+									if attempt_data[question]["answer"]==element["answer"]:
+										test[str(question_id)]=attempt_data[question]
+										replaced=True
+										break
 						if not replaced:
 							if element["type"] == "question":
 								current_question = element
 							else:
-								value = Test.build_question(item=item)
+								value = Test.build_question(item=element)
 								test[str(question_id)] = value
 				with io.open(attempt, 'w', encoding='utf8') as attempt_file:
 					attempt_file.write(json.dumps(test, ensure_ascii=False))
@@ -2374,7 +2377,6 @@ class Test():
 		return context
 
 	def attempt_save(test_id, question_id, course_id, answer, user):
-		print(answer)
 		if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
 			return {"type":"error","message":"Тест уже был выполнен"}
 		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
@@ -2816,8 +2818,8 @@ class Statistics():
 						questions[question_id]+=1
 
 		for question_id,frequency in questions.items():
-			if results_count/frequency*100 > 50:
-				most_frequent[question_id]=int(results_count/frequency*100)
+			if frequency/results_count*100 > 50:
+				most_frequent[question_id]=int(frequency/results_count*100)
 		return most_frequent
 			#user_id= results[:-5].split("/")[5][6:]
 			#user=User.objects.get(id=user_id)

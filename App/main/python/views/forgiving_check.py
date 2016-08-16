@@ -35,25 +35,26 @@ def numbers(answer):
 def check(answer, answer_right, allowed):
 	if answer == answer_right:
 		return "right"
-	if "word_order" in allowed:
-		if forgiving["word_order"](answer=answer,answer_right=answer_right):
-			return "forgiving"
-	for mistake in allowed:
-		prev_answer=answer
-		#simple replacements
-		if mistake != "word_order":
-			if mistake == "typo":
-				answer = forgiving[mistake](answer=answer,answer_right=answer_right)
-				if answer == answer_right:
-					return "forgiving"
-			elif mistake == "numbers":
-				if forgiving[mistake](answer=answer) == answer_right:
-					return "forgiving"
-			else:
-				answer = forgiving[mistake](answer=answer)
-				answer_right = forgiving[mistake](answer=answer_right)
-				if answer == answer_right:
-					return "forgiving"
+	if not isinstance(answer,dict):
+		if "word_order" in allowed:
+			if forgiving["word_order"](answer=answer,answer_right=answer_right):
+				return "forgiving"
+		for mistake in allowed:
+			prev_answer=answer
+			#simple replacements
+			if mistake != "word_order":
+				if mistake == "typo":
+					answer = forgiving[mistake](answer=answer,answer_right=answer_right)
+					if answer == answer_right:
+						return "forgiving"
+				elif mistake == "numbers":
+					if forgiving[mistake](answer=answer) == answer_right:
+						return "forgiving"
+				else:
+					answer = forgiving[mistake](answer=answer)
+					answer_right = forgiving[mistake](answer=answer_right)
+					if answer == answer_right:
+						return "forgiving"
 	return "false"
 
 def check_selected(answer, answer_right, allowed):
@@ -90,7 +91,9 @@ def single_delta(letter,right_letter):
 	if not right_letter == " ":
 		with io.open('main/python/other/delta_table.json', 'r', encoding='utf8') as info_file:
 			delta_table=json.load(info_file)
-			return letter in delta_table[right_letter]
+			if right_letter in delta_table:
+				return letter in delta_table[right_letter]
+			else: return False
 	else: return True
 
 def full_delta(answer, answer_right):
@@ -103,6 +106,7 @@ def full_delta(answer, answer_right):
 			it+=1
 	else: 
 		for letter in answer:
+			print(answer_right,letter)
 			if single_delta(letter.lower(),answer_right[it].lower()):
 				k=k[:it] + answer_right[it] + k[it+1:]
 			it+=1
@@ -194,19 +198,21 @@ def cutting(answer, right_answer, delta):
 
 def typo(answer, right_answer, delta):
 	k=answer
-	if len(k)<len(right_answer):
-		k=lost_chars(k,right_answer)
-	max=correctness(k,right_answer,delta)
-	if delta:
-		k=full_delta(k,right_answer)
-	if len(k)>len(right_answer) and correctness(cutting(k,right_answer,delta),right_answer,delta)>max:
-		max=correctness(cutting(k,right_answer,delta),right_answer,delta)
-		k=cutting(k,right_answer,delta)
-	if correctness(replacement(k,right_answer,delta),right_answer,delta)>max:
-		max=correctness(replacement(k,right_answer,delta),right_answer,delta)
-		k=replacement(k,right_answer,delta)
-	if common_chars_percentage(answer,k) > 35:
-		return answer
+	if not isinstance(answer,dict):
+		print("dggfdgf")
+		if len(k)<len(right_answer):
+			k=lost_chars(k,right_answer)
+		max=correctness(k,right_answer,delta)
+		if delta:
+			k=full_delta(k,right_answer)
+		if len(k)>len(right_answer) and correctness(cutting(k,right_answer,delta),right_answer,delta)>max:
+			max=correctness(cutting(k,right_answer,delta),right_answer,delta)
+			k=cutting(k,right_answer,delta)
+		if correctness(replacement(k,right_answer,delta),right_answer,delta)>max:
+			max=correctness(replacement(k,right_answer,delta),right_answer,delta)
+			k=replacement(k,right_answer,delta)
+		if common_chars_percentage(answer,k) > 35:
+			return answer
 	return k
 
 
