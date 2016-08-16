@@ -5,13 +5,15 @@ $(document).ready(function() {
 		var $original = $(this);
 		popup.show('{% include "Pages/Course/main/_popup_texts/add_announcement/exports.html" %}', function() {
 			
+
 			//change to edit & autofill
 			$("#add_el").text("Сохранить");
 			$('.announcement_text').html(
 				$original.find(".__content").html()).focus();
 			$('[name="heading"]').val(
-				$original.find(".__heading").text()).focus();
+				$original.find(".__heading").html()).focus();
 
+			inline_editor.start($('.announcement_text')[0]);
 			//saving
 			$("#add_el").click(function(event) {
 				var id = $original.attr('id');

@@ -46,6 +46,9 @@ var inline_editor = {
             aria: 'Добавить ссылку',
           },
         ]
+      },
+      anchor: {
+        placeholderText: 'Впишите или вставьте ссылку',
       }
     });
 

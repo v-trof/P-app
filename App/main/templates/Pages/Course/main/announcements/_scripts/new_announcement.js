@@ -2,9 +2,11 @@
 $(document).ready(function() {
 	$("#add_announcement").click(function() {
 		popup.show('{% include "Pages/Course/main/_popup_texts/add_announcement/exports.html" %}');
+		inline_editor.start($('.announcement_text')[0]);
 		$("#add_el").click(function(event) {
 			var new_heading = $('[name="heading"]').val();
 			var new_text = $('.announcement_text').html();
+			
 			$.ajax({
 				type:"POST",
 				url:"/func/add_announcement/",
@@ -29,8 +31,8 @@ $(document).ready(function() {
 					$(".announcements").append($new_announcement);
 					$(".no_announcements").hide();
 					$new_announcement.attr("id",response);
-					$new_announcement.find(".__heading").text(new_heading);
-					$new_announcement.find(".__content").text(new_text);
+					$new_announcement.find(".__heading").html(new_heading);
+					$new_announcement.find(".__content").html(new_text);
 
 					$(".announcements").show();
 

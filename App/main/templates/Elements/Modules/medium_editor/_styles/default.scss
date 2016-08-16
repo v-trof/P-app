@@ -81,6 +81,9 @@ $medium-editor-border-radius: $border--m;
     color: $font__color--white;
 }
 
+a.medium-editor-toolbar-anchor-preview-inner {
+    transition: none;
+}
 .medium-editor-placeholder:after {
     color: #b3b3b1;
 }

@@ -1,4 +1,4 @@
 <div class="card m--announcement" id="{{id}}">
 	<h4 class="__heading">{{ announcement.heading }}</h4>
-	<p class="__content">{{ announcement.text }}</p>
+	<div class="__content">{{ announcement.text|safe }}</div>
 </div>
