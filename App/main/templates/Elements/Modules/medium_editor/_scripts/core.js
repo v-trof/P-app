@@ -1,3 +1,5 @@
+
+
 var inline_editor = {
   start: function(element) {
     if( ! this.ready) {
@@ -51,6 +53,14 @@ var inline_editor = {
         placeholderText: 'Впишите или вставьте ссылку',
       }
     });
+    function handlePaste (e) {
+      e.preventDefault();
+      var text = e.clipboardData.getData("text/plain");
+      document.execCommand("insertHTML", false, text);
+  }
+
+  element.addEventListener('paste', handlePaste);
+
 
   },
   ready: false,
