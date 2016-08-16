@@ -1,4 +1,5 @@
 results_controls.display = function() {
+  show_active_test(results_controls.active_test);
 	var test_id = results_controls.active_test;
 	var user_id = results_controls.active_student;
 

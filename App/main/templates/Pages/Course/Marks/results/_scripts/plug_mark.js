@@ -24,6 +24,5 @@ function plug_marks_init($group) {
 		if(changed) {
 			results_controls.load();
 		}
-		show_active_test(id);	
 	});
 }
