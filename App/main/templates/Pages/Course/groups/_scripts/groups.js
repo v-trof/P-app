@@ -20,7 +20,7 @@ var send_changes = function() {
 	var popup_invite = $(invite_students_text)
 	$(popup_invite[2]).find("option").remove();
 	$(".group").each(function(index, el) {
-		group=$(this).children('h3').html();
+		group=$(this).children('h3').text();
 		
 		$(popup_invite[2]).append('<option value="' + group + '">'
 			+ group + '</option>');
@@ -28,7 +28,7 @@ var send_changes = function() {
 		groups[group]=[];
 		
 		$(this).find('.__name').each(function() {
-			groups[group].push($(this).html());
+			groups[group].push($(this).text());
 		});
 	});
 

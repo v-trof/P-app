@@ -54,6 +54,7 @@ var inline_editor = {
       }
     });
     function handlePaste (e) {
+      console.log('paste', e);
       e.preventDefault();
       var text = e.clipboardData.getData("text/plain");
       document.execCommand("insertHTML", false, text);
