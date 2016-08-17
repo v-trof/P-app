@@ -2491,7 +2491,7 @@ class Test():
 					test_results["right"].append(int(question_id))
 					question["result"] = "right"
 					question["user_score"] = question["worth"]
-				elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "forgiving":
+				elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "forgiving" or not "answer" in question.keys():
 					forgiving += 1
 					test_results["forgiving"].append(int(question_id))
 					question["result"] = "forgiving"
