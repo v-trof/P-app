@@ -9,8 +9,10 @@ $(document).ready(function() {
 		return $link;
 	}
 
+	console.log('go');
 	$('.m--assignment').each(function(index, el) {
 		var id = $(this).attr("id").split("_")[1];
+		console.log(this, id);
 		$(this).append(button_sample(id));
 	});
 
