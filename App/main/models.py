@@ -328,6 +328,23 @@ class CourseManager(models.Manager):
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
+
+		with io.open('main/files/json/courses/' + str(course.id) + '/sources.json', 'r', encoding='utf8') as json_file:
+			data = json.load(json_file)
+			for source_id, content in data.items():
+				if "link" in content.keys():
+					link=content["link"].split('/')
+					link[3]=str(course.id)
+					string_link=""
+					for part in link:
+						string_link+=part+'/'
+
+					content["link"]=string_link[:-1]
+
+		with io.open('main/files/json/courses/' + str(course.id) + '/sources.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(data, ensure_ascii=False)
+			json_file.write(saving_data)
+
 		return course
 
 	def create_course(self, name, subject, creator, is_closed):
@@ -1435,7 +1452,6 @@ class UserManager(UserManager):
 		user = authenticate(username=email, password=password)
 		if user is not None:
 			auth(request, user)
-			request.session.set_expiry(36000)
 			return {"type":"success","message":'Вы были успешно авторизированы'}
 		else:
 			return {"type":"error","message":'Неверный логин или пароль'}
@@ -2200,12 +2216,12 @@ class Test():
 		if "mark_setting" in test_data.keys():
 			for key in mark_setting:
 				test_data["mark_setting"][key] = mark_setting[key]
-			print(glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'))
-			for attempt in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'):
-				user_id=attempt.split('/')[5].split('\\')[1]
-				print(user_id)
-				user=User.objects.get(id=user_id)
-				Test.attempt_check(test_id=test_id,user=user,course_id=course_id)
+			#print(glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'))
+			#for attempt in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'):
+			#	user_id=attempt.split('/')[-1].split('\\')[1]
+			#	print(user_id)
+			#	user=User.objects.get(id=user_id)
+			#	Test.attempt_check(test_id=test_id,user=user,course_id=course_id)
 		else: test_data["mark_setting"]=mark_setting
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(test_data, ensure_ascii=False))
@@ -2515,8 +2531,7 @@ class Test():
 		test_results["score"]=score
 		test_results["overall_score"]=overall_score
 		test_results["right_answers"] = right + forgiving
-		test_results["questions_overall"] = right + \
-			mistakes + missed + forgiving
+		test_results["questions_overall"] = right + mistakes + missed + forgiving
 		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
 			saving_data = json.dumps(test_results, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -2666,8 +2681,8 @@ class Marks():
 		for assignment in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*'):
 			with io.open(assignment, 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
-				id = assignment[:-5].split("/")[5][12:]
-				marks[id]=Marks.get_marks_by_task(course_id=course_id,task_id=id)
+				id = assignment[:-5].split("/")[-1][12:]
+				marks[id]=Marks.get_marks_by_task(course_id=course_id,task_id=assignment[:-5].split("/")[-1][12:])
 		return marks
 
 	def by_tests(course_id):
@@ -2705,7 +2720,7 @@ class Marks():
 		for assignment in glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*'):
 			with io.open(assignment, 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
-				id = assignment[:-5].split("/")[5][12:]
+				id = assignment[:-5].split("/")[-1][12:]
 				tasks_info[id] = data
 		return tasks_info
 

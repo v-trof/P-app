@@ -160,7 +160,7 @@ class Course_views():
                 request.user.is_teacher = True
                 request.user.save()
             creator = User.objects.get(id=request.user.id)
-            if name=="--s":
+            if name=="+s":
                 course = Course.objects.create_course(
                     name="Русский язык 9-11 класс", subject="Русский язык", creator=creator, is_closed=False)
                 print(course)
