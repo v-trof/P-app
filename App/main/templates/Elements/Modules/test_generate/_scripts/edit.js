@@ -79,18 +79,20 @@ generate.edit = (function() {
 })();
 
 $(document).ready(function() {
-	$(document).on('mousedown', '.medium-editor-action', function() {
+	$(document).on('mouseup', '.medium-editor-action', function() {
 		console.log('cll0');
 		if(pull_put.ui.$.find(".__content").attr('state') == 'edit') {
-			pull_put.ui.rebuild_element();		
+			console.log('reb');
+			setTimeout(pull_put.ui.rebuild_element, 10);		
 		}
 	});
 	pull_put.ui.$.find(".__content").on(
-		"keyup click change", 
+		"keyup click blur", 
 		"button, input, .__value",
 		function() {
+			console.log('reb');
 			if(pull_put.ui.$.find(".__content").attr('state') == 'edit') {
-				pull_put.ui.rebuild_element();		
+				setTimeout(pull_put.ui.rebuild_element, 10);
 			}
 		}
 	);
