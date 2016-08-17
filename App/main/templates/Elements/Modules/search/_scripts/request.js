@@ -32,12 +32,10 @@ search.request = function() {
   if(search.course_id && search_types.elements) {
     search_types.elements.course_id = search.course_id;
   }
-  
   $.ajax({
     url: '/func/search/',
     type: 'POST',
     data: {
-      'csrfmiddlewaretoken': '{{ csrf_token }}',
       'search_query': query,
       'search_types': JSON.stringify(search_types)
     },
@@ -47,5 +45,6 @@ search.request = function() {
   })
   .fail(function() {
     notification.show('error', 'Не удалось подключиться к поиску')
-  }); 
+  });
+
 }
