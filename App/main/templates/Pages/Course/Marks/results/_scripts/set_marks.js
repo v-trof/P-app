@@ -11,7 +11,7 @@ function show_marks($group) {
               + mark.value + '</button>');
   }
   var marks_info = {{marks|safe}};
-
+  console.log(marks_info);
   var group_name = $group.find('h3').text();
 
 
@@ -20,7 +20,8 @@ function show_marks($group) {
     var student_marks = marks_info[group_name]
       [student_id].tests;
     for(mark_id in student_marks) {
-      var $user_card = $(".m--user#" + student_id);
+      var $user_card = $('[href$="/' + student_id+'"]').parent();
+       console.log('[href$="/' + student_id+'"]',$user_card)
       if( ! results_controls.active_student) {
         results_controls.active_student = student_id;
         $user_card.addClass('m--active');

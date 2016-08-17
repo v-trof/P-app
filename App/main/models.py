@@ -118,7 +118,7 @@ class Utility():
 		path = 'main/files/media/' + path
 		if not os.path.exists(path):
 			os.makedirs(path)
-		filename = file.name
+		filename = file.name.replace(" ", "_")
 		it = 1
 		while os.path.exists(path + filename):
 			if not os.path.getsize(path + filename) == file._size:
@@ -2200,6 +2200,12 @@ class Test():
 		if "mark_setting" in test_data.keys():
 			for key in mark_setting:
 				test_data["mark_setting"][key] = mark_setting[key]
+			print(glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'))
+			for attempt in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'):
+				user_id=attempt.split('/')[5].split('\\')[1]
+				print(user_id)
+				user=User.objects.get(id=user_id)
+				Test.attempt_check(test_id=test_id,user=user,course_id=course_id)
 		else: test_data["mark_setting"]=mark_setting
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(test_data, ensure_ascii=False))
@@ -2259,6 +2265,7 @@ class Test():
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
+			value["answer"] = None
 			# textarea
 		elif type == "answer--select":
 			value["options"] = item["values"]
@@ -2356,7 +2363,7 @@ class Test():
 				}]
 		for element in context["test"]["json"]["tasks"]:
 			for item in element:
-				if item["type"] == "answer":
+				if item["type"] == "answer" and "answer" in item.keys():
 					item.pop("answer", None)
 		if data is None:
 			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
@@ -2377,45 +2384,46 @@ class Test():
 		return context
 
 	def attempt_save(test_id, question_id, course_id, answer, user):
-		if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
-			return {"type":"error","message":"Тест уже был выполнен"}
-		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
-			test_info = json.load(info_file)
-		it=0
-		for task in test_info["tasks"]:
-			for question in task:
-				if question["type"]=="answer":
-					it+=1
-				if it==int(question_id):
-					if question["class"]=="answer--classify":
-						answer=json.loads(answer)
-					elif question["class"]=="answer--checkbox" or question["class"]=="answer--radio":
-						answer=json.loads(answer)
-					break
-		time_now=str(datetime.datetime.now())
-		if "start_time" in test_info.keys() and str(user.id) in test_info["start_time"].keys():
-			time=Utility.time_delta(test_info["start_time"][str(user.id)],str(time_now))
-		else:
-			time="00:00:00"
-			test_info["start_time"]={}
-			test_info["start_time"][str(user.id)]=time_now
-		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'w', encoding='utf8') as info_file:
-			info_file.write(json.dumps(test_info, ensure_ascii=False))
-		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as assignments_file:
-			assignment_map = json.load(assignments_file)
-		for assignment_id, content in assignment_map.items():
-			if not test_id in content["in_process"]["unfinished_tests"] and test_id in content["in_process"]["tests"]:
-				content["in_process"]["unfinished_tests"].append(test_id)
-		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'w', encoding='utf8') as assignments_file:
-			assignments_file.write(json.dumps(
-				assignment_map, ensure_ascii=False))
-		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
-			data = json.load(json_file)
-		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
-			data[str(question_id-1)]["user_answer"] = answer
-			data[str(question_id-1)]["time"]=time
-			saving_data = json.dumps(data, ensure_ascii=False)
-			json_file.write(saving_data)
+		if answer != "":
+			if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
+				return {"type":"error","message":"Тест уже был выполнен"}
+			with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+				test_info = json.load(info_file)
+			it=0
+			for task in test_info["tasks"]:
+				for question in task:
+					if question["type"]=="answer":
+						it+=1
+					if it==int(question_id):
+						if question["class"]=="answer--classify":
+							answer=json.loads(answer)
+						elif question["class"]=="answer--checkbox" or question["class"]=="answer--radio":
+							answer=json.loads(answer)
+						break
+			time_now=str(datetime.datetime.now())
+			if "start_time" in test_info.keys() and str(user.id) in test_info["start_time"].keys():
+				time=Utility.time_delta(test_info["start_time"][str(user.id)],str(time_now))
+			else:
+				time="00:00:00"
+				test_info["start_time"]={}
+				test_info["start_time"][str(user.id)]=time_now
+			with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'w', encoding='utf8') as info_file:
+				info_file.write(json.dumps(test_info, ensure_ascii=False))
+			with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as assignments_file:
+				assignment_map = json.load(assignments_file)
+			for assignment_id, content in assignment_map.items():
+				if not test_id in content["in_process"]["unfinished_tests"] and test_id in content["in_process"]["tests"]:
+					content["in_process"]["unfinished_tests"].append(test_id)
+			with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'w', encoding='utf8') as assignments_file:
+				assignments_file.write(json.dumps(
+					assignment_map, ensure_ascii=False))
+			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
+				data = json.load(json_file)
+			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
+				data[str(question_id-1)]["user_answer"] = answer
+				data[str(question_id-1)]["time"]=time
+				saving_data = json.dumps(data, ensure_ascii=False)
+				json_file.write(saving_data)
 		return {"type":"success","message":"Ответ сохранен"}
 
 	def give_mark(percentage, course_id, test_id):
@@ -2733,6 +2741,7 @@ class Marks():
 		if not group_list:
 			group_list = data["group_list"]
 		marks=Marks.get_marks_for_test_list(course_id=course_id,test_list=test_list, group_list=group_list)
+		print(marks)
 		return marks
 
 class Sharing():
