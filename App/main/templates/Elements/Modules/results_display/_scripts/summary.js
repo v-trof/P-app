@@ -8,8 +8,8 @@ results_display.summary_template = function(index, value, quality, element_class
 		value = test_manager.replace_json_value(element_class, value);
 	}
 
-	if(value.length > 40) {
-		value = value.substring(0, 40);
+	if(value.length > 15) {
+		value = value.substring(0, 15)+'&hellip;';
 	}
 
 	return '<div class="card m--small sumfor_'
@@ -24,6 +24,7 @@ results_display.create_summary = function(attempt, results) {
 		if(typeof value === 'object') {
 			value = test_manager.replace_json_value(element_class, value);
 		}
+		// console.log(value);
 		$summary.children(".__value").html(value);
 	}
 
@@ -86,11 +87,13 @@ results_display.create_summary = function(attempt, results) {
 				generate.read(element_class).element.fill($(this), value.slice());
 			}
 			
-			generate.read(element_class).element.getter($(this),
-			function(value, data) {
-				show_value($new_summary, value, 
-					0, data);
-			});
+			if(element_class !== 'answer--textarea') {
+				generate.read(element_class).element.getter($(this),
+				function(value, data) {
+					show_value($new_summary, value, 
+						0, data);
+				});
+			}
 
 			results_display.replace_answer(
 				$(this), 

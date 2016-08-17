@@ -1,5 +1,6 @@
 {
   "elements": ["button/ghost/icon",
                "card/course", "card/user",
-               "card/test", "card/material"]
+               "card/test", "card/material"
+               "Inputs/checkbox"]
 }

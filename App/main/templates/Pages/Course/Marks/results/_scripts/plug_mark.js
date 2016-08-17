@@ -14,7 +14,7 @@ function plug_marks_init($group) {
 		}
 
     //TEST
-		var id = $(this).attr('id');
+		var id = $(this).attr('test');
 
 		if(results_controls.active_test != id) {
 	  		results_controls.active_test = id;

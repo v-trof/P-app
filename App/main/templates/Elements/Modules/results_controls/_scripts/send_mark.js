@@ -8,8 +8,9 @@ results_controls.change_score_view = function(
     $element.removeClass('m--positive');
   }
 
-  var $mark = $('.m--user#' + results_controls.active_student)
-                .find("button#" + results_controls.active_test);
+  var $mark = $('[href$="/' + results_controls.active_student +'"]')
+                .parent().find('button[test="' + 
+                  results_controls.active_test+'"]');
   
   reset_class($mark);
   $mark.addClass('m--' + mark.quality)
