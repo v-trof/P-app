@@ -614,8 +614,8 @@ class CourseManager(models.Manager):
 		subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
 		for value in email_list:
 			code=User.objects.generate_code(type="invite",group=group,course=course)
-			text_content_nonreg = 'Вам поступило приглашение на курс ' + course.name + ' от ' + user.name + ' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)+'?code='+str(code)
-			text_content = 'Вам поступило приглашение на курс ' + course.name + ' от ' + user.name + ' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)+'?code='+str(code)
+			text_content_nonreg = 'Вам поступило приглашение на курс ' + course.name + ' от ' + user.name + ' . Перейдите по ссылке для регистрации на курс http://pileus.ru/register/'+str(course.id)+'?code='+str(code)
+			text_content = 'Вам поступило приглашение на курс ' + course.name + ' от ' + user.name + ' . Перейдите по ссылке для регистрации на курс http://pileus.ru/func/course_reg/'+str(course.id)+'?code='+str(code)
 			if User.objects.filter(email=value):
 				send_mail(subject, text_content, from_email,
 						  [value], fail_silently=False)
@@ -627,8 +627,8 @@ class CourseManager(models.Manager):
 	def invite_teacher(self, course, user, email):
 		code=User.objects.generate_code(type="invite",group="teachers",course=course)
 		subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
-		text_content_nonreg = 'Вам поступило приглашение на курс ' + course.name + ' от ' + user.name + ' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/register/'+str(course.id)+'?code='+str(code)
-		text_content = 'Вам поступило приглашение на курс ' + course.name + ' от ' + user.name + ' . Перейдите по ссылке для регистрации на курс 127.0.0.1:8000/func/course_reg/'+str(course.id)+'?code='+str(code)
+		text_content_nonreg = 'Вам поступило приглашение на курс ' + course.name + ' от ' + user.name + ' . Перейдите по ссылке для регистрации на курс http://pileus.ru/register/'+str(course.id)+'?code='+str(code)
+		text_content = 'Вам поступило приглашение на курс ' + course.name + ' от ' + user.name + ' . Перейдите по ссылке для регистрации на курс http://pileus.ru/func/course_reg/'+str(course.id)+'?code='+str(code)
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
 			if "teachers" in data["pending_users"].keys():
@@ -742,7 +742,8 @@ class CourseManager(models.Manager):
 									'/users/' + str(user.id) + '/')
 						data = {}
 						for assignment_path in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*.json'):
-							assignment_id = assignment_path[:-5].split("/")[5][12:]
+							assignment_path=assignment_path.replace('\\','/')
+							assignment_id = assignment_path[:-5].split("/")[-1]
 							with io.open(assignment_path, 'r', encoding='utf8') as data_file:
 								assignment = json.load(data_file)
 								assignment_map = {}
@@ -866,7 +867,8 @@ class CourseManager(models.Manager):
 		for assignment in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*'):
 			with io.open(assignment, 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
-				data["id"] = assignment[:-5].split("/")[5][12:]
+				assignment=assignment.replace('\\','/')
+				data["id"] = assignment[:-5].split("/")[-1]
 				data.pop("course_id", None)
 				assignments.append(data)
 		return Utility.sort_by_date(object=assignments, indicator="due_date")
@@ -989,8 +991,8 @@ class CourseManager(models.Manager):
 		ids=[]
 		paths=glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*')
 		for path in paths:
-			print(path)
-			ids.append(path[:-5].split("/")[5][12:])
+			path=path.replace('\\','/')
+			ids.append(path[:-5].split("/")[-1])
 		if len(ids)>0:
 			assignment_id = int(max(k for k in ids))+1
 		else:
@@ -1715,7 +1717,7 @@ class UserManager(UserManager):
 			codes_dict[str(user.id)]["password"] = password_code
 			with io.open('main/files/json/other/code_bank.json', 'w', encoding='utf8') as codes_file:
 				codes_file.write(json.dumps(codes_dict, ensure_ascii=False))
-			send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, перейдите по ссылке для подтверждения: 127.0.0.1:8000/secure_entry/?code=' + password_code + '&type=password.', 'p.application.bot@gmail.com',
+			send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, перейдите по ссылке для подтверждения: http://pileus.ru/secure_entry/?code=' + password_code + '&type=password.', 'p.application.bot@gmail.com',
 					  [email], fail_silently=False)
 			return True
 		else:
@@ -1767,7 +1769,7 @@ class UserManager(UserManager):
 		codes_dict[str(user.id)]["requesting_email"] = new_email
 		with io.open('main/files/json/other/code_bank.json', 'w', encoding='utf8') as codes_file:
 			codes_file.write(json.dumps(codes_dict, ensure_ascii=False))
-		send_mail('Изменение email', 'Вы запрашивали изменение email на сервисе p-app, перейдите по ссылке для подтверждения: 127.0.0.1:8000/secure_entry/?code=' + email_code + '&type=email.', 'p.application.bot@gmail.com',
+		send_mail('Изменение email', 'Вы запрашивали изменение email на сервисе p-app, перейдите по ссылке для подтверждения: http://pileus.ru/secure_entry/?code=' + email_code + '&type=email.', 'p.application.bot@gmail.com',
 				  [new_email], fail_silently=False)
 		return True
 
@@ -2681,15 +2683,17 @@ class Marks():
 		for assignment in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*'):
 			with io.open(assignment, 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
-				id = assignment[:-5].split("/")[-1][12:]
-				marks[id]=Marks.get_marks_by_task(course_id=course_id,task_id=assignment[:-5].split("/")[-1][12:])
+				assignment=assignment.replace("\\","/")
+				id = assignment[:-5].split("/")[-1]
+				marks[id]=Marks.get_marks_by_task(course_id=course_id,task_id=id)
 		return marks
 
 	def by_tests(course_id):
 		course = Course.objects.get(id=int(course_id))
 		test_list=[]
 		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/*'):
-			test_id=test[:-5].split("/")[5][6:]
+			test=test.replace("\\","/")
+			test_id=test[:-5].split("/")[-1]
 			test_list.append(test_id)
 		marks=Marks.get_marks_for_test_list(course_id=course_id, test_list=test_list, with_info=True)
 		return marks
@@ -2720,7 +2724,8 @@ class Marks():
 		for assignment in glob.glob('main/files/json/courses/' + str(course_id) + '/assignments/*'):
 			with io.open(assignment, 'r', encoding='utf8') as data_file:
 				data = json.load(data_file)
-				id = assignment[:-5].split("/")[-1][12:]
+				assignment=assignment.replace('\\','/')
+				id = assignment[:-5].split("/")[-1]
 				tasks_info[id] = data
 		return tasks_info
 
@@ -2756,7 +2761,7 @@ class Marks():
 		if not group_list:
 			group_list = data["group_list"]
 		marks=Marks.get_marks_for_test_list(course_id=course_id,test_list=test_list, group_list=group_list)
-		print(marks)
+
 		return marks
 
 class Sharing():
@@ -2860,27 +2865,28 @@ class Search():
 			if course and len(user.participation_list) > 0:
 				if str(course) in user.participation_list.split(' ') or str(course) == user.participation_list:
 					conformity=Utility.compare(str1=search_query,str2=user.name)
-					if conformity > 20:
+					if conformity > 5:
 						users.append({"object":user_object,"conformity":conformity})
 			elif course and len(user.courses) > 0:
 				if str(course) in user.courses.split(' ') or str(course) == user.courses:
 					conformity=Utility.compare(str1=search_query,str2=user.name)
-					if conformity > 20:
+					if conformity > 5:
 						users.append({"object":user_object,"conformity":conformity})
 			elif course==None:
 				conformity=Utility.compare(str1=search_query,str2=user.name)
-				if conformity > 20:
+				if conformity > 5:
 					users.append({"object":user_object,"conformity":conformity})
 		if len(users) > 0:
 			users=Utility.sort_by_conformity(object=users, indicator="conformity")
-		for user in users:
-			content={}
-			content["link"]="/profile/"+str(user["object"].id)+'/'
-			content["id"]=user["object"].id
-			content["name"]=user["object"].name
-			content["avatar"]=user["object"].avatar.url
-			content["is_teacher"]=user["object"].is_teacher
-			cards.append({"type":"user","content":content,"conformity":user["conformity"]})
+		while len(cards)<=50:
+			for user in users:
+				content={}
+				content["link"]="/profile/"+str(user["object"].id)+'/'
+				content["id"]=user["object"].id
+				content["name"]=user["object"].name
+				content["avatar"]=user["object"].avatar.url
+				content["is_teacher"]=user["object"].is_teacher
+				cards.append({"type":"user","content":content,"conformity":user["conformity"]})
 		return cards
 
 	def in_courses(search_query,user=None):
@@ -2905,26 +2911,28 @@ class Search():
 		for course in courses_all:
 			if not course.is_closed:
 				conformity=Utility.compare(str1=search_query,str2=course.name)
-				if conformity > 20:
+				if conformity > 5:
 					courses.append({"object":course,"conformity":conformity})
 		if len(courses) > 0:
 			courses=Utility.sort_by_conformity(object=courses, indicator="conformity")
-		for course in courses:
-			with io.open('main/files/json/courses/' + str(course["object"].id) + '/info.json', 'r', encoding='utf8') as data_file:
-				data = json.load(data_file)
-			course_data={}
-			course_data["link"]="/course/"+str(course["object"].id)+'/'
-			course_data["is_closed"]=course["object"].is_closed
-			course_data["name"]=course["object"].name
-			course_data["tests_number"] = 0
-			course_data["materials_number"] = 0
-			for section, elements in data["sections"]["published"].items():
-				for element in elements:
-					if element["type"] == "test":
-						course_data["tests_number"] += 1
-					else:
-						course_data["materials_number"] += 1
-			cards.append({"type":"course","content":course_data,"conformity":course["conformity"]})
+
+		while len(cards)<=50:
+			for course in courses:
+				with io.open('main/files/json/courses/' + str(course["object"].id) + '/info.json', 'r', encoding='utf8') as data_file:
+					data = json.load(data_file)
+				course_data={}
+				course_data["link"]="/course/"+str(course["object"].id)+'/'
+				course_data["is_closed"]=course["object"].is_closed
+				course_data["name"]=course["object"].name
+				course_data["tests_number"] = 0
+				course_data["materials_number"] = 0
+				for section, elements in data["sections"]["published"].items():
+					for element in elements:
+						if element["type"] == "test":
+							course_data["tests_number"] += 1
+						else:
+							course_data["materials_number"] += 1
+				cards.append({"type":"course","content":course_data,"conformity":course["conformity"]})
 		return cards
 
 #В своих курсах и посещаемых курсах
@@ -2970,12 +2978,13 @@ class Search():
 							conformity=Utility.compare(str1=search_query,str2=material_data["title"])
 							content={"type": "material","course_name":str(course.name),"title": material_data[
 																	 "title"], "id": material_id, "link": '/material/read/?course_id=' + course_id + "&material_id=" + material_id}
-						if conformity>20:
+						if conformity>5:
 							elements.append({"content":content,"conformity":conformity,"type":element["type"]})
 		if len(elements) > 0:
 			elements=Utility.sort_by_conformity(object=elements, indicator="conformity")
-		for element in elements:
-			cards.append({"type":element["type"],"content":element["content"],"conformity":element["conformity"]})
+		while len(cards)<=50:
+			for element in elements:
+				cards.append({"type":element["type"],"content":element["content"],"conformity":element["conformity"]})
 
 		return cards
 
