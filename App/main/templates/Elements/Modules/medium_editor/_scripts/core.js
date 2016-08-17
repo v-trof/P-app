@@ -75,6 +75,6 @@ var inline_editor = {
   },
 }
 
-$.getScript('//cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js', function() {
+$.getScript('/static/scripts/medium-editor.js', function() {
   inline_editor.init();
 });
