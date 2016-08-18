@@ -2878,15 +2878,14 @@ class Search():
 					users.append({"object":user_object,"conformity":conformity})
 		if len(users) > 0:
 			users=Utility.sort_by_conformity(object=users, indicator="conformity")
-		while len(cards)<=50:
-			for user in users:
-				content={}
-				content["link"]="/profile/"+str(user["object"].id)+'/'
-				content["id"]=user["object"].id
-				content["name"]=user["object"].name
-				content["avatar"]=user["object"].avatar.url
-				content["is_teacher"]=user["object"].is_teacher
-				cards.append({"type":"user","content":content,"conformity":user["conformity"]})
+		for user in users:
+			content={}
+			content["link"]="/profile/"+str(user["object"].id)+'/'
+			content["id"]=user["object"].id
+			content["name"]=user["object"].name
+			content["avatar"]=user["object"].avatar.url
+			content["is_teacher"]=user["object"].is_teacher
+			cards.append({"type":"user","content":content,"conformity":user["conformity"]})
 		return cards
 
 	def in_courses(search_query,user=None):
@@ -2915,24 +2914,23 @@ class Search():
 					courses.append({"object":course,"conformity":conformity})
 		if len(courses) > 0:
 			courses=Utility.sort_by_conformity(object=courses, indicator="conformity")
-
-		while len(cards)<=50:
-			for course in courses:
-				with io.open('main/files/json/courses/' + str(course["object"].id) + '/info.json', 'r', encoding='utf8') as data_file:
-					data = json.load(data_file)
-				course_data={}
-				course_data["link"]="/course/"+str(course["object"].id)+'/'
-				course_data["is_closed"]=course["object"].is_closed
-				course_data["name"]=course["object"].name
-				course_data["tests_number"] = 0
-				course_data["materials_number"] = 0
-				for section, elements in data["sections"]["published"].items():
-					for element in elements:
-						if element["type"] == "test":
-							course_data["tests_number"] += 1
-						else:
-							course_data["materials_number"] += 1
-				cards.append({"type":"course","content":course_data,"conformity":course["conformity"]})
+		print(courses)
+		for course in courses:
+			with io.open('main/files/json/courses/' + str(course["object"].id) + '/info.json', 'r', encoding='utf8') as data_file:
+				data = json.load(data_file)
+			course_data={}
+			course_data["link"]="/course/"+str(course["object"].id)+'/'
+			course_data["is_closed"]=course["object"].is_closed
+			course_data["name"]=course["object"].name
+			course_data["tests_number"] = 0
+			course_data["materials_number"] = 0
+			for section, elements in data["sections"]["published"].items():
+				for element in elements:
+					if element["type"] == "test":
+						course_data["tests_number"] += 1
+					else:
+						course_data["materials_number"] += 1
+			cards.append({"type":"course","content":course_data,"conformity":course["conformity"]})
 		return cards
 
 #В своих курсах и посещаемых курсах
@@ -2982,9 +2980,8 @@ class Search():
 							elements.append({"content":content,"conformity":conformity,"type":element["type"]})
 		if len(elements) > 0:
 			elements=Utility.sort_by_conformity(object=elements, indicator="conformity")
-		while len(cards)<=50:
-			for element in elements:
-				cards.append({"type":element["type"],"content":element["content"],"conformity":element["conformity"]})
+		for element in elements:
+			cards.append({"type":element["type"],"content":element["content"],"conformity":element["conformity"]})
 
 		return cards
 
@@ -2992,7 +2989,7 @@ class Search():
 		pass
 
 	def complex(search_query, search_types=None, user=None):
-
+		print("enter")
 		if not search_types:
 			search_types={}
 			types=["users","courses","elements"]
@@ -3000,23 +2997,31 @@ class Search():
 				search_types[type]={}
 		cards=[]
 		for type in search_types:
+			print("type_loop")
 			if type=="users":
 				if "course_id" in search_types[type].keys():
 					cards.extend(Search.types[type](search_query=search_query, course=search_types[type]["course"]))
 				else: cards.extend(Search.types[type](search_query=search_query, course=None))
 			elif type=="elements":
 				if "course_id" in search_types[type].keys():
-					course=search_types[type]["course"]
+					course=search_types[type]["course_id"]
 				else: course=None
 				if "type" in search_types[type].keys():
 					in_type=search_types[type]["type"]
 				else: in_type=None
 				cards.extend(Search.types[type](search_query=search_query, course=course, user=user, type=in_type))
 			elif type=="courses":
+				print("courses")
 				if "user" in search_types[type].keys():
+					print("alala")
 					cards.extend(Search.types[type](search_query=search_query))
-				else: cards.extend(Search.types[type](search_query=search_query))
+				else:
+					print("noalala")
+					cards.extend(Search.types[type](search_query=search_query))
+		print("pre-sort")
 		cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
+		print("end")
+		print(cards)
 		return cards
 
 	types = {

@@ -1,6 +1,5 @@
 search.request = function() {
   var query = search.$.find('.__query').val();
-
   //constructing types
   var search_types = {}
 
@@ -36,6 +35,7 @@ search.request = function() {
     url: '/func/search/',
     type: 'POST',
     data: {
+      'csrfmiddlewaretoken': '{{ csrf_token }}',
       'search_query': query,
       'search_types': JSON.stringify(search_types)
     },
