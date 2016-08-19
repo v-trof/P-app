@@ -540,7 +540,7 @@ class CourseManager(models.Manager):
 			data_file.write(json.dumps(data, ensure_ascii=False))
 		return {"type":"success","message":"Секции изменены"}
 
-	def add_announcement(self, heading, text, course_id, user=None):
+	def add_announcement(self, heading, text, course_id, user=None, due_date=False):
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
 		if len(data.keys()):
@@ -555,12 +555,14 @@ class CourseManager(models.Manager):
 			course_users.remove(user.id)
 		data[str(maximum + 1)] = ({"heading": heading,
 								   "text": text, "unseen_by": course_users})
+		if due_date:
+			data[str(maximum+1)]["due_date"]=due_date
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 		return len(data)
 
-	def edit_announcement(self, heading, text, course_id, announcement_id, user=None):
+	def edit_announcement(self, heading, text, course_id, announcement_id, user=None, due_date=False):
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as info_file:
@@ -570,6 +572,8 @@ class CourseManager(models.Manager):
 			course_users.remove(user.id)
 		data[announcement_id] = {"heading": heading,
 								 "text": text, "unseen_by": course_users}
+		if due_date:
+			data[announcement_id]["due_date"]=due_date
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -1312,6 +1316,24 @@ class CourseManager(models.Manager):
 			for id, announcement in announcements.items():
 				if user.id in announcement["unseen_by"]:
 					announcement["unseen_by"].remove(user.id)
+				if "due_date" in announcements.keys():
+					date = str(datetime.datetime.now())[:10]
+					if int(announcement["due_date"].split("-")[2]) > int(date.split("-")[0]):
+						relevant = True
+					elif int(announcement["due_date"].split("-")[2]) < int(date.split("-")[0]):
+						relevant = False
+					else:
+						if int(announcement["due_date"].split("-")[1]) > int(date.split("-")[1]):
+							relevant = True
+						elif int(announcement["due_date"].split("-")[1]) < int(date.split("-")[1]):
+							relevant = False
+						else:
+							if int(announcement["due_date"].split("-")[0]) >= int(date.split("-")[2]):
+								relevant = True
+							else:
+								relevant = False
+					if not relevant:
+						announcements.pop(id,None)
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(announcements, ensure_ascii=False)
 			json_file.write(saving_data)

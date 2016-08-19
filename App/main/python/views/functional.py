@@ -247,8 +247,9 @@ class Course_views():
             text = request.POST.get("text", None)
             heading = request.POST.get("heading", None)
             course_id = request.POST.get("course_id", None)
+            due_date = request.POST.get("due_date", False)
             announcement_id = Course.objects.add_announcement(
-                text=text, heading=heading, course_id=course_id, user=request.user)
+                text=text, heading=heading, course_id=course_id, user=request.user, due_date=due_date)
             return HttpResponse(announcement_id)
 
     def edit_announcement(request):
@@ -257,8 +258,9 @@ class Course_views():
             text = request.POST.get("text", None)
             heading = request.POST.get("heading", None)
             course_id = request.POST.get("course_id", None)
+            due_date = request.POST.get("due_date", False)
             message = Course.objects.edit_announcement(
-                text=text, heading=heading, course_id=course_id, announcement_id=announcement_id, user=request.user)
+                text=text, heading=heading, course_id=course_id, announcement_id=announcement_id, user=request.user, due_date=due_date)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
     def delete_announcement(request):
