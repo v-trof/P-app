@@ -66,7 +66,7 @@ $(document).ready(function() {
 	
 	section_editor.init({
 		$parent: $('.tests-materials'),
-		$section_template: $('<section class="course-part"><h3>Новая секция</h3></section>'),
+		$section_template: $('<section class="course-part"><h3></h3></section>'),
 		section_selector: section_selector,
 		heading_selector: heading_selector,
 		item_selector: item_selector,

@@ -1,4 +1,5 @@
 {
 	"elements": ["button", "Inputs/select", "Inputs/checkbox",
-				       "Inputs/text", "card", "Modules/verifier"]		
+				       "Inputs/text", "card", "Modules/verifier",
+               "Inputs/file"]		
 }

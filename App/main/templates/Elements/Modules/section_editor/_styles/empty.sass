@@ -1,5 +1,12 @@
 @import "../../../../sass_vars/main.sass"
 
+h3[contenteditable]:empty:before
+  content: "Название..."
+  color: lighten($font__color--grey, 15%)
+  display: block /* For Firefox */
+
+
 div.m--empty
 	cursor: default
 	margin-bottom: $margin--s
+

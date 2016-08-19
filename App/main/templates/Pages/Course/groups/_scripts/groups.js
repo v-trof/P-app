@@ -57,7 +57,7 @@ var send_changes = function() {
 pull_put.ui.additional_margin = 24;
 section_editor.init({
 	$parent: $('.students'),
-	$section_template: $('<section class="group"><h3>Новая группа</h3></section>'),
+	$section_template: $('<section class="group"><h3></h3></section>'),
 	section_selector: section_selector,
 	heading_selector: heading_selector,
 	item_selector: item_selector,

@@ -3,8 +3,15 @@
 <button class="m--ghost m--icon" id="add_student">
 	{% include 'Elements/Icons/add.svg' %}
 </button>
-{% include "Elements/Inputs/select/" with options=course_data.group_list %}
 
+<br> {% include "Elements/Inputs/file/" with class="email_file" accept=".txt" %}
+ Или загузите файл, содеражщий email`ы учеников 
+<br> <span class="m--grey">Текстовый документ (.txt), 
+  оформление не важно</span>
+
+<br><br>
+Добавить учеников в группу 
+{% include "Elements/Inputs/select/" with options=course_data.group_list %}
 <button id="invite_students_button">Пригласить</button>
 
 <br>Вы можете использовать ссылку: http://pileus.ru/course/{{course.id}}/
