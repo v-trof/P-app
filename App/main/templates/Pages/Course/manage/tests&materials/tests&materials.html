@@ -1,5 +1,5 @@
+<section class="tests-materials">
 {% if sections.published %}
-	<section class="tests-materials">
 	{% for section, value in sections.published.items %}
 	{% if value|length > 0 %}
 		<section class="course-part">
@@ -11,6 +11,7 @@
 	{% endif %}
 	{% endfor %}
 {% endif %}
+
 {% if sections.unpublished %}
 	<section class="course-part">
 		<h3>Неопубликованные</h3>
@@ -18,5 +19,5 @@
 			{% include "#&/element/" %}
 		{% endfor %}
 	</section>
-	</section>
 {% endif %}
+</section>

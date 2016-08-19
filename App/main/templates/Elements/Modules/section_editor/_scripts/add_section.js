@@ -9,5 +9,6 @@ section_editor.add_section = function(edit_start) {
 	
 	section_editor.check_empty($new_section)
 	section_editor.move_unordered()
+	$('body').scrollTo($new_section, {offset: -80});
 	return $new_section
 }
