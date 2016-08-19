@@ -21,28 +21,25 @@ $("#invite_students").click(function(event) {
 					email_list.push($(this).val());
 				}
 			});
-
-			if(catcher.files[0]) {
-				formdata.append('email_file', catcher.files[0]);
-			}
-
 			var group=$(".m--select").children(".__display").text();
 			if (group=="Выберите...") group="Нераспределенные";
-
 			formdata.append('csrfmiddlewaretoken', '{{ csrf_token }}');
 			formdata.append('course_id', '{{ course.id }}');
 			formdata.append('email_list', JSON.stringify(email_list));
 			formdata.append('group', group);
-
-			console.log(formdata.keys(), formdata.values());
-
+			if(catcher.files[0]) {
+				formdata.append('email_file', catcher.value[0].files[0]);
+			}
+			for (var pair of formdata.entries()) {
+			    console.log(pair[0]+ ', ' + pair[1]); 
+			}
 			$.ajax({
 				type:"POST",
 				url:"/func/invite_students/",
+				data: formdata,
 				processData: false,
 				contentType: false,
-				data: formdata,
-				 success: function(response) {
+				success: function(response) {
             if(response && response["type"]) {
             	if(response.type == "success") {
             		popup.hide();

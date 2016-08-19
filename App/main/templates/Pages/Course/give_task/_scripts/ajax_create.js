@@ -4,10 +4,13 @@ function ajax_create(data) {
 		url:"/func/create_assignment/",
 		data: data,
 		success: function(data) {
-			notification.show('success','Задание создано' );
-			loaded = true;
-			task_id = data;
-			$("#give_task").text("Сохранить изменения");
+			if (data["type"]=="success")
+			{
+				window.location.href=data["redirect"]
+			}
+			else{
+				notification.show(data)
+			}
 		}
 	});
 }

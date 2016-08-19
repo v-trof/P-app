@@ -37,6 +37,7 @@ import io
 import random
 import string
 import hashlib
+import re
 from django.conf import settings
 from django.core import serializers
 from django.core.files import File
@@ -614,8 +615,15 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		return 0
 
-	def invite_students(self, course, user, group, email_list):
+	def invite_students(self, course, user, group, email_list,email_file=False):
 		subject, from_email = 'Приглашение на курс', 'p.application.bot@gmail.com'
+		print(email_list)
+		if email_file:
+			email_file = email_file.read().decode("utf-8")
+			file_emails=re.findall(r"([a-zA-Z0-9_.+]+\@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.+]+)",email_file)
+			if len(file_emails) > 0:
+				email_list.extend(file_emails)
+			print(email_list)
 		for value in email_list:
 			code=User.objects.generate_code(type="invite",group=group,course=course)
 			text_content_nonreg = 'Вам поступило приглашение на курс ' + course.name + ' от ' + user.name + ' . Перейдите по ссылке для регистрации на курс http://pileus.ru/register/'+str(course.id)+'?code='+str(code)
@@ -1041,7 +1049,7 @@ class CourseManager(models.Manager):
 				with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(data, ensure_ascii=False)
 					json_file.write(saving_data)
-		return {"type":"success","message":"Задание создано"}
+		return {"type":"success","message":"Задание создано","redirect":"/course/"+str(course_id)+"/manage/"}
 
 	def edit_assignment(self, course_id, assignment_id, group_list, test_list, material_list, traditionals_list, due_date):
 		assignment = {}

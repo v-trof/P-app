@@ -260,7 +260,7 @@ class Course_views():
             course_id = request.POST.get("course_id", None)
             due_date = request.POST.get("due_date", False)
             message = Course.objects.edit_announcement(
-                text=text, heading=heading, course_id=course_id, announcement_id=announcement_id, user=request.user, due_date=due_date)
+                text=text, heading=heading, course_id=course_id, announcement_id=announcement_id, user=request.user, due_date=due_dateс)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
     def delete_announcement(request):
@@ -282,10 +282,12 @@ class Course_views():
 
     def invite_students(request):
         if request.method == 'POST':
-            email_list = json.loads(request.POST.get("email_list", None))
+            email_list = json.loads(request.POST.get("email_list", []))
+            email_file = request.FILES.get("email_file", False)
+            print(email_file)
             group = request.POST.get('group', None)
             course = Course.objects.get(id=request.POST.get('course_id', None))
-            message = Course.objects.invite_students(
+            message = Course.objects.invite_students(email_file=email_file,
                 email_list=email_list, group=group, course=course, user=request.user)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
@@ -344,6 +346,8 @@ class Course_views():
             due_date = request.POST.get('due_date', None)
             message = Course.objects.create_assignment(course_id=course_id, test_list=test_list, group_list=group_list,
                                                        material_list=material_list, traditionals_list=traditionals_list, due_date=due_date)
+            if message["type"]=="success":
+                request.session['notifications']=[message]
             return HttpResponse(json.dumps(message), content_type="application/json")
 
     def edit_assignment(request):
