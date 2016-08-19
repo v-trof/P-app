@@ -1,5 +1,6 @@
 {
 	"elements": ["Modules/notification",
+               "Moduels/pickmeup",
 			       	 "Modules/popup",
 		      		 "Modules/accordion",
 		      		 "card/test"],

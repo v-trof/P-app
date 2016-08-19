@@ -1,12 +1,41 @@
 {% if request.user.id == course.creator %}
+function create_announcement(due_date,
+	heading, text, id) {
+	console.log(due_date);
+	var $new_announcement = $('{% include "Elements/card/announcement/exports.html" %}');
+
+	$new_announcement.attr('due-date', due_date);
+	$new_announcement.attr("id", id);
+	$new_announcement.find(".__heading").html(heading);
+	$new_announcement.find(".__content").html(text);
+
+	$new_announcement.find('.card__due-date strong').text(due_date);
+
+	button_delete.add($new_announcement, function() {
+		announcement_delete(id);
+	});
+
+	return $new_announcement;
+}
+
 $(document).ready(function() {
 	$("#add_announcement").click(function() {
 		popup.show('{% include "Pages/Course/main/_popup_texts/add_announcement/exports.html" %}');
-		inline_editor.start($('.announcement_text')[0]);
+			inline_editor.start($('.announcement_text')[0]);
+		 	var today = new Date();
+
+		  $('.__due-date input').pickmeup({
+		    format: 'd-m-Y',
+		    min: today
+		  })
+
 		$("#add_el").click(function(event) {
 			var new_heading = $('[name="heading"]').val();
+			var new_due_date  = $("#due_date").val();
 			var new_text = $('.announcement_text').html();
 			
+			console.log(new_due_date);
+
 			$.ajax({
 				type:"POST",
 				url:"/func/add_announcement/",
@@ -15,6 +44,7 @@ $(document).ready(function() {
 					'text': new_text,
 					'heading': new_heading,
 					'course_id': "{{course.id}}",
+					'due_date': new_due_date
 				},
 				 success: function(response) {
             if(response && response["type"]) {
@@ -27,18 +57,13 @@ $(document).ready(function() {
 						$(".announcements").html($(".announcements h3"));
 					}
 
-					var $new_announcement = $('{% include "Elements/card/exports.html" %}');
-					$(".announcements").append($new_announcement);
+					var $new_announcement = create_announcement(new_due_date,
+					 new_heading, new_text, response);
+
 					$(".no_announcements").hide();
-					$new_announcement.attr("id",response);
-					$new_announcement.find(".__heading").html(new_heading);
-					$new_announcement.find(".__content").html(new_text);
-
 					$(".announcements").show();
-
-					button_delete.add($new_announcement, function() {
-						announcement_delete(response);
-					});
+					
+					$(".announcements").append($new_announcement);
 				},
 				error: function() {
 					notification.show('error','Произошла ошибка');						

@@ -5,9 +5,17 @@ $(document).ready(function() {
 		var $original = $(this);
 		popup.show('{% include "Pages/Course/main/_popup_texts/add_announcement/exports.html" %}', function() {
 			
+			var today = new Date();
+
+		  $('.__due-date input').pickmeup({
+		    format: 'd-m-Y',
+		    min: today
+		  })
 
 			//change to edit & autofill
 			$("#add_el").text("Сохранить");
+			
+			$('#due_date').val($original.attr('due-date'));
 			$('.announcement_text').html(
 				$original.find(".__content").html()).focus();
 			$('[name="heading"]').val(
@@ -19,6 +27,7 @@ $(document).ready(function() {
 				var id = $original.attr('id');
 				var new_heading = $('[name="heading"]').val();
 				var new_text = $('.announcement_text').html();
+				var new_due_date  = $("#due_date").val();
 
 				$.ajax({
 					type:"POST",
@@ -28,6 +37,7 @@ $(document).ready(function() {
 						'text': new_text,
 						'heading': new_heading,
 						'course_id': "{{course.id}}",
+						'due_date': new_due_date,
 						'announcement_id': id,
 					},
 					success: function(response) {
@@ -36,8 +46,8 @@ $(document).ready(function() {
             } else {
 							notification.show("success", "Сохранено");
 							popup.hide();
-							$original.find(".__content").html(new_text);
-							$original.find(".__heading").html(new_heading);
+							$original.replaceWith(create_announcement(new_due_date,
+					 				new_heading, new_text, id));
 						}
 					},
 					error: function() {

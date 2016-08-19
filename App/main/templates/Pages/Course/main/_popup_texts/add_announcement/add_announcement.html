@@ -1,5 +1,17 @@
 {% include "Elements/Inputs/text/" with placeholder="Заголовок" name="heading" type="text" %}
 
 {% include "Elements/Inputs/text/textarea/" with placeholder="Текст объявления" class="announcement_text" type="text" %}
-
+<br>
+<div class="__due-date row">
+  <div class="__prefix">До</div> 
+  <div class="__input">
+    {% include "Elements/Inputs/text/" with
+      id="due_date"
+      placeholder="дд-мм-гггг"
+      type="text"
+      alwaystop="True"
+    %}
+  </div>
+</div>
+<br>
 <button id="add_el">Добавить объявление</button>

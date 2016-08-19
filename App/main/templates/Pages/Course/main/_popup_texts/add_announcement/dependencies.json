@@ -1,3 +1,4 @@
 {
-	"elements": ["button", "Inputs/text", "Inputs/text/textarea"]		
+	"elements": ["button", "Inputs/text", "Inputs/text/textarea"],
+  "styles": ["Pages/Course/give_task/due_date/_styles/due_date.css"]	
 }

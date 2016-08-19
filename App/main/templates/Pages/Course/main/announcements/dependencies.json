@@ -1,3 +1,6 @@
 {
-	"elements": ["card/announcement", "Modules/button_delete", "Modules/medium_editor"]		
+	"elements": ["card/announcement",
+               "Modules/button_delete",
+               "Modules/medium_editor",
+               "Modules/pickmeup"]		
 }
