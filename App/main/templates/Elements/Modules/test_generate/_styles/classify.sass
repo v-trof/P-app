@@ -39,6 +39,10 @@
       &:hover
         border-color: $font__color--accent
         cursor: default
+    h3:empty:before
+      content: "Название..."
+      color: lighten($font__color--grey, 15%)
+      display: block /* For Firefox */
 
 
     .m--empty

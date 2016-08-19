@@ -218,7 +218,7 @@ generate.data["answer--classify"] = {
     _shared: {
       create_class: function() {
         var $new_class = $('<div class="__class">'
-          + '<h3 class="m--editable m--editing" contenteditable>Название</h3>'
+          + '<h3 class="m--editable m--editing" contenteditable></h3>'
           + '<div class="__items"></div>'
           + '</div>');
         $new_class.find('.__items').append(
@@ -255,7 +255,7 @@ generate.data["answer--classify"] = {
       
       if( ! value.answer) {
         value.answer = {
-          "Название": []
+          "": []
         };
       }
 
