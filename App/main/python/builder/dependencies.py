@@ -39,13 +39,14 @@ def get(path):
 
   for element in dependencies_json["elements"]:
     if element.endswith('/all'):
-      element_path = path["elements"] + element[:-4]
+      element = element[:-4]
+      element_path = paths["elements"] + element
       blocks = [block[0] for block in os.walk(element_path)]
       for block_path in blocks:
         block_path = block_path.replace("\\", "/")
         block_name = block_path.split("/")[-1]
 
-        if block_name.startswith("__"):
+        if block_name.startswith("_"):
           continue
 
         block_path = "/".join(block_path.split('/')[4:])
@@ -83,7 +84,6 @@ def get(path):
               ".".join(script.split(".")[:-1]))
         else:
           dependencies_json["scripts"].add(".".join(script.split(".")[:-1]))
-
   return dependencies_json
 
 

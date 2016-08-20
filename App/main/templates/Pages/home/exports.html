@@ -31,7 +31,6 @@
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/accordion/_styles/accordion.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/context_menu/_styles/context_menu.css" %}"> 
-<link rel="stylesheet" href="{% static "Elements/Modules/notification/_styles/notification.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/popup/_styles/popup.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/ripple/_styles/ripple.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/tooltip/_styles/tooltip.css" %}"> 
@@ -42,6 +41,10 @@
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
+    {% include "Elements/Modules/ui/info/notification/_scripts/core.js" %} 
+    {% include "Elements/Modules/ui/modal/pull_put/__indicator/_scripts/core.js" %} 
+    {% include "Elements/Modules/ui/info/notification/_scripts/deffered.js" %} 
+    {% include "Elements/Modules/ui/info/tooltip/_scripts/tooltip.js" %} 
     {% include "Elements/Inputs/select/_scripts/select.js" %} 
     {% include "Elements/Inputs/select/sectioned/_scripts/bind_sectioned.js" %} 
     {% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 

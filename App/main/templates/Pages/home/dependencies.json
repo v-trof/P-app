@@ -1,6 +1,5 @@
 {
-	"elements": ["Modules/notification", "Modules/header",
-               "Modules/popup", "Modules/accordion"],
+	"elements": ["Modules/ui/info/all"],
 	"scripts": [],
   "styles": [],
   "title" : "Главная",
