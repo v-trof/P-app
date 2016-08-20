@@ -67,6 +67,11 @@ def template(dependencies, page_path):
   styles_critical = []
   styles_secondary = []
 
+  dependencies["styles"] = list(dependencies["styles"])
+  dependencies["styles"].sort()
+
+  print(dependencies["styles"])
+
   for style in dependencies["styles"]:
     # check if is critical
     if(style.lower().find("layout") > -1 or
@@ -77,8 +82,6 @@ def template(dependencies, page_path):
     else:
       styles_secondary.append(style)
 
-  print(styles_critical)
-
   for style in styles_critical:
     styles_html += make_link(style, True)
 
@@ -88,6 +91,14 @@ def template(dependencies, page_path):
   scripts_critical = "<script> \n"
   scripts_html = ""
   scripts_pages = ""
+
+  dependencies["scripts"] = list(dependencies["scripts"])
+  dependencies["scripts"].sort()
+
+  dependencies["scripts_critical"] = list(
+      dependencies["scripts_critical"])
+
+  dependencies["scripts_critical"].sort()
 
   for script in dependencies["scripts_critical"]:
     scripts_critical += '    {% include "' + script + '.js" %} \n'

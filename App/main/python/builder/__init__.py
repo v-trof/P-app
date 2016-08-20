@@ -31,7 +31,7 @@ while message != "_exit":
     for page_name in pages:
       core.build_page(page_name)
 
-  else if message == '_modules':
+  elif message == '_modules':
     pages_n_blocks = [directory[0]
                       for directory in os.walk(path["elements"]) + '/Modules']
     pages = []
