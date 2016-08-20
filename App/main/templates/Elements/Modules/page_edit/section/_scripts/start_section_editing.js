@@ -1,7 +1,7 @@
 section_editor.start_section_editing = function($section) {
   // console.log(typeof $section, $section);
-  if(typeof $section === 'function') return;
-  
+  if (typeof $section === 'function') return;
+
   var $items = $section.children(section_editor.item_selector)
 
   //start heading edition
@@ -22,8 +22,8 @@ section_editor.start_section_editing = function($section) {
     .css('top', $section.find('.m--accordion-toggle').css('top'))
 
   //replace_tags
-  if(section_editor.replace) {
-    if( defined($items[0]) ) {
+  if (section_editor.replace) {
+    if (defined($items[0])) {
       section_editor.items_old_tag = $items[0].tagName
     }
 
@@ -31,11 +31,11 @@ section_editor.start_section_editing = function($section) {
     $items = $section.children(section_editor.item_selector)
   }
 
-/*  console.log(
-    $section !== section_editor.$unordered,
-    $section,
-    section_editor.$unordered)
-*/
+  /*  console.log(
+      $section !== section_editor.$unordered,
+      $section,
+      section_editor.$unordered)
+  */
   //pull_put things for items
   $items.each(function(index, el) {
     $(this).attr("tip", "Кликните, чтобы перемещать");
@@ -49,7 +49,7 @@ section_editor.start_section_editing = function($section) {
       function() {
         // console.log('2')
         indicator.show(2);
-        if(!was_unpublished) {
+        if (!was_unpublished) {
           // console.log('1')
           indicator.show(1)
           section_editor.pull.func();
@@ -57,16 +57,16 @@ section_editor.start_section_editing = function($section) {
       }
     )
 
-    if(was_unpublished) {
-       indicator.add($(this), 'down', 2)
+    if (was_unpublished) {
+      indicator.add($(this), 'down', 2)
     } else {
-       indicator.add($(this), 'down', 1)
+      indicator.add($(this), 'down', 1)
     }
 
     pull_put.put_zone.add($(this), function(event, $this, $put) {
-      if($put.hasClass('m--was-unpublished')) {
+      if ($put.hasClass('m--was-unpublished')) {
         // console.log("WUNP", $this.parent() === section_editor.$unordered);
-        if(!was_unpublished) return;
+        if (!was_unpublished) return;
       }
       $this.after($put)
       pull_put.reset()

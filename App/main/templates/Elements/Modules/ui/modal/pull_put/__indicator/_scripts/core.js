@@ -17,31 +17,31 @@ var indicator = (function() {
   };
 
   var add = function($parent, icon, group) {
-    if($parent.children('.indicator.g' + group).length > 0) {
+    if ($parent.children('.indicator.g' + group).length > 0) {
       return;
     }
 
     var $new_indicator = build(icon);
     $new_indicator.addClass('g' + group)
-    // console.log($parent, $new_indicator);
+      // console.log($parent, $new_indicator);
     $parent.prepend($new_indicator);
     $new_indicator.hide();
   }
 
   var hide = function(group) {
-    if(typeof group === "undefined") {
+    if (typeof group === "undefined") {
       $('.indicator').hide();
     } else {
       $('.indicator.g' + group).hide();
-    }  
+    }
   }
 
   var show = function(group) {
-    if(typeof group === "undefined") {
+    if (typeof group === "undefined") {
       $('.indicator').show();
     } else {
       $('.indicator.g' + group).show();
-    }  
+    }
 
     $('.pull_put_ui .indicator').hide();
   }

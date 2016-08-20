@@ -11,13 +11,13 @@ function sort_by_text($parent, key) {
   keyarr.sort();
   console.log(keyarr);
 
-  while(keyarr.length > 0) {
+  while (keyarr.length > 0) {
 
     $children.each(function(index, el) {
-      if($(this).find(key).text() == keyarr[0]) {
+      if ($(this).find(key).text() == keyarr[0]) {
         $parent.append($(this));
-        keyarr.splice(0,1);
-      }    
+        keyarr.splice(0, 1);
+      }
     });
   }
 }

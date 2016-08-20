@@ -1,7 +1,7 @@
-var search = (function(){
+var search = (function() {
   var $search = $('{% include "Elements/Modules/search/exports.html" %}');
   var url = window.location.pathname;
-  
+
   var exports = {
     $: $search,
     is_shown: false,
@@ -18,7 +18,7 @@ var search = (function(){
     types_active: ['test', 'material']
   };
 
-  if(url.indexOf('course') > -1 ) {
+  if (url.indexOf('course') > -1) {
     exports.course_id = '{{course.id}}';
   }
 
@@ -29,7 +29,7 @@ $(document).ready(function() {
   // console.log(search.$)
   $('body').append(search.$);
   $('.header>.__search>button').click(function() {
-    if( ! search.is_shown) {
+    if (!search.is_shown) {
       search.show();
     } else {
       search.hide();
@@ -38,7 +38,7 @@ $(document).ready(function() {
   search.$.find('.m--close').click(function(event) {
     search.hide();
   });
-  
+
   search.enable_query_listener();
   search.enable_checkbox_listener();
 });

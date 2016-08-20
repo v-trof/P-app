@@ -1,8 +1,7 @@
 var pull_put = {
   is_pulled: false,
   reset_sync: false,
-  reset_default: function() {
-  },
+  reset_default: function() {},
   reset: function() {
     pull_put.pre_actions.reset();
     //real reset
@@ -28,5 +27,5 @@ var pull_put = {
     pull: function($pulled) {},
     put: function($put_zone, $pulled) {}
   }
-  cancel_action: function(){}
+  cancel_action: function() {}
 }

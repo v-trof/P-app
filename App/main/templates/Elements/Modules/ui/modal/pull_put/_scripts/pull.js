@@ -37,7 +37,7 @@ pull_put.puller = (function() {
 
       $element.click(function(event) {
         pull_put.pre_actions.pull($element);
-        
+
         if (!pull_put.is_pulled) {
           var element_width = this.getBoundingClientRect().width;
 

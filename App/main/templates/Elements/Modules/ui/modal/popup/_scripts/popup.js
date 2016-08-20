@@ -6,7 +6,7 @@ var popup = (function() {
       $popup.find(".__content").html(content);
       $popup.removeClass('m--hidden');
       $popup.removeClass('m--hiding');
-      
+
       $popup.find(".m--select").each(function(index, el) {
         add_menu_caller(this);
       });
@@ -16,11 +16,11 @@ var popup = (function() {
       });
       $popup.find("input").first().focus();
 
-      if(css) {
+      if (css) {
         $popup.find('__modal').css(css);
       }
 
-      if(_callback) {
+      if (_callback) {
         _callback();
       }
     },
@@ -28,10 +28,10 @@ var popup = (function() {
       $popup.addClass('m--hiding');
       $popup.find('__modal').removeAttr('style');
 
-      if(typeof tooltip !== 'undefined') {
+      if (typeof tooltip !== 'undefined') {
         tooltip.hide()
       }
-      if(typeof context_menu !== 'undefined') {
+      if (typeof context_menu !== 'undefined') {
         context_menu.hide()
       }
 

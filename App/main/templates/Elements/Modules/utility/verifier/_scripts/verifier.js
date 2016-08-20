@@ -1,14 +1,14 @@
 var verifier = (function() {
   var expressions = {
     email: /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
-    words2:  /^[^\s]+\s[^\s]+$/,
-    password:  /.{8,}/
+    words2: /^[^\s]+\s[^\s]+$/,
+    password: /.{8,}/
   }
   var typing_interval = 2000;
 
   function verify($input, expression) {
-    if($input.val()) {
-      if( expression.test($input.val()) ) {
+    if ($input.val()) {
+      if (expression.test($input.val())) {
         $input.addClass('m--valid');
         $input.removeClass('m--invalid');
         return true
@@ -26,7 +26,7 @@ var verifier = (function() {
     verify: verify,
     expressions: expressions,
     add: function($input, expression) {
-      if(typeof expression === "string") {
+      if (typeof expression === "string") {
         expression = expressions[expression];
       }
 
@@ -34,7 +34,7 @@ var verifier = (function() {
 
       var timer;
       $input.keydown(function() {
-        clearTimeout(timer); 
+        clearTimeout(timer);
         timer = setTimeout(function() {
           verify($input, expression);
         }, typing_interval);
@@ -46,4 +46,3 @@ var verifier = (function() {
   }
   return exports;
 })();
-

@@ -9,17 +9,17 @@ var panel = (function() {
     $: $all,
     content: $panel,
     actions: $actions,
-    show: function(content,  _callback, css) {
+    show: function(content, _callback, css) {
       $panel.html(content)
-      
-      if(css) {
+
+      if (css) {
         $panel.css(css)
       }
-      
-      if(_callback) {
+
+      if (_callback) {
         _callback()
       }
-      
+
       $all.css('transform', 'none');
     },
     hide: function() {
@@ -27,8 +27,8 @@ var panel = (function() {
     },
     change_actions: function(actions, _callback) {
       $actions.html(actions)
-      
-      if(_callback) {
+
+      if (_callback) {
         _callback()
       }
     }

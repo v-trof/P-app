@@ -5,14 +5,14 @@ var context_menu = (function() {
   var build = function(options, el, chosen) {
     $menu.html("");
     $menu.attr("style", "");
-    if(el) {
+    if (el) {
       $menu.append("<div class='__option default' value='" + chosen.value + "'>" + chosen.text + "</div>")
 
       options.forEach(function(option) {
         $menu.append("<div class='__option' value='" + option.value + "'>" + option.text + "</div>");
       });
 
-      
+
     } else {
       options.forEach(function(option) {
         $menu.append("<div class='__option' onclick='" + option.func + "()'>" + option.text + "</div>");
@@ -34,14 +34,14 @@ var context_menu = (function() {
     menu_rect = $menu[0].getBoundingClientRect();
 
 
-    if(menu_rect.top + menu_rect.height > $(window).height()) {
+    if (menu_rect.top + menu_rect.height > $(window).height()) {
       $menu.css({
         "bottom": 0,
         "top": "auto",
       })
     }
 
-    if(menu_rect.left + menu_rect.width > $(window).width()) {
+    if (menu_rect.left + menu_rect.width > $(window).width()) {
       $menu.css({
         "right": 0,
         "left": "auto",
@@ -62,11 +62,11 @@ var context_menu = (function() {
     },
     show: function(options, el, chosen, sectioned) {
       $("body").append($menu);
-      if(is_shown) {
+      if (is_shown) {
         context_menu.hide();
       }
 
-      if(sectioned) {
+      if (sectioned) {
         context_menu.build_section_select(options, el, chosen);
       } else {
         build(options, el, chosen);

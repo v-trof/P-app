@@ -5,7 +5,7 @@ search.enable_query_listener = function() {
   var $input = search.$.find('.__query');
 
   $input.keydown(function() {
-    clearTimeout(timer); 
+    clearTimeout(timer);
     timer = setTimeout(function() {
       var value = $input.val();
       search.request();
@@ -17,11 +17,11 @@ search.enable_query_listener = function() {
 search.enable_checkbox_listener = function() {
   search.$.find('input[type="checkbox"]').each(function(index, el) {
     var type = $(this).attr('class').slice(7);
-    if(search.types_active.indexOf(type) > -1) {
+    if (search.types_active.indexOf(type) > -1) {
       this.checked = true;
     }
     $(this).change(function() {
-      if(this.checked) {
+      if (this.checked) {
         search.types_active.push(type);
         search.request();
       } else {
@@ -34,12 +34,14 @@ search.enable_checkbox_listener = function() {
 
 //remvoe function
 Array.prototype.remove = function() {
-    var what, a = arguments, L = a.length, ax;
-    while (L && this.length) {
-        what = a[--L];
-        while ((ax = this.indexOf(what)) !== -1) {
-            this.splice(ax, 1);
-        }
+  var what, a = arguments,
+    L = a.length,
+    ax;
+  while (L && this.length) {
+    what = a[--L];
+    while ((ax = this.indexOf(what)) !== -1) {
+      this.splice(ax, 1);
     }
-    return this;
+  }
+  return this;
 };

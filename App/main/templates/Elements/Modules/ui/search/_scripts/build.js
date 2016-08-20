@@ -1,18 +1,18 @@
-search.build = {} 
+search.build = {}
 
 search.build.num_form = function(number, forms) {
-  if(number === 0) {
+  if (number === 0) {
     return forms.many
   }
 
-  if(number%100 - number%10 != 10) {
-    if(number%10 === 0) {
+  if (number % 100 - number % 10 != 10) {
+    if (number % 10 === 0) {
       return forms.many
     }
-    if(number%10 === 1) {
+    if (number % 10 === 1) {
       return forms.one
     }
-    if(number%10 <= 4) {
+    if (number % 10 <= 4) {
       return forms.few
     }
   }
@@ -24,12 +24,12 @@ search.build.course = function(data) {
   var $new_course = $(search.template.course);
   var form = "";
   var amount = "";
-  
+
   //heading
   $new_course.find('.__heading').text(data.name);
   $new_course.find('.__content').html("");
   //closed class
-  if(data.is_closed) {
+  if (data.is_closed) {
     $new_course.addClass('m--closed');
   }
 
@@ -40,14 +40,14 @@ search.build.course = function(data) {
     many: "материалов"
   });
 
-  if(data.materials_number > 0) {
+  if (data.materials_number > 0) {
     amount = data.materials_number;
   } else {
     amount = "Нет";
   }
 
-  $new_course.find('.__content').append('<b>' + amount + '</b> '
-    + form + "<br>");
+  $new_course.find('.__content').append('<b>' + amount + '</b> ' +
+    form + "<br>");
 
   form = search.build.num_form(data.tests_number, {
     one: "тест",
@@ -55,14 +55,14 @@ search.build.course = function(data) {
     many: "тестов"
   });
 
-  if(data.tests_number > 0) {
+  if (data.tests_number > 0) {
     amount = data.tests_number;
   } else {
     amount = "Нет";
   }
 
-  $new_course.find('.__content').append('<b>' + amount + '</b> '
-    + form);
+  $new_course.find('.__content').append('<b>' + amount + '</b> ' +
+    form);
 
   return $new_course;
 }
@@ -71,7 +71,7 @@ search.build.test = function(data) {
   var $new_test = $(search.template.test);
   var form = "";
   var amount = "";
-  
+
   //heading
   $new_test.find('.__heading').text(data.title);
 
@@ -83,18 +83,18 @@ search.build.test = function(data) {
     many: "вопросов"
   });
 
-  if(data.questions_number > 0) {
+  if (data.questions_number > 0) {
     amount = data.questions_number;
   } else {
     amount = "Нет";
   }
 
-  $new_test.find('.__content').append('Тест, <b>' + amount + '</b> '
-    + form);
+  $new_test.find('.__content').append('Тест, <b>' + amount + '</b> ' +
+    form);
 
   $new_test.find('.__content').append(
-    '<div class="m--grey">Из курса '
-    + data.course_name + '</div>');
+    '<div class="m--grey">Из курса ' +
+    data.course_name + '</div>');
 
   return $new_test;
 }
@@ -103,12 +103,12 @@ search.build.material = function(data) {
   var $new_material = $(search.template.material);
   var form = "";
   var amount = "";
-  
+
   //heading
   $new_material.find('.__heading').text(data.title);
   $new_material.find('.__content').append(
-    '<div class="m--grey">Из курса '
-    + data.course_name + '</div>');
+    '<div class="m--grey">Из курса ' +
+    data.course_name + '</div>');
 
   return $new_material;
 }
@@ -117,12 +117,12 @@ search.build.user = function(data) {
   var $new_user = $(search.template.user);
   var form = "";
   var amount = "";
-  
+
   //name
   $new_user.find('.__name').text(data.name);
 
   //state
-  if(data.is_teacher) {
+  if (data.is_teacher) {
     $new_user.find('.__state').text("Преподаватель");
   } else {
     $new_user.find('.__state').text("Ученик");

@@ -1,6 +1,6 @@
 var ripple = (function() {
   var $ripple = $('<div id="ripple_effect"></div>');
-  
+
   function reset() {
     $ripple.removeAttr('style');
     $ripple.removeClass('m--hide').removeClass('m--shown');
@@ -23,12 +23,12 @@ var ripple = (function() {
         height: radius
       })
 
-      position.left -= radius/2
-      position.top -= radius/2
+      position.left -= radius / 2
+      position.top -= radius / 2
 
       $ripple.css(position);
 
-      if(typeof css !== 'undefined') {
+      if (typeof css !== 'undefined') {
         $ripple.css(css);
       }
 

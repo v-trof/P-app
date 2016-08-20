@@ -4,12 +4,12 @@ var button_delete = (function() {
   var exports = {
     add: function($element, $deletable, _callback) {
       //if callback passed second
-      if(typeof $deletable === 'function') {
+      if (typeof $deletable === 'function') {
         _callback = $deletable;
         $deletable = undefined;
       }
 
-      if(typeof $deletable === 'undefined') {
+      if (typeof $deletable === 'undefined') {
         $deletable = $element;
       }
 
@@ -18,10 +18,10 @@ var button_delete = (function() {
       $button = $(template);
 
       $element.append($button);
-      
+
       $button.click(function(event) {
         event.preventDefault();
-        if(_callback) {
+        if (_callback) {
           _callback();
         }
         $deletable.remove();

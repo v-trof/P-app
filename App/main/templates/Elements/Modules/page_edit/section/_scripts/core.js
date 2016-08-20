@@ -1,11 +1,11 @@
 function defined(variable) {
-  if(typeof variable !== typeof undefined) {
+  if (typeof variable !== typeof undefined) {
     return true
   } else {
     return false
   }
 }
- 
+
 section_editor = {}
 
 section_editor.init_done = false
@@ -48,7 +48,7 @@ section_editor.init = function(arguments) {
 
   //accept required arguments
   section_editor.$parent = arguments.$parent.first()
-  if(defined(arguments.$section_template)) {
+  if (defined(arguments.$section_template)) {
     //maginificatn hotifx
     section_editor.$section_template = arguments.$section_template
   } else {
@@ -60,27 +60,27 @@ section_editor.init = function(arguments) {
   section_editor.item_selector = arguments.item_selector
 
   //set empty_message
-  if( ! defined(arguments.empty_message)) {
+  if (!defined(arguments.empty_message)) {
     section_editor.empty_message = 'Пустая секция'
   } else {
     section_editor.empty_message = arguments.empty_message
   }
 
   //set add_button_text
-  if( ! defined(arguments.add_button_text)) {
+  if (!defined(arguments.add_button_text)) {
     section_editor.add_button_text = 'Добавить секцию'
   } else {
     section_editor.add_button_text = arguments.add_button_text
   }
 
   //set repalce
-  if( ! defined(arguments.replace)) {
+  if (!defined(arguments.replace)) {
     section_editor.replace = false
   } else {
     section_editor.replace = arguments.replace
   }
 
-  if( ! defined(arguments.no_publish)) {
+  if (!defined(arguments.no_publish)) {
     section_editor.no_publish = false
   } else {
     section_editor.no_publish = arguments.no_publish
@@ -88,51 +88,51 @@ section_editor.init = function(arguments) {
 
 
   //set accordion
-  if( ! defined(arguments.accordion)) {
+  if (!defined(arguments.accordion)) {
     section_editor.accordion = false
   } else {
     section_editor.accordion = arguments.accordion
   }
 
   //set edit_start
-  if( ! defined(arguments.edit_start)) {
-    section_editor.edit_start = function(){}
+  if (!defined(arguments.edit_start)) {
+    section_editor.edit_start = function() {}
   } else {
     section_editor.edit_start = arguments.edit_start
   }
 
 
   //set edit_end
-  if( ! defined(arguments.edit_end)) {
-    section_editor.edit_end = function(){}
+  if (!defined(arguments.edit_end)) {
+    section_editor.edit_end = function() {}
   } else {
     section_editor.edit_end = arguments.edit_end
   }
-  
+
 
   //set _save_callback
-  if( ! defined(arguments._save_callback)) {
-    section_editor._save_callback = function(){}
+  if (!defined(arguments._save_callback)) {
+    section_editor._save_callback = function() {}
   } else {
     section_editor._save_callback = arguments._save_callback
   }
 
 
   //set _put_callback
-  if( ! defined(arguments._put_callback)) {
-    section_editor._put_callback = function(){}
+  if (!defined(arguments._put_callback)) {
+    section_editor._put_callback = function() {}
   } else {
     section_editor._put_callback = arguments._put_callback
   }
 
 
-  if(defined(arguments.pull)) {
-    if( ! defined(arguments.pull.actions)) {
+  if (defined(arguments.pull)) {
+    if (!defined(arguments.pull.actions)) {
       section_editor.pull.actions = []
     } else {
       section_editor.pull = arguments.pull
     }
-    section_editor.pull.func = arguments.pull.func || function(){};
+    section_editor.pull.func = arguments.pull.func || function() {};
   } else {
     section_editor.pull = {
       actions: [],
@@ -140,22 +140,22 @@ section_editor.init = function(arguments) {
     }
   }
   //pull func
-  
+
   var unordered_heading = arguments.unordered_heading
 
   //find unordered
   section_editor.$parent.find(section_editor.section_selector)
-  .each(function(index, el) {
-    if($(this).find(section_editor.heading_selector)
-      .text() === unordered_heading) {
-      section_editor.$unordered = $(this)
+    .each(function(index, el) {
+      if ($(this).find(section_editor.heading_selector)
+        .text() === unordered_heading) {
+        section_editor.$unordered = $(this)
 
-      section_editor.$parent.prepend(section_editor.$unoredered)
-    }
-  })
+        section_editor.$parent.prepend(section_editor.$unoredered)
+      }
+    })
 
-  setTimeout(function(){
-    if(!defined(section_editor.$unordered)) {
+  setTimeout(function() {
+    if (!defined(section_editor.$unordered)) {
       section_editor.$unordered = section_editor.add_section()
 
       section_editor.$unordered.find(section_editor.heading_selector)
@@ -164,17 +164,17 @@ section_editor.init = function(arguments) {
       section_editor.end_section_editing(section_editor.$unordered)
     }
 
-    if(section_editor.no_publish) {
+    if (section_editor.no_publish) {
       section_editor.$unordered.find(section_editor.item_selector)
         .addClass('m--was-unpublished')
     }
   }, 100)
-  
+
 
   //finish startup
-  section_editor.$add_button = $('<a class="m--card">'
-    + '<button class="m--flat" id="edit_toggle">' + section_editor.add_button_text
-    + '</button></a>')
+  section_editor.$add_button = $('<a class="m--card">' +
+    '<button class="m--flat" id="edit_toggle">' + section_editor.add_button_text +
+    '</button></a>')
 
   $(".linkbox").last().append(section_editor.$add_button)
 
@@ -191,6 +191,6 @@ section_editor.init = function(arguments) {
   section_editor.check_empty('_all');
 
   pull_put.cancel_action = indicator.hide;
-  
+
   section_editor.init_done = true
 }
