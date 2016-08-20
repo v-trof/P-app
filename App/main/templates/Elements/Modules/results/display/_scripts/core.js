@@ -1,6 +1,6 @@
 var results_display = {
-	init: function(test_info, attempt_info, result_info) {
-		if(result_info.type === 'error') {
+  init: function(test_info, attempt_info, result_info) {
+    if(result_info.type === 'error') {
       panel.show("");
       $('.preview .__task').remove();
 
@@ -12,8 +12,8 @@ var results_display = {
       return;
     }
     if(test_info) {
-			test_manager.load.test(test_info);
-		}
-		results_display.create_summary(attempt_info, result_info);
-	}
+      test_manager.load.test(test_info);
+    }
+    results_display.create_summary(attempt_info, result_info);
+  }
 }

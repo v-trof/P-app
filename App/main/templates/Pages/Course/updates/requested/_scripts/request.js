@@ -1,40 +1,40 @@
 // console.log('{{ user.id }}')
 $( "#button_accept" ).click(function() {
-	$.ajax({
-		type:"POST",
-		url:"/func/accept_request/",
-		data: {
-			   'user_id': '',
-			   'csrfmiddlewaretoken': '{{ csrf_token }}',
-			   'course_id': "{{course.id}}"
-			  },
-		 success: function(response) {
+  $.ajax({
+    type:"POST",
+    url:"/func/accept_request/",
+    data: {
+         'user_id': '',
+         'csrfmiddlewaretoken': '{{ csrf_token }}',
+         'course_id': "{{course.id}}"
+        },
+     success: function(response) {
       if(response && response["type"]) {
         notification.show(response["type"], response["message"]);
       } else {
-				notification.show('success', 'Заявка принята' );
-			}
-		  $("#create_group").hide();
-		}
-	});
-	$("#create_group").hide();
+        notification.show('success', 'Заявка принята' );
+      }
+      $("#create_group").hide();
+    }
+  });
+  $("#create_group").hide();
 });
 $( "#button_decline" ).click(function() {
-	$.ajax({
-		type:"POST",
-		url:"/func/decline_request/",
-		data: {
-			   'user_id': '',
-			   'csrfmiddlewaretoken': '{{ csrf_token }}',
-			   'course_id': "{{course.id}}",
-			  },
-		success: function(response) {
+  $.ajax({
+    type:"POST",
+    url:"/func/decline_request/",
+    data: {
+         'user_id': '',
+         'csrfmiddlewaretoken': '{{ csrf_token }}',
+         'course_id': "{{course.id}}",
+        },
+    success: function(response) {
       if(response && response["type"]) {
         notification.show(response["type"], response["message"]);
       } else {
-			  notification.show('success', 'Заявка отклонена' );
-			}
-		  $("#create_group").hide();
-		}
-	});
+        notification.show('success', 'Заявка отклонена' );
+      }
+      $("#create_group").hide();
+    }
+  });
 });

@@ -1,38 +1,39 @@
 import os
 
-import core
 import build
+import core
 import dependencies
 
-path = build.path
+path = build.pathx
 
 message = input().split("/n")[0]
 
 while message != "_exit":
-	if message == "_all":
-		pages_n_blocks = [directory[0] for directory in os.walk(path["page"])]
-		pages = []
+  if message == "_all":
+    pages_n_blocks = [directory[0] for directory in os.walk(path["page"])]
+    pages = []
 
-		for directory in pages_n_blocks:	
-			dependencies_json = dependencies.get(directory)
-			if "template" in dependencies_json:
-				directory_list = directory.split("\\")
-				
-				print(directory_list)
-				if len(directory_list) > 1:
-					page_name = directory_list[0].split("/")[-1] + "/" \
-					 + "/".join(directory_list[1:])
-				else:
-					page_name = directory_list[0].split("/")[-1]
+    for directory in pages_n_blocks:
+      dependencies_json = dependencies.get(directory)
+      if "template" in dependencies_json:
+        directory_list = directory.split("\\")
 
-				pages.append(page_name)
+        print(directory_list)
+        if len(directory_list) > 1:
+          page_name = directory_list[0].split("/")[-1] + "/" \
+              + "/".join(directory_list[1:])
+        else:
+          page_name = directory_list[0].split("/")[-1]
 
-		print(pages)
-		for page_name in pages:
-			core.build_page(page_name)
+        pages.append(page_name)
 
-	else:
+    print(pages)
+    for page_name in pages:
+      core.build_page(page_name)
 
-		core.build_page(message)
-	print("\n ---- \n")
-	message = input().split("/n")[0]
+  elif message == '_modules':
+
+    else:
+    core.build_page(message)
+  print("\n ---- \n")
+  message = input().split("/n")[0]

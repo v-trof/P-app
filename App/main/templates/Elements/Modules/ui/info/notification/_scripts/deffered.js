@@ -7,11 +7,11 @@
   {% else %}
     notification.show('success', '{{notification.text}}');
   {% endif %}
-	$.ajax({
-	type:"POST",
-	url:"/func/delete_notification/",
-	data: {
-	   'csrfmiddlewaretoken': '{{ csrf_token }}'
-	}
-	});
+  $.ajax({
+  type:"POST",
+  url:"/func/delete_notification/",
+  data: {
+     'csrfmiddlewaretoken': '{{ csrf_token }}'
+  }
+  });
 {% endfor %}

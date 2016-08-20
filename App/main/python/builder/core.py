@@ -1,88 +1,88 @@
 import os
 
-import dependencies
 import build
+import dependencies
 
 path = build.path
 
+
 def build_page(page_name):
-	print("PAGE_TO_BUILD:", page_name)
-	print("==========================")
-	page_path = path["page"] + page_name
+  print("PAGE_TO_BUILD:", page_name)
+  print("==========================")
+  page_path = path["page"] + page_name
 
-	page_dependencies = dependencies.get(page_path)
-	page_dependencies["priority"] = {}
+  page_dependencies = dependencies.get(page_path)
+  page_dependencies["priority"] = {}
 
-	if not "template" in page_dependencies:
-		print("READ FAILED:", page_name)
-		# return False
+  if not "template" in page_dependencies:
+    print("READ FAILED:", page_name)
+    # return False
 
-	page_dependencies["scripts_critical"] = set()
+  page_dependencies["scripts_critical"] = set()
 
-	template_path = path["page_template"] + page_dependencies["template"]
-	template_dependencies = dependencies.get(template_path)
-	dependencies.add(page_dependencies, template_dependencies)
+  template_path = path["page_template"] + page_dependencies["template"]
+  template_dependencies = dependencies.get(template_path)
+  dependencies.add(page_dependencies, template_dependencies)
 
-	blocks = [block[0] for block in os.walk(page_path)]
-	for block_path in blocks:
-		block_path = block_path.replace("\\", "/")
-		build.dev_file(block_path)
+  blocks = [block[0] for block in os.walk(page_path)]
+  for block_path in blocks:
+    block_path = block_path.replace("\\", "/")
+    build.dev_file(block_path)
 
-		block_dependencies = dependencies.get(block_path)
-		dependencies.add(page_dependencies, block_dependencies)
+    block_dependencies = dependencies.get(block_path)
+    dependencies.add(page_dependencies, block_dependencies)
 
-	#building all elements
-	elements_done = set()
-	elements_current = set()
-	while elements_done != page_dependencies["elements"]:
-		#fix for Card/{{cardname}} to work
-		elements_current = page_dependencies["elements"] \
-							- elements_done
+  # building all elements
+  elements_done = set()
+  elements_current = set()
+  while elements_done != page_dependencies["elements"]:
+    # fix for Card/{{cardname}} to work
+    elements_current = page_dependencies["elements"] \
+        - elements_done
 
-		print("....\n", "Todos", elements_current, "\n ....")
+    print("....\n", "Todos", elements_current, "\n ....")
 
-		for element in elements_current:
-			element_path = path["elements"] + element
+    for element in elements_current:
+      element_path = path["elements"] + element
 
-			build.dev_file(element_path)
-			element_dependencies =  dependencies.get(element_path)
-			
-			element_arr = element.split("/")
-			element_l = len(element_arr)
+      build.dev_file(element_path)
+      element_dependencies = dependencies.get(element_path)
 
-			if(element_l == 1 and 
-					(element_arr[0][0].isupper() or element[0][0] == '.')	
-				):
-				print("NOBLOCK:", element_arr)
-				continue
+      element_arr = element.split("/")
+      element_l = len(element_arr)
 
-			#do not add pages recursively
-			if not (element_l>1 and element_arr[1] == "Pages"):
-				for i in range(element_l-1):
-					proto = "/".join(element_arr[:-i-1])
-					element_dependencies["elements"].add(proto)
-			else:
-				print("NOPROTO:", element_arr)
+      if(element_l == 1 and
+         (element_arr[0][0].isupper() or element[0][0] == '.')
+         ):
+        print("NOBLOCK:", element_arr)
+        continue
 
-			dependencies.add(page_dependencies, element_dependencies)
+      # do not add pages recursively
+      if not (element_l > 1 and element_arr[1] == "Pages"):
+        for i in range(element_l - 1):
+          proto = "/".join(element_arr[:-i - 1])
+          element_dependencies["elements"].add(proto)
+      else:
+        print("NOPROTO:", element_arr)
 
-			element_blocks = [block[0] for block in os.walk(element_path)]
+      dependencies.add(page_dependencies, element_dependencies)
 
-			for block_path in element_blocks:
-				block_path = block_path.replace("\\", "/")
-				block_name = block_path.split("/")[-1]
+      element_blocks = [block[0] for block in os.walk(element_path)]
 
-				if not block_name.startswith("__"):
-					continue
-				
-				
-				build.dev_file(block_path)
+      for block_path in element_blocks:
+        block_path = block_path.replace("\\", "/")
+        block_name = block_path.split("/")[-1]
 
-				block_dependencies = dependencies.get(block_path)
-				dependencies.add(page_dependencies, block_dependencies)
-		elements_done |= elements_current
+        if not block_name.startswith("__"):
+          continue
 
-	build.template(page_dependencies, page_path)
+        build.dev_file(block_path)
+
+        block_dependencies = dependencies.get(block_path)
+        dependencies.add(page_dependencies, block_dependencies)
+    elements_done |= elements_current
+
+  build.template(page_dependencies, page_path)
 
 # page_name = input().split("/n")[0]
 # build_page(page_name)

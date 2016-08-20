@@ -1,7 +1,7 @@
 pull_put.delete_action = function() {
-	if(pull_put.ui.element) {
-		pull_put.ui.element.remove();
-	}
+  if(pull_put.ui.element) {
+    pull_put.ui.element.remove();
+  }
 }
 
 pull_put.reset_sync = true;

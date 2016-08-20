@@ -1,19 +1,19 @@
 $(document).ready(function() {
-	$("#create_course").click(function() {
-		popup.show('{% include "Pages/home/_popup_texts/create_course/exports.html" %}');
-		$( "#create_course_button" ).click(function() {
-  			if( $("input[name=course_name]").val() == "") {
-			$("input[name=course_name]").attr('invalid', "true");
-				tooltip.show($("input[name=course_name]")[0], "У курса должно быть название");
-				return 0;
-			}
-			subject=$('.__display').text();
-			if (subject=="Выберите...")
-			{
-				subject="Неопределенный предмет"
-			}
-			$(this).attr('disabled', 'disabled');
-  			$.ajax({
+  $("#create_course").click(function() {
+    popup.show('{% include "Pages/home/_popup_texts/create_course/exports.html" %}');
+    $( "#create_course_button" ).click(function() {
+        if( $("input[name=course_name]").val() == "") {
+      $("input[name=course_name]").attr('invalid', "true");
+        tooltip.show($("input[name=course_name]")[0], "У курса должно быть название");
+        return 0;
+      }
+      subject=$('.__display').text();
+      if (subject=="Выберите...")
+      {
+        subject="Неопределенный предмет"
+      }
+      $(this).attr('disabled', 'disabled');
+        $.ajax({
           type:"POST",
           url:"/func/create_course/",
           data: {
@@ -26,6 +26,6 @@ $(document).ready(function() {
             window.location.href = response;
           }
           });
-			});
-		});
+      });
+    });
 });

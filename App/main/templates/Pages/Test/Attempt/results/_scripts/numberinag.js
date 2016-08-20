@@ -1,3 +1,3 @@
 $(document).ready(function() {
-	results_display.set_numbers();
+  results_display.set_numbers();
 });
