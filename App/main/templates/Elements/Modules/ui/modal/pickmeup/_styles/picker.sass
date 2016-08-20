@@ -1,4 +1,4 @@
-@import "../../../../sass_vars/main.sass"
+@import "../../../../../../sass_vars/main.sass"
 
 $border-radius            : $border--m
 $background               : $white
@@ -17,7 +17,7 @@ $day-of-week            : $not-in-month-hover
 $today-background       : $background
 $today-color            : $color
 
-.pickmeup 
+.pickmeup
   background      : $background
   border-radius   : $border-radius
   -moz-box-sizing : content-box
@@ -25,128 +25,126 @@ $today-color            : $color
   display         : none
   position        : absolute
   +box-shadow(3)
-  * 
+  *
     -moz-box-sizing : border-box
     box-sizing      : border-box
   z-index: 100
-  
 
-  .pmu-instance 
+
+  .pmu-instance
     display    : inline-block
     height     : 13.8em
     padding    : .5em
     text-align : center
     width      : 15em
 
-    .pmu-button 
+    .pmu-button
       color           : $color
       cursor          : pointer
       outline         : none
       text-decoration : none
       transition      : $time--m
       border-radius   : $border-radius
-    
 
-    .pmu-today 
+
+    .pmu-today
       background : $today-background
       color      : $today-color
-    
 
-    .pmu-button:hover 
+
+    .pmu-button:hover
       background : $background-hover
       color      : $color-hover
-    
 
-    .pmu-not-in-month 
+
+    .pmu-not-in-month
       color : $not-in-month
-    
+
 
     .pmu-disabled,
-    .pmu-disabled:hover 
+    .pmu-disabled:hover
       color  : $disabled
       background: $background
       cursor : default
-    
+
 
     .pmu-selected, .pmu-selected:hover
       background : $selected-background
       color      : $selected
-    
 
-    .pmu-not-in-month.pmu-selected 
+
+    .pmu-not-in-month.pmu-selected
       background : $not-in-month-selected-background
-    
 
-    nav 
+
+    nav
       color       : $nav-color
       display     : -ms-flexbox
       display     : -webkit-flex
       display     : flex
       line-height : 2em
 
-      *:first-child :hover 
+      *:first-child :hover
         color : $nav-color-hover
-      
+
 
       .pmu-prev,
-      .pmu-next 
+      .pmu-next
         display : none
         height  : 2em
         width   : 1em
-      
-      .pmu-month 
+
+      .pmu-month
         width : 14em
-      
-    
+
+
 
     .pmu-years,
-    .pmu-months 
-      * 
+    .pmu-months
+      *
         display     : inline-block
         line-height : 3.6em
         width       : 3.5em
-      
-    
 
-    .pmu-day-of-week 
+
+
+    .pmu-day-of-week
       color  : $day-of-week
       cursor : default
-    
+
 
     .pmu-day-of-week,
-    .pmu-days 
-      * 
+    .pmu-days
+      *
         display     : inline-block
         line-height : 1.5em
         width       : 2em
-      
-    
 
-    .pmu-day-of-week * 
+
+
+    .pmu-day-of-week *
       line-height : 1.8em
-    
-  
+
+
 
   .pmu-instance:first-child .pmu-prev,
-  .pmu-instance:last-child .pmu-next 
+  .pmu-instance:last-child .pmu-next
     display : block
-  
+
 
   .pmu-instance:first-child,
-  .pmu-instance:last-child 
-    .pmu-month 
+  .pmu-instance:last-child
+    .pmu-month
       width : 13em
-    
-  
 
-  .pmu-instance:first-child:last-child .pmu-month 
+
+
+  .pmu-instance:first-child:last-child .pmu-month
     width : 12em
-  
+
 
   &:not(.pmu-view-days) .pmu-days,
   &:not(.pmu-view-days) .pmu-day-of-week,
   &:not(.pmu-view-months) .pmu-months,
-  &:not(.pmu-view-years) .pmu-years 
+  &:not(.pmu-view-years) .pmu-years
     display : none
-  
-
