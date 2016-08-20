@@ -7,7 +7,7 @@ paths = build.path
 
 def get(path):
 	if not os.path.isfile(path + "/dependencies.json"):
-		dependencies_json = { 
+		dependencies_json = {
 			"elements": [],
 			"styles": [],
 			"scripts": [],
@@ -40,10 +40,10 @@ def get(path):
 	dependencies_json["elements"] = set(dependencies_json["elements"])
 	dependencies_json["scripts"]  = set(dependencies_json["scripts"])
 	dependencies_json["styles"]   = set(dependencies_json["styles"])
-	
+
 	dependencies_json["scripts_critical"] = set()
-	
-	filename = build.get_filename(path)	
+
+	filename = build.get_filename(path)
 
 	# print(path, real_path)
 	style_path = "../../files/static/" + real_path + "/_styles/"
@@ -61,7 +61,7 @@ def get(path):
 		for script in scripts:
 			if len(script.split(".")) > 1:
 				is_critical = False
-				if script == "core.js":
+				if script == "core.js" or 'core' in path:
 					is_critical = True
 				script = real_path + "/_scripts/" + script
 				if is_critical:
