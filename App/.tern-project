@@ -1,0 +1,22 @@
+{
+  "ecmaVersion": 5,
+  "libs": [
+    "browser",
+    "jquery"
+  ],
+  "loadEagerly": [
+    "main/templates/**/*.js"
+  ],
+  "dontLoad": [
+    "Gulp/*.js"
+  ],
+  "plugins": {
+    "complete_strings": {},
+    "lint": {},
+    "modules": {},
+    "es_modules": {},
+    "doc_comment": {
+      "fullDocs": true
+    }
+  }
+}
