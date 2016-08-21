@@ -1,0 +1,9 @@
+{
+	"elements": ["Modules/test_generate", "Modules/test_manager",
+				       "Modules/pull_put", "Modules/notification", 
+               "Modules/test_editor"],
+  "scripts": [],
+  "styles": [],
+	"title" : "Редактирование теста",
+	"template": "default"
+}
