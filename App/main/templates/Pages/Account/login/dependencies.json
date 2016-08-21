@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/notification"],	
+	"elements": ["Modules/UI/Info/notification"],
   "styles": [],
   "scripts": [],
 	"title" : "Вход",

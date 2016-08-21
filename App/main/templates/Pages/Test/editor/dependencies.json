@@ -1,0 +1,7 @@
+{
+  "elements": ["Modules/Test/generate/data/edit.all",
+               "Modules/Test/generate/data/elements.all"],
+
+  "template": "default",
+  "title": "Редактирования теста"
+}

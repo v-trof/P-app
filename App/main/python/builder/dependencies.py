@@ -38,7 +38,7 @@ def get(path):
             dependencies_json[kind][n].replace('#&', real_path)
 
   for element in dependencies_json["elements"]:
-    if element.endswith('/all'):
+    if element.endswith('.all'):
       element = element[:-4]
       element_path = paths["elements"] + element
       blocks = [block[0] for block in os.walk(element_path)]

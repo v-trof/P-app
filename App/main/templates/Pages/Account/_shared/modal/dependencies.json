@@ -1,0 +1,4 @@
+{
+	"elements": ["card", "button", "Inputs/text",
+      				 "Modules/Utility/verifier"]
+}

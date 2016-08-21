@@ -11,43 +11,60 @@
 	{% if request.user.is_teacher %}	{% include 'Pages/home/teacher_main/exports.html' %}{% else %}	{% include 'Pages/home/main/exports.html' %}{% endif %}
 </section>
   <div class="_styles">
-  {% load staticfiles %}<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}">
-<link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}">
-<link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}">
-<link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/assignment.css" %}">
-<link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/states.css" %}">
-<link rel="stylesheet" href="{% static "Elements/card/marks/_styles/marks.css" %}">
+  {% load staticfiles %}<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/popup/_styles/adaptive.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/search/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/assignment.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/states.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/marks/_styles/marks.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/user/_styles/user.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
-<link rel="stylesheet" href="{% static "Page_templates/default/_styles/layout.css" %}">
-<link rel="stylesheet" href="{% static "Pages/home/_styles/adaptive.css" %}">
-<link rel="stylesheet" href="{% static "Pages/home/_styles/layout.css" %}">
-<link rel="stylesheet" href="{% static "Pages/home/teacher_main/_styles/teacher_main.css" %}">
-<link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}">
-<link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}">
-<link rel="stylesheet" href="{% static "Elements/Inputs/select/_styles/select.css" %}">
-<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}">
-<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}">
-<link rel="stylesheet" href="{% static "Elements/Modules/ui/info/notification/_styles/notification.css" %}">
-<link rel="stylesheet" href="{% static "Elements/Modules/ui/info/tooltip/_styles/tooltip.css" %}">
-<link rel="stylesheet" href="{% static "Elements/Modules/ui/modal/pull_put/__indicator/_styles/indicator.css" %}">
-<link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}">
-<link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}">
-<link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}">
+<link rel="stylesheet" href="{% static "Page_templates/default/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/home/_styles/adaptive.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/home/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/home/teacher_main/_styles/teacher_main.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/select/_styles/select.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/Effect/ripple/_styles/ripple.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/notification/_styles/notification.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/tooltip/_styles/tooltip.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/accordion/_styles/accordion.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/context_menu/_styles/context_menu.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/popup/_styles/popup.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/ghost/icon/_styles/icon.css" %}"> 
 
   </div>
 	<script src="/static/scripts/jquery.js"></script>
-	<script>
-    {% include "Elements/Modules/ui/info/notification/_scripts/core.js" %}
-    {% include "Elements/Modules/ui/modal/pull_put/__indicator/_scripts/core.js" %}
-    {% include "Elements/Modules/ui/info/notification/_scripts/deffered.js" %}
-    {% include "Elements/Modules/ui/info/tooltip/_scripts/tooltip.js" %}
-    {% include "Elements/Inputs/select/_scripts/select.js" %}
-    {% include "Elements/Inputs/select/sectioned/_scripts/bind_sectioned.js" %}
-    {% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %}
-    {% include "Elements/Layout/header/_scripts/header.js" %}
-    {% include "Elements/card/assignment/_scripts/show_state.js" %}
-    {% include "Pages/home/_scripts/create_course.js" %}
-    {% include "Pages/home/_scripts/done_marking.js" %}
+	<script> 
+    {% include "Elements/Modules/UI/Info/notification/_scripts/core.js" %} 
+    {% include "Elements/Modules/UI/modal/context_menu/_scripts/core.js" %} 
+    {% include "Elements/Modules/UI/search/_scripts/core.js" %} 
+    {% include "Elements/Modules/UI/Effect/ripple/_scripts/ripple.js" %} 
+    {% include "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %} 
+    {% include "Elements/Modules/UI/Info/tooltip/_scripts/tooltip.js" %} 
+    {% include "Elements/Modules/UI/accordion/_scripts/accordion.js" %} 
+    {% include "Elements/Modules/UI/modal/context_menu/_scripts/build_sectioned_select.js" %} 
+    {% include "Elements/Modules/UI/modal/popup/_scripts/popup.js" %} 
+    {% include "Elements/Modules/UI/search/_scripts/build.js" %} 
+    {% include "Elements/Modules/UI/search/_scripts/fill.js" %} 
+    {% include "Elements/Modules/UI/search/_scripts/filter.js" %} 
+    {% include "Elements/Modules/UI/search/_scripts/listener.js" %} 
+    {% include "Elements/Modules/UI/search/_scripts/request.js" %} 
+    {% include "Elements/Inputs/select/_scripts/select.js" %} 
+    {% include "Elements/Inputs/select/sectioned/_scripts/bind_sectioned.js" %} 
+    {% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+    {% include "Elements/Layout/header/_scripts/header.js" %} 
+    {% include "Elements/card/assignment/_scripts/show_state.js" %} 
+    {% include "Pages/home/_scripts/create_course.js" %} 
+    {% include "Pages/home/_scripts/done_marking.js" %} 
   </script>
 </body>
 </html>

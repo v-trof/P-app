@@ -1,5 +1,5 @@
 /*****************************************************
- * Test/generate/core/register | Registers element
+ * Test/generate/core/(s)/register | Registers all data for elements
  * @method register
  * @param  {string} type (question|answer|task)
  * @param  {string} subtype (subtype)
@@ -24,8 +24,8 @@ generate.register = {
     var data = this.bind_data(type, subtype, 'element', element_data);
 
     //creates proper build function
-    data.element.make_template = function() {
-      return generate.make_template.element[type](subtype);
+    data.element.make_template = function(args) {
+      return generate.make_template.element[type](subtype, args);
     }
 
     //builds sample elemnet for parse ingorance
@@ -43,6 +43,10 @@ generate.register = {
         value = this.parser($element);
       }
 
+      if(type === 'answer') {
+        value.worth = parseInt($element.attr(worth));
+      }
+
       //types for back
       value.type = type;
       value.subtype = subtype;
@@ -57,8 +61,8 @@ generate.register = {
 
     var data = this.bind_data(type, subtype, 'edit', edit_data);
 
-    data.edit.make_template = function() {
-      return generate.make_template.edit[type](subtype);
+    data.edit.make_template = function(args) {
+      return generate.make_template.edit[type](subtype, args);
     }
   },
   external: function(type, subtype, external_data) {

@@ -1,5 +1,5 @@
 var popup = (function() {
-  $popup = $('{% include "Elements/Modules/popup/exports.html" %}')
+  $popup = $('{% include "Elements/Modules/UI/modal/popup/exports.html" %}')
   exports = {
     $: $popup,
     show: function(content, _callback, css) {

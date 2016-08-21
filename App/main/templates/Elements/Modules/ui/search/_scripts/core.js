@@ -1,5 +1,5 @@
 var search = (function() {
-  var $search = $('{% include "Elements/Modules/search/exports.html" %}');
+  var $search = $('{% include "Elements/Modules/UI/search/exports.html" %}');
   var url = window.location.pathname;
 
   var exports = {

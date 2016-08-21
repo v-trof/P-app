@@ -34,7 +34,7 @@ def dev_file(path):
   return html
 
 
-def template(dependencies, page_path):
+def template(dependencies, page_loads, page_path):
   template_path = path["page_template"] + dependencies["template"]
 
   template_file = open(template_path + "/exports.html", "r")
@@ -62,6 +62,11 @@ def template(dependencies, page_path):
 
     return tag
 
+  def make_script(script):
+    script = '{% static "' + script + '" %}'
+    tag = '<script src="' + style + \
+        '"> \n'
+
   styles_html = "{% load staticfiles %}"
 
   styles_critical = []
@@ -70,7 +75,7 @@ def template(dependencies, page_path):
   dependencies["styles"] = list(dependencies["styles"])
   dependencies["styles"].sort()
 
-  print(dependencies["styles"])
+  # print(dependencies["styles"])
 
   for style in dependencies["styles"]:
     # check if is critical
@@ -87,6 +92,14 @@ def template(dependencies, page_path):
 
   for style in styles_secondary:
     styles_html += make_link(style, False)
+
+  loads_html = "<script> \n loads = {"
+
+  for loaded in page_loads:
+    include = '{% include "' + loaded + '" %}'
+    loads_html += "'" + loaded + "'" + " : " + "'" + include + "', \n"
+
+  loads_html += "} </script>"
 
   scripts_critical = "<script> \n"
   scripts_html = ""
@@ -112,11 +125,13 @@ def template(dependencies, page_path):
   scripts_critical += scripts_html + scripts_pages
   scripts_critical += "  </script>"
 
+  scripts_html = loads_html + scripts_critical
+
   page_html = template_html \
       .replace("{ ###title }", dependencies["title"]) \
       .replace("{ **#styles }", styles_html) \
       .replace("{ *#*content }", page_dev_html)\
-      .replace("{ ##*js }", scripts_critical)
+      .replace("{ ##*js }", scripts_html)
 
   with io.open(page_path + "/exports.html", 'w+', encoding='utf8') as page_file:
     page_file.write(page_html)

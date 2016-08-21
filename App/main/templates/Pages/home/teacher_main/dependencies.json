@@ -1,4 +1,4 @@
 {
-	"elements": ["card/course", "card/create_course",
-               "Inputs", "card/update"]
+	"elements": ["card/course",
+               "card/update"]
 }

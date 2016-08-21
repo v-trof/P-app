@@ -1,5 +1,5 @@
 /**
- * Test/generate/core
+ * Test/generate/core/(s)/core Module for mantaining all test elements
  * @namespace
  */
 var generate = {
@@ -7,13 +7,13 @@ var generate = {
    * Stores test
    * @type {Object}
    */
-  container: {}
+  container: {},
 
   /**
    * Stores reference for 1 deep test
    * @type {Object}
    */
-  serialized: {}
+  serialized: {},
 
   /**
    * Data for Element/edit/external creation

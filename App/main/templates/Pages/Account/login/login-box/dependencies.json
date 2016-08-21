@@ -1,5 +1,3 @@
 {
-	"elements": ["card", "button", "Inputs/text", 
-      				 "../Pages/Account/_shared/modal",
-      				 "Modules/verifier"]		
+	"elements": ["../Pages/Account/_shared/modal"]		
 }

@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/ui/info/all"],
+	"elements": ["Modules/UI/Info/tooltip"],
 	"scripts": [],
   "styles": [],
   "title" : "Главная",

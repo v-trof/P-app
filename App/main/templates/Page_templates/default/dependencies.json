@@ -1,5 +1,4 @@
 {
-	"elements" : ["Layout/header", "Modules/search"],
 	"styles": ["Page_templates/_styles/main.css"],
 	"scripts": []
 }
