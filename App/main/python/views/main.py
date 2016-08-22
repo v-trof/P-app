@@ -62,6 +62,14 @@ class Main_group():
 
 		return render(request, 'Pages/home/exports.html', context)
 
+	def search(request):
+		search_query=request.GET.get('query','')
+		course=request.GET.get('course',None)
+		if course:
+			context["search_results"]=Search.in_courses_materials(search_query=search_query, user=request.user, course=course)
+		else: context["search_results"]=Search.complex(search_query=search_query, user=request.user)
+		return render(request, 'Pages/search/exports.html', context)
+
 
 class Auth_group():
 
@@ -384,80 +392,77 @@ class Course_group():
 		}]
 		return render(request, 'Pages/Course/give_task/exports.html', context)
 
-def search(request):
-	search_query=request.GET.get('query','')
-	course=request.GET.get('course',None)
-	if course:
-		context["search_results"]=Search.in_courses_materials(search_query=search_query, user=request.user, course=course)
-	else: context["search_results"]=Search.complex(search_query=search_query, user=request.user)
-	return render(request, 'Pages/search/exports.html', context)
+class Testing_group():
 
+	def test_suit(request):
+		module = request.GET.get("module", "accordion")
+		return render(request, 'Elements/Modules/'+module+'/test_suite/exports.html', context)
 
-def ui_kit(request):
-	context = {
-		"course": {
-			"name": "sample_course",
-			"data": {
-				"materials": {
-					"published": ["a", "b", "c"]
-				},
-				"tests": {
-					"published": ["saple_test"]
+	def ui_kit(request):
+		context = {
+			"course": {
+				"name": "sample_course",
+				"data": {
+					"materials": {
+						"published": ["a", "b", "c"]
+					},
+					"tests": {
+						"published": ["saple_test"]
+					}
 				}
-			}
-		},
-		"user": {
-			"name": "Sample User"
-		},
-		"announcement": {
-			"heading": "sample_announcement",
-			"text": "sample_text"
-		},
-		"breadcrumbs": [{
-			"href": "/Курсы",
-			"link": "/course/1"
-		}, {
-			"href": "#",
-			"link": "Заявки"
-		}],
-		"request": {
+			},
 			"user": {
 				"name": "Sample User"
-			}
-		},
-		"options": [{
-			"value": 1,
-					"text": "Option 1",
-					}, {
-			"value": 2,
-					"text": "Option 2",
-					}, {
-			"value": 3,
-					"text": "Option 3",
-					}],
-		"assignment": {
-			"content": {
-				"materials": [{
-					"done": True,
-					"link": "#",
-					"title": "Test n"
-				}, {
-					"done": False,
-					"link": "#",
-					"title": "Test n+m"
-				}],
-				"tests": [],
-				"traditional": [{
-					"done": False,
-					"content": "This is traditional task"
-				}, {
-					"done": True,
-					"content": "This is done traditional task"
-				}]
 			},
-			"due_date": {
+			"announcement": {
+				"heading": "sample_announcement",
+				"text": "sample_text"
+			},
+			"breadcrumbs": [{
+				"href": "/Курсы",
+				"link": "/course/1"
+			}, {
+				"href": "#",
+				"link": "Заявки"
+			}],
+			"request": {
+				"user": {
+					"name": "Sample User"
+				}
+			},
+			"options": [{
+				"value": 1,
+						"text": "Option 1",
+						}, {
+				"value": 2,
+						"text": "Option 2",
+						}, {
+				"value": 3,
+						"text": "Option 3",
+						}],
+			"assignment": {
+				"content": {
+					"materials": [{
+						"done": True,
+						"link": "#",
+						"title": "Test n"
+					}, {
+						"done": False,
+						"link": "#",
+						"title": "Test n+m"
+					}],
+					"tests": [],
+					"traditional": [{
+						"done": False,
+						"content": "This is traditional task"
+					}, {
+						"done": True,
+						"content": "This is done traditional task"
+					}]
+				},
+				"due_date": {
 
+				}
 			}
 		}
-	}
-	return render(request, 'Pages/UI_kit/exports.html', context)
+		return render(request, 'Pages/UI_kit/exports.html', context)

@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'django_jasmine',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -138,3 +139,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'main/files/collected_static/')
 
 USER_IMAGE_PATH = STATICFILES_DIRS
 SESSION_COOKIE_AGE = 36000
+
+if DEBUG:
+    JASMINE_TEST_DIRECTORY = 'main/files/jasmine'

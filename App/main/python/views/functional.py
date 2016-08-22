@@ -399,48 +399,41 @@ def get_group_list(request, course_id=None):
         message = Course.objects.get_group_list(course=course)
         return HttpResponse(json.dumps(message), content_type="application/json")
 
+class Utility_views():
 
-def upload_file(request):
-    if request.method == 'POST':
-        file = request.FILES.get("file", None)
-        path = request.POST.get("path", None)
-        filename = Utility.upload_file(file=file, path=path)
-        return HttpResponse(filename)
-
-
-def upload_file_by_url(request):
-    if request.method == 'POST':
-        file_url = request.POST.get("file_url", None)
-        path = request.POST.get("path", None)
-        filepath = Utility.upload_file_by_
-        url(url=file_url, path=path)
-        return HttpResponse(filepath)
+    def upload_file(request):
+        if request.method == 'POST':
+            file = request.FILES.get("file", False)
+            path = request.POST.get("path", False)
+            extensions = request.POST.get("extensions", False)
+            filepath = Utility.upload_file(url=file_url, path=path, extensions=extensions)
+            return HttpResponse(filename)
 
 
-def delete_file(request):
-    if request.method == 'POST':
-        path = request.POST.get("path", None)
-        status = Utility.delete_file(path=path)
-        return HttpResponse(status)
+    def upload_file_by_url(request):
+        if request.method == 'POST':
+            file_url = request.POST.get("file_url", False)
+            path = request.POST.get("path", False)
+            extensions = request.POST.get("extensions", False)
+            filepath = Utility.upload_file_by_url(url=file_url, path=path, extensions=extensions)
+            return HttpResponse(filepath)
 
-def delete_notification(request):
-    if request.method == 'POST':
-        del request.session['notifications']
-        return HttpResponse('ok')
 
-def delete_last_page(request):
-    if request.method == 'POST':
-        del request.session['last_page']
-        return HttpResponse('ok')
+    def delete_file(request):
+        if request.method == 'POST':
+            path = request.POST.get("path", None)
+            status = Utility.delete_file(path=path)
+            return HttpResponse(status)
 
-def search(request):
-    if request.method == "POST":
-        search_query=request.POST.get("search_query","")
-        if "search_types" in request.POST.keys():
-            search_types=json.loads(request.POST["search_types"])
-        else: search_types=None
-        cards=Search.complex(search_query=search_query,search_types=search_types,user=request.user)
-        return HttpResponse(json.dumps(cards), content_type="application/json")
+    def delete_notification(request):
+        if request.method == 'POST':
+            del request.session['notifications']
+            return HttpResponse('ok')
+
+    def delete_last_page(request):
+        if request.method == 'POST':
+            del request.session['last_page']
+            return HttpResponse('ok')
 
 class Universal_views():
 
@@ -461,4 +454,13 @@ class Universal_views():
             type=request.POST.get("type", None)
             response= Sharing.unshare(course_id=course_id,item_id=item_id,type=type,shared_id=shared_id)
             return HttpResponse(response)
+
+    def search(request):
+        if request.method == "POST":
+            search_query=request.POST.get("search_query","")
+            if "search_types" in request.POST.keys():
+                search_types=json.loads(request.POST["search_types"])
+            else: search_types=None
+            cards=Search.complex(search_query=search_query,search_types=search_types,user=request.user)
+            return HttpResponse(json.dumps(cards), content_type="application/json")
 
