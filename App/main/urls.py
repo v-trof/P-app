@@ -96,15 +96,15 @@ func_patterns = [
     url(r'^edit_source/$', functional.Course_views.edit_source, name="edit_source"),
     url(r'^delete_source/$', functional.Course_views.delete_source, name="delete_source"),
     url(r'^course_reg/(?P<course_id>[0-9]+)/$', functional.Course_views.register, name="register_on_course"),
-    url(r'^delete/$', functional.delete_file, name="delete_file"),
-    url(r'^upload/$', functional.upload_file, name="upload_file"),
-    url(r'^upload_by_url/$', functional.upload_file_by_url, name="upload_file_by_url"),
+    url(r'^delete/$', functional.Utility_views.delete_file, name="delete_file"),
+    url(r'^upload/$', functional.Utility_views.upload_file, name="upload_file"),
+    url(r'^upload_by_url/$', functional.Utility_views.upload_file_by_url, name="upload_file_by_url"),
     url(r'^delete_assignment/$', functional.Course_views.delete_assignment, name="delete_assignment"),
-    url(r'^delete_notification/$', functional.delete_notification, name="delete_notification"),
-    url(r'^delete_last_page/$', functional.delete_last_page, name="delete_last_page"),
+    url(r'^delete_notification/$', functional.Utility_views.delete_notification, name="delete_notification"),
+    url(r'^delete_last_page/$', functional.Utility_views.delete_last_page, name="delete_last_page"),
     url(r'^share/$', functional.Universal_views.share, name="share"),
     url(r'^unshare/$', functional.Universal_views.unshare, name="unshare"),
-    url(r'^search/$', functional.search, name="search"),
+    url(r'^search/$', functional.Universal_views.search, name="search"),
     url(r'^exit/(?P<course_id>[0-9]+)/$', functional.Course_views.exit, name="exit"),
 ]
 
@@ -124,8 +124,8 @@ course_patterns = [
 ]
 
 urlpatterns = [
-    url(r'^search/$', main.search),
-    url(r'^uikit/$', main.ui_kit),
+    url(r'^search/$', main.Main_group.search),
+    url(r'^uikit/$', main.Testing_group.ui_kit),
     url(r'^course/', include(course_patterns)),
     url(r'^func/', include(func_patterns)),
     url(r'^test/', include(test_patterns)),
@@ -144,3 +144,7 @@ urlpatterns = [
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
+
+if settings.DEBUG:
+    import django_jasmine.urls
+    urlpatterns += url(r'^jasmine/', include('django_jasmine.urls')),
