@@ -91,23 +91,23 @@ test_manager.publish = function() {
 
 				formData.append('max_score', max_points);
 
-        var mins_per_test = $('.m--publish-popup .mins_per_test');
+        var mins_per_test = $('.m--publish-popup .mins_per_test').val();
 
         var hours_per_test = Math.floor(mins_per_test/60);
 
         if(hours_per_test<10) {
-          hours_per_test = '0' + hours_per_test.toString();
+          hours_per_test = '0' + hours_per_test;
         } else {
-          hours_per_test = hours_per_test.toString();
+          hours_per_test = hours_per_test;
         }
 
         if(mins_per_test<10) {
-          hours_per_test = '0' + mins_per_test.toString();
+          mins_per_test = '0' + mins_per_test;
         } else {
-          hours_per_test = mins_per_test.toString();
+          mins_per_test = mins_per_test;
         }
-
-        form_data.append('max_time', hours_per_test + ":" + mins_per_test + ":00");
+        console.log('max_time', hours_per_test + ":" + mins_per_test + ":00")
+        formData.append('max_time', hours_per_test + ":" + mins_per_test + ":00");
 
 				if(!data_is_ok) {
 					return false;

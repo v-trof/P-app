@@ -94,6 +94,8 @@ def publish(request):
 		section = request.POST.get("section", "Нераспределенные")
 		max_score=request.POST.get("max_score",False)
 		max_time=request.POST.get("max_time",False)
+		if max_time:
+			max_time=str(max_time)
 		allowed_mistakes = []
 		mark_setting = {}
 		for setting in request.POST:

@@ -374,9 +374,11 @@ class Utility():
 		if time>=3600:
 			time_h=int(time/3600)
 			time-=time_h*3600
+		else: time_h=0
 		if time>=60:
 			time_m=int(time/60)
 			time-=time_m*60
+		else: time_m=0
 		time_s=int(time)
 		if len(str(time_h))<2:
 			time_h='0'+str(time_h)
@@ -2392,6 +2394,7 @@ class Test():
 		else:
 			test_data={}
 		test_data["allowed_mistakes"] = allowed_mistakes
+		print(str(max_time))
 		if max_time:
 			test_data["max_time"] = max_time
 		if max_score:
@@ -2540,21 +2543,21 @@ class Test():
 					time="00:00:00"
 					test["json"]["start_time"]={}
 					test["json"]["start_time"][str(user.id)]=time_now
-					test["json"]["finish_time"]={}
-					test["json"]["finish_time"][str(user.id)]=Utility.merge_time(test["json"]["max_time"],test["json"]["start_time"][str(user.id)])
-					if "max_time" in test["json"]:
+					if "max_time" in test["json"].keys():
+						test["json"]["finish_time"]={}
+						test["json"]["finish_time"][str(user.id)]=Utility.merge_time(test["json"]["max_time"],test["json"]["start_time"][str(user.id)])
 						test["json"]["time_left"]={}
 						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
 				elif not str(user.id) in test["json"]["start_time"].keys():
 					time="00:00:00"
 					test["json"]["start_time"][str(user.id)]=time_now
-					test["json"]["finish_time"][str(user.id)]=Utiliy.merge_time(test["json"]["max_time"],test["json"]["start_time"][str(user.id)])
 					if "max_time" in test["json"]:
+						test["json"]["finish_time"][str(user.id)]=Utiliy.merge_time(test["json"]["max_time"],test["json"]["start_time"][str(user.id)])
 						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
 				else: 
 					if "max_time" in test["json"]:
 						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
-				if Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now,absolute=False)<=0:
+				if "max_time" in test["json"] and Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now,absolute=False)<=0:
 					return {"time_out":True}
 				for task in test["json"]["tasks"]:
 					for item in task:
@@ -2577,6 +2580,9 @@ class Test():
 			for item in element:
 				if item["type"] == "answer" and "answer" in item.keys():
 					item.pop("answer", None)
+		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(test["json"], ensure_ascii=False)
+			json_file.write(saving_data)
 		if data is None:
 			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
 				test = {}
@@ -2593,9 +2599,6 @@ class Test():
 								question_id += 1
 				data = json.dumps(test, ensure_ascii=False)
 				json_file.write(data)
-		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as json_file:
-			saving_data = json.dumps(test["json"], ensure_ascii=False)
-			json_file.write(saving_data)
 		return context
 
 	def attempt_save(test_id, question_id, course_id, answer, user):

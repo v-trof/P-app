@@ -27,7 +27,7 @@ $("#invite_students").click(function(event) {
 			formdata.append('course_id', '{{ course.id }}');
 			formdata.append('email_list', JSON.stringify(email_list));
 			formdata.append('group', group);
-			if(catcher.files[0]) {
+			if(catcher.files) {
 				formdata.append('email_file', catcher.value[0].files[0]);
 			}
 			for (var pair of formdata.entries()) {
