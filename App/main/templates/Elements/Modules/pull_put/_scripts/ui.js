@@ -1,7 +1,7 @@
 pull_put.ui = (function() {
 
 	$ui = $('{% include "Elements/Modules/pull_put/exports.html" %}');
-	
+
 	$ui.__actions__additional = $ui.find(".__actions>.__additional");
 	$ui.__content = $ui.find(".__content");
 
@@ -26,19 +26,19 @@ pull_put.ui = (function() {
 		proto_element: undefined,
 		additional_margin: 0,
 		add_action: function(icon, tip, _action) {
-			
+
 			if(typeof icon === "object") {
 				var action_obj = icon;
 				icon = action_obj.icon;
 				tip = action_obj.tip;
-				_action = action_obj._action; 
-			} 
+				_action = action_obj._action;
+			}
 
 			$new_button = make_button(icon, tip, _action);
 
 			$ui.__actions__additional.html($new_button);
 		},
-		get: function($element, element_width, actions, _callback, card) {	
+		get: function($element, element_width, actions, _callback, card) {
 			if(typeof actions === "undefined") {
 				actions = []
 			}
@@ -54,14 +54,14 @@ pull_put.ui = (function() {
 			$ui.__content.html($element);
 			$ui.__actions__additional.html("");
 
-			$ui.css("margin-left", -element_width/2 
+			$ui.css("margin-left", -element_width/2
 					+ pull_put.ui.additional_margin)
-			$ui.__content.css("width", element_width 
+			$ui.__content.css("width", element_width
 					- pull_put.ui.additional_margin)
 
 			pull_put.ui.element = $element;
 
-			
+
 
 			if(actions.indexOf("delete")>-1) {
 				$ui.find(".__actions button.m--delete").parent().show();
@@ -90,6 +90,8 @@ pull_put.ui = (function() {
 			pull_put.ui.show(element_width);
 		},
 		show: function(element_width) {
+      tooltip.hide();
+
 			if(typeof editor !== "undefined") {
 				$(".__task").slice(-2).addClass("m--stand-out");
 				$(".__put-margin").last().addClass("m--stand-out");
@@ -108,7 +110,7 @@ pull_put.ui = (function() {
 				}
 
 			}, 300)
-			
+
 		},
 		hide: function() {
 			if(typeof editor !== "undefined") {
@@ -131,11 +133,11 @@ $(document).ready(function() {
 
 		//restoring defaut element
 		pull_put.ui.element = pull_put.ui.proto_element;
-		
+
 		pull_put.ui.element.removeClass('m--pullable');
 		pull_put.ui.element.removeClass('m--put-zone');
 		console.log(pull_put.ui.element);
-		
+
 		pull_put.puller.cancel();
 	});
 

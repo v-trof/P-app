@@ -29,7 +29,7 @@ function upload_file(file_to_upload, task_index, index) {
 			test_manager.packed_test.tasks[task_index][index].url=response;
 			test_manager.upload_queue.remove(file_id);
 
-			console.log("saved to:", task_index, index, 
+			console.log("saved to:", task_index, index,
 				test_manager.packed_test.tasks[task_index][index]);
 			console.log(response, "as", file_id);
 			console.log("removed", test_manager.upload_queue);
@@ -39,7 +39,7 @@ function upload_file(file_to_upload, task_index, index) {
 
 test_manager.pack = function() {
 	test_manager.packed_test = {
-		"title": $("h2").text(),
+		"title": $("h2").text() || "Безымянный тест",
 		tasks: []
 	}
 	$(".preview .__task>.__content").each(function(index, el) {
@@ -85,7 +85,7 @@ test_manager.pack = function() {
 						console.log(task_index, index, img_index);
 						upload_file(file_to_upload, task_index, index);
 					}
-					
+
 				} else if($(this).attr('src')[0] !== '/') {
 					var form_data = new FormData();
 					form_data.append('file_url',$(this).attr('src'));
@@ -101,7 +101,7 @@ test_manager.pack = function() {
 						}
 					});
 				}
-				
+
 			});
 			$(this).find("a.m--card").each(function(img_index, $element){
 				var file_id = $(this).attr("id");

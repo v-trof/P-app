@@ -7,7 +7,7 @@
 				label="Добавление и удаление пробелов"
 				tip="a b c = abc"
 			%}
-			
+
 			{% include "Elements/Inputs/checkbox/" with
 				id="autocorrect_numbers"
 				label="Замена арабских цифр на римские"
@@ -55,10 +55,9 @@
 					placeholder="Название новой секции"
 				%}
 		</div>
-		<button id="publish">Сделать доступным для прохождения</button>
 	</div>
 
-		
+	<div class="column">
 		<div class="__mark-settigns">
 			<h4 class="__heading">Критерии оценивания</h4>
 			<div>Максимум <span class="__max_ponts"> баллов</span></div>
@@ -86,4 +85,16 @@
 				placeholder="Минимум для 2"
 			%}
 		</div>
+    <br>
+    <div class="__time">
+      <h4 class="__heding">Ограничение времени выполнения</h4>
+      {% include "Elements/Inputs/text/" with
+				class="mins_per_test"
+				placeholder="В минутах"
+			%}
+      <div class="m--grey">Оставльте поле пустым,<br> если ограничение не требуется</div>
+    </div>
+  </div>
 </div>
+<br>
+<button id="publish">Сделать доступным для прохождения</button>

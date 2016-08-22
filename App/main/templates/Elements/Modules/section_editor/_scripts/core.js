@@ -5,7 +5,7 @@ function defined(variable) {
 		return false
 	}
 }
- 
+
 section_editor = {}
 
 section_editor.init_done = false
@@ -21,9 +21,10 @@ section_editor.init = function(arguments) {
 	*section_selector  | string        | if other tag was used etc.
 	*heading_selector  | string        | for finding heading in sections
 	*item_selector     | string        | how to find what is in sections
-	
+
 	empty_message      | string        | what to dispaly in empty section
 	add_button_text    | string        | what to write on add_button
+  items indicator    | string        | add/down
 
 	replace            | bool(false)   | turn items into divs for blocking actions
 	accordion          | bool(true)    | adds accordion to new_group
@@ -35,12 +36,12 @@ section_editor.init = function(arguments) {
 	unordered_heading* | function      | if there is no unoredered create it
 	_save_callback     | function      | what to do on save_changes
 	_put_callback      | function      | what to do when item was moved
-	
+
 
 	pull {
 		actions        | array   ([])  | default pull put actions
 		additional     | object        | pull_put additional action | if needed
-		func           | function      | 
+		func           | function      |
 	}
 	*/
 
@@ -108,7 +109,7 @@ section_editor.init = function(arguments) {
 	} else {
 		section_editor.edit_end = arguments.edit_end
 	}
-	
+
 
 	//set _save_callback
 	if( ! defined(arguments._save_callback)) {
@@ -140,7 +141,7 @@ section_editor.init = function(arguments) {
 		}
 	}
 	//pull func
-	
+
 	var unordered_heading = arguments.unordered_heading
 
 	//find unordered
@@ -169,7 +170,8 @@ section_editor.init = function(arguments) {
 				.addClass('m--was-unpublished')
 		}
 	}, 100)
-	
+
+  section_editor.item_indicator = arguments.items_indicator || 'down'
 
 	//finish startup
 	section_editor.$add_button = $('<a class="m--card">'
@@ -180,7 +182,7 @@ section_editor.init = function(arguments) {
 
 	section_editor.$add_button.click(function(event) {
 		section_editor.add_section()
-	})
+	});
 
 	section_editor.block_editing()
 
@@ -190,7 +192,12 @@ section_editor.init = function(arguments) {
 
 	section_editor.check_empty('_all');
 
-	pull_put.cancel_action = indicator.hide;
-	
+  pull_put.cancel_action = function() {
+    console.log('ca');
+    section_editor.$add_button.show();
+    $(section_editor.item_selector).attr("tip", "Кликните, чтобы перемещать");
+    indicator.hide();
+  }
+
 	section_editor.init_done = true
 }
