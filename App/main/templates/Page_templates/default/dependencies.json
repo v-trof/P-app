@@ -1,4 +1,5 @@
 {
+	"elements" : ["Layout/header", "Modules/UI/search", "Modules/UI/Info/notification"],
 	"styles": ["Page_templates/_styles/main.css"],
 	"scripts": []
 }
