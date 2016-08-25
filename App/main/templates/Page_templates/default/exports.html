@@ -4,6 +4,7 @@
 	{% include "Page_templates/_shared/fixes/charset.html" %}
 	{% include "Page_templates/_shared/fixes/viewport.html" %}
 	<title>{ ###title }</title>
+  { **#styles }
 </head>
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
@@ -12,7 +13,7 @@
 </section>
   {% include "Page_templates/_shared/fixes/flash.html" %}
   <div class="_styles">
-  { **#styles }
+
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	{ ##*js }
