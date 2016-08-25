@@ -1,6 +1,7 @@
 var invite_students_text = '{% include "Pages/Course/groups/_popup_texts/invite_students/exports.html" %}'
 
 $("#invite_students").click(function(event) {
+  $('#edit_toggle').click();
 	popup.show(invite_students_text);
 	$(".student__email").focus();
 	verifier.add($(".student__email"), "email");
@@ -31,7 +32,7 @@ $("#invite_students").click(function(event) {
 				formdata.append('email_file', catcher.value[0].files[0]);
 			}
 			for (var pair of formdata.entries()) {
-			    console.log(pair[0]+ ', ' + pair[1]); 
+			    console.log(pair[0]+ ', ' + pair[1]);
 			}
 			$.ajax({
 				type:"POST",
@@ -47,7 +48,7 @@ $("#invite_students").click(function(event) {
               notification.show(response["type"], response["message"]);
             } else {
 							popup.hide();
-							notification.show('success', 
+							notification.show('success',
 								'Ученики приглашены, ждем от них подтверждения' );
 						}
 				},
