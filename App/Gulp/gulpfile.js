@@ -13,7 +13,8 @@ var autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('sass_to_css', function () {
   //converts sass to css, prefixes, and minificates css
-  gulp.src(['../main/templates/**/*.sass', '../main/templates/**/*.scss'])
+  gulp.src(['../main/templates/**/*.sass', '../main/templates/**/*.scss',
+            '!../main/templates/**/Modules/**/*.sass'])
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({
       browsers: ['> 5%'],
@@ -56,4 +57,4 @@ gulp.task('watch', function() {
   gulp.watch('../main/templates/Elements/Modules/test_generate/_scripts/**/*.js', ['concat_test_generate']);
 });
 
-gulp.task('default', ['watch', 'sass_to_css', 'concat_test_generate']);
+gulp.task('default', ['watch', 'concat_test_generate']);

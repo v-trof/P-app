@@ -1,6 +1,5 @@
 {
-	"elements": ["card/user", "Modules/upload",
-               "Modules/notification", "Modules/verifier"],
+	"elements": ["card/user", "Modules/Utility/upload", "Modules/Utility/verifier"],
   "styles": [],
   "scripts": [],
 	"title" : "Профиль",

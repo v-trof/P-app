@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/notification", "card/user"],
+	"elements": ["card/user"],
   "scripts": [],
   "styles": [],
 	"title" : "Вход",

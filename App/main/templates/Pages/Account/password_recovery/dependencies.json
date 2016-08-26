@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/notification", "Modules/verifier"],	
+	"elements": ["Modules/Utility/verifier"],	
 	"title" : "Забыл пароль",
 	"template": "central_box"
 }
