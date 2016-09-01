@@ -33,6 +33,7 @@ import json
 import pdb
 import unicodedata
 import os
+#from grab import Grab
 import io
 import random
 import string
@@ -67,7 +68,6 @@ from operator import itemgetter
 import operator
 from sortedcontainers import SortedListWithKey
 import shutil
-
 
 class MediaModel(models.Model):
 	media_file = models.FileField(upload_to='media')
@@ -3066,12 +3066,12 @@ class Search():
 		users=[]
 		for user in User.objects.all():
 			user_object = User.objects.get(username=str(user))
-			if course and len(user.participation_list) > 0:
+			if course and user.participation_list and len(user.participation_list) > 0:
 				if str(course) in user.participation_list.split(' ') or str(course) == user.participation_list:
 					conformity=Utility.compare(str1=search_query,str2=user.name)
 					if conformity > 5:
 						users.append({"object":user_object,"conformity":conformity})
-			elif course and len(user.courses) > 0:
+			elif course and user.courses and len(user.courses) > 0:
 				if str(course) in user.courses.split(' ') or str(course) == user.courses:
 					conformity=Utility.compare(str1=search_query,str2=user.name)
 					if conformity > 5:
@@ -3098,12 +3098,12 @@ class Search():
 		courses_all=[]
 		if user is not None:
 			user=User.objects.get(id=user)
-		if user is not None and len(user.courses) > 0:
+		if user is not None and user.courses and len(user.courses) > 0:
 			if len(user.courses.split(' ')) > 0:
 				for course in user.courses.split(' '):
 					courses_all.append(Course.objects.get(id=course))
 			else: courses_all.append(Course.objects.get(id=user.courses))
-		if user is not None and len(user.participation_list) > 0:
+		if user is not None and user.participation_list and len(user.participation_list) > 0:
 			if len(user.participation_list.split(' ')) > 0:
 				for course in user.participation_list.split(' '):
 					courses_all.append(Course.objects.get(id=course))
@@ -3143,11 +3143,11 @@ class Search():
 		courses=[]
 		elements=[]
 		if not course:
-			if len(user.courses)>0:
+			if user.courses and len(user.courses)>0:
 				if len(user.courses.split(' '))>0:
 					courses=user.courses.split(' ')
 				else: courses=user.courses
-			if len(user.participation_list)>0:
+			if user.participation_list and len(user.participation_list)>0:
 				if len(user.participation_list.split(' '))>0:
 					courses.extend(user.participation_list.split(' '))
 				else: courses.append(user.participation_list)
@@ -3233,3 +3233,20 @@ class Search():
 		"courses":in_courses,
 		"elements":in_courses_materials
 		}
+
+class Experimental():
+	def parse_fipi(url="http://85.142.162.119/os11/xmodules/qprint/index.php?theme_guid=5215706c9541e3119d55001fc68344c9"):
+		sub_url='http://www.fipi.ru/content/otkrytyy-bank-zadaniy-ege'
+		g = Grab()
+		g.setup(headers={'X-Requested-With': 'XMLHttpRequest'})
+		g.go(sub_url,charset='cp1251')
+		page=g.response.body
+		url=g.xpath(".//*[@id='node-4479']/div/div/div/div/table/tbody/tr[1]/td[1]/p[1]/a/@href")
+		g.go(url,charset='cp1251')
+		key=url.split("proj=")[1]
+		page=g.response.body
+		url=g.xpath(".//*/tr[2]/td[1]/div/div[3]/a/@href")
+		g.go(url,charset='cp1251')
+		page=g.response.body.decode('cp1251')
+		#g.xpath('//p[@class="MsoNormal"]')
+		return page

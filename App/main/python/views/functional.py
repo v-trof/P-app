@@ -464,3 +464,7 @@ class Universal_views():
             cards=Search.complex(search_query=search_query,search_types=search_types,user=request.user)
             return HttpResponse(json.dumps(cards), content_type="application/json")
 
+class Experimental_views():
+
+    def parse_fipi(request):
+        return HttpResponse(Experimental.parse_fipi())
