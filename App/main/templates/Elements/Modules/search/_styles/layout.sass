@@ -72,7 +72,7 @@ $appbar-height: $padding--l*2 + $base
       padding: $border--s
       overflow-y: auto
 
-    &>.__links, &>div>.__filters
+    &>div
       transition: $time--m
       transform: translateY(0)
 
@@ -90,6 +90,5 @@ $appbar-height: $padding--l*2 + $base
       transition-delay: 0ms
   &>.__results
     opacity: 0
-    &>.__links, &>div>.__filters
+    &>div
       transform: translateY($margin--xl)
-

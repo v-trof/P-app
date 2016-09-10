@@ -1,205 +1,3 @@
-generate.data["question--empty"] = {
-	element: {
-		type: "question",
-		nopull: true,
-		parse: function($original) {
-			return {
-				text: "Добавьте сюда вопрос",
-				class: "question--empty",
-				type: "question"
-			}
-		},
-		build: function(value) {
-			return $("<div class='m--empty question--empty'>Добавьте сюда вопрос</div>");
-		},
-		value_sample: {
-			text: "Добавьте сюда вопрос"
-		}
-	},
-	edit: {}
-}
-
-generate.data["question--file"] = {
-	element: {
-		type: "question",
-		parse: function($original) {
-			return {
-				url: $original.find("a.m--card").attr("d-href"),
-				class: "question--file",
-				id: $original.find("a.m--card").attr("id"),
-				size: $original.find(".__size").text(),
-				name: $original.find(".__name").text(),
-				type: "question"
-			}
-		},
-		build: function(value) {
-			var file_template = $('{% include "Elements/card/file/exports.html" %}');
-
-			//turning link off
-			if(typeof editor !== "undefined") {
-				file_template.removeAttr('href');
-				file_template.removeAttr('download');
-				file_template.find(".card").removeAttr('tip');
-				//d-disabled
-				file_template.attr("d-href", value.url);
-			} else {
-				file_template.attr("href", value.url);
-			}
-			
-		
-			file_template.find(".__name").text(value.name);
-			
-			file_template.find(".__size").text(value.size);
-			file_template.attr("id", value.id);
-			
-
-			return $(generate.build.template.question("question--file"))
-				.append(file_template);
-		},
-		value_sample: {
-			name: "Файл для скачивания",
-			size: "3.21МБ",
-			id: undefined,
-			url: "http://science-all.com/images/wallpapers/hipster-wallpaper/hipster-wallpaper-21.jpg"
-		}
-	},
-	edit: {
-		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__file/exports.html" %}',
-		parse: function() {
-			var original_id = $("#new_file").attr("original-id");
-			var url, name, size, id;
-			if(generate.data.shared.file_changed) {
-				id = generate.data.shared.assets.last_id;
-			} else {
-				if(generate.data.shared.assets[original_id]) {
-					id = original_id;
-				} else {
-					var sample =  generate.data["question--file"]
-						.element.value_sample;
-					return sample;
-				}
-			}
-
-			name = $("#new_file_name").val();
-			if(url = generate.data.shared.assets[id].urls) {
-				url = generate.data.shared.assets[id].urls[0]
-				size = Math.floor(generate.data.shared.assets[id]
-					.files[0].size/1024/1024*100)/100 + "MB";
-
-				// console.log(name);
-				return {
-					url: url,
-					name: name,
-					size: size,
-					id: id
-				}
-			} else {
-				var sample =  generate.data["question--file"]
-						.element.value_sample;
-					return sample;
-			}
-		},
-		fill: function(value) {
-			// console.log(value);
-			if((! value.url) && generate.data.shared.assets[value.id]) {
-				value.url = generate.data.shared.assets[value.id].name;
-			}
-			var full_link = value.url;
-			var file_link = full_link.split("/")[full_link.split("/").length-1];
-
-			$("#new_file_name").val(value.name).focus();
-			$("#new_file").parent().find(".__text").text(file_link);
-			$("#new_file").attr("original-id", value.id);
-		},
-		middleware: function() {
-			generate.data.shared.catch_asset_file()
-		}
-	}
-}
-
-generate.data["question--image"] = {
-	element: {
-		type: "question",
-		parse: function($original) {
-			return {
-				url: $original.find("img").attr("src"),
-				class: "question--image",
-				type: "question"
-			}
-		},
-		build: function(value) {
-			return $(generate.build.template.question("question--image")).append("<img src="
-				+value.url+">")
-		},
-		value_sample: {
-			url: "/media/samples/image.jpg"
-		}
-	},
-	edit: {
-		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__image/exports.html" %}',
-		parse: function() {
-
-			var url;
-			// console.log($("#new_element_file").val());
-
-			if($("#new_element_file").val() != "") {
-				url = generate.data.shared.assets[
-					generate.data.shared.assets.last_id
-				].urls[0];
-			} else {
-				url = $("#new_element_url").val();
-			}
-
-			return {
-				url: url 
-			}
-		},
-		fill: function(value) {
-			$("#new_element_url").val(value.url).focus()
-		},
-		middleware: function() {
-			generate.data.shared.catch_asset_file()
-		}
-	}
-}
-
-generate.data["question--text"] = {
-	element: {
-		type: "question",
-		parse: function($original) {
-			var html = $original.children('.__text-content').html();
-			return {
-				text: html,
-				class: "question--text",
-				type: "question"
-			}
-		},
-		build: function(value) {
-			var $question = $(generate.build.template.question("question--text"))
-			var $content = $("<div class='__text-content'></div>");
-			$content.html(value.text);
-			return $question.html($content);
-		},
-		value_sample: {
-			text: "Текстовый вопрос"
-		}
-	},
-	edit: {
-		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__text/exports.html" %}',
-		parse: function() {			
-			return {
-				text: $("#new_element_text").html()
-			}
-		},
-		middleware: function() {
-			inline_editor.start($('#new_element_text')[0]);
-		},
-		fill: function(value) {
-			$("#new_element_text").html(value.text).focus();
-		}
-	}
-}
-
 generate.data["answer--checkbox"] = {
 	element: {
 		type: 'answer',
@@ -268,7 +66,7 @@ generate.data["answer--checkbox"] = {
 generate.data["answer--classify"] = {
   element: {
     type: 'answer',
-    
+
     parse: function($original) {
       var result = {
         class: "answer--classify",
@@ -280,7 +78,7 @@ generate.data["answer--classify"] = {
           items: []
         }
       }
-      
+
       if($original.attr('answer')) {
         result.answer = JSON.parse($original.attr("answer"));
       }
@@ -322,7 +120,7 @@ generate.data["answer--classify"] = {
         return $new_class;
       }
 
-      
+
 
       var $element = $(generate.build.template.answer('answer--classify'));
       $element.addClass("m--classify");
@@ -356,12 +154,12 @@ generate.data["answer--classify"] = {
           if(title === $(this).text()){
             //right class
             var $class = $(this).parent();
-            
+
             //removing empty
             if(answer[title].length) {
               $class.find('.m--empty').remove();
             }
-            
+
             //addign items
             answer[title].forEach(function(text) {
               $class.find('.__items').append(
@@ -370,7 +168,7 @@ generate.data["answer--classify"] = {
               $element.find('.m--unordered .__item').each(function(index, el) {
               if($(this).text() === text) {
                 $(this).remove();
-              } 
+              }
               });
             });
             return;
@@ -437,7 +235,7 @@ generate.data["answer--classify"] = {
         $(this).addClass('classy_item_'+indicator_index)
         pull_put.puller.add(
           $(this), //element
-          [], //actions 
+          [], //actions
           undefined, //additional
           function() {
             indicator.show(indicator_index);
@@ -447,11 +245,11 @@ generate.data["answer--classify"] = {
         )
       });
     },
-    
+
     value_sample: {
       values: {
         classes:  ["Глаголы", "Существительные"],
-        items: ["Дом", "Стол", "Писать"]
+        items: ["Дом", "Стол", "Быть"]
       }
     }
   },
@@ -469,13 +267,13 @@ generate.data["answer--classify"] = {
 
         //loop over items
         $(this).find('input').each(function() {
-          if(this.value) { 
+          if(this.value) {
             answer[title].push(this.value);
             values.items.push(this.value);
           }
         });
       });
-      
+
       return {
         values: values,
         answer: JSON.stringify(answer),
@@ -519,7 +317,7 @@ generate.data["answer--classify"] = {
     fill: function(value) {
       var $element = $(".pull_put_ui .m--classify");
       // console.log(value)
-      
+
       if( ! value.answer) {
         value.answer = {
           "": []
@@ -530,18 +328,18 @@ generate.data["answer--classify"] = {
       //drawing classes
       for(title in value.answer) {
         var self = this;
-        
+
         var $new_class = self._shared.create_class();
         $new_class.find('h3').text(title);
 
         value.answer[title].forEach(function(text) {
           var $new_item = self._shared.create_item();
           $new_item.find('input').val(text);
-          
+
           setTimeout(function() {
             $new_item.find('input').focus().blur();
           }, 100);
-          
+
           $new_class.find('.__new-item')
             .before($new_item);
         });
@@ -786,6 +584,208 @@ generate.data["answer--textarea"]= {
 		fill: function(value) {
 			$("#new_element_label").val(value.label).focus();
 			generate.data.shared.worth.edit.fill(value.worth);
+		}
+	}
+}
+
+generate.data["question--empty"] = {
+	element: {
+		type: "question",
+		nopull: true,
+		parse: function($original) {
+			return {
+				text: "Добавьте сюда вопрос",
+				class: "question--empty",
+				type: "question"
+			}
+		},
+		build: function(value) {
+			return $("<div class='m--empty question--empty'>Добавьте сюда вопрос</div>");
+		},
+		value_sample: {
+			text: "Добавьте сюда вопрос"
+		}
+	},
+	edit: {}
+}
+
+generate.data["question--file"] = {
+	element: {
+		type: "question",
+		parse: function($original) {
+			return {
+				url: $original.find("a.m--card").attr("d-href"),
+				class: "question--file",
+				id: $original.find("a.m--card").attr("id"),
+				size: $original.find(".__size").text(),
+				name: $original.find(".__name").text(),
+				type: "question"
+			}
+		},
+		build: function(value) {
+			var file_template = $('{% include "Elements/card/file/exports.html" %}');
+
+			//turning link off
+			if(typeof editor !== "undefined") {
+				file_template.removeAttr('href');
+				file_template.removeAttr('download');
+				file_template.find(".card").removeAttr('tip');
+				//d-disabled
+				file_template.attr("d-href", value.url);
+			} else {
+				file_template.attr("href", value.url);
+			}
+			
+		
+			file_template.find(".__name").text(value.name);
+			
+			file_template.find(".__size").text(value.size);
+			file_template.attr("id", value.id);
+			
+
+			return $(generate.build.template.question("question--file"))
+				.append(file_template);
+		},
+		value_sample: {
+			name: "Файл для скачивания",
+			size: "3.21МБ",
+			id: undefined,
+			url: "http://science-all.com/images/wallpapers/hipster-wallpaper/hipster-wallpaper-21.jpg"
+		}
+	},
+	edit: {
+		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__file/exports.html" %}',
+		parse: function() {
+			var original_id = $("#new_file").attr("original-id");
+			var url, name, size, id;
+			if(generate.data.shared.file_changed) {
+				id = generate.data.shared.assets.last_id;
+			} else {
+				if(generate.data.shared.assets[original_id]) {
+					id = original_id;
+				} else {
+					var sample =  generate.data["question--file"]
+						.element.value_sample;
+					return sample;
+				}
+			}
+
+			name = $("#new_file_name").val();
+			if(url = generate.data.shared.assets[id].urls) {
+				url = generate.data.shared.assets[id].urls[0]
+				size = Math.floor(generate.data.shared.assets[id]
+					.files[0].size/1024/1024*100)/100 + "MB";
+
+				// console.log(name);
+				return {
+					url: url,
+					name: name,
+					size: size,
+					id: id
+				}
+			} else {
+				var sample =  generate.data["question--file"]
+						.element.value_sample;
+					return sample;
+			}
+		},
+		fill: function(value) {
+			// console.log(value);
+			if((! value.url) && generate.data.shared.assets[value.id]) {
+				value.url = generate.data.shared.assets[value.id].name;
+			}
+			var full_link = value.url;
+			var file_link = full_link.split("/")[full_link.split("/").length-1];
+
+			$("#new_file_name").val(value.name).focus();
+			$("#new_file").parent().find(".__text").text(file_link);
+			$("#new_file").attr("original-id", value.id);
+		},
+		middleware: function() {
+			generate.data.shared.catch_asset_file()
+		}
+	}
+}
+
+generate.data["question--image"] = {
+	element: {
+		type: "question",
+		parse: function($original) {
+			return {
+				url: $original.find("img").attr("src"),
+				class: "question--image",
+				type: "question"
+			}
+		},
+		build: function(value) {
+			return $(generate.build.template.question("question--image")).append("<img src="
+				+value.url+">")
+		},
+		value_sample: {
+			url: "/media/samples/image.jpg"
+		}
+	},
+	edit: {
+		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__image/exports.html" %}',
+		parse: function() {
+
+			var url;
+			// console.log($("#new_element_file").val());
+
+			if($("#new_element_file").val() != "") {
+				url = generate.data.shared.assets[
+					generate.data.shared.assets.last_id
+				].urls[0];
+			} else {
+				url = $("#new_element_url").val();
+			}
+
+			return {
+				url: url 
+			}
+		},
+		fill: function(value) {
+			$("#new_element_url").val(value.url).focus()
+		},
+		middleware: function() {
+			generate.data.shared.catch_asset_file()
+		}
+	}
+}
+
+generate.data["question--text"] = {
+	element: {
+		type: "question",
+		parse: function($original) {
+			var html = $original.children('.__text-content').html();
+			return {
+				text: html,
+				class: "question--text",
+				type: "question"
+			}
+		},
+		build: function(value) {
+			var $question = $(generate.build.template.question("question--text"))
+			var $content = $("<div class='__text-content'></div>");
+			$content.html(value.text);
+			return $question.html($content);
+		},
+		value_sample: {
+			text: "Текстовый вопрос"
+		}
+	},
+	edit: {
+		text:  '{% include "Elements/Modules/test_generate/__edit_texts/__question/__text/exports.html" %}',
+		parse: function() {			
+			return {
+				text: $("#new_element_text").html()
+			}
+		},
+		middleware: function() {
+			inline_editor.start($('#new_element_text')[0]);
+		},
+		fill: function(value) {
+			$("#new_element_text").html(value.text).focus();
 		}
 	}
 }

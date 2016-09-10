@@ -8,6 +8,13 @@ test_manager.share = function() {
         $("#{{type}}_share").hide();
         $("#{{type}}_unshare").show();
       });
-    }); 
+    });
+  } else {
+    popup.show('{% include "Pages/Test/editor/_popup_texts/no_publish/exports.html" %}',
+			function() {
+			$(".__ok").click(function(event) {
+				popup.hide();
+			});
+		});
   }
 }

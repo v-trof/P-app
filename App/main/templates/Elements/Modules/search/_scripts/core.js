@@ -1,7 +1,11 @@
 var search = (function(){
-  var $search = $('{% include "Elements/Modules/search/exports.html" %}');
+  {% if test %}
+    var $search = $('{% include "Pages/Test/editor/lib/exports.html" %}');
+  {% else %}
+    var $search = $('{% include "Elements/Modules/search/exports.html" %}');
+  {% endif %}
   var url = window.location.pathname;
-  
+
   var exports = {
     $: $search,
     is_shown: false,
@@ -38,7 +42,7 @@ $(document).ready(function() {
   search.$.find('.m--close').click(function(event) {
     search.hide();
   });
-  
+
   search.enable_query_listener();
   search.enable_checkbox_listener();
 });

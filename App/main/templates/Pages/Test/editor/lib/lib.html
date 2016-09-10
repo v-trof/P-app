@@ -1,0 +1,66 @@
+<section class="search lib-search m--hidden">
+  <div class="__field">
+    <input type="text" class="__query" placeholder="Искать...">
+    <div class="__icon">
+      {% include "Elements/Icons/search.svg" %}
+    </div>
+
+    <button class="__icon m--ghost m--icon m--close">
+      {% include "Elements/Icons/close.svg" %}
+    </div>
+  </div>
+  <div class="__results row">
+    <div class="__links">
+      <div class="m--empty m--grey">Введите запрос в белое поле сверху</div>
+    </div>
+    <div>
+      <div class="__owners card">
+        {% include "Elements/Inputs/radio/" with
+          label="Мои"
+          name="owner"
+          class="owner-me"
+        %}
+
+        {% include "Elements/Inputs/radio/" with
+          label="Других преподавателей"
+          name="owner"
+          class="owner-other"
+          checked="true"
+        %}
+      </div>
+      <div class="__filters card">
+      {% include "Elements/Inputs/checkbox/" with
+        label="Тесты"
+        class="filter-test"
+      %}
+
+      {% include "Elements/Inputs/checkbox/" with
+        label="Материалы"
+        class="filter-material"
+      %}
+
+      {% include "Elements/Inputs/checkbox/" with
+        label="Шаблоны заданий"
+        class="filter-template"
+      %}
+      </div>
+
+      <h3> Общие ключевые фразы </h3>
+      <div class="row">
+        <button class="m-flat"> ЕГЭ </button>
+        <button class="m-flat"> ОГЭ </button>
+        <button class="m-flat"> Углубленное </button>
+        <button class="m-flat"> ... </button>
+      </div>
+      <br>
+      <h3> Русский Язык, ключевые фразы </h3>
+      <div class="row">
+        <button class="m-flat"> Орфография </button>
+        <button class="m-flat"> Пунктуация </button>
+        <button class="m-flat"> Синтаксис </button>
+        <button class="m-flat"> ... </button>
+      </div>
+    </div>
+  </div>
+  <div class="__bg"></div>
+</section>

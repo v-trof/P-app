@@ -31,7 +31,12 @@ $(document).ready(function() {
 	});
 
   $("#test_unshare").click(function(event) {
-		test_manager.unshare()
+		test_manager.unshare();
+	});
+
+  $("#test_import").click(function(event) {
+    search.show();
+		// test_manager.import();
 	});
 
 	$("#test_delete").click(function(event) {
