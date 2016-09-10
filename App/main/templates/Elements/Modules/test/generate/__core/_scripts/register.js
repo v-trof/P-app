@@ -22,7 +22,7 @@ generate.register = {
 
     //args are fine
     var data = this.bind_data(type, subtype, 'element', element_data);
-
+    
     //creates proper build function
     data.element.make_template = function(args) {
       return generate.make_template.element[type](subtype, args);
