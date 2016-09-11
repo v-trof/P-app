@@ -24,8 +24,7 @@
 			{% include "Elements/Icons/visibility_off.svg" %}
 		</button>
 	{% endif %}
-
-  {% if not test.loaded or not test.shared %}
+  {% if not test.loaded or not test.json.shared %}
     <button class="m--ghost m--icon" id="test_share" tip="Добавить тест в открытую библиотеку">
       {% include "Elements/Icons/share.svg" %}
     </button>

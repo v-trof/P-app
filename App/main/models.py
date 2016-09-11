@@ -2970,18 +2970,29 @@ class Marks():
 
 class Sharing():
 
-	def share(course_id, item_id, type, name=None):
-		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+	def share(course_id, item_id, type, tags, is_closed=False, name=None, description=""):
+		with io.open('main/files/json/other/shared.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
 		course=Course.objects.get(id=course_id)
+		if tags["general"].find(', '):
+			tags["general"]=tags["general"].replace(', ',',')
+		tags["general"]=tags["general"].split(',')
+		if tags["objective"].find(', '):
+			tags["objective"]=tags["objective"].replace(', ',',')
+		tags["objective"]=tags["objective"].split(',')
 		shared_item={}
 		shared_item["course_id"]=course_id
 		shared_item["id"]=item_id
+		shared_item["is_closed"]=is_closed
+		shared_item["tags"]=tags
+		shared_item["description"]=description
 		shared_item["type"]=type
 		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/'+item_id+'.json', 'r', encoding='utf8') as info_file:
 			item_info = json.load(info_file)
+		if not course.subject in shared_table.keys():
+			shared_table[course.subject]={}
 		if len(shared_table[course.subject].keys()):
-			maximum = max(k for k, v in shared_table[course.subject].items())
+			maximum = int(max(k for k, v in shared_table[course.subject].items()))
 		else:
 			maximum = 0
 		shared_id=maximum+1
@@ -2989,42 +3000,54 @@ class Sharing():
 		item_info["shared_id"]=shared_id
 		if name:
 			shared_item["name"]=name
-		else: shared_item["name"]=item_info["name"]
-		if not course.subject in shared_table.keys():
-			shared_table[course.subject]={}
+		else: shared_item["name"]=item_info["title"]
 		shared_table[course.subject][shared_id]=shared_item
 		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/'+item_id+'.json', 'w', encoding='utf8') as info_file:
 			saving_data = json.dumps(item_info, ensure_ascii=False)
 			info_file.write(saving_data)
-		with io.open('main/files/json/shared.json', 'w', encoding='utf8') as shared_file:
-			saving_data = json.dumps(item_info, ensure_ascii=False)
-			shared_file_file.write(saving_data)
-		return 'Успешно'
+		with io.open('main/files/json/other/shared.json', 'w', encoding='utf8') as shared_file:
+			saving_data = json.dumps(shared_table, ensure_ascii=False)
+			shared_file.write(saving_data)
+		return  {"type":"success","message":'Успешно'}
 
 	def unshare(course_id, item_id, shared_id, type):
-		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+		with io.open('main/files/json/other/shared.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
 		course=Course.objects.get(id=course_id)
 		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/'+item_id+'.json', 'r', encoding='utf8') as info_file:
 			item_info = json.load(info_file)
 		item_info["shared"]=False
 		item_info.pop("shared_id",None)
-		shared_table.pop(shared_id,None)
+		course=Course.objects.get(id=course_id)
+		print(shared_table[course.subject][shared_id])
+		shared_table[course.subject].pop(str(shared_id),None)
+		print(shared_table)
 		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/'+item_id+'.json', 'w', encoding='utf8') as info_file:
 			saving_data = json.dumps(item_info, ensure_ascii=False)
 			info_file.write(saving_data)
-		with io.open('main/files/json/shared.json', 'w', encoding='utf8') as shared_file:
-			saving_data = json.dumps(item_info, ensure_ascii=False)
-			shared_file_file.write(saving_data)
-		return 'Успешно'
+		with io.open('main/files/json/other/shared.json', 'w', encoding='utf8') as shared_file:
+			saving_data = json.dumps(shared_table, ensure_ascii=False)
+			shared_file.write(saving_data)
+		return {"type":"success","message":'Успешно'}
 
-	#def load_shared_by_name(search_string):
-	#	shared={}
-	#	shared[""]
-	#	with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
-	#		shared_table = json.load(shared_file)
-	#	for id, shared in shared_table.items():
-	#		if shared["name"]
+	def copy(course_id,item_id,type,shared_id, append=False):
+		with io.open('main/files/json/other/shared.json', 'r', encoding='utf8') as shared_file:
+			shared_table = json.load(shared_file)
+		course=Course.objects.get(id=course_id)
+		source_id=shared_table[course.subject][shared_id]["id"]
+		source_course=shared_table[course.subject]["course_id"]
+		source_type=shared_table[course.subject]["type"]
+		with io.open('main/files/json/courses/' + source_course + '/'+source_type+'s/'+source_id+'.json', 'r', encoding='utf8') as source_file:
+			source_info = json.load(source_file)
+		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/'+item_id+'.json', 'r', encoding='utf8') as item_file:
+			item_info = json.load(item_file)
+		if not append:
+			item_info["tasks"]=source_info["tasks"]
+		else: item_info["tasks"].extend(source_info["tasks"])
+		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/'+item_id+'.json', 'w', encoding='utf8') as item_file:
+			saving_data = json.dumps(item_info, ensure_ascii=False)
+			item_file.write(saving_data)
+		return item_info
 
 
 class Statistics():
@@ -3059,6 +3082,63 @@ class Statistics():
 
 class Search():
 # {"type" : "{{card_type}}","content":{{content}} }
+	class lib():
+		def complex(search_query, search_types=None, tags=False, user=None):
+			if not search_types:
+				search_types={}
+				types=["tests","materials","templates"]
+				for type in types:
+					search_types[type]={}
+			cards=[]
+			for type in search_types:
+				if type=="tests" or type=="materials":
+					if "user_id" in search_types[type].keys():
+						cards.extend(Search.lib.items(search_query=search_query, type=type[:-1], tags=tags, user=User.objects.get(id=user_id)))
+					else: cards.extend(Search.lib.items(search_query=search_query, tags=tags, type=type[:-1]))
+				elif type=="templates":
+					pass
+			cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
+			return cards
+
+		def items(search_query, type, tags=False, user=False):
+			restricted_courses=user.courses.split(' ')
+			if user:
+				courses_restriction=True
+			else: 
+				courses_restriction=False
+
+			cards=[]
+			shared={}
+			with io.open('main/files/json/other/shared.json', 'r', encoding='utf8') as shared_file:
+				shared_table = json.load(shared_file)
+			for subject, shared in shared_table.items():
+				for id, shared in shared.items():
+					if shared["type"] == type and not courses_restriction and not shared["course_id"] in restricted_courses or courses_restriction and shared["course_id"] in restricted_courses:
+						name_conformity=Utility.compare(str1=search_query,str2=shared["name"])
+						common_general_tags=False
+						common_objective_tags=False
+						if len(set(tags["general"]) & set(shared["tags"]["general"])) > 0:
+							common_general_tags=True
+						if len(set(tags["objective"]) & set(shared["tags"]["objective"])) > 0:
+							common_objective_tags=True
+						with io.open('main/files/json/courses/'+shared["course_id"]+'/'+type+'s/'+shared["id"]+'.json', 'r', encoding='utf8') as object_file:
+							object = json.load(object_file)
+						course=Course.object.get(id=shared["course_id"])
+						if type == "test":
+							test={"type": "test","course_name": str(course.name),"title": object["title"], "id": shared["id"], "questions_number": object["questions_number"], "link": '/test/attempt/?course_id=' + shared["course_id"] + "&test_id=" + shared["id"] }
+							if user:
+								started=Test.is_started(course_id=shared["course_id"],user_id=str(user.id), test_id=shared["id"])
+								finished=Test.is_finished(course_id=shared["course_id"],user_id=str(user.id), test_id=shared["id"])
+								if finished:
+									test["done"]=True
+								elif started:
+									test["unfinished"]=True
+							content=test
+						else:
+							content={"type": "material","course_name":str(course.name),"title": object["title"], "id": shared["id"], "link": '/material/read/?course_id=' + shared["course_id"] + "&material_id=" + shared["id"]}
+						if name_conformity > 5 and common_general_tags and common_objective_tags:
+							cards.append({"content":content,"type":type,"tags":tags,"conformity":conformity})
+			return cards
 
 
 	def in_users(search_query,course=None):
@@ -3193,7 +3273,6 @@ class Search():
 		pass
 
 	def complex(search_query, search_types=None, user=None):
-		print("enter")
 		if not search_types:
 			search_types={}
 			types=["users","courses","elements"]
@@ -3201,7 +3280,6 @@ class Search():
 				search_types[type]={}
 		cards=[]
 		for type in search_types:
-			print("type_loop")
 			if type=="users":
 				if "course_id" in search_types[type].keys():
 					cards.extend(Search.types[type](search_query=search_query, course=search_types[type]["course"]))
@@ -3217,15 +3295,10 @@ class Search():
 			elif type=="courses":
 				print("courses")
 				if "user" in search_types[type].keys():
-					print("alala")
 					cards.extend(Search.types[type](search_query=search_query))
 				else:
-					print("noalala")
 					cards.extend(Search.types[type](search_query=search_query))
-		print("pre-sort")
 		cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
-		print("end")
-		print(cards)
 		return cards
 
 	types = {

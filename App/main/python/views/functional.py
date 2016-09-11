@@ -443,8 +443,11 @@ class Universal_views():
             item_id = request.POST.get("item_id", None)
             name=request.POST.get("name", None)
             type=request.POST.get("type", None)
-            response= Sharing.share(course_id=course_id,item_id=item_id,type=type,name=name)
-            return HttpResponse(response)
+            tags=json.loads(request.POST.get("tags", "{'general':'','objective':''}"))
+            description=request.POST.get("description", None)
+            is_closed=request.POST.get("is_closed", False)
+            message= Sharing.share(course_id=course_id,item_id=item_id,type=type,name=name,is_closed=is_closed,description=description,tags=tags)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def unshare(request):
         if request.method == 'POST':
@@ -452,8 +455,30 @@ class Universal_views():
             item_id = request.POST.get("item_id", None)
             shared_id=request.POST.get("shared_id", None)
             type=request.POST.get("type", None)
-            response= Sharing.unshare(course_id=course_id,item_id=item_id,type=type,shared_id=shared_id)
-            return HttpResponse(response)
+            message= Sharing.unshare(course_id=course_id,item_id=item_id,type=type,shared_id=shared_id)
+            return HttpResponse(json.dumps(message), content_type="application/json")
+
+    def import_shared(request):
+        if request.method == 'POST':
+            course_id = request.POST.get("course_id", None)
+            append = request.POST.get("append", False)
+            item_id = request.POST.get("item_id", None)
+            shared_id=request.POST.get("shared_id", None)
+            type=request.POST.get("type", None)
+            content=Sharing.copy(course_id=course_id,item_id=item_id,type=type,shared_id=shared_id,append=append)
+            return HttpResponse(json.dumps(content), content_type="application/json")
+
+    def lib_search(request):
+        if request.method == "POST":
+            search_query=request.POST.get("search_query","")
+            if "search_types" in request.POST.keys():
+                search_types=json.loads(request.POST["search_types"])
+            else: search_types=None
+            user_id=request.POST.get("user",False)
+            if user_id:
+                user=User.object.get(user_id)
+            cards=Search.lib.complex(search_query=search_query,search_types=search_types,user=user)
+            return HttpResponse(json.dumps(cards), content_type="application/json")
 
     def search(request):
         if request.method == "POST":

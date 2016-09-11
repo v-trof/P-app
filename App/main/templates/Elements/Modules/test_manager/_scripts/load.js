@@ -1,6 +1,6 @@
 test_manager.load = {}
-
 test_manager.load.test = function(test_json) {
+	console.log(test_json);
 	$("h2").text(test_json.title);
 	test_json.tasks.forEach(function(material_data) {
 		// console.log(material_data);
@@ -58,12 +58,21 @@ test_manager.load.material = function(material_json) {
 
 {% if test.json %}
 $(document).ready(function() {
-	test_manager.load.test({{test.json|safe}});
+	json = "{{test.json|safe}}".split("True").join("true");
+	json = json.split("False").join("false");
+	json = json.split("'").join('"');
+	console.log(json)
+	json=JSON.parse(json);
+	test_manager.load.test(json);
 });
 
 {% elif material.json %}
 // console.log({{material.json|safe}});
 $(document).ready(function() {
-	test_manager.load.material({{material.json|safe}});
+	json = "{{material.json|safe}}".split('True').join('true');
+	json = json.split("False").join("false");
+	json = json.split("'").join('"');
+	json=JSON.parse(json);
+	test_manager.load.material(json);
 });
 {% endif %}

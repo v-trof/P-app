@@ -105,6 +105,8 @@ func_patterns = [
     url(r'^share/$', functional.Universal_views.share, name="share"),
     url(r'^unshare/$', functional.Universal_views.unshare, name="unshare"),
     url(r'^search/$', functional.Universal_views.search, name="search"),
+    url(r'^import_shared/$', functional.Universal_views.import_shared, name="import_shared"),
+    url(r'^lib_search/$', functional.Universal_views.lib_search, name="lib_search"),
     url(r'^exit/(?P<course_id>[0-9]+)/$', functional.Course_views.exit, name="exit"),
     url(r'^parse/$', functional.Experimental_views.parse_fipi, name="parse"),
 ]
