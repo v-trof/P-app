@@ -31,7 +31,8 @@ class Main_group():
 
 	def home(request):
 		if request.user.is_anonymous():
-			return render(request, 'Pages/home/exports.html')
+			redirect('/login/')
+			#return render(request, 'Pages/home/exports.html')
 		context = {}
 		user_settings={}
 		if os.path.isfile('main/files/json/users/' + str(request.user.id) + '/settings.json'):
