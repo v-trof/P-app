@@ -31,7 +31,7 @@ class Main_group():
 
 	def home(request):
 		if request.user.is_anonymous():
-			redirect('/login/')
+			return redirect('/login/')
 			#return render(request, 'Pages/home/exports.html')
 		context = {}
 		user_settings={}

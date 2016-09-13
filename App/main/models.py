@@ -2294,6 +2294,7 @@ class Test():
 		return {"type":"success","message":"Тест удален"}
 
 	def save(json_file, course_id, test_id, user):
+		print(json.loads(json_file)["tasks"])
 		json_file = json.loads(json_file)
 		json_file["allowed_mistakes"] = []
 		json_file["creator"] = user.id
@@ -2336,6 +2337,7 @@ class Test():
 					attempt_file.write(json.dumps(test, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
 			test_file.write(json.dumps(json_file, ensure_ascii=False))
+		print(json_file)
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 		test_unpublished = False
@@ -2576,13 +2578,13 @@ class Test():
 					"href": "#",
 					"link": test["json"]["title"]
 				}]
+		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(test["json"], ensure_ascii=False)
+			json_file.write(saving_data)
 		for element in context["test"]["json"]["tasks"]:
 			for item in element:
 				if item["type"] == "answer" and "answer" in item.keys():
 					item.pop("answer", None)
-		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as json_file:
-			saving_data = json.dumps(test["json"], ensure_ascii=False)
-			json_file.write(saving_data)
 		if data is None:
 			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
 				test = {}
