@@ -395,9 +395,9 @@ class Course_group():
 
 class Testing_group():
 
-	def test_suit(request):
-		module = request.GET.get("module", "accordion")
-		return render(request, 'Elements/Modules/'+module+'/test_suite/exports.html', context)
+	def test_suit(request,module):
+		print(module)
+		return render(request, 'Elements/Modules/'+module+'/test_suite/exports.html')
 
 	def ui_kit(request):
 		context = {

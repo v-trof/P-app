@@ -115,7 +115,7 @@ class Utility():
 		return conformity
 
 	def upload_file(file, path, extensions=False):
-		if extensins:
+		if extensions:
 			if not file.name.split(".")[-1] in extensions:
 				return 0
 		custom_path = path

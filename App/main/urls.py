@@ -129,7 +129,7 @@ course_patterns = [
 urlpatterns = [
     url(r'^search/$', main.Main_group.search),
     url(r'^uikit/$', main.Testing_group.ui_kit),
-    url(r'^test_suit/$', main.Testing_group.test_suit),
+    url(r'^test_suit/(?P<module>[a-z]+)/$', main.Testing_group.test_suit),
     url(r'^course/', include(course_patterns)),
     url(r'^func/', include(func_patterns)),
     url(r'^test/', include(test_patterns)),
