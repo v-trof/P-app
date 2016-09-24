@@ -63,9 +63,10 @@ def template(dependencies, page_loads, page_path):
     return tag
 
   def make_script(script):
-    script = '{% static "' + script + '" %}'
-    tag = '<script src="' + style + \
-        '"> \n'
+    script = '{% static "' + script + '.js" %}'
+    tag = '<script src="' + script + \
+        '"> </script>\n'
+    return tag
 
   styles_html = "{% load staticfiles %}"
 
@@ -95,15 +96,17 @@ def template(dependencies, page_loads, page_path):
 
   loads_html = "<script> \n loads = {"
 
+  print('LOADS:', page_loads)
+
   for loaded in page_loads:
     include = '{% include "' + loaded + '" %}'
     loads_html += "'" + loaded + "'" + " : " + "'" + include + "', \n"
 
   loads_html += "} </script>"
 
-  scripts_critical = "<script> \n"
+  scripts_critical=""
   scripts_html = ""
-  scripts_pages = ""
+  scripts_pages = "<script>"
 
   dependencies["scripts"] = list(dependencies["scripts"])
   dependencies["scripts"].sort()
@@ -114,16 +117,15 @@ def template(dependencies, page_loads, page_path):
   dependencies["scripts_critical"].sort()
 
   for script in dependencies["scripts_critical"]:
-    scripts_critical += '    {% include "' + script + '.js" %} \n'
+    scripts_critical += make_script(script) + "\n"
 
   for script in dependencies["scripts"]:
     if script.startswith("Elements/Modules"):
-      scripts_html += '    {% include "' + script + '.js" %} \n'
+      scripts_html += make_script(script) + '\n'
     else:
       scripts_pages += '    {% include "' + script + '.js" %} \n'
 
-  scripts_critical += scripts_html + scripts_pages
-  scripts_critical += "  </script>"
+  scripts_critical += scripts_html + scripts_pages + '</script>'
 
   scripts_html = loads_html + scripts_critical
 

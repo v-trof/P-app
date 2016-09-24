@@ -1,1 +1,91 @@
-{% include 'Pages/Course/manage/linkbox/exports.html' %}<section class="linkbox"></section>{% include 'Pages/Course/manage/tests&materials/exports.html' %}{% include 'Pages/Course/manage/homework/exports.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+	{% include "Page_templates/_shared/fixes/charset.html" %}
+	{% include "Page_templates/_shared/fixes/viewport.html" %}
+	<title>Управление курсом</title>
+</head>
+<body>
+	{% include "Elements/Layout/header/exports.html" %}
+<section class="main">
+	{% include 'Pages/Course/manage/linkbox/exports.html' %}<section class="linkbox"></section>{% include 'Pages/Course/manage/tests&materials/exports.html' %}{% include 'Pages/Course/manage/homework/exports.html' %}
+</section>
+  <div class="_styles">
+  {% load staticfiles %}<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Layout/linkbox/_styles/linkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/search/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/assignment.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/states.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/user/_styles/user.css" %}"> 
+<link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
+<link rel="stylesheet" href="{% static "Page_templates/default/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/select/_styles/select.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/Effect/ripple/_styles/ripple.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/notification/_styles/notification.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/accordion/_styles/accordion.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/context_menu/_styles/context_menu.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/ghost/icon/_styles/icon.css" %}"> 
+
+  </div>
+	<script src="/static/scripts/jquery.js"></script>
+	<script> 
+ loads = {'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
+'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
+'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
+'Elements/Icons/angle_down.svg' : '{% include "Elements/Icons/angle_down.svg" %}', 
+'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
+'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
+'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
+'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
+'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
+'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
+} </script><script src="{% static "Elements/Modules/UI/Info/notification/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/context_menu/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Utility/loads/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/utility/loads/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/Effect/ripple/_scripts/ripple.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/accordion/_scripts/accordion.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/context_menu/_scripts/build_sectioned_select.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/build.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/fill.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/filter.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/listener.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/request.js" %}"> </script>
+
+<script>    {% include "Elements/Inputs/select/_scripts/select.js" %} 
+    {% include "Elements/Inputs/select/sectioned/_scripts/bind_sectioned.js" %} 
+    {% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+    {% include "Elements/Layout/header/_scripts/header.js" %} 
+    {% include "Elements/card/assignment/_scripts/show_state.js" %} 
+    {% include "Pages/Course/manage/_scripts/delete_assignment.js" %} 
+    {% include "Pages/Course/manage/_scripts/delete_course.js" %} 
+    {% include "Pages/Course/manage/_scripts/edit_assignment_links.js" %} 
+    {% include "Pages/Course/manage/_scripts/edit_course.js" %} 
+    {% include "Pages/Course/manage/_scripts/edit_sections.js" %} 
+</script>
+</body>
+</html>

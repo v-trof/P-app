@@ -1,0 +1,7 @@
+{
+	"elements": ["Modules/Test/generate.all", "Modules/utility/jasmine"],
+	"scripts": [],
+  "styles": [],
+  "title" : "SPC test_generate",
+	"template": "default"
+}

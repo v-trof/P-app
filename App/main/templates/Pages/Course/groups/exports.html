@@ -38,19 +38,42 @@
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
- loads = {} </script><script> 
-    {% include "Elements/Modules/UI/Info/notification/_scripts/core" %} 
-    {% include "Elements/Modules/UI/modal/context_menu/_scripts/core" %} 
-    {% include "Elements/Modules/UI/search/_scripts/core" %} 
-    {% include "Elements/Modules/UI/Effect/ripple/_scripts/ripple.js" %} 
-    {% include "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %} 
-    {% include "Elements/Modules/UI/modal/context_menu/_scripts/build_sectioned_select.js" %} 
-    {% include "Elements/Modules/UI/search/_scripts/build.js" %} 
-    {% include "Elements/Modules/UI/search/_scripts/fill.js" %} 
-    {% include "Elements/Modules/UI/search/_scripts/filter.js" %} 
-    {% include "Elements/Modules/UI/search/_scripts/listener.js" %} 
-    {% include "Elements/Modules/UI/search/_scripts/request.js" %} 
-    {% include "Elements/Inputs/file/_scripts/file_catcher.js" %} 
+ loads = {'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
+'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
+'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
+'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
+'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
+'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
+'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
+'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
+'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
+} </script><script src="{% static "Elements/Modules/UI/Info/notification/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/context_menu/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Utility/loads/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/utility/loads/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/Effect/ripple/_scripts/ripple.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/context_menu/_scripts/build_sectioned_select.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/build.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/fill.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/filter.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/listener.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/request.js" %}"> </script>
+
+<script>    {% include "Elements/Inputs/file/_scripts/file_catcher.js" %} 
     {% include "Elements/Inputs/select/_scripts/select.js" %} 
     {% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
     {% include "Elements/Layout/header/_scripts/header.js" %} 
@@ -58,6 +81,6 @@
     {% include "Pages/Course/groups/_scripts/groups.js" %} 
     {% include "Pages/Course/groups/_scripts/invite_students.js" %} 
     {% include "Pages/Course/groups/_scripts/invite_teacher.js" %} 
-  </script>
+</script>
 </body>
 </html>

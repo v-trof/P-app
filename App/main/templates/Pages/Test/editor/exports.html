@@ -21,6 +21,9 @@
 <link rel="stylesheet" href="{% static "Pages/Test/editor/_styles/layout.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/text/textarea/_styles/height_fix.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Effect/ripple/_styles/ripple.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/notification/_styles/notification.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/medium_editor/_styles/core.css" %}"> 
@@ -34,26 +37,64 @@
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
- loads = {'Elements/Inputs/text/textarea/exports.html' : '{% include "Elements/Inputs/text/textarea/exports.html" %}', 
-} </script><script> 
-    {% include "Elements/Modules/Test/generate/__core/_scripts/core.js" %} 
-    {% include "Elements/Modules/Test/generate/__core/_scripts/init.js" %} 
-    {% include "Elements/Modules/Test/generate/__core/_scripts/read.js" %} 
-    {% include "Elements/Modules/Test/generate/__core/_scripts/register.js" %} 
-    {% include "Elements/Modules/UI/Info/notification/_scripts/core.js" %} 
-    {% include "Elements/Modules/UI/medium_editor/_scripts/core.js" %} 
-    {% include "Elements/Modules/UI/search/_scripts/core.js" %} 
-    {% include "Elements/Modules/Test/generate/data/__templates/_scripts/default.js" %} 
-    {% include "Elements/Modules/Test/generate/data/edit/question/text/_scripts/text.js" %} 
-    {% include "Elements/Modules/Test/generate/data/elements/question/text/_scripts/text.js" %} 
-    {% include "Elements/Modules/UI/Effect/ripple/_scripts/ripple.js" %} 
-    {% include "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %} 
-    {% include "Elements/Modules/UI/search/_scripts/build.js" %} 
-    {% include "Elements/Modules/UI/search/_scripts/fill.js" %} 
-    {% include "Elements/Modules/UI/search/_scripts/filter.js" %} 
-    {% include "Elements/Modules/UI/search/_scripts/listener.js" %} 
-    {% include "Elements/Modules/UI/search/_scripts/request.js" %} 
+ loads = {'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
+'Elements/Inputs/text/exports.html' : '{% include "Elements/Inputs/text/exports.html" %}', 
+'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
+'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
+'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
+'Elements/Inputs/text/textarea/exports.html' : '{% include "Elements/Inputs/text/textarea/exports.html" %}', 
+'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
+'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
+'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
+'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
+'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
+} </script><script src="{% static "Elements/Modules/Test/generate/__core/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__core/_scripts/get_blueprints.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__core/_scripts/init.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__core/_scripts/register.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/Info/notification/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/medium_editor/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Utility/lang/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Utility/loads/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/utility/loads/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/data/__templates/_scripts/default.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/data/edit/answer/text/_scripts/a_text_ed.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/data/edit/question/text/_scripts/q_text_ed.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/data/elements/answer/text/_scripts/a_text_el.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/data/elements/question/text/_scripts/q_text_el.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/Effect/ripple/_scripts/ripple.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/build.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/fill.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/filter.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/listener.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/search/_scripts/request.js" %}"> </script>
+
+<script>    {% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
+    {% include "Elements/Inputs/text/textarea/_scripts/add_handlers.js" %} 
     {% include "Elements/Layout/header/_scripts/header.js" %} 
-  </script>
+</script>
 </body>
 </html>

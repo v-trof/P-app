@@ -10,7 +10,10 @@ path = build.path
 def build_page(page_name):
   print("PAGE_TO_BUILD:", page_name)
   print("==========================")
-  page_path = path["page"] + page_name
+  if page_name.startswith('Modules/'):
+    page_path = path['elements'] + page_name
+  else:
+    page_path = path["page"] + page_name
 
   page_dependencies = dependencies.get(page_path)
   page_dependencies["priority"] = {}

@@ -24,6 +24,11 @@ gulp.task('sass_to_css', function () {
     .pipe(gulp.dest('../main/files/static/'));
 });
 
+gulp.task('move_js', function() {
+  gulp.src('../main/templates/**/*.js')
+      .pipe(gulp.dest('../main/files/static/'));
+});
+
 gulp.task('min_js', ['concat_test_generate'], function() {
   gulp.src('../main/templates/**/*.js')
     .pipe(uglify())
@@ -53,8 +58,8 @@ gulp.task('concat_test_generate', function() {
 gulp.task('watch', function() {
   gulp.watch("../main/templates/**/*.sass", ['sass_to_css']);
   gulp.watch("../main/templates/**/*.scss", ['sass_to_css']);
-  // gulp.watch('../main/templates/**/*.js', ['min_js'])
-  gulp.watch('../main/templates/Elements/Modules/test_generate/_scripts/**/*.js', ['concat_test_generate']);
+  gulp.watch('../main/templates/**/*.js', ['move_js'])
+  // gulp.watch('../main/templates/Elements/Modules/test_generate/_scripts/**/*.js', ['concat_test_generate']);
 });
 
 gulp.task('default', ['watch', 'concat_test_generate']);

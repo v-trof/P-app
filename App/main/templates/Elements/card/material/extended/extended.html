@@ -3,6 +3,8 @@
 		{% include "#&/../__info/" %}
 	</div>
 	<div class="__extension">
-		{% include extension %}
+    {% if extension %}
+  		{% include extension %}
+    {% endif %}
 	</div>
 </div>

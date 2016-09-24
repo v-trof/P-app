@@ -117,7 +117,7 @@ class Auth_group():
 
 
 class Course_group():
-	
+
 	def main(request, course_id):
 		if request.user.is_anonymous():
 			request.session['last_page']='/course/'+course_id+'/'
@@ -333,7 +333,7 @@ class Course_group():
 			return redirect('/login/')
 		if not Course.objects.filter(id=int(course_id)).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
-			return redirect('/')     
+			return redirect('/')
 		if not Utility.is_teacher(user=request.user, course_id=course_id):
 			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
 			return redirect('/course/' + course_id + '/')
@@ -394,9 +394,9 @@ class Course_group():
 
 class Testing_group():
 
-	def test_suit(request):
-		module = request.GET.get("module", "accordion")
-		return render(request, 'Elements/Modules/'+module+'/test_suite/exports.html', context)
+	def test_suit(request, module):
+		module = module.replace('.', '/')
+		return render(request, 'Elements/Modules/'+module+'/test_suite/exports.html')
 
 	def ui_kit(request):
 		context = {

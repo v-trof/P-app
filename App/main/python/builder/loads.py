@@ -8,7 +8,6 @@ paths = build.path
 
 
 def get(path):
-  # print(path)
   if not os.path.isfile(path + "/loads.json"):
     loads_json = set()
   else:

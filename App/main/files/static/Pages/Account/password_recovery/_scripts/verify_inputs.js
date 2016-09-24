@@ -1,0 +1,1 @@
+verifier.add($('[type="email"]'), "email");

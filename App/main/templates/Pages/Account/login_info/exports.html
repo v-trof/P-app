@@ -25,13 +25,24 @@
 </main>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
- loads = {} </script><script> 
-    {% include "Elements/Modules/UI/Info/notification/_scripts/core" %} 
-    {% include "Elements/Modules/UI/Effect/ripple/_scripts/ripple.js" %} 
-    {% include "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %} 
-    {% include "Elements/Modules/Utility/verifier/_scripts/verifier.js" %} 
-    {% include "Elements/../Pages/Account/_shared/modal/_scripts/enter_press.js" %} 
+ loads = {'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
+'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
+'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
+'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
+} </script><script src="{% static "Elements/Modules/UI/Info/notification/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Utility/loads/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/utility/loads/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/Effect/ripple/_scripts/ripple.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Utility/verifier/_scripts/verifier.js" %}"> </script>
+
+<script>    {% include "Elements/../Pages/Account/_shared/modal/_scripts/enter_press.js" %} 
     {% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
-  </script>
+</script>
 </body>
 </html>
