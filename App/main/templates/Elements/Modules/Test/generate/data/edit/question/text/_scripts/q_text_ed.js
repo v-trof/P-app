@@ -11,7 +11,7 @@ generate.register.edit('question', 'text', {
     return $new_edit;
   },
 
-  parser: function() {
-
+  parser: function($edit) {
+    return $edit.find('.__value').html(); 
   }
 });

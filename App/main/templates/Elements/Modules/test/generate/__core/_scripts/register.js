@@ -25,10 +25,8 @@ generate.register = {
    * @param  {Object} element_data how to parse and build it, sample values
    */
   element: function element(type, subtype, element_data) {
-    // console.log('registering', type, subtype, element_data)
     if (!(type && subtype)) return false;
 
-    //args are fine
     var data = this.bind_data(type, subtype, 'element', element_data);
 
     //creates proper template build function
@@ -36,7 +34,6 @@ generate.register = {
       return generate.make_template.element[type](subtype, args);
     }
 
-    // console.log(data);
     //creates build wrapper
     data.element.build = function(value) {
       var $element = data.element.builder(value);
@@ -45,10 +42,14 @@ generate.register = {
         editor.let_edit($element);
       }
 
+      if(defined(data.external)) {
+        data.external.observe($element);
+      }
+
       return $element;
     }
 
-    //builds sample elemnet for parse ingorance
+    //builds sample elemnet
     data.element.sample.build = function() {
       var $sample_element = data.element.build(data.element.sample.value);
       $sample_element.attr('no_parse', 'true');
@@ -56,26 +57,11 @@ generate.register = {
       return $sample_element;
     }
 
-    data.element.parse = function($element) {
-      var value = {};
-
-      if (!$el.attr('no_parse')) {
-        value = this.parser($element);
-      }
-
-      if(type === 'answer') {
-        value.worth = parseInt($element.attr(worth));
-      }
-
-      //types for back
-      value.type = type;
-      value.subtype = subtype;
-
-      return value;
-    }
+    data.element.parse = this.element.parser;
 
     return true;
   },
+
   edit: function(type, subtype, edit_data) {
     if (!(type && subtype)) return false;
 
@@ -88,16 +74,44 @@ generate.register = {
     //make API constant
     data.edit.build = function(value) {
       var $edit = data.edit.builder(value);
+
       if(type === 'answer') {
         var $worth = render.inputs.text('Макс. балл', 'worth', value.worth);
         $edit.append($worth);
       }
 
+      $edit.find('.m--text label').addClass('m--top');
+
       return $edit;
     }
-    data.edit.parse = data.edit.parser;
+    data.edit.parse = function($edit) {
+      var value = data.edit.parser($edit);
+
+      if(type === 'answer') {
+        value.worth = $edit.find('[name="worth"]').val();
+      }
+
+      return value;
+    }
+
+    return true;
   },
+
   external: function(type, subtype, external_data) {
-    this.bind_data(type, subtype, 'external', external_data);
-  }
+    if (!(type && subtype)) return false;
+
+    var data = this.bind_data(type, subtype, 'external', external_data);
+
+    //creating observe shortcut for summary and send
+    data.external.observe = function($element) {
+      data.external.observer($element, function() {
+        var value = data.external.value($element);
+        var summary = data.external.summary($element);
+
+        attempt.change(value, summary);
+      });
+    }
+
+    return true;
+  },
 }

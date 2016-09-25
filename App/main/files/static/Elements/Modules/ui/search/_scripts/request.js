@@ -1,4 +1,4 @@
-search.request = function() {
+search.request = function(search) {
   var query = search.$.find('.__query').val();
   //constructing types
   var search_types = {}

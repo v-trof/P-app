@@ -1,4 +1,4 @@
-search.fill = function(data) {
+Search._.fill = function(search, data) {
   var $links = search.$.find('.__links')
   $links.html('');
 
@@ -17,11 +17,4 @@ search.fill = function(data) {
   }
 
 
-}
-
-search.template = {
-  course:   loads.get("Elements/card/course/exports.html"),
-  test:     loads.get("Elements/card/test/extended/exports.html"),
-  material: loads.get("Elements/card/material/extended/exports.html"),
-  user:     loads.get("Elements/card/user/extended/exports.html"),
 }

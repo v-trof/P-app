@@ -1,6 +1,13 @@
-search.build = {}
+Search._.template = {
+  course:   loads.get("Elements/card/course/exports.html"),
+  test:     loads.get("Elements/card/test/extended/exports.html"),
+  material: loads.get("Elements/card/material/extended/exports.html"),
+  user:     loads.get("Elements/card/user/extended/exports.html"),
+}
 
-search.build.num_form = function(number, forms) {
+Search._.build = {}
+
+Search._.build.num_form = function(number, forms) {
   if (number === 0) {
     return forms.many
   }
@@ -20,7 +27,7 @@ search.build.num_form = function(number, forms) {
   return forms.many
 }
 
-search.build.course = function(data) {
+Search._.build.course = function(data) {
   var $new_course = $(search.template.course);
   var form = "";
   var amount = "";
@@ -67,7 +74,7 @@ search.build.course = function(data) {
   return $new_course;
 }
 
-search.build.test = function(data) {
+Search._.build.test = function(data) {
   var $new_test = $(search.template.test);
   var form = "";
   var amount = "";
@@ -99,7 +106,7 @@ search.build.test = function(data) {
   return $new_test;
 }
 
-search.build.material = function(data) {
+Search._.build.material = function(data) {
   var $new_material = $(search.template.material);
   var form = "";
   var amount = "";
@@ -113,7 +120,7 @@ search.build.material = function(data) {
   return $new_material;
 }
 
-search.build.user = function(data) {
+Search._.build.user = function(data) {
   var $new_user = $(search.template.user);
   var form = "";
   var amount = "";

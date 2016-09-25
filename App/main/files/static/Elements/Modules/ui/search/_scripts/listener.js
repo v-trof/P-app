@@ -1,4 +1,4 @@
-search.enable_query_listener = function() {
+Search._.enable_query_listener = function(search) {
   var timer;
   var typing_interval = 500;
 
@@ -14,7 +14,7 @@ search.enable_query_listener = function() {
 }
 
 
-search.enable_checkbox_listener = function() {
+Search._.enable_checkbox_listener = function(search) {
   search.$.find('input[type="checkbox"]').each(function(index, el) {
     var type = $(this).attr('class').slice(7);
     if (search.types_active.indexOf(type) > -1) {
@@ -31,17 +31,3 @@ search.enable_checkbox_listener = function() {
     });
   });
 }
-
-//remvoe function
-Array.prototype.remove = function() {
-  var what, a = arguments,
-    L = a.length,
-    ax;
-  while (L && this.length) {
-    what = a[--L];
-    while ((ax = this.indexOf(what)) !== -1) {
-      this.splice(ax, 1);
-    }
-  }
-  return this;
-};
