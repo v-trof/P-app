@@ -36,6 +36,8 @@ pull_put.puller = (function() {
       $element.addClass('m--pullable');
 
       $element.click(function(event) {
+        $element = $(this);
+        // console.log($element);
         pull_put.pre_actions.pull($element);
 
         if (!pull_put.is_pulled) {

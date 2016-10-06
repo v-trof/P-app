@@ -8,9 +8,9 @@ pull_put.put_zone = (function() {
       $element.click(function(event) {
 
         if (pull_put.is_pulled && !pull_put.ui.$.find(($(this)))[0]) {
-          pull_put.pre_actions.put($put_zone, pull_put.ui.element);
-
           var $put_zone = $(this);
+
+          pull_put.pre_actions.put($put_zone, pull_put.ui.element);
           // console.log($put_zone);
           _action(event, $put_zone, pull_put.ui.element);
 

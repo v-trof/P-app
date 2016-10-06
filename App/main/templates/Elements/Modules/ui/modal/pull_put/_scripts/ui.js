@@ -1,6 +1,6 @@
 pull_put.ui = (function() {
 
-  $ui = $('{% include "Elements/Modules/pull_put/exports.html" %}');
+  $ui = $(loads.get("Elements/Modules/UI/modal/pull_put/"));
 
   $ui.__actions__additional = $ui.find(".__actions>.__additional");
   $ui.__content = $ui.find(".__content");
@@ -38,6 +38,7 @@ pull_put.ui = (function() {
       $ui.__actions__additional.html($new_button);
     },
     get: function($element, element_width, actions, _callback, card) {
+      // console.log('got', $element);
       if (typeof actions === "undefined") {
         actions = []
       }
@@ -89,6 +90,7 @@ pull_put.ui = (function() {
       pull_put.ui.show(element_width);
     },
     show: function(element_width) {
+      // console.log('showing up');
       if (typeof editor !== "undefined") {
         $(".__task").slice(-2).addClass("m--stand-out");
         $(".__put-margin").last().addClass("m--stand-out");

@@ -13,8 +13,7 @@ var autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('sass_to_css', function () {
   //converts sass to css, prefixes, and minificates css
-  gulp.src(['../main/templates/**/*.sass', '../main/templates/**/*.scss',
-            '!../main/templates/**/Modules/**/*.sass'])
+  gulp.src(['../main/templates/**/*.sass', '../main/templates/**/*.scss'])
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({
       browsers: ['> 5%'],

@@ -3,9 +3,11 @@ generate.register.element('answer', 'text', {
 
   builder: function(value) {
     var $new_element = this.make_template(value);
-    $new_element.append(loads.get('Elements/Inputs/text/'));
-    $new_element.find('label').append(value.label);
-    $new_element.find('input').val(value.answer);
+    $new_element.append(render.inputs.text(
+      value.label,
+      '',
+      value.answer
+    ));
 
     return $new_element;
   },

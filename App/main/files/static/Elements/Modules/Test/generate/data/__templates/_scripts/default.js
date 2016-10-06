@@ -5,19 +5,23 @@
 generate.make_template = {
   element: {
     question: function(subtype) {
-      return $('<div type="question" subtype="' + subtype + '"></div>');
+      return $('<div type="question" subtype="' + subtype +
+       '" class="generate-item"></div>');
     },
     answer: function(subtype, args) {
       return $('<div type="answer" subtype="' + subtype +
-        '" worth="' + args.worth + '"></div>');
+        '" worth="' + args.worth +
+         '" class="generate-item"></div>');
     }
   },
   edit: {
     question: function(subtype) {
-      return $('<div type="question" subtype="' + subtype + '"></div>');
+      return $('<div type="question" subtype="' + subtype +
+       '" class="generate-edit"></div>');
     },
     answer: function(subtype, args) {
-      return $('<div type="answer" subtype="' + subtype + '"></div>');
+      return $('<div type="answer" subtype="' + subtype +
+       '"class="generate-edit"></div>');
     }
   }
 }

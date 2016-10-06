@@ -26,6 +26,10 @@ var pull_put = {
     reset: function() {},
     pull: function($pulled) {},
     put: function($put_zone, $pulled) {}
-  }
+  },
+
+  actions: {
+    add: function() {}
+  },
   cancel_action: function() {}
 }

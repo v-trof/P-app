@@ -1,4 +1,4 @@
-/*****************************************************
+ /*****************************************************
  * Test/generate/core/(s)/register | Registers all data for elements
  * @method register
  * @param  {string} type (question|answer|task)
@@ -10,6 +10,8 @@ generate.register = {
   bind_data: function(type, subtype, data_type, data_value) {
     var data = generate.data[type][subtype] || {};
     generate.data[type][subtype] = data;
+    data.type = type;
+    data.subtype = subtype;
 
     data[data_type] = data_value;
 
@@ -35,11 +37,14 @@ generate.register = {
     }
 
     //creates build wrapper
-    data.element.build = function(value) {
+    data.element.build = function(value, is_sample) {
       var $element = data.element.builder(value);
 
-      if(defined(data.edit) && typeof editor !== typeof undefined) {
-        editor.let_edit($element);
+      if(is_sample) return $element;
+
+      if(defined(data.edit) &&
+         typeof editor !== typeof undefined) {
+           editor.edit.let($element);
       }
 
       if(defined(data.external)) {
@@ -51,8 +56,7 @@ generate.register = {
 
     //builds sample elemnet
     data.element.sample.build = function() {
-      var $sample_element = data.element.build(data.element.sample.value);
-      $sample_element.attr('no_parse', 'true');
+      var $sample_element = data.element.build(data.element.sample.value, true);
 
       return $sample_element;
     }
@@ -76,11 +80,13 @@ generate.register = {
       var $edit = data.edit.builder(value);
 
       if(type === 'answer') {
-        var $worth = render.inputs.text('Макс. балл', 'worth', value.worth);
+        var $worth = render.inputs.text('Макс. балл', 'worth', (value.worth || 1));
         $edit.append($worth);
-      }
 
-      $edit.find('.m--text label').addClass('m--top');
+        if(data.edit.can_random) {
+          //TODO make randmness constructor
+        }
+      }
 
       return $edit;
     }
@@ -90,6 +96,9 @@ generate.register = {
       if(type === 'answer') {
         value.worth = $edit.find('[name="worth"]').val();
       }
+
+      value.type = type;
+      value.subtype = subtype;
 
       return value;
     }
@@ -114,4 +123,9 @@ generate.register = {
 
     return true;
   },
+
+  task: function(subtype, task_data) {
+    var data = this.bind_data('task', subtype, 'element', task_data);
+    data.build = task_data.builder;
+  }
 }

@@ -1,10 +1,10 @@
 var indicator = (function() {
 
-  var template = '{% include "Elements/Modules/indicator/exports.html" %}'
+  var template = loads["Elements/Modules/indicator/exports.html"];
 
   var icons = {
-    add: '{% include "Elements/Icons/add.svg" %}',
-    down: '{% include "Elements/Icons/angle_down.svg" %}'
+    add: loads["Elements/Icons/add.svg"],
+    down: loads["Elements/Icons/angle_down.svg"]
   }
 
   var build = function(icon) {
