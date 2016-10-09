@@ -6,8 +6,11 @@ editor.active_element = {
   },
   value: {},
   blueprints: {},
-  type: undefined,
-  subtype: undefined
+  build: function() {
+    editor.edit.change_value();
+    console.log('building', editor.active_element.value, 'using', editor.active_element.blueprints);
+    return this.blueprints.element.build(this.value);
+  }
 }
 
 pull_put.pre_actions.pull = function($pulled) {
@@ -37,6 +40,8 @@ pull_put.pre_actions.pull = function($pulled) {
     editor.active_element.position.task = undefined;
     editor.active_element.position.number = undefined;
   }
+
+  // console.log(position, editor.active_element, editor.test_data);
 }
 
 pull_put.pre_actions.cancel = function() {
@@ -48,4 +53,5 @@ pull_put.cancel_action = function() {
   editor.active_element.position.task = undefined;
   editor.active_element.position.number = undefined;
   editor.active_element.value = {};
+  editor.check.empty();
 }

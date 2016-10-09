@@ -1,43 +1,33 @@
-editor.check_empty = function() {
+editor.check.empty = function() {
 
-  var generate_selector = {
-    question: '.__question-element',
-    answer: '.__answer-field'
-  }
+  var checkers = [{
+    type: 'question',
+    action: 'prepend',
+    position: 'first'
+  }]
 
-  //loop through questions
-  // console.log(this.content_selector);
-  $('.preview ' + this.content_selector).each(function(index, el) {
-    var $task = $(this);
-    editor.active_types.forEach(function(type) {
-      var empty_class = '.'+editor.empty[type].class;
-      //loop check if empty questions
-      if($task.children(generate_selector[type]).length == 0) {
-        //empty
-        if($task.children(empty_class).length == 0) {
-          //empty not displayed
-          var $empty = editor.create_empty(type);
+  $('.preview ' + '.__task').each(function(index, el) {
+    var $content = $(this).children('.__content');
+    $content.find('.editor__m--empty').remove();
 
-          if(type === "question") {
-            $task.find('.__add_to_beginning').after($empty);
-          } else {
-            $task.append($empty);
-          }
-        }
-      } else {
-        //ok
-        $task.children(empty_class).remove();
-      }
-    });
+    if($content.children('[type="question"]').length === 0) {
+      $content.prepend(editor.check.create_empty('question'));
+    }
   });
 }
 
-editor.create_empty = function(type) {
-  var $empty = this.empty[type].template.clone();
 
-  generate.edit.add_put_zone($empty, function($this, $pulled) {
-    $this.replaceWith($pulled);
+editor.check.create_empty = function(type) {
+  var $empty = $("<div class='editor__m--empty' subtype='empty'></div>");
+
+  $empty.attr('type', 'question');
+  $empty.text(editor.check.empty_text);
+
+  pull_put.put_zone.add($empty, function() {
+    $empty.after(editor.active_element.build());
+    pull_put.reset();
   });
+
   indicator.add($empty, 'add', 1);
 
   return $empty;

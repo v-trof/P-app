@@ -1,0 +1,7 @@
+{
+	"elements": ["Modules/Test/editor", "Modules/utility/jasmine"],
+	"scripts": [],
+  "styles": [],
+  "title" : "SPC test_editor",
+	"template": "default"
+}

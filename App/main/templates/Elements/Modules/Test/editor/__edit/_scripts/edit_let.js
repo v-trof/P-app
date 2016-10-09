@@ -13,7 +13,7 @@ editor.edit.let = function($element) {
   pull_put.put_zone.add(
     $element,
     function(e, $this, $pulled) {
-      $this.after($pulled);
+      $this.after(editor.active_element.build());
       pull_put.reset();
     }
 

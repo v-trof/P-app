@@ -38,9 +38,8 @@ pull_put.puller = (function() {
       $element.click(function(event) {
         $element = $(this);
         // console.log($element);
-        pull_put.pre_actions.pull($element);
-
         if (!pull_put.is_pulled) {
+          pull_put.pre_actions.pull($element);
           var element_width = this.getBoundingClientRect().width;
 
           if (clone) {

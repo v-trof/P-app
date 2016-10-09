@@ -1,8 +1,6 @@
 editor.edit.stop = function() {
-  editor.edit.change_state();
+  var parse_value = editor.edit.change_value();
   pull_put.ui.$.find(".__content").attr('state', 'preview');
-
-  var parse_value = editor.edit.change_state();
 
   var $element = blueprints.element.build(parse_value);
 

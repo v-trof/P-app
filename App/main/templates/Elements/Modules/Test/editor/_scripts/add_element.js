@@ -1,6 +1,6 @@
 pull_put.actions.add = function() {
   if(pull_put.ui.$.find(".__content").attr('state') === 'edit') {
-    editor.edit.change_state();
+    editor.edit.change_value();
   }
 
   if(defined(editor.active_element.value)) {
@@ -22,12 +22,19 @@ pull_put.actions.add = function() {
     var $actions = $new_task.find('.__overall>.__actions');
 
     button_delete.add($actions, $new_task, function() {
+      console.log($new_task[1]);
+      var task_pos = $('.preview .__task').index($new_task[1]);
+
+      console.log(task_pos);
+
+      editor.test_data.delete_task(task_pos);
+
       setTimeout(editor.check.numbers, 150);
     });
 
     $new_task.find('.m--button-delete').removeClass('m--button-delete');
 
     editor.check.numbers();
-    editor.check_empty();
+    editor.check.empty();
   }
 }
