@@ -9,7 +9,7 @@ generate.register.external('answer', 'text', {
 
   to_answer(value) {
     return $element.find('input').val();
-  }
+  },
 
   observer($element, _change) {
     var timer;

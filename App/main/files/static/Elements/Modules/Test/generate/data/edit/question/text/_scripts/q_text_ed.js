@@ -4,7 +4,7 @@ generate.register.edit('question', 'text', {
     $new_edit.prepend(loads.get("Elements/Inputs/text/textarea/"));
 
     $new_edit.find('label').text('Текст вопроса');
-    $new_edit.find('.__value').html(value);
+    $new_edit.find('.__value').html(value.text);
 
     inline_editor.start($new_edit.find('.__value')[0]);
 
@@ -12,6 +12,8 @@ generate.register.edit('question', 'text', {
   },
 
   parser: function($edit) {
-    return $edit.find('.__value').html();
+    return {
+      text: $edit.find('.__value').html()
+    }
   }
 });

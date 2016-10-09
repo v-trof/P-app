@@ -197,6 +197,28 @@ describe('Test editor', function() {
         expect(test.tasks[0].content[1]).toEqual(val_3);
         expect(test.tasks[0].content[2]).toEqual(val_2);
       });
+
+      it('should update value', function() {
+        test.update({
+          task: 0,
+          number: 0
+        }, val_3);
+
+        expect(test.tasks[0].content[0]).toEqual(val_3);
+      });
+
+      it('should redirect update from cahnge', function() {
+        test.change({
+          task: 0,
+          number: 0
+        }, {
+          task: 0,
+          number: 0
+        }, val_3);
+
+        expect(test.tasks[0].content[0]).toEqual(val_3);
+        expect(test.tasks[0].content.length).toEqual(1);
+      });
     });
   });
 });

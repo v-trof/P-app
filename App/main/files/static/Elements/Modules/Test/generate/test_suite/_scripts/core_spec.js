@@ -43,7 +43,7 @@ describe('Test generate', function() {
         var value = sample_build().find('.__value').text();
 
         expect(value).toEqual(
-          generate.data[test_type][test_subtype].element.sample.value
+          generate.data[test_type][test_subtype].element.sample.value.text
         )
       });
 
@@ -52,18 +52,22 @@ describe('Test generate', function() {
           element.build;
         expect(build).toBeDefined();
 
-        var val = "Test Val <b>))</b>";
+        var val = {
+          text: "Test Val <b>))</b>"
+        }
 
         var value = build(val).find('.__value').html();
 
-        expect(value).toEqual(val);
+        expect(value).toEqual(val.text);
       });
 
       it('should bind editing', function() {
 
         var edit_value = '1';
         editor = {
-          let_edit: function($el) {$el.attr('edit', edit_value);}
+          edit: {
+            let: function($el) {$el.attr('edit', edit_value);}
+          }
         }
 
         console.log(editor);
