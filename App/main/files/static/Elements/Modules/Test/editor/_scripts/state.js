@@ -54,4 +54,5 @@ pull_put.cancel_action = function() {
   editor.active_element.position.number = undefined;
   editor.active_element.value = {};
   editor.check.empty();
+  indicator.hide(1);
 }

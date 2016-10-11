@@ -32,13 +32,19 @@ editor.test_data = {
       .tasks[position.task].content
       .splice(position.number, 1);
   },
+
   delete_task: function(task_pos) {
     editor.test_data.tasks.splice(task_pos, 1);
+  },
+
+  insert_task: function(task_pos, value) {
+    editor.test_data.tasks.splice(task_pos, 0, {content: [value]});
   }
 }
 
 pull_put.pre_actions.put = function($put_zone, $pulled) {
-
+  console.log($put_zone);
+  if($put_zone.hasClass('__gap')) return;
   var value = editor.edit.change_value();
 
   var number = $put_zone.parent().children('[subtype]').index($put_zone);

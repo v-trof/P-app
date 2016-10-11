@@ -4,6 +4,7 @@ editor.edit.let = function($element) {
     ['add', 'delete', 'save'],
     editor.edit.pull_put_actions.edit,
     function() {
+      console.log('showing');
       indicator.show(1);
     },
     false,
