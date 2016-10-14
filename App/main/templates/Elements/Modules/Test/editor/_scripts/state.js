@@ -14,6 +14,7 @@ editor.active_element = {
 }
 
 pull_put.pre_actions.pull = function($pulled) {
+  console.log($pulled);
   if( ! $pulled.attr('subtype')) {
     $pulled = $pulled.children();
   }
@@ -28,7 +29,8 @@ pull_put.pre_actions.pull = function($pulled) {
     var $task_parent = $pulled.parents('.__task');
     var position = {
       task: $('.preview .__task').index($task_parent[0]),
-      number: $task_parent.find('.__content').children().index($pulled[0])
+      number: $task_parent.find('.__content').
+        children('[subtype]').index($pulled[0])
     }
 
     editor.active_element.position = position;

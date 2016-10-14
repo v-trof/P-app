@@ -43,7 +43,6 @@ editor.test_data = {
 }
 
 pull_put.pre_actions.put = function($put_zone, $pulled) {
-  console.log($put_zone);
   if($put_zone.hasClass('__gap')) return;
   var value = editor.edit.change_value();
 

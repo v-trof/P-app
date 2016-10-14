@@ -11,14 +11,14 @@ editor.check.empty = function() {
     $content.find('.editor__m--empty').remove();
 
     if($content.children('[type="question"]').length === 0) {
-      $content.prepend(editor.check.create_empty('question'));
+      $content.find('.__catcher').after(editor.check.create_empty('question'));
     }
   });
 }
 
 
 editor.check.create_empty = function(type) {
-  var $empty = $("<div class='editor__m--empty' subtype='empty'></div>");
+  var $empty = $("<div class='editor__m--empty' type='empty'></div>");
 
   $empty.attr('type', 'question');
   $empty.text(editor.check.empty_text);

@@ -1,5 +1,6 @@
 editor.insert_new_task = function($gap) {
   var position = $('.preview>.content .__gap').index($gap[0]);
+
   if(pull_put.ui.$.find(".__content").attr('state') === 'edit') {
     editor.edit.change_value();
   }
@@ -22,7 +23,7 @@ editor.insert_new_task = function($gap) {
 editor.create_new_task = function() {
   var $new_task = generate.data.task.default.build();
   var $gap = $($new_task[0])
-
+  var $catcher = $('<div class="__catcher"></div>');
 
   pull_put.put_zone.add($gap, function() {
     editor.insert_new_task($gap);
@@ -30,6 +31,19 @@ editor.create_new_task = function() {
   });
 
   indicator.add($gap, 'add', 1);
+
+
+  $new_task.find('.__content').prepend($catcher);
+  pull_put.put_zone.add(
+    $catcher,
+    function(e, $this, $pulled) {
+      $this.after(editor.active_element.build());
+      pull_put.reset();
+    }
+
+  )
+  indicator.add($catcher, 'add', 1);
+
 
   $new_task.find('.__make_template').click(function() {
     generate.data.task.default.element.make_template();
