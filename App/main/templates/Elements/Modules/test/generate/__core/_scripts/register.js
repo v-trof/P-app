@@ -77,24 +77,32 @@ generate.register = {
 
     //make API constant
     data.edit.build = function(value) {
-      var $edit = data.edit.builder(value);
+      var $edit = $("<div class='m--edit-wrapper'></div>");
+      $edit.append(data.edit.builder(value));
 
       if(type === 'answer') {
         var $worth = render.inputs.text('Макс. балл', 'worth', (value.worth || 1));
         $edit.append($worth);
 
-        if(data.edit.can_random) {
-          //TODO make randmness constructor
+        if(data.edit.random_possible) {
+          var $random = $(loads["Elements/Inputs/checkbox/exports.html"]);
+          $random.find('label').text('Случайный порядок');
+          $random.find('input').attr('name', "random");
+          $edit.append($random);
         }
       }
 
       return $edit;
     }
     data.edit.parse = function($edit) {
-      var value = data.edit.parser($edit);
+      var value = data.edit.parser($edit.find('.generate-edit'));
 
       if(type === 'answer') {
         value.worth = $edit.find('[name="worth"]').val();
+      }
+
+      if(data.edit.random_possible) {
+        value.random = $edit.find('[name="random"]')[0].checked;
       }
 
       value.type = type;

@@ -1,7 +1,7 @@
 generate.data["answer--checkbox"] = {
   element: {
     type: 'answer',
-    
+
     parse: function($original) {
       var result = generate.data.shared.options
                       .element.parse($original, "checkbox");
@@ -10,7 +10,7 @@ generate.data["answer--checkbox"] = {
       return result;
     },
 
-    build: function(value) {      
+    build: function(value) {
       $element = $(generate.build.template.answer('answer--checkbox'));
 
       value.values.forEach(function(label) {
@@ -37,7 +37,7 @@ generate.data["answer--checkbox"] = {
       generate.data.shared.options
         .element.getter($element, _action);
     },
-    
+
     value_sample: {
       values: ["Вариант 1", "Вариант 2", "Вариант 3"]
     }

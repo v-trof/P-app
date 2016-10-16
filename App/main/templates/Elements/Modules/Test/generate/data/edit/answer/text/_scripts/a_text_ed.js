@@ -13,7 +13,7 @@ generate.register.edit('answer', 'text', {
     return $new_edit;
   },
 
-  parser($edit) {
+  parser: function($edit) {
     var value = {
       label: '',
       answer: undefined

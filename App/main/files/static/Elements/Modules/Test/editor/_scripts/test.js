@@ -3,7 +3,7 @@ editor.test_data = {
   tasks: [],
 
   change: function(old_position, new_position, value) {
-    console.log('changing ', new_position, 'to', value);
+    // console.log('changing ', new_position, 'to', value);
 
     if(old_position === new_position) {
       return editor.test_data.update(old_position, value);
@@ -27,7 +27,7 @@ editor.test_data = {
 
   delete: function(position) {
     if(!defined(position) || !defined(position.task)) return;
-    console.log('deleting:', position);
+    // console.log('deleting:', position);
     editor.test_data
       .tasks[position.task].content
       .splice(position.number, 1);

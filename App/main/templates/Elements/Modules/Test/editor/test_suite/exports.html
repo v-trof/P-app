@@ -22,6 +22,8 @@
 <link rel="stylesheet" href="{% static "Page_templates/default/_styles/layout.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/Test/editor/_styles/catcher.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/Test/editor/_styles/empty.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Effect/ripple/_styles/ripple.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/notification/_styles/notification.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/tooltip/_styles/tooltip.css" %}"> 
@@ -34,22 +36,22 @@
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
- loads = {'Elements/Icons/visibility.svg' : '{% include "Elements/Icons/visibility.svg" %}', 
-'Elements/Icons/angle_down.svg' : '{% include "Elements/Icons/angle_down.svg" %}', 
-'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
-'Elements/Modules/UI/button_delete/exports.html' : '{% include "Elements/Modules/UI/button_delete/exports.html" %}', 
-'Elements/Modules/UI/modal/pull_put/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/exports.html" %}', 
+ loads = {'Elements/Icons/angle_down.svg' : '{% include "Elements/Icons/angle_down.svg" %}', 
 'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
-'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
-'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
 'Elements/Modules/UI/modal/pull_put/__indicator/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/__indicator/exports.html" %}', 
-'Elements/Icons/add.svg' : '{% include "Elements/Icons/add.svg" %}', 
-'Elements/Icons/edit.svg' : '{% include "Elements/Icons/edit.svg" %}', 
-'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
+'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
 'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
+'Elements/Modules/UI/modal/pull_put/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/exports.html" %}', 
+'Elements/Icons/edit.svg' : '{% include "Elements/Icons/edit.svg" %}', 
+'Elements/Modules/UI/button_delete/exports.html' : '{% include "Elements/Modules/UI/button_delete/exports.html" %}', 
+'Elements/Icons/add.svg' : '{% include "Elements/Icons/add.svg" %}', 
+'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
+'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
+'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
 'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
 'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
-'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
+'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
+'Elements/Icons/visibility.svg' : '{% include "Elements/Icons/visibility.svg" %}', 
 } </script><script src="{% static "Elements/Modules/Test/editor/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/Info/notification/_scripts/core.js" %}"> </script>
