@@ -3,6 +3,7 @@ var popup = (function() {
   exports = {
     $: $popup,
     show: function(content, _callback, css) {
+      //console.log(arguments);
       $popup.find(".__content").html(content);
       $popup.removeClass('m--hidden');
       $popup.removeClass('m--hiding');
@@ -17,7 +18,7 @@ var popup = (function() {
       $popup.find("input").first().focus();
 
       if (css) {
-        $popup.find('__modal').css(css);
+        $popup.find('.__modal').css(css);
       }
 
       if (_callback) {

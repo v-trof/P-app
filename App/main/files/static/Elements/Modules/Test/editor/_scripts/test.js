@@ -1,6 +1,7 @@
 editor.test_data = {
   title: '',
   tasks: [],
+  templates: [],
 
   change: function(old_position, new_position, value) {
     // console.log('changing ', new_position, 'to', value);

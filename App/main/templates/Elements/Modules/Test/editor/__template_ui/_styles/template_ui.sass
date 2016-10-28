@@ -1,0 +1,41 @@
+@import "../../../../../../sass_vars/main.sass"
+
+$appbar-height: $padding--l*2 + $base
+
+.template_ui
+  display: flex
+  flex-direction: column
+  align-items: center
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: calc(100vh - #{$appbar-height})
+  margin-top: $appbar-height
+  padding: $padding--l $padding--m
+  z-index: 2
+  background: $grey--light
+  transition: $time--m
+
+  .__templates
+    width: 100%
+    max-width: 50rem
+
+  .__gap:first-child
+    height: 0
+
+  &.m--hiding
+    transform: translateY(-$margin--xl)
+    opacity: 0
+  &.m--hidden
+    display: none
+
+  .m--close
+    position: absolute
+    left: auto
+    right: $padding--m
+    top: $padding--m
+    &>svg
+      fill: $font__color--accent
+    &:hover>svg
+      fill: lighten($font__color--accent, $darkness-delta__focus--percent)

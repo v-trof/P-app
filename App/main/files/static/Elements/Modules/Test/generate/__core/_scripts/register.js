@@ -88,6 +88,7 @@ generate.register = {
           var $random = $(loads["Elements/Inputs/checkbox/exports.html"]);
           $random.find('label').text('Случайный порядок');
           $random.find('input').attr('name', "random");
+          $random.find('input')[0].checked = value.random;
           $edit.append($random);
         }
       }

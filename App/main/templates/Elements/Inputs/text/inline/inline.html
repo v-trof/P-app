@@ -1,0 +1,18 @@
+<div class="input m--text m--inline">
+	<input
+	{% if type %}
+		type="{{type}}"
+	{% else %}
+		type="text"
+	{% endif %}
+	class="{{class}} __value" placeholder=" "
+		{% include "Elements/_shared/attrs/" %}
+		>
+
+	<!-- <label
+		{% if alwaystop %}
+		class="m--top-fixed"
+		{% endif %}
+	>{{placeholder}}</label> -->
+	<div class="__indicator"></div>
+</div>

@@ -26,4 +26,8 @@ $(document).ready(function() {
   $("#test_delete").click(function(event) {
     test_manager.delete();
   });
+
+  $('#test_templates').click(function() {
+    editor.template_ui.show();
+  })
 });

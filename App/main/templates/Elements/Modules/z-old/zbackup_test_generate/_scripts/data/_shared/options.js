@@ -30,9 +30,9 @@ generate.data.shared.options = {
         }
 
         if(checked.indexOf(index) > -1) {
-          this.checked = true;  
+          this.checked = true;
         } else {
-          this.checked = false;  
+          this.checked = false;
         }
       });
     },
@@ -83,12 +83,12 @@ generate.data.shared.options = {
         var label = $(this).siblings().find(".__value").val();
 
         values.push(label);
-        
+
         if($(this).find("input").is(":checked")) {
           answer.push(index);
         }
       });
-      
+
       return {
         values: values,
         answer: answer
@@ -103,7 +103,7 @@ generate.data.shared.options = {
 
       generate.data.shared.add_item = function() {
         var $new_item = $(empty_item);
-        
+
         $(".options-edit .__items").append($new_item);
         button_delete.add($new_item);
       }
@@ -121,7 +121,7 @@ generate.data.shared.options = {
         $(".options-edit .__items").children().last()
           .find(".__value").val(label);
 
-        
+
         var checker = function() {return false};
 
         if(typeof value.answer === "string") {

@@ -7,3 +7,6 @@ editor.fill_item_list(
 editor.fill_item_list(
   $('.item-list.m--answer'), 'answer'
 );
+
+
+test_manager.publish_popup = '{% include "Pages/Test/editor/_publish_popup/exports.html" %}'
