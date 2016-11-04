@@ -12,7 +12,8 @@ test_manager.fix_test_strict = function(test) {
   test.tasks.forEach(function(task) {
     if(task.content.length === 0) return false;
     task.content.forEach(function(element) {
-      if(element.type === 'answer' && ! element.answer) {
+      if(element.type === 'answer' &&
+         ! (element.answer || element.answers.length > 0)) {
         console.log('no answer');
         test_manager.drop('publish');
         fixable = false;
@@ -33,9 +34,16 @@ test_manager.fix_test_strict = function(test) {
   }
 
   if(Object.keys(test.groups).length !== 0) {
+    test.groups['Другие'] = 0;
     test.tasks.forEach(function(task) {
-      if( ! task.group) task.group = "Другие";
+      if( ! task.group) {
+        task.group = "Другие";
+        test.groups['Другие']++;
+      }
+      if(test.groups['Другие'] === 0) delete test.groups['Другие'];
     });
+  } else {
+      test.groups['Задания'] = test.tasks.length;
   }
 
   return test;
