@@ -40,6 +40,7 @@ def create(request):
 			"link": "Новый материал"
 		}]
 	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
+	context["sections"].append('Новая...')
 	context["type"]= "material"
 	return render(request, 'Pages/Material/editor/exports.html', context)
 
@@ -69,6 +70,7 @@ def load(request):
 			"link": material["json"]["title"]
 		}]
 	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
+	context["sections"].append('Новая...')
 	context["type"]= "material"
 	return render(request, 'Pages/Material/editor/exports.html', context)
 
@@ -87,7 +89,7 @@ def publish(request):
 	if request.method == 'POST':
 		course_id = request.POST.get("course_id",None)
 		material_id = request.POST.get("material_id",None)
-		section = request.POST.get("section","Нераспределенные")
+		section = request.POST.get("publish_data")["section"]
 		response = Material.publish(course_id=course_id, material_id=material_id,section=section)
 		return HttpResponse(json.dumps(response), content_type="application/json")
 

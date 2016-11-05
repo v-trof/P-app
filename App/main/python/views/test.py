@@ -41,6 +41,7 @@ def create(request):
 		"link": "Новый тест"
 	}]
 	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
+	context["sections"].append('Новая...')
 	context["type"] = "test"
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
@@ -82,29 +83,20 @@ def load(request):
 		"link": test["json"]["title"]
 	}]
 	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
+	context["sections"].append('Новая...')
 	context["type"] = "test"
+	context["test"]["json"]=json.dumps(context["test"]["json"])
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
 
 def publish(request):
 	# makes test visible in course screen
 	if request.method == 'POST':
+		publish_data=json.loads(request.POST["publish_data"])
 		course_id = request.POST.get("course_id", None)
 		test_id = request.POST.get("test_id", None)
-		section = request.POST.get("section", "Нераспределенные")
-		max_score=request.POST.get("max_score",False)
-		max_time=request.POST.get("max_time",False)
-		allowed_mistakes = []
-		mark_setting = {}
-		for setting in request.POST:
-			if setting.startswith('min_for'):
-				if request.POST[setting] != '':
-					mark_setting[setting[-1]] = int(request.POST[setting])
-			elif setting.startswith('autocorrect_'):
-				if request.POST[setting] == "true":
-					allowed_mistakes.append(setting[12:])
-		message = Test.publish(course_id=course_id, test_id=test_id,
-								allowed_mistakes=allowed_mistakes, mark_setting=mark_setting, max_score=max_score, section=section, max_time=max_time)
+		print(publish_data,course_id,test_id)
+		message = Test.publish(course_id=course_id, test_id=test_id,publish_data=publish_data)
 		return HttpResponse(json.dumps(message), content_type="application/json")
 
 
@@ -137,6 +129,7 @@ def attempt(request):
 			return redirect("/test/attempt/results/?course_id=" + course_id + "&test_id=" + test_id)
 		context = Test.attempt(
 			user=request.user, course_id=course_id, test_id=test_id)
+		print(context)
 		context["attempt"] = True
 		context["type"] = "test"
 		context["breadcrumbs"] = [{
@@ -146,7 +139,8 @@ def attempt(request):
 			"href": "#",
 			"link": "Попытка"
 		}]
-		return render(request, 'Pages/Test/Attempt/main/exports.html', context)
+		#return render(request, 'Pages/Attempt/main/exports.html', context)
+		return HttpResponse(json.dumps(context), content_type="application/json")
 	else:
 		request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
 		return redirect('/')

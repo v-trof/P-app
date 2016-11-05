@@ -24,3 +24,7 @@ var django = {
   csrf_token: "{{ csrf_token }}",
   current_type: "{{type}}"
 }
+console.log("{{test.json}}");
+
+if ("{{test.json}}".length > 0)
+  django.loaded='{{test.json|safe}}'

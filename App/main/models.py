@@ -67,7 +67,7 @@ from operator import itemgetter
 import operator
 from sortedcontainers import SortedListWithKey
 import shutil
-
+from random import shuffle
 
 class MediaModel(models.Model):
 	media_file = models.FileField(upload_to='media')
@@ -1643,6 +1643,7 @@ class UserManager(UserManager):
 			if is_teacher == "false":
 				is_teacher = False
 			else: is_teacher = True
+			
 			user = User.objects.create_user(
 				username=email,
 				email=email,
@@ -2297,7 +2298,7 @@ class Test():
 		json_file["creator"] = user.id
 		questions_number = 0
 		for task in json_file["tasks"]:
-			for question in task:
+			for question in task["content"]:
 				if question["type"] == "answer":
 					questions_number += 1
 		json_file["questions_number"] = questions_number
@@ -2315,7 +2316,7 @@ class Test():
 				question_id = -1
 				replaced=False
 				for task in json_file["tasks"]:
-					for element in task:
+					for element in task["content"]:
 						if element["type"]=="answer":
 							question_id+=1
 							for question in attempt_data:
@@ -2350,8 +2351,6 @@ class Test():
 
 	def load(course_id, test_id):
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as json_file:
-			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
-				course_info = json.load(info_file)
 				test = {
 					"id": test_id,
 					"loaded": 1,
@@ -2360,19 +2359,19 @@ class Test():
 				}
 		return test
 
-	def publish(course_id, test_id, section, allowed_mistakes, mark_setting, max_score=False, max_time=False):
+	def publish(course_id, test_id, publish_data):
 		# makes test visible in course screen
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
-
+		print(publish_data)
 		it=0
 		for element in course_info['sections']['unpublished']:
 			if element["id"] == str(test_id) and element["type"] == "test":
 				del(course_info['sections']['unpublished'][it])
 			it+=1
 
-		if not section in course_info['sections']['published'].keys():
-			course_info['sections']['published'][section] = []
+		if not publish_data["section"] in course_info['sections']['published'].keys():
+			course_info['sections']['published'][publish_data["section"]] = []
 
 		is_published=False
 
@@ -2381,8 +2380,7 @@ class Test():
 				if element["id"] == test_id and element["type"] == "test":
 					is_published=True
 		if not is_published:
-			course_info['sections']['published'][
-				section].append({"id": test_id, "type": "test"})
+			course_info['sections']['published'][publish_data["section"]].append({"id": test_id, "type": "test"})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 
@@ -2391,22 +2389,25 @@ class Test():
 				test_data = json.load(info_file)
 		else:
 			test_data={}
-		test_data["allowed_mistakes"] = allowed_mistakes
-		if max_time:
-			test_data["max_time"] = max_time
-		if max_score:
-			for mark in mark_setting:
-				mark_setting[mark]=mark_setting[mark]/int(max_score)*100
+		test_data["allowed_mistakes"] = []
+		for mistake in publish_data["forgive"]:
+			if publish_data["forgive"][mistake]:
+				test_data["allowed_mistakes"].append(mistake)
+		if "time_limit" in publish_data.keys():
+			test_data["max_time"] = publish_data["time_limit"]
+		if "max_score" in publish_data.keys():
+			for mark in publish_data["marks"]:
+				publish_data["marks"][mark]=publish_data["marks"][mark]/int(publish_data["max_score"])*100
 		if "mark_setting" in test_data.keys():
-			for key in mark_setting:
-				test_data["mark_setting"][key] = mark_setting[key]
+			for key in publish_data["marks"]:
+				test_data["mark_setting"][key] = publish_data["marks"][key]
 			#print(glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'))
 			#for attempt in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'):
 			#	user_id=attempt.split('/')[-1].split('\\')[1]
 			#	print(user_id)
 			#	user=User.objects.get(id=user_id)
 			#	Test.attempt_check(test_id=test_id,user=user,course_id=course_id)
-		else: test_data["mark_setting"]=mark_setting
+		else: test_data["mark_setting"]=publish_data["marks"]
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(test_data, ensure_ascii=False))
 
@@ -2453,39 +2454,47 @@ class Test():
 
 	def build_question(item):
 		value = {}
-		type = item["class"]
 		item["worth"]=int(item["worth"])
-		value["type"] = type.split("--")[1]
-		if type == "answer--text":
+		value["type"] = item["subtype"]
+		if random in item.keys():
+			value["random"] = item["random"]
+		else: value["random"]=False
+		if item["subtype"] == "text":
 			value["answer"] = item["answer"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
-		elif type == "answer--textarea":
+		elif item["subtype"] == "textarea":
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
 			value["answer"] = None
 			# textarea
-		elif type == "answer--select":
-			value["options"] = item["values"]
+		elif item["subtype"] == "select":
+			if value["random"]:
+				shuffle(item["items"])
+			value["options"] = item["items"]
 			value["answer"] = item["answer"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
-		elif type == "answer--radio":
-			value["options"] = item["values"]
+		elif item["subtype"] == "radio":
+			if value["random"]:
+				shuffle(item["items"])
+			value["options"] = item["items"]
 			value["answer"] = item["answer"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
-		elif type == "answer--checkbox":
-			value["options"] = item["values"]
-			value["answer"] = item["answer"]
+		elif item["subtype"] == "checkbox":
+			if value["random"]:
+				shuffle(item["items"])
+			value["options"] = item["items"]
+			value["answer"] = item["answers"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
-		elif type == "answer--classify":
+		elif item["subtype"] == "classify":
 			value["answer"] = item["answer"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
@@ -2554,10 +2563,14 @@ class Test():
 				else: 
 					if "max_time" in test["json"]:
 						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
+				with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as json_file:
+					saving_data = json.dumps(test["json"], ensure_ascii=False)
+					json_file.write(saving_data)
 				if Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now,absolute=False)<=0:
 					return {"time_out":True}
 				for task in test["json"]["tasks"]:
-					for item in task:
+					print(task)
+					for item in task["content"]:
 						if data is not None and item["type"] == "answer" and str(it) in data and not data[str(it)]["user_answer"] == False:
 							item = Test.build_answer(
 								item=item, data=data[str(it)])
@@ -2574,7 +2587,7 @@ class Test():
 					"link": test["json"]["title"]
 				}]
 		for element in context["test"]["json"]["tasks"]:
-			for item in element:
+			for item in element["content"]:
 				if item["type"] == "answer" and "answer" in item.keys():
 					item.pop("answer", None)
 		if data is None:
@@ -2584,7 +2597,7 @@ class Test():
 				with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 					test_info = json.load(info_file)
 					for task in test_info["tasks"]:
-						for item in task:
+						for item in task["content"]:
 							if item["type"] == "question":
 								current_question = item
 							else:
@@ -2593,9 +2606,6 @@ class Test():
 								question_id += 1
 				data = json.dumps(test, ensure_ascii=False)
 				json_file.write(data)
-		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as json_file:
-			saving_data = json.dumps(test["json"], ensure_ascii=False)
-			json_file.write(saving_data)
 		return context
 
 	def attempt_save(test_id, question_id, course_id, answer, user):
@@ -2606,7 +2616,7 @@ class Test():
 				test_info = json.load(info_file)
 			it=0
 			for task in test_info["tasks"]:
-				for question in task:
+				for question in task["content"]:
 					if question["type"]=="answer":
 						it+=1
 					if it==int(question_id):

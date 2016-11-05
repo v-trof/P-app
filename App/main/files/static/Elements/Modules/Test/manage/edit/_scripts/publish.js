@@ -154,7 +154,7 @@ test_manager.publish_parse = function(test) {
 
     $.ajax({
       type:"POST",
-      url:"/{{type}}/publish/",
+      url:"/"+django.current_type+"/publish/",
       data: formData,
       processData: false,
       contentType: false,
