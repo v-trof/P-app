@@ -26,6 +26,12 @@ editor.test_data = {
     });
   },
 
+  add_template: function(template) {
+    template = JSON.parse(JSON.stringify(template));
+    template.is_template = true;
+    editor.test_data.tasks.push(template);
+  },
+
   delete: function(position) {
     if(!defined(position) || !defined(position.task)) return;
     // console.log('deleting:', position);
@@ -40,6 +46,35 @@ editor.test_data = {
 
   insert_task: function(task_pos, value) {
     editor.test_data.tasks.splice(task_pos, 0, {content: [value]});
+  },
+
+  //template methods
+  templates_remove(template) {
+    editor.test_data.templates
+      .splice(editor.test_data.templates.indexOf(template), 1);
+    console.log()
+  },
+  templates_copy(template) {
+    var new_template = JSON.parse(JSON.stringify(template));
+    editor.test_data.templates
+      .splice(editor.test_data.templates.indexOf(template), 0, new_template);
+    console.log(editor.test_data.templates);
+  }
+}
+
+editor.test_data.templates.save = function(new_tempalte) {
+  var saved = false;
+  new_tempalte = JSON.parse(JSON.stringify(new_tempalte));
+
+  editor.test_data.templates.forEach(function(template) {
+    if(template.group === new_tempalte.group) {
+      template = new_tempalte;
+      saved = true;
+    }
+  });
+
+  if( ! saved) {
+    editor.test_data.templates.push(new_tempalte);
   }
 }
 

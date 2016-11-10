@@ -35,13 +35,13 @@ generate.register.task('template', {
     for(var i=0; i<source.parts.length; i++) {
       var $part_edit = $edit.find('.__content').find('.m--edit-wrapper').eq(i);
 
-      console.log($part_edit);
+      //console.log($part_edit);
 
       var new_part = generate.data[source.parts[i].type]
                                   [source.parts[i].subtype]
                                   .edit.parse($part_edit);
 
-      console.log(new_part);
+      //console.log(new_part);
 
       template.parts.push(new_part)
     }
@@ -49,15 +49,11 @@ generate.register.task('template', {
     return template;
   },
 
-  add_to_test: function(parts, variables) {
-    return $task;
-  },
-
   builder: function(parts, variables, group) {
     function unwrap_replace(obj, variables) {
       if(typeof obj === 'string') {
         variables.forEach(function(variable) {
-          obj = obj.replace('%(' + variable.name + ')', variable.value);
+          obj = obj.replaceAll('%(' + variable.name + ')', variable.value);
         });
       } else if(obj instanceof Array) {
         obj.forEach(function(part) {
@@ -93,6 +89,11 @@ generate.register.task('template', {
       $task.find('input.__group').val(group);
     }
 
+    $task.find('.__content').children().each(function() {
+      $(this).unbind('click').removeClass('m--pullable')
+                             .removeClass('m--put-zone');
+    });
+
     return $task;
   }
 });
@@ -116,5 +117,15 @@ $(document).ready(function() {
       value: "значение"
     }],
     group: 'sample'
+  });
+
+  editor.test_data.templates.push({
+    parts: [{
+      subtype: "text",
+      text: 'fas',
+      type: "question"
+    }],
+    variables: [],
+    group: 'not'
   });
 });

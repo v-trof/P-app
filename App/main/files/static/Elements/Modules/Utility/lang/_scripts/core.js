@@ -23,3 +23,8 @@ Array.prototype.remove = function() {
   }
   return this;
 };
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};

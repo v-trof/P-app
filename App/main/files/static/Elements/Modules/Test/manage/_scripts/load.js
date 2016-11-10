@@ -3,13 +3,12 @@ test_manager.load = function(test) {
     test = JSON.parse(test);
   }
 
-
   if(defined(editor)) {
     if( ! editor.test_data.title) {
       $('.preview h2').html(test.title);
       editor.test_data.title = test.title;
     }
-    
+
     test.tasks.forEach(function(task) {
       editor.test_data.tasks.push(task);
     });
@@ -20,14 +19,23 @@ test_manager.load = function(test) {
   }
 
   test.tasks.forEach(function(task) {
-    var $new_task = editor.create_new_task();
-    $('.preview>.__content').append($new_task);
+    if(task.is_template) {
 
-    $new_task.find('.__group').val(task.group);
-    task.content.forEach(function(element) {
-      var $element = generate.data[element.type][element.subtype].element.build(element);
-      $new_task.find('.__content').append($element);
-    });
+      $new_task.click(function() {
+        generate.data.task.template.edit.launch(task);
+      });
+
+      $('.preview>.content').append($new_task);
+    } else {
+      var $new_task = editor.create_new_task();
+      $('.preview>.__content').append($new_task);
+
+      $new_task.find('.__group').val(task.group);
+      task.content.forEach(function(element) {
+        var $element = generate.data[element.type][element.subtype].element.build(element);
+        $new_task.find('.__content').append($element);
+      });
+    }
   });
 
   editor.check.numbers();

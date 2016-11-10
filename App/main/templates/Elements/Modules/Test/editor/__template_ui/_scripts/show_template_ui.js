@@ -7,24 +7,19 @@ editor.template_ui.show = function() {
   editor.test_data.templates.forEach(function(template) {
     var actions = [{
       action: function() {
-        editor.active_template = template;
-
-        var $edit = generate.data.task.template.edit
-                      .build_editor(template.parts, template.variables)
-
-        $edit.find('.task').html(generate.data.task.template.element
-                                 .build_edit(template.parts, template.group));
-
-        generate.data.task.template.edit.observe_new_vars($edit);
-
-        popup.show($edit);
+        generate.data.task.template.edit.launch(template);
       },
       icon: loads['Elements/Icons/edit.svg']
     }, {
-      action: function() {},
+      action: function() {
+        editor.test_data.templates_copy(template);
+        editor.template_ui.show();
+      },
       icon: loads['Elements/Icons/copy.svg']
     }, {
-      action: function() {},
+      action: function() {
+        //show share ui
+      },
       icon: loads['Elements/Icons/share.svg']
     }]
 
@@ -44,6 +39,8 @@ editor.template_ui.show = function() {
 
     button_delete.add($actions, $task, function() {
       //delete
+      editor.test_data.templates_remove(template);
+      editor.template_ui.show();
     });
 
     $actions.find('.m--button-delete').removeClass('m--button-delete');

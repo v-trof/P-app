@@ -37,7 +37,14 @@ $(document).ready(function() {
       return variables;
     },
 
-    build_variables: function(variables, $variables, $edit) {
+    build_variables: function(variables, $edit) {
+      var $variables = $edit.find('.__variables');
+
+      if(variables.length === 0) {
+        $variables.html('Переменных нет');
+        return;
+      }
+
       $variables.html('');
 
       variables.forEach(function(variable) {
@@ -60,8 +67,6 @@ $(document).ready(function() {
         $var_field.keyup(function() {
           editor.active_template.variables = rescan_vars();
 
-          console.log(editor.template_editor_mode);
-
           if(editor.template_editor_mode === 'preview') {
             var $new_task = generate.data.task.template.build(
                               editor.active_template.parts,
@@ -74,6 +79,8 @@ $(document).ready(function() {
             });
 
             $edit.find('.task').html($new_task);
+
+            console.log('preview -> rebuilt', $edit);
           }
         });
 
@@ -101,24 +108,19 @@ $(document).ready(function() {
 
       editor.active_template.variables = compound;
       generate.data.task.template.edit
-        .build_variables(compound, $edit.find('.__variables'), $edit);
+        .build_variables(compound, $edit);
     },
 
     build_editor: function(parts, variables) {
-      editor.template_editor_mode = 'edit';
       var $edit = $(loads['Elements/Modules/Test/generate/data/' +
                         'task/template/__edit/exports.html']);
-      var $variables = $edit.find('.__variables');
 
-      $edit.css('min-width', $('.preview').width());
+      $edit.css('width', "100%");
 
       $edit.find('.__save').click(function() {
         //save
         popup.hide();
       });
-
-      generate.data.task.template.edit
-        .build_variables(variables, $variables, $edit);
 
       $edit.find('.__add').click(function() {
         //push to test
@@ -126,48 +128,31 @@ $(document).ready(function() {
         popup.hide();
       });
 
-    var $mode_swap = $edit.find('.__mod_swap');
+      return $edit;
+    },
 
-    $mode_swap.click(function() {
-      if(editor.template_editor_mode === 'edit') {
-        editor.template_editor_mode = 'preview';
+    launch: function(template, $instance) {
+      editor.active_template = template;
+      editor.template_editor_mode = 'edit';
 
-        editor.active_template = generate.data.task.template
-                                  .element.parse_edit(
-                                    $edit.find('.task').children(),
-                                    editor.active_template);
+      var $edit = generate.data.task.template.edit
+                    .build_editor(template.parts, template.variables)
 
-        var $new_task = generate.data.task.template.build(
-                          editor.active_template.parts,
-                          editor.active_template.variables,
-                          editor.active_template.group);
-        $new_task.find('.__actions button').css('pointer-events', 'none');
+      $edit.find('.task').html(generate.data.task.template.element
+                               .build_edit(template.parts, template.group));
+      popup.show($edit, function() {}, {"width": "64rem"});
 
-        $new_task.find('.__content').children().each(function() {
-          $(this).unbind('click').removeClass('m--pullable')
-                                 .removeClass('m--put-zone');
-        });
+      $edit = popup.$.find('.__modal>.__content');
 
-        $edit.find('.task').html($new_task);
+      generate.data.task.template.edit.observe_new_vars($edit);
 
-        $mode_swap.html(loads['Elements/Icons/edit.svg'])
-          .attr('tip', 'Редактировать');
-      } else {
-        editor.template_editor_mode = 'edit';
+      generate.data.task.template.edit.handle_actions($edit, $instance);
 
-        $edit.find('.task').html(generate.data.task.template.element
-                                 .build_edit(
-                                   editor.active_template.parts,
-                                   editor.active_template.group));
+      generate.data.task.template.edit
+        .build_variables(template.variables, $edit);
 
-        generate.data.task.template.edit.observe_new_vars($edit);
+      console.log('editor for', editor.active_template, 'is', $edit);
 
-        $mode_swap.html(loads['Elements/Icons/visibility.svg'])
-          .attr('tip', 'Показать задание');
-      }
-    });
-
-    return $edit;
     }
   }
 });
