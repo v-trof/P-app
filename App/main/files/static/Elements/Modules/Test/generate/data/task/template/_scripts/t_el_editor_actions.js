@@ -42,6 +42,11 @@ $(document).ready(function() {
       }
     });
 
+    if($instance) {
+      $add.html(loads['Elements/Icons/copy.svg']);
+      $add.attr('tip', 'Создать новое задание (старое сохранится)');
+    }
+
     $add.click(function() {
       if(editor.template_editor_mode === 'edit') {
         editor.active_template = generate.data.task.template
@@ -63,15 +68,14 @@ $(document).ready(function() {
         generate.data.task.template.edit.launch(unbound_data, $new_task);
       });
 
-      $('.preview>.__content').append($new_task);
+      if($instance) {
+        $($instance[1]).after($new_task);
+      } else {
+        $('.preview>.__content').append($new_task);
+      }
 
       popup.hide();
       editor.template_ui.hide();
-
-      if($instance) {
-        $instance.remove();
-      }
-      
       editor.check.numbers();
     });
 

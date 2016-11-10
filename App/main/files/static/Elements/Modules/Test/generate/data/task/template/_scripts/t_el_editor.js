@@ -117,17 +117,6 @@ $(document).ready(function() {
 
       $edit.css('width', "100%");
 
-      $edit.find('.__save').click(function() {
-        //save
-        popup.hide();
-      });
-
-      $edit.find('.__add').click(function() {
-        //push to test
-        editor.template_ui.hide();
-        popup.hide();
-      });
-
       return $edit;
     },
 
