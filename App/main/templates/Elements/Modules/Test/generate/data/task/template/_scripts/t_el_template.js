@@ -54,6 +54,10 @@ generate.register.task('template', {
         obj.forEach(function(part) {
             part = unwrap_replace(part, variables);
         });
+
+        for(var i = 0; i < obj.length; i++) {
+          obj[i] = unwrap_replace(obj[i], variables);
+        }
       } else if(typeof obj === "object") {
         for(key in obj) {
           obj[key] = unwrap_replace(obj[key], variables)
@@ -84,15 +88,11 @@ generate.register.task('template', {
       $content.append($part);
     })
 
-
-
     $serialize.click(function() {
       generate.data.task.template.serialize($task, parts);
     });
     $serialize.attr('tip', 'Превратить это задание в обычное');
     $task.find('.__make-template').replaceWith($serialize);
-
-
 
     if(group) {
       $task.find('input.__group').val(group)
@@ -104,6 +104,7 @@ generate.register.task('template', {
       $(this).unbind('click').removeClass('m--pullable')
                              .removeClass('m--put-zone');
     });
+    $task.addClass('m--template');
 
     return $task;
   }

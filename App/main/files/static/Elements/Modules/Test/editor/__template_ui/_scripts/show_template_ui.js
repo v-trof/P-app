@@ -12,7 +12,7 @@ editor.template_ui.show = function() {
       icon: loads['Elements/Icons/edit.svg']
     }, {
       action: function() {
-        editor.test_data.templates_copy(template);
+        editor.test_data.templates.add(template);
         editor.template_ui.show();
       },
       icon: loads['Elements/Icons/copy.svg']

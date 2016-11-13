@@ -4,6 +4,8 @@ $(document).ready(function() {
     var $add = $edit.find('.__add');
     var $save = $edit.find('.__save');
 
+    var old_group = editor.active_template.group;
+
     $mode_swap.click(function() {
       console.log('was:', editor.template_editor_mode);
 
@@ -57,7 +59,8 @@ $(document).ready(function() {
                                     editor.active_template);
       }
 
-      var finished = build_finilized_task(editor.active_template);
+      var finished = generate.data.task.template.edit
+        .build_finalized_task(editor.active_template);
       var $new_task = finished.$task;
 
       console.log('adding to test:', finished.data);
@@ -80,7 +83,8 @@ $(document).ready(function() {
                                       editor.active_template);
         }
 
-        $new_task = build_finilized_task(editor.active_template).$task[1];
+        $new_task = generate.data.task.template.edit
+          .build_finalized_task(editor.active_template).$task[1];
 
         $($instance[1]).replaceWith($new_task);
 
@@ -99,7 +103,7 @@ $(document).ready(function() {
 
         console.log('saving', editor.active_template);
 
-        editor.test_data.templates.save(editor.active_template);
+        editor.test_data.templates.save(editor.active_template, old_group);
         editor.template_ui.show();
 
         console.log('rebuilding');
@@ -113,7 +117,8 @@ $(document).ready(function() {
             }
 
             //[0] is gap
-            var $new_task = build_finilized_task(task).$task[1];
+            var $new_task = generate.data.task.template.edit
+              .build_finalized_task(task).$task[1];
             console.log('data:', task, 'idx:', index);
             console.log('built:', $new_task);
 
@@ -123,45 +128,51 @@ $(document).ready(function() {
         editor.check.numbers();
       });
     }
+  }
+  generate.data.task.template.edit
+    .build_finalized_task = function(template_data) {
+    //unbinding template from editor.active_template
+    var unbound_data = template_data;
 
-    function build_finilized_task(template_data) {
-      //unbinding template from editor.active_template
-      var unbound_data = template_data;
+    //unbinding variables from initial template
+    var own_variables= JSON.parse(JSON.stringify(unbound_data.variables));
 
-      //unbinding variables from initial template
-      var own_variables= JSON.parse(JSON.stringify(unbound_data.variables));
+    unbound_data.variables = own_variables;
 
-      unbound_data.variables = own_variables;
+    var $new_task = generate.data.task.template.build(
+      unbound_data.parts,
+      unbound_data.variables,
+      unbound_data.group);
 
-      var $new_task = generate.data.task.template.build(
-        unbound_data.parts,
-        unbound_data.variables,
-        unbound_data.group);
+    //unbound_data will reference template in original list, not in editor
+    $($new_task[1]).click(function() {
+      if(event.target.nodeName.toLowerCase() != "button" &&
+         event.target.nodeName.toLowerCase() != "path" &&
+         event.target.nodeName.toLowerCase() != "svg") {
+        generate.data.task.template.edit.launch(unbound_data, $new_task);
+      }
+    });
 
-      //unbound_data will reference template in original list, not in editor
-      $new_task.click(function() {
-        console.log(event.target.nodeName);
-        if(event.target.nodeName.toLowerCase() != "button" &&
-           event.target.nodeName.toLowerCase() != "path" &&
-           event.target.nodeName.toLowerCase() != "svg") {
-          generate.data.task.template.edit.launch(unbound_data, $new_task);
-        }
-      });
+    button_delete.add($new_task.find('.__overall>.__actions'), $new_task,
+    function() {
+      var task_pos = $('.preview .__task').index($new_task[1]);
+      editor.test_data.delete_task(task_pos);
 
-      button_delete.add($new_task.find('.__overall>.__actions'), $new_task,
-      function() {
-        var task_pos = $('.preview .__task').index($new_task[1]);
-        editor.test_data.delete_task(task_pos);
+      setTimeout(editor.check.numbers, 150);
+    });
 
-        setTimeout(editor.check.numbers, 150);
-      });
+    $new_task.find('.m--button-delete').removeClass('m--button-delete');
 
-      $new_task.find('.m--button-delete').removeClass('m--button-delete');
+    var $gap = $($new_task[0]);
+    pull_put.put_zone.add($gap, function() {
+      editor.insert_new_task($gap);
+      pull_put.reset();
+    });
+    indicator.add($gap, 'add', 1);
 
-      return {
-        data: unbound_data,
-        $task: $new_task
-      };
-    }
+    return {
+      data: unbound_data,
+      $task: $new_task
+    };
   }
 })

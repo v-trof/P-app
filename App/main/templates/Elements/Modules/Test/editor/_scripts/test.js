@@ -50,13 +50,19 @@ editor.test_data = {
   templates_remove(template) {
     editor.test_data.templates
       .splice(editor.test_data.templates.indexOf(template), 1);
-    console.log()
-  },
-  templates_copy(template) {
-    var new_template = JSON.parse(JSON.stringify(template));
-    editor.test_data.templates
-      .splice(editor.test_data.templates.indexOf(template), 0, new_template);
-    console.log(editor.test_data.templates);
+
+    $('.preview .__task.m--template').each(function() {
+      var $task = $(this);
+      var group = $task.find('.__group').val();
+
+      console.log('checking', this, '(' + group + ')', '=>',
+        editor.test_data.template_get_parts(group));
+
+      if( ! editor.test_data.template_get_parts(group)) {
+        //going DRY
+        $task.find('.__serialize').click();
+      }
+    });
   },
 
   template_get_parts(group) {
@@ -70,21 +76,42 @@ editor.test_data = {
   }
 }
 
-editor.test_data.templates.save = function(new_tempalte) {
-  var saved = false;
-  console.log('saving');
+editor.test_data.templates.save = function(new_tempalte, old_group) {
   new_tempalte = JSON.parse(JSON.stringify(new_tempalte));
 
+  console.log('saving', new_tempalte, 'as', old_group);
+
   for(var i = 0; i < editor.test_data.templates.length; i++) {
-    if(editor.test_data.templates[i].group === new_tempalte.group) {
+    if(editor.test_data.templates[i].group === old_group) {
       editor.test_data.templates[i] = new_tempalte;
       saved = true;
     }
   }
+}
 
-  if( ! saved) {
+editor.test_data.templates.add = function(new_tempalte) {
+  var was = false;
+  var new_group = new_tempalte.group;
+
+  console.log('adding', new_tempalte);
+
+  new_tempalte = JSON.parse(JSON.stringify(new_tempalte));
+
+  for(var i = 0; i < editor.test_data.templates.length; i++) {
+    if(editor.test_data.templates[i].group === new_tempalte.group) {
+      was = true;
+    }
+  }
+
+  if(was) {
+    new_group = new_group + '+';
+    new_tempalte.group = new_group;
+    return editor.test_data.templates.add(new_tempalte);
+  } else {
     editor.test_data.templates.push(new_tempalte);
   }
+
+  return new_group;
 }
 
 pull_put.pre_actions.put = function($put_zone, $pulled) {

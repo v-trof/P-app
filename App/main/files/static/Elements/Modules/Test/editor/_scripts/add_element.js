@@ -29,9 +29,7 @@ editor.create_new_task = function() {
     editor.insert_new_task($gap);
     pull_put.reset();
   });
-
   indicator.add($gap, 'add', 1);
-
 
   $new_task.find('.__content').prepend($catcher);
   pull_put.put_zone.add(
@@ -43,19 +41,12 @@ editor.create_new_task = function() {
 
   )
   indicator.add($catcher, 'add', 1);
-
-
-  $new_task.find('.__make_template').click(function() {
-    generate.data.task.default.element.make_template();
-  });
+  
 
   var $actions = $new_task.find('.__overall>.__actions');
 
   button_delete.add($actions, $new_task, function() {
     var task_pos = $('.preview .__task').index($new_task[1]);
-
-    // console.log($new_task[1]);
-    // console.log(task_pos);
 
     editor.test_data.delete_task(task_pos);
 
