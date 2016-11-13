@@ -3,7 +3,7 @@ $(document).ready(function() {
   generate.data.task.template.edit = {
     observe_new_vars: function($edit) {
       $edit.find('.task .__value').keyup(function() {
-        console.log('trigger');
+
         var new_variables = [];
         $edit.find('.task .__value').each(function() {
           var used_variables = generate.data.task
@@ -129,7 +129,7 @@ $(document).ready(function() {
 
       $edit.find('.task').html(generate.data.task.template.element
                                .build_edit(template.parts, template.group));
-      popup.show($edit, function() {}, {"width": "64rem"});
+      popup.show($edit, function() {}, {"width": "64rem"}, true);
 
       $edit = popup.$.find('.__modal>.__content');
 
@@ -139,9 +139,6 @@ $(document).ready(function() {
 
       generate.data.task.template.edit
         .build_variables(template.variables, $edit);
-
-      console.log('editor for', editor.active_template, 'is', $edit);
-
     }
   }
 });

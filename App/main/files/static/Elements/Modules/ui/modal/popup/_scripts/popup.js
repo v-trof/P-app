@@ -2,8 +2,7 @@ var popup = (function() {
   $popup = $(loads.get('Elements/Modules/UI/modal/popup/exports.html'));
   exports = {
     $: $popup,
-    show: function(content, _callback, css) {
-      //console.log(arguments);
+    show: function(content, _callback, css, no_prefocus) {
       $popup.find(".__content").html(content);
       $popup.removeClass('m--hidden');
       $popup.removeClass('m--hiding');
@@ -15,10 +14,15 @@ var popup = (function() {
       $popup.find(".m--sectioned").each(function(index, el) {
         add_menu_caller_sectioned(this);
       });
-      $popup.find("input").first().focus();
+
 
       if (css) {
         $popup.find('.__modal').css(css);
+      }
+
+      //added post factum
+      if( ! no_prefocus) {
+        $popup.find("input").first().focus();
       }
 
       if (_callback) {

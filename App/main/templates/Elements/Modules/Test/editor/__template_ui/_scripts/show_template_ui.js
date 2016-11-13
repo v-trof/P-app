@@ -49,6 +49,7 @@ editor.template_ui.show = function() {
     $task.find('.__content').children().each(function() {
       $(this).unbind('click');
     });
+
     $task.find('.__group').attr('tip', 'Название шаблона');
 
     editor.template_ui.$.find('.__templates').append($task);

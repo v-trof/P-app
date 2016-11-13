@@ -34,14 +34,9 @@ generate.register.task('template', {
 
     for(var i=0; i<source.parts.length; i++) {
       var $part_edit = $edit.find('.__content').find('.m--edit-wrapper').eq(i);
-
-      //console.log($part_edit);
-
       var new_part = generate.data[source.parts[i].type]
                                   [source.parts[i].subtype]
                                   .edit.parse($part_edit);
-
-      //console.log(new_part);
 
       template.parts.push(new_part)
     }
@@ -70,6 +65,10 @@ generate.register.task('template', {
 
     var $task = generate.data.task.default.build();
     var $content = $task.find('.__content');
+    var $serialize = $('<button class="m--ghost m--icon __serialize">'
+                      + loads['Elements/Icons/serialize.svg']
+                      + '</button>');
+
 
     //keeping objects safe
     var parts = JSON.parse(JSON.stringify(parts));
@@ -81,13 +80,25 @@ generate.register.task('template', {
     parts.forEach(function(part) {
       var $part = generate.data[part.type][part.subtype]
                     .element.build(part);
-
+      $part.children('.indicator').remove();
       $content.append($part);
     })
 
+
+
+    $serialize.click(function() {
+      generate.data.task.template.serialize($task, parts);
+    });
+    $serialize.attr('tip', 'Превратить это задание в обычное');
+    $task.find('.__make-template').replaceWith($serialize);
+
+
+
     if(group) {
-      $task.find('input.__group').val(group);
+      $task.find('input.__group').val(group)
     }
+    $task.find('input.__group').attr('disabled', 'disabled');
+
 
     $task.find('.__content').children().each(function() {
       $(this).unbind('click').removeClass('m--pullable')
@@ -122,10 +133,13 @@ $(document).ready(function() {
   editor.test_data.templates.push({
     parts: [{
       subtype: "text",
-      text: 'fas',
+      text: '%(fas)',
       type: "question"
     }],
-    variables: [],
+    variables: [{
+      name: 'fas',
+      value: 'bla'
+    }],
     group: 'not'
   });
 });

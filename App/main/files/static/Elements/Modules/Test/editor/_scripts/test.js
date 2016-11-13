@@ -27,14 +27,12 @@ editor.test_data = {
   },
 
   add_template: function(template) {
-    template = JSON.parse(JSON.stringify(template));
     template.is_template = true;
     editor.test_data.tasks.push(template);
   },
 
   delete: function(position) {
     if(!defined(position) || !defined(position.task)) return;
-    // console.log('deleting:', position);
     editor.test_data
       .tasks[position.task].content
       .splice(position.number, 1);
@@ -59,19 +57,30 @@ editor.test_data = {
     editor.test_data.templates
       .splice(editor.test_data.templates.indexOf(template), 0, new_template);
     console.log(editor.test_data.templates);
+  },
+
+  template_get_parts(group) {
+    for(var i = 0; i < editor.test_data.templates.length; i++) {
+      if(editor.test_data.templates[i].group === group) {
+        return editor.test_data.templates[i].parts;
+      }
+    }
+
+    return false;
   }
 }
 
 editor.test_data.templates.save = function(new_tempalte) {
   var saved = false;
+  console.log('saving');
   new_tempalte = JSON.parse(JSON.stringify(new_tempalte));
 
-  editor.test_data.templates.forEach(function(template) {
-    if(template.group === new_tempalte.group) {
-      template = new_tempalte;
+  for(var i = 0; i < editor.test_data.templates.length; i++) {
+    if(editor.test_data.templates[i].group === new_tempalte.group) {
+      editor.test_data.templates[i] = new_tempalte;
       saved = true;
     }
-  });
+  }
 
   if( ! saved) {
     editor.test_data.templates.push(new_tempalte);
