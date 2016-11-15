@@ -3,6 +3,8 @@ test_manager.load = function(test) {
     test = JSON.parse(test);
   }
 
+  console.log('loaded', test);
+
   if(defined(editor)) {
     if( ! editor.test_data.title) {
       $('.preview h2').html(test.title);
@@ -20,12 +22,14 @@ test_manager.load = function(test) {
 
   test.tasks.forEach(function(task) {
     if(task.is_template) {
+      var task_bundle = generate.data.task.template.build_finalized_task(task);
+      // $new_task.click(function() {
+      //   generate.data.task.template.edit.launch(task);
+      // });
+      //
+      console.log(task_bundle);
 
-      $new_task.click(function() {
-        generate.data.task.template.edit.launch(task);
-      });
-
-      $('.preview>.content').append($new_task);
+      $('.preview>.__content').append(task_bundle.$task);
     } else {
       var $new_task = editor.create_new_task();
       $('.preview>.__content').append($new_task);

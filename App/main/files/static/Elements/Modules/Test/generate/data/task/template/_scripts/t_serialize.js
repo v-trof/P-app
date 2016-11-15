@@ -19,10 +19,13 @@ $(document).ready(function() {
                       element.build(part_data);
       $new_task.find('.__content').append($element);
     });
+    
     $new_task.find('.__group').val(new_task_data.group);
 
 
-    $($task[1]).replaceWith($new_task[1]);
+    $($task[1]).replaceWith($new_task);
+    $task[0].remove();
+
     editor.check.numbers();
     editor.check.empty();
   }

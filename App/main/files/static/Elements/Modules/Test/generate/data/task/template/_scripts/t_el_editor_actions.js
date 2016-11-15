@@ -6,8 +6,10 @@ $(document).ready(function() {
 
     var old_group = editor.active_template.group;
 
-    //template better be unbound
-    editor.active_template = JSON.parse(JSON.stringify(editor.active_template));
+    //template better be unbound for prototypes
+    if(! defined($instance)) {
+      editor.active_template = JSON.parse(JSON.stringify(editor.active_template));
+    }
 
     $mode_swap.click(function() {
       console.log('was:', editor.template_editor_mode);
@@ -66,11 +68,12 @@ $(document).ready(function() {
         }
 
         $new_task = generate.data.task.template
-                      .build_finalized_task(editor.active_template).$task[1];
+                      .build_finalized_task(editor.active_template).$task;
 
         $($instance[1]).replaceWith($new_task);
+        $instance[0].remove();
 
-        $instance[1] = $new_task;
+        $instance = $new_task;
 
         editor.check.numbers();
       });
