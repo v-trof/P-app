@@ -21,6 +21,14 @@ editor.template_ui.show = function() {
         //show share ui
       },
       icon: loads['Elements/Icons/share.svg']
+    }, {
+      action: function() {
+        var $new_task = generate.data.task.template.add_to_test(template);
+        setTimeout(function() {
+          $new_task.click();
+        }, 500);
+      },
+      icon: loads['Elements/Icons/add.svg']
     }]
 
     var $task = generate.data.task.template

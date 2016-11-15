@@ -175,9 +175,15 @@ test_manager.publish_parse = function(test) {
 test_manager.calculate_max_points = function(test) {
   var max_points = 0;
   test.tasks.forEach(function(task) {
-    task.content.forEach(function(element) {
-      if(element.type === 'answer') max_points += parseInt(element.worth);
-    })
+    if(task.is_template) {
+      task.parts.forEach(function(element) {
+        if(element.type === 'answer') max_points += parseInt(element.worth);
+      });
+    } else {
+      task.content.forEach(function(element) {
+        if(element.type === 'answer') max_points += parseInt(element.worth);
+      });
+    }
   });
 
   return max_points;

@@ -15,7 +15,7 @@ $(document).ready(function() {
       new_task_data.parts.push(part);
     });
 
-    var new_task_bundle = generate.data.task.template.edit
+    var new_task_bundle = generate.data.task.template
                             .build_finalized_task(new_task_data);
 
     var new_group = editor.test_data.templates.add(new_task_bundle.data);

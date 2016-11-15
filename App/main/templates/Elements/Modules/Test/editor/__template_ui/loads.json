@@ -1,1 +1,7 @@
-["Elements/Modules/Test/editor/__template_ui/"]
+[
+  "Elements/Modules/Test/editor/__template_ui/",
+  "Elements/Icons/add.svg",
+  "Elements/Icons/share.svg",
+  "Elements/Icons/edit.svg",
+  "Elements/Icons/copy.svg"
+]

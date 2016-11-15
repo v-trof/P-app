@@ -139,7 +139,7 @@ $(document).ready(function() {
     }],
     variables: [{
       name: 'fas',
-      value: 'bla'
+      value: 'ANISYIA'
     }],
     group: 'not'
   });
