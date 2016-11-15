@@ -5,30 +5,35 @@ editor.template_ui.show = function() {
   editor.template_ui.$.removeClass('m--hidden');
 
   editor.test_data.templates.forEach(function(template) {
-    var actions = [{
+    var actions = [
+      {
+        action: function() {
+          var $new_task = generate.data.task.template.add_to_test(template);
+          setTimeout(function() {
+            $new_task.click();
+          }, 500);
+        },
+        icon: loads['Elements/Icons/add.svg'],
+        tip: 'Добавить в тест задание из этого шаблона'
+      }, {
       action: function() {
         generate.data.task.template.edit.launch(template);
       },
-      icon: loads['Elements/Icons/edit.svg']
+      icon: loads['Elements/Icons/edit.svg'],
+      tip: 'Редактировать шаблон'
     }, {
       action: function() {
         editor.test_data.templates.add(template);
         editor.template_ui.show();
       },
-      icon: loads['Elements/Icons/copy.svg']
+      icon: loads['Elements/Icons/copy.svg'],
+      tip: 'Копировать шаблон'
     }, {
       action: function() {
         //show share ui
       },
-      icon: loads['Elements/Icons/share.svg']
-    }, {
-      action: function() {
-        var $new_task = generate.data.task.template.add_to_test(template);
-        setTimeout(function() {
-          $new_task.click();
-        }, 500);
-      },
-      icon: loads['Elements/Icons/add.svg']
+      icon: loads['Elements/Icons/share.svg'],
+      tip: 'Добавить шаблон в открытую библиотеку'
     }]
 
     var $task = generate.data.task.template
@@ -41,6 +46,7 @@ editor.template_ui.show = function() {
     actions.forEach(function(button) {
       var $action = $('<button class="m--ghost m--icon"></button>');
       $action.append(button.icon);
+      $action.attr('tip', button.tip);
       $action.click(button.action);
       $actions.append($action);
     });
@@ -51,7 +57,9 @@ editor.template_ui.show = function() {
       editor.template_ui.show();
     });
 
-    $actions.find('.m--button-delete').removeClass('m--button-delete');
+    $actions.find('.m--button-delete')
+      .removeClass('m--button-delete')
+      .attr('tip', 'Удалить шаблон');
 
     //unbind pull_put shit
     $task.find('.__content').children().each(function() {
