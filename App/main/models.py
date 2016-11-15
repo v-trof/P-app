@@ -67,7 +67,7 @@ from operator import itemgetter
 import operator
 from sortedcontainers import SortedListWithKey
 import shutil
-from random import shuffle
+import random as rand
 
 class MediaModel(models.Model):
 	media_file = models.FileField(upload_to='media')
@@ -2298,9 +2298,14 @@ class Test():
 		json_file["creator"] = user.id
 		questions_number = 0
 		for task in json_file["tasks"]:
-			for question in task["content"]:
-				if question["type"] == "answer":
-					questions_number += 1
+			if "parts" in task.keys():
+				for question in task["parts"]:
+					if question["type"] == "answer":
+						questions_number += 1
+			else:
+				for question in task["content"]:
+					if question["type"] == "answer":
+						questions_number += 1
 		json_file["questions_number"] = questions_number
 		if os.path.exists('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json'):
 			with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as test_file:
@@ -2363,7 +2368,6 @@ class Test():
 		# makes test visible in course screen
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
-		print(publish_data)
 		it=0
 		for element in course_info['sections']['unpublished']:
 			if element["id"] == str(test_id) and element["type"] == "test":
@@ -2398,6 +2402,8 @@ class Test():
 		if "max_score" in publish_data.keys():
 			for mark in publish_data["marks"]:
 				publish_data["marks"][mark]=publish_data["marks"][mark]/int(publish_data["max_score"])*100
+		if "random" in publish_data.keys():
+			test_data["random"]=publish_data["random"]
 		if "mark_setting" in test_data.keys():
 			for key in publish_data["marks"]:
 				test_data["mark_setting"][key] = publish_data["marks"][key]
@@ -2408,6 +2414,7 @@ class Test():
 			#	user=User.objects.get(id=user_id)
 			#	Test.attempt_check(test_id=test_id,user=user,course_id=course_id)
 		else: test_data["mark_setting"]=publish_data["marks"]
+		print(test_data,test_data["random"])
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(test_data, ensure_ascii=False))
 
@@ -2472,7 +2479,7 @@ class Test():
 			# textarea
 		elif item["subtype"] == "select":
 			if value["random"]:
-				shuffle(item["items"])
+				rand.shuffle(item["items"])
 			value["options"] = item["items"]
 			value["answer"] = item["answer"]
 			value["user_answer"] = False
@@ -2480,7 +2487,7 @@ class Test():
 			value["user_score"] = 0
 		elif item["subtype"] == "radio":
 			if value["random"]:
-				shuffle(item["items"])
+				rand.shuffle(item["items"])
 			value["options"] = item["items"]
 			value["answer"] = item["answer"]
 			value["user_answer"] = False
@@ -2488,7 +2495,7 @@ class Test():
 			value["user_score"] = 0
 		elif item["subtype"] == "checkbox":
 			if value["random"]:
-				shuffle(item["items"])
+				rand.shuffle(item["items"])
 			value["options"] = item["items"]
 			value["answer"] = item["answers"]
 			value["user_answer"] = False
@@ -2519,6 +2526,33 @@ class Test():
 
 		return item
 
+	def global_random(random,tasks):
+		print("1",tasks[3])
+		for group in random["limits"]:
+			limit=random["limits"][group]
+			positions=[]
+			it=0
+			for task in tasks:
+				if task["group"]==group:
+					positions.append(it)
+				it+=1
+			it=0
+			print(positions)
+			while it != limit:
+				del positions[rand.randint(0,len(positions)-1)]
+				it+=1
+			print(positions)
+			temp_tasks=tasks
+			for position in sorted(positions, reverse=True):
+				print(position)
+				del tasks[position]
+		print(tasks)
+		if random['shuffle']==True:
+			rand.shuffle(tasks)
+		print(tasks)
+		return tasks
+
+
 	def attempt(course_id, user, test_id):
 		# creates or continues attempt
 		# loads test file
@@ -2533,6 +2567,7 @@ class Test():
 				data = json.load(json_file)
 		else:
 			data = None
+
 		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 				course_info = json.load(info_file)
@@ -2543,6 +2578,7 @@ class Test():
 					"json": json.load(json_file),
 					"published": Test.is_published(test_id=test_id, course_id=course_id)
 				}
+
 				it = 0
 				time_now=str(datetime.datetime.now())
 				if not "start_time" in test["json"].keys():
@@ -2568,6 +2604,9 @@ class Test():
 					json_file.write(saving_data)
 				if Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now,absolute=False)<=0:
 					return {"time_out":True}
+
+				if test["json"]["random"]["do"]==True:
+					test["json"]["tasks"]=Test.global_random(random=test["json"]["random"],tasks=test["json"]["tasks"])
 				for task in test["json"]["tasks"]:
 					print(task)
 					for item in task["content"]:
