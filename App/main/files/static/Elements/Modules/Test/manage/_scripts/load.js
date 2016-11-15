@@ -23,11 +23,6 @@ test_manager.load = function(test) {
   test.tasks.forEach(function(task) {
     if(task.is_template) {
       var task_bundle = generate.data.task.template.build_finalized_task(task);
-      // $new_task.click(function() {
-      //   generate.data.task.template.edit.launch(task);
-      // });
-      //
-      console.log(task_bundle);
 
       $('.preview>.__content').append(task_bundle.$task);
     } else {

@@ -109,38 +109,3 @@ generate.register.task('template', {
     return $task;
   }
 });
-
-$(document).ready(function() {
-  editor.test_data.templates.push({
-    parts: [{
-      subtype: "text",
-      text: '%(eщё пер)',
-      type: "question"
-    }, {
-      subtype: "text",
-      text: '%(пер)',
-      type: "question"
-    }],
-    variables: [{
-      name: 'пер',
-      value: "знач."
-    }, {
-      name: 'eщё пер',
-      value: "значение"
-    }],
-    group: 'sample'
-  });
-
-  editor.test_data.templates.push({
-    parts: [{
-      subtype: "text",
-      text: '%(fas)',
-      type: "question"
-    }],
-    variables: [{
-      name: 'fas',
-      value: 'ANISYIA'
-    }],
-    group: 'not'
-  });
-});

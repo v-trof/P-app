@@ -75,6 +75,11 @@ $(document).ready(function() {
 
         $instance = $new_task;
 
+        var position = $('.preview .__task').index($instance[1]);
+
+        editor.test_data.tasks[position] = editor.active_template;
+        editor.test_data.tasks[position].is_template = true;
+
         editor.check.numbers();
       });
     } else {
@@ -85,8 +90,6 @@ $(document).ready(function() {
                                       $edit.find('.task').children(),
                                       editor.active_template);
         }
-
-        console.log('saving', editor.active_template);
 
         editor.test_data.templates.save(editor.active_template, old_group);
         editor.template_ui.show();
