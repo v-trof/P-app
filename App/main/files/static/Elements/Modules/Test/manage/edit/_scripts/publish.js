@@ -176,6 +176,11 @@ test_manager.calculate_max_points = function(test) {
   var max_points = 0;
   test.tasks.forEach(function(task) {
     if(task.is_template) {
+      task.parts = generate.data.task.template
+                    .unwrap_replace(task.parts, task.variables);
+
+      console.log(task);
+
       task.parts.forEach(function(element) {
         if(element.type === 'answer') max_points += parseInt(element.worth);
       });

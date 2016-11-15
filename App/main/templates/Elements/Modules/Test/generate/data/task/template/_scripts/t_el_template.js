@@ -45,28 +45,6 @@ generate.register.task('template', {
   },
 
   builder: function(parts, variables, group) {
-    function unwrap_replace(obj, variables) {
-      if(typeof obj === 'string') {
-        variables.forEach(function(variable) {
-          obj = obj.replaceAll('%(' + variable.name + ')', variable.value);
-        });
-      } else if(obj instanceof Array) {
-        obj.forEach(function(part) {
-            part = unwrap_replace(part, variables);
-        });
-
-        for(var i = 0; i < obj.length; i++) {
-          obj[i] = unwrap_replace(obj[i], variables);
-        }
-      } else if(typeof obj === "object") {
-        for(key in obj) {
-          obj[key] = unwrap_replace(obj[key], variables)
-        }
-      }
-
-      return obj;
-    }
-
     var $task = generate.data.task.default.build();
     var $content = $task.find('.__content');
     var $serialize = $('<button class="m--ghost m--icon __serialize">'
@@ -78,7 +56,7 @@ generate.register.task('template', {
     var parts = JSON.parse(JSON.stringify(parts));
 
     parts.forEach(function(part) {
-      part = unwrap_replace(part, variables);
+      part = generate.data.task.template.unwrap_replace(part, variables);
     });
 
     parts.forEach(function(part) {
