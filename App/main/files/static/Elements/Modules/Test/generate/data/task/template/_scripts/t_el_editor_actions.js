@@ -6,8 +6,10 @@ $(document).ready(function() {
 
     var old_group = editor.active_template.group;
 
-    //template better be unbound
-    editor.active_template = JSON.parse(JSON.stringify(editor.active_template));
+    //template better be unbound for prototypes
+    if(! defined($instance)) {
+      editor.active_template = JSON.parse(JSON.stringify(editor.active_template));
+    }
 
     $mode_swap.click(function() {
       console.log('was:', editor.template_editor_mode);
@@ -66,11 +68,17 @@ $(document).ready(function() {
         }
 
         $new_task = generate.data.task.template
-                      .build_finalized_task(editor.active_template).$task[1];
+                      .build_finalized_task(editor.active_template).$task;
 
         $($instance[1]).replaceWith($new_task);
+        $instance[0].remove();
 
-        $instance[1] = $new_task;
+        $instance = $new_task;
+
+        var position = $('.preview .__task').index($instance[1]);
+
+        editor.test_data.tasks[position] = editor.active_template;
+        editor.test_data.tasks[position].is_template = true;
 
         editor.check.numbers();
       });
@@ -82,8 +90,6 @@ $(document).ready(function() {
                                       $edit.find('.task').children(),
                                       editor.active_template);
         }
-
-        console.log('saving', editor.active_template);
 
         editor.test_data.templates.save(editor.active_template, old_group);
         editor.template_ui.show();

@@ -41,7 +41,7 @@ editor.create_new_task = function() {
 
   )
   indicator.add($catcher, 'add', 1);
-  
+
 
   var $actions = $new_task.find('.__overall>.__actions');
 

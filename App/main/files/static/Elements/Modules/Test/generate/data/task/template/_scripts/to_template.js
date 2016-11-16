@@ -25,7 +25,10 @@ $(document).ready(function() {
     editor.test_data.tasks[position] = new_task_bundle.data;
 
     new_task_bundle.$task.find('input.__group').val(new_group);
-    $($task[1]).replaceWith(new_task_bundle.$task[1]);
+
+    $($task[1]).replaceWith(new_task_bundle.$task);
+    $task[0].remove();
+
     editor.check.numbers();
     editor.check.empty();
   }

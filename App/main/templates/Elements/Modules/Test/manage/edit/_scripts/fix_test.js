@@ -10,8 +10,17 @@ test_manager.fix_test_strict = function(test) {
   test.groups = {};
 
   test.tasks.forEach(function(task) {
-    if(task.content.length === 0) return false;
-    task.content.forEach(function(element) {
+    var elements;
+
+    if( ! defined(task.content)) {
+      elements = task.parts;
+    } else {
+      elements = task.content;
+    }
+
+    if(elements.length === 0) return false;
+
+    elements.forEach(function(element) {
       if(element.type === 'answer' &&
          ! (element.answer || element.answers.length > 0)) {
         console.log('no answer');
