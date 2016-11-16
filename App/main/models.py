@@ -2310,10 +2310,7 @@ class Test():
 		if os.path.exists('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json'):
 			with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as test_file:
 				data=json.load(test_file)
-				if "allowed_mistakes" in data.keys():
-					json_file["allowed_mistakes"]=data["allowed_mistakes"]
-				if "mark_setting" in data.keys():
-					json_file["mark_setting"]=data["mark_setting"]
+				json_file.update(data)
 			for attempt in glob.glob('main/files/json/courses/' + course_id + '/users/*/tests/attempts/' + test_id + '.json'):
 				with io.open(attempt, 'r', encoding='utf8') as attempt_file:
 					attempt_data=json.load(attempt_file)
@@ -2398,7 +2395,9 @@ class Test():
 			if publish_data["forgive"][mistake]:
 				test_data["allowed_mistakes"].append(mistake)
 		if "time_limit" in publish_data.keys():
+			print("okokokok")
 			test_data["max_time"] = publish_data["time_limit"]
+		print("time_limit:", publish_data.keys())
 		if "max_score" in publish_data.keys():
 			for mark in publish_data["marks"]:
 				publish_data["marks"][mark]=publish_data["marks"][mark]/int(publish_data["max_score"])*100
@@ -2586,26 +2585,26 @@ class Test():
 					test["json"]["start_time"]={}
 					test["json"]["start_time"][str(user.id)]=time_now
 					test["json"]["finish_time"]={}
-					test["json"]["finish_time"][str(user.id)]=Utility.merge_time(test["json"]["max_time"],test["json"]["start_time"][str(user.id)])
-					if "max_time" in test["json"]:
+					if test["json"]["max_time"]!="00:00:00":
 						test["json"]["time_left"]={}
+						test["json"]["finish_time"][str(user.id)]=Utility.merge_time(test["json"]["max_time"],test["json"]["start_time"][str(user.id)])
 						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
 				elif not str(user.id) in test["json"]["start_time"].keys():
 					time="00:00:00"
 					test["json"]["start_time"][str(user.id)]=time_now
-					test["json"]["finish_time"][str(user.id)]=Utiliy.merge_time(test["json"]["max_time"],test["json"]["start_time"][str(user.id)])
-					if "max_time" in test["json"]:
+					if test["json"]["max_time"]!="00:00:00":
+						test["json"]["finish_time"][str(user.id)]=Utiliy.merge_time(test["json"]["max_time"],test["json"]["start_time"][str(user.id)])
 						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
 				else: 
-					if "max_time" in test["json"]:
+					if test["json"]["max_time"]!="00:00:00":
 						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
 				with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(test["json"], ensure_ascii=False)
 					json_file.write(saving_data)
-				if Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now,absolute=False)<=0:
+				if test["json"]["max_time"]!="00:00:00" and Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now,absolute=False)<=0:
 					return {"time_out":True}
 
-				if test["json"]["random"]["do"]==True:
+				if "random" in test["json"] and test["json"]["random"]["do"]==True:
 					test["json"]["tasks"]=Test.global_random(random=test["json"]["random"],tasks=test["json"]["tasks"])
 				for task in test["json"]["tasks"]:
 					print(task)
