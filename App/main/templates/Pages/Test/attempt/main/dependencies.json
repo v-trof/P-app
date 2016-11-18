@@ -5,6 +5,7 @@
                "Modules/Test/generate/data/task.all",
                "Modules/Test/manage",
                "Modules/Utility/scroll",
+               "Modules/tooltip",
                "button"],
   "template": "default",
   "title": "Попытка {{test.title}}"

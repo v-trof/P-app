@@ -1,7 +1,7 @@
 generate.register.external('answer', 'checkbox', {
   get_value($element) {
     var answers = [];
-    $element.find('.m--checkbox').each(function(el, index) {
+    $element.find('.m--checkbox').each(function(index, el) {
       if(el.querySelector('input').checked) {
         answers.push(index);
       }
@@ -11,12 +11,12 @@ generate.register.external('answer', 'checkbox', {
 
   get_summary($element) {
     var answers = [];
-    $element.find('.m--checkbox').each(function(el, index) {
+    $element.find('.m--checkbox').each(function(index, el) {
       if(el.querySelector('input').checked) {
         answers.push(el.querySelector('label').innerHTML);
       }
     });
-    return answers;
+    return answers.join(', ');
   },
 
   to_answer(value) {

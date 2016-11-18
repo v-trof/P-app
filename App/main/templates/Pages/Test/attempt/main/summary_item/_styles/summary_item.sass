@@ -1,0 +1,16 @@
+@import "../../../../../../sass_vars/main.sass"
+
+.summary-item
+    align-items: center
+    margin-bottom: $margin--s
+    &>.__number
+      margin-right: $margin--s
+    &>.card
+      width: 100%
+      margin: 0
+    &>button.m--ghost.m--icon.__icon
+      pointer-events: none
+      svg
+        fill: $grey--dark
+      &.m--negative
+        fill: $red
