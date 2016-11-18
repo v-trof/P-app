@@ -1,9 +1,9 @@
 generate.register.external('answer', 'text', {
-  value($element) {
+  get_value($element) {
     return $element.find('input').val();
   },
 
-  summary($element) {
+  get_summary($element) {
     return $element.find('input').val();
   },
 

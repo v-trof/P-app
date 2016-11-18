@@ -1,0 +1,11 @@
+{
+  "elements": ["Modules/UI/modal/panel",
+               "Modules/Test/generate/data/elements.all",
+               "Modules/Test/generate/data/external.all",
+               "Modules/Test/generate/data/task.all",
+               "Modules/Test/manage",
+               "Modules/Utility/scroll",
+               "button"],
+  "template": "default",
+  "title": "Попытка {{test.title}}"
+}

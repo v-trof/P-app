@@ -1,5 +1,5 @@
-generate.register.external('answer', 'text', {
-  value($element) {
+generate.register.external('answer', 'checkbox', {
+  get_value($element) {
     var answers = [];
     $element.find('.m--checkbox').each(function(el, index) {
       if(el.querySelector('input').checked) {
@@ -9,7 +9,7 @@ generate.register.external('answer', 'text', {
     return answers;
   },
 
-  summary($element) {
+  get_summary($element) {
     var answers = [];
     $element.find('.m--checkbox').each(function(el, index) {
       if(el.querySelector('input').checked) {

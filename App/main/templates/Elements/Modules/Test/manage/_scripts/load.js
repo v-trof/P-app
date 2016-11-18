@@ -3,9 +3,9 @@ test_manager.load = function(test) {
     test = JSON.parse(test);
   }
 
-  console.log('loaded', test);
+  var editor_defined = (typeof editor !== 'undefined');
 
-  if(defined(editor)) {
+  if (editor_defined) {
     if( ! editor.test_data.title) {
       $('.preview h2').html(test.title);
       editor.test_data.title = test.title;
@@ -20,13 +20,19 @@ test_manager.load = function(test) {
     });
   }
 
-  test.tasks.forEach(function(task) {
+  test.tasks.forEach(function(task, index) {
     if(task.is_template) {
       var task_bundle = generate.data.task.template.build_finalized_task(task);
 
       $('.preview>.__content').append(task_bundle.$task);
     } else {
-      var $new_task = editor.create_new_task();
+      if(editor_defined) {
+        var $new_task = editor.create_new_task();
+      } else {
+        var $new_task = generate.data.task.default.build();
+        $new_task.find('.__actions').remove();
+        $new_task.find('.__number').html(index + 1);
+      }
       $('.preview>.__content').append($new_task);
 
       $new_task.find('.__group').val(task.group);
@@ -37,12 +43,8 @@ test_manager.load = function(test) {
     }
   });
 
-  editor.check.numbers();
-  editor.check.empty();
-}
-
-$(document).ready(function() {
-  if(defined(django.loaded)) {
-    test_manager.load(django.loaded);
+  if(editor_defined) {
+    editor.check.numbers();
+    editor.check.empty();
   }
-});
+}

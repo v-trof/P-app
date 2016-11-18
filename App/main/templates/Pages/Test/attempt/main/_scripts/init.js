@@ -1,15 +1,5 @@
-editor.check.empty_text = 'Добавьте сюда элемент вопроса';
-
-editor.fill_item_list(
-  $('.item-list.m--question'), 'question'
-);
-
-editor.fill_item_list(
-  $('.item-list.m--answer'), 'answer'
-);
-
-
-test_manager.publish_popup = '{% include "Pages/Test/editor/_publish_popup/exports.html" %}'
+var False = false;
+var True = true;
 
 var django = {
   course: {
@@ -28,9 +18,13 @@ var django = {
 if ("{{test.json}}".length > 0)
   django.loaded = {{test.json|safe}};
 
-
 $(document).ready(function() {
   if(defined(django.loaded)) {
     test_manager.load(django.loaded);
+    attempt.append_send();
+    attempt.make_summary();
+  } else {
+    $('.preview>h2').html('Ошибка при загрузке теста');
+    //GET-AJAX-HERE error log
   }
 });

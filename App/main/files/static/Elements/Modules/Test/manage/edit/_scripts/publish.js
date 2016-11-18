@@ -81,7 +81,7 @@ test_manager.publish_parse = function(test) {
       "2": 0
     },
     section: "Нераспределенные",
-    time_limit: 0
+    time_limit: "00:00:00"
   };
 
   //build
@@ -134,7 +134,8 @@ test_manager.publish_parse = function(test) {
 
   //time
   if($('#limit_time').is(':checked')) {
-    parsed.time_limit = parseInt($('#max_time').val());
+    var mins_limit = parseInt($('#max_time').val());
+    parsed.time_limit = [mins_limit/60, mins_limit%60, 0].join(':');
   }
 
   console.log(parsed);
