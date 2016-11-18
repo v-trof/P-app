@@ -31,7 +31,6 @@ attempt.make_summary = function () {
       index++;
 
       //no idea where to look for values
-      var value = "Пусто";
 
       var $new_summary = attempt.make_summary_item(show_index, value,
                                                    answer_pos, $(this));

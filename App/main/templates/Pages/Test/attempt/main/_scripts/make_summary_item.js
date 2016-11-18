@@ -68,8 +68,13 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
 
   $summary_item.find('.__number').html(show_index + " ");
 
-  $value.html(value);
-  $icon.html(loads['Elements/Icons/minus.svg']);
+  if(value) {
+    $value.html(value);
+    set_icon('synced');
+  } else {
+    $value.html("Пусто");
+    set_icon('empty');
+  }
 
   data.observe($sync_element, _check);
 
