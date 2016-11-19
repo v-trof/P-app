@@ -77,4 +77,8 @@ pull_put.actions.add = function() {
     editor.check.numbers();
     editor.check.empty();
   }
+
+  if(defined(editor.active_element.position)) {
+    editor.test_data.delete(editor.active_element.position);
+  }
 }

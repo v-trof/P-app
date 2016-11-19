@@ -19,7 +19,7 @@ pull_put.pre_actions.pull = function($pulled) {
     $pulled = $pulled.children();
   }
 
-  var blueprints = generate.get_blueprints($pulled)
+  var blueprints = generate.get_blueprints($pulled);
   editor.active_element.blueprints = blueprints;
 
   if($pulled.parents('.preview').length > 0) {
