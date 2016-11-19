@@ -508,7 +508,8 @@ class CourseManager(models.Manager):
 		else:
 			setattr(creator, 'courses', str(course.id))
 		creator.save()
-		os.makedirs('main/files/json/courses/' + str(course.id) + '/tests/')
+		os.makedirs('main/files/json/courses/' + str(course.id) + '/tests/public/')
+		os.makedirs('main/files/json/courses/' + str(course.id) + '/tests/control/')
 		os.makedirs('main/files/json/courses/' +
 					str(course.id) + '/assignments/')
 		os.makedirs('main/files/json/courses/' +
@@ -1383,7 +1384,7 @@ class CourseManager(models.Manager):
 			for element in list(values):
 				if element["type"] == "test":
 					test_id = element["id"]
-					with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+					with io.open('main/files/json/courses/' + str(course_id) + '/tests/public/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 						test_data = json.load(info_file)
 						tests[section_name].append({"title": test_data["title"], "id": test_id, "questions_number": test_data[
 												   "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
@@ -1416,7 +1417,7 @@ class CourseManager(models.Manager):
 			for element in elements:
 				if element["type"] == "test":
 					test_id = element["id"]
-					with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+					with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 						test_data = json.load(info_file)
 					test={"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
 															 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id}
@@ -1439,7 +1440,7 @@ class CourseManager(models.Manager):
 		for element in data["sections"]["unpublished"]:
 			if element["type"] == "test":
 				test_id = element["id"]
-				with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+				with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 					test_data = json.load(info_file)
 					context["unpublished"].append({"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
 												  "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
@@ -2234,7 +2235,9 @@ class Test():
 	def delete(course_id, test_id):
 		# moves test to trash bin
 		os.remove('main/files/json/courses/' +
-				  course_id + '/tests/' + test_id + '.json')
+				  course_id + '/tests/public/' + test_id + '.json')
+		os.remove('main/files/json/courses/' +
+				  course_id + '/tests/control/' + test_id + '.json')
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
@@ -2307,8 +2310,8 @@ class Test():
 					if question["type"] == "answer":
 						questions_number += 1
 		json_file["questions_number"] = questions_number
-		if os.path.exists('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json'):
-			with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as test_file:
+		if os.path.exists('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json'):
+			with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'r', encoding='utf8') as test_file:
 				data=json.load(test_file)
 				json_file.update(data)
 			for attempt in glob.glob('main/files/json/courses/' + course_id + '/users/*/tests/attempts/' + test_id + '.json'):
@@ -2335,8 +2338,24 @@ class Test():
 								test[str(question_id)] = value
 				with io.open(attempt, 'w', encoding='utf8') as attempt_file:
 					attempt_file.write(json.dumps(test, ensure_ascii=False))
-		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
+		with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
 			test_file.write(json.dumps(json_file, ensure_ascii=False))
+		control_file=json_file.copy()
+		del control_file["templates"]
+		control_file["tasks"]=[]
+		for task in json_file["tasks"]:
+			if "is_template" in task.keys() and task["is_template"]==True:
+				generated_task=task
+				generated_task["content"]=generated_task["parts"]
+				del generated_task["parts"]
+				del generated_task["is_template"]
+				print(generated_task)
+				control_file["tasks"].append(generated_task)
+			else: control_file["tasks"].append(task)
+
+		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
+			test_file.write(json.dumps(control_file, ensure_ascii=False))
+
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 		test_unpublished = False
@@ -2352,7 +2371,7 @@ class Test():
 		return {"type":"success","message":"Тест сохранен"}
 
 	def load(course_id, test_id):
-		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as json_file:
+		with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 				test = {
 					"id": test_id,
 					"loaded": 1,
@@ -2385,8 +2404,8 @@ class Test():
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 
-		if os.path.exists('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json'):
-			with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+		if os.path.exists('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json'):
+			with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 				test_data = json.load(info_file)
 		else:
 			test_data={}
@@ -2414,9 +2433,10 @@ class Test():
 			#	Test.attempt_check(test_id=test_id,user=user,course_id=course_id)
 		else: test_data["mark_setting"]=publish_data["marks"]
 		print(test_data,test_data["random"])
-		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
+		with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(test_data, ensure_ascii=False))
-
+		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
+			info_file.write(json.dumps(test_data, ensure_ascii=False))
 		return {"type":"success","message":"Тест был опубликован"}
 
 	def unpublish(course_id, test_id):
@@ -2508,47 +2528,43 @@ class Test():
 		return value
 
 	def build_answer(item, data):
-		type = item["class"]
-		if type == "answer--text":
+		type = item["subtype"]
+		if type == "text":
 			item["value"] = data["user_answer"]
-		elif type == "answer--textarea":
+		elif type == "textarea":
 			item["value"] = data["user_answer"]
-		elif type == "answer--select":
+		elif type == "select":
 			item["value"] = data["user_answer"]
 			item["filled"] = data["user_answer"]
-		elif type == "answer--radio":
+		elif type == "radio":
 			item["value"] = data["user_answer"]
-		elif type == "answer--checkbox":
+		elif type == "checkbox":
 			item["value"] = data["user_answer"]
-		elif type == "answer--classify":
+		elif type == "classify":
 			item["value"] = data["user_answer"]
 
 		return item
 
 	def global_random(random,tasks):
-		print("1",tasks[3])
 		for group in random["limits"]:
 			limit=random["limits"][group]
 			positions=[]
-			it=0
+			pos_it=0
+			pos_cnt=0
 			for task in tasks:
 				if task["group"]==group:
-					positions.append(it)
-				it+=1
+					positions.append(pos_it)
+					pos_cnt+=1
+				pos_it+=1
 			it=0
-			print(positions)
-			while it != limit:
+			while it != limit and it < pos_cnt:
 				del positions[rand.randint(0,len(positions)-1)]
 				it+=1
-			print(positions)
 			temp_tasks=tasks
 			for position in sorted(positions, reverse=True):
-				print(position)
 				del tasks[position]
-		print(tasks)
 		if random['shuffle']==True:
 			rand.shuffle(tasks)
-		print(tasks)
 		return tasks
 
 
@@ -2567,7 +2583,7 @@ class Test():
 		else:
 			data = None
 
-		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as json_file:
+		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 				course_info = json.load(info_file)
 				course = {"id": course_id}
@@ -2598,7 +2614,7 @@ class Test():
 				else: 
 					if test["json"]["max_time"]!="00:00:00":
 						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
-				with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as json_file:
+				with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'w', encoding='utf8') as json_file:
 					saving_data = json.dumps(test["json"], ensure_ascii=False)
 					json_file.write(saving_data)
 				if test["json"]["max_time"]!="00:00:00" and Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now,absolute=False)<=0:
@@ -2628,11 +2644,13 @@ class Test():
 			for item in element["content"]:
 				if item["type"] == "answer" and "answer" in item.keys():
 					item.pop("answer", None)
+		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'w', encoding='utf8') as json_file:
+			json_file.write(json.dumps(test["json"],ensure_ascii=False))
 		if data is None:
 			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
 				test = {}
 				question_id = 0
-				with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+				with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 					test_info = json.load(info_file)
 					for task in test_info["tasks"]:
 						for item in task["content"]:
@@ -2650,7 +2668,7 @@ class Test():
 		if answer != "":
 			if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
 				return {"type":"error","message":"Тест уже был выполнен"}
-			with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+			with io.open('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 				test_info = json.load(info_file)
 			it=0
 			for task in test_info["tasks"]:
@@ -2658,9 +2676,10 @@ class Test():
 					if question["type"]=="answer":
 						it+=1
 					if it==int(question_id):
-						if question["class"]=="answer--classify":
+						print(question)
+						if question["subtype"]=="classify":
 							answer=json.loads(answer)
-						elif question["class"]=="answer--checkbox" or question["class"]=="answer--radio":
+						elif question["subtype"]=="checkbox" or question["subtype"]=="radio":
 							answer=json.loads(answer)
 						break
 			time_now=str(datetime.datetime.now())
@@ -2674,7 +2693,7 @@ class Test():
 				timeout=True
 			else: timeout=False
 
-			with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'w', encoding='utf8') as info_file:
+			with io.open('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json', 'w', encoding='utf8') as info_file:
 				info_file.write(json.dumps(test_info, ensure_ascii=False))
 			with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as assignments_file:
 				assignment_map = json.load(assignments_file)
@@ -2687,6 +2706,7 @@ class Test():
 			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 				data = json.load(json_file)
 			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
+				print("OLOLOLOLO", answer)
 				data[str(question_id-1)]["user_answer"] = answer
 				data[str(question_id-1)]["time"]=time
 				saving_data = json.dumps(data, ensure_ascii=False)
@@ -2694,7 +2714,7 @@ class Test():
 			return {"type":"success","message":"Ответ сохранен","timeout":timeout}
 
 	def give_mark(percentage, course_id, test_id):
-		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/tests/public/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 			test_info = json.load(info_file)
 		if percentage >= test_info["mark_setting"]["5"]:
 			mark = "5"
@@ -2739,7 +2759,7 @@ class Test():
 		test_results["forgiving"] = []
 		test_results["missed"] = []
 		test_results["unseen_by"] = []
-		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 			test_data = json.load(info_file)
 		test_results["test"] = {"id": test_id, "title": test_data["title"]}
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
@@ -2872,8 +2892,8 @@ class Test():
 			return {"type":"error","message":"Тест не был выполнен"}
 
 	def get_test_info(course_id, test_id):
-		if os.path.exists('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json'):
-			with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+		if os.path.exists('main/files/json/courses/' + str(course_id) + '/tests/public/' + str(test_id) + '.json'):
+			with io.open('main/files/json/courses/' + str(course_id) + '/tests/public/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 				test_info = json.load(info_file)
 			return test_info
 		else:
@@ -2900,7 +2920,7 @@ class Test():
 			return {"type":"error","message":"Попытка не существует"}
 
 	def is_creator(user, test_id, course_id):
-		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/tests/public/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 			test_info = json.load(info_file)
 		return test_info["creator"] == user.id
 
@@ -2955,7 +2975,7 @@ class Marks():
 			tests_info[section]={}
 			for test in course_data["sections"]["published"][section]:
 				if test["type"]=="test":
-					with io.open('main/files/json/courses/' + str(course_id) + '/tests/'+test["id"]+'.json', 'r', encoding='utf8') as data_file:
+					with io.open('main/files/json/courses/' + str(course_id) + '/tests/public/'+test["id"]+'.json', 'r', encoding='utf8') as data_file:
 						data = json.load(data_file)
 						tests_info[section][test["id"]]=data
 		return tests_info
@@ -2994,7 +3014,7 @@ class Marks():
 							test_info = json.load(info_file)
 						marks[group][str(user_id)]["tests"][test_id] = test_info["mark"]
 						if with_info:
-							with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+							with io.open('main/files/json/courses/' + str(course_id) + '/tests/public/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 								test_info = json.load(info_file)
 							marks[group][str(user_id)]["tests"][test_id]["info"]=test_info
 					else: marks[group][str(user_id)]["tests"][test_id]=0
@@ -3206,7 +3226,7 @@ class Search():
 					if type and element["type"]==type or type==None:
 						if element["type"] == "test":
 							test_id = element["id"]
-							with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+							with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 								test_data = json.load(info_file)
 							conformity=Utility.compare(str1=search_query,str2=test_data["title"])
 							test={"type": "test","course_name": str(course.name),"title": test_data["title"], "id": test_id, "questions_number": test_data["questions_number"], "link": '/test/attempt/?course_id=' + course_id + "&test_id=" + test_id }
