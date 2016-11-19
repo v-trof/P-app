@@ -15,8 +15,9 @@ var django = {
   current_type: "{{type}}"
 }
 
-if ("{{test.json}}".length > 0)
+{% if test.json %}
   django.loaded = {{test.json|safe}};
+{% endif %}
 
 $(document).ready(function() {
   if(defined(django.loaded)) {

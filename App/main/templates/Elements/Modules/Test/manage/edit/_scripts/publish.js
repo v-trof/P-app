@@ -209,6 +209,8 @@ test_manager.collect_publish = function() {
 }
 
 test_manager.render_inline = function(label, max) {
+
+  console.log('rendering:', label, max);
   var $new_item = $(
     "<div class='row'>" +
       "<div class='__group'>" + label + ": </div>" +
