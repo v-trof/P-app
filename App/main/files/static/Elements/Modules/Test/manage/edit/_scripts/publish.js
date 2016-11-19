@@ -135,7 +135,8 @@ test_manager.publish_parse = function(test) {
   //time
   if($('#limit_time').is(':checked')) {
     var mins_limit = parseInt($('#max_time').val());
-    parsed.time_limit = [mins_limit/60, mins_limit%60, 0].join(':');
+    parsed.time_limit = [Math.floor(mins_limit/60), mins_limit%60, 0].join(':');
+    parsed.time_limit = test_manager.expand_time(parsed.time_limit);
   }
 
   console.log(parsed);
@@ -231,4 +232,19 @@ test_manager.render_inline = function(label, max) {
   });
 
   return $new_item;
+}
+
+/**
+ * turns h:m:s to hh:mm:ss
+ * @method expand_time
+ * @param  {string} hms time to turn into hh:mm:ss
+ * @return {string} hh:mm:ss
+ */
+test_manager.expand_time = function(hms) {
+  var hhmmss = hms.split(':');
+  for(var i = 0; i < hhmmss.length; i++) {
+    if(hhmmss[i].length == 1) hhmmss[i] = '0' + hhmmss[i];
+  }
+
+  return hhmmss.join(':');
 }
