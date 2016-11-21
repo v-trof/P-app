@@ -28,7 +28,3 @@ $(window).resize(function(event) {
   */
   adapt_layout();
 });
-
-$(document).ready(function() {
-  setTimeout(adapt_layout, 200);
-});

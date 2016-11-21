@@ -1,6 +1,6 @@
 var attempt = attempt || {}
 
-attempt.append_send = function(index, value, _success_cb, _error_cb) {
+attempt.append_send = function(index, value) {
   var $send_button = $("<button>Сдать тест</button>");
 
   $('.preview >.__content').append($send_button);
@@ -34,7 +34,7 @@ attempt.append_send = function(index, value, _success_cb, _error_cb) {
     });
 }
 
-attempt.send_value = function(index, value) {
+attempt.send_value = function(index, value, _success_cb, _error_cb) {
   $.ajax({
 			type:"POST",
 			url:"../attempt/save/",
@@ -45,8 +45,12 @@ attempt.send_value = function(index, value) {
 			"course_id":"{{course.id}}",
 			"csrfmiddlewaretoken":"{{ csrf_token }}"
 		},
-			error: function() {
-				notification.show('error', 'Не удалось сохранить ответ на сервере, <br> не закрывайте тест' );
-			},
+    success: function() {
+      _success_cb();
+    },
+		error: function() {
+      _error_cb();
+			notification.show('error', 'Не удалось сохранить ответ на сервере, <br> не закрывайте тест' );
+		},
 		});
 }

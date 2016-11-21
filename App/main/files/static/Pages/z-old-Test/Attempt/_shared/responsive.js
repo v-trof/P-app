@@ -20,14 +20,13 @@ function adapt_layout() {
 }
 
 $(window).resize(function(event) {
-  /* 3 states: 
-     1600+ search align 
+  /* 3 states:
+     1600+ search align
      1366-1600
      1100-960 test gets smaller
      960 - panel is hidden
   */
   adapt_layout();
-
 });
 
 $(document).ready(function() {

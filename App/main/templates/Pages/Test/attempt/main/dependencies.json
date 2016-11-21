@@ -7,6 +7,8 @@
                "Modules/Utility/scroll",
                "Modules/UI/Info/tooltip",
                "button"],
+  "scripts": ["Pages/Test/Attempt/_shared/adapt_layout",
+              "Pages/Test/Attempt/_shared/summary"],
   "template": "default",
   "title": "Попытка {{test.title}}"
 }

@@ -28,4 +28,6 @@ $(document).ready(function() {
     $('.preview>h2').html('Ошибка при загрузке теста');
     //GET-AJAX-HERE error log
   }
+
+  adapt_layout();
 });

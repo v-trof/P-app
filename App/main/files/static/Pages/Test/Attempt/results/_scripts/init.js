@@ -22,7 +22,7 @@ var django = {
 $(document).ready(function() {
   if(defined(django.loaded)) {
     test_manager.load(django.loaded);
-    attempt.append_send();
+    attempt.swap_answers();
     attempt.make_summary();
   } else {
     $('.preview>h2').html('Ошибка при загрузке теста');

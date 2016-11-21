@@ -20,9 +20,9 @@
 <link rel="stylesheet" href="{% static "Elements/card/user/_styles/user.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/default/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/attempt/main/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/attempt/main/_styles/summary.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/attempt/main/summary_item/_styles/summary_item.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/Attempt/main/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/Attempt/main/_styles/summary.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/Attempt/main/summary_item/_styles/summary_item.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}"> 
@@ -44,30 +44,30 @@
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
- loads = {'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
-'Elements/Icons/serialize.svg' : '{% include "Elements/Icons/serialize.svg" %}', 
-'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
+ loads = {'Elements/Modules/Test/generate/data/task/default/exports.html' : '{% include "Elements/Modules/Test/generate/data/task/default/exports.html" %}', 
+'Elements/Icons/minus.svg' : '{% include "Elements/Icons/minus.svg" %}', 
+'Elements/Icons/copy.svg' : '{% include "Elements/Icons/copy.svg" %}', 
+'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
+'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
+'Elements/Icons/share.svg' : '{% include "Elements/Icons/share.svg" %}', 
+'Elements/Modules/UI/modal/popup/exports.html' : '{% include "Elements/Modules/UI/modal/popup/exports.html" %}', 
+'Elements/Inputs/checkbox/exports.html' : '{% include "Elements/Inputs/checkbox/exports.html" %}', 
+'Elements/Icons/sync_problem.svg' : '{% include "Elements/Icons/sync_problem.svg" %}', 
 'Elements/Modules/Test/generate/data/task/template/__edit/exports.html' : '{% include "Elements/Modules/Test/generate/data/task/template/__edit/exports.html" %}', 
 'Elements/Modules/UI/modal/panel/exports.html' : '{% include "Elements/Modules/UI/modal/panel/exports.html" %}', 
-'Elements/Inputs/text/exports.html' : '{% include "Elements/Inputs/text/exports.html" %}', 
-'Elements/Icons/sync_problem.svg' : '{% include "Elements/Icons/sync_problem.svg" %}', 
-'Elements/Modules/Test/generate/data/task/default/exports.html' : '{% include "Elements/Modules/Test/generate/data/task/default/exports.html" %}', 
-'Pages/Test/attempt/main/summary_item/exports.html' : '{% include "Pages/Test/attempt/main/summary_item/exports.html" %}', 
 'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
-'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
-'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
-'Elements/Icons/copy.svg' : '{% include "Elements/Icons/copy.svg" %}', 
-'Elements/Modules/UI/modal/popup/exports.html' : '{% include "Elements/Modules/UI/modal/popup/exports.html" %}', 
+'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
 'Elements/Icons/spinner.svg' : '{% include "Elements/Icons/spinner.svg" %}', 
-'Elements/Icons/share.svg' : '{% include "Elements/Icons/share.svg" %}', 
-'Elements/Inputs/checkbox/exports.html' : '{% include "Elements/Inputs/checkbox/exports.html" %}', 
-'Elements/Icons/edit.svg' : '{% include "Elements/Icons/edit.svg" %}', 
-'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
-'Elements/Icons/minus.svg' : '{% include "Elements/Icons/minus.svg" %}', 
-'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
+'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
+'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
 'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
+'Elements/Icons/edit.svg' : '{% include "Elements/Icons/edit.svg" %}', 
 'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
 'Elements/Icons/save.svg' : '{% include "Elements/Icons/save.svg" %}', 
+'Pages/Test/attempt/main/summary_item/exports.html' : '{% include "Pages/Test/attempt/main/summary_item/exports.html" %}', 
+'Elements/Icons/serialize.svg' : '{% include "Elements/Icons/serialize.svg" %}', 
+'Elements/Inputs/text/exports.html' : '{% include "Elements/Inputs/text/exports.html" %}', 
+'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
 } </script><script src="{% static "Elements/Modules/Test/generate/__core/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/__core/_scripts/get_blueprints.js" %}"> </script>
@@ -150,10 +150,11 @@
 
 <script>    {% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
     {% include "Elements/Layout/header/_scripts/header.js" %} 
-    {% include "Pages/Test/attempt/main/_scripts/init.js" %} 
-    {% include "Pages/Test/attempt/main/_scripts/make_summary_item.js" %} 
-    {% include "Pages/Test/attempt/main/_scripts/send.js" %} 
-    {% include "Pages/Test/attempt/main/_scripts/summary.js" %} 
+    {% include "Pages/Test/Attempt/_shared/adapt_layout.js" %} 
+    {% include "Pages/Test/Attempt/_shared/summary.js" %} 
+    {% include "Pages/Test/Attempt/main/_scripts/init.js" %} 
+    {% include "Pages/Test/Attempt/main/_scripts/make_summary_item.js" %} 
+    {% include "Pages/Test/Attempt/main/_scripts/send.js" %} 
 </script>
 </body>
 </html>

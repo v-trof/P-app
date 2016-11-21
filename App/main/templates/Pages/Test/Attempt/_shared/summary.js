@@ -1,3 +1,5 @@
+var attempt = attempt || {};
+
 attempt.make_summary = function () {
   panel.show("");
   panel.actions.hide();
