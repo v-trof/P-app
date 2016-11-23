@@ -35,7 +35,7 @@ attempt.make_summary = function () {
       //no idea where to look for values
 
       var $new_summary = attempt.make_summary_item(show_index, value,
-                                                   answer_pos, $(this));
+                                                   answer_pos - 1, $(this));
 
       panel.content.append($new_summary);
 

@@ -1,7 +1,0 @@
-{
-	"elements": ["Modules/Test/generate",
-               "Modules/Test/generate/data/elements.all",
-      				 "Modules/Test/manager",
-      				 "Modules/UI/scroll",
-      				 "Modules/UI/modal/panel"]
-}

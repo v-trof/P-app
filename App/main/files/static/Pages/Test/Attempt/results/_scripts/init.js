@@ -19,10 +19,13 @@ var django = {
   django.loaded = {{test.json|safe}};
 {% endif %}
 
+django.attempt = {{attempt|safe}};
+django.results = {{results|safe}};
+
 $(document).ready(function() {
   if(defined(django.loaded)) {
     test_manager.load(django.loaded);
-    attempt.swap_answers();
+    //summary also swap answers
     attempt.make_summary();
   } else {
     $('.preview>h2').html('Ошибка при загрузке теста');

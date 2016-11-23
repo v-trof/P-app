@@ -7,8 +7,17 @@ generate.register.external('answer', 'text', {
     return $element.find('input').val();
   },
 
-  to_answer(value) {
-    return $element.find('input').val();
+  to_answer(user_answer, right_answer) {
+    console.log(user_answer, right_answer);
+    var $user = $('<span></span>');
+    var $right = $('<span></span>');
+
+    $user.html(user_answer);
+    $right.html(right_answer);
+    return {
+      user: $user,
+      right: $right
+    }
   },
 
   observer($element, _change) {

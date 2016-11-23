@@ -6,7 +6,7 @@
  * @param  {object} element_data
  * @return void
  *****************************************************/
-generate.register = {
+/*generate.register = {
   bind_data: function(type, subtype, data_type, data_value) {
     var data = generate.data[type][subtype] || {};
     generate.data[type][subtype] = data;
@@ -25,7 +25,7 @@ generate.register = {
    * @param  {string} type arhectype of created element
    * @param  {string} subtype type of created elemetn
    * @param  {Object} element_data how to parse and build it, sample values
-   */
+   *//*
   element: function element(type, subtype, element_data) {
     if (!(type && subtype)) return false;
 
@@ -131,6 +131,17 @@ generate.register = {
       });
     }
 
+    data.external.make_answer = function(user_answer, right_answer,
+                                         user_score, worth, result) {
+     //TODO
+    }
+
+    data.external.make_answer = function(user_answer, right_answer,
+                                         user_score, worth, result) {
+      //TODO
+
+    }
+
     return true;
   },
 
@@ -139,3 +150,4 @@ generate.register = {
     data.build = task_data.builder;
   }
 }
+*/

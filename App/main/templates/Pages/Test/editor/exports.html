@@ -8,7 +8,7 @@
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	<section class="item-list card m--question"></section><section class="preview">	<h2 class="__heading" contenteditable></h2>	<div class="__content">	</div></section><section class="item-list card m--answer"></section>{% include "Pages/Test/editor/actions/exports.html" %}
+	<section class="item-list card m--question"></section><section class="preview">	<h2 class="__heading" contenteditable></h2>	<div class="__content">	</div></section><section class="item-list card m--answer"></section>{% include "Pages/Test/Editor/actions/exports.html" %}
 </section>
   <div class="_styles">
   {% load staticfiles %}<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
@@ -22,9 +22,9 @@
 <link rel="stylesheet" href="{% static "Elements/card/user/_styles/user.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/default/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/editor/_publish_popup/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/editor/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/editor/actions/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/Editor/_publish_popup/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/Editor/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/Editor/actions/_styles/layout.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/select/_styles/select.css" %}"> 
@@ -53,42 +53,42 @@
 <link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/icon/_styles/icon.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/editor/_styles/disable.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/editor/_styles/input_adaptation.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/editor/_styles/preview.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/Editor/_styles/disable.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/Editor/_styles/input_adaptation.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/Editor/_styles/preview.css" %}"> 
 
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
- loads = {'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
+ loads = {'Elements/Modules/Test/manage/__popup_texts/__no_publish/exports.html' : '{% include "Elements/Modules/Test/manage/__popup_texts/__no_publish/exports.html" %}', 
+'Elements/Icons/copy.svg' : '{% include "Elements/Icons/copy.svg" %}', 
 'Elements/Modules/UI/button_delete/exports.html' : '{% include "Elements/Modules/UI/button_delete/exports.html" %}', 
 'Elements/Modules/Test/generate/data/task/default/exports.html' : '{% include "Elements/Modules/Test/generate/data/task/default/exports.html" %}', 
-'Elements/Inputs/text/inline/exports.html' : '{% include "Elements/Inputs/text/inline/exports.html" %}', 
-'Elements/Inputs/text/exports.html' : '{% include "Elements/Inputs/text/exports.html" %}', 
-'Elements/Icons/visibility.svg' : '{% include "Elements/Icons/visibility.svg" %}', 
-'Elements/Inputs/text/textarea/exports.html' : '{% include "Elements/Inputs/text/textarea/exports.html" %}', 
+'Elements/Modules/Test/manage/__popup_texts/__no_save/exports.html' : '{% include "Elements/Modules/Test/manage/__popup_texts/__no_save/exports.html" %}', 
+'Elements/Icons/serialize.svg' : '{% include "Elements/Icons/serialize.svg" %}', 
+'Elements/Modules/UI/modal/popup/exports.html' : '{% include "Elements/Modules/UI/modal/popup/exports.html" %}', 
+'Elements/Modules/UI/modal/pull_put/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/exports.html" %}', 
 'Elements/Inputs/checkbox/exports.html' : '{% include "Elements/Inputs/checkbox/exports.html" %}', 
-'Elements/Icons/angle_down.svg' : '{% include "Elements/Icons/angle_down.svg" %}', 
-'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
-'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
-'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
-'Elements/Modules/Test/manage/__popup_texts/__no_publish/exports.html' : '{% include "Elements/Modules/Test/manage/__popup_texts/__no_publish/exports.html" %}', 
-'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
+'Elements/Modules/Test/generate/data/task/template/__edit/exports.html' : '{% include "Elements/Modules/Test/generate/data/task/template/__edit/exports.html" %}', 
+'Elements/Inputs/text/inline/exports.html' : '{% include "Elements/Inputs/text/inline/exports.html" %}', 
+'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
+'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
+'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
+'Elements/Icons/visibility.svg' : '{% include "Elements/Icons/visibility.svg" %}', 
+'Elements/Icons/add.svg' : '{% include "Elements/Icons/add.svg" %}', 
+'Elements/Inputs/text/textarea/exports.html' : '{% include "Elements/Inputs/text/textarea/exports.html" %}', 
 'Elements/Icons/share.svg' : '{% include "Elements/Icons/share.svg" %}', 
 'Elements/Modules/UI/modal/pull_put/__indicator/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/__indicator/exports.html" %}', 
-'Elements/Icons/edit.svg' : '{% include "Elements/Icons/edit.svg" %}', 
-'Elements/Modules/Test/manage/__popup_texts/__no_save/exports.html' : '{% include "Elements/Modules/Test/manage/__popup_texts/__no_save/exports.html" %}', 
-'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
-'Elements/Modules/UI/modal/pull_put/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/exports.html" %}', 
-'Elements/Icons/copy.svg' : '{% include "Elements/Icons/copy.svg" %}', 
-'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
-'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
-'Elements/Modules/Test/generate/data/task/template/__edit/exports.html' : '{% include "Elements/Modules/Test/generate/data/task/template/__edit/exports.html" %}', 
-'Elements/Modules/Test/editor/__template_ui/exports.html' : '{% include "Elements/Modules/Test/editor/__template_ui/exports.html" %}', 
-'Elements/Modules/UI/modal/popup/exports.html' : '{% include "Elements/Modules/UI/modal/popup/exports.html" %}', 
-'Elements/Icons/add.svg' : '{% include "Elements/Icons/add.svg" %}', 
 'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
-'Elements/Icons/serialize.svg' : '{% include "Elements/Icons/serialize.svg" %}', 
+'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
+'Elements/Modules/Test/editor/__template_ui/exports.html' : '{% include "Elements/Modules/Test/editor/__template_ui/exports.html" %}', 
+'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
+'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
+'Elements/Inputs/text/exports.html' : '{% include "Elements/Inputs/text/exports.html" %}', 
+'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
+'Elements/Icons/angle_down.svg' : '{% include "Elements/Icons/angle_down.svg" %}', 
+'Elements/Icons/edit.svg' : '{% include "Elements/Icons/edit.svg" %}', 
+'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
 } </script><script src="{% static "Elements/Modules/Test/editor/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/__core/_scripts/core.js" %}"> </script>
@@ -98,6 +98,8 @@
 <script src="{% static "Elements/Modules/Test/generate/__core/_scripts/init.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/__core/_scripts/register.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__register/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/manage/_scripts/core.js" %}"> </script>
 
@@ -150,6 +152,14 @@
 <script src="{% static "Elements/Modules/Test/editor/_scripts/state.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/editor/_scripts/test.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__register/_scripts/edit.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__register/_scripts/element.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__register/_scripts/external.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__register/_scripts/task.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/data/__templates/_scripts/default.js" %}"> </script>
 
@@ -233,8 +243,8 @@
     {% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
     {% include "Elements/Inputs/text/textarea/_scripts/add_handlers.js" %} 
     {% include "Elements/Layout/header/_scripts/header.js" %} 
-    {% include "Pages/Test/editor/_scripts/init.js" %} 
-    {% include "Pages/Test/editor/actions/_scripts/handler.js" %} 
+    {% include "Pages/Test/Editor/_scripts/init.js" %} 
+    {% include "Pages/Test/Editor/actions/_scripts/handler.js" %} 
 </script>
 </body>
 </html>

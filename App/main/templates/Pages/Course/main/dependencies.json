@@ -1,8 +1,7 @@
 {
-	"elements": ["Modules/notification",
-               "Moduels/pickmeup",
-			       	 "Modules/popup",
-		      		 "Modules/accordion",
+	"elements": ["Moduels/UI/modal/pickmeup",
+			       	 "Modules/UI/modalpopup",
+		      		 "Modules/UI/accordion",
 		      		 "card/test"],
 	"title" : "Курс",
 	"template": "default"

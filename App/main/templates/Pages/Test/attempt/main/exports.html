@@ -12,6 +12,7 @@
 </section>
   <div class="_styles">
   {% load staticfiles %}<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/Test/generate/data/external/answer/__template/_styles/to_answer_layout.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/popup/_styles/adaptive.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/search/_styles/layout.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
@@ -20,9 +21,6 @@
 <link rel="stylesheet" href="{% static "Elements/card/user/_styles/user.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/default/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/Attempt/main/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/Attempt/main/_styles/summary.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/Attempt/main/summary_item/_styles/summary_item.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}"> 
@@ -35,39 +33,46 @@
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Effect/ripple/_styles/ripple.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/notification/_styles/notification.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/tooltip/_styles/tooltip.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/accordion/_styles/accordion.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/panel/_styles/panel.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/popup/_styles/popup.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/icon/_styles/icon.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/Attempt/_shared/summary_item.css" %}"> 
 
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
- loads = {'Elements/Modules/Test/generate/data/task/default/exports.html' : '{% include "Elements/Modules/Test/generate/data/task/default/exports.html" %}', 
-'Elements/Icons/minus.svg' : '{% include "Elements/Icons/minus.svg" %}', 
-'Elements/Icons/copy.svg' : '{% include "Elements/Icons/copy.svg" %}', 
-'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
-'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
-'Elements/Icons/share.svg' : '{% include "Elements/Icons/share.svg" %}', 
+ loads = {'Elements/Icons/copy.svg' : '{% include "Elements/Icons/copy.svg" %}', 
+'Elements/Modules/Test/generate/data/task/default/exports.html' : '{% include "Elements/Modules/Test/generate/data/task/default/exports.html" %}', 
+'Elements/Icons/close.svg' : '{% include "Elements/Icons/close.svg" %}', 
+'Elements/Icons/save.svg' : '{% include "Elements/Icons/save.svg" %}', 
+'Elements/Icons/serialize.svg' : '{% include "Elements/Icons/serialize.svg" %}', 
+'Elements/Icons/spinner.svg' : '{% include "Elements/Icons/spinner.svg" %}', 
 'Elements/Modules/UI/modal/popup/exports.html' : '{% include "Elements/Modules/UI/modal/popup/exports.html" %}', 
-'Elements/Inputs/checkbox/exports.html' : '{% include "Elements/Inputs/checkbox/exports.html" %}', 
-'Elements/Icons/sync_problem.svg' : '{% include "Elements/Icons/sync_problem.svg" %}', 
+'Elements/Icons/pause.svg' : '{% include "Elements/Icons/pause.svg" %}', 
+'Elements/Modules/Test/generate/data/external/answer/__template/exports.html' : '{% include "Elements/Modules/Test/generate/data/external/answer/__template/exports.html" %}', 
 'Elements/Modules/Test/generate/data/task/template/__edit/exports.html' : '{% include "Elements/Modules/Test/generate/data/task/template/__edit/exports.html" %}', 
+'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
+'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
+'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
+'Elements/Inputs/checkbox/exports.html' : '{% include "Elements/Inputs/checkbox/exports.html" %}', 
+'Elements/Icons/share.svg' : '{% include "Elements/Icons/share.svg" %}', 
+'Elements/Icons/in_progress.svg' : '{% include "Elements/Icons/in_progress.svg" %}', 
+'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
+'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
+'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
 'Elements/Modules/UI/modal/panel/exports.html' : '{% include "Elements/Modules/UI/modal/panel/exports.html" %}', 
 'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
-'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
-'Elements/Icons/spinner.svg' : '{% include "Elements/Icons/spinner.svg" %}', 
-'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
-'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
-'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
-'Elements/Icons/edit.svg' : '{% include "Elements/Icons/edit.svg" %}', 
-'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
-'Elements/Icons/save.svg' : '{% include "Elements/Icons/save.svg" %}', 
-'Pages/Test/attempt/main/summary_item/exports.html' : '{% include "Pages/Test/attempt/main/summary_item/exports.html" %}', 
-'Elements/Icons/serialize.svg' : '{% include "Elements/Icons/serialize.svg" %}', 
 'Elements/Inputs/text/exports.html' : '{% include "Elements/Inputs/text/exports.html" %}', 
+'Pages/Test/attempt/main/summary_item/exports.html' : '{% include "Pages/Test/attempt/main/summary_item/exports.html" %}', 
 'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
+'Elements/Icons/angle_down.svg' : '{% include "Elements/Icons/angle_down.svg" %}', 
+'Elements/Icons/sync_problem.svg' : '{% include "Elements/Icons/sync_problem.svg" %}', 
+'Elements/Icons/minus.svg' : '{% include "Elements/Icons/minus.svg" %}', 
+'Elements/Icons/edit.svg' : '{% include "Elements/Icons/edit.svg" %}', 
+'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
 } </script><script src="{% static "Elements/Modules/Test/generate/__core/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/__core/_scripts/get_blueprints.js" %}"> </script>
@@ -75,6 +80,8 @@
 <script src="{% static "Elements/Modules/Test/generate/__core/_scripts/init.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/__core/_scripts/register.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__register/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/manage/_scripts/core.js" %}"> </script>
 
@@ -91,6 +98,14 @@
 <script src="{% static "Elements/Modules/Utility/scroll/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/utility/loads/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__register/_scripts/edit.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__register/_scripts/element.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__register/_scripts/external.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/__register/_scripts/task.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/data/__templates/_scripts/default.js" %}"> </script>
 
@@ -129,6 +144,8 @@
 <script src="{% static "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/Info/tooltip/_scripts/tooltip.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/accordion/_scripts/accordion.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/modal/panel/_scripts/panel.js" %}"> </script>
 

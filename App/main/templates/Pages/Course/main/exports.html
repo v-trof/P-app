@@ -31,6 +31,7 @@
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/textarea/_styles/height_fix.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Effect/ripple/_styles/ripple.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/notification/_styles/notification.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/accordion/_styles/accordion.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/button_delete/_styles/button_delete.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/medium_editor/_styles/core.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/medium_editor/_styles/default.css" %}"> 
@@ -45,17 +46,18 @@
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
- loads = {'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
+ loads = {'Elements/Modules/UI/button_delete/exports.html' : '{% include "Elements/Modules/UI/button_delete/exports.html" %}', 
+'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
+'Elements/Modules/UI/modal/popup/exports.html' : '{% include "Elements/Modules/UI/modal/popup/exports.html" %}', 
+'Elements/Icons/angle_down.svg' : '{% include "Elements/Icons/angle_down.svg" %}', 
 'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
+'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
+'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
+'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
+'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
+'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
 'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
 'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
-'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
-'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
-'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
-'Elements/Modules/UI/button_delete/exports.html' : '{% include "Elements/Modules/UI/button_delete/exports.html" %}', 
-'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
-'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
-'Elements/Modules/UI/modal/popup/exports.html' : '{% include "Elements/Modules/UI/modal/popup/exports.html" %}', 
 } </script><script src="{% static "Elements/Modules/UI/Info/notification/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/medium_editor/_scripts/core.js" %}"> </script>
@@ -73,6 +75,8 @@
 <script src="{% static "Elements/Modules/UI/Effect/ripple/_scripts/ripple.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/accordion/_scripts/accordion.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/button_delete/_scripts/button_delete.js" %}"> </script>
 

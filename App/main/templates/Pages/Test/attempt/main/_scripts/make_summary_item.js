@@ -15,7 +15,7 @@ attempt.icons = {
   },
   error: {
     icon: loads["Elements/Icons/sync_problem.svg"],
-    tip: "Не удалось сохранить, запишите себе куда-нибудь",
+    tip: "Не удалось сохранить, запишите его. Мы будем пытаться отправить его вновь",
     class: "m--negative"
   }
 }
@@ -50,21 +50,21 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
 
     set_icon('spinner');
     $value.html(summary);
-    attempt.send_value(
-      real_index, value,
-      function() {
-        set_icon('synced');
-      },
-      function() {
-        set_icon('error');
-      });
 
+    function send_this() {
+      attempt.send_value(
+        real_index, value,
+        function() {
+          set_icon('synced');
+        },
+        function() {
+          set_icon('error');
+          setTimeout(send_this, 60000);
+        });
+    }
 
-    //set spinner
+    send_this();
   }
-
-  console.log(generate.data[$sync_element.attr('type')]
-                [$sync_element.attr('subtype')]);
 
   $summary_item.find('.__number').html(show_index + " ");
 

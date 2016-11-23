@@ -19,6 +19,8 @@ var django = {
   django.loaded = {{test.json|safe}};
 {% endif %}
 
+django.attempt = {{attempt|safe}};
+
 $(document).ready(function() {
   if(defined(django.loaded)) {
     test_manager.load(django.loaded);

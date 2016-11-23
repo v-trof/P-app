@@ -1,3 +1,4 @@
 {
-  "Elements": ["card/small", "button/ghost/icon"]
+  "elements": ["card/small", "button/ghost/icon"],
+  "styles": ["Pages/Test/Attempt/_shared/summary_item.css"]
 }
