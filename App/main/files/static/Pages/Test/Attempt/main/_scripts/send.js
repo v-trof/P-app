@@ -35,6 +35,7 @@ attempt.append_send = function(index, value) {
 }
 
 attempt.send_value = function(index, value, _success_cb, _error_cb) {
+  console.log(index);
   $.ajax({
 			type:"POST",
 			url:"../attempt/save/",

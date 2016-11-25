@@ -20,7 +20,7 @@ var django = {
 {% endif %}
 
 django.attempt = {{attempt|safe}};
-
+console.log(django.loaded)
 $(document).ready(function() {
   if(defined(django.loaded)) {
     test_manager.load(django.loaded);

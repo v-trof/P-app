@@ -2,7 +2,7 @@ test_manager.load = function(test) {
   if(typeof test === 'string') {
     test = JSON.parse(test);
   }
-
+  console.log(test)
   var editor_defined = (typeof editor !== 'undefined');
 
   if (editor_defined) {
