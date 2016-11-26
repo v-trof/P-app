@@ -19,7 +19,7 @@ generate.register.edit('answer', 'checkbox', {
         var $field = create_field(label);
 
         $new_edit.append($field);
-        if(value.answers.has(index)) {
+        if(value.answer.has(index)) {
           $field.find('[type="checkbox"]')[0].checked = true;
         }
       });
@@ -42,7 +42,7 @@ generate.register.edit('answer', 'checkbox', {
   parser: function($edit) {
     var value = {
       items: [],
-      answers: []
+      answer: []
     }
 
     $edit.find(".m--checkbox").each(function(index, el) {
@@ -51,7 +51,7 @@ generate.register.edit('answer', 'checkbox', {
       value.items.push(label);
 
       if($(el).find("input").is(":checked")) {
-        value.answers.push(index);
+        value.answer.push(index);
       }
     });
 

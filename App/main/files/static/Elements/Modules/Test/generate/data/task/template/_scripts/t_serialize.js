@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  generate.data.task.template.serialize = function($task, parts) {
+  generate.data.task.template.serialize = function($task, parts, variables) {
     var position = $('.preview .__task').index($task[1]);
 
     var new_task_data = {
@@ -8,7 +8,8 @@ $(document).ready(function() {
     };
 
     parts.forEach(function(part) {
-      new_task_data.content.push(part);
+      new_task_data.content.push(generate.data.task.template
+                                  .unwrap_replace(part, task.variables));
     });
 
     editor.test_data.tasks[position] = new_task_data;
@@ -19,7 +20,7 @@ $(document).ready(function() {
                       element.build(part_data);
       $new_task.find('.__content').append($element);
     });
-    
+
     $new_task.find('.__group').val(new_task_data.group);
 
 

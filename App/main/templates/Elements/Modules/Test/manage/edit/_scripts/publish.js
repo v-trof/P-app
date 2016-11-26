@@ -6,6 +6,23 @@ test_manager.publish = function() {
   popup.show(test_manager.publish_popup, function() {
     var $publish = test_manager.collect_publish();
 
+    //serializing
+    test.tasks.forEach(function(task) {
+      if( ! task.is_template) return;
+      delete task.is_template;
+      task.content = [];
+      task.parts.forEach(function(part) {
+        task.content.push(generate.data.task.template
+                            .unwrap_replace(part, task.variables));
+      });
+
+      delete task.variables;
+      delete task.parts;
+    });
+    delete test.templates;
+
+    console.log(test);
+
     //build
     for(var group_name in test.groups) {
       $publish.build.append(
@@ -154,6 +171,8 @@ test_manager.publish_parse = function(test) {
 
     formData.append('publish_data', JSON.stringify(parsed));
 
+    formData.append('compiled_test', JSON.stringify(test));
+
     $.ajax({
       type:"POST",
       url:"/"+django.current_type+"/publish/",
@@ -177,20 +196,9 @@ test_manager.publish_parse = function(test) {
 test_manager.calculate_max_points = function(test) {
   var max_points = 0;
   test.tasks.forEach(function(task) {
-    if(task.is_template) {
-      task.parts = generate.data.task.template
-                    .unwrap_replace(task.parts, task.variables);
-
-      console.log(task);
-
-      task.parts.forEach(function(element) {
-        if(element.type === 'answer') max_points += parseInt(element.worth);
-      });
-    } else {
-      task.content.forEach(function(element) {
-        if(element.type === 'answer') max_points += parseInt(element.worth);
-      });
-    }
+    task.content.forEach(function(element) {
+      if(element.type === 'answer') max_points += parseInt(element.worth);
+    });
   });
 
   return max_points;

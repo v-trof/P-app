@@ -67,7 +67,7 @@ generate.register.task('template', {
     })
 
     $serialize.click(function() {
-      generate.data.task.template.serialize($task, parts);
+      generate.data.task.template.serialize($task, parts, variables);
     });
     $serialize.attr('tip', 'Превратить это задание в обычное');
     $task.find('.__make-template').replaceWith($serialize);

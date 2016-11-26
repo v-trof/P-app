@@ -7,7 +7,7 @@ generate.register.element('answer', 'checkbox', {
       var $new_checkbox = $(loads.get('Elements/Inputs/checkbox/'));
       $new_checkbox.find('label').text(label);
 
-      if(value.answers.has(index)) {
+      if(value.answer.has(index)) {
         $new_checkbox.find('input')[0].checked = true;
       }
 
@@ -20,7 +20,7 @@ generate.register.element('answer', 'checkbox', {
   sample: {
     value: {
       items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
-      answers: [1],
+      answer: [1],
       worth: 1
     }
   }
