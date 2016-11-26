@@ -4,7 +4,6 @@ attempt.append_send = function(index, value) {
   var $send_button = $("<button>Сдать тест</button>");
 
   $('.preview >.__content').append($send_button);
-
   $send_button.click(function() {
     $.ajax({
     type:"POST",
@@ -29,8 +28,6 @@ attempt.append_send = function(index, value) {
 			}
 		},
 		});
-        notification.show('success', 'Тест проверен системой' );
-        window.location = '/test/attempt/results?course_id={{course.id}}&test_id={{test.id}}';
     });
 }
 
