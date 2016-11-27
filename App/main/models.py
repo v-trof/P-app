@@ -2679,7 +2679,7 @@ class Test():
 						else:
 							test["json"]["tasks"][task["control_ids"]["task_id"]]["content"][task["control_ids"]["item_id"]]["answer"] = ""
 					else: del test["json"]["tasks"][task["control_ids"]["task_id"]]
-				context = {"test": test, "course": course}
+				context = {"test": test, "course": course, "attempt":data}
 				context["breadcrumbs"] = [{
 					"href": "/course/" + str(course_id),
 					"link": Course.objects.get(id=course_id).name

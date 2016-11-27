@@ -130,7 +130,6 @@ def attempt(request):
 		context = Test.attempt(
 			user=request.user, course_id=course_id, test_id=test_id)
 		print(context)
-		context["attempt"] = True
 		context["type"] = "test"
 		context["breadcrumbs"] = [{
 			"href": "/course/" + str(course_id),
