@@ -2703,7 +2703,7 @@ class Test():
 			answer=json.loads(answer)
 		time_now=str(datetime.datetime.now())
 		time=Utility.time_delta(test_info["start_time"][str(user.id)],str(time_now))
-		if "max_time" in test_info.keys() and Utility.time_delta(test_info["finish_time"][str(user.id)],time,absolute=False) <= 0:
+		if "max_time" in test_info.keys() and test_info["max_time"]!="00:00:00" and Utility.time_delta(test_info["finish_time"][str(user.id)],time,absolute=False) <= 0:
 			timeout=True
 		else: timeout=False
 

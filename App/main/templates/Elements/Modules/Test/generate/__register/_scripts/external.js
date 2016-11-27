@@ -66,17 +66,17 @@ generate.register.external.icons = {
     tip: "Пропущено",
     class: "m--negative"
   },
-  negative: {
+  wrong: {
     icon: loads["Elements/Icons/close.svg"],
     tip: "Неверно",
     class: "m--negative"
   },
-  neutral: {
+  forgiving: {
     icon: loads["Elements/Icons/pause.svg"],
     tip: "Неполный балл: ${got} / ${max}",
     class: "m--neutral"
   },
-  positive: {
+  right: {
     icon: loads["Elements/Icons/done.svg"],
     tip: "Верно",
     class: "m--positive"
