@@ -41,7 +41,8 @@ $(document).ready(function() {
       var $variables = $edit.find('.__variables');
 
       if(variables.length === 0) {
-        $variables.html('Переменных нет');
+        $variables.html('Переменных нет.<br>Они создаются выражением:<br>' +
+          '<i>%(название пременной)</i>');
         return;
       }
 

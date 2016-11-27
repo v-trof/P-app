@@ -7,7 +7,7 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
   var $value = $summary_item.find('.__value');
   var $icon = $summary_item.find('.__icon');
   var attempt_data = django.attempt[real_index];
-  value = (django.attempt[real_index].user_answer || 'Пропущено');
+  value = (value || 'Пропущено');
 
 
   function set_icon(icon) {

@@ -2,6 +2,9 @@ generate.register.element('answer', 'checkbox', {
   show_in_items: true,
 
   builder: function(value) {
+
+    value.answer = value.answer || [];
+
     var $new_element = this.make_template(value);
     value.items.forEach(function(label, index) {
       var $new_checkbox = $(loads.get('Elements/Inputs/checkbox/'));

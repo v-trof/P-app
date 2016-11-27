@@ -1,5 +1,14 @@
 var attempt = attempt || {};
 
+
+attempt.send_queue = {}
+
+setInterval(function() {
+  for(task_index in attempt.send_queue) {
+    attempt.send_queue[task_index]();
+  }
+}, 60000);
+
 attempt.icons = {
   empty: {
     icon: loads["Elements/Icons/minus.svg"],
@@ -59,7 +68,7 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
         },
         function() {
           set_icon('error');
-          setTimeout(send_this, 60000);
+          attempt.send_queue[real_index] = send_this;
         });
     }
 
