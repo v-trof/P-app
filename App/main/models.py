@@ -2520,7 +2520,7 @@ class Test():
 			if value["random"]:
 				rand.shuffle(item["items"])
 			value["options"] = item["items"]
-			value["answer"] = item["answers"]
+			value["answer"] = item["answer"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
@@ -2632,7 +2632,7 @@ class Test():
 				json_file.write(json.dumps(test, ensure_ascii=False))
 
 		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as json_file:
-			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
+			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:  
 				course_info = json.load(info_file)
 				course = {"id": course_id}
 				test = {
