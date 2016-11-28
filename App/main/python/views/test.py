@@ -208,7 +208,7 @@ def results(request):
 		"href": "#",
 		"link": "Результаты"
 	}]
-		test = Test.load(course_id=course_id, test_id=test_id)
+		test = Test.load(course_id=course_id, test_id=test_id, type="control")
 		context["test"]["json"] = test["json"]
 		context["is_results"] = True
 		return render(request, 'Pages/Test/Attempt/results/exports.html', context)

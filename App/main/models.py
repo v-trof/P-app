@@ -2378,8 +2378,8 @@ class Test():
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		return {"type":"success","message":"Тест сохранен"}
 
-	def load(course_id, test_id):
-		with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'r', encoding='utf8') as json_file:
+	def load(course_id, test_id, type="public"):
+		with io.open('main/files/json/courses/' + course_id + '/tests/'+type+'/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 				test = {
 					"id": test_id,
 					"loaded": 1,
