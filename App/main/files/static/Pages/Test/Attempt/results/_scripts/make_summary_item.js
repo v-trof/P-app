@@ -29,7 +29,7 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
 
   $summary_item.find('.__number').html(show_index + " ");
 
-  $value.html(value);
+  $value.text(data.get_summary($sync_element));
 
   set_icon(attempt_data.result);
   // set_icon('negative');

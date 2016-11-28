@@ -58,13 +58,14 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
     }
 
     set_icon('spinner');
-    $value.html(summary);
+    $value.text(summary);
 
     function send_this() {
       attempt.send_value(
         real_index, value,
         function() {
           set_icon('synced');
+          console.log('sync made');
         },
         function() {
           set_icon('error');
@@ -78,10 +79,10 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
   $summary_item.find('.__number').html(show_index + " ");
 
   if(value) {
-    $value.html(value);
+    $value.text(data.get_summary($sync_element));
     set_icon('synced');
   } else {
-    $value.html("Пусто");
+    $value.text("Пусто");
     set_icon('empty');
   }
 

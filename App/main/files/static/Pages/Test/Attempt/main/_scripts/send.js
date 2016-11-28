@@ -33,6 +33,11 @@ attempt.append_send = function(index, value) {
 
 attempt.send_value = function(index, value, _success_cb, _error_cb) {
   console.log(index);
+
+  if(typeof value != typeof "") {
+    value = JSON.stringify(value);
+  }
+
   $.ajax({
 			type:"POST",
 			url:"../attempt/save/",
