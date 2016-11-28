@@ -1,9 +1,26 @@
 test_manager.upload_queue = []
 test_manager.packed_test = {}
 
-test_manager.upload_test = function(test_packed) {
+test_manager.upload_test = function() {
   console.log('upload');
   console.log(test_manager.packed_test);
+
+  var serialized_test = JSON.parse(JSON.stringify(test_manager.packed_test));
+
+  //serializing
+  serialized_test.tasks.forEach(function(task) {
+    if( ! task.is_template) return;
+    delete task.is_template;
+    task.content = [];
+    task.parts.forEach(function(part) {
+      task.content.push(generate.data.task.template
+                          .unwrap_replace(part, task.variables));
+    });
+
+    delete task.variables;
+    delete task.parts;
+  });
+  delete serialized_test.templates;
 
   var formData = new FormData();
   formData.append("json_file", JSON.stringify(test_manager.packed_test));
@@ -14,6 +31,8 @@ test_manager.upload_test = function(test_packed) {
     formData.append("material_id", django.material.id);
   }
   formData.append('csrfmiddlewaretoken', django.csrf_token);
+
+  formData.append('compiled_test', JSON.stringify(serialized_test));
 
   $.ajax({
     type:"POST",

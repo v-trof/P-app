@@ -21,8 +21,6 @@ test_manager.publish = function() {
     });
     delete test.templates;
 
-    console.log(test);
-
     //build
     for(var group_name in test.groups) {
       $publish.build.append(
@@ -171,7 +169,7 @@ test_manager.publish_parse = function(test) {
 
     formData.append('publish_data', JSON.stringify(parsed));
 
-    formData.append('compiled_test', JSON.stringify(test));
+    //formData.append('compiled_test', JSON.stringify(test));
 
     $.ajax({
       type:"POST",
