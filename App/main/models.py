@@ -2291,7 +2291,7 @@ class Test():
 					assignments_map, ensure_ascii=False))
 		return {"type":"success","message":"Тест удален"}
 
-	def save(json_file, compiled_json, course_id, material_id, user):
+	def save(json_file, compiled_json, course_id, test_id, user):
 		json_file = json.loads(json_file)
 		control_file= json.loads(compiled_json)
 
@@ -2337,7 +2337,7 @@ class Test():
 										replaced=True
 										break
 						if not replaced:
-							for task in tasks:
+							for task in control_file["tasks"]:
 								for item in task["content"]:
 									print(item)
 									if item["type"] == "question":
@@ -2353,16 +2353,13 @@ class Test():
 					attempt_file.write(json.dumps(test, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
 			test_file.write(json.dumps(json_file, ensure_ascii=False))
-		del control_file["templates"]
-		control_file["tasks"]=[]
-		for task in json_file["tasks"]:
+		if "templates" in control_file.keys():
+			del control_file["templates"]
+		for task in control_file["tasks"]:
 			if "is_template" in task.keys() and task["is_template"]==True:
-				generated_task=task
-				generated_task["content"]=generated_task["parts"]
-				del generated_task["parts"]
-				del generated_task["is_template"]
-				control_file["tasks"].append(generated_task)
-			else: control_file["tasks"].append(task)
+				task["content"]=generated_task["parts"]
+				del task["parts"]
+				del task["is_template"]
 
 		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
 			test_file.write(json.dumps(control_file, ensure_ascii=False))
@@ -2694,6 +2691,7 @@ class Test():
 		return context
 
 	def attempt_save(test_id, question_id, course_id, answer, user):
+		print(answer)
 		if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
 			return {"type":"error","message":"Тест уже был выполнен"}
 		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as info_file:

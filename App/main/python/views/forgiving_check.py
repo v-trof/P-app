@@ -33,6 +33,7 @@ def numbers(answer):
 	return romanResult
 
 def check(answer, answer_right, allowed):
+	print("ans", answer)
 	if not isinstance(answer_right,list) and not isinstance(answer,dict):
 		answer_right = re.sub('[<.*>]', '', answer_right)
 		answer =  re.sub('[<.*>]', '', answer)
