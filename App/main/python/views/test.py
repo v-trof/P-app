@@ -96,7 +96,6 @@ def publish(request):
 		publish_data=json.loads(request.POST["publish_data"])
 		course_id = request.POST.get("course_id", None)
 		test_id = request.POST.get("test_id", None)
-		print(publish_data,course_id,test_id)
 		message = Test.publish(course_id=course_id, test_id=test_id,publish_data=publish_data)
 		return HttpResponse(json.dumps(message), content_type="application/json")
 
@@ -130,7 +129,6 @@ def attempt(request):
 			return redirect("/test/attempt/results/?course_id=" + course_id + "&test_id=" + test_id)
 		context = Test.attempt(
 			user=request.user, course_id=course_id, test_id=test_id)
-		print(context)
 		context["type"] = "test"
 		context["breadcrumbs"] = [{
 			"href": "/course/" + str(course_id),
@@ -155,7 +153,6 @@ def attempt_save(request):
 		question_id = int(request.POST.get("question", None))
 		course_id = request.POST.get("course_id", None)
 		answer = request.POST.get("answer", None)
-		print(answer)
 		message=Test.attempt_save(test_id=test_id, question_id=question_id,
 						  course_id=course_id, answer=answer, user=request.user)
 		return HttpResponse(json.dumps(message), content_type="application/json")
@@ -197,19 +194,18 @@ def results(request):
 		context = {"course": Course.objects.get(id=course_id),
 				   "results": Test.get_results(user_id=str(user.id), course_id=course_id, test_id=test_id),
 				   "attempt": Test.get_attempt_info(user_id=str(user.id), course_id=course_id, test_id=test_id),
-				   "test": Test.get_test_info(course_id=course_id, test_id=test_id), "user_status": Course.objects.load_user_status(course=Course.objects.get(id=course_id), user=request.user)}
+				   "test": {"json":Test.get_test_info(course_id=course_id, test_id=test_id, compiled=True, user_id=user_id)}, 
+				   "user_status": Course.objects.load_user_status(course=Course.objects.get(id=course_id), user=request.user)}
 		context["breadcrumbs"] = [{
 		"href": "/course/" + str(course_id),
 		"link": Course.objects.get(id=course_id).name
 	}, {
 		"href": "/test/attempt/?course_id="+course_id+"&test_id="+test_id,
-		"link": context["test"]["title"]
+		"link": context["test"]["json"]["title"]
 	},{
 		"href": "#",
 		"link": "Результаты"
 	}]
-		test = Test.load(course_id=course_id, test_id=test_id, type="control")
-		context["test"]["json"] = test["json"]
 		context["is_results"] = True
 		return render(request, 'Pages/Test/Attempt/results/exports.html', context)
 	else:

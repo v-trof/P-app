@@ -62,6 +62,7 @@ def check(answer, answer_right, allowed):
 	return "false"
 
 def check_selected(answer, answer_right, allowed):
+	print("chck",answer,answer_right)
 	if set(answer) == set(answer_right):
 		return "right"
 	else: return "false"

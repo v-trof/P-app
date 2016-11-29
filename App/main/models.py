@@ -2339,7 +2339,6 @@ class Test():
 						if not replaced:
 							for task in control_file["tasks"]:
 								for item in task["content"]:
-									print(item)
 									if item["type"] == "question":
 										current_question = item
 									else:
@@ -2499,30 +2498,45 @@ class Test():
 			value["user_score"] = 0
 			value["answer"] = None
 			# textarea
-		elif item["subtype"] == "select":
-			if value["random"]:
-				rand.shuffle(item["items"])
-			value["options"] = item["items"]
-			value["answer"] = item["answer"]
+		elif item["subtype"] == "radio" or item["subtype"]=="select":
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
-		elif item["subtype"] == "radio":
+			value["answer"] = item["answer"].copy()
+			value["options"] = item["items"].copy()
 			if value["random"]:
-				rand.shuffle(item["items"])
-			value["options"] = item["items"]
-			value["answer"] = item["answer"]
-			value["user_answer"] = False
-			value["worth"] = item["worth"]
-			value["user_score"] = 0
+				answers=[]
+				for answer in list(value["answer"]):
+					answers.append(value["options"][answer])
+				value["answer"]=[]
+				rand.shuffle(value["options"])
+				it=0
+				for item in list(value["options"]):
+					if item in list(answers):
+						value["answer"].append(it)
+					it+=1
 		elif item["subtype"] == "checkbox":
-			if value["random"]:
-				rand.shuffle(item["items"])
-			value["options"] = item["items"]
-			value["answer"] = item["answer"]
+			print("Prev answer: "+str(item["answer"]))
+			print("Prev options: "+str(item["items"]))
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
+			value["answer"] = item["answer"].copy()
+			value["options"] = item["items"].copy()
+			if value["random"]:
+				answers=[]
+				for answer in value["answer"]:
+					answers.append(value["options"][answer])
+				print("Real vals : "+str(answers))
+				value["answer"]=[]
+				rand.shuffle(value["options"])
+				print("Shuffled options : "+str(value["options"]))
+				it=0
+				for item in value["options"]:
+					if item in answers:
+						value["answer"].append(it)
+					it+=1
+				print("Final answer : "+str(value["answer"]))
 		elif item["subtype"] == "classify":
 			value["answer"] = item["answer"]
 			value["user_answer"] = False
@@ -2549,7 +2563,6 @@ class Test():
 		return item
 
 	def global_random(random,tasks):
-		print("LIMITS", random["limits"])
 		for group in random["limits"]:
 			limit=random["limits"][group]
 			positions=[]
@@ -2559,6 +2572,7 @@ class Test():
 				if "group" in task.keys() and task["group"]==group:
 					positions.append(pos_it)
 					pos_cnt+=1
+				task["position"]=pos_it
 				pos_it+=1
 			it=0
 			while it != limit and it < pos_cnt:
@@ -2601,12 +2615,14 @@ class Test():
 					item_id=0
 					for task in tasks:
 						for item in task["content"]:
-							print(item)
 							if item["type"] == "question":
 								current_question = item
 							else:
 								value = Test.build_question(item=item)
-								value["control_ids"]={"task_id":task_id,"item_id":item_id}
+								if "position" in task.keys():
+									value["control_ids"]={"task_id":task["position"],"item_id":item_id}
+								else:
+									value["control_ids"]={"task_id":task_id,"item_id":item_id}
 								test.append(value)
 							item_id+=1
 						task_id+=1
@@ -2670,15 +2686,9 @@ class Test():
 					for item in element["content"]:
 						if item["type"] == "answer" and "answer" in item.keys():
 							item.pop("answer", None)
-				for task in data:
-					if not "hidden" in task.keys():
-						if not task["user_answer"] == False:
-							test["json"]["tasks"][task["control_ids"]["task_id"]]["content"][task["control_ids"]["item_id"]] = Test.build_answer(
-								item=test["json"]["tasks"][task["control_ids"]["task_id"]]["content"][task["control_ids"]["item_id"]].copy(), data=task.copy())
-							print(test["json"]["tasks"][task["control_ids"]["task_id"]]["content"][task["control_ids"]["item_id"]])
-						else:
-							test["json"]["tasks"][task["control_ids"]["task_id"]]["content"][task["control_ids"]["item_id"]]["answer"] = ""
-					else: del test["json"]["tasks"][task["control_ids"]["task_id"]]
+
+				test["json"]["tasks"]=Test.compile_tasks(tasks=test["json"]["tasks"].copy(),attempt_data=data)
+
 				context = {"test": test, "course": course, "attempt":data}
 				context["breadcrumbs"] = [{
 					"href": "/course/" + str(course_id),
@@ -2687,8 +2697,24 @@ class Test():
 					"href": "#",
 					"link": test["json"]["title"]
 				}]
-				print("alala", test["json"]["tasks"])
 		return context
+
+	def compile_tasks(tasks,attempt_data):
+		global_tasks=[]
+		it=0
+		for task in attempt_data:
+			if not "hidden" in task.keys():
+				if not task["user_answer"] == False:
+					local_task=tasks[task["control_ids"]["task_id"]].copy()
+					local_task["content"][task["control_ids"]["item_id"]]=Test.build_answer(
+						item=tasks[task["control_ids"]["task_id"]]["content"][task["control_ids"]["item_id"]].copy(), data=task.copy())
+					global_tasks.append(local_task)
+				else:
+					global_tasks.append(tasks[task["control_ids"]["task_id"]])
+					global_tasks[it]["content"][task["control_ids"]["item_id"]]["answer"]=""
+			it+=1
+		tasks=global_tasks
+		return tasks
 
 	def attempt_save(test_id, question_id, course_id, answer, user):
 		print(answer)
@@ -2699,9 +2725,9 @@ class Test():
 
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-
-		print(answer)
+		print(data[question_id]["type"])
 		if data[question_id]["type"]=="classify" or data[question_id]["type"]=="checkbox" or data[question_id]["type"]=="radio":
+			print("OKOK")
 			answer=json.loads(answer)
 		time_now=str(datetime.datetime.now())
 		time=Utility.time_delta(test_info["start_time"][str(user.id)],str(time_now))
@@ -2721,13 +2747,13 @@ class Test():
 				assignment_map, ensure_ascii=False))
 
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
-			print(question_id, data[question_id]["control_ids"], "before:", data[question_id]["user_answer"], "after:", answer)
 			if answer=="":
 				answer=False
 			data[question_id]["user_answer"] = answer
 			data[question_id]["time"]=time
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
+		print(answer)
 		return {"type":"success","message":"Ответ сохранен","timeout":timeout}
 
 	def give_mark(percentage, course_id, test_id):
@@ -2762,7 +2788,6 @@ class Test():
 		return check(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 
 	def attempt_check(user, test_id, course_id):
-		print("check")
 		if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
 			return {"type":"error","message":"Тест уже был выполнен"}
 		right = 0
@@ -2830,7 +2855,6 @@ class Test():
 		test_results["overall_score"]=overall_score
 		test_results["right_answers"] = right + forgiving
 		test_results["questions_overall"] = right + mistakes + missed + forgiving
-		print(test_results)
 		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
 			saving_data = json.dumps(test_results, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -2919,10 +2943,15 @@ class Test():
 		else:
 			return {"type":"error","message":"Тест не был выполнен"}
 
-	def get_test_info(course_id, test_id):
+	def get_test_info(course_id, test_id, compiled=False, user_id=False):
 		if os.path.exists('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json'):
 			with io.open('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 				test_info = json.load(info_file)
+			if compiled and user_id:
+				with io.open('main/files/json/courses/' + str(course_id) + '/users/'+ str(user_id) + '/tests/attempts/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+					attempt_data = json.load(info_file)
+				test_info["tasks"]=Test.compile_tasks(tasks=test_info["tasks"].copy(),attempt_data=attempt_data)
+				print(test_info["tasks"])
 			return test_info
 		else:
 			return {"type":"error","message":"Тест не существует"}
