@@ -9,15 +9,33 @@ generate.register.external('answer', 'checkbox', {
     return answers;
   },
 
-  get_summary($element) {
+  get_summary(value, element_data) {
     var answers = [];
-    $element.find('.m--checkbox').each(function(index, el) {
-      if(el.querySelector('input').checked) {
-        answers.push(el.querySelector('label').innerHTML);
+    var big  = false;
+
+    value.forEach(function(pos) {
+      var option = element_data.options[pos];
+
+      if(option.length > 20) {
+        option = option.substring(0, 17).escape();
+        option = option +  "&hellip;";
+        big = true;
+      } else {
+        option = option.escape();
       }
-    });
-    return answers.join(', ');
+
+      answers.push(option);
+    })
+
+    if(big) {
+      answers = answers.join('<br>');
+    } else {
+      answers = answers.join(', ');
+    }
+
+    return answers;
   },
+
 
   to_answer(user_answer, right_answer, element_data) {
     function make_DOM(answers) {
@@ -31,10 +49,8 @@ generate.register.external('answer', 'checkbox', {
     var right_answers = [];
 
     if( ! Array.isArray(user_answer)) {
-      user_answer = [1, 2, 3];
+      user_answer = [];
     }
-
-    console.log(user_answer);
 
     element_data.options.forEach(function(option, index) {
       if(user_answer.has(index)) {
