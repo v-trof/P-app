@@ -7,8 +7,10 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
   var $value = $summary_item.find('.__value');
   var $icon = $summary_item.find('.__icon');
   var attempt_data = django.attempt[real_index];
-  value = (value || 'Пропущено');
 
+  value = (data.get_summary(value, attempt_data) || 'Пропущено');
+
+  console.log(value);
 
   function set_icon(icon) {
     var icons = generate.register.external.icons;
@@ -29,7 +31,7 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
 
   $summary_item.find('.__number').html(show_index + " ");
 
-  $value.text(data.get_summary($sync_element));
+  $value.html(value);
 
   set_icon(attempt_data.result);
   // set_icon('negative');

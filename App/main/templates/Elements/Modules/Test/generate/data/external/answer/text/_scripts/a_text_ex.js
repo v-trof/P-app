@@ -3,17 +3,23 @@ generate.register.external('answer', 'text', {
     return $element.find('input').val();
   },
 
-  get_summary($element) {
-    return $element.find('input').val();
+  get_summary(value) {
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
+    } else {
+      value = value.escape();
+    }
+
+    return value;
   },
 
   to_answer(user_answer, right_answer) {
-    console.log(user_answer, right_answer);
     var $user = $('<span></span>');
     var $right = $('<span></span>');
 
-    $user.html(user_answer);
-    $right.html(right_answer);
+    $user.text(user_answer);
+    $right.text(right_answer);
     return {
       user: $user,
       right: $right

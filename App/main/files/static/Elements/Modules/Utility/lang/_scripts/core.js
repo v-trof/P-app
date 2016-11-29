@@ -24,6 +24,12 @@ Array.prototype.remove = function() {
   return this;
 };
 
+String.prototype.escape = function() {
+  var escape = document.createElement('textarea');
+  escape.textContent = this;
+  return escape.innerHTML;
+}
+
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.split(search).join(replacement);

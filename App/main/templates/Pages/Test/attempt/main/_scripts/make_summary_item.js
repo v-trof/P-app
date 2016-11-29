@@ -35,6 +35,7 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
                 [$sync_element.attr('subtype')].external;
   var $value = $summary_item.find('.__value');
   var $icon = $summary_item.find('.__icon');
+  var attempt_data = django.attempt[real_index];
 
   function set_icon(icon) {
     $icon.html(attempt.icons[icon].icon);
@@ -58,14 +59,13 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
     }
 
     set_icon('spinner');
-    $value.text(summary);
+    $value.html(summary);
 
     function send_this() {
       attempt.send_value(
         real_index, value,
         function() {
           set_icon('synced');
-          console.log('sync made');
         },
         function() {
           set_icon('error');
@@ -79,14 +79,14 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
   $summary_item.find('.__number').html(show_index + " ");
 
   if(value) {
-    $value.text(data.get_summary($sync_element));
+    $value.html(data.get_summary(value, attempt_data));
     set_icon('synced');
   } else {
     $value.text("Пусто");
     set_icon('empty');
   }
 
-  data.observe($sync_element, _check);
+  data.observe($sync_element, attempt_data, _check);
 
   return $summary_item;
 }

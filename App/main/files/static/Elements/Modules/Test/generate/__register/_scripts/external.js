@@ -4,12 +4,12 @@ generate.register.external = function(type, subtype, external_data) {
   var data = this.bind_data(type, subtype, 'external', external_data);
 
   //creating observe shortcut for summary and send
-  data.external.observe = function($element, _check) {
+  data.external.observe = function($element, element_data, _check) {
 
     if( ! defined(_check)) return false;
     data.external.observer($element, function() {
       var value = data.external.get_value($element);
-      var summary = data.external.get_summary($element);
+      var summary = data.external.get_summary(value, element_data);
       _check(value, summary);
     });
   }
