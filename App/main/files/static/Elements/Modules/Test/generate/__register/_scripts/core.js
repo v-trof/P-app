@@ -8,6 +8,8 @@ generate.register = {
     data[data_type] = data_value;
 
     data[data_type].self = data;
+
+    generate.counter[subtype] = 0;
     return data;
   }
 }

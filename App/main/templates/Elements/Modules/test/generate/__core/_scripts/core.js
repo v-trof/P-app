@@ -12,5 +12,12 @@ var generate = {
     task: {},
     question: {},
     answer: {}
+  },
+
+  /**
+   * counters for id's \\
+   * @type {Object}
+   */
+  counter: {
   }
 }

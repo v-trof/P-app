@@ -1,0 +1,4 @@
+{
+  "elements": ["Inputs/radio", "Modules/UI/button_delete",
+               "Modules/Utility/lang", "Modules/Utility/render/inputs/text"]
+}

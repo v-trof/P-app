@@ -9,7 +9,7 @@ $(document).ready(function() {
 
     parts.forEach(function(part) {
       new_task_data.content.push(generate.data.task.template
-                                  .unwrap_replace(part, task.variables));
+                                  .unwrap_replace(part, variables));
     });
 
     editor.test_data.tasks[position] = new_task_data;
