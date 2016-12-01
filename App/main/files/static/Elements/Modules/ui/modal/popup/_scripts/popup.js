@@ -3,7 +3,8 @@ var popup = (function() {
   exports = {
     $: $popup,
     show: function(content, _callback, css, no_prefocus) {
-      $popup.find(".__content").html(content);
+      $popup.find(".__content").children().remove();
+      $popup.find(".__content").append(content);
       $popup.removeClass('m--hidden');
       $popup.removeClass('m--hiding');
 

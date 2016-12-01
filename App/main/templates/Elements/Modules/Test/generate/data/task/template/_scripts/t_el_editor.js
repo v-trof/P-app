@@ -132,8 +132,6 @@ $(document).ready(function() {
                                .build_edit(template.parts, template.group));
       popup.show($edit, function() {}, {"width": "64rem"}, true);
 
-      $edit = popup.$.find('.__modal>.__content');
-
       generate.data.task.template.edit.observe_new_vars($edit);
 
       generate.data.task.template.edit.handle_actions($edit, $instance);
