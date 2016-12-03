@@ -10,7 +10,6 @@ generate.make_template = {
     },
     answer: function(subtype, args) {
       return $('<div type="answer" subtype="' + subtype +
-        '" worth="' + args.worth +
          '" class="generate-item"></div>');
     }
   },

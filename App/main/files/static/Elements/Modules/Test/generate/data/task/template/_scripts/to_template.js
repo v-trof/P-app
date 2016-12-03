@@ -13,6 +13,7 @@ $(document).ready(function() {
 
     old_content.forEach(function(part) {
       new_task_data.parts.push(part);
+      console.log(part);
     });
 
     var new_task_bundle = generate.data.task.template

@@ -1,7 +1,7 @@
 generate.data["answer--classify"] = {
   element: {
     type: 'answer',
-    
+
     parse: function($original) {
       var result = {
         class: "answer--classify",
@@ -13,7 +13,7 @@ generate.data["answer--classify"] = {
           items: []
         }
       }
-      
+
       if($original.attr('answer')) {
         result.answer = JSON.parse($original.attr("answer"));
       }
@@ -55,7 +55,7 @@ generate.data["answer--classify"] = {
         return $new_class;
       }
 
-      
+
 
       var $element = $(generate.build.template.answer('answer--classify'));
       $element.addClass("m--classify");
@@ -89,12 +89,12 @@ generate.data["answer--classify"] = {
           if(title === $(this).text()){
             //right class
             var $class = $(this).parent();
-            
+
             //removing empty
             if(answer[title].length) {
               $class.find('.m--empty').remove();
             }
-            
+
             //addign items
             answer[title].forEach(function(text) {
               $class.find('.__items').append(
@@ -103,7 +103,7 @@ generate.data["answer--classify"] = {
               $element.find('.m--unordered .__item').each(function(index, el) {
               if($(this).text() === text) {
                 $(this).remove();
-              } 
+              }
               });
             });
             return;
@@ -170,7 +170,7 @@ generate.data["answer--classify"] = {
         $(this).addClass('classy_item_'+indicator_index)
         pull_put.puller.add(
           $(this), //element
-          [], //actions 
+          [], //actions
           undefined, //additional
           function() {
             indicator.show(indicator_index);
@@ -180,7 +180,7 @@ generate.data["answer--classify"] = {
         )
       });
     },
-    
+
     value_sample: {
       values: {
         classes:  ["Глаголы", "Существительные"],
@@ -202,13 +202,13 @@ generate.data["answer--classify"] = {
 
         //loop over items
         $(this).find('input').each(function() {
-          if(this.value) { 
+          if(this.value) {
             answer[title].push(this.value);
             values.items.push(this.value);
           }
         });
       });
-      
+
       return {
         values: values,
         answer: JSON.stringify(answer),
@@ -252,7 +252,7 @@ generate.data["answer--classify"] = {
     fill: function(value) {
       var $element = $(".pull_put_ui .m--classify");
       // console.log(value)
-      
+
       if( ! value.answer) {
         value.answer = {
           "": []
@@ -263,18 +263,18 @@ generate.data["answer--classify"] = {
       //drawing classes
       for(title in value.answer) {
         var self = this;
-        
+
         var $new_class = self._shared.create_class();
         $new_class.find('h3').text(title);
 
         value.answer[title].forEach(function(text) {
           var $new_item = self._shared.create_item();
           $new_item.find('input').val(text);
-          
+
           setTimeout(function() {
             $new_item.find('input').focus().blur();
           }, 100);
-          
+
           $new_class.find('.__new-item')
             .before($new_item);
         });

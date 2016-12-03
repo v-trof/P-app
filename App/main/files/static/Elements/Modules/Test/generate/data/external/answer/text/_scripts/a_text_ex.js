@@ -14,15 +14,20 @@ generate.register.external('answer', 'text', {
     return value;
   },
 
-  to_answer(user_answer, right_answer) {
-    var $user = $('<span></span>');
-    var $right = $('<span></span>');
+  to_answer(user_answer, right_answer, element_data) {
+    var self = this.self;
 
-    $user.text(user_answer);
-    $right.text(right_answer);
+    function make_DOM(answer) {
+      element_data.answer = answer;
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
     return {
-      user: $user,
-      right: $right
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
     }
   },
 

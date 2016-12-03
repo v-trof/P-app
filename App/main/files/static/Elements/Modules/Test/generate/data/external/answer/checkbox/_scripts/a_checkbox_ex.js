@@ -1,5 +1,5 @@
 generate.register.external('answer', 'checkbox', {
-  get_value($element) {
+  get_value: function($element) {
     var answers = [];
     $element.find('.m--checkbox').each(function(index, el) {
       if(el.querySelector('input').checked) {
@@ -9,7 +9,7 @@ generate.register.external('answer', 'checkbox', {
     return answers;
   },
 
-  get_summary(value, element_data) {
+  get_summary: function(value, element_data) {
     var answers = [];
     var big  = false;
 
@@ -18,7 +18,7 @@ generate.register.external('answer', 'checkbox', {
 
       if(option.length > 20) {
         option = option.substring(0, 17).escape();
-        option = option +  "&hellip;";
+        option = option + "&hellip;";
         big = true;
       } else {
         option = option.escape();
@@ -37,40 +37,31 @@ generate.register.external('answer', 'checkbox', {
   },
 
 
-  to_answer(user_answer, right_answer, element_data) {
-    function make_DOM(answers) {
-      var $list = $("<ul></ul>");
-      $list.append('<li>' + answers.join('</li><li>'));
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
 
-      return $list;
+    function make_DOM(answer) {
+      //wonder why api is altered
+      element_data.items = element_data.options;
+      element_data.answer = answer;
+
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
     }
-
-    var user_answers = [];
-    var right_answers = [];
 
     if( ! Array.isArray(user_answer)) {
       user_answer = [];
     }
 
-    element_data.options.forEach(function(option, index) {
-      if(user_answer.has(index)) {
-        user_answers.push(option);
-      }
-
-      if(right_answer.has(index)) {
-        right_answers.push(option);
-      }
-    });
-
-
-
     return {
-      user: make_DOM(user_answers),
-      right: make_DOM(right_answers)
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
     }
   },
 
-  observer($element, _change) {
+  observer: function($element, _change) {
     $element.find('input').change(_change);
   }
 });

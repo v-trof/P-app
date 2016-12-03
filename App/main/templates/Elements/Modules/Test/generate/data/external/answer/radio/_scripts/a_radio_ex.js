@@ -38,35 +38,26 @@ generate.register.external('answer', 'radio', {
 
 
   to_answer(user_answer, right_answer, element_data) {
-    function make_DOM(answers) {
-      var $list = $("<ul></ul>");
-      $list.append('<li>' + answers.join('</li><li>'));
+    var self = this.self;
 
-      return $list;
+    function make_DOM(answer) {
+      //wonder why api is altered
+      element_data.items = element_data.options;
+      element_data.answer = answer;
+
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
     }
-
-    var user_answers = [];
-    var right_answers = [];
 
     if( ! Array.isArray(user_answer)) {
       user_answer = [];
     }
 
-    element_data.options.forEach(function(option, index) {
-      if(user_answer.has(index)) {
-        user_answers.push(option);
-      }
-
-      if(right_answer.has(index)) {
-        right_answers.push(option);
-      }
-    });
-
-
-
     return {
-      user: make_DOM(user_answers),
-      right: make_DOM(right_answers)
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
     }
   },
 
