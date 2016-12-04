@@ -2292,6 +2292,7 @@ class Test():
 		return {"type":"success","message":"Тест удален"}
 
 	def save(json_file, compiled_json, course_id, test_id, user):
+		print(compiled_json)
 		json_file = json.loads(json_file)
 		control_file= json.loads(compiled_json)
 
@@ -2311,49 +2312,151 @@ class Test():
 						questions_number += 1
 		json_file["questions_number"] = questions_number
 		control_file["questions_number"] = questions_number
-		if os.path.exists('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json'):
+		if os.path.exists('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json') and len(glob.glob('main/files/json/courses/' + course_id + '/users/*/tests/attempts/' + test_id + '.json'))>0:
 			with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as test_file:
 				data=json.load(test_file)
 				control_file["allowed_mistakes"]=data["allowed_mistakes"]
 				if "max_time" in data.keys():
 					control_file["max_time"]=data["max_time"]
-				control_file["mark_setting"]=data["mark_setting"]
+				if "mark_setting" in data.keys():
+					control_file["mark_setting"]=data["mark_setting"]
 				if "random" in data.keys():
 					control_file["random"]=data["random"]
+			max_id=0
+			max_item_id=0
+			for task in control_file["tasks"]:
+				if "task_id" in task.keys() and task["task_id"]>max_id:
+					max_id=task["task_id"]
 			for attempt in glob.glob('main/files/json/courses/' + course_id + '/users/*/tests/attempts/' + test_id + '.json'):
 				with io.open(attempt, 'r', encoding='utf8') as attempt_file:
 					attempt_data=json.load(attempt_file)
-				test = []
-				replaced=False
-				task_id=0
-				item_id=0
-				for task in control_file["tasks"]:
-					for element in task["content"]:
-						if element["type"]=="answer":
-							for question in attempt_data:
-								if "answer" in question.keys() and "answer" in element.keys():
-									if question["answer"]==element["answer"]:
-										test.append(question)
-										replaced=True
-										break
-						if not replaced:
-							for task in control_file["tasks"]:
-								for item in task["content"]:
-									if item["type"] == "question":
-										current_question = item
-									else:
-										value = Test.build_question(item=item)
-										value["control_ids"]={"task_id":task_id,"item_id":item_id}
-										test.append(value)
-						item_id+=1
-					task_id+=1
-					item_id=0
+				real_ids=list(range(0, len(control_file["tasks"])))
+				it=0
+				for task_info in attempt_data.copy():
+					print(task_info["control_ids"]["task_id"])
+					task_found=False
+					renewed_task_ind=0
+					for task in control_file["tasks"]:
+						if "task_id" in task.keys() and task["task_id"]==task_info["control_ids"]["task_id"]:
+							task_found=True
+							task_info["real_ids"]={"task_id":renewed_task_ind}
+							attempt_data[it]["real_ids"]={"task_id":renewed_task_ind}
+							real_ids.remove(renewed_task_ind)
+							renewed_task=task.copy()
+							break
+						renewed_task_ind+=1
+					if not task_found:
+						del attempt_data[it]
+						it-=1
+					else:
+						real_item_ids=list(range(0, len(renewed_task["content"])))
+						for task in data["tasks"]:
+							if task["task_id"]==task_info["control_ids"]["task_id"]:
+								old_task=task.copy()
+								break
+						if task_info["control_ids"]["item_id"]>max_item_id:
+							max_item_id=task_info["control_ids"]["item_id"]
+						renewed_item_ind=0
+						item_found=False
+						for item in renewed_task["content"].copy():
+							if "item_id" in item.keys() and item["item_id"]==task_info["control_ids"]["item_id"]:
+								item_found=True
+								attempt_data[it]["real_ids"]["item_id"]=renewed_item_ind
+								task_info["real_ids"]["item_id"]=renewed_item_ind
+								real_item_ids.remove(renewed_item_ind)
+								renewed_item=item.copy()
+								break
+							renewed_item_ind+=1
+						if not item_found:
+							del attempt_data[it]
+							it-=1
+						else:
+							for item in old_task["content"]:
+								if "item_id" in item.keys() and item["item_id"]==task_info["control_ids"]["item_id"]:
+									old_item=item.copy()
+									break
+							if renewed_item["type"]=="answer":
+								if renewed_item["answer"] != old_item["answer"]:
+									attempt_data[it]["answer"]=renewed_item["answer"]
+								if renewed_item["worth"] != old_item["worth"]:
+									attempt_data[it]["worth"]=int(renewed_item["worth"])
+								if "items" in renewed_item.keys() and set(renewed_item["items"])!=set(old_item["items"]):
+									attempt_data[it]["updated_items"]=True
+							else:
+								if not "renewed_questions" in attempt_data[it].keys():
+									attempt_data[it]["renewed_questions"]=[]
+								attempt_data[it]["renewed_questions"].append(task_info["control_ids"]["item_id"])
+						print(real_item_ids)
+						for ind in real_item_ids:
+							item=renewed_task["content"][ind]
+							print(item)
+							if item["type"] == "question":
+								current_question = item
+							else:
+								max_item_id+=1
+								item["item_id"]=max_item_id
+								value = Test.build_question(item=item)
+								value["control_ids"]={"task_id":it,"item_id":max_item_id}
+								value["real_ids"]={"task_id":it,"item_id":ind}
+								attempt_data.append(value)
+					it+=1
+				for ind in real_ids:
+					task=control_file["tasks"][ind].copy()
+					item_ind=0
+					for item in task["content"]:
+						if item["type"] == "question":
+							current_question = item
+						else:
+							value = Test.build_question(item=item)
+							max_id+=1
+							task["task_id"]=max_id
+							value["control_ids"]={"task_id":max_id,"item_id":item_ind}
+							value["real_ids"]={"task_id":ind,"item_id":item_ind}
+							attempt_data.append(value)
+						item_ind+=1
+				print(attempt_data)
+				#attempt_data = sorted(attempt_data, key=lambda k: k["real_ids"])
+
 				with io.open(attempt, 'w', encoding='utf8') as attempt_file:
-					attempt_file.write(json.dumps(test, ensure_ascii=False))
+					attempt_file.write(json.dumps(attempt_data, ensure_ascii=False))
+		else:
+			if os.path.exists('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json'):
+				with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as test_file:
+					data=json.load(test_file)
+				control_file["allowed_mistakes"]=data["allowed_mistakes"]
+				if "max_time" in data.keys():
+					control_file["max_time"]=data["max_time"]
+				if "mark_setting" in data.keys():
+					control_file["mark_setting"]=data["mark_setting"]
+				if "random" in data.keys():
+					control_file["random"]=data["random"]
+			task_id=0
+			for task in json_file["tasks"]:
+				task["task_id"]=task_id
+				item_id=0
+				if "content" in task.keys():
+					for item in task["content"]:
+						item["item_id"]=item_id
+						item_id+=1
+				else: 
+					for item in task["parts"]:
+						item["item_id"]=item_id
+						item_id+=1
+				task_id+=1
+
+			task_id=0
+			for task in control_file["tasks"]:
+				task["task_id"]=task_id
+				item_id=0
+				for item in task["content"]:
+					item["item_id"]=item_id
+					item_id+=1
+				task_id+=1
 		with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'w+', encoding='utf8') as test_file:
 			test_file.write(json.dumps(json_file, ensure_ascii=False))
 		if "templates" in control_file.keys():
 			del control_file["templates"]
+
 		for task in control_file["tasks"]:
 			if "is_template" in task.keys() and task["is_template"]==True:
 				task["content"]=generated_task["parts"]
@@ -2503,40 +2606,35 @@ class Test():
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
 			value["answer"] = item["answer"].copy()
-			value["options"] = item["items"].copy()
+			value["items"] = item["items"].copy()
 			if value["random"]:
 				answers=[]
 				for answer in list(value["answer"]):
-					answers.append(value["options"][answer])
+					answers.append(value["items"][answer])
 				value["answer"]=[]
-				rand.shuffle(value["options"])
+				rand.shuffle(value["items"])
 				it=0
-				for item in list(value["options"]):
+				for item in list(value["items"]):
 					if item in list(answers):
 						value["answer"].append(it)
 					it+=1
 		elif item["subtype"] == "checkbox":
-			print("Prev answer: "+str(item["answer"]))
-			print("Prev options: "+str(item["items"]))
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
 			value["answer"] = item["answer"].copy()
-			value["options"] = item["items"].copy()
+			value["items"] = item["items"].copy()
 			if value["random"]:
 				answers=[]
 				for answer in value["answer"]:
-					answers.append(value["options"][answer])
-				print("Real vals : "+str(answers))
+					answers.append(value["items"][answer])
 				value["answer"]=[]
-				rand.shuffle(value["options"])
-				print("Shuffled options : "+str(value["options"]))
+				rand.shuffle(value["items"])
 				it=0
-				for item in value["options"]:
+				for item in value["items"]:
 					if item in answers:
 						value["answer"].append(it)
 					it+=1
-				print("Final answer : "+str(value["answer"]))
 		elif item["subtype"] == "classify":
 			value["answer"] = item["answer"]
 			value["user_answer"] = False
@@ -2611,26 +2709,18 @@ class Test():
 						tasks=Test.global_random(random=test_info["random"],tasks=test_info["tasks"].copy())
 					else:
 						tasks=test_info["tasks"].copy()
-					task_id=0
-					item_id=0
+
 					for task in tasks:
 						for item in task["content"]:
 							if item["type"] == "question":
 								current_question = item
 							else:
 								value = Test.build_question(item=item)
-								if "position" in task.keys():
-									value["control_ids"]={"task_id":task["position"],"item_id":item_id}
-								else:
-									value["control_ids"]={"task_id":task_id,"item_id":item_id}
+								value["control_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
+								value["real_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
 								test.append(value)
-							item_id+=1
-						task_id+=1
-						item_id=0
 
-					if test_info["random"]["do"]==True:
-						task_id=0
-						item_id=0
+					if "random" in test_info.keys() and test_info["random"]["do"]==True:
 						for task in test_info["tasks"]:
 							if not task in tasks:
 								for item in task["content"]:
@@ -2638,12 +2728,10 @@ class Test():
 										current_question = item
 									else:
 										value = Test.build_question(item=item)
-										value["control_ids"]={"task_id":task_id,"item_id":item_id}
+										value["control_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
+										value["real_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
 										value["hidden"]=True
 										test.append(value)
-									item_id+=1
-							task_id+=1
-							item_id=0
 				data = test
 				json_file.write(json.dumps(test, ensure_ascii=False))
 
@@ -2703,15 +2791,28 @@ class Test():
 		global_tasks=[]
 		it=0
 		for task in attempt_data:
+			if "renewed_questions" in task.keys() or "renewed_items" in task.keys():
+				for task_info in tasks:
+					for item in task_info["content"]:
+						if "renewed_questions" in task.keys():	
+							if item["item_id"] in task["renewed_questions"]:
+								item["was_changed"]=True
+						if "renewed_items" in task.keys():	
+							if item["item_id"] in task["renewed_items"]:
+								item["was_changed"]=True
 			if not "hidden" in task.keys():
 				if not task["user_answer"] == False:
-					local_task=tasks[task["control_ids"]["task_id"]].copy()
-					local_task["content"][task["control_ids"]["item_id"]]=Test.build_answer(
-						item=tasks[task["control_ids"]["task_id"]]["content"][task["control_ids"]["item_id"]].copy(), data=task.copy())
+					local_task=tasks[task["real_ids"]["task_id"]].copy()
+					local_task["content"][task["real_ids"]["item_id"]]=Test.build_answer(
+						item=tasks[task["real_ids"]["task_id"]]["content"][task["real_ids"]["item_id"]].copy(), data=task.copy())
 					global_tasks.append(local_task)
+					if "items" in global_tasks[it]["content"][task["real_ids"]["item_id"]].keys():
+						global_tasks[it]["content"][task["real_ids"]["item_id"]]["items"]=task["items"]
 				else:
-					global_tasks.append(tasks[task["control_ids"]["task_id"]])
-					global_tasks[it]["content"][task["control_ids"]["item_id"]]["answer"]=""
+					global_tasks.append(tasks[task["real_ids"]["task_id"]])
+					print(global_tasks,it)
+					global_tasks[it]["content"][task["real_ids"]["item_id"]]["answer"]=""
+
 			it+=1
 		tasks=global_tasks
 		return tasks
@@ -2725,9 +2826,7 @@ class Test():
 
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
-		print(data[question_id]["type"])
 		if data[question_id]["type"]=="classify" or data[question_id]["type"]=="checkbox" or data[question_id]["type"]=="radio":
-			print("OKOK")
 			answer=json.loads(answer)
 		time_now=str(datetime.datetime.now())
 		time=Utility.time_delta(test_info["start_time"][str(user.id)],str(time_now))
@@ -2753,7 +2852,7 @@ class Test():
 			data[question_id]["time"]=time
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
-		print(answer)
+
 		return {"type":"success","message":"Ответ сохранен","timeout":timeout}
 
 	def give_mark(percentage, course_id, test_id):
@@ -2951,7 +3050,6 @@ class Test():
 				with io.open('main/files/json/courses/' + str(course_id) + '/users/'+ str(user_id) + '/tests/attempts/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 					attempt_data = json.load(info_file)
 				test_info["tasks"]=Test.compile_tasks(tasks=test_info["tasks"].copy(),attempt_data=attempt_data)
-				print(test_info["tasks"])
 			return test_info
 		else:
 			return {"type":"error","message":"Тест не существует"}
