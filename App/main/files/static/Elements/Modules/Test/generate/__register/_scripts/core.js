@@ -9,7 +9,7 @@ generate.register = {
 
     data[data_type].self = data;
 
-    generate.counter[subtype] = 0;
+    generate.counter[subtype] = 10;
     return data;
   }
 }

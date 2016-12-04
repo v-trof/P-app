@@ -2,7 +2,9 @@ generate.register.external('answer', 'classify', {
   get_value: function($element) {
     var answer = {};
 
-    $edit.children('.__class').each(function() {
+    $element.children('.__class').each(function() {
+      if($(this).hasClass('m--unordered')) return;
+
       var title = $(this).children('h3').text();
       answer[title] = [];
 
@@ -20,13 +22,14 @@ generate.register.external('answer', 'classify', {
         classes = [];
 
     for(class_name in value) {
-      for(var i = 0; i < value[class_name]; i++) {
+      for(var i = 0; i < value[class_name].length; i++) {
         if(value[class_name][i].length > 20 && reduce) {
-          value[class_name][i] = value[class_name][i].substring(0, 13).escape();
-          value[class_name][i] = value[class_name][i] + "&hellip;";
+          value[class_name][i] = value[class_name][i].substring(0, 17).escape();
+          value[class_name][i] = value[class_name][i] + "...";
         } else {
           value[class_name][i] = value[class_name][i].escape();
         }
+        classes.remove(class_name);
         classes.push(class_name);
         items.push(value[class_name][i]);
       }
@@ -43,9 +46,14 @@ generate.register.external('answer', 'classify', {
     //build & item_reduce
     value = this.unwrap_answer(value, true);
 
-    var $summary = element_data.build(value);
+    if(value.items.length === 0) {
+      console.log('empty');
+      return "";
+    }
 
-    $summary.find('*').removeEventListener('click');
+    var $summary = this.self.element.build(value);
+
+    $summary.find('*').unbind('click');
 
     return $summary;
   },
@@ -58,7 +66,7 @@ generate.register.external('answer', 'classify', {
 
       var $element = this.self.element.build(value);
 
-      $element.find('*').removeEventListener('click');
+      $element.find('*').unbind('click');
 
       return $element;
     }
@@ -70,6 +78,10 @@ generate.register.external('answer', 'classify', {
   },
 
   observer: function($element, _change) {
-    $element.find('.__class').click(_change);
+    $element.find('.__items').click(function(event) {
+      if(pull_put.is_pulled) {
+        _change();
+      }
+    });
   }
 });

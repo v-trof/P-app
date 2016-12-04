@@ -14,7 +14,7 @@ generate.register.external('answer', 'checkbox', {
     var big  = false;
 
     value.forEach(function(pos) {
-      var option = element_data.options[pos];
+      var option = element_data.items[pos];
 
       if(option.length > 20) {
         option = option.substring(0, 17).escape();
@@ -41,8 +41,6 @@ generate.register.external('answer', 'checkbox', {
     var self = this.self;
 
     function make_DOM(answer) {
-      //wonder why api is altered
-      element_data.items = element_data.options;
       element_data.answer = answer;
 
       var $element = self.element.build(element_data);

@@ -96,7 +96,8 @@ def template(dependencies, page_loads, page_path):
 
   loads_html = "<script> \n loads = {"
 
-  print('LOADS:', page_loads)
+  page_loads = list(page_loads)
+  page_loads.sort()
 
   for loaded in page_loads:
     include = '{% include "' + loaded + '" %}'

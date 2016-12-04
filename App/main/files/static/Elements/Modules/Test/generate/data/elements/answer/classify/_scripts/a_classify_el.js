@@ -5,6 +5,7 @@ generate.register.element('answer', 'classify', {
     var $new_item = $(loads.get('Elements/Modules/Test/generate/' +
                                 'data/elements/answer/classify/__item/'));
     $new_item.text(item_text);
+    $new_item.addClass('classify_item_'+indicator_index);
 
     //binding pull_put
     pull_put.puller.add(
@@ -13,6 +14,7 @@ generate.register.element('answer', 'classify', {
       undefined, //additional
       function() {
         indicator.show(indicator_index);
+        pull_put.ui.$.find('.__content').css('min-width', '10rem');
       },
       false,
       true
@@ -48,16 +50,17 @@ generate.register.element('answer', 'classify', {
     }
 
     //binding pull_put
-    pull_put.put_zone.add($(this), function(event, $this, $pulled) {
-      if($pulled.hasClass('classy_item_'+indicator_index)) {
-        $this.find('.__items').append($pulled);
+    pull_put.put_zone.add($items, function(event, $this, $pulled) {
+      if($pulled.hasClass('classify_item_'+indicator_index)) {
+        $items.append($pulled);
+        console.log($pulled);
         pull_put.reset();
         indicator.hide(indicator_index);
         self.check($new_class.parent());
       }
     });
 
-    indicator.add($new_class.find('.__items'), 'add', indicator_index);
+    indicator.add($items, 'add', indicator_index);
 
     $new_class.find('.__title').text(title);
     $new_class.addClass(special_class);

@@ -8,6 +8,7 @@ var pull_put = {
     pull_put.ui.element = undefined;
     pull_put.ui.hide();
     $placeholder.remove();
+    indicator.hide();
     pull_put.ui.$.find(".__content").removeAttr('state');
     if (typeof tooltip !== 'undefiend') {
       tooltip.hide();
