@@ -59,7 +59,7 @@ import collections
 import requests
 import tempfile
 from django.core import files
-from main.python.views.forgiving_check import check, check_selected
+from main.python.views.forgiving_check import check, check_selected, check_classify
 import datetime
 from django.utils import timezone
 from collections import OrderedDict
@@ -985,7 +985,7 @@ class CourseManager(models.Manager):
 			for element in value:
 				if element["type"] == "test":
 					test_ids.append(element["id"])
-		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/*.json'):
+		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/control/*.json'):
 			it = it + 1
 			if str(it) in test_ids:
 				with io.open(test, 'r', encoding='utf8') as data_file:
@@ -1413,7 +1413,7 @@ class CourseManager(models.Manager):
 			for element in elements:
 				if element["type"] == "test":
 					test_id = element["id"]
-					with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+					with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 						test_data = json.load(info_file)
 					test={"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
 															 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id}
@@ -1436,7 +1436,7 @@ class CourseManager(models.Manager):
 		for element in data["sections"]["unpublished"]:
 			if element["type"] == "test":
 				test_id = element["id"]
-				with io.open('main/files/json/courses/' + course_id + '/tests/public/' + test_id + '.json', 'r', encoding='utf8') as info_file:
+				with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 					test_data = json.load(info_file)
 					context["unpublished"].append({"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
 												  "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
@@ -2636,10 +2636,15 @@ class Test():
 						value["answer"].append(it)
 					it+=1
 		elif item["subtype"] == "classify":
-			value["answer"] = item["answer"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
+			value["answer"] = item["answer"].copy()
+			value["items"] = item["items"].copy()
+			value["classes"] = item["classes"].copy()
+			if value["random"]:
+				rand.shuffle(value["classes"])
+				rand.shuffle(value["items"])
 		return value
 
 	def build_answer(item, data):
@@ -2884,6 +2889,8 @@ class Test():
 			return check_selected(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 		elif question["type"]=="select" or question["type"]=="radio":
 			return check_selected(answer_right=str(question["answer"]), answer=str(question["user_answer"]), allowed=allowed_mistakes)
+		elif question["type"]=="classify":
+			return check_classify(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 		return check(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 
 	def attempt_check(user, test_id, course_id):
@@ -3115,7 +3122,7 @@ class Marks():
 	def by_tests(course_id):
 		course = Course.objects.get(id=int(course_id))
 		test_list=[]
-		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/*'):
+		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/control/'):
 			test=test.replace("\\","/")
 			test_id=test[:-5].split("/")[-1]
 			test_list.append(test_id)
