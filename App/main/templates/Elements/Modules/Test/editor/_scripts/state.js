@@ -4,6 +4,7 @@ editor.active_element = {
     task: undefined,
     number: undefined
   },
+  item_id: undefined,
   value: {},
   blueprints: {},
   build: function() {

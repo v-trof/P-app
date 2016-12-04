@@ -9,6 +9,7 @@ generate.register.edit = function(type, subtype, edit_data) {
 
   //make API constant
   data.edit.build = function(value) {
+    editor.active_element.item_id = value.item_id;
     var $edit = $("<div class='m--edit-wrapper'></div>");
     $edit.append(data.edit.builder(value));
 
@@ -29,6 +30,7 @@ generate.register.edit = function(type, subtype, edit_data) {
   }
   data.edit.parse = function($edit) {
     var value = data.edit.parser($edit.find('.generate-edit'));
+    value.item_id = editor.active_element.item_id;
 
     if(type === 'answer') {
       value.worth = $edit.find('[name="worth"]').val();
