@@ -67,6 +67,15 @@ def check_selected(answer, answer_right, allowed):
 		return "right"
 	else: return "false"
 
+def check_classify(answer, answer_right, allowed):
+	for group,content in answer.items():
+		for right_group,right_content in answer_right.items():
+			if group==right_group:
+				if set(content) != set(right_content):
+					return "false"
+				else: break
+	return "right"
+
 def spaces(answer):
 	answer = answer.replace(" ", "")
 	return answer
