@@ -1,6 +1,6 @@
 {
 	"elements": ["card/course", "card/user", "card/test", "card/material",
-							 "card/user/extended", "card/test/extended", 
+							 "card/user/extended", "card/test/extended",
 							 "card/material/extended",
 							 "card/announcement", "card/assignment",
 							 "button/main", "button/ghost", "button/flat",
@@ -9,9 +9,9 @@
 							 "Inputs/text/textarea",
 							 "Inputs/checkbox", "Inputs/radio",
 							 "Inputs/select", "Inputs/file",
-							 "Modules/panel",
+							 "Modules/UI/modal/panel",
 							 "card/file",
-							 "Modules/plyr"
+							 "Modules/UI/plyr"
 						],
 	"scripts": [],
 	"styles": [],

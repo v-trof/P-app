@@ -1,7 +1,7 @@
 {
-	"elements": ["Modules/notification", "Modules/accordion",
-				       "Modules/popup",
-			       	 "Modules/text_sort", "Modules/section_editor"],
+	"elements": ["Modules/UI/Info/notification", "Modules/UI/accordion",
+				       "Modules/UI/modal/popup",
+			       	 "Modules/Utility/text_sort", "Modules/Page_edit/section"],
   "styles": [],
   "scripts": [],
 	"title" : "Группы",

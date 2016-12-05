@@ -14,9 +14,12 @@
   {% load staticfiles %}<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Layout/linkbox/_styles/linkbox.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Layout/request/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/popup/_styles/adaptive.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/pull_put/_styles/layout.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/search/_styles/layout.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/circle/_styles/shape.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/user/_styles/user.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/default/_styles/layout.css" %}"> 
@@ -26,9 +29,16 @@
 <link rel="stylesheet" href="{% static "Elements/Inputs/select/_styles/select.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/text.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/Page_edit/section/_styles/empty.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/Page_edit/section/_styles/header_editing.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Effect/ripple/_styles/ripple.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/notification/_styles/notification.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/tooltip/_styles/tooltip.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/accordion/_styles/accordion.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/button_delete/_styles/button_delete.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/context_menu/_styles/context_menu.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/popup/_styles/popup.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/pull_put/__indicator/_styles/indicator.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}"> 
@@ -38,18 +48,32 @@
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
- loads = {'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
+ loads = {'Elements/Icons/add.svg' : '{% include "Elements/Icons/add.svg" %}', 
+'Elements/Icons/angle_down.svg' : '{% include "Elements/Icons/angle_down.svg" %}', 
+'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
 'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
 'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
 'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
+'Elements/Modules/UI/button_delete/exports.html' : '{% include "Elements/Modules/UI/button_delete/exports.html" %}', 
+'Elements/Modules/UI/modal/popup/exports.html' : '{% include "Elements/Modules/UI/modal/popup/exports.html" %}', 
+'Elements/Modules/UI/modal/pull_put/__indicator/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/__indicator/exports.html" %}', 
+'Elements/Modules/UI/modal/pull_put/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/exports.html" %}', 
 'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
 'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
 'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
 'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
 'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
-} </script><script src="{% static "Elements/Modules/UI/Info/notification/_scripts/core.js" %}"> </script>
+} </script><script src="{% static "Elements/Modules/Page_edit/section/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Page_edit/toggle/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/Info/notification/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/modal/context_menu/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/pull_put/__indicator/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/pull_put/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/search/_scripts/core.js" %}"> </script>
 
@@ -57,13 +81,47 @@
 
 <script src="{% static "Elements/Modules/Utility/loads/_scripts/core.js" %}"> </script>
 
+<script src="{% static "Elements/Modules/Utility/scroll/_scripts/core.js" %}"> </script>
+
 <script src="{% static "Elements/Modules/utility/loads/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Page_edit/section/_scripts/add_section.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Page_edit/section/_scripts/block_editing.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Page_edit/section/_scripts/check_empty.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Page_edit/section/_scripts/end.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Page_edit/section/_scripts/end_section_editing.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Page_edit/section/_scripts/move_unordered.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Page_edit/section/_scripts/start.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Page_edit/section/_scripts/start_section_editing.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/Effect/ripple/_scripts/ripple.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %}"> </script>
 
+<script src="{% static "Elements/Modules/UI/Info/tooltip/_scripts/tooltip.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/accordion/_scripts/accordion.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/button_delete/_scripts/button_delete.js" %}"> </script>
+
 <script src="{% static "Elements/Modules/UI/modal/context_menu/_scripts/build_sectioned_select.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/popup/_scripts/popup.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/pull_put/_scripts/actions.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/pull_put/_scripts/pull.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/pull_put/_scripts/put.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/pull_put/_scripts/ui.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/search/_scripts/build.js" %}"> </script>
 
@@ -74,6 +132,14 @@
 <script src="{% static "Elements/Modules/UI/search/_scripts/init.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/search/_scripts/listener.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Utility/replace/_scripts/replace.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Utility/scroll/_scripts/wire.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Utility/text_sort/_scripts/text_sort.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Utility/verifier/_scripts/verifier.js" %}"> </script>
 
 <script>    {% include "Elements/Inputs/file/_scripts/file_catcher.js" %} 
     {% include "Elements/Inputs/select/_scripts/select.js" %} 

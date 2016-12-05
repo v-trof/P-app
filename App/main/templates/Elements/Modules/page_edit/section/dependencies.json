@@ -1,6 +1,6 @@
 {
 	"elements": ["Modules/UI/accordion", "Modules/UI/button_delete",
       				 "Modules/UI/modal/pull_put", "Modules/Utility/replace",
-      				 "Modules/page_edit/toggle_edit", "Modules/UI/indicator",
-               "Modules/UI/scroll", "Modules/Utility/lang"]
+      				 "Modules/Page_edit/toggle",
+               "Modules/Utility/scroll", "Modules/Utility/lang"]
 }

@@ -1,7 +1,8 @@
 {
-	"elements": ["card/file", "Modules/notification", "Modules/popup",
-				       "Inputs/text", "Inputs/file", "Modules/toggle_edit",
-				       "Modules/button_delete", "Modules/replace"],
+	"elements": ["card/file", "Modules/UI/Info/notification",
+               "Modules/UI/modal/popup",
+				       "Inputs/text", "Inputs/file", "Modules/Page_edit/toggle",
+				       "Modules/UI/button_delete", "Modules/Utility/replace"],
   "scripts": [],
   "styles": [],
 	"title" : "Источники",

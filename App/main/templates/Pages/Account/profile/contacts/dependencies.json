@@ -1,5 +1,5 @@
 {
-	"elements": ["button/ghost/icon", "Modules/popup", 
-      				 "Modules/button_delete",
-      				 "Inputs/select", "Inputs/text"]		
+	"elements": ["button/ghost/icon", "Modules/UI/modal/popup",
+      				 "Modules/UI/button_delete",
+      				 "Inputs/select", "Inputs/text"]
 }

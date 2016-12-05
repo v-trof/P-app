@@ -12,6 +12,7 @@
 </section>
   <div class="_styles">
   {% load staticfiles %}<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/popup/_styles/adaptive.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/search/_styles/layout.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}"> 
@@ -27,8 +28,13 @@
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/textarea/_styles/height_fix.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Effect/ripple/_styles/ripple.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/notification/_styles/notification.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/tooltip/_styles/tooltip.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/accordion/_styles/accordion.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/medium_editor/_styles/core.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/medium_editor/_styles/default.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/panel/_styles/panel.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/pickmeup/_styles/picker.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/popup/_styles/popup.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/icon/_styles/icon.css" %}"> 
@@ -37,10 +43,13 @@
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
- loads = {'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
+ loads = {'Elements/Icons/angle_down.svg' : '{% include "Elements/Icons/angle_down.svg" %}', 
+'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
 'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
 'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
 'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
+'Elements/Modules/UI/modal/panel/exports.html' : '{% include "Elements/Modules/UI/modal/panel/exports.html" %}', 
+'Elements/Modules/UI/modal/popup/exports.html' : '{% include "Elements/Modules/UI/modal/popup/exports.html" %}', 
 'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
 'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
 'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
@@ -49,6 +58,8 @@
 } </script><script src="{% static "Elements/Modules/UI/Info/notification/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/medium_editor/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/pickmeup/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/search/_scripts/core.js" %}"> </script>
 
@@ -61,6 +72,14 @@
 <script src="{% static "Elements/Modules/UI/Effect/ripple/_scripts/ripple.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/Info/tooltip/_scripts/tooltip.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/accordion/_scripts/accordion.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/panel/_scripts/panel.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/popup/_scripts/popup.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/search/_scripts/build.js" %}"> </script>
 

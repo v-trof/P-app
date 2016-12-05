@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/assignment.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/assignment/_styles/states.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/file/_styles/file.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/small/_styles/small.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/user/_styles/user.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/default/_styles/layout.css" %}"> 
@@ -34,9 +35,14 @@
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/textarea/_styles/height_fix.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Effect/ripple/_styles/ripple.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/notification/_styles/notification.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/tooltip/_styles/tooltip.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/medium_editor/_styles/core.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/medium_editor/_styles/default.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/context_menu/_styles/context_menu.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/panel/_styles/panel.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/plyr/_styles/mixins.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/plyr/_styles/plyr.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/plyr/_styles/variables.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}"> 
@@ -51,6 +57,7 @@
 'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
 'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
 'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
+'Elements/Modules/UI/modal/panel/exports.html' : '{% include "Elements/Modules/UI/modal/panel/exports.html" %}', 
 'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
 'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
 'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
@@ -74,7 +81,13 @@
 
 <script src="{% static "Elements/Modules/UI/Info/notification/_scripts/deffered.js" %}"> </script>
 
+<script src="{% static "Elements/Modules/UI/Info/tooltip/_scripts/tooltip.js" %}"> </script>
+
 <script src="{% static "Elements/Modules/UI/modal/context_menu/_scripts/build_sectioned_select.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/modal/panel/_scripts/panel.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/plyr/_scripts/plyr.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/search/_scripts/build.js" %}"> </script>
 

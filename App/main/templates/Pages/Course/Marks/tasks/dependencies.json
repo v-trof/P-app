@@ -1,5 +1,5 @@
 {
-	"elements": ["card/assignment", "Modules/replace"],
+	"elements": ["card/assignment", "Modules/Utility/replace"],
   "scripts": [],
   "styles": [],
 	"title" : "Оценки за задания",
