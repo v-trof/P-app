@@ -1,4 +1,4 @@
-function upload_file(file_to_upload, task_index, index) {
+function upload_file(file_to_upload, url_handler) {
   var file_id = test_manager.upload_queue.length;
   console.log("uplaoding file ||| id:", file_id);
   test_manager.upload_queue.push(file_id);
@@ -14,19 +14,35 @@ function upload_file(file_to_upload, task_index, index) {
       processData: false,
       contentType: false,
     success:function(response) {
-      test_manager.packed_test.tasks[task_index][index].url=response;
-      test_manager.upload_queue.remove(file_id);
+      url_handler(response);
+    }
+  });
+}
 
-      console.log("saved to:", task_index, index,
-        test_manager.packed_test.tasks[task_index][index]);
-      console.log(response, "as", file_id);
-      console.log("removed", test_manager.upload_queue);
+test_manager.look_for_files = function(content) {
+  content.forEach(function(part) {
+    if(defined(part.asset_id)) {
+      upload_file(editor.assets.get(part.asset_id).files[0], function(url) {
+        part.url = url;
+        part.asset_id = undefined;
+        console.log('uploaded', part);
+      });
     }
   });
 }
 
 test_manager.pack = function(test) {
-  console.log("packing:", test);
   test_manager.packed_test = test;
-  //TODO source matching
+
+  test.templates.forEach(function(template) {
+    test_manager.look_for_files(template.parts);
+  });
+
+  test.tasks.forEach(function(task) {
+    if(task.is_template) {
+      test_manager.look_for_files(task.parts);
+    } else {
+      test_manager.look_for_files(task.content);
+    }
+  });
 }

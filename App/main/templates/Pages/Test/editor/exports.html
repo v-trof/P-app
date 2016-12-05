@@ -8,7 +8,7 @@
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	<section class="item-list card m--question"></section><section class="preview">	<h2 class="__heading" contenteditable></h2>	<div class="__content">	</div></section><section class="item-list card m--answer"></section>{% include "Pages/Test/Editor/actions/exports.html" %}
+	<section class="item-list card m--question"></section><section class="preview">	<h2 class="__heading" contenteditable></h2>	<div class="__content">	</div></section><section class="item-list card m--answer"></section>{% include "Pages/Test/editor/actions/exports.html" %}
 </section>
   <div class="_styles">
   {% load staticfiles %}<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
@@ -20,15 +20,17 @@
 <link rel="stylesheet" href="{% static "Elements/card/_styles/card.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/_styles/link.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/circle/_styles/shape.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/card/file/_styles/file.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/small/_styles/small.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/card/user/_styles/user.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/_styles/main.css" %}"> 
 <link rel="stylesheet" href="{% static "Page_templates/default/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/Editor/_publish_popup/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/Editor/_styles/layout.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/Editor/actions/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/editor/_publish_popup/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/editor/_styles/layout.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/editor/actions/_styles/layout.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/_shared/_styles/toggle.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/checkbox/_styles/checkbox.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Inputs/file/_styles/file.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/radio/_styles/radio.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/select/_styles/select.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/_styles/reset.css" %}"> 
@@ -37,6 +39,7 @@
 <link rel="stylesheet" href="{% static "Elements/Inputs/text/textarea/_styles/height_fix.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/Test/editor/__template_ui/_styles/template_ui.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/Test/editor/_styles/catcher.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/Test/editor/_styles/disable_pointer.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/Test/editor/_styles/empty.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/Test/editor/_styles/test.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/Test/generate/data/__templates/_styles/make_flex.css" %}"> 
@@ -56,11 +59,12 @@
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/popup/_styles/popup.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/modal/pull_put/__indicator/_styles/indicator.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/icon/_styles/icon.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/Editor/_styles/disable.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/Editor/_styles/input_adaptation.css" %}"> 
-<link rel="stylesheet" href="{% static "Pages/Test/Editor/_styles/preview.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/editor/_styles/disable.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/editor/_styles/input_adaptation.css" %}"> 
+<link rel="stylesheet" href="{% static "Pages/Test/editor/_styles/preview.css" %}"> 
 
   </div>
 	<script src="/static/scripts/jquery.js"></script>
@@ -77,6 +81,7 @@
 'Elements/Icons/visibility.svg' : '{% include "Elements/Icons/visibility.svg" %}', 
 'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
 'Elements/Inputs/checkbox/exports.html' : '{% include "Elements/Inputs/checkbox/exports.html" %}', 
+'Elements/Inputs/file/exports.html' : '{% include "Elements/Inputs/file/exports.html" %}', 
 'Elements/Inputs/radio/exports.html' : '{% include "Elements/Inputs/radio/exports.html" %}', 
 'Elements/Inputs/text/exports.html' : '{% include "Elements/Inputs/text/exports.html" %}', 
 'Elements/Inputs/text/inline/exports.html' : '{% include "Elements/Inputs/text/inline/exports.html" %}', 
@@ -88,12 +93,14 @@
 'Elements/Modules/Test/generate/data/task/template/__edit/exports.html' : '{% include "Elements/Modules/Test/generate/data/task/template/__edit/exports.html" %}', 
 'Elements/Modules/Test/manage/__popup_texts/__no_publish/exports.html' : '{% include "Elements/Modules/Test/manage/__popup_texts/__no_publish/exports.html" %}', 
 'Elements/Modules/Test/manage/__popup_texts/__no_save/exports.html' : '{% include "Elements/Modules/Test/manage/__popup_texts/__no_save/exports.html" %}', 
+'Elements/Modules/Test/manage/__popup_texts/__save/exports.html' : '{% include "Elements/Modules/Test/manage/__popup_texts/__save/exports.html" %}', 
 'Elements/Modules/UI/button_delete/exports.html' : '{% include "Elements/Modules/UI/button_delete/exports.html" %}', 
 'Elements/Modules/UI/modal/popup/exports.html' : '{% include "Elements/Modules/UI/modal/popup/exports.html" %}', 
 'Elements/Modules/UI/modal/pull_put/__indicator/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/__indicator/exports.html" %}', 
 'Elements/Modules/UI/modal/pull_put/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/exports.html" %}', 
 'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
 'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
+'Elements/card/file/exports.html' : '{% include "Elements/card/file/exports.html" %}', 
 'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
 'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
 'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
@@ -153,6 +160,8 @@
 
 <script src="{% static "Elements/Modules/Test/editor/_scripts/add_element.js" %}"> </script>
 
+<script src="{% static "Elements/Modules/Test/editor/_scripts/assets.js" %}"> </script>
+
 <script src="{% static "Elements/Modules/Test/editor/_scripts/fill_item_list.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/editor/_scripts/observers.js" %}"> </script>
@@ -179,6 +188,8 @@
 
 <script src="{% static "Elements/Modules/Test/generate/data/edit/answer/text/_scripts/a_text_ed.js" %}"> </script>
 
+<script src="{% static "Elements/Modules/Test/generate/data/edit/question/file/_scripts/q_file_ed.js" %}"> </script>
+
 <script src="{% static "Elements/Modules/Test/generate/data/edit/question/text/_scripts/q_text_ed.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/data/elements/answer/checkbox/_scripts/a_checkbox_el.js" %}"> </script>
@@ -188,6 +199,8 @@
 <script src="{% static "Elements/Modules/Test/generate/data/elements/answer/radio/_scripts/a_radio_el.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/data/elements/answer/text/_scripts/a_text_el.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/data/elements/question/file/_scripts/q_file_el.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/data/elements/question/text/_scripts/q_text_el.js" %}"> </script>
 
@@ -255,12 +268,13 @@
 
 <script src="{% static "Elements/Modules/Utility/render/inputs/text/_scripts/i_text.js" %}"> </script>
 
-<script>    {% include "Elements/Inputs/select/_scripts/select.js" %} 
+<script>    {% include "Elements/Inputs/file/_scripts/file_catcher.js" %} 
+    {% include "Elements/Inputs/select/_scripts/select.js" %} 
     {% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
     {% include "Elements/Inputs/text/textarea/_scripts/add_handlers.js" %} 
     {% include "Elements/Layout/header/_scripts/header.js" %} 
-    {% include "Pages/Test/Editor/_scripts/init.js" %} 
-    {% include "Pages/Test/Editor/actions/_scripts/handler.js" %} 
+    {% include "Pages/Test/editor/_scripts/init.js" %} 
+    {% include "Pages/Test/editor/actions/_scripts/handler.js" %} 
 </script>
 </body>
 </html>

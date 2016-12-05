@@ -24,13 +24,13 @@ generate.data["question--file"] = {
       } else {
         file_template.attr("href", value.url);
       }
-      
-    
+
+
       file_template.find(".__name").text(value.name);
-      
+
       file_template.find(".__size").text(value.size);
       file_template.attr("id", value.id);
-      
+
 
       return $(generate.build.template.question("question--file"))
         .append(file_template);

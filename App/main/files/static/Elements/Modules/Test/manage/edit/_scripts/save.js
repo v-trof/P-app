@@ -2,9 +2,6 @@ test_manager.upload_queue = []
 test_manager.packed_test = {}
 
 test_manager.upload_test = function() {
-  console.log('upload');
-  console.log(test_manager.packed_test);
-
   var serialized_test = JSON.parse(JSON.stringify(test_manager.packed_test));
 
   //serializing
@@ -59,17 +56,13 @@ test_manager.drop = function(state) {
       popup.hide();
     });
   });
-  console.log('dropout');
   return;
 }
 
 test_manager.save = function() {
   if(test_manager.is_published) {
-    console.log('checking_publish');
     var test = test_manager.fix_test_strict(editor.test_data);
-    console.log(test);
     if( ! test) {
-      console.log('deny', test);
       return false;
     }
   } else {
@@ -81,6 +74,7 @@ test_manager.save = function() {
 
   if(test_manager.upload_queue.length !== 0) {
     popup.show(loads.get("Elements/Modules/Test/manage/__popup_texts/__save/"));
+    console.log(loads.get("Elements/Modules/Test/manage/__popup_texts/__save/"));
   }
 
   var check_queue = function() {

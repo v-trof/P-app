@@ -1,7 +1,7 @@
 var file_catcher = {}
 
 file_catcher.add = function($file_input) {
-
+  console.log('catching at', $file_input);
   $file_input = $($file_input).first();
 
   $input_button = $file_input.find(".__choose");
