@@ -1,4 +1,21 @@
-test_manager.upload_queue = []
+test_manager.upload_queue = {
+  last_id: 0,
+  length: 0,
+  error: false,
+  _pending: [],
+  add: function() {
+    var new_id = this.last_id++;
+    this.length++;
+    this._pending.push(new_id);
+
+    return new_id;
+  },
+  remove: function(id) {
+    this._pending.remove(id);
+    this.length--;
+  }
+}
+
 test_manager.packed_test = {}
 
 test_manager.upload_test = function() {
@@ -60,6 +77,7 @@ test_manager.drop = function(state) {
 }
 
 test_manager.save = function() {
+  test_manager.upload_queue.error = false;
   if(test_manager.is_published) {
     var test = test_manager.fix_test_strict(editor.test_data);
     if( ! test) {
@@ -79,7 +97,14 @@ test_manager.save = function() {
 
   var check_queue = function() {
     if(test_manager.upload_queue.length === 0) {
-      test_manager.upload_test();
+      if( ! test_manager.upload_queue.error) {
+        test_manager.upload_test();
+      } else {
+        notification.show('error', 'Не удалось сохранить тест из-за ' +
+        'ошбики с файлом. \n Его можно сохранить, ' +
+        'если вы удалите поле, вызывающее ошибку.');
+      }
+
       popup.hide();
     } else {
       setTimeout(check_queue, 100);

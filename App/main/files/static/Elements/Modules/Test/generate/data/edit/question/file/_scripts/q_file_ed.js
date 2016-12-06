@@ -11,13 +11,15 @@ generate.register.edit('question', 'file', {
     $new_edit.append($file_input);
     var file_data = file_catcher.add($file_input);
 
-    if( ! defined(value.asset_id)) {
-      value.asset_id = editor.assets.add(file_data);
-    } else {
+    if(defined(value.asset_id) || defined(value.url)) {
       $file_input.find('.__text').text(value.file_name);
       file_data.value.change(function() {
         editor.assets.replace(value.asset_id, file_data);
       });
+    }
+
+    if( ! defined(value.asset_id)) {
+      value.asset_id = editor.assets.add(file_data);
     }
 
     return $new_edit;
