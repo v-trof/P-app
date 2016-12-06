@@ -406,8 +406,8 @@ class Utility_views():
             file = request.FILES.get("file", False)
             path = request.POST.get("path", False)
             extensions = request.POST.get("extensions", False)
-            filepath = Utility.upload_file(url=file, path=path, extensions=extensions)
-            return HttpResponse(filename)
+            filepath = Utility.upload_file(file=file, path=path, extensions=extensions)
+            return HttpResponse(filepath)
 
 
     def upload_file_by_url(request):
