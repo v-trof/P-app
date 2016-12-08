@@ -3269,13 +3269,15 @@ class Statistics():
 			results_count+=1
 			with io.open(results, 'r', encoding='utf8') as info_file:
 				test_info = json.load(info_file)
-			for question_id,question in test_info.items():
+			question_it=0
+			for question in test_info:
 				if "result" in question.keys():
 					if question["result"] == "wrong" or question["result"] == "missed":
-						question_id=str(int(question_id)+1)
+						question_id=str(int(question_it)+1)
 						if not question_id in questions.keys():
 							questions[question_id]=0
 						questions[question_id]+=1
+				question_it+=1
 
 		for question_id,frequency in questions.items():
 			if frequency/results_count*100 > 50:
