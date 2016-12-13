@@ -81,11 +81,12 @@
 'Elements/Modules/UI/modal/pull_put/__indicator/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/__indicator/exports.html" %}', 
 'Elements/Modules/UI/modal/pull_put/exports.html' : '{% include "Elements/Modules/UI/modal/pull_put/exports.html" %}', 
 'Elements/Modules/UI/search/exports.html' : '{% include "Elements/Modules/UI/search/exports.html" %}', 
+'Elements/Modules/UI/summary/__summary_item/exports.html' : '{% include "Elements/Modules/UI/summary/__summary_item/exports.html" %}', 
 'Elements/card/course/exports.html' : '{% include "Elements/card/course/exports.html" %}', 
+'Elements/card/file/exports.html' : '{% include "Elements/card/file/exports.html" %}', 
 'Elements/card/material/extended/exports.html' : '{% include "Elements/card/material/extended/exports.html" %}', 
 'Elements/card/test/extended/exports.html' : '{% include "Elements/card/test/extended/exports.html" %}', 
 'Elements/card/user/extended/exports.html' : '{% include "Elements/card/user/extended/exports.html" %}', 
-'Pages/Test/attempt/main/summary_item/exports.html' : '{% include "Pages/Test/attempt/main/summary_item/exports.html" %}', 
 } </script><script src="{% static "Elements/Modules/Test/generate/__core/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/__core/_scripts/get_blueprints.js" %}"> </script>
@@ -105,6 +106,8 @@
 <script src="{% static "Elements/Modules/UI/modal/pull_put/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/search/_scripts/core.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/summary/_scripts/core.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Utility/lang/_scripts/core.js" %}"> </script>
 
@@ -133,6 +136,8 @@
 <script src="{% static "Elements/Modules/Test/generate/data/elements/answer/radio/_scripts/a_radio_el.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/data/elements/answer/text/_scripts/a_text_el.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Test/generate/data/elements/question/file/_scripts/q_file_el.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/data/elements/question/text/_scripts/q_text_el.js" %}"> </script>
 
@@ -194,6 +199,10 @@
 
 <script src="{% static "Elements/Modules/UI/search/_scripts/listener.js" %}"> </script>
 
+<script src="{% static "Elements/Modules/UI/summary/_scripts/icons.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/UI/summary/_scripts/summary.js" %}"> </script>
+
 <script src="{% static "Elements/Modules/Utility/render/inputs/text/_scripts/i_text.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Utility/scroll/_scripts/wire.js" %}"> </script>
@@ -201,7 +210,6 @@
 <script>    {% include "Elements/Inputs/text/_scripts/emptyness_checker.js" %} 
     {% include "Elements/Layout/header/_scripts/header.js" %} 
     {% include "Pages/Test/Attempt/_shared/adapt_layout.js" %} 
-    {% include "Pages/Test/Attempt/_shared/summary.js" %} 
     {% include "Pages/Test/Attempt/main/_scripts/init.js" %} 
     {% include "Pages/Test/Attempt/main/_scripts/make_summary_item.js" %} 
     {% include "Pages/Test/Attempt/main/_scripts/send.js" %} 

@@ -25,7 +25,7 @@ $(document).ready(function() {
   if(defined(django.loaded)) {
     test_manager.load(django.loaded);
     attempt.append_send();
-    attempt.make_summary();
+    summary.make(django.loaded, django.attempt, attempt.make_summary_item);
   } else {
     $('.preview>h2').html('Ошибка при загрузке теста');
     //GET-AJAX-HERE error log

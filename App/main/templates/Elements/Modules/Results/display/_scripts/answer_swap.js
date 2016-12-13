@@ -1,7 +1,4 @@
-//answer swap
-var attempt = attempt || {};
-
-attempt.swap_answer = function(attempt_data, field_data, $answer_field) {
+results_display.swap_answer = function(attempt_data, field_data, $answer_field) {
   var $answer = $(field_data.make_answer(attempt_data.user_answer,
                                          attempt_data.answer,
                                          attempt_data.user_score,

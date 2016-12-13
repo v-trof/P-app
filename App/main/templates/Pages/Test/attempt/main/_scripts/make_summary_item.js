@@ -20,7 +20,7 @@ attempt.icons = {
   },
   synced: {
     icon: loads["Elements/Icons/save.svg"],
-    tip: "Сохраено"
+    tip: "Сохранено"
   },
   error: {
     icon: loads["Elements/Icons/sync_problem.svg"],
@@ -30,7 +30,7 @@ attempt.icons = {
 }
 
 attempt.make_summary_item = function(show_index, value, real_index, $sync_element) {
-  var $summary_item = $(loads.get("Pages/Test/attempt/main/summary_item/"));
+  var $summary_item = $(loads.get("Elements/Modules/UI/summary/__summary_item/"));
   var data = generate.data[$sync_element.attr('type')]
                 [$sync_element.attr('subtype')].external;
   var $value = $summary_item.find('.__value');
@@ -38,6 +38,7 @@ attempt.make_summary_item = function(show_index, value, real_index, $sync_elemen
   var attempt_data = django.attempt[real_index];
 
   function set_icon(icon) {
+    console.log('ico->', icon);
     $icon.html(attempt.icons[icon].icon);
     $icon.attr('tip', attempt.icons[icon].tip);
 

@@ -5,10 +5,12 @@
 <section class='tests'>
 	{% for section_name, section in tests.items %}
 		{% if section|length > 0 %}
+      <section>
 			<h3>{{section_name}}</h3>
 			{% for test_id,test in section.items %}
 				<a class="m--card" href="/course/{{course.id}}/results/?test_id={{test_id}}"> {% include "Elements/card/test/" %} </a>
 			{% endfor %}
+      </section>
 		{% endif %}
 	{% endfor %}
   {% if tests.items|length == 1 %}

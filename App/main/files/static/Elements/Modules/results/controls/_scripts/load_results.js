@@ -38,8 +38,8 @@ results_controls.load = function() {
       url: '/test/get_results/',
       type: 'POST',
       data: {
-        'csrfmiddlewaretoken': '{{ csrf_token }}',
-        'course_id': "{{course.id}}",
+        'csrfmiddlewaretoken': django.csrf_token,
+        'course_id': django.course.id,
         'test_id': test_id,
         'user_id': user_id
       },
@@ -54,8 +54,8 @@ results_controls.load = function() {
       url: '/test/get_attempt_info/',
       type: 'POST',
       data: {
-        'csrfmiddlewaretoken': '{{ csrf_token }}',
-        'course_id': "{{course.id}}",
+        'csrfmiddlewaretoken':  django.csrf_token,
+        'course_id': django.course.id,
         'test_id': test_id,
         'user_id': user_id
       },

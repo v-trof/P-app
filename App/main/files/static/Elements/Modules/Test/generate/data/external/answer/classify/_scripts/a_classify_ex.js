@@ -61,10 +61,11 @@ generate.register.external('answer', 'classify', {
 
   to_answer: function(user_answer, right_answer, element_data) {
     // build
+    var self = this;
     var make_DOM = function(answer) {
-      var value = this.unwrap_answer(answer, false);
-
-      var $element = this.self.element.build(value);
+      console.log(answer);
+      answer = self.unwrap_answer(answer, true);
+      var $element = self.self.element.build(answer);
 
       $element.find('*').unbind('click');
 
@@ -72,8 +73,8 @@ generate.register.external('answer', 'classify', {
     }
 
     return {
-      user: make_DOM(user_answers),
-      right: make_DOM(right_answers)
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
     }
   },
 
@@ -85,3 +86,6 @@ generate.register.external('answer', 'classify', {
     });
   }
 });
+
+
+//TODO fix attempt icon swap

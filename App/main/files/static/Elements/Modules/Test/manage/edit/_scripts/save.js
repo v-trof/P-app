@@ -58,6 +58,9 @@ test_manager.upload_test = function() {
       notification.show(response["type"], response["message"]);
       if(defined(django.test.id)) {
         window.history.pushState('Редактирование ' + test_manager.packed_test.title, 'Редактирование ' + test_manager.packed_test.heading, '/test/edit/?course_id=' + django.course.id + '&test_id=' + django.test.id);
+
+        $('.header>.__breadcrumbs>a').last().
+          find('div').text(test_manager.packed_test.title);
       } else {
         window.history.pushState('Редактирование ' + test_manager.packed_test.title, 'Редактирование ' + test_manager.packed_test.heading, '/material/edit/?course_id='+ django.course.id +'&material_id='+ django.material.id +'');
       }

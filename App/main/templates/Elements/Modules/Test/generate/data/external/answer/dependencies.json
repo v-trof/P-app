@@ -1,3 +1,3 @@
 {
-  "elements": ["Modules/UI/accordion"]
+  "elements": ["Modules/UI/accordion", "Modules/UI/summary"]
 }

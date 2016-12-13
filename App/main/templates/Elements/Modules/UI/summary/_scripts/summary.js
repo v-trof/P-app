@@ -1,6 +1,4 @@
-var attempt = attempt || {};
-
-attempt.make_summary = function () {
+summary.make = function (test, attempt, make_summary_item) {
   panel.show("");
   panel.actions.hide();
   var global_answer_pos = 0;
@@ -14,6 +12,7 @@ attempt.make_summary = function () {
     if($answer_fields.length > 1) {
       use_full_format = true;
     }
+
     $answer_fields.each(function(index, el) {
       answer_pos+=1;
       global_answer_pos+=1;
@@ -21,7 +20,7 @@ attempt.make_summary = function () {
       var $new_summary;
 
       item_it+=1; //step after last found
-      while (django.loaded.tasks[task_index].content[item_it].type !== "answer") {
+      while (test.tasks[task_index].content[item_it].type !== "answer") {
         item_it+=1;
       }
 
@@ -32,10 +31,12 @@ attempt.make_summary = function () {
       }
       index++;
 
-      //no idea where to look for values
-      value = django.attempt[global_answer_pos - 1].user_answer;
-      var $new_summary = attempt.make_summary_item(show_index, value,
-                                                   global_answer_pos - 1, $(this));
+      var real_index = global_answer_pos - 1;
+
+      value = attempt[real_index].user_answer;
+      var $new_summary = make_summary_item(show_index, value,
+                                           real_index, $(this),
+                                           attempt[real_index]);
       panel.content.append($new_summary);
 
       scroll.wire($new_summary, $(this).parent().parent());

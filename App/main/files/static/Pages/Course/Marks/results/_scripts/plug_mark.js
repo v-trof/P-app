@@ -20,10 +20,8 @@ function plug_marks_init($group) {
         results_controls.active_test = id;
         changed=true;
       }
-    
-    if(changed) {
-      results_controls.load();
-    }
+
+    results_controls.load();
     show_active_test(id);
   });
 }

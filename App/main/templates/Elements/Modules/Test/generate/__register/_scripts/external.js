@@ -34,8 +34,7 @@ generate.register.external = function(type, subtype, external_data) {
     $score.find('.__current').html(user_score);
     $score.find('.__max').html(worth);
 
-    generate.register.external.set_icon(result,
-                                        $new_answer.find('.__data>.__icon'));
+    summary.set_icon(result, $new_answer.find('.__data>.__icon'));
 
     setTimeout(function() {
       accordion.add($new_answer.find('.__right'), 'h3');
@@ -58,50 +57,4 @@ generate.register.external = function(type, subtype, external_data) {
   }
 
   return true;
-}
-
-generate.register.external.icons = {
-  missed: {
-    icon: loads["Elements/Icons/minus.svg"],
-    tip: "Пропущено",
-    class: "m--negative"
-  },
-  wrong: {
-    icon: loads["Elements/Icons/close.svg"],
-    tip: "Неверно",
-    class: "m--negative"
-  },
-  forgiving: {
-    icon: loads["Elements/Icons/pause.svg"],
-    tip: "Неполный балл: ${got} / ${max}",
-    class: "m--neutral"
-  },
-  right: {
-    icon: loads["Elements/Icons/done.svg"],
-    tip: "Верно",
-    class: "m--positive"
-  },
-
-  unknown: {
-    icon: loads["Elements/Icons/in_progress.svg"],
-    tip: "Ждем проверки преподавателем",
-    class: "m--neutral"
-  },
-}
-
-generate.register.external.set_icon = function(icon, $icon) {
-  var icons = generate.register.external.icons;
-
-  $icon.html(icons[icon].icon);
-  $icon.attr('tip', icons[icon].tip);
-
-  for(icon_name in icons) {
-    if(icons[icon_name].class) {
-      $icon.removeClass(icons[icon_name].class);
-    }
-  }
-
-  if(icons[icon].class) {
-    $icon.addClass(icons[icon].class);
-  }
 }

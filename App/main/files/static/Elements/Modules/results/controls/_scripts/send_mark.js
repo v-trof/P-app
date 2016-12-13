@@ -1,5 +1,3 @@
-
-
 results_controls.change_score_view = function(
   index, mark, score, max, $field) {
   var reset_class = function($element) {
@@ -9,9 +7,9 @@ results_controls.change_score_view = function(
   }
 
   var $mark = $('[href$="/' + results_controls.active_student +'"]')
-                .parent().find('button[test="' + 
+                .parent().find('button[test="' +
                   results_controls.active_test+'"]');
-  
+
   reset_class($mark);
   $mark.addClass('m--' + mark.quality)
     .text(mark.value);
@@ -42,8 +40,8 @@ results_controls.send_mark = function(index,
     url: '/test/change_score/',
     type: 'POST',
     data: {
-      'csrfmiddlewaretoken': '{{ csrf_token }}',
-      'course_id': "{{course.id}}",
+      'csrfmiddlewaretoken': django.csrf_token,
+      'course_id': django.course.id,
       'test_id': results_controls.active_test,
       'user_id': results_controls.active_student,
       'answer_id': index,

@@ -8,7 +8,7 @@
 <body>
 	{% include "Elements/Layout/header/exports.html" %}
 <section class="main">
-	{% load keyvalue from filters %}{% load makelist from filters %}{% load makeuser from filters %}{% include "Pages/Course/Marks/tests/linkbox/exports.html" %}<section class='tests'>	{% for section_name, section in tests.items %}		{% if section|length > 0 %}			<h3>{{section_name}}</h3>			{% for test_id,test in section.items %}				<a class="m--card" href="/course/{{course.id}}/results/?test_id={{test_id}}"> {% include "Elements/card/test/exports.html" %} </a>			{% endfor %}		{% endif %}	{% endfor %}  {% if tests.items|length == 1 %}    {% for section_name, section in tests.items %}      {% for test_id,test in section.items %}      {% empty %}        У вас нет выданных тестов      {% endfor %}    {% endfor %}  {% endif %}</section>
+	{% load keyvalue from filters %}{% load makelist from filters %}{% load makeuser from filters %}{% include "Pages/Course/Marks/tests/linkbox/exports.html" %}<section class='tests'>	{% for section_name, section in tests.items %}		{% if section|length > 0 %}      <section>			<h3>{{section_name}}</h3>			{% for test_id,test in section.items %}				<a class="m--card" href="/course/{{course.id}}/results/?test_id={{test_id}}"> {% include "Elements/card/test/exports.html" %} </a>			{% endfor %}      </section>		{% endif %}	{% endfor %}  {% if tests.items|length == 1 %}    {% for section_name, section in tests.items %}      {% for test_id,test in section.items %}      {% empty %}        У вас нет выданных тестов      {% endfor %}    {% endfor %}  {% endif %}</section>
 </section>
   <div class="_styles">
   {% load staticfiles %}<link rel="stylesheet" href="{% static "Elements/Layout/header/_styles/header.css" %}"> 
@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Effect/ripple/_styles/ripple.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/notification/_styles/notification.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/Modules/UI/Info/tooltip/_styles/tooltip.css" %}"> 
+<link rel="stylesheet" href="{% static "Elements/Modules/UI/accordion/_styles/accordion.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/_styles/button.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/flat/_styles/flat.css" %}"> 
 <link rel="stylesheet" href="{% static "Elements/button/ghost/_styles/ghost.css" %}"> 
@@ -32,7 +33,8 @@
   </div>
 	<script src="/static/scripts/jquery.js"></script>
 	<script> 
- loads = {'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
+ loads = {'Elements/Icons/angle_down.svg' : '{% include "Elements/Icons/angle_down.svg" %}', 
+'Elements/Icons/cancel.svg' : '{% include "Elements/Icons/cancel.svg" %}', 
 'Elements/Icons/done.svg' : '{% include "Elements/Icons/done.svg" %}', 
 'Elements/Icons/info.svg' : '{% include "Elements/Icons/info.svg" %}', 
 'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
@@ -57,6 +59,8 @@
 
 <script src="{% static "Elements/Modules/UI/Info/tooltip/_scripts/tooltip.js" %}"> </script>
 
+<script src="{% static "Elements/Modules/UI/accordion/_scripts/accordion.js" %}"> </script>
+
 <script src="{% static "Elements/Modules/UI/search/_scripts/build.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/UI/search/_scripts/fill.js" %}"> </script>
@@ -68,6 +72,7 @@
 <script src="{% static "Elements/Modules/UI/search/_scripts/listener.js" %}"> </script>
 
 <script>    {% include "Elements/Layout/header/_scripts/header.js" %} 
+    {% include "Pages/Course/Marks/tests/_scripts/init.js" %} 
 </script>
 </body>
 </html>

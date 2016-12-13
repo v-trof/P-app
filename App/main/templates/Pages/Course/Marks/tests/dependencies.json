@@ -1,5 +1,7 @@
 {
-	"elements": ["card/test"],
+	"elements": [
+    "card/test",
+    "Modules/UI/accordion"],
   "scripts": [],
   "styles": [],
 	"title" : "Оценки за тесты",
