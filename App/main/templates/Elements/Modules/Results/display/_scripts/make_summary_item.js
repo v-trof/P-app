@@ -23,7 +23,7 @@ results_display.make_summary_item = function(show_index, value, real_index,
     $icon.attr('tip', tip);
   }
 
-  results_display.swap_answer(attempt_data, data, $sync_element);
+  results_display.swap_answer(attempt_data, data, $sync_element, real_index);
 
   return $summary_item;
 }

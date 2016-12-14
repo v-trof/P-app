@@ -12,7 +12,6 @@ results_controls.bind_stepper = function(
   $current.text(current_value);
 
   $inc.click(function(event) {
-    // console.log(current_value < max_value, current_value, max_value);
     if(current_value < max_value) {
       current_value++;
       $current.text(current_value);
@@ -28,3 +27,20 @@ results_controls.bind_stepper = function(
     }
   });
 }
+
+$(document).ready(function() {
+  results_display.answer_decorator = function($answer, attempt_data, index) {
+    var $stepper = $(
+                      loads.get('Elements/Modules/Results/controls/__set_mark/')
+                    );
+    var $icon = $answer.find('.__icon');
+    var $index =
+    $answer.find('.__score').replaceWith($stepper);
+    results_controls.bind_stepper($stepper,
+                                  attempt_data.user_score, attempt_data.worth,
+                                  function(score) {
+                                    results_controls.send_mark(index,
+                                      score, attempt_data.worth, $icon);
+                                  });
+  }
+});

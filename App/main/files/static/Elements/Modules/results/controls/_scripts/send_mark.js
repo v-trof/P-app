@@ -1,5 +1,5 @@
 results_controls.change_score_view = function(
-  index, mark, score, max, $field) {
+  index, mark, score, max, $icon) {
   var reset_class = function($element) {
     $element.removeClass('m--negative');
     $element.removeClass('m--neutral');
@@ -21,21 +21,17 @@ results_controls.change_score_view = function(
   reset_class($number);
 
   if(score === max) {
-    $answer.addClass('m--positive')
-    $number.addClass('m--positive')
+    summary.set_icon('right', $icon);
   } else if(score > 0) {
-    $answer.addClass('m--neutral')
-    $number.addClass('m--neutral')
+    summary.set_icon('forgiving', $icon);
   } else {
-    $answer.addClass('m--negative')
-    $number.addClass('m--negative')
+    summary.set_icon('wrong', $icon);
   }
-
-
 }
 
 results_controls.send_mark = function(index,
-  mark, max, $field) {
+  mark, max, $icon) {
+  summary.set_icon('spinner', $icon);
   $.ajax({
     url: '/test/change_score/',
     type: 'POST',
@@ -54,7 +50,7 @@ results_controls.send_mark = function(index,
       new_mark,
       mark,
       max,
-      $field
+      $icon
     );
     // notification.show('success', 'Оценка изменена');
   })
@@ -62,3 +58,11 @@ results_controls.send_mark = function(index,
     notification.show('error', error);
   })
 }
+
+
+$(document).ready(function() {
+  summary.add_icon('spinner',
+                   loads["Elements/Icons/spinner.svg"],
+                   'Сохраняем на сервере',
+                   'm--neutral');
+});

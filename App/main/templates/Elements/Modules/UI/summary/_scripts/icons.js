@@ -53,3 +53,11 @@ summary.set_icon = function(icon_name, $icon) {
     $icon.addClass(icons[icon_name].class);
   }
 }
+
+summary.add_icon = function(name, html, tip, special_class) {
+  summary.icons[name] = {
+    icon: html,
+    tip: tip,
+    class: special_class
+  }
+}
