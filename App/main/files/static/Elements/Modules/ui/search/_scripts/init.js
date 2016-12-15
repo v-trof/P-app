@@ -42,7 +42,7 @@ var search;
         url: '/func/search/',
         type: 'POST',
         data: {
-          'csrfmiddlewaretoken': '{{ csrf_token }}',
+          'csrfmiddlewaretoken': django.csrf_token,
           'search_query': query,
           'search_types': JSON.stringify(search_types)
         },

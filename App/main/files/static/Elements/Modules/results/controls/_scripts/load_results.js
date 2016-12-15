@@ -32,6 +32,23 @@ results_controls.load = function() {
     }
   } else {
     results_controls.loaded.results[test_id + "-" + user_id] = {}
+    results_controls.loaded.tests[test_id + "-" + user_id] = {}
+
+    $.ajax({
+      url: '/test/get_test_info/',
+      type: 'POST',
+      data: {
+        'csrfmiddlewaretoken': django.csrf_token,
+        'course_id': django.course.id,
+        'test_id': test_id,
+        'user_id': user_id,
+        'compiled': true
+      },
+    })
+    .success(function(json) {
+    //  loaded.results.test = true;
+      results_controls.loaded.tests[test_id + "-" + user_id] = json;
+    });
 
     // console.log(user_id);
     $.ajax({
@@ -45,7 +62,7 @@ results_controls.load = function() {
       },
     })
     .success(function(json) {
-      loaded.results.mark = true;
+    //  loaded.results.mark = true;
       results_controls.loaded.results[test_id + "-" + user_id].mark = json;
     });
 
@@ -61,7 +78,7 @@ results_controls.load = function() {
       },
     })
     .success(function(json) {
-      loaded.results.attempt = true;
+    //  loaded.results.attempt = true;
       results_controls.loaded
         .results[test_id + "-" + user_id].attempt = json;
     });

@@ -4,6 +4,8 @@ generate.register.external('answer', 'text', {
   },
 
   get_summary(value) {
+    if( ! value) value = "";
+    
     if(value.length > 20) {
       value = value.substring(0, 17).escape();
       value += "&hellip;"
