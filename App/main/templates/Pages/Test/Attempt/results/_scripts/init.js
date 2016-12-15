@@ -27,6 +27,7 @@ $(document).ready(function() {
     test_manager.load(django.loaded);
     //summary also swap answers
     summary.make(django.loaded, django.attempt, results_display.make_summary_item);
+    results_display.update_mark(django.results.mark, django.results);
   } else {
     $('.preview>h2').html('Ошибка при загрузке теста');
     //GET-AJAX-HERE error log

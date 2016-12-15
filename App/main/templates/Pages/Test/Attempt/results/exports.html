@@ -66,6 +66,7 @@
 'Elements/Icons/pause.svg' : '{% include "Elements/Icons/pause.svg" %}', 
 'Elements/Icons/serialize.svg' : '{% include "Elements/Icons/serialize.svg" %}', 
 'Elements/Icons/share.svg' : '{% include "Elements/Icons/share.svg" %}', 
+'Elements/Icons/spinner.svg' : '{% include "Elements/Icons/spinner.svg" %}', 
 'Elements/Icons/warning.svg' : '{% include "Elements/Icons/warning.svg" %}', 
 'Elements/Inputs/checkbox/exports.html' : '{% include "Elements/Inputs/checkbox/exports.html" %}', 
 'Elements/Inputs/radio/exports.html' : '{% include "Elements/Inputs/radio/exports.html" %}', 
@@ -122,7 +123,13 @@
 
 <script src="{% static "Elements/Modules/Results/display/_scripts/answer_swap.js" %}"> </script>
 
+<script src="{% static "Elements/Modules/Results/display/_scripts/calculate_score.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Results/display/_scripts/init.js" %}"> </script>
+
 <script src="{% static "Elements/Modules/Results/display/_scripts/make_summary_item.js" %}"> </script>
+
+<script src="{% static "Elements/Modules/Results/display/_scripts/update_mark.js" %}"> </script>
 
 <script src="{% static "Elements/Modules/Test/generate/__register/_scripts/edit.js" %}"> </script>
 

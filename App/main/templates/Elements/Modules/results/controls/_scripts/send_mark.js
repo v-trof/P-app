@@ -6,26 +6,31 @@ results_controls.change_score_view = function(
     $element.removeClass('m--positive');
   }
 
+  var test_score = results_display.calculate_score();
+
   var $mark = $('[href$="/' + results_controls.active_student +'"]')
                 .parent().find('button[test="' +
                   results_controls.active_test+'"]');
+  var $summary_icon = $('.summary-item').eq(index).find('button');
+  var $summary_mark = $('.summary-mark')
 
   reset_class($mark);
+  reset_class($summary_mark);
+
   $mark.addClass('m--' + mark.quality)
     .text(mark.value);
 
-  var $answer = $field.find(".__student_answer");
-  var $number = $(panel.content.find('.card')[index])
-              .find('.__number');
-  reset_class($answer);
-  reset_class($number);
+  results_display.update_mark(mark, test_score);
 
   if(score === max) {
     summary.set_icon('right', $icon);
+    summary.set_icon('right', $summary_icon);
   } else if(score > 0) {
     summary.set_icon('forgiving', $icon);
+    summary.set_icon('forgiving', $summary_icon);
   } else {
     summary.set_icon('wrong', $icon);
+    summary.set_icon('wrong', $summary_icon);
   }
 }
 
@@ -52,7 +57,6 @@ results_controls.send_mark = function(index,
       max,
       $icon
     );
-    // notification.show('success', 'Оценка изменена');
   })
   .error(function(error) {
     notification.show('error', error);
