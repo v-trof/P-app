@@ -3019,16 +3019,16 @@ class Test():
 			test_results["missed"].remove(answer_id)
 		else:
 			test_results["mistakes"].remove(answer_id)
-		attempt_data[str(answer_id)]["user_score"]=int(score)
-		if attempt_data[str(answer_id)]["user_score"]==attempt_data[str(answer_id)]["worth"]:
+		attempt_data[answer_id]["user_score"]=int(score)
+		if attempt_data[answer_id]["user_score"]==attempt_data[answer_id]["worth"]:
 			test_results["right"].append(answer_id)
-			attempt_data[str(answer_id)]["result"]="right"
-		elif attempt_data[str(answer_id)]["user_score"]==0:
+			attempt_data[answer_id]["result"]="right"
+		elif attempt_data[answer_id]["user_score"]==0:
 			test_results["mistakes"].append(answer_id)
-			attempt_data[str(answer_id)]["result"]="wrong"
+			attempt_data[answer_id]["result"]="wrong"
 		else: 
 			test_results["forgiving"].append(answer_id)
-			attempt_data[str(answer_id)]["result"]="forgiving"
+			attempt_data[answer_id]["result"]="forgiving"
 
 		test_results["mark"]["value"] = Test.give_mark(percentage=(test_results["score"]) / (test_results["overall_score"]) * 100, course_id=course_id, test_id=test_id)
 		test_results["mark"]["quality"] = Test.set_mark_quality(test_results[

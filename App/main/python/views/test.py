@@ -161,7 +161,7 @@ def attempt_save(request):
 def change_answer_status(request):
 	if request.method == 'POST':
 		test_id = request.POST.get("test_id", None)
-		question_id = str(request.POST.get("question_id", None))
+		question_id = int(request.POST.get("question_id", None))
 		course_id = request.POST.get("course_id", None)
 		user_id = request.POST.get("user_id", None)
 		question_result = request.POST.get("question_status", None)
@@ -172,7 +172,7 @@ def change_answer_status(request):
 def change_score(request):
 	if request.method == 'POST':
 		test_id = request.POST.get("test_id", None)
-		answer_id = str(request.POST.get("answer_id", None))
+		answer_id = int(request.POST.get("answer_id", None))
 		course_id = request.POST.get("course_id", None)
 		user_id = request.POST.get("user_id", None)
 		score = request.POST.get("score", None)
