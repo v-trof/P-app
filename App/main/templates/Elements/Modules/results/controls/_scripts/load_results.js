@@ -46,7 +46,8 @@ results_controls.load = function() {
       },
     })
     .success(function(json) {
-    //  loaded.results.test = true;
+      loaded.results.test = true;
+    console.log(json);
       results_controls.loaded.tests[test_id + "-" + user_id] = json;
     });
 
@@ -62,7 +63,7 @@ results_controls.load = function() {
       },
     })
     .success(function(json) {
-    //  loaded.results.mark = true;
+      loaded.results.mark = true;
       results_controls.loaded.results[test_id + "-" + user_id].mark = json;
     });
 
@@ -78,7 +79,7 @@ results_controls.load = function() {
       },
     })
     .success(function(json) {
-    //  loaded.results.attempt = true;
+      loaded.results.attempt = true;
       results_controls.loaded
         .results[test_id + "-" + user_id].attempt = json;
     });

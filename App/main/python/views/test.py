@@ -229,7 +229,6 @@ def give_mark(request, percentage, course_id, test_id):
 def set_mark_quality(mark):
 	return Test.object.set_mark_quality(mark=mark)
 
-
 def get_results(request):
 	if request.method == 'POST':
 		test_id = request.POST.get("test_id", None)
@@ -237,13 +236,15 @@ def get_results(request):
 		user_id = request.POST.get("user_id", None)
 		return HttpResponse(json.dumps(Test.get_results(course_id=course_id, test_id=test_id, user_id=user_id), ensure_ascii=False), content_type="application/json")
 
-
 def get_test_info(request):
 	if request.method == 'POST':
 		test_id = request.POST.get("test_id", None)
 		course_id = request.POST.get("course_id", None)
-		return HttpResponse(json.dumps(Test.get_test_info(course_id=course_id, test_id=test_id), ensure_ascii=False), content_type="application/json")
-
+		compiled = request.POST.get("compiled", False)
+		user_id = request.POST.get("user_id", False)
+		if compiled:
+			compiled=True
+		return HttpResponse(json.dumps(Test.get_test_info(course_id=course_id, test_id=test_id,user_id=user_id,compiled=compiled), ensure_ascii=False), content_type="application/json")
 
 def get_attempt_info(request):
 	if request.method == 'POST':

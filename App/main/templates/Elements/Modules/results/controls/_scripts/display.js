@@ -5,7 +5,7 @@ results_controls.display = function() {
 
   var user_key = test_id + "-" + user_id;
   
-  var test_info = results_controls.loaded.tests[test_id];
+  var test_info = results_controls.loaded.tests[user_key];
 
   var attempt_info = results_controls.loaded.results[user_key].attempt;
   var results_info = results_controls.loaded.results[user_key].mark;
