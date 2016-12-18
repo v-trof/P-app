@@ -61,3 +61,4 @@ App/main/files/collected_static
 *.chache
 *.pyc
 *.tern_project
+*.sqlite3

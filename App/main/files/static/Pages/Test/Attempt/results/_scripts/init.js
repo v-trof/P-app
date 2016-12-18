@@ -24,10 +24,31 @@ django.results = {{results|safe}};
 
 $(document).ready(function() {
   if(defined(django.loaded)) {
-    test_manager.load(django.loaded);
-    //summary also swap answers
-    summary.make(django.loaded, django.attempt, results_display.make_summary_item);
-    results_display.update_mark(django.results.mark, django.results);
+    results_display.init(django.loaded, django.attempt, django.results);
+
+    var $redo = $('<button>Попросить переписать</button>');
+
+    $redo.click(function() {
+      $.ajax({
+        url: 'test/request_reset/',
+        data: {
+          'course_id': django.course.id,
+          'test_id': django.test.id,
+          'csrfmiddlewaretoken': django.csrf_token
+        }
+      }).success(function(response) {
+         if(response && response["type"]) {
+             notification.show(response["type"], response["message"]);
+         } else {
+           notification.show('success',
+                        'Запрос преподавателю на сброс результатов отправлен');
+         }
+      }).error(function(error) {
+        notification.show('error', "Произошла ошибка");
+      });
+    });
+
+    $('.preview').append($redo);
   } else {
     $('.preview>h2').html('Ошибка при загрузке теста');
     //GET-AJAX-HERE error log
