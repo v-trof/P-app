@@ -22,6 +22,3 @@ generate.register.element('question', 'file', {
     }
   }
 });
-
-
-console.log('file');
