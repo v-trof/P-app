@@ -10,5 +10,7 @@ edit.start = function() {
 
   section_editor.end_section_editing(section_editor.$unordered, true)
 
-  section_editor.edit_start()
+  section_editor.edit_start();
+
+  section_editor.fix_pull_put();
 }

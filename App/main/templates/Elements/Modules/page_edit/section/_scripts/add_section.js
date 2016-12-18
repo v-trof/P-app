@@ -12,5 +12,7 @@ section_editor.add_section = function(edit_start) {
   $('body').scrollTo($new_section, {
     offset: -80
   });
-  return $new_section
+
+  section_editor.fix_pull_put();
+  return $new_section;
 }

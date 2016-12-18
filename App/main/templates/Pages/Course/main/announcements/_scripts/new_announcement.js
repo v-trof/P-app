@@ -33,8 +33,15 @@ $(document).ready(function() {
       var new_heading = $('[name="heading"]').val();
       var new_due_date  = $("#due_date").val();
       var new_text = $('.announcement_text').html();
-      
-      console.log(new_due_date);
+
+      if(new_heading === '' && new_text === '') {
+        notification.show('warning', 'Объявление не должно быть пустым');
+        return;
+      }
+
+      if(! new_due_date) {
+        new_due_date = '1-1-2020';
+      }
 
       $.ajax({
         type:"POST",
@@ -62,11 +69,11 @@ $(document).ready(function() {
 
           $(".no_announcements").hide();
           $(".announcements").show();
-          
+
           $(".announcements").append($new_announcement);
         },
         error: function() {
-          notification.show('error','Произошла ошибка');            
+          notification.show('error','Произошла ошибка');
         }
       });
     });

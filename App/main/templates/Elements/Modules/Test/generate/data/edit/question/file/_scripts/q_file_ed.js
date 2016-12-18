@@ -39,6 +39,10 @@ generate.register.edit('question', 'file', {
       value.size = editor.active_element.value.size;
     }
 
+    if(value.name === '') {
+      value.name = value.file_name;
+    }
+
     return value;
   }
 });

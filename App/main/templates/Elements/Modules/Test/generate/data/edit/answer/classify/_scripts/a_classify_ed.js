@@ -76,8 +76,14 @@ generate.register.edit('answer', 'classify', {
     var items = [],
         classes = [],
         answer = {};
+    var empty  = 1;
     $edit.children('.__class').each(function() {
       var title = $(this).children('h3').text();
+      if(title === '') {
+        title = 'Тип ' + empty;
+        empty++;
+      }
+
       answer[title] = [];
       classes.push(title);
 

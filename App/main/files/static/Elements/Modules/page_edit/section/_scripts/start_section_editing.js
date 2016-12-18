@@ -68,8 +68,9 @@ section_editor.start_section_editing = function($section) {
         // console.log("WUNP", $this.parent() === section_editor.$unordered);
         if (!was_unpublished) return;
       }
-      $this.after($put)
-      pull_put.reset()
+      $this.after($put);
+      pull_put.reset();
+      section_editor.fix_pull_put();
     }, function($put_zone) {
       section_editor.check_empty('_all')
       section_editor._put_callback($put_zone)

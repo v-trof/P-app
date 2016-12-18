@@ -13,7 +13,7 @@ var as_g = {}
 as_g.current_type = ""
 as_g.original = $()
 
-as_g.card_template = function(el) { 
+as_g.card_template = function(el) {
   return '<div class="card m--small" href="'+el.link+'">'+el.title+'</div>'
 }
 
@@ -32,7 +32,7 @@ as_g.show_list = function(content_type, original) {
 
     panel.content.append($new_section);
     accordion.add($new_section, "h3");
-    
+
     value.forEach(function(el) {
       if(used_links.indexOf(el.link) == -1) {
         $new_section.append(as_g.card_template(el));
@@ -56,7 +56,7 @@ $(document).ready(function() {
   //  {
   //  field: document.getElementById('due_date'),
   //  });
-  
+
 
   $("#assignment--new__add_test").click(function(event) {
     as_g.show_list("test");
@@ -111,16 +111,32 @@ $("#assignment--new__traditional").on("click", ".card.m--small", function(event)
   $("#give_task").text("Сохранить изменения");
 {% endif %}
 $("#give_task").click(function(e) {
+  var data_fine = true;
   var data = parse_assignment();
   data.csrfmiddlewaretoken = '{{csrf_token}}';
   data.course_id = '{{course.object.id}}';
-  
-  // console.log(data);
-  
-  if(loaded) {
-    ajax_edit(data);
+
+  if(data.material_list === '[]' && data.test_list === '[]'
+     && data.traditionals_list === '[]') {
+       notification.show('warning', 'Задание пустое');
+       data_fine = false;
   }
-  else {
-    ajax_create(data);
+
+  if(data.group_list === '[]') {
+      notification.show('warning', 'Выберите группы для выдачи задания');
+      data_fine = false;
+  }
+
+  if(data.due_date === '') {
+    notification.show('warning', 'Укажите дату сдачи');
+  }
+
+  if(data_fine) {
+    if(loaded) {
+      ajax_edit(data);
+    }
+    else {
+      ajax_create(data);
+    }
   }
 });
