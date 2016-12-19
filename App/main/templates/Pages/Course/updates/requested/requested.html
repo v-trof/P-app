@@ -1,7 +1,8 @@
 <section class="requests">
+{% load get_user_obj_by_id from filters %}
 {% for u_request in requests %}
 		{% include "Elements/card/user/extended/" with
-		  extension="Elements/Layout/request/" %}
+		  extension="Elements/Layout/request/" user=u_request.user_id|get_user_obj_by_id %}
 {% empty %}
 	Никто не отправлял запросы в этом курсе за последнее время
 {% endfor %}

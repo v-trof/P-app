@@ -1564,7 +1564,7 @@ class CourseManager(models.Manager):
 		updates['requests']=[]
 		if data["status"] == "closed":
 			for requesting_user_id in data["pending_users"]["Заявки"]:
-				updates["requests"].append({"type":"request","user":User.objects.get(id=requesting_user_id)})
+				updates["requests"].append({"type":"request","user_id":requesting_user_id})
 		if 'requests' in data.keys() and 'waiting' in data["requests"].keys():
 			for request in data["requests"]["waiting"]:
 				request_model=request.copy()
