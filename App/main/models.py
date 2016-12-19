@@ -1561,11 +1561,17 @@ class CourseManager(models.Manager):
 		for user_id in data["teachers"][str(user.id)]["new_users"]:
 			updates["new_students"].append(User.objects.get(id=user_id))
 		data["teachers"][str(user.id)]["new_users"] = []
+		updates['requests']=[]
 		if data["status"] == "closed":
-			updates["requesting_users"] = []
 			for requesting_user_id in data["pending_users"]["Заявки"]:
-				updates["requesting_users"].append(
-					User.objects.get(id=requesting_user_id))
+				updates["requests"].append({"type":"request","user":User.objects.get(id=requesting_user_id)})
+		if 'requests' in data.keys() and 'waiting' in data["requests"].keys():
+			for request in data["requests"]["waiting"]:
+				request_model=request.copy()
+				if 'test_id' in request_model.keys():
+					request_model['test']=Test.get_test_info(course_id=str(course.id),test_id=request_model["test_id"],user_id=request_model['user_id'],compact=True)
+					del request_model['test_id']
+				updates['requests'].append(request_model)
 		updates["new_results"] = []
 		updates["expired"] = {}
 		for user_id in data["users"]:
@@ -1810,7 +1816,12 @@ class UserManager(UserManager):
 				if data["status"] == "closed":
 					updates[course_id]["requesting_users"] = data[
 						"pending_users"]["Заявки"]
+				updates[course_id]['requests']=[]
+				if 'requests' in data.keys() and 'waiting' in data["requests"].keys():
+					for request in data["requests"]["waiting"]:
+						updates[course_id]['requests'].append(request)
 				updates[course_id]["new_results"] = 0
+				print(updates[course_id])
 				for user_id in data["users"]:
 					if os.path.exists('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json'):
 						with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'r', encoding='utf8') as json_file:
@@ -1857,6 +1868,9 @@ class UserManager(UserManager):
 					has_updates = True
 		if not has_updates:
 			updates = None
+		for id,update in updates.copy().items():
+			if len(update)==0:
+				del updates[id]
 		return updates
 
 	def change_data(self, user, data_list):
@@ -2860,6 +2874,90 @@ class Test():
 
 		return {"type":"success","message":"Ответ сохранен","timeout":timeout}
 
+	def reset_attempt(user_id,test_id,course_id):
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data = json.load(data_file)
+		if 'requests' in course_data.keys():
+			for request in course_data['requests']['waiting']:
+				if request['type']=='reset' and request['user_id'] == user_id and request['test_id'] == test_id:
+					course_data['requests']['waiting'].remove(request)
+					break
+
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as data_file:
+			data_file.write(json.dumps(course_data, ensure_ascii=False))
+						
+		with io.open('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+			test_info = json.load(info_file)
+
+		if "time_left" in test_info.keys() and user_id in test_info["time_left"].keys():
+			del test_info["time_left"][user_id]
+		if "start_time" in test_info.keys() and user_id in test_info["start_time"].keys():
+			del test_info["start_time"][user_id]
+		if "finish_time" in test_info.keys() and user_id in test_info["finish_time"].keys():
+			del test_info["finish_time"][user_id]
+
+		with io.open('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json', 'w', encoding='utf8') as info_file:
+			info_file.write(json.dumps(test_info, ensure_ascii=False))
+
+		os.remove('main/files/json/courses/' + course_id + '/users/' + user_id + '/tests/attempts/' + test_id + '.json')
+		os.remove('main/files/json/courses/' + course_id + '/users/' + user_id + '/tests/results/' + test_id + '.json')
+
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + user_id + '/assignments.json', 'r', encoding='utf8') as assignments_file:
+			assignment_map = json.load(assignments_file)
+
+		for assignment_id, content in assignment_map.items():
+			if test_id in content["in_process"]["unfinished_tests"]:
+				content["in_process"]["unfinished_tests"].remove(test_id)
+			if not test_id in content["in_process"]["tests"]:
+				content["in_process"]["tests"].append(test_id)
+
+		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/assignments.json', 'w', encoding='utf8') as assignments_file:
+			assignments_file.write(json.dumps(
+				assignment_map, ensure_ascii=False))
+
+		return {"type":"success","message":"Попытка сброшена"}
+
+	def request_reset(user_id,test_id,course_id):
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data = json.load(data_file)
+		request={'type':'reset','test_id':test_id,'user_id':user_id}
+		print(test_id)
+		if not 'requests' in course_data.keys():
+			course_data['requests']={}
+		if not 'waiting' in course_data['requests'].keys():
+			course_data['requests']['waiting']=[]
+		if not 'declined' in course_data['requests'].keys():
+			course_data['requests']['declined']=[]
+		if not request in course_data['requests']['waiting'] and not request in course_data['requests']['declined']:
+			course_data['requests']['waiting'].append(request)
+			with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as data_file:
+				data_file.write(json.dumps(course_data, ensure_ascii=False))
+			return {"type":"success","message":"Запрос отправлен"}
+		elif request in course_data["requests"]["waiting"]:
+			return {"type":"info","message":"Запрос уже был отправлен"}
+		else:
+			return {"type":"info","message":"Ваш запрос уже был отклонен"}
+	
+	def accept_reset(user_id,test_id,course_id):
+		message=Test.reset_attempt(user_id=user_id,test_id=test_id,course_id=course_id)
+		return message
+
+	def decline_reset(user_id,test_id,course_id):
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data = json.load(data_file)
+		if 'requests' in course_data.keys():
+			for request in course_data['requests']['waiting']:
+				if request['type']=='reset' and request['user_id'] == user_id and request['test_id'] == test_id:
+					if not 'declined' in course_data['requests'].keys():
+						course_data['requests']['declined']=[]
+					course_data['requests']['declined'].append(request)
+					course_data['requests']['waiting'].remove(request)
+					break
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as data_file:
+			data_file.write(json.dumps(course_data, ensure_ascii=False))
+		return {"type":"info","message":"Запрос успешно отклонен"}
+
+
 	def give_mark(percentage, course_id, test_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 			test_info = json.load(info_file)
@@ -3049,14 +3147,24 @@ class Test():
 		else:
 			return {"type":"error","message":"Тест не был выполнен"}
 
-	def get_test_info(course_id, test_id, compiled=False, user_id=False):
+	def get_test_info(course_id, test_id, compiled=False, user_id=False, compact=False):
+		print(test_id)
 		if os.path.exists('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json'):
 			with io.open('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 				test_info = json.load(info_file)
-			if compiled and user_id:
-				with io.open('main/files/json/courses/' + str(course_id) + '/users/'+ str(user_id) + '/tests/attempts/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
-					attempt_data = json.load(info_file)
-				test_info["tasks"]=Test.compile_tasks(tasks=test_info["tasks"].copy(),attempt_data=attempt_data)
+			if compact:
+				test={"type": "test", "title": test_info["title"], "id": test_id, "questions_number": test_info[
+															 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id}
+				if user_id:
+					with io.open('main/files/json/courses/' + str(course_id) + '/users/'+ str(user_id) + '/tests/results/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+						results_data = json.load(info_file)
+					test['results']=results_data
+				return test
+			else:
+				if compiled and user_id:
+					with io.open('main/files/json/courses/' + str(course_id) + '/users/'+ str(user_id) + '/tests/attempts/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
+						attempt_data = json.load(info_file)
+					test_info["tasks"]=Test.compile_tasks(tasks=test_info["tasks"].copy(),attempt_data=attempt_data)
 			return test_info
 		else:
 			return {"type":"error","message":"Тест не существует"}
@@ -3197,7 +3305,7 @@ class Marks():
 
 class Sharing():
 
-	def share(course_id, item_id, type, name=None):
+	def share(course_id, item_id, type, tags=False, name=None):
 		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
 		course=Course.objects.get(id=course_id)
@@ -3205,6 +3313,7 @@ class Sharing():
 		shared_item["course_id"]=course_id
 		shared_item["id"]=item_id
 		shared_item["type"]=type
+		shared_item["tags"]=type
 		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/'+item_id+'.json', 'r', encoding='utf8') as info_file:
 			item_info = json.load(info_file)
 		if len(shared_table[course.subject].keys()):

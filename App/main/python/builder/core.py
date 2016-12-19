@@ -38,7 +38,7 @@ def build_page(page_name):
     dependencies.add(page_dependencies, block_dependencies)
 
     loads.add(page_loads, loads.get(block_path))
-
+  print("DATA:","dependencies: ",dependencies,page_dependencies)
   # building all elements
   elements_done = set()
   elements_current = set()

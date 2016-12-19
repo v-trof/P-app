@@ -16,10 +16,10 @@ results_controls.display = function() {
   var $redo = $('<button>Сбросить результаты</button>');
 
   $('.preview').append($redo);
-
   $redo.click(function() {
     $.ajax({
-      url: 'test/reset_attempt/',
+      url: '/test/reset_attempt/',
+      type:'POST',
       data: {
         'course_id': django.course.id,
         'test_id': test_id,

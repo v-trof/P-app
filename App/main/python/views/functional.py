@@ -336,6 +336,22 @@ class Course_views():
                 user=user, course_id=course_id)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
+    def accept_reset(request):
+        if request.method == 'POST':
+            course_id = request.POST.get("course_id", None)
+            test_id = request.POST.get("test_id", None)
+            user_id = request.POST.get("user_id", None)
+            message = Test.accept_reset(test_id=test_id,user_id=user_id,course_id=course_id)
+            return HttpResponse(json.dumps(message), content_type="application/json")
+
+    def decline_reset(request):
+        if request.method == 'POST':
+            course_id = request.POST.get("course_id", None)
+            test_id = request.POST.get("test_id", None)
+            user_id = request.POST.get("user_id", None)
+            message = Test.decline_reset(test_id=test_id,user_id=user_id,course_id=course_id)
+            return HttpResponse(json.dumps(message), content_type="application/json")
+
     def create_assignment(request):
         if request.method == 'POST':
             course_id = request.POST.get('course_id', None)

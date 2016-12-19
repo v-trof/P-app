@@ -27,10 +27,11 @@ $(document).ready(function() {
     results_display.init(django.loaded, django.attempt, django.results);
 
     var $redo = $('<button>Попросить переписать</button>');
-
+    console.log(django.test.id)
     $redo.click(function() {
       $.ajax({
-        url: 'test/request_reset/',
+        url: '/test/request_reset/',
+        type: 'POST',
         data: {
           'course_id': django.course.id,
           'test_id': django.test.id,

@@ -46,6 +46,8 @@ test_patterns = [
     url(r'^get_results/$', test.get_results),
     url(r'^get_test_info/$', test.get_test_info),
     url(r'^get_attempt_info/$', test.get_attempt_info),
+    url(r'^reset_attempt/$', test.reset_attempt, name="reset_attempt"),
+    url(r'^request_reset/$', test.request_reset, name="request_reset"),
 ]
 
 material_patterns = [
@@ -84,6 +86,8 @@ func_patterns = [
     url(r'^invite_teacher/$', functional.Course_views.invite_teacher, name="invite_teacher"),
     url(r'^accept_request/$', functional.Course_views.accept_request, name="accept_request"),
     url(r'^decline_request/$', functional.Course_views.decline_request, name="decline_request"),
+    url(r'^accept_reset/$', functional.Course_views.accept_reset, name="accept_reset"),
+    url(r'^decline_reset/$', functional.Course_views.decline_reset, name="decline_reset"),
     url(r'^create_assignment/$', functional.Course_views.create_assignment, name="create_assignment"),
     url(r'^edit_assignment/$', functional.Course_views.edit_assignment, name="edit_assignment"),
     url(r'^change_permission_level/$', functional.User_views.change_permission_level, name="change_permission_level"),
@@ -105,8 +109,7 @@ func_patterns = [
     url(r'^share/$', functional.Universal_views.share, name="share"),
     url(r'^unshare/$', functional.Universal_views.unshare, name="unshare"),
     url(r'^search/$', functional.Universal_views.search, name="search"),
-    url(r'^exit/(?P<course_id>[0-9]+)/$', functional.Course_views.exit, name="exit"),
-]
+    url(r'^exit/(?P<course_id>[0-9]+)/$', functional.Course_views.exit, name="exit"),]
 
 course_patterns = [
     url(r'^(?P<course_id>[0-9]+)/groups/$', main.Course_group.groups, name="groups"),

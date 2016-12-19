@@ -1,1 +1,1 @@
-<section class="requests">{% for user in requesting_users %}			{% include "Elements/card/user/extended/exports.html" with		  extension="Elements/Layout/request/exports.html" %}{% empty %}	Никто не подавал заявки в курс за последнее время{% endfor %}</section>
+<section class="requests">{% for u_request in requests %}		{% include "Elements/card/user/extended/exports.html" with		  extension="Elements/Layout/request/exports.html" %}{% empty %}	Никто не отправлял запросы в этом курсе за последнее время{% endfor %}</section>

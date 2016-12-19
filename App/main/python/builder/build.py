@@ -63,12 +63,12 @@ def template(dependencies, page_loads, page_path):
     return tag
 
   def make_script(script):
-    script = '{% static "' + script + '.js" %}'
+    script = '{%'+' static "' + script + '.js" %}'
     tag = '<script src="' + script + \
         '"> </script>\n'
     return tag
 
-  styles_html = "{% load staticfiles %}"
+  styles_html = "{%"+" load staticfiles %}"
 
   styles_critical = []
   styles_secondary = []
