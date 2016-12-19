@@ -1,6 +1,7 @@
 {% load keyvalue from filters %}
 {% load makelist from filters %}
 {% load makeuser from filters %}
+{% if expired %}
 {% for user_id,task in expired.items %}
 	{% with user=user_id|makeuser %}
 	{% with assignment=tasks_info|keyvalue:task %}
@@ -8,3 +9,6 @@
 	{% endwith %}
 	{% endwith %}
 {% endfor %}
+{% else %}
+Никто не просрочил задания
+{% endif %}
