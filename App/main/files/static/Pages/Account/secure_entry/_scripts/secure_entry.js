@@ -15,8 +15,6 @@ $('#confirm').click(function() {
               notification.show(response["type"], response["message"]);
               if (response["type"] == "success") {
                 window.location.href = '/';
-              }  else {
-                notification.show('error',response);
               }
           }
         });
@@ -35,8 +33,6 @@ $('#confirm').click(function() {
               notification.show(response["type"], response["message"]);
               if (response["type"] == "success") {
                 window.location.href = '/';
-              }  else {
-                notification.show('error',response);
               }
           }
             });

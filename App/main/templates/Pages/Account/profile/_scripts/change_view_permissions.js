@@ -10,7 +10,7 @@ $(document).on('click', '[name="contacts_see"]', function () {
                 if(response) {
                     notification.show(response["type"], response["message"]);
                 }
-                notification.show('success','Разрешения были успешно изменены' );
+                else notification.show('success','Разрешения были успешно изменены' );
              }
         });
     });

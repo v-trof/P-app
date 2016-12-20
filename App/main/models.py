@@ -1866,11 +1866,11 @@ class UserManager(UserManager):
 					updates[course_id] = {}
 				else:
 					has_updates = True
-		if not has_updates:
-			updates = None
 		for id,update in updates.copy().items():
 			if len(update)==0:
 				del updates[id]
+		if not has_updates:
+			updates = None
 		return updates
 
 	def change_data(self, user, data_list):

@@ -119,7 +119,7 @@ class User_views():
 
     def approve_email(request):
         if request.method == 'POST':
-            if not User.objects.filter(id=int(user_id)).exists():
+            if not User.objects.filter(id=int(request.POST['user_id'])).exists():
                 return HttpResponse(json.dumps({"type":"error","message":"Несуществующий пользователь"}), content_type="application/json")
 
             user = User.objects.get(id=int(request.POST['user_id']))
