@@ -65,12 +65,15 @@ class Main_group():
 	def search(request):
 		search_query=request.GET.get('query','')
 		course=request.GET.get('course',None)
+		context={}
 		if course:
 			context["search_results"]=Search.in_courses_materials(search_query=search_query, user=request.user, course=course)
 		else: context["search_results"]=Search.complex(search_query=search_query, user=request.user)
 		return render(request, 'Pages/search/exports.html', context)
 
-
+	def promo(request):
+		context={}
+		return render(request, 'Pages/promo/exports.html', context)
 class Auth_group():
 
 	def login(request):

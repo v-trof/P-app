@@ -135,6 +135,7 @@ urlpatterns = [
     url(r'^test/', include(test_patterns)),
     url(r'^material/', include(material_patterns)),
     url(r'^login/$', main.Auth_group.login, name="login"),
+    url(r'^promo/$', main.Main_group.promo, name="promo"),
     url(r'^login/(?P<course_id>[0-9]+)/$', main.Auth_group.login_with_reg, name="login+course"),
     url(r'^secure_entry/$', main.Auth_group.secure_entry, name="secure_entry"),
     url(r'^change_user/$', main.Auth_group.change_user, name="change_user"),
