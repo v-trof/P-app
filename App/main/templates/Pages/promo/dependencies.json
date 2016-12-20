@@ -1,0 +1,5 @@
+{
+  "elements": ["card", "Inputs/text", "button"],
+  "title" : "Pileus",
+	"template": "default"
+}
