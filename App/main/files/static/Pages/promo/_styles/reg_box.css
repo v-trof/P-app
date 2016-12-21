@@ -1,1 +1,1 @@
-.register{position:fixed;top:5.75rem;width:17.5rem;left:50%;margin-left:12.5rem;z-index:2}#register{margin:0}
+.register{position:fixed;top:5.75rem;width:17.5rem;left:50%;margin-left:12.5rem;z-index:2}@media all and (max-width:1023px){.register{position:static;margin:0}}#register{margin:0}

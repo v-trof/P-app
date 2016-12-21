@@ -9,6 +9,8 @@ body, html, .main
   padding: 0
   margin: 0
 
+.main
+  margin-top: 3.75rem
 
 div.header
   padding-left: $side-margin
@@ -23,10 +25,13 @@ div.header
   &>.row
     width: $col-width * 3 + $gap-width*2
     align-items: stretch
+    @media all and (max-width: 1023px)
+      width: auto
+      flex-direction: column
+      align-items: center
 
 .above-the-flood
   background: $color--main
-  margin-top: 3.75rem
   .row .card
     margin-bottom: 0
   .card
@@ -37,7 +42,10 @@ div.header
     width: $gap-width - $margin--s*2
     margin: 0 $margin--s
     color: darken($color--main, 20%)
-
+    @media all and (max-width: 1023px)
+      width: 100%
+      margin: 0
+      line-height: $line--m !important
 
 .functions
   flex-direction: column
@@ -50,5 +58,17 @@ div.header
   .info
     width: $col-width
     margin-right: $gap-width
+    @media all and (max-width: 1023px)
+      margin-right: 0
   .instant
     width: $col-width*2 + $gap-width
+    @media all and (max-width: 1023px)
+      width: $col-width
+
+.header
+  .__breadcrumbs
+    @media all and (max-width: 1023px)
+      display: none
+  .__user-info
+    @media all and (max-width: 1023px)
+      width: auto !important

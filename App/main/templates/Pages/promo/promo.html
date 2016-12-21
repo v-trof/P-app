@@ -1,27 +1,3 @@
-<div class="card register">
-  <h2>Попробуйте</h2>
-	{% csrf_token %}
-	{% include "Elements/Inputs/text/" with
-		placeholder="Фамилия и Имя"
-		name="name_last_name"
-		tip="Например: Безухов Пьер"
-		value=name_last_name %}
-
-	{% include "Elements/Inputs/text/" with
-		placeholder="Email"
-		name="email"
-		type="email"
-		value=email %}
-
-	{% include "Elements/Inputs/text/" with
-		placeholder="Пароль"
-		name="password"
-		type="password"
-		tip="Минимум 8 символов"
-		value=password %}
-	<button id="register">Использовать Pileus</button>
-</div>
-
 <section class="above-the-flood">
   <div class="row">
     <div class="card">
@@ -29,7 +5,7 @@
       <div>
         Pileus &mdash; система управления обчением,
         созданная для тех, кто преподает вживую в России и СНГ. <br>
-        Богатый <a>функционал</a>, <b>рутину Pileus возьмет на себя</b>. <br><br>
+        Богатый <a class="features-link">функционал</a>, <b>рутину Pileus возьмет на себя</b>. <br><br>
 
         <b>Обмен:</b> то, чем вы занимались давно, но с неудобствами, теперь
          часть системы.
@@ -42,13 +18,38 @@
       <div>
         Мы учились здесь, преподавали здесь, знаем,
         чего на самом деле не хватало. Учёта местной специфики и удобства. <br>
-        Все в браузере, с любого устройтва. <br>
+        Всё в браузере, с любого устройтва. <br>
         Никакой установки и поддержки локальной копии. <br>
         Без бумажной работы. <br>
         Бесплатно.
       </div>
     </div>
+
     <div class="symbol"> > </div>
+
+    <div class="card register">
+      <h2>Попробуйте</h2>
+    	{% csrf_token %}
+    	{% include "Elements/Inputs/text/" with
+    		placeholder="Фамилия и Имя"
+    		name="name_last_name"
+    		tip="Например: Безухов Пьер"
+    		value=name_last_name %}
+
+    	{% include "Elements/Inputs/text/" with
+    		placeholder="Email"
+    		name="email"
+    		type="email"
+    		value=email %}
+
+    	{% include "Elements/Inputs/text/" with
+    		placeholder="Пароль"
+    		name="password"
+    		type="password"
+    		tip="Минимум 8 символов"
+    		value=password %}
+    	<button id="register">Использовать Pileus</button>
+    </div>
   </div>
 </section>
 
@@ -65,9 +66,9 @@
       <h2>Без рутины</h2>
       <ul>
         <li><b>Шаблоны заданий:</b> Никогда не придется перепечатывать
-            все ради 2 слов.
+            всё ради 2 слов.
         <li><b>Обмен тестами</b>, материалами и шаблонами заданий с другими
-            препадвателями.<br>
+            преподавателями.<br>
             <span class="m--grey">Разумеется, только по вашей воле</span>
       </ul>
     </div>
@@ -98,12 +99,14 @@
     </div>
   </div>
   <div class=".row">
-    <span class='m--grey'>И многое другое!</span>
+    <span class='m--grey'>И больше</span>
   </div>
 </section>
 
 <section class="contacts">
-  <h2> Контакты </h2>
+  <div class="row">
+    <h2> Контакты </h2>
+  </div>
   <div class="row">
     <div class="info">
       <div class="card">

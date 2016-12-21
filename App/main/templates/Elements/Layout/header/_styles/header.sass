@@ -15,20 +15,22 @@
 	padding: 0 $padding--s
 	color: $font__color--white
 	background: $color--main
-	z-index: 10	
+	z-index: 10
 	+box-shadow(2)
 	@media all and (max-width: 769px)
 		overflow-x: scroll
-	
+
 	&>*
 		height: $base*2 + $padding--s * 2
 
-	a
+	a, span
 		display: flex
 		align-items: center
 		padding: $padding--s $padding--m
 		font-weight: 400
 		color: $font__color--white
+		cursor: pointer
+		transition: $time--s
 		border-radius: $border--m
 		&:hover, &:focus
 			color: $font__color--white

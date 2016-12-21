@@ -1,5 +1,6 @@
 {
-  "elements": ["card", "Inputs/text", "button"],
+  "elements": ["card", "Inputs/text", "button", "Inputs/text/textarea",
+               "Modules/Utility/scroll"],
   "title" : "Pileus",
 	"template": "default"
 }
