@@ -1,1 +1,54 @@
 @import "../../../sass_vars/main.sass"
+
+$col-width: 17.5rem
+$gap-width: 3.75rem
+$side-margin: 2rem
+
+body, html, .main
+  width: 100%
+  padding: 0
+  margin: 0
+
+
+div.header
+  padding-left: $side-margin
+  padding-right: $side-margin
+
+.main>section
+  padding: $side-margin
+  width: 100%
+  display: flex
+  align-items: center
+  justify-content: center
+  &>.row
+    width: $col-width * 3 + $gap-width*2
+    align-items: stretch
+
+.above-the-flood
+  background: $color--main
+  margin-top: 3.75rem
+  .row .card
+    margin-bottom: 0
+  .card
+    width: $col-width
+  .symbol
+    font-size: 3rem
+    text-align: center
+    width: $gap-width - $margin--s*2
+    margin: 0 $margin--s
+    color: darken($color--main, 20%)
+
+
+.functions
+  flex-direction: column
+  .feature
+    width: $col-width
+    margin-right: $gap-width
+
+.contacts
+  flex-direction: column
+  .info
+    width: $col-width
+    margin-right: $gap-width
+  .instant
+    width: $col-width*2 + $gap-width
