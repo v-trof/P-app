@@ -1,0 +1,33 @@
+@import "../../../../../../sass_vars/main.sass"
+
+#tooltip
+	display: flex
+	align-items: center
+	justify-content: center
+	position: fixed
+	padding: $padding--m
+	font-size: $font__size--s
+	line-height: 100%
+	color: $font__color--white
+	background: $grey-blue--dark
+	border-radius: $border--m
+	transition: $time--s
+	transition-property: opacity, transform
+	// opacity: 0.8
+	z-index: 30
+
+	&.m--hidden
+		top: -100%
+		opacity: 0
+		transform: translateY(-$margin--s)
+
+	//posiotion classes
+	&.m--top
+		margin-bottom: $margin--xs
+	&.m--bottom
+		margin-top: $margin--xs
+
+	&.m--left
+		margin-right: $margin--xs
+	&.m--right
+		margin-left: $margin--xs

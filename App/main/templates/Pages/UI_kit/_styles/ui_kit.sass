@@ -1,0 +1,26 @@
+@import "../../../sass_vars/main.sass"
+
+.UI_kit-box
+	margin-bottom: $margin--l
+
+	&.m--horizontal
+		display: flex
+		flex-direction: row
+		align-items: top
+	
+		.__item
+			width: 100%
+			&.m--flex
+				display: flex
+		.__description
+			width: 50%
+			margin-left: $margin--m
+			color: $font__color--dark
+	
+	&.m--colored-bg
+		padding: $padding--l
+		background: $color--main
+		border-radius: $border--m
+		+box-shadow(1)
+		.__description
+			color: $font__color--white
