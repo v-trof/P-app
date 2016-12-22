@@ -47,8 +47,7 @@ Frontend
 Backend/Dev/courses
 Backend/Dev/main/files
 App/Gulp/node_modules
-App/main/settings.py
-#App/main/files/json
+App/main/files/json
 App/main/files/collected_static
 #-------------------
 
@@ -63,3 +62,5 @@ App/main/files/collected_static
 *.pyc
 *.tern_project
 *.sqlite3
+App/main/settings.py
+App/main/settings.py
