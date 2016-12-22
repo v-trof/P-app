@@ -23,6 +23,17 @@ $(document).ready(function() {
 		test_manager.unpublish();
 	});
 
+  $("#test_share").click(function(event) {
+		if(pull_put.is_pulled) {
+			pull_put.puller.cancel();
+		}
+		setTimeout(test_manager.share, 200);
+	});
+
+  $("#test_unshare").click(function(event) {
+		test_manager.unshare()
+	});
+
 	$("#test_delete").click(function(event) {
 		test_manager.delete();
 	});

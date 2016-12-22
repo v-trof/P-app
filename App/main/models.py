@@ -33,6 +33,7 @@ import json
 import pdb
 import unicodedata
 import os
+#from grab import Grab
 import io
 import random
 import string
@@ -67,7 +68,6 @@ from operator import itemgetter
 import operator
 from sortedcontainers import SortedListWithKey
 import shutil
-
 
 class MediaModel(models.Model):
 	media_file = models.FileField(upload_to='media')
@@ -114,7 +114,10 @@ class Utility():
 
 		return conformity
 
-	def upload_file(file, path):
+	def upload_file(file, path, extensions=False):
+		if extensins:
+			if not file.name.split(".")[-1] in extensions:
+				return 0
 		custom_path = path
 		path = 'main/files/media/' + path
 		if not os.path.exists(path):
@@ -134,7 +137,7 @@ class Utility():
 		url = '/media/' + custom_path + filename
 		return url
 
-	def upload_file_by_url(url, path):
+	def upload_file_by_url(url, path, extensions=False):
 		custom_path = path
 		path = 'main/files/media/' + path
 		if not os.path.exists(path):
@@ -150,7 +153,9 @@ class Utility():
 			if not block:
 				break
 			temp.write(block)
-
+		if extensins:
+			if not filename.split(".")[-1] in extensions:
+				return 0
 		with open(path + filename, 'wb+') as destination:
 			for chunk in files.File(temp).chunks():
 				destination.write(chunk)
@@ -197,23 +202,101 @@ class Utility():
 		new_date=date[2]+"-"+date[1]+"-"+date[0]
 		return new_date
 
-	def time_delta(date1,date2):
+	def time_delta(date1,date2,absolute=True):
 		time_delta=0
-		year1=int(date1[:4])
-		year2=int(date2[:4])
-		month1=int(date1[5:7])
-		month2=int(date2[5:7])
-		day1=int(date1[8:10])
-		day2=int(date2[8:10])
-		hour1=int(date1[11:13])
-		hour2=int(date2[11:13])
-		minute1=int(date1[14:16])
-		minute2=int(date2[14:16])
-		second1=int(date1[17:19])
-		second2=int(date2[17:19])
 
+		try:
+			year1=int(date1[:4])
+		except:
+			year1=0
+		try:
+			year2=int(date2[:4])
+		except:
+			year2=0
+
+		if year1==0 and not year2==0:
+			year2=0
+		elif not year1==0 and year2==0:
+			year1=0
+
+		try:
+			month1=int(date1[5:7])
+		except:
+			month1=0
+			date1=date1
+		try:
+			month2=int(date2[5:7])
+		except:
+			month2=0
+
+		if month1==0 and not month2==0:
+			month2=0
+		elif not month1==0 and month2==0:
+			month1=0
+
+		try:
+			day1=int(day1[8:10])
+		except:
+			day1=0
+		try:
+			day2=int(day2[8:10])
+		except:
+			day2=0
+
+		if day1==0 and not day2==0:
+			day2=0
+		elif not day1==0 and day2==0:
+			day1=0
+
+		try:
+			hour1=int(date1[11:13])
+		except:
+			try:
+				hour1=int(date1[:2])
+			except: hour1=0
+
+		try:
+			hour2=int(date2[11:13])
+		except:
+			try:
+				hour2=int(date2[:2])
+			except: hour2=0	
+
+		try:
+			minute1=int(date1[14:16])
+		except:
+			try:
+				minute1=int(date1[3:5])
+			except: minute1=0
+
+		print(date2[14:16])
+		try:
+			minute2=int(date2[14:16])
+		except:
+			try:
+				minute2=int(date2[3:5])
+			except: minute2=0
+
+		try:
+			second1=int(date1[17:19])
+		except:
+			try:
+				second1=int(date1[6:8])
+			except: second1=0
+
+		try:
+			second2=int(date2[17:19])
+		except:
+			try:
+				second2=int(date2[6:8])
+			except: second2=0
+
+		print(date1,year1,month1,day1,hour1,minute1,second1)
+		print(date2,year2,month2,day2,hour2,minute2,second2)
+		month_days={"1":31,"2":28,"3":31,"4":30,"5":31,"6":30,"7":31,"8":31,"9":30,"10":31,"11":30,"12":31}
 		time_delta+=(year1-year2)*365*24*60*60
-		time_delta+=(month1-month2)*30*24*60*60
+		while month2 < month1:
+			time_delta+=month_days[str(month2)]*24*60*60
 		time_delta+=(day1-day2)*24*60*60
 		time_delta+=(hour1-hour2)*60*60
 		time_delta+=(minute1-minute2)*60
@@ -222,6 +305,10 @@ class Utility():
 		time_delta_h=0
 		time_delta_m=0
 		time_delta_s=0
+		if not absolute:
+			if time_delta<=0:
+				return -1
+			else: return 1
 		time_delta=abs(time_delta)
 		if time_delta>=3600:
 			time_delta_h=int(time_delta/3600)
@@ -237,8 +324,73 @@ class Utility():
 		if len(str(time_delta_s))<2:
 			time_delta_s='0'+str(time_delta_s)
 		time_delta=str(time_delta_h)+":"+str(time_delta_m)+":"+str(time_delta_s)
-
 		return time_delta
+
+	def merge_time(date1,date2):
+		try:
+			hour1=int(date1[11:13])
+		except:
+			try:
+				hour1=int(date1[:2])
+			except: hour1=0
+
+		try:
+			hour2=int(date2[11:13])
+		except:
+			try:
+				hour2=int(date2[:2])
+			except: hour2=0	
+
+		try:
+			minute1=int(date1[14:16])
+		except:
+			try:
+				minute1=int(date1[3:5])
+			except: minute1=0
+
+		try:
+			minute2=int(date2[14:16])
+		except:
+			try:
+				minute2=int(date2[3:5])
+			except: minute2=0
+
+		try:
+			second1=int(date1[17:19])
+		except:
+			try:
+				second1=int(date1[6:8])
+			except: second1=0
+
+		try:
+			second2=int(date2[17:19])
+		except:
+			try:
+				second2=int(date2[6:8])
+			except: second2=0
+
+		time=second2+second1+minute1*60+minute2*60+hour1*60*60+hour2*60*60
+
+		if time>=3600:
+			time_h=int(time/3600)
+			time-=time_h*3600
+		else: time_h=0
+		if time>=60:
+			time_m=int(time/60)
+			time-=time_m*60
+		else: time_m=0
+		time_s=int(time)
+		if len(str(time_h))<2:
+			time_h='0'+str(time_h)
+		if len(str(time_m))<2:
+			time_m='0'+str(time_m)
+		if len(str(time_s))<2:
+			time_s='0'+str(time_s)
+
+		time=str(time_h)+":"+str(time_m)+":"+str(time_s)
+		return time
+
+
 
 	def sort_by_date(object, indicator, raising=True):
 		items = []
@@ -2210,7 +2362,7 @@ class Test():
 				}
 		return test
 
-	def publish(course_id, test_id, section, allowed_mistakes, mark_setting, max_score=False):
+	def publish(course_id, test_id, section, allowed_mistakes, mark_setting, max_score=False, max_time=False):
 		# makes test visible in course screen
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
@@ -2242,6 +2394,9 @@ class Test():
 		else:
 			test_data={}
 		test_data["allowed_mistakes"] = allowed_mistakes
+		print(str(max_time))
+		if max_time:
+			test_data["max_time"] = max_time
 		if max_score:
 			for mark in mark_setting:
 				mark_setting[mark]=mark_setting[mark]/int(max_score)*100
@@ -2388,10 +2543,22 @@ class Test():
 					time="00:00:00"
 					test["json"]["start_time"]={}
 					test["json"]["start_time"][str(user.id)]=time_now
+					if "max_time" in test["json"].keys():
+						test["json"]["finish_time"]={}
+						test["json"]["finish_time"][str(user.id)]=Utility.merge_time(test["json"]["max_time"],test["json"]["start_time"][str(user.id)])
+						test["json"]["time_left"]={}
+						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
 				elif not str(user.id) in test["json"]["start_time"].keys():
 					time="00:00:00"
 					test["json"]["start_time"][str(user.id)]=time_now
-
+					if "max_time" in test["json"]:
+						test["json"]["finish_time"][str(user.id)]=Utiliy.merge_time(test["json"]["max_time"],test["json"]["start_time"][str(user.id)])
+						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
+				else: 
+					if "max_time" in test["json"]:
+						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
+				if "max_time" in test["json"] and Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now,absolute=False)<=0:
+					return {"time_out":True}
 				for task in test["json"]["tasks"]:
 					for item in task:
 						if data is not None and item["type"] == "answer" and str(it) in data and not data[str(it)]["user_answer"] == False:
@@ -2413,6 +2580,9 @@ class Test():
 			for item in element:
 				if item["type"] == "answer" and "answer" in item.keys():
 					item.pop("answer", None)
+		with io.open('main/files/json/courses/' + course_id + '/tests/' + test_id + '.json', 'w', encoding='utf8') as json_file:
+			saving_data = json.dumps(test["json"], ensure_ascii=False)
+			json_file.write(saving_data)
 		if data is None:
 			with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
 				test = {}
@@ -2455,6 +2625,10 @@ class Test():
 				time="00:00:00"
 				test_info["start_time"]={}
 				test_info["start_time"][str(user.id)]=time_now
+			if "max_time" in test_info.keys() and Utility.time_delta(test_info["finish_time"][str(user.id)],time,absolute=False) <= 0:
+				timeout=True
+			else: timeout=False
+
 			with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'w', encoding='utf8') as info_file:
 				info_file.write(json.dumps(test_info, ensure_ascii=False))
 			with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/assignments.json', 'r', encoding='utf8') as assignments_file:
@@ -2472,7 +2646,7 @@ class Test():
 				data[str(question_id-1)]["time"]=time
 				saving_data = json.dumps(data, ensure_ascii=False)
 				json_file.write(saving_data)
-		return {"type":"success","message":"Ответ сохранен"}
+			return {"type":"success","message":"Ответ сохранен","timeout":timeout}
 
 	def give_mark(percentage, course_id, test_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/tests/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
@@ -2892,12 +3066,12 @@ class Search():
 		users=[]
 		for user in User.objects.all():
 			user_object = User.objects.get(username=str(user))
-			if course and len(user.participation_list) > 0:
+			if course and user.participation_list and len(user.participation_list) > 0:
 				if str(course) in user.participation_list.split(' ') or str(course) == user.participation_list:
 					conformity=Utility.compare(str1=search_query,str2=user.name)
 					if conformity > 5:
 						users.append({"object":user_object,"conformity":conformity})
-			elif course and len(user.courses) > 0:
+			elif course and user.courses and len(user.courses) > 0:
 				if str(course) in user.courses.split(' ') or str(course) == user.courses:
 					conformity=Utility.compare(str1=search_query,str2=user.name)
 					if conformity > 5:
@@ -2924,12 +3098,12 @@ class Search():
 		courses_all=[]
 		if user is not None:
 			user=User.objects.get(id=user)
-		if user is not None and len(user.courses) > 0:
+		if user is not None and user.courses and len(user.courses) > 0:
 			if len(user.courses.split(' ')) > 0:
 				for course in user.courses.split(' '):
 					courses_all.append(Course.objects.get(id=course))
 			else: courses_all.append(Course.objects.get(id=user.courses))
-		if user is not None and len(user.participation_list) > 0:
+		if user is not None and user.participation_list and len(user.participation_list) > 0:
 			if len(user.participation_list.split(' ')) > 0:
 				for course in user.participation_list.split(' '):
 					courses_all.append(Course.objects.get(id=course))
@@ -2969,11 +3143,11 @@ class Search():
 		courses=[]
 		elements=[]
 		if not course:
-			if len(user.courses)>0:
+			if user.courses and len(user.courses)>0:
 				if len(user.courses.split(' '))>0:
 					courses=user.courses.split(' ')
 				else: courses=user.courses
-			if len(user.participation_list)>0:
+			if user.participation_list and len(user.participation_list)>0:
 				if len(user.participation_list.split(' '))>0:
 					courses.extend(user.participation_list.split(' '))
 				else: courses.append(user.participation_list)
@@ -3059,3 +3233,20 @@ class Search():
 		"courses":in_courses,
 		"elements":in_courses_materials
 		}
+
+class Experimental():
+	def parse_fipi(url="http://85.142.162.119/os11/xmodules/qprint/index.php?theme_guid=5215706c9541e3119d55001fc68344c9"):
+		sub_url='http://www.fipi.ru/content/otkrytyy-bank-zadaniy-ege'
+		g = Grab()
+		g.setup(headers={'X-Requested-With': 'XMLHttpRequest'})
+		g.go(sub_url,charset='cp1251')
+		page=g.response.body
+		url=g.xpath(".//*[@id='node-4479']/div/div/div/div/table/tbody/tr[1]/td[1]/p[1]/a/@href")
+		g.go(url,charset='cp1251')
+		key=url.split("proj=")[1]
+		page=g.response.body
+		url=g.xpath(".//*/tr[2]/td[1]/div/div[3]/a/@href")
+		g.go(url,charset='cp1251')
+		page=g.response.body.decode('cp1251')
+		#g.xpath('//p[@class="MsoNormal"]')
+		return page

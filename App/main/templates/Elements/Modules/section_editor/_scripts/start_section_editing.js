@@ -1,7 +1,7 @@
 section_editor.start_section_editing = function($section) {
 	// console.log(typeof $section, $section);
 	if(typeof $section === 'function') return;
-	
+
 	var $items = $section.children(section_editor.item_selector)
 
 	//start heading edition
@@ -38,7 +38,6 @@ section_editor.start_section_editing = function($section) {
 */
 	//pull_put things for items
 	$items.each(function(index, el) {
-		$(this).attr("tip", "Кликните, чтобы перемещать");
 		var was_unpublished = $(this).hasClass('m--was-unpublished');
 		//add pullers
 		// console.log(this);
@@ -53,14 +52,16 @@ section_editor.start_section_editing = function($section) {
 					// console.log('1')
 					indicator.show(1)
 					section_editor.pull.func();
+          $(section_editor.item_selector).removeAttr("tip");
+          section_editor.$add_button.hide();
 				}
 			}
 		)
 
 		if(was_unpublished) {
-			 indicator.add($(this), 'down', 2)
+			 indicator.add($(this), section_editor.item_indicator, 2)
 		} else {
-			 indicator.add($(this), 'down', 1)
+			 indicator.add($(this), section_editor.item_indicator, 1)
 		}
 
 		pull_put.put_zone.add($(this), function(event, $this, $put) {

@@ -1,0 +1,15 @@
+<div class="popup--share" style="width: 30rem">
+  {% include "Elements/Inputs/text/textarea/" with
+    class="__description"
+    placeholder="Описание"
+  %}
+  {% include "Elements/Inputs/text/" with
+    class="tags"
+    placeholder="Ключевые фразы. Например: ЕГЭ, пунктуация, двоеточия"
+  %}
+  <div class="m--grey">
+    Их можно не указывать
+  </div>
+  <br>
+  <button id="share">Добавить в открытую билиотеку</button>
+</div>

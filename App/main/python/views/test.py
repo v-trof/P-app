@@ -93,6 +93,9 @@ def publish(request):
 		test_id = request.POST.get("test_id", None)
 		section = request.POST.get("section", "Нераспределенные")
 		max_score=request.POST.get("max_score",False)
+		max_time=request.POST.get("max_time",False)
+		if max_time:
+			max_time=str(max_time)
 		allowed_mistakes = []
 		mark_setting = {}
 		for setting in request.POST:
@@ -103,7 +106,7 @@ def publish(request):
 				if request.POST[setting] == "true":
 					allowed_mistakes.append(setting[12:])
 		message = Test.publish(course_id=course_id, test_id=test_id,
-								allowed_mistakes=allowed_mistakes, mark_setting=mark_setting, max_score=max_score, section=section)
+								allowed_mistakes=allowed_mistakes, mark_setting=mark_setting, max_score=max_score, section=section, max_time=max_time)
 		return HttpResponse(json.dumps(message), content_type="application/json")
 
 

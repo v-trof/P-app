@@ -5,6 +5,41 @@ import re
 import io
 import json
 
+def check(answer, answer_right, allowed):
+	if answer == answer_right:
+		return "right"
+	if not isinstance(answer,dict):
+		percentage=common_chars_percentage(answer,answer_right)
+		for mistake in allowed:
+			prev_answer=answer
+			if mistake == "typo":
+				if common_chars_percentage(forgiving[mistake](answer=answer),answer_right) > percentage:
+					answer=forgiving[mistake](answer=answer)
+				if answer == answer_right:
+					return "forgiving"
+			elif mistake == "numbers":
+				if common_chars_percentage(forgiving[mistake](answer=answer),answer_right) > percentage:
+					answer=forgiving[mistake](answer=answer)
+				if forgiving[mistake](answer=answer) == answer_right:
+					return "forgiving"
+			else:
+				new_answer = forgiving[mistake](answer=answer)
+				new_answer_right = forgiving[mistake](answer=answer_right)
+				if common_chars_percentage(new_answer,new_answer_right) > percentage:
+					answer=new_answer
+					answer_right=new_answer_right
+				if answer == answer_right:
+					return "forgiving"
+		if "word_order" in allowed:
+			if forgiving["word_order"](answer=answer,answer_right=answer_right):
+				return "forgiving"
+	return "false"
+
+def check_selected(answer, answer_right, allowed):
+	if set(answer) == set(answer_right):
+		return "right"
+	else: return "false"
+
 def swap(c, i, j):
 	c = list(c)
 	c[i], c[j] = c[j], c[i]
@@ -32,44 +67,8 @@ def numbers(answer):
 				romanResult += wholeNumber[1]
 	return romanResult
 
-def check(answer, answer_right, allowed):
-	if answer == answer_right:
-		return "right"
-	if not isinstance(answer,dict):
-		if "word_order" in allowed:
-			if forgiving["word_order"](answer=answer,answer_right=answer_right):
-				return "forgiving"
-		for mistake in allowed:
-			prev_answer=answer
-			#simple replacements
-			if mistake != "word_order":
-				if mistake == "typo":
-					answer = forgiving[mistake](answer=answer,answer_right=answer_right)
-					if answer == answer_right:
-						return "forgiving"
-				elif mistake == "numbers":
-					if forgiving[mistake](answer=answer) == answer_right:
-						return "forgiving"
-				else:
-					answer = forgiving[mistake](answer=answer)
-					answer_right = forgiving[mistake](answer=answer_right)
-					if answer == answer_right:
-						return "forgiving"
-	return "false"
-
-def check_selected(answer, answer_right, allowed):
-	if set(answer) == set(answer_right):
-		return "right"
-	else: return "false"
-
 def spaces(answer):
 	answer = answer.replace(" ", "")
-	return answer
-
-def roman_nums(answer):
-	# answer_map = ""
-	# 	chunk = intToRoman(chunk)
-	# answer
 	return answer
 
 def punctuation(answer):

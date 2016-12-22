@@ -1,5 +1,5 @@
 <div id="actions">
-	<button class="m--ghost m--icon" id="test_save" 
+	<button class="m--ghost m--icon" id="test_save"
 		{% if  test.published %}
 		tip="Cохранить изменения"
 		{% else %}
@@ -24,6 +24,27 @@
 			{% include "Elements/Icons/visibility_off.svg" %}
 		</button>
 	{% endif %}
+
+  {% if not test.loaded or not test.shared %}
+    <button class="m--ghost m--icon" id="test_share" tip="Добавить тест в открытую библиотеку">
+      {% include "Elements/Icons/share.svg" %}
+    </button>
+    <button class="m--ghost m--icon" id="test_unshare"  tip="Удалить тест из открытой библиотеки" style="display:none">
+      {% include "Elements/Icons/unshare.svg" %}
+    </button>
+
+  {% else %}
+    <button class="m--ghost m--icon" id="test_share" tip="Добавить тест в открытую библиотеку" style="display:none">
+      {% include "Elements/Icons/share.svg" %}
+    </button>
+    <button class="m--ghost m--icon" id="test_unshare"  tip="Удалить тест из открытой библиотеки">
+      {% include "Elements/Icons/unshare.svg" %}
+    </button>
+  {% endif %}
+
+  <button class="m--ghost m--icon" id="test_import"  tip="Добавить из открытой библиотеки">
+    {% include "Elements/Icons/import.svg" %}
+  </button>
 
 	<button class="m--ghost m--icon m--negative" id="test_delete"  tip="Удалить">
 		{% include "Elements/Icons/delete.svg" %}
