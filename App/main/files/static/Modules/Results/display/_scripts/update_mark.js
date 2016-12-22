@@ -1,0 +1,1 @@
+results_display.update_mark=function(a,s){panel.actions.show(),panel.actions.html('<b class="summary-mark">'+a.value+"</b>("+s.score+" из "+s.overall_score+")"),$(".summary-mark").addClass("m--"+a.quality),$(".summary-mark").css("margin-right",".5em")};

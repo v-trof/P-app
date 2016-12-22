@@ -1,3 +1,1 @@
-$(document).ready(function() {
-  scroll.wire($('.features-link'), $('.functions'));
-});
+$(document).ready(function(){scroll.wire($(".features-link"),$(".functions"))});

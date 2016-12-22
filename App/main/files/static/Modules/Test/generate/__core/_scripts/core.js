@@ -1,0 +1,1 @@
+var generate={data:{task:{},question:{},answer:{}},counter:{}};

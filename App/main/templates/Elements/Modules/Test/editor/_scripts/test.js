@@ -47,7 +47,7 @@ editor.test_data = {
   },
 
   //template methods
-  templates_remove(template) {
+  templates_remove: function(template) {
     editor.test_data.templates
       .splice(editor.test_data.templates.indexOf(template), 1);
 
@@ -65,7 +65,7 @@ editor.test_data = {
     });
   },
 
-  template_get_parts(group) {
+  template_get_parts: function(group) {
     for(var i = 0; i < editor.test_data.templates.length; i++) {
       if(editor.test_data.templates[i].group === group) {
         return editor.test_data.templates[i].parts;

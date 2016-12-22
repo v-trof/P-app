@@ -1,0 +1,1 @@
+generate.register.edit("answer","text",{builder:function(e){var r=this.make_template(),n=render.inputs.text("Формат ответа","label",e.label);r.prepend(n);var a=render.inputs.text("Верный ответ","answer",e.answer);return r.prepend(a),r},parser:function(e){var r={label:"",answer:void 0};return r.label=e.find('[name="label"]').val(),r.answer=e.find('[name="answer"]').val(),r}});

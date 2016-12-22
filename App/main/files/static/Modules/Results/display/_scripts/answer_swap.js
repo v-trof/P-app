@@ -1,0 +1,1 @@
+results_display.swap_answer=function(r,e,s,a){var n=$(e.make_answer(r.user_answer,r.answer,r.user_score,r.worth,r.result,r));r.user_answer===r.answer?s.replaceWith(n):s.replaceWith(n),results_display.answer_decorator&&results_display.answer_decorator(n,r,a)};

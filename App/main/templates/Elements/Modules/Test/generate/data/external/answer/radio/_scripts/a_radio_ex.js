@@ -1,5 +1,5 @@
 generate.register.external('answer', 'radio', {
-  get_value($element) {
+  get_value: function($element) {
     var answers = [];
     $element.find('.m--radio').each(function(index, el) {
       if(el.querySelector('input').checked) {
@@ -9,7 +9,7 @@ generate.register.external('answer', 'radio', {
     return answers;
   },
 
-  get_summary(value, element_data) {
+  get_summary: function(value, element_data) {
     var answers = [];
     var big  = false;
 
@@ -37,7 +37,7 @@ generate.register.external('answer', 'radio', {
   },
 
 
-  to_answer(user_answer, right_answer, element_data) {
+  to_answer: function(user_answer, right_answer, element_data) {
     var self = this.self;
 
     function make_DOM(answer) {
@@ -59,7 +59,7 @@ generate.register.external('answer', 'radio', {
     }
   },
 
-  observer($element, _change) {
+  observer: function($element, _change) {
     $element.find('input').change(_change);
   }
 });

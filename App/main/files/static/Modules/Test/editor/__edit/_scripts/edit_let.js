@@ -1,0 +1,1 @@
+editor.edit.let=function(t){pull_put.puller.add(t,["add","delete","save"],editor.edit.pull_put_actions.edit,function(){console.log("showing"),indicator.show(1)},!1,!0),pull_put.put_zone.add(t,function(t,e,d){e.after(editor.active_element.build()),pull_put.reset()}),indicator.add(t,"down",1)};

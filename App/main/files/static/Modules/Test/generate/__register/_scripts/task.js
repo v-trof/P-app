@@ -1,0 +1,1 @@
+generate.register.task=function(e,t){var a=this.bind_data("task",e,"element",t);a.build=t.builder};

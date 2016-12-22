@@ -1,0 +1,1 @@
+editor.assets={_files:[],add:function(e){var i=this._files.length;return this._files.push(e),i},get:function(e){return this._files[e]},replace:function(e,i){this._files[e]=i}};

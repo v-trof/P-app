@@ -1,0 +1,1 @@
+editor.edit.start=function(){pull_put.ui.$.find(".__content").attr("state","edit"),indicator.show(1);var t=editor.active_element.value;blueprints=editor.active_element.blueprints;var e=blueprints.edit.build(t);pull_put.ui.$.find(".__content").html(e),pull_put.ui.add_action(editor.edit.pull_put_actions.preview)};

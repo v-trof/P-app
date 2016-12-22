@@ -1,11 +1,11 @@
 generate.register.external('answer', 'text', {
-  get_value($element) {
+  get_value: function($element) {
     return $element.find('input').val();
   },
 
-  get_summary(value) {
+  get_summary: function(value) {
     if( ! value) value = "";
-    
+
     if(value.length > 20) {
       value = value.substring(0, 17).escape();
       value += "&hellip;"
@@ -16,7 +16,7 @@ generate.register.external('answer', 'text', {
     return value;
   },
 
-  to_answer(user_answer, right_answer, element_data) {
+  to_answer: function(user_answer, right_answer, element_data) {
     var self = this.self;
 
     function make_DOM(answer) {
@@ -33,7 +33,7 @@ generate.register.external('answer', 'text', {
     }
   },
 
-  observer($element, _change) {
+  observer: function($element, _change) {
     var timer;
     var typing_interval = 1000;
 
