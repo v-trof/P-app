@@ -149,6 +149,18 @@ class User_views():
         if request.method == 'POST':
             return HttpResponse(User.objects.upload_avatar(user=request.user, new_avatar=request.FILES['new_avatar']))
 
+    def send_mail(request):
+        if request.method == 'POST':
+            email = request.POST.get('email', False)
+            text = request.POST.get('message_text', False)
+            print(email,text)
+            if email and text:
+                send_mail('Новое сообщение от '+email, text, email,
+                          ['ru.pileus@gmail.com'], fail_silently=False)
+                return HttpResponse(json.dumps({"type":"success","message":"Письмо успешно отправлено"}), content_type="application/json")
+            else: return HttpResponse(json.dumps({"type":"error","message":"Произошла ошибка. Проверьте введенные данные"}), content_type="application/json")
+
+
 
 class Course_views():
 

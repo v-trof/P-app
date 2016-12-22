@@ -82,6 +82,7 @@ func_patterns = [
     url(r'^create_contact/$', functional.User_views.create_contact, name="create_contact"),
     url(r'^delete_contact/$', functional.User_views.delete_contact, name="delete_contact"),
     url(r'^upload_avatar/$', functional.User_views.upload_avatar, name="upload_avatar"),
+    url(r'^send_mail/$', functional.User_views.send_mail, name="send_mail"),
     url(r'^invite_students/$', functional.Course_views.invite_students, name="invite_students"),
     url(r'^invite_teacher/$', functional.Course_views.invite_teacher, name="invite_teacher"),
     url(r'^accept_request/$', functional.Course_views.accept_request, name="accept_request"),

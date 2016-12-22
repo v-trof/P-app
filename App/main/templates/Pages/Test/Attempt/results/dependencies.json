@@ -8,5 +8,5 @@
                "button"],
   "scripts": ["Pages/Test/Attempt/_shared/adapt_layout"],
   "template": "default",
-  "title": "Резуьтаты: {{test.title}}"
+  "title": "Результаты: {{test.title}}"
 }

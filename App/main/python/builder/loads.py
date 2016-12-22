@@ -18,7 +18,7 @@ def get(path):
         if loads_json[i][-1] == '/':
           loads_json[i] += 'exports.html'
       loads_json = set(loads_json)
-      print(loads_json)
+      print("loads:",loads_json)
 
   return loads_json
 
