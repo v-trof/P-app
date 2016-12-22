@@ -22,15 +22,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'q!)pcvgp*&5q+b8%l^-oj32lae(!_qynk5ze73=+jsn@@15=q5'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+DEBUG = False
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = (
-    'django_jasmine',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -61,7 +59,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ['main/templates'],
-        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -70,6 +67,12 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
                 'django.template.context_processors.media',
+            ],
+           'loaders': [
+                ('django.template.loaders.cached.Loader', [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ]),
             ],
         },
     },
@@ -89,17 +92,12 @@ DATABASES = {
     }
 }
 
-DEFAULT_FROM_EMAIL = "p.application.bot@gmail.com"
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
 
-EMAIL_HOST = "smtp.gmail.com"
+SENDGRID_USER = "pileus"
 
-EMAIL_HOST_USER = "p.application.bot@gmail.com"
+SENDGRID_PASSWORD = "03104b68"
 
-EMAIL_HOST_PASSWORD = "papplicationbot"
-
-EMAIL_PORT = 587
-
-EMAIL_USE_TLS = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -138,7 +136,4 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'main/files/collected_static/')
 
 USER_IMAGE_PATH = STATICFILES_DIRS
-SESSION_COOKIE_AGE = 36000
-
-if DEBUG:
-    JASMINE_TEST_DIRECTORY = 'main/files/jasmine'
+SESSION_COOKIE_AGE = 1209600
