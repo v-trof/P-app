@@ -1,0 +1,1 @@
+generate.register.element("question","text",{show_in_items:!0,builder:function(e){var t=this.make_template(e);return t.html('<div class="__value">'+e.text+"</div>"),t},sample:{value:{text:"Текстовый вопрос"}}});

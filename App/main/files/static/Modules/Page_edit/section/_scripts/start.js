@@ -1,0 +1,1 @@
+edit.start=function(){pull_put.is_pulled=!1,section_editor.$add_button.show(),section_editor.$parent.find(section_editor.section_selector).each(function(t,e){section_editor.start_section_editing($(this))}),section_editor.end_section_editing(section_editor.$unordered,!0),section_editor.edit_start(),section_editor.fix_pull_put()};

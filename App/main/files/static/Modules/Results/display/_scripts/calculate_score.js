@@ -1,0 +1,1 @@
+results_display.calculate_score=function(){var e=$(".set_mark .__current"),r=$(".set_mark .__max"),n=0,t=0;return e.each(function(){n+=parseInt(this.innerHTML)}),r.each(function(){t+=parseInt(this.innerHTML)}),{score:n,overall_score:t}};

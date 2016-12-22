@@ -1,0 +1,1 @@
+loads.get=function(t){return"/"==t[t.length-1]&&(t+="exports.html"),this[t]};

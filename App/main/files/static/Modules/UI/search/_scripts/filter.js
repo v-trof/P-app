@@ -1,0 +1,1 @@
+Search._.filter=function(i){i.types.forEach(function(n){i.types_active.indexOf(n)===-1?i.$.find(".__links").children(".m--"+n).hide():i.$.find(".__links").children(".m--"+n).show()})};

@@ -1,0 +1,1 @@
+results_display.init=function(a,s,m){test_manager.load(a),summary.make(a,s,results_display.make_summary_item),results_display.update_mark(m.mark,m)};

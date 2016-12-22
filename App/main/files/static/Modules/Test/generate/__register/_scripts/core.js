@@ -1,0 +1,1 @@
+generate.register={bind_data:function(e,t,a,r){var n=generate.data[e][t]||{};return generate.data[e][t]=n,n.type=e,n.subtype=t,n[a]=r,n[a].self=n,generate.counter[t]=10,n}};

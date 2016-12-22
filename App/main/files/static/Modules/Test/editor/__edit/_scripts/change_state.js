@@ -1,0 +1,1 @@
+editor.edit.change_value=function(){if("edit"!==pull_put.ui.$.find(".__content").attr("state"))return editor.active_element.value;var e=editor.active_element.blueprints,t=e.edit.parse(pull_put.ui.$.find(".__content"));return editor.active_element.value=t,t};

@@ -18,6 +18,8 @@
     "gulp-uglify": "^2.0.0"
   },
   "dependencies": {
-    "gulp-concat": "^2.6.0"
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "^2.0.0",
+    "pump": "^1.0.2"
   }
 }

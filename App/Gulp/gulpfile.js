@@ -5,6 +5,7 @@ var gulp = require('gulp');
   //things sass & css need
 var  sass = require('gulp-sass'); //compiles sass into css
 var  rename = require('gulp-rename');
+var pump = require('pump');
 var uglify = require('gulp-uglify');
   //js needs
 var  concat = require('gulp-concat');
@@ -28,10 +29,12 @@ gulp.task('move_js', function() {
       .pipe(gulp.dest('../main/files/static/'));
 });
 
-gulp.task('min_js', ['concat_test_generate'], function() {
-  gulp.src('../main/templates/**/*.js')
-    .pipe(uglify())
-    .pipe(gulp.dest('../main/files/static/'));
+gulp.task('min_js', function(cb) {
+  pump([
+    gulp.src('../main/templates/Elements/**/*.js'),
+    uglify(),
+    gulp.dest('../main/files/static/')
+  ], cb);
 });
 
 gulp.task('concat_test_generate', function() {
@@ -57,7 +60,7 @@ gulp.task('concat_test_generate', function() {
 gulp.task('watch', function() {
   gulp.watch("../main/templates/**/*.sass", ['sass_to_css']);
   gulp.watch("../main/templates/**/*.scss", ['sass_to_css']);
-  gulp.watch('../main/templates/**/*.js', ['move_js'])
+  gulp.watch('../main/templates/**/*.js', ['min_js'])
   // gulp.watch('../main/templates/Elements/Modules/test_generate/_scripts/**/*.js', ['concat_test_generate']);
 });
 

@@ -1,0 +1,1 @@
+function sort_by_text(t,n){t=$(t).first();var i=t.children(),e=[];for(i.each(function(t,i){e.push($(this).find(n).text())}),e.sort(),console.log(e);e.length>0;)i.each(function(i,o){$(this).find(n).text()==e[0]&&(t.append($(this)),e.splice(0,1))})}
