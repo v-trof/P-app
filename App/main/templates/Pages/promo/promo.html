@@ -1,3 +1,27 @@
+<div class="card register">
+  <h2>Попробуйте</h2>
+  {% csrf_token %}
+  {% include "Elements/Inputs/text/" with
+    placeholder="Фамилия и Имя"
+    name="name_last_name"
+    tip="Например: Безухов Пьер"
+    value=name_last_name %}
+
+  {% include "Elements/Inputs/text/" with
+    placeholder="Email"
+    name="email"
+    type="email"
+    value=email %}
+
+  {% include "Elements/Inputs/text/" with
+    placeholder="Пароль"
+    name="password"
+    type="password"
+    tip="Минимум 8 символов"
+    value=password %}
+  <button id="register">Использовать Pileus</button>
+</div>
+
 <section class="above-the-flood">
   <div class="row">
     <div class="card">
@@ -27,29 +51,6 @@
 
     <div class="symbol"> > </div>
 
-    <div class="card register">
-      <h2>Попробуйте</h2>
-    	{% csrf_token %}
-    	{% include "Elements/Inputs/text/" with
-    		placeholder="Фамилия и Имя"
-    		name="name_last_name"
-    		tip="Например: Безухов Пьер"
-    		value=name_last_name %}
-
-    	{% include "Elements/Inputs/text/" with
-    		placeholder="Email"
-    		name="email"
-    		type="email"
-    		value=email %}
-
-    	{% include "Elements/Inputs/text/" with
-    		placeholder="Пароль"
-    		name="password"
-    		type="password"
-    		tip="Минимум 8 символов"
-    		value=password %}
-    	<button id="register">Использовать Pileus</button>
-    </div>
   </div>
 </section>
 
