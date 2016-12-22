@@ -30,5 +30,20 @@ $('#register').click(function() {
             notification.show(response["type"], response["message"]);
             }
      }
-        });
     });
+});
+
+$(document).ready(function() {
+  var $reg = $('.register');
+
+  function position_reg_box() {
+    if(window.innerWidth >= 1024) {
+      $('body').append($reg);
+    } else {
+      $('.above-the-flood .row').append($reg)
+    }
+  }
+
+  window.onresize = position_reg_box;
+  position_reg_box();
+});
