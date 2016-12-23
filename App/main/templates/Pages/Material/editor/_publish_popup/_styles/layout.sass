@@ -1,0 +1,26 @@
+@import "../../../../../sass_vars/main.sass"
+
+.m--publish-popup
+  display: flex
+  flex-direction: column
+  padding: $padding--m
+  .column div:last-child
+  	margin-top: $margin--m
+  &>.row
+    align-items: flex-start
+    width: 100%
+    &:first-child
+      margin-bottom: $margin--m
+    &>div
+      width: 33%
+      &:not(:last-child)
+      	margin-right: $margin--l
+    &>button
+      align-self: flex-end
+    .__build-settings, .__mark-settings
+      .row
+        margin-bottom: $margin--s
+      .input.m--inline
+        width: 2rem
+        .__value
+          text-align: right
