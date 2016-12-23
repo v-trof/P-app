@@ -1,0 +1,11 @@
+{
+  "elements": ["Modules/Test/generate/data/edit.all",
+               "Modules/Test/generate/data/elements.all",
+               "Modules/Test/generate/data/task.all",
+               "Modules/Test/manage.all",
+               "Modules/Test/editor",
+               "button/ghost/icon", "card"],
+
+  "template": "default",
+  "title": "Редактирования теста"
+}

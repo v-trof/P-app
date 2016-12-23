@@ -9,18 +9,18 @@
 		{% include "Elements/Icons/save.svg" %}
 	</button>
 	{% if not test.loaded or not test.published %}
-		<button class="m--ghost m--icon" id="test_publish" tip="Сделать доступным для прохождения">
+		<button class="m--ghost m--icon" id="test_publish" tip="Сделать доступным для просмотра">
 			{% include "Elements/Icons/visibility.svg" %}
 		</button>
-		<button class="m--ghost m--icon" id="test_unpublish"  tip="Сделать недоступным для прохождения" style="display:none">
+		<button class="m--ghost m--icon" id="test_unpublish"  tip="Сделать недоступным для просмотра" style="display:none">
 			{% include "Elements/Icons/visibility_off.svg" %}
 		</button>
 
 	{% else %}
-		<button class="m--ghost m--icon" id="test_publish" tip="Сделать доступным для прохождения" style="display:none">
+		<button class="m--ghost m--icon" id="test_publish" tip="Сделать доступным для просмотра" style="display:none">
 			{% include "Elements/Icons/visibility.svg" %}
 		</button>
-		<button class="m--ghost m--icon" id="test_unpublish"  tip="Сделать недоступным для прохождения" >
+		<button class="m--ghost m--icon" id="test_unpublish"  tip="Сделать недоступным для просмотра" >
 			{% include "Elements/Icons/visibility_off.svg" %}
 		</button>
 	{% endif %}
@@ -48,8 +48,8 @@
     <button class="m--ghost m--icon" id="test_unshare"  tip="Удалить тест из открытой библиотеки">
       {% include "Elements/Icons/unshare.svg" %}
     </button>
-  {% endif %} -->
-
+  {% endif %}
+   -->
 	<button class="m--ghost m--icon m--negative" id="test_delete"  tip="Удалить">
 		{% include "Elements/Icons/delete.svg" %}
 	</button>
