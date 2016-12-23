@@ -62,3 +62,5 @@ App/main/files/collected_static
 *.pyc
 *.tern_project
 *.sqlite3
+App/main/settings.py
+App/main/settings.py

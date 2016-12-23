@@ -37,7 +37,8 @@ class Main_group():
 		if os.path.isfile('main/files/json/users/' + str(request.user.id) + '/settings.json'):
 			with io.open('main/files/json/users/' + str(request.user.id) + '/settings.json', 'r', encoding='utf8') as settings_file:
 				user_settings = json.load(settings_file)
-		else: user_settings={"assignments":{"sort_method": "by_date"}}
+		else: 
+			user_settings={"assignments":{"sort_method":"by_date"}}
 		context["subjects"] = {"Гуманитарные науки":["Литература","История","Обществознание"],"Языки":["Русский язык","Английский язык","Немецкий язык","Французский язык","Испанский язык"],"Точные науки":["Математика","Информатика"], "Естественные науки":["Физика","Химия","Биология","География"]}
 		if request.user.participation_list:
 			context["marks"] = User.objects.load_marks(

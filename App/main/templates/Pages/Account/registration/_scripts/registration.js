@@ -31,6 +31,6 @@ $('#register').click(function() {
             {
             notification.show(response["type"], response["message"]);
             }
-     }
+     },
         });
     });
