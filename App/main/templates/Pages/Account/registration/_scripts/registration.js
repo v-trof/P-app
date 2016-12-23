@@ -32,6 +32,5 @@ $('#register').click(function() {
             notification.show(response["type"], response["message"]);
             }
      },
-     error: notification.show("error", "Произошла ошибка");
         });
     });
