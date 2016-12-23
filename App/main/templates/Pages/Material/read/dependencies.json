@@ -1,0 +1,9 @@
+{
+  "elements": ["Modules/Test/generate/data/elements.all",
+               "Modules/Test/generate/data/task.all",
+               "Modules/Test/manage",
+               "button"],
+  "scripts": ["Pages/Test/Attempt/_shared/adapt_layout"],
+  "template": "default",
+  "title": "Просмотр материала"
+}
