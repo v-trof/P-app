@@ -1,9 +1,1 @@
-render.inputs.text = function(label, name, value) {
-  var $input = $(loads.get("Elements/Inputs/text/"));
-  $input.find('label').text(label);
-  $input.find('input').attr('name', name).val(value);
-
-  check_if_filled($input.find('input'));
-
-  return $input;
-}
+render.inputs.text=function(t,e,n){var i=$(loads.get("Elements/Inputs/text/"));return i.find("label").text(t),i.find("input").attr("name",e).val(n),check_if_filled(i.find("input")),i};

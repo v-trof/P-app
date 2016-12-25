@@ -1,33 +1,33 @@
 <div class="register-box modal card">
 	<h2>Регистрация</h2>
 		{% csrf_token %}
-		{% include "Elements/Inputs/text/" with 
-			placeholder="Фамилия и Имя" 
+		{% include "Elements/Inputs/text/" with
+			placeholder="Фамилия и Имя"
 			name="name_last_name"
 			tip="Например: Безухов Пьер"
 			value=name_last_name %}
-		
-		{% include "Elements/Inputs/text/" with 
-			placeholder="Email" 
+
+		{% include "Elements/Inputs/text/" with
+			placeholder="Email"
 			name="email"
 			type="email"
 			value=email %}
-		
-		{% include "Elements/Inputs/text/" with 
-			placeholder="Пароль" 
+
+		{% include "Elements/Inputs/text/" with
+			placeholder="Пароль"
 			name="password"
 			type="password"
 			tip="Минимум 8 символов"
 			value=password %}
-			
-			
-		{% include "Elements/Inputs/checkbox/" with 
-				label="Я — преподаватель" 
+
+
+		{% include "Elements/Inputs/checkbox/" with
+				label="Я &emdash; преподаватель" 
 				name="is_teacher"%}
-			
+
 		{% if course %}
 			<input type="hidden" name="course_id" value="{{course.id}}">
-			{% include "Elements/Inputs/checkbox/" with 
+			{% include "Elements/Inputs/checkbox/" with
 				label="Присоединиться к курсу "|add:course.name
 				name="course_reg"
 				value=1

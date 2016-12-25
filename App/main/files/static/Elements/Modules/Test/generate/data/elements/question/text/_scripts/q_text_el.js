@@ -1,15 +1,1 @@
-generate.register.element('question', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.html('<div class="__value">' + value.text + '</div>');
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      text: 'Текстовый вопрос'
-    }
-  }
-});
+generate.register.element("question","text",{show_in_items:!0,builder:function(e){var t=this.make_template(e);return t.html('<div class="__value">'+e.text+"</div>"),t},sample:{value:{text:"Текстовый вопрос"}}});

@@ -1,5 +1,1 @@
-var render = {
-  inputs: {},
-  cards: {},
-  buttons: {}
-}
+var render={inputs:{},cards:{},buttons:{}};

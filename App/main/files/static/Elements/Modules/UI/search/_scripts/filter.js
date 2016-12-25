@@ -1,9 +1,1 @@
-Search._.filter = function(search) {
-  search.types.forEach(function(type) {
-    if (search.types_active.indexOf(type) === -1) {
-      search.$.find('.__links').children('.m--' + type).hide();
-    } else {
-      search.$.find('.__links').children('.m--' + type).show();
-    }
-  });
-}
+Search._.filter=function(i){i.types.forEach(function(n){i.types_active.indexOf(n)===-1?i.$.find(".__links").children(".m--"+n).hide():i.$.find(".__links").children(".m--"+n).show()})};

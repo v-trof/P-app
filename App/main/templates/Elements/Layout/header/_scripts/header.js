@@ -1,10 +1,10 @@
 function header_build() {
   $(".header>.__breadcrumbs").removeAttr('style');
   $(".header>.__user").removeAttr('style');
-  
+
   var breadcrumbs_width = $(".header>.__breadcrumbs").innerWidth();
   var user_width = $(".header>.__user").innerWidth();
-  
+
   if(breadcrumbs_width > user_width) {
     breadcrumbs_width += 10;
     user_width = breadcrumbs_width;
@@ -19,7 +19,7 @@ function header_build() {
 
 $(window).resize(function(event) {
   header_build();
-  
+
   try {
     tooltip.hide();
   } catch(err) {}
@@ -31,4 +31,4 @@ $(window).resize(function(event) {
 
 $(document).ready(function() {
   header_build();
-})
+});

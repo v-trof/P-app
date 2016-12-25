@@ -1,1 +1,1 @@
-test_manager = {}
+test_manager={};

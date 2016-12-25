@@ -1,1 +1,1 @@
-var summary = {}
+var summary={};

@@ -1,4 +1,1 @@
-editor.active_task = {
-  position: undefined,
-  value: {}
-}
+editor.active_task={position:void 0,value:{}};

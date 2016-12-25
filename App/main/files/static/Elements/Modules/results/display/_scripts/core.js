@@ -1,1 +1,1 @@
-var results_display = {}
+var results_display={};

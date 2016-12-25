@@ -1,11 +1,1 @@
-editor.edit.stop = function() {
-  var parse_value = editor.edit.change_value();
-  pull_put.ui.$.find(".__content").attr('state', 'preview');
-
-  var $element = blueprints.element.build(parse_value);
-
-  pull_put.ui.element = $element;
-  pull_put.ui.$.find(".__content").html($element);
-
-  pull_put.ui.add_action(editor.edit.pull_put_actions.edit);
-}
+editor.edit.stop=function(){var t=editor.edit.change_value();pull_put.ui.$.find(".__content").attr("state","preview");var e=blueprints.element.build(t);pull_put.ui.element=e,pull_put.ui.$.find(".__content").html(e),pull_put.ui.add_action(editor.edit.pull_put_actions.edit)};
