@@ -1,4 +1,4 @@
 {
-  "elements": ["Modules/UI/modal/pull_put", "Modules/UI/button_delete",
+  "elements": ["Modules/UI/pull_put", "Modules/UI/button_delete",
                "Modules/Utility/lang"]
 }

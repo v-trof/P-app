@@ -9,7 +9,7 @@
 							 "Inputs/text/textarea",
 							 "Inputs/checkbox", "Inputs/radio",
 							 "Inputs/select", "Inputs/file",
-							 "Modules/UI/modal/panel",
+							 "Modules/UI/panel",
 							 "card/file",
 							 "Modules/UI/plyr"
 						],

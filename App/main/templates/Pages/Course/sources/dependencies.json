@@ -1,6 +1,6 @@
 {
 	"elements": ["card/file", "Modules/UI/Info/notification",
-               "Modules/UI/modal/popup",
+               "Modules/UI/popup",
 				       "Inputs/text", "Inputs/file", "Modules/Page_edit/toggle",
 				       "Modules/UI/button_delete", "Modules/Utility/replace"],
   "scripts": [],

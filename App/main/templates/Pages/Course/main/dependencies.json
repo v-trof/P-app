@@ -1,6 +1,6 @@
 {
-	"elements": ["Moduels/UI/modal/pickmeup",
-			       	 "Modules/UI/modal/popup",
+	"elements": ["Moduels/UI/pickmeup",
+			       	 "Modules/UI/popup",
 		      		 "Modules/UI/accordion",
 		      		 "card/test"],
 	"title" : "Курс",

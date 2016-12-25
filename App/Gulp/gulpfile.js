@@ -79,16 +79,6 @@ gulp.task('min_elements_js', function(cb) {
   ], cb);
 });
 
-  gulp.src(['../main/templates/Elements/Modules/test_generate/_scripts/build/**/*.js'])
-    .pipe(concat('build.js'))
-    .pipe(rename(function (path) {
-      path.dirname = "../";
-    }))
-    .pipe(gulp.dest(function(file) {
-      return file.base;
-  }));
-});
-
 gulp.task('watch', function() {
   gulp.watch("../main/templates/**/*.sass", ['sass_to_css']);
   gulp.watch("../main/templates/**/*.scss", ['sass_to_css']);

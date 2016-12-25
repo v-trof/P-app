@@ -1,9 +1,9 @@
 {
 	"elements": ["Modules/UI/Info/notification",
-							 "Modules/UI/modal/popup",
+							 "Modules/UI/popup",
 							 "Modules/UI/accordion",
-							 "Modules/UI/modal/panel",
-							 "Modules/UI/modal/pickmeup",
+							 "Modules/UI/panel",
+							 "Modules/UI/pickmeup",
 							 "card/small",
 							 "button/ghost/icon",
 							 "Inputs/checkbox"],

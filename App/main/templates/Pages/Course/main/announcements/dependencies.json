@@ -2,6 +2,6 @@
 	"elements": ["card/announcement",
                "Modules/UI/button_delete",
                "Modules/UI/medium_editor",
-               "Modules/UI/modal/pickmeup",
-               "Modules/UI/modal/popup"]
+               "Modules/UI/pickmeup",
+               "Modules/UI/popup"]
 }

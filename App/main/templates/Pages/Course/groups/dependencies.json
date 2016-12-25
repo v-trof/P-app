@@ -1,6 +1,6 @@
 {
 	"elements": ["Modules/UI/Info/notification", "Modules/UI/accordion",
-				       "Modules/UI/modal/popup",
+				       "Modules/UI/popup",
 			       	 "Modules/Utility/text_sort", "Modules/Page_edit/section"],
   "styles": [],
   "scripts": [],
