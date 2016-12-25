@@ -79,16 +79,6 @@ gulp.task('min_elements_js', function(cb) {
   ], cb);
 });
 
-gulp.task('concat_test_generate', function() {
-  gulp.src(['../main/templates/Elements/Modules/test_generate/_scripts/data/**/*.js'])
-    .pipe(concat('data.js'))
-    .pipe(rename(function (path) {
-      path.dirname = "../";
-     }))
-    .pipe(gulp.dest(function(file) {
-      return file.base;
-  }));
-
   gulp.src(['../main/templates/Elements/Modules/test_generate/_scripts/build/**/*.js'])
     .pipe(concat('build.js'))
     .pipe(rename(function (path) {
@@ -102,8 +92,8 @@ gulp.task('concat_test_generate', function() {
 gulp.task('watch', function() {
   gulp.watch("../main/templates/**/*.sass", ['sass_to_css']);
   gulp.watch("../main/templates/**/*.scss", ['sass_to_css']);
-  gulp.watch('../main/templates/**/*.js', ['min_js'])
-  // gulp.watch('../main/templates/Elements/Modules/test_generate/_scripts/**/*.js', ['concat_test_generate']);
+  gulp.watch('../main/templates/Modules/**/*.js', ['min_modules_js']);
+  gulp.watch('../main/templates/**/*.js', ['min_elements_js']);
 });
 
-gulp.task('default', ['watch', 'concat_test_generate']);
+gulp.task('default', ['watch']);
