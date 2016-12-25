@@ -1,0 +1,1 @@
+function upload(e,n,c){e.append("csrfmiddlewaretoken","{{ csrf_token }}"),"undefined"==typeof success&&(success="Выполнено"),$.ajax({type:"POST",url:n,data:e,processData:!1,contentType:!1,success:function(e){c(e)},error:function(e){c(e),notification.show("error","Произошла ошибка")}})}

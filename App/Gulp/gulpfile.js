@@ -64,7 +64,7 @@ gulp.task('min_modules_js', function(cb) {
         gulp.src(path.join(modules_path, folder, '/**/*.js')),
         concat(folder + '.js'),
         uglify(),
-        gulp.dest('../main/files/static/Elements/')
+        gulp.dest('../main/files/static/Elements/Modules')
       ]);
   });
 
