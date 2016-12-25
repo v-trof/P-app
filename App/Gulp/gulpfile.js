@@ -1,6 +1,7 @@
 'use strict';
 
-
+var fs = require('fs');
+var path = require('path');
 var gulp = require('gulp');
   //things sass & css need
 var  sass = require('gulp-sass'); //compiles sass into css
@@ -11,6 +12,15 @@ var uglify = require('gulp-uglify');
 var  concat = require('gulp-concat');
 var cleanCSS = require('gulp-clean-css');
 var autoprefixer = require('gulp-autoprefixer');
+var merge = require('merge-stream');
+
+function getFolders(dir) {
+  return fs.readdirSync(dir)
+    .filter(function(file) {
+      return fs.statSync(path.join(dir, file)).isDirectory();
+    });
+}
+
 
 gulp.task('sass_to_css', function () {
   //converts sass to css, prefixes, and minificates css
@@ -29,11 +39,43 @@ gulp.task('move_js', function() {
       .pipe(gulp.dest('../main/files/static/'));
 });
 
-gulp.task('min_js', function(cb) {
+gulp.task('min_modules_js', function(cb) {
+  var modules_path = '../main/templates/Elements/Modules';
+  var macro_folders = getFolders(modules_path);
+  var folders = [];
+
+  console.log(macro_folders);
+
+  macro_folders.forEach(function(dir) {
+    console.log(modules_path + '/' + dir, getFolders(modules_path + '/' + dir));
+    var new_folders = [];
+    getFolders(modules_path + '/' + dir).forEach(function(folder) {
+      new_folders.push(path.join(dir, folder));
+    });
+
+    folders = folders.concat(new_folders);
+  });
+
+  console.log(folders);
+
+
+   var tasks = folders.map(function(folder) {
+      return pump([
+        gulp.src(path.join(modules_path, folder, '/**/*.js')),
+        concat(folder + '.js'),
+        uglify(),
+        gulp.dest('../main/files/static/Elements/')
+      ]);
+  });
+
+  cb();
+});
+
+gulp.task('min_elements_js', function(cb) {
   pump([
-    gulp.src('../main/templates/Elements/**/*.js'),
+    gulp.src(['../main/templates/Elements/**/*.js', '!../main/templates/Elements/Modules/**/*.js']),
     uglify(),
-    gulp.dest('../main/files/static/')
+    gulp.dest('../main/files/static/Elements')
   ], cb);
 });
 

@@ -1,0 +1,1 @@
+$.fn.replaceTag=function(e){for(var t=[],r=this.length;r--;){for(var n=document.createElement(e),a=this[r],i=a.attributes,u=i.length-1;u>=0;u--){var f=i[u];n.setAttribute(f.name,f.value)}n.innerHTML=a.innerHTML,$(a).after(n).remove(),t[r-1]=n}return $(t)};
