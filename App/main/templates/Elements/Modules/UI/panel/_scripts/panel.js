@@ -1,6 +1,6 @@
 var panel = (function() {
 
-  var $all = $(loads.get('Elements/Modules/UI/modal/panel/'));
+  var $all = $(loads.get('Elements/Modules//panel/'));
 
   var $panel = $all.find(".__content");
   var $actions = $all.find(".__actions");

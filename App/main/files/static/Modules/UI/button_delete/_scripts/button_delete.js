@@ -1,1 +1,0 @@
-var button_delete=function(){var t=loads.get("Elements/Modules/UI/button_delete/"),e={add:function(e,n,o){"function"==typeof n&&(o=n,n=void 0),"undefined"==typeof n&&(n=e),e=e.first(),$button=$(t),e.append($button),$button.click(function(t){t.preventDefault(),o&&o(),n.remove()})}};return e}();

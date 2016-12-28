@@ -1,9 +1,0 @@
-{
-	"elements": ["Modules/results_display",
-			       	 "Modules/pull_put", "Modules/notification",
-		      		 "card/small", "Modules/panel"],
-	"scripts": ["Pages/Test/Attempt/_shared/responsive"],
-  "styles": [],
-	"title" : "Результаты",
-	"template": "default"
-}

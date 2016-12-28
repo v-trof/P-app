@@ -1,1 +1,0 @@
-generate.register.element("answer","text",{show_in_items:!0,builder:function(e){var t=this.make_template(e);return t.append(render.inputs.text(e.label,"",e.answer)),t},sample:{value:{label:"Текстовый ответ",worth:1}}});

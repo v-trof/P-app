@@ -1,0 +1,48 @@
+@import "../../../../../sass_vars/main.sass"
+
+.notification
+	display: flex
+	flex-direction: row
+	align-items: center
+	position: fixed
+	top: $margin--xl
+	right: $margin--l
+	transition: $time--s
+	border-radius: $border--m
+	z-index: 50
+	+box-shadow(2)
+
+	.__icon
+		border-right: $border--s solid rgba($white, .3)
+		display: flex
+		align-items: center
+		justify-content: center
+		+square("m")
+		padding: $base*0.25 0
+		svg
+			+square("s")
+			fill: $font__color--white
+	.__text
+		margin: 0 $margin--s
+
+	&.m--error
+		background: $red
+		color: $white
+
+
+	&.m--warning
+		background: $yellow
+		color: $black
+		&>.__icon
+			fill: $black
+
+	&.m--success
+		background: $green
+		color: $white
+
+	&.m--info
+		background: $color--accent
+		color: $white
+
+	&.m--hidden
+		opacity: 0

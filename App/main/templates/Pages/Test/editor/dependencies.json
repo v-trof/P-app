@@ -1,8 +1,6 @@
 {
-  "elements": ["Modules/Test/generate/data/edit.all",
-               "Modules/Test/generate/data/elements.all",
-               "Modules/Test/generate/data/task.all",
-               "Modules/Test/manage.all",
+  "elements": ["Modules/Test/generate",
+               "Modules/Test/manage/edit",
                "Modules/Test/editor",
                "button/ghost/icon", "card"],
 

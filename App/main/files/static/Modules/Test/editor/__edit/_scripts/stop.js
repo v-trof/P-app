@@ -1,1 +1,0 @@
-editor.edit.stop=function(){var t=editor.edit.change_value();pull_put.ui.$.find(".__content").attr("state","preview");var e=blueprints.element.build(t);pull_put.ui.element=e,pull_put.ui.$.find(".__content").html(e),pull_put.ui.add_action(editor.edit.pull_put_actions.edit)};

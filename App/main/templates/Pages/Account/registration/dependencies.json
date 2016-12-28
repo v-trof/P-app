@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/UI/Info/tooltip", "Modules/Utility/verifier"],
+	"elements": ["Modules/Info/tooltip", "Modules/Utility/verifier"],
   "scripts": [],
   "styles": [],
 	"title" : "Регистрация",

@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/UI/Info/tooltip"],
+	"elements": ["Modules/Info/tooltip"],
 
 	"scripts": []
 }

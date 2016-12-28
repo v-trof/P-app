@@ -113,34 +113,35 @@ editor.test_data.templates.add = function(new_tempalte) {
 
   return new_group;
 }
+$(document).ready(function() {
+  pull_put.pre_actions.put = function($put_zone, $pulled) {
+    if($put_zone.hasClass('__gap')) return;
+    var value = editor.edit.change_value();
 
-pull_put.pre_actions.put = function($put_zone, $pulled) {
-  if($put_zone.hasClass('__gap')) return;
-  var value = editor.edit.change_value();
+    var number = $put_zone.parent().children('[subtype]').index($put_zone);
+    number+=1;
+    var new_position = {
+      task: $('.preview .__task').index($put_zone.parents('.__task')),
+      number: number
+    }
 
-  var number = $put_zone.parent().children('[subtype]').index($put_zone);
-  number+=1;
-  var new_position = {
-    task: $('.preview .__task').index($put_zone.parents('.__task')),
-    number: number
+    editor.test_data.change(editor.active_element.position, new_position, value);
   }
 
-  editor.test_data.change(editor.active_element.position, new_position, value);
-}
+  pull_put.pre_actions.save = function() {
+    editor.edit.change_value();
 
-pull_put.pre_actions.save = function() {
-  editor.edit.change_value();
+    var position = editor.active_element.position;
+    var value = editor.active_element.value;
 
-  var position = editor.active_element.position;
-  var value = editor.active_element.value;
+    editor.edit.stop();
 
-  editor.edit.stop();
+    $('.m--pull_put_empty').after(pull_put.ui.element);
 
-  $('.m--pull_put_empty').after(pull_put.ui.element);
+    editor.test_data.update(position, value);
+  }
 
-  editor.test_data.update(position, value);
-}
-
-pull_put.pre_actions.delete = function() {
-  editor.test_data.delete(editor.active_element.position);
-}
+  pull_put.pre_actions.delete = function() {
+    editor.test_data.delete(editor.active_element.position);
+  }
+});

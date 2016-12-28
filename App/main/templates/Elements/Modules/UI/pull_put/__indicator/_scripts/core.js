@@ -1,6 +1,6 @@
 var indicator = (function() {
 
-  var template = loads["Elements/Modules/UI/modal/pull_put/__indicator/exports.html"];
+  var template = loads["Elements/Modules//pull_put/__indicator/exports.html"];
 
   var icons = {
     add: loads["Elements/Icons/add.svg"],

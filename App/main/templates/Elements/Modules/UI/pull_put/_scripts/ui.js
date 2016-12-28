@@ -1,6 +1,6 @@
 pull_put.ui = (function() {
 
-  $ui = $(loads.get("Elements/Modules/UI/modal/pull_put/"));
+  $ui = $(loads.get("Elements/Modules/UI/pull_put/"));
 
   $ui.__actions__additional = $ui.find(".__actions>.__additional");
   $ui.__content = $ui.find(".__content");

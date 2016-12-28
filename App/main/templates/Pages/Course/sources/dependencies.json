@@ -1,5 +1,5 @@
 {
-	"elements": ["card/file", "Modules/UI/Info/notification",
+	"elements": ["card/file", "Modules/Info/notification",
                "Modules/UI/popup",
 				       "Inputs/text", "Inputs/file", "Modules/Page_edit/toggle",
 				       "Modules/UI/button_delete", "Modules/Utility/replace"],

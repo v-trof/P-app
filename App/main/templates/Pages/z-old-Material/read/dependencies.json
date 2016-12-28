@@ -1,7 +1,0 @@
-{
-	"elements": ["Modules/test_generate", "Modules/test_manager"],
-  "styles": [],
-  "scripts": [],
-	"title" : "Просмотр материала",
-	"template": "default"
-}

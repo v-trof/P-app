@@ -1,4 +1,4 @@
 {
-  "elements": ["Modules/Test/generate/task/default", "button/ghost/icon",
+  "elements": ["Modules/Test/generate/data/task/default", "button/ghost/icon",
                "Modules/UI/popup"]
 }

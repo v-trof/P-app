@@ -1,1 +1,0 @@
-Search._.fill=function(e,n){var t=e.$.find(".__links");t.html(""),n.length?(n.forEach(function(n){var a=$('<a class="m--card m--'+n.type+'" href="'+n.content.link+'"></a>');$new_item=e.build[n.type](n.content),a.append($new_item),t.append(a)}),e.filter()):t.append('<div class="m--empty m--grey">Ничего не найдено</div>')};

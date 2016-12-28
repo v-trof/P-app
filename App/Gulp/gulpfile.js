@@ -21,7 +21,6 @@ function getFolders(dir) {
     });
 }
 
-
 gulp.task('sass_to_css', function () {
   //converts sass to css, prefixes, and minificates css
   gulp.src(['../main/templates/**/*.sass', '../main/templates/**/*.scss'])
@@ -39,15 +38,12 @@ gulp.task('move_js', function() {
       .pipe(gulp.dest('../main/files/static/'));
 });
 
-gulp.task('min_modules_js', function(cb) {
-  var modules_path = '../main/templates/Elements/Modules';
+gulp.task('move_module_css', function() {
+  var modules_path = '../main/files/static/Elements/Modules';
   var macro_folders = getFolders(modules_path);
   var folders = [];
 
-  console.log(macro_folders);
-
   macro_folders.forEach(function(dir) {
-    console.log(modules_path + '/' + dir, getFolders(modules_path + '/' + dir));
     var new_folders = [];
     getFolders(modules_path + '/' + dir).forEach(function(folder) {
       new_folders.push(path.join(dir, folder));
@@ -56,12 +52,37 @@ gulp.task('min_modules_js', function(cb) {
     folders = folders.concat(new_folders);
   });
 
-  console.log(folders);
+
+   var tasks = folders.map(function(folder) {
+      return gulp.src(path.join(modules_path, folder, '/**/*.css'))
+        .pipe(concat(folder + '.css'))
+        .pipe(gulp.dest('../main/files/static/Elements/Modules'));
+  });
+});
+
+gulp.task('min_modules_js', function(cb) {
+  var modules_path = '../main/templates/Elements/Modules';
+  var macro_folders = getFolders(modules_path);
+  var folders = [];
+
+  macro_folders.forEach(function(dir) {
+    var new_folders = [];
+    getFolders(modules_path + '/' + dir).forEach(function(folder) {
+      new_folders.push(path.join(dir, folder));
+    });
+
+    folders = folders.concat(new_folders);
+  });
 
 
    var tasks = folders.map(function(folder) {
       return pump([
-        gulp.src(path.join(modules_path, folder, '/**/*.js')),
+        gulp.src([
+                  path.join(modules_path, folder, '/__core/**/core.js'),
+                  path.join(modules_path, folder, '/!(core)**/core.js'),
+                  path.join(modules_path, folder, '/**/!(core)*.js'),
+                  path.join('!'+modules_path, folder, '/test_suite/**/*.js')
+        ]),
         concat(folder + '.js'),
         uglify(),
         gulp.dest('../main/files/static/Elements/Modules')

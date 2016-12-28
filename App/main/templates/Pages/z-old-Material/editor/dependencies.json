@@ -1,9 +1,0 @@
-{
-	"elements": ["Modules/test_generate", "Modules/test_manager",
-				       "Modules/notification", "Modules/popup",
-				       "Inputs/select", "Modules/test_editor"],
-  "styles": [],
-  "scripts": [],
-	"title" : "Редактирование материала",
-	"template": "default"
-}

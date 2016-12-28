@@ -1,1 +1,0 @@
-function check_if_filled(e){var i;i="INPUT"===e[0].tagName?e.val():e.text(),i.length?e.siblings("label").addClass("m--top"):e.siblings("label").removeClass("m--top")}$(document).ready(function(){$("body").on("keydown change blur",".m--text>.__value",function(){var e=$(this);setTimeout(function(){check_if_filled(e)},10)}),$("input").each(function(e,i){check_if_filled($(this))})});

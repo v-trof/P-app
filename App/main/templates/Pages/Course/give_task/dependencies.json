@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/UI/Info/notification",
+	"elements": ["Modules/Info/notification",
 							 "Modules/UI/popup",
 							 "Modules/UI/accordion",
 							 "Modules/UI/panel",

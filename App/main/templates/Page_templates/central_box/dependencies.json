@@ -1,5 +1,5 @@
 {
-	"elements" : ["Modules/UI/Info/notification",
+	"elements" : ["Modules/Info/notification",
                 "Modules/utility/loads"],
 	"styles": ["Page_templates/_styles/main.css"],
 	"scripts": []

@@ -1,5 +1,5 @@
 var popup = (function() {
-  $popup = $(loads.get('Elements/Modules/UI/modal/popup/exports.html'));
+  $popup = $(loads.get('Elements/Modules/UI/popup/exports.html'));
   exports = {
     $: $popup,
     show: function(content, _callback, css, no_prefocus) {

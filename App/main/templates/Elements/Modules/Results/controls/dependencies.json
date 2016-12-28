@@ -1,5 +1,5 @@
 {
 	"elements": ["Modules/Results/display",
                "button/ghost/icon",
-               "Modules/UI/Info/notification"]
+               "Modules/Info/notification"]
 }

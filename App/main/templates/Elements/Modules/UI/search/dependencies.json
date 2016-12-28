@@ -1,7 +1,7 @@
 {
   "elements": ["button/ghost/icon",
-               "card/course", "card/user",
-               "card/test", "card/material",
+               "card/course", "card/user/extended",
+               "card/test/extended", "card/material/extended",
                "Inputs/checkbox",
                "Modules/Utility/lang"]
 }

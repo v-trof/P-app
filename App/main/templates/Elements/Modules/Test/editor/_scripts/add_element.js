@@ -58,27 +58,29 @@ editor.create_new_task = function() {
   return $new_task;
 }
 
-pull_put.actions.add = function() {
-  if(pull_put.ui.$.find(".__content").attr('state') === 'edit') {
-    editor.edit.change_value();
-  }
+$(document).ready(function() {
+  pull_put.actions.add = function() {
+    if(pull_put.ui.$.find(".__content").attr('state') === 'edit') {
+      editor.edit.change_value();
+    }
 
-  if(defined(editor.active_element.value)) {
-    var $element = editor.active_element.build();
+    if(defined(editor.active_element.value)) {
+      var $element = editor.active_element.build();
 
-    var $new_task = editor.create_new_task();
+      var $new_task = editor.create_new_task();
 
-    $('.preview>.__content').append($new_task);
-    $new_task.find('.__content').append($element);
+      $('.preview>.__content').append($new_task);
+      $new_task.find('.__content').append($element);
 
-    editor.test_data.add(editor.active_element.value,
-      editor.active_element.type, editor.active_element.subtype);
+      editor.test_data.add(editor.active_element.value,
+        editor.active_element.type, editor.active_element.subtype);
 
-    editor.check.numbers();
-    editor.check.empty();
-  }
+        editor.check.numbers();
+        editor.check.empty();
+      }
 
-  if(defined(editor.active_element.position)) {
-    editor.test_data.delete(editor.active_element.position);
-  }
-}
+      if(defined(editor.active_element.position)) {
+        editor.test_data.delete(editor.active_element.position);
+      }
+    }
+});

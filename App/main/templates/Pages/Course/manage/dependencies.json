@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/Page_edit/section", "Modules/UI/Info/notification",
+	"elements": ["Modules/Page_edit/section", "Modules/Info/notification",
                "Modules/UI/accordion", "Modules/UI/popup",
 				       "button", "Inputs/select", "Inputs/checkbox",
 				       "Inputs/text", "Inputs/select/sectioned"

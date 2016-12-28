@@ -1,5 +1,5 @@
 {
-	"elements": ["Moduels/UI/pickmeup",
+	"elements": ["Modules/UI/pickmeup",
 			       	 "Modules/UI/popup",
 		      		 "Modules/UI/accordion",
 		      		 "card/test"],

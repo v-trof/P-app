@@ -1,9 +1,0 @@
-{
-	"elements": ["Modules/test_generate", "Modules/test_manager",
-				       "Modules/pull_put", "Modules/notification",
-			       	 "card/small", "Modules/panel", "Modules/scroll"],
-	"scripts": ["Pages/Test/Attempt/_shared/responsive"],
-  "styles": [],
-	"title" : "Попытка",
-	"template": "default"
-}
