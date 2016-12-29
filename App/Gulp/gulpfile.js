@@ -79,7 +79,7 @@ gulp.task('min_module_js', function(cb) {
       return pump([
         gulp.src([
                   path.join(modules_path, folder, '/__core/**/core.js'),
-                  path.join(modules_path, folder, '/!(core)**/core.js'),
+                  path.join(modules_path, folder, '/**/!(__core)/core.js'),
                   path.join(modules_path, folder, '/**/!(core)*.js'),
                   path.join('!'+modules_path, folder, '/test_suite/**/*.js')
         ]),
