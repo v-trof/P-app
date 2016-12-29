@@ -468,20 +468,46 @@ class Universal_views():
     def share(request):
         if request.method == 'POST':
             course_id = request.POST.get("course_id", None)
-            item_id = request.POST.get("item_id", None)
-            name=request.POST.get("name", None)
-            type=request.POST.get("type", None)
-            response= Sharing.share(course_id=course_id,item_id=item_id,type=type,name=name)
-            return HttpResponse(response)
+            subject_tags = request.POST.get("subject_tags", False)
+            global_tags = request.POST.get("global_tags", False)
+            if global_tags:
+                global_tags=json.loads(global_tags)
+            if subject_tags:
+                subject_tags=json.loads(subject_tags)
+            description=request.POST.get('description',False)
+            test_id = request.POST.get("test_id", False)
+            material_id = request.POST.get("material_id", False)
+            share_query = request.POST.get("share_query", False)
+            shared_id= request.POST.get("shared_id", False)
+            templates= request.POST.get("templates", False)
+            if templates:
+                templates=json.loads(templates)
+            refresh=True
+            if share_query:
+                share_query=json.loads(share_query)
+            if test_id:
+                type="test"
+                item_id=test_id
+            elif material_id:
+                type="material"
+                item_id=material_id
+            else: refresh=False
+            message = Sharing.share(course_id=course_id, item_id=item_id, type=type, subject_tags=subject_tags, global_tags=global_tags, description=decription, share_query=share_query, refresh=refresh, shared_id=shared_id,templates=templates)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def unshare(request):
         if request.method == 'POST':
-            course_id = request.POST.get("course_id", None)
-            item_id = request.POST.get("item_id", None)
-            shared_id=request.POST.get("shared_id", None)
-            type=request.POST.get("type", None)
-            response= Sharing.unshare(course_id=course_id,item_id=item_id,type=type,shared_id=shared_id)
-            return HttpResponse(response)
+            shared_id = request.POST.get("shared_id", None)
+            message = Sharing.unshare(course_id=course_id, item_id=item_id, type=type)
+            return HttpResponse(json.dumps(message), content_type="application/json")
+
+    def take_shared(request):
+        if request.method == 'POST':
+            shared_id = request.POST.get("shared_id", None)
+            course_id=request.POST.get("course_id",None)
+            user_id=request.POST.get("user_id",None)
+            message = Sharing.take_shared(course_id=course_id, shared_id=shared_id, user_id=user_id)
+            return HttpResponse(json.dumps(message), content_type="application/json")
 
     def search(request):
         if request.method == "POST":

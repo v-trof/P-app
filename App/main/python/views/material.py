@@ -101,10 +101,6 @@ def unpublish(request):
 		response = Material.unpublish(course_id=course_id, material_id=material_id)
 		return HttpResponse(json.dumps(response), content_type="application/json")
 
-
-def share(request):
-	pass
-
 def read(request):
 	course_id = request.GET.get("course_id",None)
 	material_id = request.GET.get("material_id",None)

@@ -109,6 +109,7 @@ func_patterns = [
     url(r'^delete_last_page/$', functional.Utility_views.delete_last_page, name="delete_last_page"),
     url(r'^share/$', functional.Universal_views.share, name="share"),
     url(r'^unshare/$', functional.Universal_views.unshare, name="unshare"),
+    url(r'^take_shared/$', functional.Universal_views.take_shared, name="take_shared"),
     url(r'^search/$', functional.Universal_views.search, name="search"),
     url(r'^exit/(?P<course_id>[0-9]+)/$', functional.Course_views.exit, name="exit"),]
 

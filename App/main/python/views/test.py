@@ -109,11 +109,6 @@ def unpublish(request):
 		return HttpResponse(json.dumps(message), content_type="application/json")
 
 
-def share(request):
-	# make test avalible in package_catalog
-	pass
-
-
 def attempt(request):
 	# creates or continues attempt
 	# loads test file
