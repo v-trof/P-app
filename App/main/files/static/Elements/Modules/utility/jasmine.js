@@ -1,1 +1,1 @@
-beforeEach(function(){jasmine.addMatchers(customMatchers)}),console.log(customMatchers),beforeEach(function(){jasmine.addMatchers(customMatchers)});
+console.log(customMatchers),beforeEach(function(){jasmine.addMatchers(customMatchers)}),beforeEach(function(){jasmine.addMatchers(customMatchers)});

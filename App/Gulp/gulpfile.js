@@ -38,7 +38,7 @@ gulp.task('move_js', function() {
       .pipe(gulp.dest('../main/files/static/'));
 });
 
-gulp.task('move_module_css', function() {
+gulp.task('move_module_css', ['sass_to_css'], function() {
   var modules_path = '../main/files/static/Elements/Modules';
   var macro_folders = getFolders(modules_path);
   var folders = [];
@@ -60,7 +60,7 @@ gulp.task('move_module_css', function() {
   });
 });
 
-gulp.task('min_modules_js', function(cb) {
+gulp.task('min_module_js', function(cb) {
   var modules_path = '../main/templates/Elements/Modules';
   var macro_folders = getFolders(modules_path);
   var folders = [];
@@ -92,7 +92,7 @@ gulp.task('min_modules_js', function(cb) {
   cb();
 });
 
-gulp.task('min_elements_js', function(cb) {
+gulp.task('min_element_js', function(cb) {
   pump([
     gulp.src(['../main/templates/Elements/**/*.js', '!../main/templates/Elements/Modules/**/*.js']),
     uglify(),
@@ -101,10 +101,10 @@ gulp.task('min_elements_js', function(cb) {
 });
 
 gulp.task('watch', function() {
-  gulp.watch("../main/templates/**/*.sass", ['sass_to_css']);
-  gulp.watch("../main/templates/**/*.scss", ['sass_to_css']);
-  gulp.watch('../main/templates/Modules/**/*.js', ['min_modules_js']);
-  gulp.watch('../main/templates/**/*.js', ['min_elements_js']);
+  gulp.watch("../main/templates/**/*.sass", ['move_module_css']);
+  gulp.watch("../main/templates/**/*.scss", ['move_module_css']);
+  gulp.watch('../main/templates/Elements/Modules/**/*.js', ['min_module_js']);
+  gulp.watch('../main/templates/**/*.js', ['min_element_js']);
 });
 
 gulp.task('default', ['watch']);

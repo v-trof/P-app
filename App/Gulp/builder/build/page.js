@@ -109,8 +109,17 @@ function add_styles(exports_file, page_info) {
     modules_html += `<link rel='stylesheet' href='{% static "` + dir + `"%}'>
                     \n`;
   }
-  //elements
+
   var other_html = '';
+  //tempalte
+  for(let dir of page_info.dependencies.styles.template) {
+    dir = path.normalize(dir);
+    dir = dir.replace(path.normalize(config.path.main), '');
+    dir = dir.split(path.sep).join('/');
+    dir = dir.replace('sass', 'css');
+    other_html += `<link rel='stylesheet' href='{% static "` + dir + `"%}'> \n`;
+  }
+  //elements
   for(let dir of page_info.dependencies.styles.element) {
     dir = path.normalize(dir);
     dir = dir.replace(path.normalize(config.path.main), '');
@@ -129,14 +138,6 @@ function add_styles(exports_file, page_info) {
     other_html += `<link rel='stylesheet' href='{% static "` + dir + `"%}'> \n`;
   }
 
-  //tempalte
-  for(let dir of page_info.dependencies.styles.template) {
-    dir = path.normalize(dir);
-    dir = dir.replace(path.normalize(config.path.main), '');
-    dir = dir.split(path.sep).join('/');
-    dir = dir.replace('sass', 'css');
-    other_html += `<link rel='stylesheet' href='{% static "` + dir + `"%}'> \n`;
-  }
 
   styles_html += modules_html + other_html;
   exports_file = exports_file.replace('{ **#styles }', styles_html);
