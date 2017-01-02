@@ -3392,34 +3392,42 @@ class Sharing():
 		if os.path.exists('main/files/json/shared/'+shared_id+'.json'):
 			os.remove('main/files/json/shared/'+shared_id+'.json')
 		if type == "test":
-			return {"type":"success","message":"Тест успешно удален из библиотеки"}
+			return {"type":"success","message":"Тест успешно удален из библиотеки", "link":}
 		else:
-			return {"type":"success","message":"Материал успешно удален из библиотеки"}
+			return {"type":"success","message":"Материал успешно удален из библиотеки","link":}
 
-	def take_shared(shared_id,course_id,user_id):
+	def take_shared(shared_id,type,course_id,user_id,inheritor_id=False):
 		with io.open('main/files/json/shared/'+shared_id+'.json', 'r', encoding='utf8') as shared_file:
 			public_file = json.load(shared_file)
-		if not "title" in public_file.keys():
+		if not "title" in public_file.keys() and not inheritor_id:
 			public_file['tasks']=[]
 			public_file["questions_number"]=0
 			public_file["title"]=""
 		public_file['creator']=int(user_id)
 
-		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
-			course_info = json.load(data_file)
-			max=0
-			for section, elements in course_info['sections']['published'].items():
-				for element in elements:
-					if element["type"] == "test" and int(element["id"])>max:
-						max=int(element["id"])
-			for unpublished in course_info['sections']['unpublished']:
-				if unpublished["type"] == "test" and int(unpublished["id"])>max:
-					max=int(unpublished["id"])
-		item_id=max+1
-		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/' + item_id + '.json', 'w+', encoding='utf8') as file:
+		if not inheritor_id:
+			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
+				course_info = json.load(data_file)
+				max=0
+				for section, elements in course_info['sections']['published'].items():
+					for element in elements:
+						if element["type"] == type and int(element["id"])>max:
+							max=int(element["id"])
+				for unpublished in course_info['sections']['unpublished']:
+					if unpublished["type"] == type and int(unpublished["id"])>max:
+						max=int(unpublished["id"])
+			inheritor_id=max+1
+		else:
+			with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/' + inheritor_id + '.json', 'r', encoding='utf8') as file:
+				inheritor_data=json.load(file)
+			public_file["title"]=inheritor_data["title"]
+			public_file['tasks']=inheritor_data["tasks"]
+			public_file['questions_number']=inheritor_data["questions_number"]
+
+		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/' + inheritor_id + '.json', 'w+', encoding='utf8') as file:
 			file.write(json.dumps(public_file, ensure_ascii=False))
 		course_info['sections']['unpublished'].append(
-				{"id": item_id, "type": type})
+				{"id": inheritor_id, "type": type})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		if type == "test":

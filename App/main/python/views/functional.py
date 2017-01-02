@@ -459,7 +459,7 @@ class Utility_views():
             return HttpResponse('ok')
 
     def delete_last_page(request):
-        if request.method == 'POST':
+        if request.method == 'POST':    
             del request.session['last_page']
             return HttpResponse('ok')
 
@@ -506,7 +506,9 @@ class Universal_views():
             shared_id = request.POST.get("shared_id", None)
             course_id=request.POST.get("course_id",None)
             user_id=request.POST.get("user_id",None)
-            message = Sharing.take_shared(course_id=course_id, shared_id=shared_id, user_id=user_id)
+            type=request.POST.get("type",None)
+            item_id=request.POST.get("item_id",False)
+            message = Sharing.take_shared(course_id=course_id, shared_id=shared_id, user_id=user_id, type=type, item_id=item_id)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
     def search(request):
