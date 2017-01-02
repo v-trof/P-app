@@ -3339,8 +3339,8 @@ class Sharing():
 		shared_item["creator"]=full_public_file['creator']
 		shared_table[shared_id]=shared_item
 
-		if (refresh)
-		full_control_file=item_info
+		if (refresh):
+			full_control_file=item_info
 		public_file={}
 		public_file['templates']=[]
 		if type in shared_item["share_query"]:
@@ -3431,9 +3431,9 @@ class Sharing():
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		if type == "test":
-			return {"type":"success","message":"Тест успешно взят из библиотеки", "link":'/test/edit/?course_id=' + course_id + "&test_id=" + inheritor_id}
+			return {"type":"success","message":"Тест успешно взят из библиотеки", "link":'/test/edit/?course_id=' + course_id + "&test_id=" + str(inheritor_id)}
 		else:
-			return {"type":"success","message":"Материал успешно взят из библиотеки", "link":'/material/edit/?course_id=' + course_id + "&material_id=" + inheritor_id}
+			return {"type":"success","message":"Материал успешно взят из библиотеки", "link":'/material/edit/?course_id=' + course_id + "&material_id=" + str(inheritor_id)}
 
 	#def load_shared_by_name(search_string):
 	#	shared={}
