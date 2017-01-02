@@ -67,6 +67,6 @@ var inline_editor = {
   },
 }
 
-$.getScript('/static/scripts/medium-editor.js', function() {
+$(document).ready(function() {
   inline_editor.init();
 });

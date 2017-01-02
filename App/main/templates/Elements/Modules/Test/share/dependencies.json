@@ -1,0 +1,6 @@
+{
+  "elements": ["card", "Modules/UI/search",
+               "Modules/Utility/render", "Modules/Utility/loads",
+               "Modules/Utility/lang", "Modules/UI/medium_editor"
+               "Inputs/text/textarea", "Inputs/checkbox"]
+}

@@ -8,11 +8,11 @@ module.exports = {
     loads: {
       list: false,
       read_error: false,
-      parse_error: false
+      parse_error: true
     },
     exports: {
       read_error: false,
-      parse_error: false,
+      parse_error: true,
       start: false
     },
     build: {

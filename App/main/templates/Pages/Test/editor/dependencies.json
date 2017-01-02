@@ -1,9 +1,9 @@
 {
   "elements": ["Modules/Test/generate",
                "Modules/Test/manage/edit",
-               "Modules/Test/editor",
+               "Modules/Test/editor", "Modules/Test/share",
                "button/ghost/icon", "card"],
 
   "template": "default",
-  "title": "Редактирования теста"
+  "title": "Редактирование {{test.title}}"
 }

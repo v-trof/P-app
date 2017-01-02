@@ -15,6 +15,7 @@ function exports(item) {
 }
 
 function whitespace(item) {
+  item = item.replace(/(?:>)\s+(?:<)/g, '><');
   item = item.replace(/\s{2,}/g, ' ');
   item = item.replace(/\r?\n|\r/g, '');
   return item;
