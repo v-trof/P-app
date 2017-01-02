@@ -3392,9 +3392,9 @@ class Sharing():
 		if os.path.exists('main/files/json/shared/'+shared_id+'.json'):
 			os.remove('main/files/json/shared/'+shared_id+'.json')
 		if type == "test":
-			return {"type":"success","message":"Тест успешно удален из библиотеки", "link":}
+			return {"type":"success","message":"Тест успешно удален из библиотеки"}
 		else:
-			return {"type":"success","message":"Материал успешно удален из библиотеки","link":}
+			return {"type":"success","message":"Материал успешно удален из библиотеки"}
 
 	def take_shared(shared_id,type,course_id,user_id,inheritor_id=False):
 		with io.open('main/files/json/shared/'+shared_id+'.json', 'r', encoding='utf8') as shared_file:
@@ -3431,9 +3431,9 @@ class Sharing():
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		if type == "test":
-			return {"type":"success","message":"Тест успешно взят из библиотеки"}
+			return {"type":"success","message":"Тест успешно взят из библиотеки", "link":'/test/edit/?course_id=' + course_id + "&test_id=" + inheritor_id}
 		else:
-			return {"type":"success","message":"Материал успешно взят из библиотеки"}
+			return {"type":"success","message":"Материал успешно взят из библиотеки", "link":'/material/edit/?course_id=' + course_id + "&material_id=" + inheritor_id}
 
 	#def load_shared_by_name(search_string):
 	#	shared={}
