@@ -22,22 +22,22 @@
   }
 
   function make_specification(share_data) {
-    var used = [];
-    function make_tempalte_checker(template_list) {
-      var $list = $('<div></div>');
-      var $item;
-
-      for(var i = 0;i < template_list.length; i++) {
-        if(used.has(template_list[i].group)) continue;
-        used.push(template_list[i].group);
-
-        $item = $(loads.get('Elements/Inputs/checkbox/'));
-        $item.find('label').html(template_list[i].group);
-        $list.append($item);
-      }
-
-      return $list;
-    }
+    // var used = [];
+    // function make_tempalte_checker(template_list) {
+    //   var $list = $('<div></div>');
+    //   var $item;
+    //
+    //   for(var i = 0;i < template_list.length; i++) {
+    //     if(used.has(template_list[i].group)) continue;
+    //     used.push(template_list[i].group);
+    //
+    //     $item = $(loads.get('Elements/Inputs/checkbox/'));
+    //     $item.find('label').html(template_list[i].group);
+    //     $list.append($item);
+    //   }
+    //
+    //   return $list;
+    // }
 
     var $specification = $('<div></div>');
 
@@ -51,8 +51,12 @@
     }
     $specification.append($core);
 
-    $specification.append(make_tempalte_checker(editor.test_data.templates));
-    $specification.append(make_tempalte_checker(share_data.assets.template));
+    if(editor.test_data.templates || share_data.assets.template) {
+      var $templates = $(loads.get('Elements/Inputs/checkbox/'));
+      $templates.addClass('share_templates');
+      $templates.find('label').text('Шаблоны');
+      $specification.append($templates);
+    }
 
     return $specification;
   }

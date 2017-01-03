@@ -18,6 +18,11 @@ share.edit.parse = function($edit) {
       share_data.assets.test = django.test.id;
   }
 
+  if($edit.find('.share_templates input')[0] &&
+     $edit.find('.share_templates input')[0].checked) {
+      share_data.assets.templates = true;
+  }
+
   if($edit.find('.share_material input')[0] &&
      $edit.find('.share_material input')[0].checked) {
       share_data.assets.material = django.material.id;
