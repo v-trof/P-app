@@ -34,4 +34,8 @@ $(document).ready(function() {
   $("#test_share").click(function(event) {
     share.edit.show();
   });
+
+  $("#test_import").click(function(event) {
+    share.search.show();
+  });
 });
