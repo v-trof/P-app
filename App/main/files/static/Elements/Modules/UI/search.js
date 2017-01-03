@@ -22,11 +22,11 @@ var Search = function(requester,
 
   this.types = types;
   this.types_active = types_active;
-
+  var self = this;
   this.request = function() {
     requester(this)
       .success(function(data) {
-        this.fill(data);
+        self.fill(data);
       })
       .fail(function() {
         notification.show('error', 'Не удалось подключиться к поиску')
