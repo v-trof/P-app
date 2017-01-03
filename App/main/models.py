@@ -3633,13 +3633,14 @@ class Search():
 				if parameters["own"] and shared_info["creator"]==parameters["user_id"] or not parameters["own"] and not shared_info["creator"]==parameters["user_id"]:
 					if parameters['open'] and shared_info["open"] or not parameters['open'] and not shared_info["open"]:
 						if not shared_info["course_id"] in user.participation_list.split(' '):
-							general_tags_conformity=Utility.compare_tags(tags1=parameters["general_tags"],tags2=shared_info["general_tags"])
+							print(parameters)
+							global_tags_conformity=Utility.compare_tags(tags1=parameters["global_tags"],tags2=shared_info["global_tags"])
 							subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
 							shared_info["shared_id"]=shared_id
 							name_conformity=Utility.compare(str1=search_query,str2=shared_info["title"])
-							if general_tags_conformity > 0 and subject_tags_conformity > 0 and name_conformity>0:
+							if global_tags_conformity >= 0 and subject_tags_conformity >= 0 and name_conformity>0:
 								cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity})
-		if len(elements) > 0:
+		if len(cards) > 0:
 			cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
 		return cards
 
@@ -3650,7 +3651,6 @@ class Search():
 			for type in types:
 				search_types[type]={}
 		cards=[]
-		print(search_types)
 		for type in search_types:
 			if type=="users":
 				if "course_id" in search_types[type].keys():
@@ -3670,12 +3670,12 @@ class Search():
 				else:
 					cards.extend(Search.types[type](search_query=search_query))
 			elif type=="shared":
-				for parameter,content in parameters.items():
+				for parameter,content in search_types["shared"].items():
 					try:
 						content=json.loads(content)
 					except:
 						pass
-				cards.extend(Search.types[type](search_query=search_query,parameters=search_types[type]))
+				cards.extend(Search.types[type](search_query=search_query,parameters=search_types["shared"]))
 
 		cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
 

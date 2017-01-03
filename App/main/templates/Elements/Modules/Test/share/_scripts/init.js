@@ -6,24 +6,23 @@ $(document).ready(function() {
 
     var own = search.$.find('.own_only input')[0].checked;
     var open = search.$.find('.open_only input')[0].checked;
-
+    var global_tags=[];
+    //add tags
+    var subject_tags=[];
     return $.ajax({
         url: '/func/search/',
         type: 'POST',
         data: {
-          'search_types': JSON.stringify(['shared']),
+          'search_types': JSON.stringify({'shared':{'subject_tags':subject_tags,'global_tags':global_tags,'own':own,'open':open,'shared_query':JSON.stringify(search_types)}}),
           'csrfmiddlewaretoken': loads.csrf_token,
-          'search_query': query,
-          'shared_query': JSON.stringify(search_types),
-          'own': own,
-          'open': open
+          'search_query': query
         },
     });
   };
 
   share.search = new Search(
     request,
-    ['test', 'material', 'template_collection'],
+    ['test', 'material', 'templates'],
     ['Тесты', 'Материалы', 'Наборы шаблонов'],
     ['template_collection']
   );
