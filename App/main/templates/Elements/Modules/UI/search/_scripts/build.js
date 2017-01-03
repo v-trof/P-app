@@ -28,7 +28,7 @@ Search._.build.num_form = function(number, forms) {
 }
 
 Search._.build.course = function(data) {
-  var $new_course = $(search.template.course);
+  var $new_course = $(Search._.template.course);
   var form = "";
   var amount = "";
 
@@ -75,7 +75,7 @@ Search._.build.course = function(data) {
 }
 
 Search._.build.test = function(data) {
-  var $new_test = $(search.template.test);
+  var $new_test = $(Search._.template.test);
   var form = "";
   var amount = "";
 
@@ -107,7 +107,7 @@ Search._.build.test = function(data) {
 }
 
 Search._.build.material = function(data) {
-  var $new_material = $(search.template.material);
+  var $new_material = $(Search._.template.material);
   var form = "";
   var amount = "";
 
@@ -121,7 +121,7 @@ Search._.build.material = function(data) {
 }
 
 Search._.build.user = function(data) {
-  var $new_user = $(search.template.user);
+  var $new_user = $(Search._.template.user);
   var form = "";
   var amount = "";
 

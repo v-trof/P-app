@@ -11,7 +11,7 @@ $(document).ready(function() {
         url: '/func/search/',
         type: 'POST',
         data: {
-          'search_types': ['shared'],
+          'search_types': JSON.stringify(['shared']),
           'csrfmiddlewaretoken': loads.csrf_token,
           'search_query': query,
           'shared_query': JSON.stringify(search_types),
