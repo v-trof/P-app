@@ -2139,6 +2139,9 @@ class Material():
 					"json": json.load(json_file),
 					"published": Material.is_published(material_id=material_id, course_id=course_id)
 				}
+		if "shared" in json_file.keys() and json_file["shared"]==True:
+			with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+				material["share_data"]=json.load(shared_file)[json_file["shared_id"]]
 		context = {}
 		context["material"] = material
 		context["material"]["id"] = material_id
@@ -2504,6 +2507,9 @@ class Test():
 					"json": json.load(json_file),
 					"published": Test.is_published(test_id=test_id, course_id=course_id)
 				}
+		if "shared" in json_file.keys() and json_file["shared"]==True:
+			with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+				test["share_data"]=json.load(shared_file)[json_file["shared_id"]]
 		return test
 
 	def publish(course_id, test_id, publish_data):
@@ -3411,52 +3417,47 @@ class Sharing():
 		shared_table[shared_id]["popularity"]+=1
 		with io.open('main/files/json/shared.json', 'w+', encoding='utf8') as shared_file:
 			shared_file.write(json.dumps(shared_table, ensure_ascii=False))
-		with io.open('main/files/json/shared/'+shared_id+'.json', 'r', encoding='utf8') as shared_file:
-			public_file = json.load(shared_file)
-		if not "title" in public_file.keys() and not inheritor_id:
-			public_file['tasks']=[]
-			public_file["questions_number"]=0
-			public_file["title"]=""
-		public_file['creator']=int(user_id)
+		if shared_table[shared_id]["open"]:
+			with io.open('main/files/json/shared/'+shared_id+'.json', 'r', encoding='utf8') as shared_file:
+				public_file = json.load(shared_file)
+			if not "title" in public_file.keys() and not inheritor_id:
+				public_file['tasks']=[]
+				public_file["questions_number"]=0
+				public_file["title"]=""
+			public_file['creator']=int(user_id)
 
-		if not inheritor_id:
-			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
-				course_info = json.load(data_file)
-				max=0
-				for section, elements in course_info['sections']['published'].items():
-					for element in elements:
-						if element["type"] == type and int(element["id"])>max:
-							max=int(element["id"])
-				for unpublished in course_info['sections']['unpublished']:
-					if unpublished["type"] == type and int(unpublished["id"])>max:
-						max=int(unpublished["id"])
-			inheritor_id=max+1
+			if not inheritor_id:
+				with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
+					course_info = json.load(data_file)
+					max=0
+					for section, elements in course_info['sections']['published'].items():
+						for element in elements:
+							if element["type"] == type and int(element["id"])>max:
+								max=int(element["id"])
+					for unpublished in course_info['sections']['unpublished']:
+						if unpublished["type"] == type and int(unpublished["id"])>max:
+							max=int(unpublished["id"])
+				inheritor_id=max+1
+			else:
+				with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/' + inheritor_id + '.json', 'r', encoding='utf8') as file:
+					inheritor_data=json.load(file)
+				public_file["title"]=inheritor_data["title"]
+				public_file['tasks']=inheritor_data["tasks"]
+				public_file['questions_number']=inheritor_data["questions_number"]
+
+			with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/' + inheritor_id + '.json', 'w+', encoding='utf8') as file:
+				file.write(json.dumps(public_file, ensure_ascii=False))
+			course_info['sections']['unpublished'].append(
+					{"id": inheritor_id, "type": type})
+			with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
+				info_file.write(json.dumps(course_info, ensure_ascii=False))
+			if type == "test":
+				return {"type":"success","message":"Тест успешно взят из библиотеки", "link":'/test/edit/?course_id=' + course_id + "&test_id=" + str(inheritor_id)}
+			else:
+				return {"type":"success","message":"Материал успешно взят из библиотеки", "link":'/material/edit/?course_id=' + course_id + "&material_id=" + str(inheritor_id)}
 		else:
-			with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/' + inheritor_id + '.json', 'r', encoding='utf8') as file:
-				inheritor_data=json.load(file)
-			public_file["title"]=inheritor_data["title"]
-			public_file['tasks']=inheritor_data["tasks"]
-			public_file['questions_number']=inheritor_data["questions_number"]
-
-		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/' + inheritor_id + '.json', 'w+', encoding='utf8') as file:
-			file.write(json.dumps(public_file, ensure_ascii=False))
-		course_info['sections']['unpublished'].append(
-				{"id": inheritor_id, "type": type})
-		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
-			info_file.write(json.dumps(course_info, ensure_ascii=False))
-		if type == "test":
-			return {"type":"success","message":"Тест успешно взят из библиотеки", "link":'/test/edit/?course_id=' + course_id + "&test_id=" + str(inheritor_id)}
-		else:
-			return {"type":"success","message":"Материал успешно взят из библиотеки", "link":'/material/edit/?course_id=' + course_id + "&material_id=" + str(inheritor_id)}
-
-	#def load_shared_by_name(search_string):
-	#	shared={}
-	#	shared[""]
-	#	with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
-	#		shared_table = json.load(shared_file)
-	#	for id, shared in shared_table.items():
-	#		if shared["name"]
-
+			pass
+			#create_request for shared
 
 class Statistics():
 
@@ -3630,13 +3631,14 @@ class Search():
 		for shared_id,shared_info in shared_table.items():
 			if shared_info["type"] in parameters["shared_query"]:
 				if parameters["own"] and shared_info["creator"]==parameters["user_id"] or not parameters["own"] and not shared_info["creator"]==parameters["user_id"]:
-					if not shared_info["course_id"] in user.participation_list.split(' '):
-						general_tags_conformity=Utility.compare_tags(tags1=parameters["general_tags"],tags2=shared_info["general_tags"])
-						subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
-						shared_info["shared_id"]=shared_id
-						name_conformity=Utility.compare(str1=search_query,str2=shared_info["title"])
-						if general_tags_conformity > 0 and subject_tags_conformity > 0 and name_conformity>0:
-							cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity})
+					if parameters['open'] and shared_info["open"] or not parameters['open'] and not shared_info["open"]:
+						if not shared_info["course_id"] in user.participation_list.split(' '):
+							general_tags_conformity=Utility.compare_tags(tags1=parameters["general_tags"],tags2=shared_info["general_tags"])
+							subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
+							shared_info["shared_id"]=shared_id
+							name_conformity=Utility.compare(str1=search_query,str2=shared_info["title"])
+							if general_tags_conformity > 0 and subject_tags_conformity > 0 and name_conformity>0:
+								cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity})
 		if len(elements) > 0:
 			cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
 		return cards
@@ -3668,6 +3670,11 @@ class Search():
 				else:
 					cards.extend(Search.types[type](search_query=search_query))
 			elif type=="shared":
+				for parameter,content in parameters.items():
+					try:
+						content=json.loads(content)
+					except:
+						pass
 				cards.extend(Search.types[type](search_query=search_query,parameters=search_types[type]))
 
 		cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
