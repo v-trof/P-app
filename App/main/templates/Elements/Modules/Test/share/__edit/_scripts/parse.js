@@ -15,7 +15,8 @@ share.edit.parse = function($edit) {
 
   if($edit.find('.share_test input')[0] &&
      $edit.find('.share_test input')[0].checked) {
-      share_data.assets.test = django.test.id;
+      share_data.assets.test_id = django.test.id;
+      share_data.assets.test = true;
   }
 
   if($edit.find('.share_templates input')[0] &&
@@ -25,7 +26,8 @@ share.edit.parse = function($edit) {
 
   if($edit.find('.share_material input')[0] &&
      $edit.find('.share_material input')[0].checked) {
-      share_data.assets.material = django.material.id;
+      share_data.assets.material_id = django.material.id;
+      share_data.assets.material = true;
   }
 
   //here should be template parsing
