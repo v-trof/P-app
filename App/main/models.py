@@ -2139,9 +2139,9 @@ class Material():
 					"json": json.load(json_file),
 					"published": Material.is_published(material_id=material_id, course_id=course_id)
 				}
-		if "shared" in json_file.keys() and json_file["shared"]==True:
+		if "shared" in material["json"].keys() and material["json"]["shared"]==True:
 			with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
-				material["share_data"]=json.load(shared_file)[json_file["shared_id"]]
+				material["share_data"]=json.load(shared_file)[material["json"]["shared_id"]]
 		context = {}
 		context["material"] = material
 		context["material"]["id"] = material_id
@@ -2507,9 +2507,9 @@ class Test():
 					"json": json.load(json_file),
 					"published": Test.is_published(test_id=test_id, course_id=course_id)
 				}
-		if "shared" in json_file.keys() and json_file["shared"]==True:
+		if "shared" in test["json"].keys() and test["json"]["shared"]==True:
 			with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
-				test["share_data"]=json.load(shared_file)[json_file["shared_id"]]
+				test["share_data"]=json.load(shared_file)[test["json"]["shared_id"]]
 		return test
 
 	def publish(course_id, test_id, publish_data):
