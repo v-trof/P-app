@@ -3307,7 +3307,7 @@ class Marks():
 
 class Sharing():
 
-	def share(course_id, item_id, type, subject=False, description=False, global_tags=False, subject_tags=False, share_query=False, refresh=True, shared_id=False, templates=False):
+	def share(course_id, item_id, type, open=True, subject=False, description=False, global_tags=False, subject_tags=False, share_query=False, refresh=False, shared_id=False, templates=False):
 		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
 		course=Course.objects.get(id=course_id)
@@ -3316,13 +3316,14 @@ class Sharing():
 		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/'+item_id+'.json', 'r', encoding='utf8') as info_file:
 			full_public_file = json.load(info_file)
 		if not shared_id:
-			if len(shared_table[course.subject].keys()):
-				maximum = max(k for k, v in shared_table[course.subject].items())
+			if len(shared_table.keys()):
+				maximum = max(k for k, v in shared_table.items())
 			else:
 				maximum = 0
 			shared_id=maximum+1
 		shared_item={}
 		shared_item["course_id"]=course_id
+		shared_item["open"]=open
 		shared_item["id"]=item_id
 		shared_item["type"]=type
 		shared_item["popularity"]=0
@@ -3340,7 +3341,7 @@ class Sharing():
 		shared_table[shared_id]=shared_item
 
 		if (refresh):
-			with io.open('main/files/shared/'+shared_id+'.json', 'r', encoding='utf8') as info_file:
+			with io.open('main/files/shared/'+str(shared_id)+'.json', 'r', encoding='utf8') as info_file:
 				old_shared = json.load(info_file)
 			full_control_file=item_info
 		public_file={}
@@ -3362,7 +3363,7 @@ class Sharing():
 			public_file['templates']=old_shared['templates']
 		else: public_file['tasks']=full_control_file['tasks']
 
-		with io.open('main/files/json/shared/'+shared_id+'.json', 'w+', encoding='utf8') as shared_file:
+		with io.open('main/files/json/shared/'+str(shared_id)+'.json', 'w+', encoding='utf8') as shared_file:
 			saving_data = json.dumps(public_file, ensure_ascii=False)
 			shared_file.write(saving_data)
 
@@ -3370,8 +3371,8 @@ class Sharing():
 			saving_data = json.dumps(item_info, ensure_ascii=False)
 			info_file.write(saving_data)
 		with io.open('main/files/json/shared.json', 'w', encoding='utf8') as shared_file:
-			saving_data = json.dumps(item_info, ensure_ascii=False)
-			shared_file_file.write(saving_data)
+			saving_data = json.dumps(shared_table, ensure_ascii=False)
+			shared_file.write(saving_data)
 		if type == "test":
 			return {"type":"success","message":"Тест успешно помещен в библиотеку"}
 		else:
@@ -3405,6 +3406,11 @@ class Sharing():
 			return {"type":"success","message":"Материал успешно удален из библиотеки"}
 
 	def take_shared(shared_id,type,course_id,user_id,inheritor_id=False):
+		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+			shared_table = json.load(shared_file)
+		shared_table[shared_id]["popularity"]+=1
+		with io.open('main/files/json/shared.json', 'w+', encoding='utf8') as shared_file:
+			shared_file.write(json.dumps(shared_table, ensure_ascii=False))
 		with io.open('main/files/json/shared/'+shared_id+'.json', 'r', encoding='utf8') as shared_file:
 			public_file = json.load(shared_file)
 		if not "title" in public_file.keys() and not inheritor_id:
@@ -3517,6 +3523,7 @@ class Search():
 			content["avatar"]=user["object"].avatar.url
 			content["is_teacher"]=user["object"].is_teacher
 			cards.append({"type":"user","content":content,"conformity":user["conformity"]})
+		print(cards)
 		return cards
 
 	def in_courses(search_query,user=None):
@@ -3641,6 +3648,7 @@ class Search():
 			for type in types:
 				search_types[type]={}
 		cards=[]
+		print(search_types)
 		for type in search_types:
 			if type=="users":
 				if "course_id" in search_types[type].keys():

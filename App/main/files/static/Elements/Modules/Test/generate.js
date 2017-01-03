@@ -237,6 +237,23 @@ generate.make_template = {
   }
 }
 
+generate.register.task('default', {
+  builder: function() {
+    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
+
+    console.log($task, $task[1]);
+    if(defined(generate.data.task.template)) {
+      $task.find('.__make-template').click(function() {
+        generate.data.task.template.to_tempalte($task);
+      });
+    } else {
+      $task.find('.__make_template').remove();
+    }
+
+    return $task;
+  }
+});
+
 $(document).ready(function() {
   generate.data.task.template.add_to_test = function(template, $edit) {
     template = JSON.parse(JSON.stringify(template));
@@ -766,23 +783,6 @@ $(document).ready(function() {
   }
 });
 
-generate.register.task('default', {
-  builder: function() {
-    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
-
-    console.log($task, $task[1]);
-    if(defined(generate.data.task.template)) {
-      $task.find('.__make-template').click(function() {
-        generate.data.task.template.to_tempalte($task);
-      });
-    } else {
-      $task.find('.__make_template').remove();
-    }
-
-    return $task;
-  }
-});
-
 generate.register.edit('answer', 'checkbox', {
   random_possible: true,
   builder: function(value) {
@@ -831,6 +831,71 @@ generate.register.edit('answer', 'checkbox', {
     }
 
     $edit.find(".m--checkbox").each(function(index, el) {
+      var label = $(el).siblings().find(".__value").val();
+
+      value.items.push(label);
+
+      if($(el).find("input").is(":checked")) {
+        value.answer.push(index);
+      }
+    });
+
+    return value;
+  }
+});
+
+generate.register.edit('answer', 'radio', {
+  random_possible: true,
+  builder: function(value) {
+    var $new_edit = this.make_template();
+    var group = generate.counter.radio++;
+
+    var create_field = function(label) {
+      var $radio = $(loads.get('Elements/Inputs/radio/'));
+      var $input = render.inputs.text('', '', label);
+
+      var $field = $("<div class='__edit_item'></div>");
+
+      $radio.find('input').attr('name', "new_radio_" + group);
+
+      $field.append($radio).append($input);
+      button_delete.add($field);
+
+      return $field;
+    }
+
+    if(value.items && value.items.length) {
+      value.items.forEach(function(label, index) {
+        var $field = create_field(label);
+
+        $new_edit.append($field);
+        if(value.answer.has(index)) {
+          $field.find('[type="radio"]')[0].checked = true;
+        }
+      });
+    } else {
+      $new_edit.append(create_field());
+    }
+
+
+    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
+
+    $new_edit.append($add_option);
+
+    $add_option.click(function() {
+      $add_option.before(create_field());
+    });
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      items: [],
+      answer: []
+    }
+
+    $edit.find(".m--radio").each(function(index, el) {
       var label = $(el).siblings().find(".__value").val();
 
       value.items.push(label);
@@ -978,68 +1043,118 @@ generate.register.edit('answer', 'text', {
   }
 });
 
-generate.register.edit('answer', 'radio', {
-  random_possible: true,
+generate.register.edit('question', 'file', {
   builder: function(value) {
     var $new_edit = this.make_template();
-    var group = generate.counter.radio++;
 
-    var create_field = function(label) {
-      var $radio = $(loads.get('Elements/Inputs/radio/'));
-      var $input = render.inputs.text('', '', label);
+    var $filename = render.inputs.text('Название файла (как его увидят ученики)',
+                                      'file_name', value.name);
+    var $file_input = $(loads.get("Elements/Inputs/file/"));
 
-      var $field = $("<div class='__edit_item'></div>");
+    $new_edit.append($filename);
 
-      $radio.find('input').attr('name', "new_radio_" + group);
+    $new_edit.append($file_input);
+    var file_data = file_catcher.add($file_input);
 
-      $field.append($radio).append($input);
-      button_delete.add($field);
-
-      return $field;
-    }
-
-    if(value.items && value.items.length) {
-      value.items.forEach(function(label, index) {
-        var $field = create_field(label);
-
-        $new_edit.append($field);
-        if(value.answer.has(index)) {
-          $field.find('[type="radio"]')[0].checked = true;
-        }
+    if(defined(value.asset_id) || defined(value.url)) {
+      $file_input.find('.__text').text(value.file_name);
+      file_data.value.change(function() {
+        editor.assets.replace(value.asset_id, file_data);
       });
-    } else {
-      $new_edit.append(create_field());
     }
 
-
-    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
-
-    $new_edit.append($add_option);
-
-    $add_option.click(function() {
-      $add_option.before(create_field());
-    });
+    if( ! defined(value.asset_id)) {
+      value.asset_id = editor.assets.add(file_data);
+    }
 
     return $new_edit;
   },
 
   parser: function($edit) {
-    var value = {
-      items: [],
-      answer: []
+    var value = {};
+    value.asset_id = editor.active_element.value.asset_id;
+    value.name = $edit.find('[name="file_name"]').val();
+
+    if(defined(editor.assets.get(value.asset_id))) {
+      value.file_name = editor.assets.get(value.asset_id).name;
+      value.size = Math.floor(editor.assets.get(value.asset_id)
+                    .files[0].size/1024/1024*100)/100 + "МБ";
+    } else {
+      value.file_name = editor.active_element.value.file_name;
+      value.size = editor.active_element.value.size;
     }
 
-    $edit.find(".m--radio").each(function(index, el) {
-      var label = $(el).siblings().find(".__value").val();
-
-      value.items.push(label);
-
-      if($(el).find("input").is(":checked")) {
-        value.answer.push(index);
-      }
-    });
+    if(value.name === '') {
+      value.name = value.file_name;
+    }
 
     return value;
+  }
+});
+
+generate.register.edit('question', 'image', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    var $file_input = $(loads.get("Elements/Inputs/file/"));
+
+    $new_edit.append($file_input);
+    var file_data = file_catcher.add($file_input);
+
+    if(defined(value.asset_id) || defined(value.url)) {
+      $file_input.find('.__text').text(value.file_name);
+      file_data.value.change(function() {
+        editor.assets.replace(value.asset_id, file_data);
+      });
+    }
+
+    if( ! defined(value.asset_id)) {
+      value.asset_id = editor.assets.add(file_data);
+    }
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {};
+    value.asset_id = editor.active_element.value.asset_id;
+
+    var event = editor.assets.get(value.asset_id);
+
+    if(defined(event)) {
+      value.file_name = editor.assets.get(value.asset_id).name;
+      value.href = URL.createObjectURL(event.files[0]);
+      value.url = undefined;
+    } else {
+      value.href = value.url || editor.active_element.value.href;
+      value.file_name = editor.active_element.value.file_name;
+    }
+
+    return value;
+  }
+});
+
+generate.register.edit('question', 'text', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+    $new_edit.prepend(loads.get("Elements/Inputs/text/textarea/"));
+
+    $new_edit.find('label').text('Текст');
+    $new_edit.find('.__value').html(value.text);
+
+    if(value.text) {
+      $new_edit.find('label').addClass('m--top');
+    }
+
+    inline_editor.start($new_edit.find('.__value')[0]);
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    return {
+      text: $edit.find('.__value').html()
+    }
   }
 });
 
@@ -1183,28 +1298,6 @@ generate.register.element('answer', 'classify', {
   }
 });
 
-generate.register.element('answer', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.append(render.inputs.text(
-      value.label,
-      '',
-      value.answer
-    ));
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      label: 'Текстовый ответ',
-      worth: 1
-    }
-  }
-})
-
 generate.register.element('answer', 'radio', {
   show_in_items: true,
 
@@ -1237,120 +1330,27 @@ generate.register.element('answer', 'radio', {
   }
 });
 
-generate.register.edit('question', 'file', {
+generate.register.element('answer', 'text', {
+  show_in_items: true,
+
   builder: function(value) {
-    var $new_edit = this.make_template();
+    var $new_element = this.make_template(value);
+    $new_element.append(render.inputs.text(
+      value.label,
+      '',
+      value.answer
+    ));
 
-    var $filename = render.inputs.text('Название файла (как его увидят ученики)',
-                                      'file_name', value.name);
-    var $file_input = $(loads.get("Elements/Inputs/file/"));
-
-    $new_edit.append($filename);
-
-    $new_edit.append($file_input);
-    var file_data = file_catcher.add($file_input);
-
-    if(defined(value.asset_id) || defined(value.url)) {
-      $file_input.find('.__text').text(value.file_name);
-      file_data.value.change(function() {
-        editor.assets.replace(value.asset_id, file_data);
-      });
-    }
-
-    if( ! defined(value.asset_id)) {
-      value.asset_id = editor.assets.add(file_data);
-    }
-
-    return $new_edit;
+    return $new_element;
   },
 
-  parser: function($edit) {
-    var value = {};
-    value.asset_id = editor.active_element.value.asset_id;
-    value.name = $edit.find('[name="file_name"]').val();
-
-    if(defined(editor.assets.get(value.asset_id))) {
-      value.file_name = editor.assets.get(value.asset_id).name;
-      value.size = Math.floor(editor.assets.get(value.asset_id)
-                    .files[0].size/1024/1024*100)/100 + "МБ";
-    } else {
-      value.file_name = editor.active_element.value.file_name;
-      value.size = editor.active_element.value.size;
-    }
-
-    if(value.name === '') {
-      value.name = value.file_name;
-    }
-
-    return value;
-  }
-});
-
-generate.register.edit('question', 'image', {
-  builder: function(value) {
-    var $new_edit = this.make_template();
-
-    var $file_input = $(loads.get("Elements/Inputs/file/"));
-
-    $new_edit.append($file_input);
-    var file_data = file_catcher.add($file_input);
-
-    if(defined(value.asset_id) || defined(value.url)) {
-      $file_input.find('.__text').text(value.file_name);
-      file_data.value.change(function() {
-        editor.assets.replace(value.asset_id, file_data);
-      });
-    }
-
-    if( ! defined(value.asset_id)) {
-      value.asset_id = editor.assets.add(file_data);
-    }
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    var value = {};
-    value.asset_id = editor.active_element.value.asset_id;
-
-    var event = editor.assets.get(value.asset_id);
-
-    if(defined(event)) {
-      value.file_name = editor.assets.get(value.asset_id).name;
-      value.href = URL.createObjectURL(event.files[0]);
-      value.url = undefined;
-    } else {
-      value.href = value.url || editor.active_element.value.href;
-      value.file_name = editor.active_element.value.file_name;
-    }
-
-    return value;
-  }
-});
-
-generate.register.edit('question', 'text', {
-  builder: function(value) {
-    var $new_edit = this.make_template();
-    $new_edit.prepend(loads.get("Elements/Inputs/text/textarea/"));
-
-    $new_edit.find('label').text('Текст');
-    $new_edit.find('.__value').html(value.text);
-
-    if(value.text) {
-      $new_edit.find('label').addClass('m--top');
-    }
-
-    inline_editor.start($new_edit.find('.__value')[0]);
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    return {
-      text: $edit.find('.__value').html()
+  sample: {
+    value: {
+      label: 'Текстовый ответ',
+      worth: 1
     }
   }
-});
+})
 
 generate.register.element('question', 'file', {
   show_in_items: true,
@@ -1377,22 +1377,6 @@ generate.register.element('question', 'file', {
   }
 });
 
-generate.register.element('question', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.html('<div class="__value">' + value.text + '</div>');
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      text: 'Текстовый вопрос'
-    }
-  }
-});
-
 generate.register.element('question', 'image', {
   show_in_items: true,
 
@@ -1415,6 +1399,22 @@ generate.register.element('question', 'image', {
   sample: {
     value: {
       url: "/media/samples/image.jpg"
+    }
+  }
+});
+
+generate.register.element('question', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.html('<div class="__value">' + value.text + '</div>');
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      text: 'Текстовый вопрос'
     }
   }
 });
@@ -1577,55 +1577,6 @@ generate.register.external('answer', 'classify', {
 
 //TODO fix attempt icon swap
 
-generate.register.external('answer', 'text', {
-  get_value: function($element) {
-    return $element.find('input').val();
-  },
-
-  get_summary: function(value) {
-    if( ! value) value = "";
-
-    if(value.length > 20) {
-      value = value.substring(0, 17).escape();
-      value += "&hellip;"
-    } else {
-      value = value.escape();
-    }
-
-    return value;
-  },
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    var timer;
-    var typing_interval = 1000;
-
-    $element.keydown(function() {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        var value = $element.find('.__value').val();
-        _change();
-      }, typing_interval);
-    });
-  }
-});
-
 generate.register.external('answer', 'radio', {
   get_value: function($element) {
     var answers = [];
@@ -1689,5 +1640,54 @@ generate.register.external('answer', 'radio', {
 
   observer: function($element, _change) {
     $element.find('input').change(_change);
+  }
+});
+
+generate.register.external('answer', 'text', {
+  get_value: function($element) {
+    return $element.find('input').val();
+  },
+
+  get_summary: function(value) {
+    if( ! value) value = "";
+
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
+    } else {
+      value = value.escape();
+    }
+
+    return value;
+  },
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    var timer;
+    var typing_interval = 1000;
+
+    $element.keydown(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        var value = $element.find('.__value').val();
+        _change();
+      }, typing_interval);
+    });
   }
 });
