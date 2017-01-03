@@ -149,7 +149,9 @@ function bake_loads(page_info) {
 
   //variables
   for(let variable of page_info.loads.variable) {
-    loads_html += '"' + variable + '": "' + variable + '",';
+    let name = variable.replace(/(?:{{)\s*/g, '').replace(/\s*(?:}})/g, '');
+    console.log(variable, name);
+    loads_html += '"' + name + '": "' + variable + '",';
   }
   //elements
   for(let dir of page_info.loads.element) {
