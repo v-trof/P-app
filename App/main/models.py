@@ -3340,6 +3340,8 @@ class Sharing():
 		shared_table[shared_id]=shared_item
 
 		if (refresh):
+			with io.open('main/files/shared/'+shared_id+'.json', 'r', encoding='utf8') as info_file:
+				old_shared = json.load(info_file)
 			full_control_file=item_info
 		public_file={}
 		public_file['templates']=[]
@@ -3347,11 +3349,17 @@ class Sharing():
 			public_file['tasks']=full_public_file['tasks']
 			public_file["questions_number"]=full_public_file["questions_number"]
 			public_file["title"]=full_public_file["title"]
+		elif refresh:
+			public_file['tasks']=old_shared['tasks']
+			public_file["questions_number"]=old_shared["questions_number"]
+			public_file["title"]=old_shared["title"]
 		if "templates" in shared_item["share_query"]:
 			if not templates:
 				public_file['templates']=full_public_file['templates']
 			else:
 				public_file['templates']=templates
+		elif refresh:
+			public_file['templates']=old_shared['templates']
 		else: public_file['tasks']=full_control_file['tasks']
 
 		with io.open('main/files/json/shared/'+shared_id+'.json', 'w+', encoding='utf8') as shared_file:

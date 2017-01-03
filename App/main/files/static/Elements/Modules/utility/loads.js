@@ -1,1 +1,6 @@
-loads.get=function(t){return"/"==t[t.length-1]&&(t+="exports.html"),this[t]};
+loads.get = function(path) {
+  if(path[path.length - 1] == '/') {
+    path += 'exports.html';
+  }
+  return this[path];
+}

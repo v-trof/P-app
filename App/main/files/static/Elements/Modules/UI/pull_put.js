@@ -1,1 +1,356 @@
-var pull_put={is_pulled:!1,reset_sync:!1,reset_default:function(){},reset:function(){pull_put.pre_actions.reset(),pull_put.ui.element=void 0,pull_put.ui.hide(),$placeholder.remove(),indicator.hide(),pull_put.ui.$.find(".__content").removeAttr("state"),"undefiend"!=typeof tooltip&&tooltip.hide(),pull_put.cancel_action()},pre_actions:{cancel:function(){},save:function(){},delete:function(){},add:function(){},reset:function(){},pull:function(t){},put:function(t,i){}},actions:{add:function(){}},cancel_action:function(){}},indicator=function(){var t=loads["Elements/Modules//pull_put/__indicator/exports.html"],i={add:loads["Elements/Icons/add.svg"],down:loads["Elements/Icons/angle_down.svg"]},e=function(e){var n=$(t);return n.find("button").html(i[e]),n.addClass("m--"+e),n},n=function(t,i,n){if(!(t.children(".indicator.g"+n).length>0)){var u=e(i);u.addClass("g"+n),t.prepend(u),u.hide()}},u=function(t){"undefined"==typeof t?$(".indicator").hide():$(".indicator.g"+t).hide()},l=function(t){"undefined"==typeof t?$(".indicator").show():$(".indicator.g"+t).show(),$(".pull_put_ui .indicator").hide()},o={add:n,hide:u,show:l};return o}();$(document).ready(function(){$("body").append(pull_put.ui.$),$(".pull_put_ui .__actions .m--cancel").click(function(t){pull_put.pre_actions.cancel(),pull_put.ui.element=pull_put.ui.proto_element,pull_put.ui.element.removeClass("m--pullable"),pull_put.ui.element.removeClass("m--put-zone"),pull_put.puller.cancel()}),$(".pull_put_ui .__actions .m--save").click(function(t){pull_put.pre_actions.save(),pull_put.puller.cancel()}),$(".pull_put_ui .__actions .m--delete").click(function(t){pull_put.pre_actions.delete(),pull_put.ui.element=$(""),pull_put.reset()}),$(".pull_put_ui .__actions .m--add").click(function(t){pull_put.pre_actions.add(),pull_put.actions.add(),pull_put.reset()})}),pull_put.puller=function(){function t(t){pull_put.ui.element&&pull_put.puller.cancel(),$placeholder.html(""),$placeholder.css({width:t.outerWidth(),height:t.outerHeight(),marginBottom:t.css("margin-bottom"),marginTop:t.css("margin-top"),marginLeft:t.css("margin-left"),marginRight:t.css("margin-right")}),t.after($placeholder)}return $placeholder=$("<div class='m--pull_put_empty'></div>"),exports={had_clone:!1,cancel:function(){$placeholder.replaceWith(pull_put.ui.element),pull_put.reset()},add:function(i,e,n,u,l,o){i=$(i).first(),i.addClass("m--pullable"),i.click(function(i){if(d=$(this),!pull_put.is_pulled){pull_put.pre_actions.pull(d);var p=this.getBoundingClientRect().width;if(l){var d=$(this).clone();pull_put.puller.had_clone=!0}else{var d=$(this);t(d)}pull_put.ui.get(d,p,e,u,o),n&&pull_put.ui.add_action(n.icon,n.tip,n._action)}})}},exports}(),pull_put.put_zone=function(){var t={add:function(t,i,e){t=$(t).first(),t.addClass("m--put-zone"),t.click(function(t){if(pull_put.is_pulled&&!pull_put.ui.$.find($(this))[0]){var n=$(this);pull_put.pre_actions.put(n,pull_put.ui.element),i(t,n,pull_put.ui.element),e&&e(n)}})}};return t}(),pull_put.ui=function(){function t(t,i,e){var n=$('<div class="card m--circle" tip="'+i+'"><button class="m--ghost m--icon">'+t+"</button></div>");return n.click(function(t){e(t)}),n}return $ui=$(loads.get("Elements/Modules/UI/pull_put/")),$ui.__actions__additional=$ui.find(".__actions>.__additional"),$ui.__content=$ui.find(".__content"),exports={added_card:!1,$:$ui,element:void 0,proto_element:void 0,additional_margin:0,add_action:function(i,e,n){if("object"==typeof i){var u=i;i=u.icon,e=u.tip,n=u._action}$new_button=t(i,e,n),$ui.__actions__additional.html($new_button)},get:function(t,i,e,n,u){"undefined"==typeof e&&(e=[]),$ui.removeAttr("style"),u?$ui.__content.addClass("card"):$ui.__content.removeClass("card"),$ui.__content.html(t),$ui.__actions__additional.html(""),$ui.css("margin-left",-i/2+pull_put.ui.additional_margin),$ui.__content.css("width",i-pull_put.ui.additional_margin),pull_put.ui.element=t,e.indexOf("delete")>-1?$ui.find(".__actions button.m--delete").parent().show():$ui.find(".__actions button.m--delete").parent().hide(),e.indexOf("add")>-1?$ui.find(".__actions button.m--add").parent().show():$ui.find(".__actions button.m--add").parent().hide(),e.indexOf("save")>-1?(pull_put.ui.proto_element=t.clone(),$ui.find(".__actions button.m--save").parent().show()):(pull_put.ui.proto_element=t,$ui.find(".__actions button.m--save").parent().hide()),n&&n(),pull_put.ui.show(i)},show:function(t){"undefined"!=typeof editor&&($(".__task").slice(-2).addClass("m--stand-out"),$(".__put-margin").last().addClass("m--stand-out")),$ui.removeClass("m--hidden"),setTimeout(function(){pull_put.is_pulled=!0;var i=window.innerWidth,e=$ui.width()-t/2+pull_put.ui.additional_margin-i/2;e>0&&$ui.css("right","16px")},300)},hide:function(){"undefined"!=typeof editor&&$(".m--stand-out").removeClass("m--stand-out"),$ui.addClass("m--hidden"),setTimeout(function(){pull_put.is_pulled=!1,setTimeout(tooltip.hide,100)},300)}},exports}();
+var pull_put = {
+  is_pulled: false,
+  reset_sync: false,
+  reset_default: function() {},
+  reset: function() {
+    pull_put.pre_actions.reset();
+    //real reset
+    pull_put.ui.element = undefined;
+    pull_put.ui.hide();
+    $placeholder.remove();
+    indicator.hide();
+    pull_put.ui.$.find(".__content").removeAttr('state');
+    if (typeof tooltip !== 'undefiend') {
+      tooltip.hide();
+    }
+    pull_put.cancel_action();
+  },
+  /**
+   * Contains all functinos invoked before actual action
+   * @type {Object}
+   */
+  pre_actions: {
+    cancel: function() {},
+    save: function() {},
+    delete: function() {},
+    add: function() {},
+    reset: function() {},
+    pull: function($pulled) {},
+    put: function($put_zone, $pulled) {}
+  },
+
+  actions: {
+    add: function() {}
+  },
+  cancel_action: function() {}
+}
+
+var indicator = (function() {
+
+  var template = loads["Elements/Modules//pull_put/__indicator/exports.html"];
+
+  var icons = {
+    add: loads["Elements/Icons/add.svg"],
+    down: loads["Elements/Icons/angle_down.svg"]
+  }
+
+  var build = function(icon) {
+    var $new_indicator = $(template);
+
+    $new_indicator.find('button').html(icons[icon]);
+
+    $new_indicator.addClass('m--' + icon);
+    return $new_indicator;
+  };
+
+  var add = function($parent, icon, group) {
+    if ($parent.children('.indicator.g' + group).length > 0) {
+      return;
+    }
+
+    var $new_indicator = build(icon);
+    $new_indicator.addClass('g' + group)
+      // console.log($parent, $new_indicator);
+    $parent.prepend($new_indicator);
+    $new_indicator.hide();
+  }
+
+  var hide = function(group) {
+    if (typeof group === "undefined") {
+      $('.indicator').hide();
+    } else {
+      $('.indicator.g' + group).hide();
+    }
+  }
+
+  var show = function(group) {
+    if (typeof group === "undefined") {
+      $('.indicator').show();
+    } else {
+      $('.indicator.g' + group).show();
+    }
+
+    $('.pull_put_ui .indicator').hide();
+  }
+
+
+  var exports = {
+    add: add,
+    hide: hide,
+    show: show
+  }
+
+  return exports;
+})();
+
+$(document).ready(function() {
+  $("body").append(pull_put.ui.$)
+
+  $(".pull_put_ui .__actions .m--cancel").click(function(event) {
+    pull_put.pre_actions.cancel();
+
+    //restoring defaut element
+    pull_put.ui.element = pull_put.ui.proto_element;
+
+    pull_put.ui.element.removeClass('m--pullable');
+    pull_put.ui.element.removeClass('m--put-zone');
+
+    pull_put.puller.cancel();
+  });
+
+  $(".pull_put_ui .__actions .m--save").click(function(event) {
+    pull_put.pre_actions.save();
+
+    pull_put.puller.cancel();
+  });
+
+  $(".pull_put_ui .__actions .m--delete").click(function(event) {
+    pull_put.pre_actions.delete();
+
+    pull_put.ui.element = $("");
+    pull_put.reset();
+  });
+
+  $(".pull_put_ui .__actions .m--add").click(function(event) {
+    pull_put.pre_actions.add();
+
+    pull_put.actions.add();
+    pull_put.reset();
+  });
+});
+
+pull_put.puller = (function() {
+
+  $placeholder = $("<div class='m--pull_put_empty'></div>")
+
+  function replace($element) {
+    if (pull_put.ui.element) {
+      pull_put.puller.cancel();
+    }
+
+    $placeholder.html('');
+
+    $placeholder.css({
+      width: $element.outerWidth(),
+      height: $element.outerHeight(),
+      marginBottom: $element.css("margin-bottom"),
+      marginTop: $element.css("margin-top"),
+      marginLeft: $element.css("margin-left"),
+      marginRight: $element.css("margin-right")
+    });
+
+    $element.after($placeholder);
+  }
+
+
+  exports = {
+    had_clone: false,
+    cancel: function() {
+      $placeholder.replaceWith(pull_put.ui.element);
+      pull_put.reset();
+    },
+
+    add: function($element, actions, action_additional, _callback, clone, card) {
+
+      $element = $($element).first(); //fault-tolerance
+
+      $element.addClass('m--pullable');
+
+      $element.click(function(event) {
+        $element = $(this);
+        // console.log($element);
+        if (!pull_put.is_pulled) {
+          pull_put.pre_actions.pull($element);
+          var element_width = this.getBoundingClientRect().width;
+
+          if (clone) {
+            var $element = $(this).clone();
+            pull_put.puller.had_clone = true;
+          } else {
+            var $element = $(this);
+            replace($element);
+          }
+
+          pull_put.ui.get($element, element_width, actions, _callback, card);
+
+          if (action_additional) {
+            pull_put.ui.add_action(
+              action_additional.icon,
+              action_additional.tip,
+              action_additional._action
+            );
+          }
+        }
+      });
+    }
+  }
+  return exports;
+
+})();
+
+pull_put.put_zone = (function() {
+
+  var exports = {
+    add: function($element, _action, _callback) {
+      $element = $($element).first(); //fault-tolerance
+      $element.addClass('m--put-zone');
+
+      $element.click(function(event) {
+
+        if (pull_put.is_pulled && !pull_put.ui.$.find(($(this)))[0]) {
+          var $put_zone = $(this);
+
+          pull_put.pre_actions.put($put_zone, pull_put.ui.element);
+          // console.log($put_zone);
+          _action(event, $put_zone, pull_put.ui.element);
+
+          // pull_put.reset();
+
+          // console.log($put_zone);
+          if (_callback) {
+            _callback($put_zone);
+          }
+        }
+      });
+    }
+  }
+
+  return exports;
+})();
+
+pull_put.ui = (function() {
+
+  $ui = $(loads.get("Elements/Modules/UI/pull_put/"));
+
+  $ui.__actions__additional = $ui.find(".__actions>.__additional");
+  $ui.__content = $ui.find(".__content");
+
+  function make_button(icon, tip, _action) {
+    var $button = $('<div class="card m--circle" tip="' +
+      tip + '">' +
+      '<button class="m--ghost m--icon">' +
+      icon +
+      '</button></div>');
+    $button.click(function(event) {
+      _action(event);
+    });
+
+    return $button;
+  }
+
+
+  exports = {
+    added_card: false,
+    $: $ui,
+    element: undefined,
+    proto_element: undefined,
+    additional_margin: 0,
+    add_action: function(icon, tip, _action) {
+      if (typeof icon === "object") {
+        var action_obj = icon;
+        icon = action_obj.icon;
+        tip = action_obj.tip;
+        _action = action_obj._action;
+      }
+
+      $new_button = make_button(icon, tip, _action);
+
+      $ui.__actions__additional.html($new_button);
+    },
+    get: function($element, element_width, actions, _callback, card) {
+      // console.log('got', $element);
+      if (typeof actions === "undefined") {
+        actions = []
+      }
+
+      $ui.removeAttr('style');
+
+      if (card) {
+        $ui.__content.addClass('card');
+      } else {
+        $ui.__content.removeClass('card');
+      }
+
+      $ui.__content.html($element);
+      $ui.__actions__additional.html("");
+
+      $ui.css("margin-left", -element_width / 2 +
+        pull_put.ui.additional_margin)
+      $ui.__content.css("width", element_width -
+        pull_put.ui.additional_margin)
+
+      pull_put.ui.element = $element;
+
+
+
+      if (actions.indexOf("delete") > -1) {
+        $ui.find(".__actions button.m--delete").parent().show();
+      } else {
+        $ui.find(".__actions button.m--delete").parent().hide();
+      }
+
+      if (actions.indexOf("add") > -1) {
+        $ui.find(".__actions button.m--add").parent().show();
+      } else {
+        $ui.find(".__actions button.m--add").parent().hide();
+      }
+
+      if (actions.indexOf("save") > -1) {
+        pull_put.ui.proto_element = $element.clone();
+        $ui.find(".__actions button.m--save").parent().show();
+      } else {
+        pull_put.ui.proto_element = $element;
+        $ui.find(".__actions button.m--save").parent().hide();
+      }
+
+      if (_callback) {
+        _callback();
+      }
+
+      pull_put.ui.show(element_width);
+    },
+    show: function(element_width) {
+      // console.log('showing up');
+      if (typeof editor !== "undefined") {
+        $(".__task").slice(-2).addClass("m--stand-out");
+        $(".__put-margin").last().addClass("m--stand-out");
+      }
+      $ui.removeClass('m--hidden');
+
+      setTimeout(function() {
+        pull_put.is_pulled = true;
+
+        var screen_width = window.innerWidth;
+        var dropout = ($ui.width() - element_width / 2 +
+          pull_put.ui.additional_margin) - screen_width / 2;
+
+        if (dropout > 0) {
+          $ui.css('right', '16px');
+        }
+
+      }, 300)
+
+    },
+    hide: function() {
+      if (typeof editor !== "undefined") {
+        $(".m--stand-out").removeClass("m--stand-out");
+      }
+      $ui.addClass('m--hidden');
+      setTimeout(function() {
+        pull_put.is_pulled = false;
+        setTimeout(tooltip.hide, 100);
+      }, 300)
+    }
+  }
+  return exports;
+})();

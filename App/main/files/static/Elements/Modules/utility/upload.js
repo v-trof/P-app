@@ -1,1 +1,22 @@
-function upload(e,n,c){e.append("csrfmiddlewaretoken","{{ csrf_token }}"),"undefined"==typeof success&&(success="Выполнено"),$.ajax({type:"POST",url:n,data:e,processData:!1,contentType:!1,success:function(e){c(e)},error:function(e){c(e),notification.show("error","Произошла ошибка")}})}
+function upload(formData, url, _callback) {
+  formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+  if (typeof success === "undefined") {
+    success = "Выполнено";
+  }
+  $.ajax({
+    type: "POST",
+    url: url,
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+      _callback(response);
+      // notification.show(response["type"], response["message"]);
+    },
+    error: function(response) {
+      _callback(response);
+      notification.show('error', "Произошла ошибка");
+    },
+  });
+}

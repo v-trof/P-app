@@ -1,1 +1,1693 @@
-var generate={data:{task:{},question:{},answer:{}},counter:{}};generate.register={bind_data:function(e,t,a,n){var r=generate.data[e][t]||{};return generate.data[e][t]=r,r.type=e,r.subtype=t,r[a]=n,r[a].self=r,generate.counter[t]=10,r}},generate.get_blueprints=function(e){var t=$(e),a=t.attr("type"),n=t.attr("subtype");return generate.data[a][n]},generate.register.edit=function(e,t,a){if(!e||!t)return!1;var n=this.bind_data(e,t,"edit",a);return n.edit.make_template=function(a){return generate.make_template.edit[e](t,a)},n.edit.build=function(t){editor.active_element.item_id=t.item_id;var a=$("<div class='m--edit-wrapper'></div>");if(a.append(n.edit.builder(t)),"answer"===e){var r=render.inputs.text("Макс. балл","worth",t.worth||1);if(a.append(r),n.edit.random_possible){var i=$(loads["Elements/Inputs/checkbox/exports.html"]);i.find("label").text("Случайный порядок"),i.find("input").attr("name","random"),i.find("input")[0].checked=t.random,a.append(i)}}return a},n.edit.parse=function(a){var r=n.edit.parser(a.find(".generate-edit"));return r.item_id=editor.active_element.item_id,"answer"===e&&(r.worth=a.find('[name="worth"]').val()),n.edit.random_possible&&(r.random=a.find('[name="random"]')[0].checked),r.type=e,r.subtype=t,r},!0},generate.register.element=function(e,t,a){if(!e||!t)return!1;var n=this.bind_data(e,t,"element",a);return n.element.make_template=function(a){return generate.make_template.element[e](t,a)},n.element.build=function(e,t){var a=n.element.builder(e);return t?a:(defined(n.edit)&&"undefined"!=typeof editor&&editor.edit.let(a),defined(n.external)&&n.external.observe(a),a)},n.element.sample.build=function(){var e=n.element.build(n.element.sample.value,!0);return e},n.element.parse=this.element.parser,!0},generate.register.external=function(e,t,a){if(!e||!t)return!1;var n=this.bind_data(e,t,"external",a);return n.external.observe=function(e,t,a){return!!defined(a)&&void n.external.observer(e,function(){var r=n.external.get_value(e),i=n.external.get_summary(r,t);a(r,i)})},n.external.make_answer=function(e,t,a,r,i,s){var d=n.external.to_answer(e,t,s);e||(d.user=$("<b> Пропущено </b>"));var l=$(loads.get("Elements/Modules/Test/generate/data/external/answer/__template/")),o=l.find(".__score");return l.find(".__user>.__answer").html(d.user),l.find(".__right>.__answer").html(d.right),o.find(".__current").html(a),o.find(".__max").html(r),summary.set_icon(i,l.find(".__data>.__icon")),setTimeout(function(){accordion.add(l.find(".__right"),"h3");var e=l.find(".m--accordion-toggle");e.css({left:e[0].offsetLeft,right:"auto"}),e.click()},100),l},n.external.make_answer_edit=function(e,t,a,n,r){},!0},generate.register.task=function(e,t){var a=this.bind_data("task",e,"element",t);a.build=t.builder},generate.make_template={element:{question:function(e){return $('<div type="question" subtype="'+e+'" class="generate-item"></div>')},answer:function(e,t){return $('<div type="answer" subtype="'+e+'" class="generate-item"></div>')}},edit:{question:function(e){return $('<div type="question" subtype="'+e+'" class="generate-edit"></div>')},answer:function(e,t){return $('<div type="answer" subtype="'+e+'"class="generate-edit"></div>')}}},generate.register.task("default",{builder:function(){var e=$(loads.get("Elements/Modules/Test/generate/data/task/default/"));return console.log(e,e[1]),defined(generate.data.task.template)?e.find(".__make-template").click(function(){generate.data.task.template.to_tempalte(e)}):e.find(".__make_template").remove(),e}}),$(document).ready(function(){generate.data.task.template.add_to_test=function(e,t){e=JSON.parse(JSON.stringify(e)),defined(t)&&"edit"===editor.template_editor_mode&&(e=generate.data.task.template.element.parse_edit(t.find(".task").children(),e));var a=generate.data.task.template.build_finalized_task(e),n=a.$task;return console.log("adding to test:",a.data),editor.test_data.add_template(a.data),$(".preview>.__content").append(n),popup.hide(),editor.template_ui.hide(),editor.check.numbers(),n}}),$(document).ready(function(){generate.data.task.template.build_finalized_task=function(e){var t=e,a=JSON.parse(JSON.stringify(t.variables));t.variables=a;var n=generate.data.task.template.build(t.parts,t.variables,t.group);$(n[1]).click(function(e){"button"!=e.target.nodeName.toLowerCase()&&"path"!=e.target.nodeName.toLowerCase()&&"svg"!=e.target.nodeName.toLowerCase()&&generate.data.task.template.edit.launch(t,n)}),button_delete.add(n.find(".__overall>.__actions"),n,function(){var e=$(".preview .__task").index(n[1]);editor.test_data.delete_task(e),setTimeout(editor.check.numbers,150)}),n.find(".m--button-delete").removeClass("m--button-delete");var r=$(n[0]);return pull_put.put_zone.add(r,function(){editor.insert_new_task(r),pull_put.reset()}),indicator.add(r,"add",1),{data:t,$task:n}}}),$(document).ready(function(){generate.data.task.template.to_tempalte=function(e){var t=$(".preview .__task").index(e[1]),a=editor.test_data.tasks[t].content,n={group:editor.test_data.tasks[t].group,parts:[],variables:[],is_template:!0};a.forEach(function(e){n.parts.push(e),console.log(e)});var r=generate.data.task.template.build_finalized_task(n),i=editor.test_data.templates.add(r.data);r.data.group=i,editor.test_data.tasks[t]=r.data,r.$task.find("input.__group").val(i),$(e[1]).replaceWith(r.$task),e[0].remove(),editor.check.numbers(),editor.check.empty()}}),$(document).ready(function(){generate.data.task.template.edit={observe_new_vars:function(e){e.find(".task .__value").keyup(function(){var t=[];e.find(".task .__value").each(function(){var e=generate.data.task.template.edit.check_for_vars($(this));e.forEach(function(e){t.indexOf(e)===-1&&t.push(e)})}),generate.data.task.template.edit.update_variables(t,e)})},check_for_vars:function(e){var t=/%\(([^()]+)\)/g,a="",n=[];for(e.val()?a=e.val():e.text()&&(a=e.text());result=t.exec(a);)n.push(result[1]);return n},build_variables:function(e,t){var a=t.find(".__variables");return 0===e.length?void a.html("Переменных нет.<br>Они создаются выражением:<br><i>%(название пременной)</i>"):(a.html(""),void e.forEach(function(e){function n(){var e=[];return a.find("input").each(function(){e.push({name:$(this).attr("name"),value:$(this).val()})}),e}var r=render.inputs.text(e.name,e.name,e.value);a.append(r),r.keyup(function(){if(editor.active_template.variables=n(),"preview"===editor.template_editor_mode){var e=generate.data.task.template.build(editor.active_template.parts,editor.active_template.variables,editor.active_template.group);e.find(".__actions button").css("pointer-events","none"),e.find(".__content").children().each(function(){$(this).unbind("click")}),t.find(".task").html(e),console.log("preview -> rebuilt",t)}})}))},update_variables:function(e,t){var a=[];editor.active_template.variables.forEach(function(t){var n=e.indexOf(t.name);n>-1&&(a.push(t),e.splice(n,1))}),e.forEach(function(e){a.push({name:e,value:""})}),editor.active_template.variables=a,generate.data.task.template.edit.build_variables(a,t)},build_editor:function(e,t){var a=$(loads["Elements/Modules/Test/generate/data/task/template/__edit/exports.html"]);return a.css("width","100%"),a},launch:function(e,t){editor.active_template=e,editor.template_editor_mode="edit";var a=generate.data.task.template.edit.build_editor(e.parts,e.variables);a.find(".task").html(generate.data.task.template.element.build_edit(e.parts,e.group)),popup.show(a,function(){},{width:"64rem"},!0),generate.data.task.template.edit.observe_new_vars(a),generate.data.task.template.edit.handle_actions(a,t),generate.data.task.template.edit.build_variables(e.variables,a)}}}),$(document).ready(function(){generate.data.task.template.edit.handle_actions=function(e,t){var a=e.find(".__mod_swap"),n=e.find(".__add"),r=e.find(".__save"),i=editor.active_template.group;defined(t)||(editor.active_template=JSON.parse(JSON.stringify(editor.active_template))),a.click(function(){if(console.log("was:",editor.template_editor_mode),"edit"===editor.template_editor_mode){editor.template_editor_mode="preview",editor.active_template=generate.data.task.template.element.parse_edit(e.find(".task").children(),editor.active_template);var t=generate.data.task.template.build(editor.active_template.parts,editor.active_template.variables,editor.active_template.group);t.find(".__actions button").css("pointer-events","none"),console.log(e),e.find(".task").html(t),a.html(loads["Elements/Icons/edit.svg"]).attr("tip","Редактировать")}else editor.template_editor_mode="edit",e.find(".task").html(generate.data.task.template.element.build_edit(editor.active_template.parts,editor.active_template.group)),generate.data.task.template.edit.observe_new_vars(e),a.html(loads["Elements/Icons/visibility.svg"]).attr("tip","Показать задание")}),t&&(n.html(loads["Elements/Icons/copy.svg"]),n.attr("tip","Создать новое задание (старое сохранится)")),n.click(function(){generate.data.task.template.add_to_test(editor.active_template,e)}),t?r.click(function(){"edit"===editor.template_editor_mode&&(editor.active_template=generate.data.task.template.element.parse_edit(e.find(".task").children(),editor.active_template)),$new_task=generate.data.task.template.build_finalized_task(editor.active_template).$task,$(t[1]).replaceWith($new_task),t[0].remove(),t=$new_task;var a=$(".preview .__task").index(t[1]);editor.test_data.tasks[a]=editor.active_template,editor.test_data.tasks[a].is_template=!0,editor.check.numbers()}):r.click(function(){"edit"===editor.template_editor_mode&&(editor.active_template=generate.data.task.template.element.parse_edit(e.find(".task").children(),editor.active_template)),editor.test_data.templates.save(editor.active_template,i),editor.template_ui.show(),console.log("rebuilding"),editor.test_data.tasks.forEach(function(e,t){if(e.is_template){var a=editor.test_data.template_get_parts(e.group);a&&(e.parts=a);var n=generate.data.task.template.build_finalized_task(e).$task[1];console.log("data:",e,"idx:",t),console.log("built:",n),$(".preview>.__content>.__task").eq(t).replaceWith(n)}}),editor.check.numbers()})}}),generate.register.task("template",{build_edit:function(e,t){var a=generate.data.task.default.build(),n=a.find(".__content");return e.forEach(function(e){var t=generate.data[e.type][e.subtype].edit.build(e);n.append(t)}),a.find(".__number").text("Шаблон задания"),a.find(".__actions button").remove(),a.find("input.__group").val(t).attr("tip","Название шаблона"),a},parse_edit:function(e,t){var a={parts:[],variables:t.variables,group:""};a.group=e.find(".__group").val();for(var n=0;n<t.parts.length;n++){var r=e.find(".__content").find(".m--edit-wrapper").eq(n),i=generate.data[t.parts[n].type][t.parts[n].subtype].edit.parse(r);a.parts.push(i)}return a},builder:function(e,t,a){var n=generate.data.task.default.build(),r=n.find(".__content"),i=$('<button class="m--ghost m--icon __serialize">'+loads["Elements/Icons/serialize.svg"]+"</button>"),e=JSON.parse(JSON.stringify(e));return e.forEach(function(e){e=generate.data.task.template.unwrap_replace(e,t)}),e.forEach(function(e){var t=generate.data[e.type][e.subtype].element.build(e);t.children(".indicator").remove(),r.append(t)}),i.click(function(){generate.data.task.template.serialize(n,e,t)}),i.attr("tip","Превратить это задание в обычное"),n.find(".__make-template").replaceWith(i),a&&n.find("input.__group").val(a),n.find("input.__group").attr("disabled","disabled"),n.find(".__content").children().each(function(){$(this).unbind("click").removeClass("m--pullable").removeClass("m--put-zone")}),n.addClass("m--template"),n}}),$(document).ready(function(){generate.data.task.template.serialize=function(e,t,a){var n=$(".preview .__task").index(e[1]),r={group:editor.test_data.tasks[n].group,content:[]};t.forEach(function(e){r.content.push(generate.data.task.template.unwrap_replace(e,a))}),editor.test_data.tasks[n]=r;var i=editor.create_new_task();r.content.forEach(function(e){var t=generate.data[e.type][e.subtype].element.build(e);i.find(".__content").append(t)}),i.find(".__group").val(r.group),$(e[1]).replaceWith(i),e[0].remove(),editor.check.numbers(),editor.check.empty()}}),$(document).ready(function(){generate.data.task.template.unwrap_replace=function(e,t){if("string"==typeof e)t.forEach(function(t){e=e.replaceAll("%("+t.name+")",t.value)});else if(e instanceof Array){e.forEach(function(e){e=generate.data.task.template.unwrap_replace(e,t)});for(var a=0;a<e.length;a++)e[a]=generate.data.task.template.unwrap_replace(e[a],t)}else if("object"==typeof e)for(key in e)e[key]=generate.data.task.template.unwrap_replace(e[key],t);return e}}),generate.register.element("question","file",{show_in_items:!0,builder:function(e){var t=this.make_template(e),a=$(loads.get("Elements/card/file/exports.html"));return a.attr("href",e.url),a.find(".__name").text(e.name),a.find(".__size").text(e.size),t.append(a),t},sample:{value:{name:"Файл для скачивания",size:"3.21МБ",pos:void 0,url:"https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"}}}),generate.register.element("question","text",{show_in_items:!0,builder:function(e){var t=this.make_template(e);return t.html('<div class="__value">'+e.text+"</div>"),t},sample:{value:{text:"Текстовый вопрос"}}}),generate.register.element("question","image",{show_in_items:!0,builder:function(e){var t=this.make_template(e),a=$(document.createElement("img"));return a.attr("src",e.url||e.href),a.css("max-width","100%"),t.css({display:"flex","align-items":"center","justify-content":"center"}),t.append(a),t},sample:{value:{url:"/media/samples/image.jpg"}}}),generate.register.element("answer","checkbox",{show_in_items:!0,builder:function(e){e.answer=e.answer||[];var t=this.make_template(e);return e.items.forEach(function(a,n){var r=$(loads.get("Elements/Inputs/checkbox/"));r.find("label").text(a),e.answer.has(n)&&(r.find("input")[0].checked=!0),t.append(r)}),t},sample:{value:{items:["Вариант 1","Вариант 2","Вариант 3"],answer:[1],worth:1}}}),generate.register.element("answer","classify",{show_in_items:!0,create_item:function(e,t){var a=$(loads.get("Elements/Modules/Test/generate/data/elements/answer/classify/__item/"));return a.text(e),a.addClass("classify_item_"+t),pull_put.puller.add(a,[],void 0,function(){indicator.show(t),pull_put.ui.$.find(".__content").css("min-width","10rem")},!1,!0),a},check:function(e){e.find(".__items").each(function(){0===$(this).children(".__item").length?0===$(this).children(".m--classify-empty").length&&$(this).append('<div class="m--classify-empty">Пусто</div>'):$(this).children(".m--classify-empty").remove()})},create_class:function(e,t,a,n){var r=this,i=$(loads.get("Elements/Modules/Test/generate/data/elements/answer/classify/")),s=i.find(".__items");return 0===t.length?s.append('<div class="m--classify-empty">Пусто</div>'):t.forEach(function(e){s.append(r.create_item(e,n))}),pull_put.put_zone.add(s,function(e,t,a){a.hasClass("classify_item_"+n)&&(s.append(a),console.log(a),pull_put.reset(),indicator.hide(n),r.check(i.parent()))}),indicator.add(s,"add",n),i.find(".__title").text(e),i.addClass(a),i},builder:function(e){var t=this,a=generate.counter.classify++,n=e.items.slice(),r=t.make_template(e);return e.classes.forEach(function(i){var s=[];e.answer[i]&&e.answer[i].forEach(function(e){n.remove(e),s.push(e)}),r.append(t.create_class(i,s,"",a))}),n.length>0&&r.append(t.create_class("",n,"m--unordered",a)),r},sample:{value:{classes:["Глаголы","Существительные"],items:["Дом","Стол","Бук"],answer:{}}}}),generate.register.element("answer","radio",{show_in_items:!0,builder:function(e){var t=generate.counter.radio++;e.answer=e.answer||[];var a=this.make_template(e);return e.items.forEach(function(n,r){var i=$(loads.get("Elements/Inputs/radio/"));i.find("label").text(n),e.answer.has(r)&&(i.find("input")[0].checked=!0),a.append(i),a.find("input").attr("name","radio_"+t)}),a},sample:{value:{items:["Вариант 1","Вариант 2","Вариант 3"],answer:[1],worth:1}}}),generate.register.element("answer","text",{show_in_items:!0,builder:function(e){var t=this.make_template(e);return t.append(render.inputs.text(e.label,"",e.answer)),t},sample:{value:{label:"Текстовый ответ",worth:1}}}),generate.register.edit("answer","checkbox",{random_possible:!0,builder:function(e){var t=this.make_template(),a=function(e){var t=$(loads.get("Elements/Inputs/checkbox/")),a=render.inputs.text("","",e),n=$("<div class='__edit_item'></div>");return n.append(t).append(a),button_delete.add(n),n};e.items&&e.items.length?e.items.forEach(function(n,r){var i=a(n);t.append(i),e.answer.has(r)&&(i.find('[type="checkbox"]')[0].checked=!0)}):t.append(a());var n=$("<button class='__add_option'>Ещё вариант</button>");return t.append(n),n.click(function(){n.before(a())}),t},parser:function(e){var t={items:[],answer:[]};return e.find(".m--checkbox").each(function(e,a){var n=$(a).siblings().find(".__value").val();t.items.push(n),$(a).find("input").is(":checked")&&t.answer.push(e)}),t}}),generate.register.edit("answer","classify",{random_possible:!0,create_item:function(e){var t=$(loads.get("Elements/Modules/Test/generate/data/elements/answer/classify/__item/"));return t.append(render.inputs.text("Текст элемента","",e)),button_delete.add(t),t},create_class:function(e,t,a){var n=this,r=$(loads.get("Elements/Modules/Test/generate/data/elements/answer/classify/")),i=r.find(".__items"),s=$('<button class="m--ghost m--icon"></button>');return t.length>0&&t.forEach(function(e){i.append(n.create_item(e))}),r.find(".__title").text(e).attr("contenteditable","true"),r.addClass(a),button_delete.add(r),s.append(loads["Elements/Icons/add.svg"]),s.click(function(){s.before(n.create_item(""))}),r.find(".__items").append(s),r},builder:function(e){var t=this,a=e.items?e.items.slice():[],n=t.make_template(e),r=$('<button class="m--ghost m--icon"></button>');return e.classes&&e.classes.forEach(function(r){var i=[];e.answer[r]&&e.answer[r].forEach(function(e){a.remove(e),i.push(e)}),n.append(t.create_class(r,i))}),a.length>0&&n.append(t.create_class("",a,"m--unordered")),r.append(loads["Elements/Icons/add.svg"]),r.click(function(){r.before(t.create_class("",[]))}),n.append(r),n},parser:function(e){var t=[],a=[],n={},r=1;return e.children(".__class").each(function(){var e=$(this).children("h3").text();""===e&&(e="Тип "+r,r++),n[e]=[],a.push(e),$(this).find("input").each(function(){this.value&&(n[e].push(this.value),t.push(this.value))})}),{items:t,classes:a,answer:n}}}),generate.register.edit("answer","radio",{random_possible:!0,builder:function(e){var t=this.make_template(),a=generate.counter.radio++,n=function(e){var t=$(loads.get("Elements/Inputs/radio/")),n=render.inputs.text("","",e),r=$("<div class='__edit_item'></div>");return t.find("input").attr("name","new_radio_"+a),r.append(t).append(n),button_delete.add(r),r};e.items&&e.items.length?e.items.forEach(function(a,r){var i=n(a);t.append(i),e.answer.has(r)&&(i.find('[type="radio"]')[0].checked=!0)}):t.append(n());var r=$("<button class='__add_option'>Ещё вариант</button>");return t.append(r),r.click(function(){r.before(n())}),t},parser:function(e){var t={items:[],answer:[]};return e.find(".m--radio").each(function(e,a){var n=$(a).siblings().find(".__value").val();t.items.push(n),$(a).find("input").is(":checked")&&t.answer.push(e)}),t}}),generate.register.edit("answer","text",{builder:function(e){var t=this.make_template(),a=render.inputs.text("Формат ответа","label",e.label);t.prepend(a);var n=render.inputs.text("Верный ответ","answer",e.answer);return t.prepend(n),t},parser:function(e){var t={label:"",answer:void 0};return t.label=e.find('[name="label"]').val(),t.answer=e.find('[name="answer"]').val(),t}}),generate.register.edit("question","file",{builder:function(e){var t=this.make_template(),a=render.inputs.text("Название файла (как его увидят ученики)","file_name",e.name),n=$(loads.get("Elements/Inputs/file/"));t.append(a),t.append(n);var r=file_catcher.add(n);return(defined(e.asset_id)||defined(e.url))&&(n.find(".__text").text(e.file_name),r.value.change(function(){editor.assets.replace(e.asset_id,r)})),defined(e.asset_id)||(e.asset_id=editor.assets.add(r)),t},parser:function(e){var t={};return t.asset_id=editor.active_element.value.asset_id,t.name=e.find('[name="file_name"]').val(),defined(editor.assets.get(t.asset_id))?(t.file_name=editor.assets.get(t.asset_id).name,t.size=Math.floor(editor.assets.get(t.asset_id).files[0].size/1024/1024*100)/100+"МБ"):(t.file_name=editor.active_element.value.file_name,t.size=editor.active_element.value.size),""===t.name&&(t.name=t.file_name),t}}),generate.register.edit("question","image",{builder:function(e){var t=this.make_template(),a=$(loads.get("Elements/Inputs/file/"));t.append(a);var n=file_catcher.add(a);return(defined(e.asset_id)||defined(e.url))&&(a.find(".__text").text(e.file_name),n.value.change(function(){editor.assets.replace(e.asset_id,n)})),defined(e.asset_id)||(e.asset_id=editor.assets.add(n)),t},parser:function(e){var t={};t.asset_id=editor.active_element.value.asset_id;var a=editor.assets.get(t.asset_id);return defined(a)?(t.file_name=editor.assets.get(t.asset_id).name,t.href=URL.createObjectURL(a.files[0]),t.url=void 0):(t.href=t.url||editor.active_element.value.href,t.file_name=editor.active_element.value.file_name),t}}),generate.register.edit("question","text",{builder:function(e){var t=this.make_template();return t.prepend(loads.get("Elements/Inputs/text/textarea/")),t.find("label").text("Текст"),t.find(".__value").html(e.text),e.text&&t.find("label").addClass("m--top"),inline_editor.start(t.find(".__value")[0]),t},parser:function(e){return{text:e.find(".__value").html()}}}),generate.register.external("answer","checkbox",{get_value:function(e){var t=[];return e.find(".m--checkbox").each(function(e,a){a.querySelector("input").checked&&t.push(e)}),t},get_summary:function(e,t){var a=[],n=!1;return e.forEach(function(e){var r=t.items[e];r.length>20?(r=r.substring(0,17).escape(),r+="&hellip;",n=!0):r=r.escape(),a.push(r)}),a=n?a.join("<br>"):a.join(", ")},to_answer:function(e,t,a){function n(e){a.answer=e;var t=r.element.build(a);return t.find("input").attr("disabled","disabled"),t}var r=this.self;return Array.isArray(e)||(e=[]),{user:n(e),right:n(t)}},observer:function(e,t){e.find("input").change(t)}}),generate.register.external("answer","classify",{get_value:function(e){var t={};return e.children(".__class").each(function(){if(!$(this).hasClass("m--unordered")){var e=$(this).children("h3").text();t[e]=[],$(this).find(".__item").each(function(){t[e].push($(this).text())})}}),t},unwrap_answer:function(e,t){var a=[],n=[];for(class_name in e)for(var r=0;r<e[class_name].length;r++)e[class_name][r].length>20&&t?(e[class_name][r]=e[class_name][r].substring(0,17).escape(),e[class_name][r]=e[class_name][r]+"..."):e[class_name][r]=e[class_name][r].escape(),n.remove(class_name),n.push(class_name),a.push(e[class_name][r]);return{classes:n,items:a,answer:e}},get_summary:function(e,t){if(e=this.unwrap_answer(e,!0),0===e.items.length)return console.log("empty"),"";var a=this.self.element.build(e);return a.find("*").unbind("click"),a},to_answer:function(e,t,a){var n=this,r=function(e){console.log(e),e=n.unwrap_answer(e,!0);var t=n.self.element.build(e);return t.find("*").unbind("click"),t};return{user:r(e),right:r(t)}},observer:function(e,t){e.find(".__items").click(function(e){pull_put.is_pulled&&t()})}}),generate.register.external("answer","text",{get_value:function(e){return e.find("input").val()},get_summary:function(e){return e||(e=""),e.length>20?(e=e.substring(0,17).escape(),e+="&hellip;"):e=e.escape(),e},to_answer:function(e,t,a){function n(e){a.answer=e;var t=r.element.build(a);return t.find("input").attr("disabled","disabled"),t}var r=this.self;return{user:n(e),right:n(t)}},observer:function(e,t){var a,n=1e3;e.keydown(function(){clearTimeout(a),a=setTimeout(function(){e.find(".__value").val();t()},n)})}}),generate.register.external("answer","radio",{get_value:function(e){var t=[];return e.find(".m--radio").each(function(e,a){a.querySelector("input").checked&&t.push(e)}),t},get_summary:function(e,t){var a=[],n=!1;return e.forEach(function(e){var r=t.items[e];r.length>20?(r=r.substring(0,17).escape(),r+="&hellip;",n=!0):r=r.escape(),a.push(r)}),a=n?a.join("<br>"):a.join(", ")},to_answer:function(e,t,a){function n(e){a.answer=e;var t=r.element.build(a);return t.find("input").attr("disabled","disabled"),t}var r=this.self;return Array.isArray(e)||(e=[]),{user:n(e),right:n(t)}},observer:function(e,t){e.find("input").change(t)}});
+/**
+ * Test/generate/core/(s)/core Module for mantaining all test elements
+ * @namespace
+ */
+var generate = {
+
+  /**
+   * Data for Element/edit/external creation
+   * @type {Object}
+   */
+  data: {
+    task: {},
+    question: {},
+    answer: {}
+  },
+
+  /**
+   * counters for id's \\
+   * @type {Object}
+   */
+  counter: {
+  }
+}
+
+generate.register = {
+  bind_data: function(type, subtype, data_type, data_value) {
+    var data = generate.data[type][subtype] || {};
+    generate.data[type][subtype] = data;
+    data.type = type;
+    data.subtype = subtype;
+
+    data[data_type] = data_value;
+
+    data[data_type].self = data;
+
+    generate.counter[subtype] = 10;
+    return data;
+  }
+}
+
+/**
+ * Returns general blueprints of this subtype (data[type][subtype])
+ * @method get_blueprints
+ * @param  {$} element element to parse
+ * @return {Object} blueprints
+ */
+generate.get_blueprints = function(element) {
+  //to jq
+  var $element = $(element);
+  var type = $element.attr('type');
+  var subtype = $element.attr('subtype');
+
+  return generate.data[type][subtype];
+}
+
+generate.register.edit = function(type, subtype, edit_data) {
+  if (!(type && subtype)) return false;
+
+  var data = this.bind_data(type, subtype, 'edit', edit_data);
+
+  data.edit.make_template = function(args) {
+    return generate.make_template.edit[type](subtype, args);
+  }
+
+  //make API constant
+  data.edit.build = function(value) {
+    editor.active_element.item_id = value.item_id;
+    var $edit = $("<div class='m--edit-wrapper'></div>");
+    $edit.append(data.edit.builder(value));
+
+    if(type === 'answer') {
+      var $worth = render.inputs.text('Макс. балл', 'worth', (value.worth || 1));
+      $edit.append($worth);
+
+      if(data.edit.random_possible) {
+        var $random = $(loads["Elements/Inputs/checkbox/exports.html"]);
+        $random.find('label').text('Случайный порядок');
+        $random.find('input').attr('name', "random");
+        $random.find('input')[0].checked = value.random;
+        $edit.append($random);
+      }
+    }
+
+    return $edit;
+  }
+  data.edit.parse = function($edit) {
+    var value = data.edit.parser($edit.find('.generate-edit'));
+    value.item_id = editor.active_element.item_id;
+
+    if(type === 'answer') {
+      value.worth = $edit.find('[name="worth"]').val();
+    }
+
+    if(data.edit.random_possible) {
+      value.random = $edit.find('[name="random"]')[0].checked;
+    }
+
+    value.type = type;
+    value.subtype = subtype;
+
+    return value;
+  }
+
+  return true;
+}
+
+generate.register.element = function element(type, subtype, element_data) {
+  if (!(type && subtype)) return false;
+
+  var data = this.bind_data(type, subtype, 'element', element_data);
+
+  //creates proper template build function
+  data.element.make_template = function(args) {
+    return generate.make_template.element[type](subtype, args);
+  }
+
+  //creates build wrapper
+  data.element.build = function(value, is_sample) {
+    var $element = data.element.builder(value);
+
+    if(is_sample) return $element;
+
+    if(defined(data.edit) &&
+       typeof editor !== typeof undefined) {
+         editor.edit.let($element);
+    }
+
+    if(defined(data.external)) {
+      data.external.observe($element);
+    }
+
+    return $element;
+  }
+
+  //builds sample elemnet
+  data.element.sample.build = function() {
+    var $sample_element = data.element.build(data.element.sample.value, true);
+
+    return $sample_element;
+  }
+
+  data.element.parse = this.element.parser;
+
+  return true;
+}
+
+generate.register.external = function(type, subtype, external_data) {
+  if (!(type && subtype)) return false;
+
+  var data = this.bind_data(type, subtype, 'external', external_data);
+
+  //creating observe shortcut for summary and send
+  data.external.observe = function($element, element_data, _check) {
+
+    if( ! defined(_check)) return false;
+    data.external.observer($element, function() {
+      var value = data.external.get_value($element);
+      var summary = data.external.get_summary(value, element_data);
+      _check(value, summary);
+    });
+  }
+
+  data.external.make_answer = function(user_answer, right_answer,
+                                       user_score, worth, result,
+                                       element_data) {
+
+    var answers = data.external.to_answer(user_answer, right_answer,
+                                          element_data);
+
+    if( ! user_answer) {
+      answers.user = $("<b> Пропущено </b>");
+    }
+    var $new_answer = $(loads.get("Elements/Modules/Test/generate/" +
+                                  "data/external/answer/__template/"));
+    var $score = $new_answer.find('.__score');
+
+    $new_answer.find('.__user>.__answer').html(answers.user);
+    $new_answer.find('.__right>.__answer').html(answers.right);
+
+    $score.find('.__current').html(user_score);
+    $score.find('.__max').html(worth);
+
+    summary.set_icon(result, $new_answer.find('.__data>.__icon'));
+
+    setTimeout(function() {
+      accordion.add($new_answer.find('.__right'), 'h3');
+      var $accordion_toggle = $new_answer.find('.m--accordion-toggle');
+      $accordion_toggle.css({
+        "left": $accordion_toggle[0].offsetLeft,
+        "right": "auto"
+      });
+
+      $accordion_toggle.click();
+    }, 100);
+
+    return $new_answer;
+  }
+
+  data.external.make_answer_edit = function(user_answer, right_answer,
+                                       user_score, worth, result) {
+    //TODO
+
+  }
+
+  return true;
+}
+
+generate.register.task = function(subtype, task_data) {
+  var data = this.bind_data('task', subtype, 'element', task_data);
+  data.build = task_data.builder;
+}
+
+/**
+ * Modules/Test/generate/data/__template/(s)/default | Create wrappers for generated elements
+ * @type {Object}
+ */
+generate.make_template = {
+  element: {
+    question: function(subtype) {
+      return $('<div type="question" subtype="' + subtype +
+       '" class="generate-item"></div>');
+    },
+    answer: function(subtype, args) {
+      return $('<div type="answer" subtype="' + subtype +
+         '" class="generate-item"></div>');
+    }
+  },
+  edit: {
+    question: function(subtype) {
+      return $('<div type="question" subtype="' + subtype +
+       '" class="generate-edit"></div>');
+    },
+    answer: function(subtype, args) {
+      return $('<div type="answer" subtype="' + subtype +
+       '"class="generate-edit"></div>');
+    }
+  }
+}
+
+generate.register.task('default', {
+  builder: function() {
+    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
+
+    console.log($task, $task[1]);
+    if(defined(generate.data.task.template)) {
+      $task.find('.__make-template').click(function() {
+        generate.data.task.template.to_tempalte($task);
+      });
+    } else {
+      $task.find('.__make_template').remove();
+    }
+
+    return $task;
+  }
+});
+
+$(document).ready(function() {
+  generate.data.task.template.add_to_test = function(template, $edit) {
+    template = JSON.parse(JSON.stringify(template));
+
+    if(defined($edit) && editor.template_editor_mode === 'edit') {
+      template = generate.data.task.template
+      .element.parse_edit(
+        $edit.find('.task').children(),
+        template);
+    }
+
+    var finished = generate.data.task.template.build_finalized_task(template);
+    var $new_task = finished.$task;
+
+    console.log('adding to test:', finished.data);
+
+    editor.test_data.add_template(finished.data);
+
+    $('.preview>.__content').append($new_task);
+
+    popup.hide();
+    editor.template_ui.hide();
+    editor.check.numbers();
+
+    return $new_task;
+  }
+});
+
+$(document).ready(function() {
+  generate.data.task.template
+    .build_finalized_task = function(template_data) {
+    //unbinding template from editor.active_template
+    var unbound_data = template_data;
+
+    //unbinding variables from initial template
+    var own_variables= JSON.parse(JSON.stringify(unbound_data.variables));
+
+    unbound_data.variables = own_variables;
+
+    var $new_task = generate.data.task.template.build(
+      unbound_data.parts,
+      unbound_data.variables,
+      unbound_data.group);
+
+      //unbound_data will reference template in original list, not in editor
+      $($new_task[1]).click(function(event) {
+        if(
+          event.target.nodeName.toLowerCase() != "button" &&
+          event.target.nodeName.toLowerCase() != "path" &&
+          event.target.nodeName.toLowerCase() != "svg"
+        ) {
+          generate.data.task.template.edit.launch(unbound_data, $new_task);
+        }
+      });
+
+      button_delete.add($new_task.find('.__overall>.__actions'), $new_task,
+      function() {
+        var task_pos = $('.preview .__task').index($new_task[1]);
+        editor.test_data.delete_task(task_pos);
+
+        setTimeout(editor.check.numbers, 150);
+      });
+
+      $new_task.find('.m--button-delete').removeClass('m--button-delete');
+
+      var $gap = $($new_task[0]);
+      pull_put.put_zone.add($gap, function() {
+        editor.insert_new_task($gap);
+        pull_put.reset();
+      });
+      indicator.add($gap, 'add', 1);
+
+      return {
+        data: unbound_data,
+        $task: $new_task
+      };
+    }
+});
+
+$(document).ready(function() {
+  generate.data.task.template.to_tempalte = function($task) {
+    var position = $('.preview .__task').index($task[1]);
+
+    var old_content = editor.test_data.tasks[position].content;
+
+    var new_task_data = {
+      group: editor.test_data.tasks[position].group,
+      parts: [],
+      variables: [],
+      is_template: true
+    };
+
+    old_content.forEach(function(part) {
+      new_task_data.parts.push(part);
+      console.log(part);
+    });
+
+    var new_task_bundle = generate.data.task.template
+                            .build_finalized_task(new_task_data);
+
+    var new_group = editor.test_data.templates.add(new_task_bundle.data);
+
+    new_task_bundle.data.group = new_group;
+
+    editor.test_data.tasks[position] = new_task_bundle.data;
+
+    new_task_bundle.$task.find('input.__group').val(new_group);
+
+    $($task[1]).replaceWith(new_task_bundle.$task);
+    $task[0].remove();
+
+    editor.check.numbers();
+    editor.check.empty();
+  }
+});
+
+//making shure to run after register
+$(document).ready(function() {
+  generate.data.task.template.edit = {
+    observe_new_vars: function($edit) {
+      $edit.find('.task .__value').keyup(function() {
+
+        var new_variables = [];
+        $edit.find('.task .__value').each(function() {
+          var used_variables = generate.data.task
+                                 .template.edit.check_for_vars($(this));
+
+          used_variables.forEach(function(variable) {
+            if(new_variables.indexOf(variable) === -1) {
+              new_variables.push(variable);
+            }
+          });
+        });
+        generate.data.task.template.edit.update_variables(new_variables, $edit);
+      });
+    },
+
+    check_for_vars: function($element) {
+      var expression = /%\(([^()]+)\)/g;
+      var test_string = "";
+      var variables = [];
+
+      if($element.val()) {
+        test_string = $element.val();
+      } else if($element.text()) {
+        test_string = $element.text();
+      }
+
+      while(result = expression.exec(test_string)) {
+        variables.push(result[1]);
+      }
+
+      return variables;
+    },
+
+    build_variables: function(variables, $edit) {
+      var $variables = $edit.find('.__variables');
+
+      if(variables.length === 0) {
+        $variables.html('Переменных нет.<br>Они создаются выражением:<br>' +
+          '<i>%(название пременной)</i>');
+        return;
+      }
+
+      $variables.html('');
+
+      variables.forEach(function(variable) {
+        function rescan_vars() {
+          var variables = [];
+          $variables.find('input').each(function() {
+            variables.push({
+              name: $(this).attr('name'),
+              value: $(this).val(),
+            })
+          });
+
+          return variables;
+        }
+
+        var $var_field = render.inputs
+                          .text(variable.name, variable.name, variable.value);
+        $variables.append($var_field);
+
+        $var_field.keyup(function() {
+          editor.active_template.variables = rescan_vars();
+
+          if(editor.template_editor_mode === 'preview') {
+            var $new_task = generate.data.task.template.build(
+                              editor.active_template.parts,
+                              editor.active_template.variables,
+                              editor.active_template.group);
+            $new_task.find('.__actions button').css('pointer-events', 'none');
+
+            $new_task.find('.__content').children().each(function() {
+              $(this).unbind('click');
+            });
+
+            $edit.find('.task').html($new_task);
+
+            console.log('preview -> rebuilt', $edit);
+          }
+        });
+
+      });
+
+    },
+
+    update_variables: function(new_variables, $edit) {
+      var compound = [];
+
+      editor.active_template.variables.forEach(function(variable) {
+        var index = new_variables.indexOf(variable.name);
+        if(index > -1) {
+          compound.push(variable);
+          new_variables.splice(index, 1);
+        }
+      });
+
+      new_variables.forEach(function(name) {
+        compound.push({
+          name: name,
+          value: ""
+        });
+      });
+
+      editor.active_template.variables = compound;
+      generate.data.task.template.edit
+        .build_variables(compound, $edit);
+    },
+
+    build_editor: function(parts, variables) {
+      var $edit = $(loads['Elements/Modules/Test/generate/data/' +
+                        'task/template/__edit/exports.html']);
+
+      $edit.css('width', "100%");
+
+      return $edit;
+    },
+
+    launch: function(template, $instance) {
+      editor.active_template = template;
+      editor.template_editor_mode = 'edit';
+
+      var $edit = generate.data.task.template.edit
+                    .build_editor(template.parts, template.variables)
+
+      $edit.find('.task').html(generate.data.task.template.element
+                               .build_edit(template.parts, template.group));
+      popup.show($edit, function() {}, {"width": "64rem"}, true);
+
+      generate.data.task.template.edit.observe_new_vars($edit);
+
+      generate.data.task.template.edit.handle_actions($edit, $instance);
+
+      generate.data.task.template.edit
+        .build_variables(template.variables, $edit);
+    }
+  }
+});
+
+$(document).ready(function() {
+  generate.data.task.template.edit.handle_actions = function($edit, $instance) {
+    var $mode_swap = $edit.find('.__mod_swap');
+    var $add = $edit.find('.__add');
+    var $save = $edit.find('.__save');
+
+    var old_group = editor.active_template.group;
+
+    //template better be unbound for prototypes
+    if(! defined($instance)) {
+      editor.active_template = JSON.parse(JSON.stringify(editor.active_template));
+    }
+
+    $mode_swap.click(function() {
+      console.log('was:', editor.template_editor_mode);
+
+      if(editor.template_editor_mode === 'edit') {
+        editor.template_editor_mode = 'preview';
+
+        editor.active_template = generate.data.task.template
+                                  .element.parse_edit(
+                                    $edit.find('.task').children(),
+                                    editor.active_template);
+
+        var $new_task = generate.data.task.template.build(
+                          editor.active_template.parts,
+                          editor.active_template.variables,
+                          editor.active_template.group);
+        $new_task.find('.__actions button').css('pointer-events', 'none');
+
+        console.log($edit);
+
+        $edit.find('.task').html($new_task);
+
+        $mode_swap.html(loads['Elements/Icons/edit.svg'])
+          .attr('tip', 'Редактировать');
+      } else {
+        editor.template_editor_mode = 'edit';
+
+        $edit.find('.task').html(generate.data.task.template.element
+                                 .build_edit(
+                                   editor.active_template.parts,
+                                   editor.active_template.group));
+
+        generate.data.task.template.edit.observe_new_vars($edit);
+
+        $mode_swap.html(loads['Elements/Icons/visibility.svg'])
+          .attr('tip', 'Показать задание');
+      }
+    });
+
+    if($instance) {
+      $add.html(loads['Elements/Icons/copy.svg']);
+      $add.attr('tip', 'Создать новое задание (старое сохранится)');
+    }
+
+    $add.click(function() {
+      generate.data.task.template.add_to_test(editor.active_template, $edit);
+    });
+
+    if($instance) {
+      $save.click(function() {
+        if(editor.template_editor_mode === 'edit') {
+          editor.active_template = generate.data.task.template
+                                    .element.parse_edit(
+                                      $edit.find('.task').children(),
+                                      editor.active_template);
+        }
+
+        $new_task = generate.data.task.template
+                      .build_finalized_task(editor.active_template).$task;
+
+        $($instance[1]).replaceWith($new_task);
+        $instance[0].remove();
+
+        $instance = $new_task;
+
+        var position = $('.preview .__task').index($instance[1]);
+
+        editor.test_data.tasks[position] = editor.active_template;
+        editor.test_data.tasks[position].is_template = true;
+
+        editor.check.numbers();
+      });
+    } else {
+      $save.click(function() {
+        if(editor.template_editor_mode === 'edit') {
+          editor.active_template = generate.data.task.template
+                                    .element.parse_edit(
+                                      $edit.find('.task').children(),
+                                      editor.active_template);
+        }
+
+        editor.test_data.templates.save(editor.active_template, old_group);
+        editor.template_ui.show();
+
+        console.log('rebuilding');
+
+        editor.test_data.tasks.forEach(function(task, index) {
+          if(task.is_template) {
+
+            var new_parts = editor.test_data.template_get_parts(task.group);
+            if(new_parts) {
+              task.parts = new_parts;
+            }
+
+            //[0] is gap
+            var $new_task = generate.data.task.template
+                              .build_finalized_task(task).$task[1];
+            console.log('data:', task, 'idx:', index);
+            console.log('built:', $new_task);
+
+            $('.preview>.__content>.__task').eq(index).replaceWith($new_task);
+          }
+      });
+        editor.check.numbers();
+      });
+    }
+  }
+});
+
+generate.register.task('template', {
+  build_edit: function(parts, group) {
+    var $task = generate.data.task.default.build();
+    var $content = $task.find('.__content');
+
+    parts.forEach(function(part) {
+      var $part = generate.data[part.type][part.subtype]
+                    .edit.build(part);
+
+      $content.append($part);
+    });
+
+    $task.find('.__number').text('Шаблон задания');
+
+    $task.find('.__actions button').remove();
+
+    $task.find('input.__group').val(group).attr('tip', 'Название шаблона');
+
+    return $task;
+  },
+
+  parse_edit: function($edit, source) {
+    function scan_for_vars() {
+      //regexp thing
+    }
+
+    var template = {
+      parts: [],
+      variables: source.variables,
+      group: ""
+    }
+
+    template.group = $edit.find('.__group').val();
+
+    for(var i=0; i<source.parts.length; i++) {
+      var $part_edit = $edit.find('.__content').find('.m--edit-wrapper').eq(i);
+      var new_part = generate.data[source.parts[i].type]
+                                  [source.parts[i].subtype]
+                                  .edit.parse($part_edit);
+
+      template.parts.push(new_part)
+    }
+
+    return template;
+  },
+
+  builder: function(parts, variables, group) {
+    var $task = generate.data.task.default.build();
+    var $content = $task.find('.__content');
+    var $serialize = $('<button class="m--ghost m--icon __serialize">'
+                      + loads['Elements/Icons/serialize.svg']
+                      + '</button>');
+
+
+    //keeping objects safe
+    var parts = JSON.parse(JSON.stringify(parts));
+
+    parts.forEach(function(part) {
+      part = generate.data.task.template.unwrap_replace(part, variables);
+    });
+
+    parts.forEach(function(part) {
+      var $part = generate.data[part.type][part.subtype]
+                    .element.build(part);
+      $part.children('.indicator').remove();
+      $content.append($part);
+    })
+
+    $serialize.click(function() {
+      generate.data.task.template.serialize($task, parts, variables);
+    });
+    $serialize.attr('tip', 'Превратить это задание в обычное');
+    $task.find('.__make-template').replaceWith($serialize);
+
+    if(group) {
+      $task.find('input.__group').val(group)
+    }
+    $task.find('input.__group').attr('disabled', 'disabled');
+
+
+    $task.find('.__content').children().each(function() {
+      $(this).unbind('click').removeClass('m--pullable')
+                             .removeClass('m--put-zone');
+    });
+    $task.addClass('m--template');
+
+    return $task;
+  }
+});
+
+$(document).ready(function() {
+  generate.data.task.template.serialize = function($task, parts, variables) {
+    var position = $('.preview .__task').index($task[1]);
+
+    var new_task_data = {
+      group: editor.test_data.tasks[position].group,
+      content: [],
+    };
+
+    parts.forEach(function(part) {
+      new_task_data.content.push(generate.data.task.template
+                                  .unwrap_replace(part, variables));
+    });
+
+    editor.test_data.tasks[position] = new_task_data;
+
+    var $new_task = editor.create_new_task();
+    new_task_data.content.forEach(function(part_data) {
+      var $element = generate.data[part_data.type][part_data.subtype].
+                      element.build(part_data);
+      $new_task.find('.__content').append($element);
+    });
+
+    $new_task.find('.__group').val(new_task_data.group);
+
+
+    $($task[1]).replaceWith($new_task);
+    $task[0].remove();
+
+    editor.check.numbers();
+    editor.check.empty();
+  }
+});
+
+$(document).ready(function() {
+  generate.data.task.template.unwrap_replace = function(obj, variables) {
+    if(typeof obj === 'string') {
+      variables.forEach(function(variable) {
+        obj = obj.replaceAll('%(' + variable.name + ')', variable.value);
+      });
+    } else if(obj instanceof Array) {
+      obj.forEach(function(part) {
+          part = generate.data.task.template.unwrap_replace(part, variables);
+      });
+
+      for(var i = 0; i < obj.length; i++) {
+        obj[i] = generate.data.task.template.unwrap_replace(obj[i], variables);
+      }
+    } else if(typeof obj === "object") {
+      for(key in obj) {
+        obj[key] = generate.data.task.template.unwrap_replace(obj[key], variables)
+      }
+    }
+
+    return obj;
+  }
+});
+
+generate.register.edit('answer', 'checkbox', {
+  random_possible: true,
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    var create_field = function(label) {
+      var $checkbox = $(loads.get('Elements/Inputs/checkbox/'));
+      var $input = render.inputs.text('', '', label);
+
+      var $field = $("<div class='__edit_item'></div>");
+      $field.append($checkbox).append($input);
+      button_delete.add($field);
+
+      return $field;
+    }
+
+    if(value.items && value.items.length) {
+      value.items.forEach(function(label, index) {
+        var $field = create_field(label);
+
+        $new_edit.append($field);
+        if(value.answer.has(index)) {
+          $field.find('[type="checkbox"]')[0].checked = true;
+        }
+      });
+    } else {
+      $new_edit.append(create_field());
+    }
+
+
+    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
+
+    $new_edit.append($add_option);
+
+    $add_option.click(function() {
+      $add_option.before(create_field());
+    });
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      items: [],
+      answer: []
+    }
+
+    $edit.find(".m--checkbox").each(function(index, el) {
+      var label = $(el).siblings().find(".__value").val();
+
+      value.items.push(label);
+
+      if($(el).find("input").is(":checked")) {
+        value.answer.push(index);
+      }
+    });
+
+    return value;
+  }
+});
+
+generate.register.edit('answer', 'classify', {
+  random_possible: true,
+
+  create_item: function(item_text) {
+    var $new_item = $(loads.get('Elements/Modules/Test/generate/' +
+                                'data/elements/answer/classify/__item/'));
+
+    $new_item.append(render.inputs.text("Текст элемента", '', item_text));
+    button_delete.add($new_item);
+
+    return $new_item;
+  },
+
+  create_class: function(title, items, special_class) {
+    var self = this;
+    var $new_class = $(loads.get('Elements/Modules/Test/generate/' +
+                                 'data/elements/answer/classify/'));
+    var $items = $new_class.find('.__items');
+    var $add_btn = $('<button class="m--ghost m--icon"></button>');
+
+    if(items.length > 0) {
+      items.forEach(function(item_text) {
+        $items.append(self.create_item(item_text));
+      });
+    }
+
+    $new_class.find('.__title').text(title).attr('contenteditable', 'true');
+    $new_class.addClass(special_class);
+
+    button_delete.add($new_class);
+    $add_btn.append(loads['Elements/Icons/add.svg']);
+    $add_btn.click(function() {
+      $add_btn.before(self.create_item(''));
+    });
+    $new_class.find('.__items').append($add_btn);
+
+    return $new_class;
+  },
+
+  builder: function(value) {
+    var self = this;
+    var items_copy = value.items ? value.items.slice() : [];
+
+    var $new_element = self.make_template(value);
+    var $add_btn = $('<button class="m--ghost m--icon"></button>');
+
+    if(value.classes) {
+      value.classes.forEach(function(class_name) {
+        var class_items = [];
+
+        if(value.answer[class_name]) {
+          value.answer[class_name].forEach(function(item) {
+            items_copy.remove(item);
+            class_items.push(item);
+          });
+        }
+
+        $new_element.append(self.create_class(class_name, class_items));
+      });
+    }
+
+    if(items_copy.length > 0) {
+      $new_element.append(self.create_class('', items_copy, 'm--unordered'));
+    }
+
+    $add_btn.append(loads['Elements/Icons/add.svg']);
+    $add_btn.click(function() {
+      $add_btn.before(self.create_class('', []));
+    });
+    $new_element.append($add_btn);
+
+    return $new_element;
+  },
+
+  parser: function($edit) {
+    var items = [],
+        classes = [],
+        answer = {};
+    var empty  = 1;
+    $edit.children('.__class').each(function() {
+      var title = $(this).children('h3').text();
+      if(title === '') {
+        title = 'Тип ' + empty;
+        empty++;
+      }
+
+      answer[title] = [];
+      classes.push(title);
+
+      //loop over items
+      $(this).find('input').each(function() {
+        if(this.value) {
+          answer[title].push(this.value);
+          items.push(this.value);
+        }
+      });
+    });
+
+    return {
+      items: items,
+      classes: classes,
+      answer: answer
+    }
+  }
+});
+
+generate.register.edit('answer', 'text', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    //for label (tip)
+    var $label = render.inputs.text('Формат ответа', 'label', value.label);
+    $new_edit.prepend($label);
+
+    //for right answer
+    var $answer = render.inputs.text('Верный ответ', 'answer', value.answer);
+    $new_edit.prepend($answer);
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      label: '',
+      answer: undefined
+    }
+
+    value.label = $edit.find('[name="label"]').val();
+    value.answer = $edit.find('[name="answer"]').val();
+
+    return value;
+  }
+});
+
+generate.register.edit('answer', 'radio', {
+  random_possible: true,
+  builder: function(value) {
+    var $new_edit = this.make_template();
+    var group = generate.counter.radio++;
+
+    var create_field = function(label) {
+      var $radio = $(loads.get('Elements/Inputs/radio/'));
+      var $input = render.inputs.text('', '', label);
+
+      var $field = $("<div class='__edit_item'></div>");
+
+      $radio.find('input').attr('name', "new_radio_" + group);
+
+      $field.append($radio).append($input);
+      button_delete.add($field);
+
+      return $field;
+    }
+
+    if(value.items && value.items.length) {
+      value.items.forEach(function(label, index) {
+        var $field = create_field(label);
+
+        $new_edit.append($field);
+        if(value.answer.has(index)) {
+          $field.find('[type="radio"]')[0].checked = true;
+        }
+      });
+    } else {
+      $new_edit.append(create_field());
+    }
+
+
+    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
+
+    $new_edit.append($add_option);
+
+    $add_option.click(function() {
+      $add_option.before(create_field());
+    });
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      items: [],
+      answer: []
+    }
+
+    $edit.find(".m--radio").each(function(index, el) {
+      var label = $(el).siblings().find(".__value").val();
+
+      value.items.push(label);
+
+      if($(el).find("input").is(":checked")) {
+        value.answer.push(index);
+      }
+    });
+
+    return value;
+  }
+});
+
+generate.register.edit('question', 'file', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    var $filename = render.inputs.text('Название файла (как его увидят ученики)',
+                                      'file_name', value.name);
+    var $file_input = $(loads.get("Elements/Inputs/file/"));
+
+    $new_edit.append($filename);
+
+    $new_edit.append($file_input);
+    var file_data = file_catcher.add($file_input);
+
+    if(defined(value.asset_id) || defined(value.url)) {
+      $file_input.find('.__text').text(value.file_name);
+      file_data.value.change(function() {
+        editor.assets.replace(value.asset_id, file_data);
+      });
+    }
+
+    if( ! defined(value.asset_id)) {
+      value.asset_id = editor.assets.add(file_data);
+    }
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {};
+    value.asset_id = editor.active_element.value.asset_id;
+    value.name = $edit.find('[name="file_name"]').val();
+
+    if(defined(editor.assets.get(value.asset_id))) {
+      value.file_name = editor.assets.get(value.asset_id).name;
+      value.size = Math.floor(editor.assets.get(value.asset_id)
+                    .files[0].size/1024/1024*100)/100 + "МБ";
+    } else {
+      value.file_name = editor.active_element.value.file_name;
+      value.size = editor.active_element.value.size;
+    }
+
+    if(value.name === '') {
+      value.name = value.file_name;
+    }
+
+    return value;
+  }
+});
+
+generate.register.edit('question', 'image', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    var $file_input = $(loads.get("Elements/Inputs/file/"));
+
+    $new_edit.append($file_input);
+    var file_data = file_catcher.add($file_input);
+
+    if(defined(value.asset_id) || defined(value.url)) {
+      $file_input.find('.__text').text(value.file_name);
+      file_data.value.change(function() {
+        editor.assets.replace(value.asset_id, file_data);
+      });
+    }
+
+    if( ! defined(value.asset_id)) {
+      value.asset_id = editor.assets.add(file_data);
+    }
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {};
+    value.asset_id = editor.active_element.value.asset_id;
+
+    var event = editor.assets.get(value.asset_id);
+
+    if(defined(event)) {
+      value.file_name = editor.assets.get(value.asset_id).name;
+      value.href = URL.createObjectURL(event.files[0]);
+      value.url = undefined;
+    } else {
+      value.href = value.url || editor.active_element.value.href;
+      value.file_name = editor.active_element.value.file_name;
+    }
+
+    return value;
+  }
+});
+
+generate.register.edit('question', 'text', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+    $new_edit.prepend(loads.get("Elements/Inputs/text/textarea/"));
+
+    $new_edit.find('label').text('Текст');
+    $new_edit.find('.__value').html(value.text);
+
+    if(value.text) {
+      $new_edit.find('label').addClass('m--top');
+    }
+
+    inline_editor.start($new_edit.find('.__value')[0]);
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    return {
+      text: $edit.find('.__value').html()
+    }
+  }
+});
+
+generate.register.element('answer', 'checkbox', {
+  show_in_items: true,
+
+  builder: function(value) {
+
+    value.answer = value.answer || [];
+
+    var $new_element = this.make_template(value);
+    value.items.forEach(function(label, index) {
+      var $new_checkbox = $(loads.get('Elements/Inputs/checkbox/'));
+      $new_checkbox.find('label').text(label);
+
+      if(value.answer.has(index)) {
+        $new_checkbox.find('input')[0].checked = true;
+      }
+
+      $new_element.append($new_checkbox);
+    });
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
+      answer: [1],
+      worth: 1
+    }
+  }
+});
+
+generate.register.element('answer', 'classify', {
+  show_in_items: true,
+
+  create_item: function(item_text, indicator_index) {
+    var $new_item = $(loads.get('Elements/Modules/Test/generate/' +
+                                'data/elements/answer/classify/__item/'));
+    $new_item.text(item_text);
+    $new_item.addClass('classify_item_'+indicator_index);
+
+    //binding pull_put
+    pull_put.puller.add(
+      $new_item, //element
+      [], //actions
+      undefined, //additional
+      function() {
+        indicator.show(indicator_index);
+        pull_put.ui.$.find('.__content').css('min-width', '10rem');
+      },
+      false,
+      true
+    );
+
+    return $new_item;
+  },
+
+  check: function($element) {
+    $element.find('.__items').each(function() {
+      if($(this).children('.__item').length === 0) {
+        if($(this).children('.m--classify-empty').length === 0) {
+          $(this).append('<div class="m--classify-empty">Пусто</div>');
+        }
+      } else {
+        $(this).children('.m--classify-empty').remove();
+      }
+    });
+  },
+
+  create_class: function(title, items, special_class, indicator_index) {
+    var self = this;
+    var $new_class = $(loads.get('Elements/Modules/Test/generate/' +
+                                 'data/elements/answer/classify/'));
+
+    var $items = $new_class.find('.__items');
+    if(items.length === 0) {
+      $items.append('<div class="m--classify-empty">Пусто</div>');
+    } else {
+      items.forEach(function(item_text) {
+        $items.append(self.create_item(item_text, indicator_index));
+      });
+    }
+
+    //binding pull_put
+    pull_put.put_zone.add($items, function(event, $this, $pulled) {
+      if($pulled.hasClass('classify_item_'+indicator_index)) {
+        $items.append($pulled);
+        console.log($pulled);
+        pull_put.reset();
+        indicator.hide(indicator_index);
+        self.check($new_class.parent());
+      }
+    });
+
+    indicator.add($items, 'add', indicator_index);
+
+    $new_class.find('.__title').text(title);
+    $new_class.addClass(special_class);
+
+    return $new_class;
+  },
+
+  builder: function(value) {
+    var self = this;
+    var indicator_index = generate.counter.classify++;
+
+    var items_copy = value.items.slice();
+
+    var $new_element = self.make_template(value);
+
+    value.classes.forEach(function(class_name) {
+      var class_items = [];
+
+      if(value.answer[class_name]) {
+        value.answer[class_name].forEach(function(item) {
+          items_copy.remove(item);
+          class_items.push(item);
+        });
+      }
+
+      $new_element.append(self.create_class(class_name, class_items, '',
+                                            indicator_index));
+    });
+
+    if(items_copy.length > 0) {
+      $new_element.append(self.create_class('', items_copy, 'm--unordered',
+                                            indicator_index));
+    }
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      classes:  ["Глаголы", "Существительные"],
+      items: ["Дом", "Стол", "Бук"],
+      answer: {}
+    }
+  }
+});
+
+generate.register.element('answer', 'radio', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var group = generate.counter.radio++;
+    value.answer = value.answer || [];
+
+    var $new_element = this.make_template(value);
+    value.items.forEach(function(label, index) {
+      var $new_checkbox = $(loads.get('Elements/Inputs/radio/'));
+      $new_checkbox.find('label').text(label);
+
+      if(value.answer.has(index)) {
+        $new_checkbox.find('input')[0].checked = true;
+      }
+
+      $new_element.append($new_checkbox);
+      $new_element.find('input').attr('name', "radio_" + group);
+    });
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
+      answer: [1],
+      worth: 1
+    }
+  }
+});
+
+generate.register.element('answer', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.append(render.inputs.text(
+      value.label,
+      '',
+      value.answer
+    ));
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      label: 'Текстовый ответ',
+      worth: 1
+    }
+  }
+})
+
+generate.register.element('question', 'file', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $file_template = $(loads.get("Elements/card/file/exports.html"));
+
+    $file_template.attr("href", value.url);
+    $file_template.find(".__name").text(value.name);
+    $file_template.find(".__size").text(value.size);
+
+    $new_element.append($file_template);
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      name: "Файл для скачивания",
+      size: "3.21МБ",
+      pos: undefined,
+      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
+    }
+  }
+});
+
+generate.register.element('question', 'image', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $image = $(document.createElement('img'));
+
+    $image.attr("src", value.url || value.href);
+    $image.css('max-width', '100%');
+    $new_element.css({
+      'display': 'flex',
+      'align-items': 'center',
+      'justify-content': 'center'
+    });
+
+    $new_element.append($image);
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      url: "/media/samples/image.jpg"
+    }
+  }
+});
+
+generate.register.element('question', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.html('<div class="__value">' + value.text + '</div>');
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      text: 'Текстовый вопрос'
+    }
+  }
+});
+
+generate.register.external('answer', 'checkbox', {
+  get_value: function($element) {
+    var answers = [];
+    $element.find('.m--checkbox').each(function(index, el) {
+      if(el.querySelector('input').checked) {
+        answers.push(index);
+      }
+    });
+    return answers;
+  },
+
+  get_summary: function(value, element_data) {
+    var answers = [];
+    var big  = false;
+
+    value.forEach(function(pos) {
+      var option = element_data.items[pos];
+
+      if(option.length > 20) {
+        option = option.substring(0, 17).escape();
+        option = option + "&hellip;";
+        big = true;
+      } else {
+        option = option.escape();
+      }
+
+      answers.push(option);
+    })
+
+    if(big) {
+      answers = answers.join('<br>');
+    } else {
+      answers = answers.join(', ');
+    }
+
+    return answers;
+  },
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    if( ! Array.isArray(user_answer)) {
+      user_answer = [];
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('input').change(_change);
+  }
+});
+
+generate.register.external('answer', 'classify', {
+  get_value: function($element) {
+    var answer = {};
+
+    $element.children('.__class').each(function() {
+      if($(this).hasClass('m--unordered')) return;
+
+      var title = $(this).children('h3').text();
+      answer[title] = [];
+
+      //loop over items
+      $(this).find('.__item').each(function() {
+        answer[title].push($(this).text());
+      });
+    });
+
+    return answer;
+  },
+
+  unwrap_answer: function(value, reduce) {
+    var items = [],
+        classes = [];
+
+    for(class_name in value) {
+      for(var i = 0; i < value[class_name].length; i++) {
+        if(value[class_name][i].length > 20 && reduce) {
+          value[class_name][i] = value[class_name][i].substring(0, 17).escape();
+          value[class_name][i] = value[class_name][i] + "...";
+        } else {
+          value[class_name][i] = value[class_name][i].escape();
+        }
+        classes.remove(class_name);
+        classes.push(class_name);
+        items.push(value[class_name][i]);
+      }
+    }
+
+    return {
+      classes: classes,
+      items: items,
+      answer: value
+    };
+  },
+
+  get_summary: function(value, element_data) {
+    //build & item_reduce
+    value = this.unwrap_answer(value, true);
+
+    if(value.items.length === 0) {
+      console.log('empty');
+      return "";
+    }
+
+    var $summary = this.self.element.build(value);
+
+    $summary.find('*').unbind('click');
+
+    return $summary;
+  },
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    // build
+    var self = this;
+    var make_DOM = function(answer) {
+      console.log(answer);
+      answer = self.unwrap_answer(answer, true);
+      var $element = self.self.element.build(answer);
+
+      $element.find('*').unbind('click');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('.__items').click(function(event) {
+      if(pull_put.is_pulled) {
+        _change();
+      }
+    });
+  }
+});
+
+
+//TODO fix attempt icon swap
+
+generate.register.external('answer', 'radio', {
+  get_value: function($element) {
+    var answers = [];
+    $element.find('.m--radio').each(function(index, el) {
+      if(el.querySelector('input').checked) {
+        answers.push(index);
+      }
+    });
+    return answers;
+  },
+
+  get_summary: function(value, element_data) {
+    var answers = [];
+    var big  = false;
+
+    value.forEach(function(pos) {
+      var option = element_data.items[pos];
+
+      if(option.length > 20) {
+        option = option.substring(0, 17).escape();
+        option = option +  "&hellip;";
+        big = true;
+      } else {
+        option = option.escape();
+      }
+
+      answers.push(option);
+    })
+
+    if(big) {
+      answers = answers.join('<br>');
+    } else {
+      answers = answers.join(', ');
+    }
+
+    return answers;
+  },
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    if( ! Array.isArray(user_answer)) {
+      user_answer = [];
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('input').change(_change);
+  }
+});
+
+generate.register.external('answer', 'text', {
+  get_value: function($element) {
+    return $element.find('input').val();
+  },
+
+  get_summary: function(value) {
+    if( ! value) value = "";
+
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
+    } else {
+      value = value.escape();
+    }
+
+    return value;
+  },
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    var timer;
+    var typing_interval = 1000;
+
+    $element.keydown(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        var value = $element.find('.__value').val();
+        _change();
+      }, typing_interval);
+    });
+  }
+});

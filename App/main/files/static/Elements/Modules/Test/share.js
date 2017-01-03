@@ -1,1 +1,216 @@
-var share={ajax:{},display:{},edit:{},search:{},current_id:""};$(document).ready(function(){}),share.ajax.edit=function(e){},share.ajax.share=function(e){console.log("SHOULD HAVE SHARED",e)},share.ajax.unshare=function(e){},share.display.hide=function(){},share.display.show=function(e){},share.edit.get_defaults=function(){return{share_id:!1,open:!1,description:"",tags:{main:[],subject:[]},assets:{test:!1,material:!1,template:[]}}},share.edit.parse=function(e){var t=share.edit.get_defaults();if(!e)return console.log("NOTING TO PARSE"),t;var a=e.find('*[name="overall-tags"]').val(),n=e.find('*[name="subject-tags"]').val();return t.tags.main=a.replace(", ",",").split(","),t.tags.subject=n.replace(", ",",").split(","),t.description=e.find(".__text.__value").html(),t.open=e.find(".__open")[0].checked,e.find(".share_test input")[0]&&e.find(".share_test input")[0].checked&&(t.assets.test=django.test.id),e.find(".share_material input")[0]&&e.find(".share_material input")[0].checked&&(t.assets.material=django.material.id),t},function(){function e(e){var t=$('<div class="row"></div>'),a=$("<button>Добавить в открытую библиотеку</button>");return t.append(a),a.click(function(){var t=share.edit.parse(e);share.ajax.share(t),popup.hide()}),t}function t(e){var t=$('<div class="row></div>');return t.append("<button>Сохранить изменения</button>"),t.append('<button class="m--ghost">Добавить как новое</button>'),t.append('<button class="m--ghost" class="m--negative"> Удалить </button>'),t}function a(e){function t(e){for(var t,n=$("<div></div>"),s=0;s<e.length;s++)a.has(e[s].group)||(a.push(e[s].group),t=$(loads.get("Elements/Inputs/checkbox/")),t.find("label").html(e[s].group),n.append(t));return n}var a=[],n=$("<div></div>"),s=$(loads.get("Elements/Inputs/checkbox/"));return"test"===django.current_type?(s.find("label").html("Тест"),s.addClass("share_test")):(s.find("label").html("Материал"),s.addClass("share_material")),n.append(s),n.append(t(editor.test_data.templates)),n.append(t(e.assets.template)),n}function n(n){var s=$(loads.get("Elements/Modules/Test/share/__popup_texts/__edit/")),i=s.find(".__text.__value");return i.html(n.description),check_if_filled(i),inline_editor.start(i[0]),s.find(".__specification").html(a(n)),s.find(".__tags>.__overall").append(render.inputs.text("Через запятую, не более 4","overall-tags",n.tags.main.join(", "))),s.find(".__tags>.__subject").append(render.inputs.text("Через запятую, не более 4","subject-tags",n.tags.subject.join(", "))),n.share_id?s.find(".__actions").append(t(s)):s.find(".__actions").append(e(s)),s}share.edit.show=function(e){e||(e=share.edit.get_defaults());var t=n(e);popup.show(t)}}();
+var share = {
+  ajax: {},
+  display: {},
+  edit: {},
+  search: {},
+  current_id: ""
+}
+
+$(document).ready(function() {
+  
+});
+
+share.ajax.edit = function(new_data) {
+
+}
+
+
+share.ajax.share = function(share_data) {
+  console.log('SHOULD HAVE SHARED', share_data);
+  var form_data = new FormData();
+  form_data.append('course_id',loads.course.id);
+  form_data.append('description',share_data.description);
+  form_data.append('open',share_data.open);
+  //form_data.append('share_query',JSON.stringify(share_data.share_query));
+  form_data.append('subject_tags',JSON.stringify(share_data.tags.subject));
+  form_data.append('global_tags',JSON.stringify(share_data.tags.main));
+  if (share_data.assets.material)
+  	form_data.append('material_id',share_data.assets.material);
+  else 
+  	form_data.append('test_id',share_data.assets.test);
+  if (share_data.assets.templates)
+  	form_data.append('templates',JSON.stringify(share_data.assets.templates));
+  if (share_data.shared_id)
+  	form_data.append('shared_id',share_data.shared_id);
+  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
+  console.log(form_data);
+  $.ajax({
+    type:"POST",
+    url:"/func/share/",
+    data: form_data,
+    processData: false,
+      contentType: false,
+     success: function(response) {
+      if(response && response["type"]) {
+          notification.show(response["type"], response["message"]);
+      } else {
+        notification.show('success', 'Группы изменены' );
+      }
+    }
+});
+}
+
+share.ajax.unshare = function(share_data) {
+  //ajax to unshare
+}
+
+share.display.hide = function() {
+
+}
+
+share.display.show = function(data) {
+
+}
+
+share.edit.get_defaults = function() {
+  return {
+    share_id: false,
+    open: false,
+    description: "",
+    tags: {
+      main: [],
+      subject: []
+    },
+    assets: {
+      test: false,
+      material: false,
+      template: []
+    }
+  }
+}
+
+share.edit.parse = function($edit) {
+  var share_data = share.edit.get_defaults();
+  if( ! $edit) {
+    console.log("NOTING TO PARSE");
+    return share_data;
+  }
+  var tags_overall = $edit.find('*[name="overall-tags"]').val();
+  var tags_subject = $edit.find('*[name="subject-tags"]').val();
+
+  share_data.tags.main = tags_overall.replace(', ', ',').split(',');
+  share_data.tags.subject = tags_subject.replace(', ', ',').split(',');
+  share_data.description = $edit.find('.__text.__value').html();
+  share_data.open = $edit.find('.__open')[0].checked;
+
+
+  if($edit.find('.share_test input')[0] &&
+     $edit.find('.share_test input')[0].checked) {
+      share_data.assets.test = django.test.id;
+  }
+
+  if($edit.find('.share_templates input')[0] &&
+     $edit.find('.share_templates input')[0].checked) {
+      share_data.assets.templates = true;
+  }
+
+  if($edit.find('.share_material input')[0] &&
+     $edit.find('.share_material input')[0].checked) {
+      share_data.assets.material = django.material.id;
+  }
+
+  //here should be template parsing
+  return share_data;
+};
+
+(function() {
+  function make_create_actions($new_edit) {
+    var $actions = $('<div class="row"></div>');
+    var $share_btn = $('<button>Добавить в открытую библиотеку</button>');
+    $actions.append($share_btn);
+    $share_btn.click(function() {
+      var data = share.edit.parse($new_edit);
+      share.ajax.share(data);
+      popup.hide();
+    });
+
+    return $actions;
+  }
+
+  function make_edit_actions($new_edit) {
+    var $actions = $('<div class="row></div>');
+    $actions.append('<button>Сохранить изменения</button>');
+    $actions.append('<button class="m--ghost">Добавить как новое</button>');
+    $actions.append(
+      '<button class="m--ghost" class="m--negative"> Удалить </button>');
+    return $actions;
+  }
+
+  function make_specification(share_data) {
+    // var used = [];
+    // function make_tempalte_checker(template_list) {
+    //   var $list = $('<div></div>');
+    //   var $item;
+    //
+    //   for(var i = 0;i < template_list.length; i++) {
+    //     if(used.has(template_list[i].group)) continue;
+    //     used.push(template_list[i].group);
+    //
+    //     $item = $(loads.get('Elements/Inputs/checkbox/'));
+    //     $item.find('label').html(template_list[i].group);
+    //     $list.append($item);
+    //   }
+    //
+    //   return $list;
+    // }
+
+    var $specification = $('<div></div>');
+
+    var $core = $(loads.get('Elements/Inputs/checkbox/'));
+    if(django.current_type === 'test') {
+      $core.find('label').html('Тест');
+      $core.addClass('share_test');
+    } else {
+      $core.find('label').html('Материал');
+      $core.addClass('share_material');
+    }
+    $specification.append($core);
+
+    if(editor.test_data.templates || share_data.assets.template) {
+      var $templates = $(loads.get('Elements/Inputs/checkbox/'));
+      $templates.addClass('share_templates');
+      $templates.find('label').text('Шаблоны');
+      $specification.append($templates);
+    }
+
+    return $specification;
+  }
+
+  function make_edit(share_data) {
+    var $new_edit = $(loads.get(
+                      'Elements/Modules/Test/share/__popup_texts/__edit/'));
+
+    var $desc = $new_edit.find('.__text.__value');
+    $desc.html(share_data.description);
+
+    check_if_filled($desc);
+    inline_editor.start($desc[0]);
+
+    $new_edit.find('.__specification').html(make_specification(share_data));
+
+    $new_edit.find('.__tags>.__overall').append(render.inputs.text(
+      'Через запятую, не более 4', 'overall-tags',  share_data.tags.main.join(', ')
+    ));
+
+    $new_edit.find('.__tags>.__subject').append(render.inputs.text(
+      'Через запятую, не более 4', 'subject-tags', share_data.tags.subject.join(', ')
+    ));
+
+    if(share_data.share_id) {
+      $new_edit.find('.__actions').append(make_edit_actions($new_edit));
+    } else {
+      $new_edit.find('.__actions').append(make_create_actions($new_edit));
+    }
+
+    return $new_edit;
+  }
+
+  share.edit.show = function(share_data) {
+    if( ! share_data) share_data = share.edit.get_defaults();
+
+    var $new_edit = make_edit(share_data);
+
+    popup.show($new_edit);
+  }
+
+}() );

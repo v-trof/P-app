@@ -1,1 +1,280 @@
-var results_controls={active_student:"",active_test:"",loaded:{tests:{},results:{}}};results_controls.check_load=function(){var t=results_controls.active_test,s=results_controls.active_student;return results_controls.loaded.tests[t+"-"+s]?results_controls.loaded.results[t+"-"+s]?{test:!0,results:!0}:{test:!0,results:!1}:{test:!1,results:!1}},results_controls.display=function(){show_active_test(results_controls.active_test);var t=results_controls.active_test,s=results_controls.active_student,e=t+"-"+s,r=results_controls.loaded.tests[e],o=results_controls.loaded.results[e].attempt,n=results_controls.loaded.results[e].mark;$(".preview>.__content").html(""),results_display.init(r,o,n);var c=$("<button>Сбросить результаты</button>");$(".preview").append(c),c.click(function(){$.ajax({url:"/test/reset_attempt/",type:"POST",data:{course_id:django.course.id,test_id:t,user_id:s,csrfmiddlewaretoken:django.csrf_token}}).success(function(t){t&&t.type?notification.show(t.type,t.message):notification.show("success","Результаты сброшены, ученик может переписать")}).error(function(t){notification.show("error","Произошла ошибка")})})},results_controls.load=function(){function t(){s.results.mark&&s.results.attempt?results_controls.display():setTimeout(t,20)}var s={results:!1},e=results_controls.active_test,r=results_controls.active_student;s.results={attempt:!1,mark:!1};var o;s.results.mark?(o=results_controls.loaded.results[e+"-"+r],s.results={attempt:!0,mark:!0}):(results_controls.loaded.results[e+"-"+r]={},results_controls.loaded.tests[e+"-"+r]={},$.ajax({url:"/test/get_test_info/",type:"POST",data:{csrfmiddlewaretoken:django.csrf_token,course_id:django.course.id,test_id:e,user_id:r,compiled:!0}}).success(function(t){s.results.test=!0,console.log(t),results_controls.loaded.tests[e+"-"+r]=t}),$.ajax({url:"/test/get_results/",type:"POST",data:{csrfmiddlewaretoken:django.csrf_token,course_id:django.course.id,test_id:e,user_id:r}}).success(function(t){s.results.mark=!0,results_controls.loaded.results[e+"-"+r].mark=t}),$.ajax({url:"/test/get_attempt_info/",type:"POST",data:{csrfmiddlewaretoken:django.csrf_token,course_id:django.course.id,test_id:e,user_id:r}}).success(function(t){s.results.attempt=!0,results_controls.loaded.results[e+"-"+r].attempt=t})),t()},results_controls.change_score_view=function(t,s,e,r,o){var n=function(t){t.removeClass("m--negative"),t.removeClass("m--neutral"),t.removeClass("m--positive")},c=results_display.calculate_score(),l=$('[href$="/'+results_controls.active_student+'"]').parent().find('button[test="'+results_controls.active_test+'"]'),a=$(".summary-item").eq(t).find("button"),u=$(".summary-mark");n(l),n(u),l.addClass("m--"+s.quality).text(s.value),results_display.update_mark(s,c),e===r?(summary.set_icon("right",o),summary.set_icon("right",a)):e>0?(summary.set_icon("forgiving",o),summary.set_icon("forgiving",a)):(summary.set_icon("wrong",o),summary.set_icon("wrong",a))},results_controls.send_mark=function(t,s,e,r){summary.set_icon("spinner",r),$.ajax({url:"/test/change_score/",type:"POST",data:{csrfmiddlewaretoken:django.csrf_token,course_id:django.course.id,test_id:results_controls.active_test,user_id:results_controls.active_student,answer_id:t,score:s}}).success(function(o){results_controls.change_score_view(t,o,s,e,r)}).error(function(t){notification.show("error",t)})},$(document).ready(function(){summary.add_icon("spinner",loads["Elements/Icons/spinner.svg"],"Сохраняем на сервере","m--neutral")}),results_controls.bind_stepper=function(t,s,e,r){var o=t.find(".inc_mark"),n=t.find(".dec_mark"),c=t.find(".__current");t.find(".__max").text(e),c.text(s),o.click(function(t){s<e&&(s++,c.text(s),r(s))}),n.click(function(t){s>0&&(s--,c.text(s),r(s))})},$(document).ready(function(){results_display.answer_decorator=function(t,s,e){var r=$(loads.get("Elements/Modules/Results/controls/__set_mark/")),o=t.find(".__icon");t.find(".__score").replaceWith(r);results_controls.bind_stepper(r,s.user_score,s.worth,function(t){results_controls.send_mark(e,t,s.worth,o)})}});
+var results_controls = {
+  active_student: "",
+  active_test: "",
+  loaded: {
+    tests: {},
+    results: {}
+  }
+}
+results_controls.check_load = function() {
+  var test_id = results_controls.active_test;
+  var user_id = results_controls.active_student;
+  if( results_controls.loaded.tests[test_id + "-" + user_id]) {
+    if(results_controls.loaded.results[test_id + "-" + user_id]) {
+      return {
+        test: true,
+        results: true
+      }
+    } else {
+      return {
+        test: true,
+        results: false
+      }
+    }
+  }
+  return {
+    test: false,
+    results: false
+  }
+}
+
+results_controls.display = function() {
+  show_active_test(results_controls.active_test);
+  var test_id = results_controls.active_test;
+  var user_id = results_controls.active_student;
+
+  var user_key = test_id + "-" + user_id;
+
+  var test_info = results_controls.loaded.tests[user_key];
+
+  var attempt_info = results_controls.loaded.results[user_key].attempt;
+  var results_info = results_controls.loaded.results[user_key].mark;
+
+  $('.preview>.__content').html('');
+  results_display.init(test_info, attempt_info, results_info);
+
+  var $redo = $('<button>Сбросить результаты</button>');
+
+  $('.preview').append($redo);
+  $redo.click(function() {
+    $.ajax({
+      url: '/test/reset_attempt/',
+      type:'POST',
+      data: {
+        'course_id': django.course.id,
+        'test_id': test_id,
+        'user_id': user_id,
+        'csrfmiddlewaretoken': django.csrf_token
+      }
+    }).success(function(response) {
+       if(response && response["type"]) {
+           notification.show(response["type"], response["message"]);
+       } else {
+         notification.show('success',
+                           'Результаты сброшены, ученик может переписать');
+       }
+    }).error(function(error) {
+      notification.show('error', "Произошла ошибка");
+    });
+  })
+}
+
+results_controls.load = function() {
+
+  var loaded = {
+    results: false
+  }
+
+  var test_id = results_controls.active_test;
+  var user_id = results_controls.active_student;
+
+  // console.log(results_controls);
+
+  function check_load() {
+    if(loaded.results.mark && loaded.results.attempt) {
+      results_controls.display();
+    } else {
+      setTimeout(check_load, 20);
+    }
+  }
+
+  loaded.results = {
+    attempt: false,
+    mark: false
+  }
+
+  var results;
+
+  if(loaded.results.mark) {
+    results = results_controls.loaded.results[test_id + "-" + user_id]
+    loaded.results = {
+      attempt: true,
+      mark: true
+    }
+  } else {
+    results_controls.loaded.results[test_id + "-" + user_id] = {}
+    results_controls.loaded.tests[test_id + "-" + user_id] = {}
+
+    $.ajax({
+      url: '/test/get_test_info/',
+      type: 'POST',
+      data: {
+        'csrfmiddlewaretoken': django.csrf_token,
+        'course_id': django.course.id,
+        'test_id': test_id,
+        'user_id': user_id,
+        'compiled': true
+      },
+    })
+    .success(function(json) {
+      loaded.results.test = true;
+    console.log(json);
+      results_controls.loaded.tests[test_id + "-" + user_id] = json;
+    });
+
+    // console.log(user_id);
+    $.ajax({
+      url: '/test/get_results/',
+      type: 'POST',
+      data: {
+        'csrfmiddlewaretoken': django.csrf_token,
+        'course_id': django.course.id,
+        'test_id': test_id,
+        'user_id': user_id
+      },
+    })
+    .success(function(json) {
+      loaded.results.mark = true;
+      results_controls.loaded.results[test_id + "-" + user_id].mark = json;
+    });
+
+    // console.log(user_id);
+    $.ajax({
+      url: '/test/get_attempt_info/',
+      type: 'POST',
+      data: {
+        'csrfmiddlewaretoken':  django.csrf_token,
+        'course_id': django.course.id,
+        'test_id': test_id,
+        'user_id': user_id
+      },
+    })
+    .success(function(json) {
+      loaded.results.attempt = true;
+      results_controls.loaded
+        .results[test_id + "-" + user_id].attempt = json;
+    });
+  }
+
+  check_load();
+}
+
+results_controls.change_score_view = function(
+  index, mark, score, max, $icon) {
+  var reset_class = function($element) {
+    $element.removeClass('m--negative');
+    $element.removeClass('m--neutral');
+    $element.removeClass('m--positive');
+  }
+
+  var test_score = results_display.calculate_score();
+
+  var $mark = $('[href$="/' + results_controls.active_student +'"]')
+                .parent().find('button[test="' +
+                  results_controls.active_test+'"]');
+  var $summary_icon = $('.summary-item').eq(index).find('button');
+  var $summary_mark = $('.summary-mark')
+
+  reset_class($mark);
+  reset_class($summary_mark);
+
+  $mark.addClass('m--' + mark.quality)
+    .text(mark.value);
+
+  results_display.update_mark(mark, test_score);
+
+  if(score === max) {
+    summary.set_icon('right', $icon);
+    summary.set_icon('right', $summary_icon);
+  } else if(score > 0) {
+    summary.set_icon('forgiving', $icon);
+    summary.set_icon('forgiving', $summary_icon);
+  } else {
+    summary.set_icon('wrong', $icon);
+    summary.set_icon('wrong', $summary_icon);
+  }
+}
+
+results_controls.send_mark = function(index,
+  mark, max, $icon) {
+  summary.set_icon('spinner', $icon);
+  $.ajax({
+    url: '/test/change_score/',
+    type: 'POST',
+    data: {
+      'csrfmiddlewaretoken': django.csrf_token,
+      'course_id': django.course.id,
+      'test_id': results_controls.active_test,
+      'user_id': results_controls.active_student,
+      'answer_id': index,
+      'score': mark
+    },
+  })
+  .success(function(new_mark) {
+    results_controls.change_score_view(
+      index,
+      new_mark,
+      mark,
+      max,
+      $icon
+    );
+  })
+  .error(function(error) {
+    notification.show('error', error);
+  })
+}
+
+
+$(document).ready(function() {
+  summary.add_icon('spinner',
+                   loads["Elements/Icons/spinner.svg"],
+                   'Сохраняем на сервере',
+                   'm--neutral');
+});
+
+results_controls.bind_stepper = function(
+  $element,
+  current_value,
+  max_value,
+  _call_back) {
+  var $inc = $element.find('.inc_mark');
+  var $dec = $element.find('.dec_mark');
+  var $current = $element.find('.__current');
+
+  //display
+  $element.find('.__max').text(max_value);
+  $current.text(current_value);
+
+  $inc.click(function(event) {
+    if(current_value < max_value) {
+      current_value++;
+      $current.text(current_value);
+      _call_back(current_value);
+    }
+  });
+
+  $dec.click(function(event) {
+    if(current_value > 0) {
+      current_value--;
+      $current.text(current_value);
+      _call_back(current_value);
+    }
+  });
+}
+
+$(document).ready(function() {
+  results_display.answer_decorator = function($answer, attempt_data, index) {
+    var $stepper = $(
+                      loads.get('Elements/Modules/Results/controls/__set_mark/')
+                    );
+    var $icon = $answer.find('.__icon');
+    var $index =
+    $answer.find('.__score').replaceWith($stepper);
+    results_controls.bind_stepper($stepper,
+                                  attempt_data.user_score, attempt_data.worth,
+                                  function(score) {
+                                    results_controls.send_mark(index,
+                                      score, attempt_data.worth, $icon);
+                                  });
+  }
+});

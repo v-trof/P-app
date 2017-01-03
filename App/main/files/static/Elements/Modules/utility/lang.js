@@ -1,1 +1,36 @@
-function defined(t){return"undefined"!=typeof t}Array.prototype.has=function(t){return this.indexOf(t)>-1},Array.prototype.remove=function(){for(var t,e,n=arguments,r=n.length;r&&this.length;)for(t=n[--r];(e=this.indexOf(t))!==-1;)this.splice(e,1);return this},String.prototype.escape=function(){var t=document.createElement("textarea");return t.textContent=this,t.innerHTML},String.prototype.replaceAll=function(t,e){var n=this;return n.split(t).join(e)};
+function defined(variable) {
+  if (typeof variable !== typeof undefined) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Array.prototype.has = function(value) {
+  return (this.indexOf(value) > -1);
+}
+
+//remvoe function
+Array.prototype.remove = function() {
+  var what, a = arguments,
+    L = a.length,
+    ax;
+  while (L && this.length) {
+    what = a[--L];
+    while ((ax = this.indexOf(what)) !== -1) {
+      this.splice(ax, 1);
+    }
+  }
+  return this;
+};
+
+String.prototype.escape = function() {
+  var escape = document.createElement('textarea');
+  escape.textContent = this;
+  return escape.innerHTML;
+}
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};

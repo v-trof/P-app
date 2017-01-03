@@ -1,1 +1,711 @@
-function upload_file(e,t){var a=test_manager.upload_queue.add(),n=new FormData;n.append("file",e),n.append("path","courses/"+django.course.id+"/assets/"+django.type+"/"),n.append("csrfmiddlewaretoken",django.csrf_token),$.ajax({type:"POST",url:"/func/upload/",data:n,processData:!1,contentType:!1,success:function(e){test_manager.upload_queue.remove(a),console.log(e),t(e)},error:function(t){test_manager.upload_queue.remove(a),notification.show("error","Ошбика при загрузке "+e.name),test_manager.upload_queue.error=!0}})}test_manager={},test_manager.load=function(e){"string"==typeof e&&(e=JSON.parse(e)),console.log(e);var t="undefined"!=typeof editor;t&&(editor.test_data.title||($(".preview h2").html(e.title),editor.test_data.title=e.title),e.tasks.forEach(function(e){editor.test_data.tasks.push(e)}),e.templates.forEach(function(e){editor.test_data.templates.push(e)})),e.tasks.forEach(function(e,a){if(e.is_template){var n=generate.data.task.template.build_finalized_task(e);$(".preview>.__content").append(n.$task)}else{if(t)var s=editor.create_new_task();else{var s=generate.data.task.default.build();s.find(".__actions").remove(),s.find(".__number").html(a+1)}$(".preview>.__content").append(s),s.find(".__group").val(e.group),e.content.forEach(function(e){var t=generate.data[e.type][e.subtype].element.build(e);s.find(".__content").append(t)})}}),t&&(editor.check.numbers(),editor.check.empty())},test_manager.delete=function(){var e=new FormData;e.append("course_id",django.course.id),defined(django.test.id)?e.append("test_id",django.test.id):e.append("material_id",django.material.id),e.append("csrfmiddlewaretoken",django.csrf_token),$.ajax({type:"POST",url:"/"+django.current_type+"/delete/",data:e,processData:!1,contentType:!1,success:function(e){notification.show(e.type,e.message),defined(django.test.id)?window.history.pushState("Редактирование "+test_manager.packed_test.title,"Редактирование "+test_manager.packed_test.heading,"/test/edit/?course_id="+django.course.id+"&test_id="+django.test.id):window.history.pushState("Редактирование "+test_manager.packed_test.title,"Редактирование "+test_manager.packed_test.heading,"/material/edit/?course_id="+django.course.id+"&material_id="+django.material.id)}})},test_manager.fix_test_strict=function(e){var t=!0;return!!(e=test_manager.fix_test_soft(e))&&(e.groups={},e.tasks.forEach(function(a){var n;return n=defined(a.content)?a.content:a.parts,0===n.length?(test_manager.drop("publish"),!1):(n.forEach(function(e){"answer"!==e.type||e.answer||e.answers.length>0||(test_manager.drop("publish"),t=!1)}),void(a.group&&(e.groups[a.group]?e.groups[a.group]++:e.groups[a.group]=1)))}),!!t&&(0!==Object.keys(e.groups).length?(e.groups["Другие"]=0,e.tasks.forEach(function(t){t.group||(t.group="Другие",e.groups["Другие"]++)}),0===e.groups["Другие"]&&delete e.groups["Другие"]):e.groups["Задания"]=e.tasks.length,e))},test_manager.fix_test_soft=function(e){return e=JSON.parse(JSON.stringify(e)),e.title?0===e.tasks.length?(console.log("no empty"),test_manager.drop("save"),!1):e:(console.log("no heading"),test_manager.drop("save"),!1)},test_manager.look_for_files=function(e){e.forEach(function(e){defined(e.asset_id)&&(editor.assets.get(e.asset_id).files?upload_file(editor.assets.get(e.asset_id).files[0],function(t){e.url=t,e.asset_id=void 0}):e.asset_id=void 0)})},test_manager.pack=function(e){test_manager.packed_test=e,e.templates.forEach(function(e){test_manager.look_for_files(e.parts)}),e.tasks.forEach(function(e){e.is_template?test_manager.look_for_files(e.parts):test_manager.look_for_files(e.content)})},test_manager.publish=function(){var e=test_manager.fix_test_strict(editor.test_data);e&&popup.show(test_manager.publish_popup,function(){var t=test_manager.collect_publish();e.tasks.forEach(function(e){e.is_template&&(delete e.is_template,e.content=[],e.parts.forEach(function(t){e.content.push(generate.data.task.template.unwrap_replace(t,e.variables))}),delete e.variables,delete e.parts)}),delete e.templates;for(var a in e.groups)t.build.append(test_manager.render_inline(a,e.groups[a]));t.build.find(".__value").attr("disabled","disabled"),$("#random_build").change(function(){this.checked?(t.build.find(".__value").removeAttr("disabled"),$("#random_order").removeAttr("disabled")):(t.build.find(".__value").attr("disabled","disabled"),$("#random_order").attr("disabled","disabled"))});for(var n=test_manager.calculate_max_points(e),s=5;s>=2;s--)t.marks.append(test_manager.render_inline(s+" от",n));$("#course_section").change(function(){"Новая..."===this.value?$("#new_section_name").removeAttr("disabled"):$("#new_section_name").attr("disabled","disabled")}),$("#limit_time").change(function(){this.checked?t.time.find(".__value").removeAttr("disabled"):t.time.find(".__value").attr("disabled","disabled")}),$("#max_time").change(function(){(this.value<1||isNaN(this.value))&&(this.value=1)}),t.button.click(function(){test_manager.publish_parse(e)})},{width:"64rem"})},test_manager.publish_parse=function(e){var t=test_manager.collect_publish(),a=!0,n={random:{do:!1,shuffle:!1,limits:{}},forgive:{},max_score:test_manager.calculate_max_points(e),marks:{5:0,4:0,3:0,2:0},section:"Нераспределенные",time_limit:"00:00:00"};if($("#random_build").is(":checked")&&(n.random.do=!0,$("#random_order").is(":checked")&&(n.random.shuffle=!0),t.build.find(".row").each(function(){var e=$(this).find(".__group").text();e=e.substring(0,e.length-2);var t=parseInt($(this).find(".__value").val());t||(a=!1,notification.show("warning","Введите квоту для типа "+e)),n.random.limits[e]=parseInt(t)})),t.forgive.find("input").each(function(e,t){n.forgive[$(this).attr("id")]=this.checked}),t.marks.find("input").each(function(e,t){var s=5-e;n.marks[s.toString()]=parseInt(this.value),this.value||(a=!1,notification.show("warning","Введите минимальный балл для "+s))}),"Новая..."===$("#course_section").val()?n.section=$("#new_section_name").val():n.section=$("#course_section").val(),n.section||(notification.show("warning","Выберите секцию для размещения теста"),a=!1),$("#limit_time").is(":checked")){var s=parseInt($("#max_time").val());n.time_limit=[Math.floor(s/60),s%60,0].join(":"),n.time_limit=test_manager.expand_time(n.time_limit)}if(console.log(n),a){var i=new FormData;i.append("json_file",JSON.stringify(test_manager.packed_test)),i.append("course_id",django.course.id),defined(django.test.id)?i.append("test_id",django.test.id):i.append("material_id",django.material.id),i.append("csrfmiddlewaretoken",django.csrf_token),i.append("publish_data",JSON.stringify(n)),$.ajax({type:"POST",url:"/"+django.current_type+"/publish/",data:i,processData:!1,contentType:!1,success:function(e){notification.show(e.type,e.message),$("#"+django.current_type+"_publish").hide(),$("#"+django.current_type+"_unpublish").show(),popup.hide(),test_manager.save()},error:function(e){notification.show(e.type,e.message)}})}},test_manager.calculate_max_points=function(e){var t=0;return e.tasks.forEach(function(e){e.content.forEach(function(e){"answer"===e.type&&(t+=parseInt(e.worth))})}),t},test_manager.collect_publish=function(){var e={};return e.build=popup.$.find(".__build-settings"),e.forgive=popup.$.find(".__forgive"),e.marks=popup.$.find(".__mark-settings"),e.section=popup.$.find(".__course-section"),e.time=popup.$.find(".__time-settings"),e.button=popup.$.find("#publish"),e},test_manager.render_inline=function(e,t){console.log("rendering:",e,t);var a=$("<div class='row'><div class='__group'>"+e+": </div>"+loads.get("Elements/Inputs/text/inline/")+"<div class='__max'> / "+t+"</div></div>");return a.find("input").change(function(){var e=this.value;e=parseInt(e),console.log(e,t),(e<0||isNaN(e))&&(e=0),e>t&&(e=t),this.value=e}),a},test_manager.expand_time=function(e){for(var t=e.split(":"),a=0;a<t.length;a++)1==t[a].length&&(t[a]="0"+t[a]);return t.join(":")},test_manager.publish_material=function(){var e=test_manager.fix_test_strict(editor.test_data);e&&popup.show(test_manager.publish_popup,function(){var t=test_manager.collect_publish();e.tasks.forEach(function(e){e.is_template&&(delete e.is_template,e.content=[],e.parts.forEach(function(t){e.content.push(generate.data.task.template.unwrap_replace(t,e.variables))}),delete e.variables,delete e.parts)}),delete e.templates,$("#course_section").change(function(){"Новая..."===this.value?$("#new_section_name").removeAttr("disabled"):$("#new_section_name").attr("disabled","disabled")}),t.button.click(function(){test_manager.publish_parse(e)})},{width:"64rem"})},test_manager.publish_parse=function(e){var t=(test_manager.collect_publish(),!0),a={section:"Нераспределенные"};if("Новая..."===$("#course_section").val()?a.section=$("#new_section_name").val():a.section=$("#course_section").val(),a.section||(notification.show("warning","Выберите секцию для размещения теста"),t=!1),t){var n=new FormData;n.append("json_file",JSON.stringify(test_manager.packed_test)),n.append("course_id",django.course.id),defined(django.test.id)?n.append("test_id",django.test.id):n.append("material_id",django.material.id),n.append("csrfmiddlewaretoken",django.csrf_token),n.append("publish_data",JSON.stringify(a)),$.ajax({type:"POST",url:"/"+django.current_type+"/publish/",data:n,processData:!1,contentType:!1,success:function(e){notification.show(e.type,e.message),$("#"+django.current_type+"_publish").hide(),$("#"+django.current_type+"_unpublish").show(),popup.hide(),test_manager.save()},error:function(e){notification.show(e.type,e.message)}})}},test_manager.upload_queue={last_id:0,length:0,error:!1,_pending:[],add:function(){var e=this.last_id++;return this.length++,this._pending.push(e),e},remove:function(e){this._pending.remove(e),this.length--}},test_manager.packed_test={},test_manager.upload_test=function(){var e=JSON.parse(JSON.stringify(test_manager.packed_test));e.tasks.forEach(function(e){e.is_template&&(delete e.is_template,e.content=[],e.parts.forEach(function(t){e.content.push(generate.data.task.template.unwrap_replace(t,e.variables))}),delete e.variables,delete e.parts)}),delete e.templates;var t=new FormData;t.append("json_file",JSON.stringify(test_manager.packed_test)),t.append("course_id",django.course.id),defined(django.test.id)?t.append("test_id",django.test.id):t.append("material_id",django.material.id),t.append("csrfmiddlewaretoken",django.csrf_token),t.append("compiled_test",JSON.stringify(e)),$.ajax({type:"POST",url:"/"+django.current_type+"/save/",data:t,processData:!1,contentType:!1,success:function(e){notification.show(e.type,e.message),defined(django.test.id)?(window.history.pushState("Редактирование "+test_manager.packed_test.title,"Редактирование "+test_manager.packed_test.heading,"/test/edit/?course_id="+django.course.id+"&test_id="+django.test.id),$(".header>.__breadcrumbs>a").last().find("div").text(test_manager.packed_test.title)):window.history.pushState("Редактирование "+test_manager.packed_test.title,"Редактирование "+test_manager.packed_test.heading,"/material/edit/?course_id="+django.course.id+"&material_id="+django.material.id)}})},test_manager.drop=function(e){popup.show(loads.get("Elements/Modules/Test/manage/__popup_texts/__no_"+e+"/"),function(){$(".__ok").click(function(e){popup.hide()})})},test_manager.save=function(){if(test_manager.upload_queue.error=!1,test_manager.is_published){var e=test_manager.fix_test_strict(editor.test_data);if(!e)return!1}else{var e=test_manager.fix_test_soft(editor.test_data);if(!e)return!1}test_manager.pack(e),0!==test_manager.upload_queue.length&&(popup.show(loads.get("Elements/Modules/Test/manage/__popup_texts/__save/")),console.log(loads.get("Elements/Modules/Test/manage/__popup_texts/__save/")));var t=function(){0===test_manager.upload_queue.length?(test_manager.upload_queue.error?notification.show("error","Не удалось сохранить тест из-за ошбики с файлом. \n Его можно сохранить, если вы удалите поле, вызывающее ошибку."):test_manager.upload_test(),popup.hide()):setTimeout(t,100)};setTimeout(t,100)},test_manager.unpublish=function(){var e=new FormData;e.append("course_id",django.course.id),defined(django.test.id)?e.append("test_id",django.test.id):e.append("material_id",django.material.id),e.append("csrfmiddlewaretoken",django.csrf_token),$.ajax({type:"POST",url:"/"+django.current_type+"/unpublish/",data:e,processData:!1,contentType:!1,success:function(e){notification.show(e.type,e.message),$("#"+django.current_type+"_publish").show(),$("#"+django.current_type+"_unpublish").hide(),test_manager.is_published=!1}})};
+test_manager = {}
+
+test_manager.load = function(test) {
+  if(typeof test === 'string') {
+    test = JSON.parse(test);
+  }
+  console.log(test)
+  var editor_defined = (typeof editor !== 'undefined');
+
+  if (editor_defined) {
+    if( ! editor.test_data.title) {
+      $('.preview h2').html(test.title);
+      editor.test_data.title = test.title;
+    }
+
+    test.tasks.forEach(function(task) {
+      editor.test_data.tasks.push(task);
+    });
+
+    test.templates.forEach(function(template) {
+      editor.test_data.templates.push(template);
+    });
+  }
+
+  test.tasks.forEach(function(task, index) {
+    if(task.is_template) {
+      var task_bundle = generate.data.task.template.build_finalized_task(task);
+
+      $('.preview>.__content').append(task_bundle.$task);
+    } else {
+      if(editor_defined) {
+        var $new_task = editor.create_new_task();
+      } else {
+        var $new_task = generate.data.task.default.build();
+        $new_task.find('.__actions').remove();
+        $new_task.find('.__number').html(index + 1);
+      }
+      $('.preview>.__content').append($new_task);
+
+      $new_task.find('.__group').val(task.group);
+      task.content.forEach(function(element) {
+        var $element = generate.data[element.type][element.subtype].element.build(element);
+        $new_task.find('.__content').append($element);
+      });
+    }
+  });
+
+  if(editor_defined) {
+    editor.check.numbers();
+    editor.check.empty();
+  }
+}
+
+test_manager.delete = function() {
+  var formData = new FormData();
+  formData.append("course_id", django.course.id);
+  if(defined(django.test.id)) {
+    formData.append("test_id", django.test.id);
+  } else {
+    formData.append("material_id", django.material.id);
+  }
+  formData.append('csrfmiddlewaretoken', django.csrf_token);
+
+  $.ajax({
+    type:"POST",
+    url:"/" + django.current_type + "/delete/",
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+      notification.show(response["type"], response["message"]);
+      if(defined(django.test.id)) {
+        window.history.pushState('Редактирование ' + test_manager.packed_test.title, 'Редактирование ' + test_manager.packed_test.heading, '/test/edit/?course_id=' + django.course.id + '&test_id=' + django.test.id);
+      } else {
+        window.history.pushState('Редактирование ' + test_manager.packed_test.title, 'Редактирование ' + test_manager.packed_test.heading, '/material/edit/?course_id='+ django.course.id +'&material_id='+ django.material.id +'');
+      }
+    }
+  });
+}
+
+test_manager.fix_test_strict = function(test) {
+  var fixable = true;
+
+  test = test_manager.fix_test_soft(test);
+
+  if( ! test) {
+    return false;
+  }
+
+  test.groups = {};
+
+  test.tasks.forEach(function(task) {
+    var elements;
+
+    if( ! defined(task.content)) {
+      elements = task.parts;
+    } else {
+      elements = task.content;
+    }
+
+    if(elements.length === 0) {
+      test_manager.drop('publish');
+      return false;
+    }
+
+    elements.forEach(function(element) {
+      if(element.type === 'answer' &&
+         ! (element.answer || element.answers.length > 0)) {
+        test_manager.drop('publish');
+        fixable = false;
+      }
+    });
+
+    if(task.group) {
+      if(test.groups[task.group]) {
+        test.groups[task.group]++;
+      } else {
+        test.groups[task.group] = 1;
+      }
+    }
+  });
+
+  if( ! fixable) {
+    return false;
+  }
+
+  if(Object.keys(test.groups).length !== 0) {
+    test.groups['Другие'] = 0;
+    test.tasks.forEach(function(task) {
+      if( ! task.group) {
+        task.group = "Другие";
+        test.groups['Другие']++;
+      }
+    });
+    if(test.groups['Другие'] === 0) delete test.groups['Другие'];
+  } else {
+      test.groups['Задания'] = test.tasks.length;
+  }
+
+  return test;
+}
+
+test_manager.fix_test_soft = function(test) {
+  test = JSON.parse(JSON.stringify(test));
+
+  if( ! test.title ) {
+    console.log('no heading');
+    test_manager.drop('save');
+    return false;
+  }
+
+  if(test.tasks.length === 0) {
+    console.log('no empty');
+    test_manager.drop('save');
+    return false;
+  }
+
+
+  return test;
+}
+
+function upload_file(file_to_upload, url_handler) {
+  var file_id = test_manager.upload_queue.add();
+
+  var form_data = new FormData();
+  form_data.append('file', file_to_upload);
+  form_data.append('path', 'courses/'+django.course.id+'/assets/'+django.type+'/');
+  form_data.append('csrfmiddlewaretoken', django.csrf_token);
+
+  $.ajax({
+    type:"POST",
+    url:"/func/upload/",
+    data: form_data,
+      processData: false,
+      contentType: false,
+    success: function(response) {
+      test_manager.upload_queue.remove(file_id);
+      console.log(response);
+      url_handler(response);
+    },
+    error: function(response) {
+      test_manager.upload_queue.remove(file_id);
+      notification.show('error', 'Ошбика при загрузке '+file_to_upload.name);
+      test_manager.upload_queue.error = true;
+    }
+  });
+}
+
+test_manager.look_for_files = function(content) {
+  content.forEach(function(part) {
+    if(defined(part.asset_id)) {
+      if(editor.assets.get(part.asset_id).files) {
+        upload_file(editor.assets.get(part.asset_id).files[0], function(url) {
+          part.url = url;
+          part.asset_id = undefined;
+        });
+      } else {
+        part.asset_id = undefined;
+      }
+    }
+  });
+}
+
+test_manager.pack = function(test) {
+  test_manager.packed_test = test;
+
+  test.templates.forEach(function(template) {
+    test_manager.look_for_files(template.parts);
+  });
+
+  test.tasks.forEach(function(task) {
+    if(task.is_template) {
+      test_manager.look_for_files(task.parts);
+    } else {
+      test_manager.look_for_files(task.content);
+    }
+  });
+}
+
+test_manager.publish = function() {
+  var test = test_manager.fix_test_strict(editor.test_data);
+
+  if( ! test) return;
+
+  popup.show(test_manager.publish_popup, function() {
+    var $publish = test_manager.collect_publish();
+
+    //serializing
+    test.tasks.forEach(function(task) {
+      if( ! task.is_template) return;
+      delete task.is_template;
+      task.content = [];
+      task.parts.forEach(function(part) {
+        task.content.push(generate.data.task.template
+                            .unwrap_replace(part, task.variables));
+      });
+
+      delete task.variables;
+      delete task.parts;
+    });
+    delete test.templates;
+
+    //build
+    for(var group_name in test.groups) {
+      $publish.build.append(
+        test_manager.render_inline(group_name, test.groups[group_name])
+      );
+    }
+    $publish.build.find('.__value').attr('disabled', 'disabled');
+
+    $('#random_build').change(function() {
+      if(this.checked) {
+        $publish.build.find('.__value').removeAttr('disabled');
+        $('#random_order').removeAttr('disabled');
+      } else {
+        $publish.build.find('.__value').attr('disabled', 'disabled');
+        $('#random_order').attr('disabled', 'disabled');
+      }
+    });
+
+    //marks
+    var max_points = test_manager.calculate_max_points(test);
+
+    for(var i = 5; i >= 2; i--) {
+      $publish.marks.append(
+        test_manager.render_inline(i + ' от', max_points)
+      );
+    }
+
+    //section
+    $('#course_section').change(function() {
+      if(this.value === 'Новая...') {
+        $("#new_section_name").removeAttr('disabled');
+      } else {
+        $("#new_section_name").attr('disabled', 'disabled');
+      }
+    });
+
+    //time
+    $('#limit_time').change(function() {
+      if(this.checked) {
+        $publish.time.find('.__value').removeAttr('disabled');
+      } else {
+        $publish.time.find('.__value').attr('disabled', 'disabled');
+      }
+    });
+
+    $("#max_time").change(function() {
+      if(this.value < 1 || isNaN(this.value)) this.value = 1;
+    });
+
+    $publish.button.click(function() {
+      test_manager.publish_parse(test);
+    });
+  }, {'width': '64rem'});
+}
+
+test_manager.publish_parse = function(test) {
+  var $publish = test_manager.collect_publish();
+
+  var data_is_fine = true;
+
+  var parsed = {
+    random: {
+      do: false,
+      shuffle: false,
+      limits: {}
+    },
+    forgive: {},
+    max_score: test_manager.calculate_max_points(test),
+    marks: {
+      "5": 0,
+      "4": 0,
+      "3": 0,
+      "2": 0
+    },
+    section: "Нераспределенные",
+    time_limit: "00:00:00"
+  };
+
+  //build
+  if($('#random_build').is(':checked')) {
+    parsed.random.do = true;
+    if($('#random_order').is(':checked')) {parsed.random.shuffle = true};
+    $publish.build.find('.row').each(function() {
+      var group_name = $(this).find('.__group').text();
+      //removing :
+      group_name = group_name.substring(0, group_name.length - 2);
+
+      var group_limit = parseInt($(this).find('.__value').val());
+
+      if( ! group_limit ) {
+        data_is_fine = false;
+        notification.show('warning', 'Введите квоту для типа ' + group_name);
+      }
+
+      parsed.random.limits[group_name] = parseInt(group_limit);
+    });
+  }
+
+  //forgive
+  $publish.forgive.find("input").each(function(index, el) {
+    parsed.forgive[$(this).attr("id")] = this.checked;
+  });
+
+  //marks
+  $publish.marks.find("input").each(function(index, el) {
+    var mark = 5 - index;
+    parsed.marks[mark.toString()] = parseInt(this.value);
+
+    if( ! this.value) {
+      data_is_fine = false;
+      notification.show('warning', 'Введите минимальный балл для ' + mark);
+    }
+  });
+
+  //section
+  if($('#course_section').val() === 'Новая...') {
+    parsed.section = $('#new_section_name').val();
+  } else {
+    parsed.section = $('#course_section').val();
+  }
+
+  if( ! parsed.section) {
+    notification.show('warning', 'Выберите секцию для размещения теста');
+    data_is_fine = false;
+  }
+
+  //time
+  if($('#limit_time').is(':checked')) {
+    var mins_limit = parseInt($('#max_time').val());
+    parsed.time_limit = [Math.floor(mins_limit/60), mins_limit%60, 0].join(':');
+    parsed.time_limit = test_manager.expand_time(parsed.time_limit);
+  }
+
+  console.log(parsed);
+
+  if(data_is_fine) {
+    var formData = new FormData();
+    formData.append("json_file", JSON.stringify(test_manager.packed_test));
+    formData.append("course_id", django.course.id);
+    if(defined(django.test.id)) {
+      formData.append("test_id", django.test.id);
+    } else {
+      formData.append("material_id", django.material.id);
+    }
+    formData.append('csrfmiddlewaretoken', django.csrf_token);
+
+    formData.append('publish_data', JSON.stringify(parsed));
+
+    //formData.append('compiled_test', JSON.stringify(test));
+
+    $.ajax({
+      type:"POST",
+      url:"/"+django.current_type+"/publish/",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        notification.show(response["type"], response["message"]);
+        $("#" + django.current_type + "_publish").hide();
+        $("#" + django.current_type + "_unpublish").show();
+        popup.hide();
+        test_manager.save();
+      },
+      error: function(response) {
+        notification.show(response["type"], response["message"]);
+      }
+    });
+  }
+}
+
+test_manager.calculate_max_points = function(test) {
+  var max_points = 0;
+  test.tasks.forEach(function(task) {
+    task.content.forEach(function(element) {
+      if(element.type === 'answer') max_points += parseInt(element.worth);
+    });
+  });
+
+  return max_points;
+}
+
+test_manager.collect_publish = function() {
+  var collected = {}
+
+  collected.build = popup.$.find('.__build-settings');
+  collected.forgive = popup.$.find('.__forgive');
+  collected.marks = popup.$.find('.__mark-settings');
+  collected.section = popup.$.find('.__course-section');
+  collected.time = popup.$.find('.__time-settings');
+  collected.button = popup.$.find('#publish');
+
+  return collected;
+}
+
+test_manager.render_inline = function(label, max) {
+
+  console.log('rendering:', label, max);
+  var $new_item = $(
+    "<div class='row'>" +
+      "<div class='__group'>" + label + ": </div>" +
+      loads.get('Elements/Inputs/text/inline/') +
+      "<div class='__max'> / " + max + "</div>" +
+    "</div>");
+
+  $new_item.find('input').change(function() {
+    var val = this.value;
+    val = parseInt(val);
+
+    console.log(val, max);
+
+    if(val < 0 || isNaN(val)) val = 0;
+    if(val > max) val = max;
+
+    this.value = val;
+  });
+
+  return $new_item;
+}
+
+/**
+ * turns h:m:s to hh:mm:ss
+ * @method expand_time
+ * @param  {string} hms time to turn into hh:mm:ss
+ * @return {string} hh:mm:ss
+ */
+test_manager.expand_time = function(hms) {
+  var hhmmss = hms.split(':');
+  for(var i = 0; i < hhmmss.length; i++) {
+    if(hhmmss[i].length == 1) hhmmss[i] = '0' + hhmmss[i];
+  }
+
+  return hhmmss.join(':');
+}
+
+test_manager.publish_material = function() {
+  var test = test_manager.fix_test_strict(editor.test_data);
+
+  if( ! test) return;
+
+  popup.show(test_manager.publish_popup, function() {
+    var $publish = test_manager.collect_publish();
+
+    //serializing
+    test.tasks.forEach(function(task) {
+      if( ! task.is_template) return;
+      delete task.is_template;
+      task.content = [];
+      task.parts.forEach(function(part) {
+        task.content.push(generate.data.task.template
+                            .unwrap_replace(part, task.variables));
+      });
+
+      delete task.variables;
+      delete task.parts;
+    });
+    delete test.templates;
+
+    //section
+    $('#course_section').change(function() {
+      if(this.value === 'Новая...') {
+        $("#new_section_name").removeAttr('disabled');
+      } else {
+        $("#new_section_name").attr('disabled', 'disabled');
+      }
+    });
+
+    $publish.button.click(function() {
+      test_manager.publish_parse(test);
+    });
+  }, {'width': '64rem'});
+}
+
+test_manager.publish_parse = function(test) {
+  var $publish = test_manager.collect_publish();
+
+  var data_is_fine = true;
+
+  var parsed = {
+    section: "Нераспределенные",
+  };
+
+  //section
+  if($('#course_section').val() === 'Новая...') {
+    parsed.section = $('#new_section_name').val();
+  } else {
+    parsed.section = $('#course_section').val();
+  }
+
+  if( ! parsed.section) {
+    notification.show('warning', 'Выберите секцию для размещения теста');
+    data_is_fine = false;
+  }
+
+  if(data_is_fine) {
+    var formData = new FormData();
+    formData.append("json_file", JSON.stringify(test_manager.packed_test));
+    formData.append("course_id", django.course.id);
+    if(defined(django.test.id)) {
+      formData.append("test_id", django.test.id);
+    } else {
+      formData.append("material_id", django.material.id);
+    }
+    formData.append('csrfmiddlewaretoken', django.csrf_token);
+
+    formData.append('publish_data', JSON.stringify(parsed));
+
+    //formData.append('compiled_test', JSON.stringify(test));
+
+    $.ajax({
+      type:"POST",
+      url:"/"+django.current_type+"/publish/",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        notification.show(response["type"], response["message"]);
+        $("#" + django.current_type + "_publish").hide();
+        $("#" + django.current_type + "_unpublish").show();
+        popup.hide();
+        test_manager.save();
+      },
+      error: function(response) {
+        notification.show(response["type"], response["message"]);
+      }
+    });
+  }
+}
+
+test_manager.upload_queue = {
+  last_id: 0,
+  length: 0,
+  error: false,
+  _pending: [],
+  add: function() {
+    var new_id = this.last_id++;
+    this.length++;
+    this._pending.push(new_id);
+
+    return new_id;
+  },
+  remove: function(id) {
+    this._pending.remove(id);
+    this.length--;
+  }
+}
+
+test_manager.packed_test = {}
+
+test_manager.upload_test = function() {
+  var serialized_test = JSON.parse(JSON.stringify(test_manager.packed_test));
+
+  //serializing
+  serialized_test.tasks.forEach(function(task) {
+    if( ! task.is_template) return;
+    delete task.is_template;
+    task.content = [];
+    task.parts.forEach(function(part) {
+      task.content.push(generate.data.task.template
+                          .unwrap_replace(part, task.variables));
+    });
+
+    delete task.variables;
+    delete task.parts;
+  });
+  delete serialized_test.templates;
+
+  var formData = new FormData();
+  formData.append("json_file", JSON.stringify(test_manager.packed_test));
+  formData.append("course_id", django.course.id);
+  if(defined(django.test.id)) {
+    formData.append("test_id", django.test.id);
+  } else {
+    formData.append("material_id", django.material.id);
+  }
+  formData.append('csrfmiddlewaretoken', django.csrf_token);
+
+  formData.append('compiled_test', JSON.stringify(serialized_test));
+
+  $.ajax({
+    type:"POST",
+    url:"/" + django.current_type + "/save/",
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+      notification.show(response["type"], response["message"]);
+      if(defined(django.test.id)) {
+        window.history.pushState('Редактирование ' + test_manager.packed_test.title, 'Редактирование ' + test_manager.packed_test.heading, '/test/edit/?course_id=' + django.course.id + '&test_id=' + django.test.id);
+
+        $('.header>.__breadcrumbs>a').last().
+          find('div').text(test_manager.packed_test.title);
+      } else {
+        window.history.pushState('Редактирование ' + test_manager.packed_test.title, 'Редактирование ' + test_manager.packed_test.heading, '/material/edit/?course_id='+ django.course.id +'&material_id='+ django.material.id +'');
+      }
+    }
+  });
+}
+
+test_manager.drop = function(state) {
+  popup.show(loads.get("Elements/Modules/Test/manage/__popup_texts/__no_"
+    + state + "/"),
+  function() {
+    $(".__ok").click(function(event) {
+      popup.hide();
+    });
+  });
+  return;
+}
+
+test_manager.save = function() {
+  test_manager.upload_queue.error = false;
+  if(test_manager.is_published) {
+    var test = test_manager.fix_test_strict(editor.test_data);
+    if( ! test) {
+      return false;
+    }
+  } else {
+    var test = test_manager.fix_test_soft(editor.test_data);
+    if( ! test) return false;
+  }
+
+  test_manager.pack(test);
+
+  if(test_manager.upload_queue.length !== 0) {
+    popup.show(loads.get("Elements/Modules/Test/manage/__popup_texts/__save/"));
+    console.log(loads.get("Elements/Modules/Test/manage/__popup_texts/__save/"));
+  }
+
+  var check_queue = function() {
+    if(test_manager.upload_queue.length === 0) {
+      if( ! test_manager.upload_queue.error) {
+        test_manager.upload_test();
+      } else {
+        notification.show('error', 'Не удалось сохранить тест из-за ' +
+        'ошбики с файлом. \n Его можно сохранить, ' +
+        'если вы удалите поле, вызывающее ошибку.');
+      }
+
+      popup.hide();
+    } else {
+      setTimeout(check_queue, 100);
+    }
+  }
+  setTimeout(check_queue, 100);
+}
+
+test_manager.unpublish = function() {
+  var formData = new FormData();
+  formData.append("course_id", django.course.id);
+  if(defined(django.test.id)) {
+    formData.append("test_id", django.test.id);
+  } else {
+    formData.append("material_id", django.material.id);
+  }
+  formData.append('csrfmiddlewaretoken', django.csrf_token);
+  $.ajax({
+    type:"POST",
+    url:"/"+django.current_type+"/unpublish/",
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+      notification.show(response["type"], response["message"]);
+      $("#" + django.current_type + "_publish").show();
+      $("#" + django.current_type + "_unpublish").hide();
+      test_manager.is_published = false;
+    }
+  });
+}

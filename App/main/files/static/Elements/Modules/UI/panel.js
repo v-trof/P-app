@@ -1,1 +1,44 @@
-var panel=function(){var n=$(loads.get("Elements/Modules//panel/")),t=n.find(".__content"),e=n.find(".__actions"),o={$:n,content:t,actions:e,show:function(e,o,a){t.html(e),a&&t.css(a),o&&o(),n.css("transform","none")},hide:function(){n.css("transform","translateX(16.5rem)")},change_actions:function(n,t){e.html(n),t&&t()}};return o}();$(document).ready(function(){$("body").append(panel.$),panel.hide()});
+var panel = (function() {
+
+  var $all = $(loads.get('Elements/Modules//panel/'));
+
+  var $panel = $all.find(".__content");
+  var $actions = $all.find(".__actions");
+
+  var exports = {
+    $: $all,
+    content: $panel,
+    actions: $actions,
+    show: function(content, _callback, css) {
+      $panel.html(content)
+
+      if (css) {
+        $panel.css(css)
+      }
+
+      if (_callback) {
+        _callback()
+      }
+
+      $all.css('transform', 'none');
+    },
+    hide: function() {
+      $all.css('transform', 'translateX(16.5rem)')
+    },
+    change_actions: function(actions, _callback) {
+      $actions.html(actions)
+
+      if (_callback) {
+        _callback()
+      }
+    }
+
+  }
+  return exports;
+})();
+
+
+$(document).ready(function() {
+  $("body").append(panel.$);
+  panel.hide();
+});
