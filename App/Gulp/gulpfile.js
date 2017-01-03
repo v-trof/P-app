@@ -84,7 +84,7 @@ gulp.task('min_module_js', function(cb) {
                   path.join('!'+modules_path, folder, '/test_suite/**/*.js')
         ]),
         concat(folder + '.js'),
-        //uglify(),
+        // uglify(),
         gulp.dest('../main/files/static/Elements/Modules')
       ]);
   });

@@ -42,7 +42,7 @@ var search;
         url: '/func/search/',
         type: 'POST',
         data: {
-          'csrfmiddlewaretoken': django.csrf_token,
+          'csrfmiddlewaretoken': loads.csrf_token,
           'search_query': query,
           'search_types': JSON.stringify(search_types)
         },
@@ -54,7 +54,7 @@ var search;
     search = new Search(
       request,
       ['test', 'material', 'user', 'course'],
-      ["Тесты", "Материалы", 'Пользователи', "Открытые курсы"],
+      ["Тесты", "Материалы", 'Люди', "Открытые курсы"],
       ['test', 'material']
     );
 

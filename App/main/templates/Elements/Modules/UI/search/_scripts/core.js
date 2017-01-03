@@ -53,6 +53,15 @@ var Search = function(requester,
     this.build[key] = builders[key];
   }
 
+  //building filters
+  for(var i = 0; i < types.length; i++) {
+    var $new_checkbox = $(loads.get('Elements/Inputs/checkbox/'));
+    $new_checkbox.find('input').addClass('filter-'+types[i]);
+    $new_checkbox.find('label').text(types_names[i]);
+
+    this.$.find('.__filters').append($new_checkbox);
+  }
+
   //enabling UI in DOM
   $('body').append(this.$);
 
