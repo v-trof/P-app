@@ -15,10 +15,11 @@ var autoprefixer = require('gulp-autoprefixer');
 var merge = require('merge-stream');
 
 function getFolders(dir) {
-  return fs.readdirSync(dir)
+  var folders = fs.readdirSync(dir)
     .filter(function(file) {
       return fs.statSync(path.join(dir, file)).isDirectory();
     });
+  return folders.sort();
 }
 
 gulp.task('sass_to_css', function () {
@@ -64,6 +65,19 @@ gulp.task('min_module_js', function(cb) {
   var modules_path = '../main/templates/Elements/Modules';
   var macro_folders = getFolders(modules_path);
   var folders = [];
+  var queue = {
+    given: 0,
+    done: 0,
+    stop() {
+      queue.done++;
+      if(queue.done === queue.given) {
+        cb();
+      }
+    },
+    add() {
+      queue.given++;
+    }
+  }
 
   macro_folders.forEach(function(dir) {
     var new_folders = [];
@@ -76,6 +90,7 @@ gulp.task('min_module_js', function(cb) {
 
 
    var tasks = folders.map(function(folder) {
+      queue.add();
       return pump([
         gulp.src([
                   path.join(modules_path, folder, '/__core/**/core.js'),
@@ -86,10 +101,8 @@ gulp.task('min_module_js', function(cb) {
         concat(folder + '.js'),
         // uglify(),
         gulp.dest('../main/files/static/Elements/Modules')
-      ]);
+      ], queue.stop);
   });
-
-  cb();
 });
 
 gulp.task('min_element_js', function(cb) {

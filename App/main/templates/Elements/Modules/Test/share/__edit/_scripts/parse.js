@@ -7,8 +7,12 @@ share.edit.parse = function($edit) {
   var tags_overall = $edit.find('*[name="overall-tags"]').val();
   var tags_subject = $edit.find('*[name="subject-tags"]').val();
 
-  share_data.tags.main = tags_overall.replace(', ', ',').split(',');
-  share_data.tags.subject = tags_subject.replace(', ', ',').split(',');
+  if(tags_overall) {
+    share_data.tags.main = tags_overall.replace(', ', ',').split(',');
+  }
+  if(tags_subject) {
+    share_data.tags.subject = tags_subject.replace(', ', ',').split(',');
+  }
   share_data.description = $edit.find('.__text.__value').html();
   share_data.open = $edit.find('.__open')[0].checked;
 

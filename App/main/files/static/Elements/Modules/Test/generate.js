@@ -783,67 +783,6 @@ $(document).ready(function() {
   }
 });
 
-generate.register.edit('answer', 'checkbox', {
-  random_possible: true,
-  builder: function(value) {
-    var $new_edit = this.make_template();
-
-    var create_field = function(label) {
-      var $checkbox = $(loads.get('Elements/Inputs/checkbox/'));
-      var $input = render.inputs.text('', '', label);
-
-      var $field = $("<div class='__edit_item'></div>");
-      $field.append($checkbox).append($input);
-      button_delete.add($field);
-
-      return $field;
-    }
-
-    if(value.items && value.items.length) {
-      value.items.forEach(function(label, index) {
-        var $field = create_field(label);
-
-        $new_edit.append($field);
-        if(value.answer.has(index)) {
-          $field.find('[type="checkbox"]')[0].checked = true;
-        }
-      });
-    } else {
-      $new_edit.append(create_field());
-    }
-
-
-    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
-
-    $new_edit.append($add_option);
-
-    $add_option.click(function() {
-      $add_option.before(create_field());
-    });
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    var value = {
-      items: [],
-      answer: []
-    }
-
-    $edit.find(".m--checkbox").each(function(index, el) {
-      var label = $(el).siblings().find(".__value").val();
-
-      value.items.push(label);
-
-      if($(el).find("input").is(":checked")) {
-        value.answer.push(index);
-      }
-    });
-
-    return value;
-  }
-});
-
 generate.register.edit('answer', 'classify', {
   random_possible: true,
 
@@ -950,6 +889,67 @@ generate.register.edit('answer', 'classify', {
   }
 });
 
+generate.register.edit('answer', 'checkbox', {
+  random_possible: true,
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    var create_field = function(label) {
+      var $checkbox = $(loads.get('Elements/Inputs/checkbox/'));
+      var $input = render.inputs.text('', '', label);
+
+      var $field = $("<div class='__edit_item'></div>");
+      $field.append($checkbox).append($input);
+      button_delete.add($field);
+
+      return $field;
+    }
+
+    if(value.items && value.items.length) {
+      value.items.forEach(function(label, index) {
+        var $field = create_field(label);
+
+        $new_edit.append($field);
+        if(value.answer.has(index)) {
+          $field.find('[type="checkbox"]')[0].checked = true;
+        }
+      });
+    } else {
+      $new_edit.append(create_field());
+    }
+
+
+    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
+
+    $new_edit.append($add_option);
+
+    $add_option.click(function() {
+      $add_option.before(create_field());
+    });
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      items: [],
+      answer: []
+    }
+
+    $edit.find(".m--checkbox").each(function(index, el) {
+      var label = $(el).siblings().find(".__value").val();
+
+      value.items.push(label);
+
+      if($(el).find("input").is(":checked")) {
+        value.answer.push(index);
+      }
+    });
+
+    return value;
+  }
+});
+
 generate.register.edit('answer', 'radio', {
   random_possible: true,
   builder: function(value) {
@@ -1015,34 +1015,6 @@ generate.register.edit('answer', 'radio', {
   }
 });
 
-generate.register.edit('answer', 'text', {
-  builder: function(value) {
-    var $new_edit = this.make_template();
-
-    //for label (tip)
-    var $label = render.inputs.text('Формат ответа', 'label', value.label);
-    $new_edit.prepend($label);
-
-    //for right answer
-    var $answer = render.inputs.text('Верный ответ', 'answer', value.answer);
-    $new_edit.prepend($answer);
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    var value = {
-      label: '',
-      answer: undefined
-    }
-
-    value.label = $edit.find('[name="label"]').val();
-    value.answer = $edit.find('[name="answer"]').val();
-
-    return value;
-  }
-});
-
 generate.register.edit('question', 'file', {
   builder: function(value) {
     var $new_edit = this.make_template();
@@ -1087,6 +1059,34 @@ generate.register.edit('question', 'file', {
     if(value.name === '') {
       value.name = value.file_name;
     }
+
+    return value;
+  }
+});
+
+generate.register.edit('answer', 'text', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    //for label (tip)
+    var $label = render.inputs.text('Формат ответа', 'label', value.label);
+    $new_edit.prepend($label);
+
+    //for right answer
+    var $answer = render.inputs.text('Верный ответ', 'answer', value.answer);
+    $new_edit.prepend($answer);
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      label: '',
+      answer: undefined
+    }
+
+    value.label = $edit.find('[name="label"]').val();
+    value.answer = $edit.find('[name="answer"]').val();
 
     return value;
   }
@@ -1183,6 +1183,22 @@ generate.register.element('question', 'file', {
   }
 });
 
+generate.register.element('question', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.html('<div class="__value">' + value.text + '</div>');
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      text: 'Текстовый вопрос'
+    }
+  }
+});
+
 generate.register.element('question', 'image', {
   show_in_items: true,
 
@@ -1205,22 +1221,6 @@ generate.register.element('question', 'image', {
   sample: {
     value: {
       url: "/media/samples/image.jpg"
-    }
-  }
-});
-
-generate.register.element('question', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.html('<div class="__value">' + value.text + '</div>');
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      text: 'Текстовый вопрос'
     }
   }
 });
@@ -1365,6 +1365,28 @@ generate.register.element('answer', 'classify', {
   }
 });
 
+generate.register.element('answer', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.append(render.inputs.text(
+      value.label,
+      '',
+      value.answer
+    ));
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      label: 'Текстовый ответ',
+      worth: 1
+    }
+  }
+})
+
 generate.register.element('answer', 'radio', {
   show_in_items: true,
 
@@ -1396,28 +1418,6 @@ generate.register.element('answer', 'radio', {
     }
   }
 });
-
-generate.register.element('answer', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.append(render.inputs.text(
-      value.label,
-      '',
-      value.answer
-    ));
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      label: 'Текстовый ответ',
-      worth: 1
-    }
-  }
-})
 
 generate.register.external('answer', 'checkbox', {
   get_value: function($element) {

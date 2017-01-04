@@ -38,6 +38,7 @@ $(document).ready(function() {
   );
 
 
+  share.search.$.addClass('share-search');
   //adding own \ open only checkbox
   var $flags = $('<div class="card"></div>');
   var $own = $(loads.get('Elements/Inputs/checkbox/'));
@@ -54,32 +55,56 @@ $(document).ready(function() {
 
 
   //adding tags
-
-
+  //
+  //
   share.search.$.find('.m--close').click(function(event) {
     share.search.hide();
   });
-  //custom card builders
-  share.search.build['test'] = function(data) {
-    console.log('share recived test', data);
-    var $card = Search._.build.test(data);
 
+  function decoreate_with_share($card, data) {
+    $card.find('.__content .m--grey')
+      .replaceWith('<div><span class="m--grey"> Добавил '
+        + data.creator + '</span></div>');
+    $card.find('.__content').append(
+      '<span class="m--grey"> Изпользовали ' + data.popularity + ' раз</span>'
+    );
 
     $card.find('.__extension').append(
       share.search.build['tag_list'](data.global_tags));
 
     $card.find('.__extension').append(
       share.search.build['tag_list'](data.subject_tags));
+
+
+    $card.click(function() {
+      share.display.show(data);
+    });
+  }
+
+  //custom card builders
+  share.search.build['test'] = function(data) {
+    console.log('share recived test', data);
+    var $card = Search._.build.test(data);
+
+    decoreate_with_share($card, data);
+
+    return $card;
   }
 
   share.search.build['material'] = function(data) {
     console.log("SHARE RECIVED MATERIAL:", data);
-    return $('<b>HERE IS SEARCH MATERIAL CARD');
+    var $card = Search._.build.material(data);
+
+    decoreate_with_share($card, data);
+
+    return $card;
   }
 
   share.search.build['templates'] = function(data) {
-    console.log("SHARE RECIVED TEMPLATE:", data);
-    return $('<b>HERE IS SEARCH TEMPLATE CARD');
+    var $card = "???";
+    decoreate_with_share($card, data);
+
+    return $card;
   }
 
   share.search.build['tag'] = function(data) {
@@ -89,7 +114,7 @@ $(document).ready(function() {
   share.search.build['tag_list'] = function(tag_list) {
     var $tags = $('<div class="row"></div>');
     tag_list.forEach(function(tag) {
-      $tags.appned(share.search.build['tag'](tag));
+      $tags.append(share.search.build['tag'](tag));
     });
 
     return $tags;
