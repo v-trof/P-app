@@ -2949,6 +2949,13 @@ class Test():
 	
 	def accept_reset(user_id,test_id,course_id):
 		message=Test.reset_attempt(user_id=user_id,test_id=test_id,course_id=course_id)
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data = json.load(data_file)
+		if 'requests' in course_data.keys():
+			for request in course_data['requests']['waiting']:
+				if request['type']=='reset' and request['user_id'] == user_id and request['test_id'] == test_id:
+					course_data['requests']['waiting'].remove(request)
+					break
 		return message
 
 	def decline_reset(user_id,test_id,course_id):
@@ -3372,6 +3379,7 @@ class Sharing():
 				public_file['templates']=full_public_file['templates']
 			else:
 				public_file['templates']=templates
+			shared_item["templates_number"]=len(public_file['templates'])
 		elif refresh:
 			public_file['templates']=old_shared['templates']
 		else: public_file['tasks']=item_info['tasks']
@@ -3418,13 +3426,58 @@ class Sharing():
 		else:
 			return {"type":"success","message":"Материал успешно удален из библиотеки"}
 
-	def take_shared(shared_id,type,course_id,user_id,inheritor_id=False):
+	def request_sharing(user_id,shared_id,course_id,type,inheritor_course_id):
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data = json.load(data_file)
+		request={'type':'share','course_id':inheritor_course_id,'share_type':type,'shared_id':shared_id,'user_id':user_id}
+		if not 'requests' in course_data.keys():
+			course_data['requests']={}
+		if not 'waiting' in course_data['requests'].keys():
+			course_data['requests']['waiting']=[]
+		if not 'declined' in course_data['requests'].keys():
+			course_data['requests']['declined']=[]
+		if not request in course_data['requests']['waiting'] and not request in course_data['requests']['declined']:
+			course_data['requests']['waiting'].append(request)
+			with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as data_file:
+				data_file.write(json.dumps(course_data, ensure_ascii=False))
+			return {"type":"success","message":"Запрос отправлен"}
+		elif request in course_data["requests"]["waiting"]:
+			return {"type":"info","message":"Запрос уже был отправлен"}
+		else:
+			return {"type":"info","message":"Ваш запрос уже был отклонен"}
+	
+	def accept_sharing(shared_id,course_id):
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data = json.load(data_file)
+		if 'requests' in course_data.keys():
+			for request in course_data['requests']['waiting']:
+				if request['type']=='share' and request['shared_id'] == shared_id:
+					course_data['requests']['waiting'].remove(request)
+		message=Sharing.take_shared(user_id=request['user_id'],shared_id=shared_id,course_id=course_id,type=request['share_type'],accept=True)
+		return message
+
+	def decline_sharing(shared_id,course_id):
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data = json.load(data_file)
+		if 'requests' in course_data.keys():
+			for request in course_data['requests']['waiting']:
+				if request['type']=='share' and request['shared_id'] == shared_id:
+					if not 'declined' in course_data['requests'].keys():
+						course_data['requests']['declined']=[]
+					course_data['requests']['declined'].append(request)
+					course_data['requests']['waiting'].remove(request)
+					break
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as data_file:
+			data_file.write(json.dumps(course_data, ensure_ascii=False))
+		return {"type":"info","message":"Запрос успешно отклонен"}
+
+	def take_shared(shared_id,type,course_id,user_id,inheritor_id=False,accept=False):
 		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
 		shared_table[shared_id]["popularity"]+=1
 		with io.open('main/files/json/shared.json', 'w+', encoding='utf8') as shared_file:
 			shared_file.write(json.dumps(shared_table, ensure_ascii=False))
-		if shared_table[shared_id]["open"]:
+		if shared_table[shared_id]["open"] or accept:
 			with io.open('main/files/json/shared/'+shared_id+'.json', 'r', encoding='utf8') as shared_file:
 				public_file = json.load(shared_file)
 			if not "title" in public_file.keys() and not inheritor_id:
@@ -3463,8 +3516,7 @@ class Sharing():
 			else:
 				return {"type":"success","message":"Материал успешно взят из библиотеки", "link":'/material/edit/?course_id=' + course_id + "&material_id=" + str(inheritor_id)}
 		else:
-			pass
-			#create_request for shared
+			return Sharing.request_sharing(user_id=user_id,shared_id=shared_id,course_id=course_id,type=type)
 
 class Statistics():
 
@@ -3631,16 +3683,17 @@ class Search():
 		return cards
 
 	def in_shared_elements(search_query,parameters,user):
+		print(parameters)
 		cards=[]
 		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_table:
 			shared_table=json.load(shared_table)
 		for shared_id,shared_info in shared_table.items():
-			print(shared_info["type"],parameters["shared_query"])
 			if shared_info["type"] in parameters["shared_query"]:
-				if parameters["own"] and shared_info["creator"]==str(user.id) or not parameters["own"] and not shared_info["creator"]==str(user.id):
-					if parameters['open'] and shared_info["open"] or not parameters['open'] and not shared_info["open"]:
+				if parameters["own"] and str(shared_info["creator"])==str(user.id) or not parameters["own"]:
+					print("own",parameters['open'],shared_info["open"])
+					if parameters['open'] and shared_info["open"] or not parameters['open']:
+						print("open")
 						if not shared_info["course_id"] in user.participation_list.split(' '):
-							print(parameters)
 							global_tags_conformity=Utility.compare_tags(tags1=parameters["global_tags"],tags2=shared_info["global_tags"])
 							subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
 							shared_info["shared_id"]=shared_id
