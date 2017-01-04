@@ -3324,10 +3324,10 @@ class Sharing():
 			full_public_file = json.load(info_file)
 		if not shared_id:
 			if len(shared_table.keys()):
-				maximum = max(k for k, v in shared_table.items())
+				maximum = int(max(k for k, v in shared_table.items()))
 			else:
 				maximum = 0
-			shared_id=maximum+1
+			shared_id=str(maximum+1)
 		shared_item={}
 		shared_item["course_id"]=course_id
 		shared_item["open"]=open
