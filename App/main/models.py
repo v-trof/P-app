@@ -115,7 +115,10 @@ class Utility():
 		return conformity
 
 	def compare_tags(tags1,tags2):
-		return len(set(tags1) & set(tags2))/max(len(tags1),len(tags2))*100
+		maximum=max(len(tags1),len(tags2))
+		if maximum==0:
+			return 100
+		else: return len(set(tags1) & set(tags2))/max(len(tags1),len(tags2))*100
 
 	def upload_file(file, path, extensions=False):
 		if extensions:
