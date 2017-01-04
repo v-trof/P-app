@@ -14,7 +14,7 @@ share.edit.parse = function($edit) {
     share_data.tags.subject = tags_subject.replace(', ', ',').split(',');
   }
   share_data.description = $edit.find('.__text.__value').html();
-  share_data.open = $edit.find('.__open')[0].checked;
+  share_data.open = ! $edit.find('.__open')[0].checked;
 
 
   if($edit.find('.share_test input')[0] &&

@@ -87,6 +87,10 @@
       $new_edit.find('.__actions').append(make_create_actions($new_edit));
     }
 
+    if( ! share_data.open ) {
+      $new_edit.find('.__open')[0].checked = true;
+    }
+
     return $new_edit;
   }
 

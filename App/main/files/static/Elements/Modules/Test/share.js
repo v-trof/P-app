@@ -223,18 +223,10 @@ share.ajax.unshare = function(share_data) {
 });
 }
 
-share.display.hide = function() {
-
-}
-
-share.display.show = function(data) {
-
-}
-
 share.edit.get_defaults = function() {
   return {
     share_id: false,
-    open: false,
+    open: true,
     description: "",
     tags: {
       main: [],
@@ -264,7 +256,7 @@ share.edit.parse = function($edit) {
     share_data.tags.subject = tags_subject.replace(', ', ',').split(',');
   }
   share_data.description = $edit.find('.__text.__value').html();
-  share_data.open = $edit.find('.__open')[0].checked;
+  share_data.open = ! $edit.find('.__open')[0].checked;
 
 
   if($edit.find('.share_test input')[0] &&
@@ -380,6 +372,10 @@ share.edit.parse = function($edit) {
       $new_edit.find('.__actions').append(make_create_actions($new_edit));
     }
 
+    if( ! share_data.open ) {
+      $new_edit.find('.__open')[0].checked = true;
+    }
+
     return $new_edit;
   }
 
@@ -392,3 +388,11 @@ share.edit.parse = function($edit) {
   }
 
 }() );
+
+share.display.hide = function() {
+
+}
+
+share.display.show = function(data) {
+
+}
