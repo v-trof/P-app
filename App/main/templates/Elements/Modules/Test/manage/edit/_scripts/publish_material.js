@@ -31,12 +31,12 @@ test_manager.publish_material = function() {
     });
 
     $publish.button.click(function() {
-      test_manager.publish_parse(test);
+      test_manager.publish_parse_material(test);
     });
   }, {'width': '64rem'});
 }
 
-test_manager.publish_parse = function(test) {
+test_manager.publish_parse_material = function(test) {
   var $publish = test_manager.collect_publish();
 
   var data_is_fine = true;

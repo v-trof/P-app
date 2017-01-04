@@ -237,23 +237,6 @@ generate.make_template = {
   }
 }
 
-generate.register.task('default', {
-  builder: function() {
-    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
-
-    console.log($task, $task[1]);
-    if(defined(generate.data.task.template)) {
-      $task.find('.__make-template').click(function() {
-        generate.data.task.template.to_tempalte($task);
-      });
-    } else {
-      $task.find('.__make_template').remove();
-    }
-
-    return $task;
-  }
-});
-
 $(document).ready(function() {
   generate.data.task.template.add_to_test = function(template, $edit) {
     template = JSON.parse(JSON.stringify(template));
@@ -783,6 +766,138 @@ $(document).ready(function() {
   }
 });
 
+generate.register.task('default', {
+  builder: function() {
+    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
+
+    console.log($task, $task[1]);
+    if(defined(generate.data.task.template)) {
+      $task.find('.__make-template').click(function() {
+        generate.data.task.template.to_tempalte($task);
+      });
+    } else {
+      $task.find('.__make_template').remove();
+    }
+
+    return $task;
+  }
+});
+
+generate.register.edit('question', 'file', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    var $filename = render.inputs.text('Название файла (как его увидят ученики)',
+                                      'file_name', value.name);
+    var $file_input = $(loads.get("Elements/Inputs/file/"));
+
+    $new_edit.append($filename);
+
+    $new_edit.append($file_input);
+    var file_data = file_catcher.add($file_input);
+
+    if(defined(value.asset_id) || defined(value.url)) {
+      $file_input.find('.__text').text(value.file_name);
+      file_data.value.change(function() {
+        editor.assets.replace(value.asset_id, file_data);
+      });
+    }
+
+    if( ! defined(value.asset_id)) {
+      value.asset_id = editor.assets.add(file_data);
+    }
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {};
+    value.asset_id = editor.active_element.value.asset_id;
+    value.name = $edit.find('[name="file_name"]').val();
+
+    if(defined(editor.assets.get(value.asset_id))) {
+      value.file_name = editor.assets.get(value.asset_id).name;
+      value.size = Math.floor(editor.assets.get(value.asset_id)
+                    .files[0].size/1024/1024*100)/100 + "МБ";
+    } else {
+      value.file_name = editor.active_element.value.file_name;
+      value.size = editor.active_element.value.size;
+    }
+
+    if(value.name === '') {
+      value.name = value.file_name;
+    }
+
+    return value;
+  }
+});
+
+generate.register.edit('question', 'image', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    var $file_input = $(loads.get("Elements/Inputs/file/"));
+
+    $new_edit.append($file_input);
+    var file_data = file_catcher.add($file_input);
+
+    if(defined(value.asset_id) || defined(value.url)) {
+      $file_input.find('.__text').text(value.file_name);
+      file_data.value.change(function() {
+        editor.assets.replace(value.asset_id, file_data);
+      });
+    }
+
+    if( ! defined(value.asset_id)) {
+      value.asset_id = editor.assets.add(file_data);
+    }
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {};
+    value.asset_id = editor.active_element.value.asset_id;
+
+    var event = editor.assets.get(value.asset_id);
+
+    if(defined(event)) {
+      value.file_name = editor.assets.get(value.asset_id).name;
+      value.href = URL.createObjectURL(event.files[0]);
+      value.url = undefined;
+    } else {
+      value.href = value.url || editor.active_element.value.href;
+      value.file_name = editor.active_element.value.file_name;
+    }
+
+    return value;
+  }
+});
+
+generate.register.edit('question', 'text', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+    $new_edit.prepend(loads.get("Elements/Inputs/text/textarea/"));
+
+    $new_edit.find('label').text('Текст');
+    $new_edit.find('.__value').html(value.text);
+
+    if(value.text) {
+      $new_edit.find('label').addClass('m--top');
+    }
+
+    inline_editor.start($new_edit.find('.__value')[0]);
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    return {
+      text: $edit.find('.__value').html()
+    }
+  }
+});
+
 generate.register.edit('answer', 'checkbox', {
   random_possible: true,
   builder: function(value) {
@@ -1043,117 +1158,69 @@ generate.register.edit('answer', 'text', {
   }
 });
 
-generate.register.edit('question', 'file', {
+generate.register.element('question', 'image', {
+  show_in_items: true,
+
   builder: function(value) {
-    var $new_edit = this.make_template();
+    var $new_element = this.make_template(value);
+    var $image = $(document.createElement('img'));
 
-    var $filename = render.inputs.text('Название файла (как его увидят ученики)',
-                                      'file_name', value.name);
-    var $file_input = $(loads.get("Elements/Inputs/file/"));
+    $image.attr("src", value.url || value.href);
+    $image.css('max-width', '100%');
+    $new_element.css({
+      'display': 'flex',
+      'align-items': 'center',
+      'justify-content': 'center'
+    });
 
-    $new_edit.append($filename);
+    $new_element.append($image);
 
-    $new_edit.append($file_input);
-    var file_data = file_catcher.add($file_input);
-
-    if(defined(value.asset_id) || defined(value.url)) {
-      $file_input.find('.__text').text(value.file_name);
-      file_data.value.change(function() {
-        editor.assets.replace(value.asset_id, file_data);
-      });
-    }
-
-    if( ! defined(value.asset_id)) {
-      value.asset_id = editor.assets.add(file_data);
-    }
-
-    return $new_edit;
+    return $new_element;
   },
-
-  parser: function($edit) {
-    var value = {};
-    value.asset_id = editor.active_element.value.asset_id;
-    value.name = $edit.find('[name="file_name"]').val();
-
-    if(defined(editor.assets.get(value.asset_id))) {
-      value.file_name = editor.assets.get(value.asset_id).name;
-      value.size = Math.floor(editor.assets.get(value.asset_id)
-                    .files[0].size/1024/1024*100)/100 + "МБ";
-    } else {
-      value.file_name = editor.active_element.value.file_name;
-      value.size = editor.active_element.value.size;
+  sample: {
+    value: {
+      url: "/media/samples/image.jpg"
     }
-
-    if(value.name === '') {
-      value.name = value.file_name;
-    }
-
-    return value;
   }
 });
 
-generate.register.edit('question', 'image', {
+generate.register.element('question', 'file', {
+  show_in_items: true,
+
   builder: function(value) {
-    var $new_edit = this.make_template();
+    var $new_element = this.make_template(value);
+    var $file_template = $(loads.get("Elements/card/file/exports.html"));
 
-    var $file_input = $(loads.get("Elements/Inputs/file/"));
+    $file_template.attr("href", value.url);
+    $file_template.find(".__name").text(value.name);
+    $file_template.find(".__size").text(value.size);
 
-    $new_edit.append($file_input);
-    var file_data = file_catcher.add($file_input);
+    $new_element.append($file_template);
 
-    if(defined(value.asset_id) || defined(value.url)) {
-      $file_input.find('.__text').text(value.file_name);
-      file_data.value.change(function() {
-        editor.assets.replace(value.asset_id, file_data);
-      });
-    }
-
-    if( ! defined(value.asset_id)) {
-      value.asset_id = editor.assets.add(file_data);
-    }
-
-    return $new_edit;
+    return $new_element;
   },
-
-  parser: function($edit) {
-    var value = {};
-    value.asset_id = editor.active_element.value.asset_id;
-
-    var event = editor.assets.get(value.asset_id);
-
-    if(defined(event)) {
-      value.file_name = editor.assets.get(value.asset_id).name;
-      value.href = URL.createObjectURL(event.files[0]);
-      value.url = undefined;
-    } else {
-      value.href = value.url || editor.active_element.value.href;
-      value.file_name = editor.active_element.value.file_name;
+  sample: {
+    value: {
+      name: "Файл для скачивания",
+      size: "3.21МБ",
+      pos: undefined,
+      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
     }
-
-    return value;
   }
 });
 
-generate.register.edit('question', 'text', {
+generate.register.element('question', 'text', {
+  show_in_items: true,
+
   builder: function(value) {
-    var $new_edit = this.make_template();
-    $new_edit.prepend(loads.get("Elements/Inputs/text/textarea/"));
+    var $new_element = this.make_template(value);
+    $new_element.html('<div class="__value">' + value.text + '</div>');
 
-    $new_edit.find('label').text('Текст');
-    $new_edit.find('.__value').html(value.text);
-
-    if(value.text) {
-      $new_edit.find('label').addClass('m--top');
-    }
-
-    inline_editor.start($new_edit.find('.__value')[0]);
-
-    return $new_edit;
+    return $new_element;
   },
-
-  parser: function($edit) {
-    return {
-      text: $edit.find('.__value').html()
+  sample: {
+    value: {
+      text: 'Текстовый вопрос'
     }
   }
 });
@@ -1351,73 +1418,6 @@ generate.register.element('answer', 'text', {
     }
   }
 })
-
-generate.register.element('question', 'file', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $file_template = $(loads.get("Elements/card/file/exports.html"));
-
-    $file_template.attr("href", value.url);
-    $file_template.find(".__name").text(value.name);
-    $file_template.find(".__size").text(value.size);
-
-    $new_element.append($file_template);
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      name: "Файл для скачивания",
-      size: "3.21МБ",
-      pos: undefined,
-      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
-    }
-  }
-});
-
-generate.register.element('question', 'image', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $image = $(document.createElement('img'));
-
-    $image.attr("src", value.url || value.href);
-    $image.css('max-width', '100%');
-    $new_element.css({
-      'display': 'flex',
-      'align-items': 'center',
-      'justify-content': 'center'
-    });
-
-    $new_element.append($image);
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      url: "/media/samples/image.jpg"
-    }
-  }
-});
-
-generate.register.element('question', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.html('<div class="__value">' + value.text + '</div>');
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      text: 'Текстовый вопрос'
-    }
-  }
-});
 
 generate.register.external('answer', 'checkbox', {
   get_value: function($element) {

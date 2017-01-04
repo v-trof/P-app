@@ -373,7 +373,7 @@ test_manager.publish_parse = function(test) {
     parsed.time_limit = test_manager.expand_time(parsed.time_limit);
   }
 
-  console.log(parsed);
+  console.log('PUBLISHING', parsed);
 
   if(data_is_fine) {
     var formData = new FormData();
@@ -507,12 +507,12 @@ test_manager.publish_material = function() {
     });
 
     $publish.button.click(function() {
-      test_manager.publish_parse(test);
+      test_manager.publish_parse_material(test);
     });
   }, {'width': '64rem'});
 }
 
-test_manager.publish_parse = function(test) {
+test_manager.publish_parse_material = function(test) {
   var $publish = test_manager.collect_publish();
 
   var data_is_fine = true;

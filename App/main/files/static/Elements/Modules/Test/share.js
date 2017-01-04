@@ -14,14 +14,24 @@ $(document).ready(function() {
 
     var own = search.$.find('.own_only input')[0].checked;
     var open = search.$.find('.open_only input')[0].checked;
-    var global_tags=[];
+
     //add tags
+    var global_tags=[];
     var subject_tags=[];
+
     return $.ajax({
         url: '/func/search/',
         type: 'POST',
         data: {
-          'search_types': JSON.stringify({'shared':{'subject_tags':subject_tags,'global_tags':global_tags,'own':own,'open':open,'shared_query':JSON.stringify(search_types)}}),
+          'search_types': JSON.stringify({
+            'shared': {
+              'subject_tags': subject_tags,
+              'global_tags': global_tags,
+              'own': own,
+              'open': open,
+              'shared_query': JSON.stringify(search_types)
+            }
+          }),
           'csrfmiddlewaretoken': loads.csrf_token,
           'search_query': query
         },
@@ -32,7 +42,7 @@ $(document).ready(function() {
     request,
     ['test', 'material', 'templates'],
     ['Тесты', 'Материалы', 'Наборы шаблонов'],
-    ['template_collection']
+    ['templates']
   );
 
 
@@ -51,13 +61,16 @@ $(document).ready(function() {
   share.search.$.find('.__filters').parent().append($flags);
 
 
+  //adding tags
+
+
   share.search.$.find('.m--close').click(function(event) {
     share.search.hide();
   });
   //custom card builders
   share.search.build['test'] = function(data) {
-    console.log("SHARE RECIVED TEST:", data);
-    return $('<b>HERE IS SEARCH TEST CARD');
+    var $card = Search._.build.test(data);
+    $card.find('.__extension').html();
   }
 
   share.search.build['material'] = function(data) {
@@ -68,6 +81,10 @@ $(document).ready(function() {
   share.search.build['templates'] = function(data) {
     console.log("SHARE RECIVED TEMPLATE:", data);
     return $('<b>HERE IS SEARCH TEMPLATE CARD');
+  }
+
+  share.search.build['tag'] = function(data) {
+    return $('<div class="card m--small">' + data + '</div>');
   }
 
 });

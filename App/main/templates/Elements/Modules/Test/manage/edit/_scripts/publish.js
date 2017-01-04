@@ -154,7 +154,7 @@ test_manager.publish_parse = function(test) {
     parsed.time_limit = test_manager.expand_time(parsed.time_limit);
   }
 
-  console.log(parsed);
+  console.log('PUBLISHING', parsed);
 
   if(data_is_fine) {
     var formData = new FormData();
