@@ -588,7 +588,7 @@ test_manager.upload_queue = {
 
 test_manager.packed_test = {}
 
-test_manager.upload_test = function() {
+test_manager.upload_test = function(success_cb) {
   var serialized_test = JSON.parse(JSON.stringify(test_manager.packed_test));
 
   //serializing
@@ -634,6 +634,8 @@ test_manager.upload_test = function() {
       } else {
         window.history.pushState('Редактирование ' + test_manager.packed_test.title, 'Редактирование ' + test_manager.packed_test.heading, '/material/edit/?course_id='+ django.course.id +'&material_id='+ django.material.id +'');
       }
+
+      if(success_cb) success_cb();
     }
   });
 }
@@ -649,7 +651,7 @@ test_manager.drop = function(state) {
   return;
 }
 
-test_manager.save = function() {
+test_manager.save = function(success_cb) {
   test_manager.upload_queue.error = false;
   if(test_manager.is_published) {
     var test = test_manager.fix_test_strict(editor.test_data);
@@ -671,7 +673,7 @@ test_manager.save = function() {
   var check_queue = function() {
     if(test_manager.upload_queue.length === 0) {
       if( ! test_manager.upload_queue.error) {
-        test_manager.upload_test();
+        test_manager.upload_test(success_cb);
       } else {
         notification.show('error', 'Не удалось сохранить тест из-за ' +
         'ошбики с файлом. \n Его можно сохранить, ' +

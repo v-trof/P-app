@@ -5,7 +5,13 @@
     $actions.append($share_btn);
     $share_btn.click(function() {
       var data = share.edit.parse($new_edit);
-      share.ajax.share(data);
+
+      console.log(data);
+      if(data) {
+        test_manager.save(function() {
+          share.ajax.share(data);
+        });
+      }
     });
 
     return $actions;

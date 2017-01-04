@@ -72,10 +72,13 @@ $(document).ready(function() {
 
   function decoreate_with_share($card, data) {
     var $changable = $card.find('.__content .m--grey');
+    console.log(data);
     if(data.templates_number) {
       $changable.before('<div><b>' + data.templates_number + '</b>, '
         + Search._.build.num_form(data.templates_number,
-                                  ['шаблон', 'шаблона', 'шаблонов'])
+                                  { one: 'шаблон',
+                                    few: 'шаблона',
+                                    many: 'шаблонов'})
         + '</div>');
     }
 
@@ -138,14 +141,6 @@ $(document).ready(function() {
   }
 
 });
-
-share.display.hide = function() {
-
-}
-
-share.display.show = function(data) {
-
-}
 
 share.ajax.get = function(share_data) {
   var form_data = new FormData();
@@ -317,7 +312,13 @@ share.edit.parse = function($edit) {
     $actions.append($share_btn);
     $share_btn.click(function() {
       var data = share.edit.parse($new_edit);
-      share.ajax.share(data);
+
+      console.log(data);
+      if(data) {
+        test_manager.save(function() {
+          share.ajax.share(data);
+        });
+      }
     });
 
     return $actions;
@@ -414,3 +415,11 @@ share.edit.parse = function($edit) {
   }
 
 }() );
+
+share.display.hide = function() {
+
+}
+
+share.display.show = function(data) {
+
+}

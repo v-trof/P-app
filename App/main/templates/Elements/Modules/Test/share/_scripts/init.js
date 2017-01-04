@@ -64,10 +64,13 @@ $(document).ready(function() {
 
   function decoreate_with_share($card, data) {
     var $changable = $card.find('.__content .m--grey');
+    console.log(data);
     if(data.templates_number) {
       $changable.before('<div><b>' + data.templates_number + '</b>, '
         + Search._.build.num_form(data.templates_number,
-                                  ['шаблон', 'шаблона', 'шаблонов'])
+                                  { one: 'шаблон',
+                                    few: 'шаблона',
+                                    many: 'шаблонов'})
         + '</div>');
     }
 

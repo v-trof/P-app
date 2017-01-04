@@ -102,6 +102,7 @@ gulp.task('min_module_js', function(cb) {
         ]),
         concat(folder + '.js'),
         // uglify(),
+        charset({to: 'utf8'}),
         gulp.dest('../main/files/static/Elements/Modules')
       ], queue.stop);
   });
