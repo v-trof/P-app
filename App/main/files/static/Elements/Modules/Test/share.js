@@ -242,6 +242,14 @@ share.ajax.unshare = function(share_data) {
 });
 }
 
+share.display.hide = function() {
+
+}
+
+share.display.show = function(data) {
+
+}
+
 share.edit.get_defaults = function() {
   return {
     share_id: false,
