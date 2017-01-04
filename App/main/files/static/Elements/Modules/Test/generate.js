@@ -237,23 +237,6 @@ generate.make_template = {
   }
 }
 
-generate.register.task('default', {
-  builder: function() {
-    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
-
-    console.log($task, $task[1]);
-    if(defined(generate.data.task.template)) {
-      $task.find('.__make-template').click(function() {
-        generate.data.task.template.to_tempalte($task);
-      });
-    } else {
-      $task.find('.__make_template').remove();
-    }
-
-    return $task;
-  }
-});
-
 $(document).ready(function() {
   generate.data.task.template.add_to_test = function(template, $edit) {
     template = JSON.parse(JSON.stringify(template));
@@ -783,6 +766,23 @@ $(document).ready(function() {
   }
 });
 
+generate.register.task('default', {
+  builder: function() {
+    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
+
+    console.log($task, $task[1]);
+    if(defined(generate.data.task.template)) {
+      $task.find('.__make-template').click(function() {
+        generate.data.task.template.to_tempalte($task);
+      });
+    } else {
+      $task.find('.__make_template').remove();
+    }
+
+    return $task;
+  }
+});
+
 generate.register.edit('answer', 'checkbox', {
   random_possible: true,
   builder: function(value) {
@@ -1298,6 +1298,28 @@ generate.register.element('answer', 'classify', {
   }
 });
 
+generate.register.element('answer', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.append(render.inputs.text(
+      value.label,
+      '',
+      value.answer
+    ));
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      label: 'Текстовый ответ',
+      worth: 1
+    }
+  }
+})
+
 generate.register.element('answer', 'radio', {
   show_in_items: true,
 
@@ -1330,28 +1352,6 @@ generate.register.element('answer', 'radio', {
   }
 });
 
-generate.register.element('answer', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.append(render.inputs.text(
-      value.label,
-      '',
-      value.answer
-    ));
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      label: 'Текстовый ответ',
-      worth: 1
-    }
-  }
-})
-
 generate.register.element('question', 'file', {
   show_in_items: true,
 
@@ -1373,6 +1373,22 @@ generate.register.element('question', 'file', {
       size: "3.21МБ",
       pos: undefined,
       url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
+    }
+  }
+});
+
+generate.register.element('question', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.html('<div class="__value">' + value.text + '</div>');
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      text: 'Текстовый вопрос'
     }
   }
 });
@@ -1399,22 +1415,6 @@ generate.register.element('question', 'image', {
   sample: {
     value: {
       url: "/media/samples/image.jpg"
-    }
-  }
-});
-
-generate.register.element('question', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.html('<div class="__value">' + value.text + '</div>');
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      text: 'Текстовый вопрос'
     }
   }
 });
@@ -1577,6 +1577,55 @@ generate.register.external('answer', 'classify', {
 
 //TODO fix attempt icon swap
 
+generate.register.external('answer', 'text', {
+  get_value: function($element) {
+    return $element.find('input').val();
+  },
+
+  get_summary: function(value) {
+    if( ! value) value = "";
+
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
+    } else {
+      value = value.escape();
+    }
+
+    return value;
+  },
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    var timer;
+    var typing_interval = 1000;
+
+    $element.keydown(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        var value = $element.find('.__value').val();
+        _change();
+      }, typing_interval);
+    });
+  }
+});
+
 generate.register.external('answer', 'radio', {
   get_value: function($element) {
     var answers = [];
@@ -1640,54 +1689,5 @@ generate.register.external('answer', 'radio', {
 
   observer: function($element, _change) {
     $element.find('input').change(_change);
-  }
-});
-
-generate.register.external('answer', 'text', {
-  get_value: function($element) {
-    return $element.find('input').val();
-  },
-
-  get_summary: function(value) {
-    if( ! value) value = "";
-
-    if(value.length > 20) {
-      value = value.substring(0, 17).escape();
-      value += "&hellip;"
-    } else {
-      value = value.escape();
-    }
-
-    return value;
-  },
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    var timer;
-    var typing_interval = 1000;
-
-    $element.keydown(function() {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        var value = $element.find('.__value').val();
-        _change();
-      }, typing_interval);
-    });
   }
 });

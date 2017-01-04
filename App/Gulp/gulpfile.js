@@ -13,13 +13,15 @@ var  concat = require('gulp-concat');
 var cleanCSS = require('gulp-clean-css');
 var autoprefixer = require('gulp-autoprefixer');
 var merge = require('merge-stream');
+var charset = require('gulp-charset');
 
 function getFolders(dir) {
   var folders = fs.readdirSync(dir)
     .filter(function(file) {
       return fs.statSync(path.join(dir, file)).isDirectory();
     });
-  return folders.sort();
+  folders.sort();
+  return folders;
 }
 
 gulp.task('sass_to_css', function () {

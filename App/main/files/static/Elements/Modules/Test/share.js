@@ -52,15 +52,16 @@ $(document).ready(function() {
   var $own = $(loads.get('Elements/Inputs/checkbox/'));
   $own.addClass('own_only');
   $own.find('label').text('Только добавленные мной');
+  $own.change(function() {request(share.search)});
 
   var $open = $(loads.get('Elements/Inputs/checkbox/'));
   $open.addClass('open_only');
   $open.find('label').text('Только с открытым доступом');
+  $open.change(function() {request(share.search)});
 
   $flags.append($own);
   $flags.append($open);
   share.search.$.find('.__filters').parent().append($flags);
-
 
   //adding tags
   //
@@ -240,14 +241,6 @@ share.ajax.unshare = function(share_data) {
       }
     }
 });
-}
-
-share.display.hide = function() {
-
-}
-
-share.display.show = function(data) {
-
 }
 
 share.edit.get_defaults = function() {
