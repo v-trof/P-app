@@ -42,13 +42,13 @@ var Search = function(requester,
   }
 
   //adding templates
-  this.templates = Search._.templates;
+  this.templates = $.extend({}, Search._.templates);
   for(var key in templates) {
     this.templates[key] = templates[key];
   }
 
   //enabling builders
-  this.build = Search._.build;
+  this.build = $.extend({}, Search._.build);
   for(var key in builders) {
     this.build[key] = builders[key];
   }

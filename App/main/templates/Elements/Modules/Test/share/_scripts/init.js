@@ -61,8 +61,15 @@ $(document).ready(function() {
   });
   //custom card builders
   share.search.build['test'] = function(data) {
+    console.log('share recived test', data);
     var $card = Search._.build.test(data);
-    $card.find('.__extension').html();
+
+
+    $card.find('.__extension').append(
+      share.search.build['tag_list'](data.global_tags));
+
+    $card.find('.__extension').append(
+      share.search.build['tag_list'](data.subject_tags));
   }
 
   share.search.build['material'] = function(data) {
@@ -77,6 +84,15 @@ $(document).ready(function() {
 
   share.search.build['tag'] = function(data) {
     return $('<div class="card m--small">' + data + '</div>');
+  }
+
+  share.search.build['tag_list'] = function(tag_list) {
+    var $tags = $('<div class="row"></div>');
+    tag_list.forEach(function(tag) {
+      $tags.appned(share.search.build['tag'](tag));
+    });
+
+    return $tags;
   }
 
 });

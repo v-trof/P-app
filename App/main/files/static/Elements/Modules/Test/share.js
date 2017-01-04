@@ -69,8 +69,15 @@ $(document).ready(function() {
   });
   //custom card builders
   share.search.build['test'] = function(data) {
+    console.log('share recived test', data);
     var $card = Search._.build.test(data);
-    $card.find('.__extension').html();
+
+
+    $card.find('.__extension').append(
+      share.search.build['tag_list'](data.global_tags));
+
+    $card.find('.__extension').append(
+      share.search.build['tag_list'](data.subject_tags));
   }
 
   share.search.build['material'] = function(data) {
@@ -85,6 +92,15 @@ $(document).ready(function() {
 
   share.search.build['tag'] = function(data) {
     return $('<div class="card m--small">' + data + '</div>');
+  }
+
+  share.search.build['tag_list'] = function(tag_list) {
+    var $tags = $('<div class="row"></div>');
+    tag_list.forEach(function(tag) {
+      $tags.appned(share.search.build['tag'](tag));
+    });
+
+    return $tags;
   }
 
 });
@@ -182,14 +198,6 @@ share.ajax.unshare = function(share_data) {
 });
 }
 
-share.display.hide = function() {
-
-}
-
-share.display.show = function(data) {
-
-}
-
 share.edit.get_defaults = function() {
   return {
     share_id: false,
@@ -231,6 +239,9 @@ share.edit.parse = function($edit) {
   if($edit.find('.share_templates input')[0] &&
      $edit.find('.share_templates input')[0].checked) {
       share_data.assets.templates = true;
+      if (django.material.id)
+        share_data.assets.material_id = django.material.id;
+      else  share_data.assets.test_id = django.test.id;
   }
 
   if($edit.find('.share_material input')[0] &&
@@ -344,3 +355,11 @@ share.edit.parse = function($edit) {
   }
 
 }() );
+
+share.display.hide = function() {
+
+}
+
+share.display.show = function(data) {
+
+}
