@@ -64,9 +64,8 @@ $(document).ready(function() {
 
   function decoreate_with_share($card, data) {
     var $changable = $card.find('.__content .m--grey');
-    console.log(data);
     if(data.templates_number) {
-      $changable.before('<div><b>' + data.templates_number + '</b>, '
+      $changable.before('<div><b>' + data.templates_number + '</b> '
         + Search._.build.num_form(data.templates_number,
                                   { one: 'шаблон',
                                     few: 'шаблона',
@@ -87,6 +86,11 @@ $(document).ready(function() {
     $card.find('.__extension').append(
       share.search.build['tag_list'](data.subject_tags));
 
+    if( ! share.open) {
+      $card.find('.__icons .__neutral')
+        .append(loads["Elements/Icons/locked.svg"])
+        .attr('tip', 'Доступ по запросу');
+    }
 
     $card.click(function() {
       share.display.show(data);
@@ -114,7 +118,11 @@ $(document).ready(function() {
 
   share.search.build['templates'] = function(data) {
     var $card = Search._.build.test(data);
+    var $save = $card.find('.__content').children('*:not(b)');
+    $card.find('.__content').html('').append($save);
+    console.log($save);
     decoreate_with_share($card, data);
+    $card.find('b').first().before('<span>Набор, </span>');
 
     return $card;
   }
