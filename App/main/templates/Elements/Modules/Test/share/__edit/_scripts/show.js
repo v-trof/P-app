@@ -6,7 +6,6 @@
     $share_btn.click(function() {
       var data = share.edit.parse($new_edit);
       share.ajax.share(data);
-      popup.hide();
     });
 
     return $actions;

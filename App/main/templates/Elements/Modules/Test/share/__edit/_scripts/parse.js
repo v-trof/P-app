@@ -37,6 +37,13 @@ share.edit.parse = function($edit) {
       share_data.assets.material = true;
   }
 
+  if( ! share_data.assets.test
+      && ! share_data.assets.material
+      && ! share_data.assets.templates) {
+    notification.show('warning', 'Выберете, что добавить в библиотеку');
+    return false;
+  }
+
   //here should be template parsing
   return share_data;
 };

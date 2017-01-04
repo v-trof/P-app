@@ -1,5 +1,7 @@
 share.ajax.share = function(share_data) {
   console.log('SHOULD HAVE SHARED', share_data);
+  if( ! share_data) return;
+
   var form_data = new FormData();
   form_data.append('course_id',django.course.id);
   form_data.append('description',share_data.description);
@@ -40,6 +42,7 @@ share.ajax.share = function(share_data) {
      success: function(response) {
       if(response && response["type"]) {
           notification.show(response["type"], response["message"]);
+          popup.hide();
       }
     }
 });

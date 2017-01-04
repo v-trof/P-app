@@ -62,9 +62,17 @@ $(document).ready(function() {
   });
 
   function decoreate_with_share($card, data) {
-    $card.find('.__content .m--grey')
-      .replaceWith('<div><span class="m--grey"> Добавил '
-        + data.creator + '</span></div>');
+    var $changable = $card.find('.__content .m--grey');
+    if(data.templates_number) {
+      $changable.before('<div><b>' + data.templates_number + '</b>, '
+        + Search._.build.num_form(data.templates_number,
+                                  ['шаблон', 'шаблона', 'шаблонов'])
+        + '</div>');
+    }
+
+    $changable.replaceWith('<div><span class="m--grey"> Добавил '
+        + data.creator_name + '</span></div>');
+
     $card.find('.__content').append(
       '<span class="m--grey"> Изпользовали ' + data.popularity + ' раз</span>'
     );
@@ -101,7 +109,7 @@ $(document).ready(function() {
   }
 
   share.search.build['templates'] = function(data) {
-    var $card = "???";
+    var $card = Search._.build.test(data);
     decoreate_with_share($card, data);
 
     return $card;

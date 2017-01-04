@@ -10,7 +10,7 @@ share.edit.get_defaults = function() {
     assets: {
       test: false,
       material: false,
-      template: []
+      templats: false
     }
   }
 }

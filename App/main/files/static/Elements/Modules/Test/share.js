@@ -70,9 +70,17 @@ $(document).ready(function() {
   });
 
   function decoreate_with_share($card, data) {
-    $card.find('.__content .m--grey')
-      .replaceWith('<div><span class="m--grey"> Добавил '
-        + data.creator + '</span></div>');
+    var $changable = $card.find('.__content .m--grey');
+    if(data.templates_number) {
+      $changable.before('<div><b>' + data.templates_number + '</b>, '
+        + Search._.build.num_form(data.templates_number,
+                                  ['шаблон', 'шаблона', 'шаблонов'])
+        + '</div>');
+    }
+
+    $changable.replaceWith('<div><span class="m--grey"> Добавил '
+        + data.creator_name + '</span></div>');
+
     $card.find('.__content').append(
       '<span class="m--grey"> Изпользовали ' + data.popularity + ' раз</span>'
     );
@@ -109,7 +117,7 @@ $(document).ready(function() {
   }
 
   share.search.build['templates'] = function(data) {
-    var $card = "???";
+    var $card = Search._.build.test(data);
     decoreate_with_share($card, data);
 
     return $card;
@@ -129,6 +137,14 @@ $(document).ready(function() {
   }
 
 });
+
+share.display.hide = function() {
+
+}
+
+share.display.show = function(data) {
+
+}
 
 share.ajax.get = function(share_data) {
   var form_data = new FormData();
@@ -159,6 +175,8 @@ share.ajax.get = function(share_data) {
 }
 share.ajax.share = function(share_data) {
   console.log('SHOULD HAVE SHARED', share_data);
+  if( ! share_data) return;
+
   var form_data = new FormData();
   form_data.append('course_id',django.course.id);
   form_data.append('description',share_data.description);
@@ -199,6 +217,7 @@ share.ajax.share = function(share_data) {
      success: function(response) {
       if(response && response["type"]) {
           notification.show(response["type"], response["message"]);
+          popup.hide();
       }
     }
 });
@@ -235,7 +254,7 @@ share.edit.get_defaults = function() {
     assets: {
       test: false,
       material: false,
-      template: []
+      templats: false
     }
   }
 }
@@ -279,6 +298,13 @@ share.edit.parse = function($edit) {
       share_data.assets.material = true;
   }
 
+  if( ! share_data.assets.test
+      && ! share_data.assets.material
+      && ! share_data.assets.templates) {
+    notification.show('warning', 'Выберете, что добавить в библиотеку');
+    return false;
+  }
+
   //here should be template parsing
   return share_data;
 };
@@ -291,7 +317,6 @@ share.edit.parse = function($edit) {
     $share_btn.click(function() {
       var data = share.edit.parse($new_edit);
       share.ajax.share(data);
-      popup.hide();
     });
 
     return $actions;
@@ -388,11 +413,3 @@ share.edit.parse = function($edit) {
   }
 
 }() );
-
-share.display.hide = function() {
-
-}
-
-share.display.show = function(data) {
-
-}
