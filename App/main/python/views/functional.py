@@ -467,7 +467,7 @@ class Universal_views():
 
     def share(request):
         if request.method == 'POST':
-            print(request.POST.get("test_id", None))
+            print(request.POST)
             course_id = request.POST.get("course_id", None)
             subject_tags = request.POST.get("subject_tags", False)
             global_tags = request.POST.get("global_tags", False)

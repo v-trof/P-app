@@ -2541,6 +2541,7 @@ class Test():
 				test_data = json.load(info_file)
 		else:
 			test_data={}
+		print(publish_data)
 		test_data["allowed_mistakes"] = []
 		for mistake in publish_data["forgive"]:
 			if publish_data["forgive"][mistake]:
@@ -3367,7 +3368,7 @@ class Sharing():
 				public_file['templates']=templates
 		elif refresh:
 			public_file['templates']=old_shared['templates']
-		else: public_file['tasks']=full_control_file['tasks']
+		else: public_file['tasks']=item_info['tasks']
 
 		with io.open('main/files/json/shared/'+str(shared_id)+'.json', 'w+', encoding='utf8') as shared_file:
 			saving_data = json.dumps(public_file, ensure_ascii=False)
