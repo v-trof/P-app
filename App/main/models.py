@@ -3314,7 +3314,7 @@ class Marks():
 
 class Sharing():
 
-	def share(course_id, item_id, type, open=True, subject=False, description=False, global_tags=False, subject_tags=False, share_query=False, refresh=False, shared_id=False, templates=False):
+	def share(course_id, item_id, type, open=True, subject=False, description=False, global_tags=False, subject_tags=False, shared_query=False, refresh=False, shared_id=False, templates=False):
 		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
 		course=Course.objects.get(id=course_id)
@@ -3332,19 +3332,25 @@ class Sharing():
 		shared_item["course_id"]=course_id
 		shared_item["open"]=open
 		shared_item["id"]=item_id
-		shared_item["type"]=type
 		shared_item["popularity"]=0
 		shared_item["global_tags"]=global_tags
 		item_info["shared"]=True
-		if not share_query:
-			share_query=[str(type),'templates']
-		shared_item["share_query"]=share_query
-		item_info["share_query"]=share_query
+		if not shared_query:
+			shared_query=[str(type),'templates']
+		shared_item["shared_query"]=shared_query
+		if type in shared_item["shared_query"]:
+			shared_item["type"]=type
+		else: shared_item["type"]='templates'
+		print(type in shared_item["shared_query"],shared_item["type"])
+		item_info["shared_query"]=shared_query
 		item_info["shared_id"]=shared_id
 		shared_item["title"]=item_info["title"]
 		shared_item["subject"]=course.subject
+		shared_item["questions_number"]=full_public_file["questions_number"]
 		shared_item["subject_tags"]=subject_tags
 		shared_item["creator"]=full_public_file['creator']
+		user=User.objects.get(id=full_public_file['creator'])
+		shared_item["creator_name"]=user.name
 		shared_table[shared_id]=shared_item
 
 		if (refresh):
@@ -3353,7 +3359,7 @@ class Sharing():
 			full_control_file=item_info
 		public_file={}
 		public_file['templates']=[]
-		if type in shared_item["share_query"]:
+		if type in shared_item["shared_query"]:
 			public_file['tasks']=full_public_file['tasks']
 			public_file["questions_number"]=full_public_file["questions_number"]
 			public_file["title"]=full_public_file["title"]
@@ -3361,7 +3367,7 @@ class Sharing():
 			public_file['tasks']=old_shared['tasks']
 			public_file["questions_number"]=old_shared["questions_number"]
 			public_file["title"]=old_shared["title"]
-		if "templates" in shared_item["share_query"]:
+		if "templates" in shared_item["shared_query"]:
 			if not templates:
 				public_file['templates']=full_public_file['templates']
 			else:
@@ -3395,7 +3401,7 @@ class Sharing():
 		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/control/'+item_id+'.json', 'r', encoding='utf8') as info_file:
 			item_info = json.load(info_file)
 		item_info["shared"]=False
-		item_info["share_query"]=[]
+		item_info["shared_query"]=[]
 		item_info["shared_id"]=False
 		item_info.pop("shared_id",None)
 		shared_table.pop(shared_id,None)
@@ -3624,14 +3630,14 @@ class Search():
 
 		return cards
 
-	def in_shared_elements(search_query,parameters):
+	def in_shared_elements(search_query,parameters,user):
 		cards=[]
-		user=User.objects.get(id=parameters["user_id"])
 		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_table:
 			shared_table=json.load(shared_table)
 		for shared_id,shared_info in shared_table.items():
+			print(shared_info["type"],parameters["shared_query"])
 			if shared_info["type"] in parameters["shared_query"]:
-				if parameters["own"] and shared_info["creator"]==parameters["user_id"] or not parameters["own"] and not shared_info["creator"]==parameters["user_id"]:
+				if parameters["own"] and shared_info["creator"]==str(user.id) or not parameters["own"] and not shared_info["creator"]==str(user.id):
 					if parameters['open'] and shared_info["open"] or not parameters['open'] and not shared_info["open"]:
 						if not shared_info["course_id"] in user.participation_list.split(' '):
 							print(parameters)
@@ -3671,12 +3677,7 @@ class Search():
 				else:
 					cards.extend(Search.types[type](search_query=search_query))
 			elif type=="shared":
-				for parameter,content in search_types["shared"].items():
-					try:
-						content=json.loads(content)
-					except:
-						pass
-				cards.extend(Search.types[type](search_query=search_query,parameters=search_types["shared"]))
+				cards.extend(Search.types[type](search_query=search_query,parameters=search_types["shared"],user=user))
 
 		cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
 

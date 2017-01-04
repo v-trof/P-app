@@ -478,7 +478,7 @@ class Universal_views():
             description=request.POST.get('description',False)
             test_id = request.POST.get("test_id", False)
             material_id = request.POST.get("material_id", False)
-            share_query = request.POST.get("share_query", False)
+            shared_query = request.POST.get("shared_query", False)
             shared_id= request.POST.get("shared_id", False)
             templates= request.POST.get("templates", False)
             open= request.POST.get("open", False)
@@ -490,15 +490,15 @@ class Universal_views():
             if shared_id:
                 refresh=True
             else: refresh=False
-            if share_query:
-                share_query=json.loads(share_query)
+            if shared_query:
+                shared_query=json.loads(shared_query)
             if test_id:
                 type="test"
                 item_id=test_id
             elif material_id:
                 type="material"
                 item_id=material_id
-            message = Sharing.share(course_id=course_id, item_id=item_id, type=type, open=open, subject_tags=subject_tags, global_tags=global_tags, description=description, share_query=share_query, refresh=refresh, shared_id=shared_id,templates=templates)
+            message = Sharing.share(course_id=course_id, item_id=item_id, type=type, open=open, subject_tags=subject_tags, global_tags=global_tags, description=description, shared_query=shared_query, refresh=refresh, shared_id=shared_id,templates=templates)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
     def unshare(request):
@@ -523,8 +523,6 @@ class Universal_views():
             search_query=request.POST.get("search_query","")
             if "search_types" in request.POST.keys():
                 search_types=json.loads(request.POST["search_types"])
-                if "shared" in search_types.keys():
-                    search_types["shared"]["user_id"]=str(request.user.id)
             else: search_types=None
             cards=Search.complex(search_query=search_query,search_types=search_types,user=request.user)
             return HttpResponse(json.dumps(cards), content_type="application/json")

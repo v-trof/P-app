@@ -29,7 +29,7 @@ $(document).ready(function() {
               'global_tags': global_tags,
               'own': own,
               'open': open,
-              'shared_query': JSON.stringify(search_types)
+              'shared_query': search_types
             }
           }),
           'csrfmiddlewaretoken': loads.csrf_token,
@@ -165,28 +165,28 @@ share.ajax.share = function(share_data) {
   form_data.append('open',share_data.open);
   form_data.append('subject_tags',JSON.stringify(share_data.tags.subject));
   form_data.append('global_tags',JSON.stringify(share_data.tags.main));
-  var share_query=[]
+  var shared_query=[]
   if (share_data.assets.material)
   {
-  	share_query.push('material');
+  	shared_query.push('material');
   	form_data.append('material_id',share_data.assets.material_id);
   	if (share_data.assets.templates)
-  		share_query.push('templates');
+  		shared_query.push('templates');
   }
   else if (share_data.assets.test)
   {
-  	share_query.push('test');
+  	shared_query.push('test');
   	form_data.append('test_id',share_data.assets.test_id);
   	if (share_data.assets.templates)
-  		share_query.push('templates');
+  		shared_query.push('templates');
   }
   else if (share_data.assets.templates){
-  	share_query.push('templates');
+  	shared_query.push('templates');
   	if (share_data.assets.test_id)
   		form_data.append('test_id',share_data.assets.test_id);
   	else form_data.append('material_id',share_data.assets.material_id);
   }
-  form_data.append('share_query',JSON.stringify(share_query));
+  form_data.append('shared_query',JSON.stringify(shared_query));
   if (share_data.shared_id)
   	form_data.append('shared_id',share_data.shared_id);
   form_data.append('csrfmiddlewaretoken', loads.csrf_token);
@@ -221,6 +221,14 @@ share.ajax.unshare = function(share_data) {
       }
     }
 });
+}
+
+share.display.hide = function() {
+
+}
+
+share.display.show = function(data) {
+
 }
 
 share.edit.get_defaults = function() {
@@ -384,11 +392,3 @@ share.edit.parse = function($edit) {
   }
 
 }() );
-
-share.display.hide = function() {
-
-}
-
-share.display.show = function(data) {
-
-}

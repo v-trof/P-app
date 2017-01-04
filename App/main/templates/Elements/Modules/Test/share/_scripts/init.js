@@ -21,7 +21,7 @@ $(document).ready(function() {
               'global_tags': global_tags,
               'own': own,
               'open': open,
-              'shared_query': JSON.stringify(search_types)
+              'shared_query': search_types
             }
           }),
           'csrfmiddlewaretoken': loads.csrf_token,
