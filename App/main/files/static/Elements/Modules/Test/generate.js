@@ -1162,200 +1162,6 @@ generate.register.edit('question', 'text', {
   }
 });
 
-generate.register.element('answer', 'checkbox', {
-  show_in_items: true,
-
-  builder: function(value) {
-
-    value.answer = value.answer || [];
-
-    var $new_element = this.make_template(value);
-    value.items.forEach(function(label, index) {
-      var $new_checkbox = $(loads.get('Elements/Inputs/checkbox/'));
-      $new_checkbox.find('label').text(label);
-
-      if(value.answer.has(index)) {
-        $new_checkbox.find('input')[0].checked = true;
-      }
-
-      $new_element.append($new_checkbox);
-    });
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
-      answer: [1],
-      worth: 1
-    }
-  }
-});
-
-generate.register.element('answer', 'radio', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var group = generate.counter.radio++;
-    value.answer = value.answer || [];
-
-    var $new_element = this.make_template(value);
-    value.items.forEach(function(label, index) {
-      var $new_checkbox = $(loads.get('Elements/Inputs/radio/'));
-      $new_checkbox.find('label').text(label);
-
-      if(value.answer.has(index)) {
-        $new_checkbox.find('input')[0].checked = true;
-      }
-
-      $new_element.append($new_checkbox);
-      $new_element.find('input').attr('name', "radio_" + group);
-    });
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
-      answer: [1],
-      worth: 1
-    }
-  }
-});
-
-generate.register.element('answer', 'classify', {
-  show_in_items: true,
-
-  create_item: function(item_text, indicator_index) {
-    var $new_item = $(loads.get('Elements/Modules/Test/generate/' +
-                                'data/elements/answer/classify/__item/'));
-    $new_item.text(item_text);
-    $new_item.addClass('classify_item_'+indicator_index);
-
-    //binding pull_put
-    pull_put.puller.add(
-      $new_item, //element
-      [], //actions
-      undefined, //additional
-      function() {
-        indicator.show(indicator_index);
-        pull_put.ui.$.find('.__content').css('min-width', '10rem');
-      },
-      false,
-      true
-    );
-
-    return $new_item;
-  },
-
-  check: function($element) {
-    $element.find('.__items').each(function() {
-      if($(this).children('.__item').length === 0) {
-        if($(this).children('.m--classify-empty').length === 0) {
-          $(this).append('<div class="m--classify-empty">Пусто</div>');
-        }
-      } else {
-        $(this).children('.m--classify-empty').remove();
-      }
-    });
-  },
-
-  create_class: function(title, items, special_class, indicator_index) {
-    var self = this;
-    var $new_class = $(loads.get('Elements/Modules/Test/generate/' +
-                                 'data/elements/answer/classify/'));
-
-    var $items = $new_class.find('.__items');
-    if(items.length === 0) {
-      $items.append('<div class="m--classify-empty">Пусто</div>');
-    } else {
-      items.forEach(function(item_text) {
-        $items.append(self.create_item(item_text, indicator_index));
-      });
-    }
-
-    //binding pull_put
-    pull_put.put_zone.add($items, function(event, $this, $pulled) {
-      if($pulled.hasClass('classify_item_'+indicator_index)) {
-        $items.append($pulled);
-        console.log($pulled);
-        pull_put.reset();
-        indicator.hide(indicator_index);
-        self.check($new_class.parent());
-      }
-    });
-
-    indicator.add($items, 'add', indicator_index);
-
-    $new_class.find('.__title').text(title);
-    $new_class.addClass(special_class);
-
-    return $new_class;
-  },
-
-  builder: function(value) {
-    var self = this;
-    var indicator_index = generate.counter.classify++;
-
-    var items_copy = value.items.slice();
-
-    var $new_element = self.make_template(value);
-
-    value.classes.forEach(function(class_name) {
-      var class_items = [];
-
-      if(value.answer[class_name]) {
-        value.answer[class_name].forEach(function(item) {
-          items_copy.remove(item);
-          class_items.push(item);
-        });
-      }
-
-      $new_element.append(self.create_class(class_name, class_items, '',
-                                            indicator_index));
-    });
-
-    if(items_copy.length > 0) {
-      $new_element.append(self.create_class('', items_copy, 'm--unordered',
-                                            indicator_index));
-    }
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      classes:  ["Глаголы", "Существительные"],
-      items: ["Дом", "Стол", "Бук"],
-      answer: {}
-    }
-  }
-});
-
-generate.register.element('answer', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.append(render.inputs.text(
-      value.label,
-      '',
-      value.answer
-    ));
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      label: 'Текстовый ответ',
-      worth: 1
-    }
-  }
-})
-
 generate.register.external('answer', 'checkbox', {
   get_value: function($element) {
     var answers = [];
@@ -1514,55 +1320,6 @@ generate.register.external('answer', 'classify', {
 
 //TODO fix attempt icon swap
 
-generate.register.external('answer', 'text', {
-  get_value: function($element) {
-    return $element.find('input').val();
-  },
-
-  get_summary: function(value) {
-    if( ! value) value = "";
-
-    if(value.length > 20) {
-      value = value.substring(0, 17).escape();
-      value += "&hellip;"
-    } else {
-      value = value.escape();
-    }
-
-    return value;
-  },
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    var timer;
-    var typing_interval = 1000;
-
-    $element.keydown(function() {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        var value = $element.find('.__value').val();
-        _change();
-      }, typing_interval);
-    });
-  }
-});
-
 generate.register.external('answer', 'radio', {
   get_value: function($element) {
     var answers = [];
@@ -1628,6 +1385,249 @@ generate.register.external('answer', 'radio', {
     $element.find('input').change(_change);
   }
 });
+
+generate.register.external('answer', 'text', {
+  get_value: function($element) {
+    return $element.find('input').val();
+  },
+
+  get_summary: function(value) {
+    if( ! value) value = "";
+
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
+    } else {
+      value = value.escape();
+    }
+
+    return value;
+  },
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    var timer;
+    var typing_interval = 1000;
+
+    $element.keydown(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        var value = $element.find('.__value').val();
+        _change();
+      }, typing_interval);
+    });
+  }
+});
+
+generate.register.element('answer', 'checkbox', {
+  show_in_items: true,
+
+  builder: function(value) {
+
+    value.answer = value.answer || [];
+
+    var $new_element = this.make_template(value);
+    value.items.forEach(function(label, index) {
+      var $new_checkbox = $(loads.get('Elements/Inputs/checkbox/'));
+      $new_checkbox.find('label').text(label);
+
+      if(value.answer.has(index)) {
+        $new_checkbox.find('input')[0].checked = true;
+      }
+
+      $new_element.append($new_checkbox);
+    });
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
+      answer: [1],
+      worth: 1
+    }
+  }
+});
+
+generate.register.element('answer', 'classify', {
+  show_in_items: true,
+
+  create_item: function(item_text, indicator_index) {
+    var $new_item = $(loads.get('Elements/Modules/Test/generate/' +
+                                'data/elements/answer/classify/__item/'));
+    $new_item.text(item_text);
+    $new_item.addClass('classify_item_'+indicator_index);
+
+    //binding pull_put
+    pull_put.puller.add(
+      $new_item, //element
+      [], //actions
+      undefined, //additional
+      function() {
+        indicator.show(indicator_index);
+        pull_put.ui.$.find('.__content').css('min-width', '10rem');
+      },
+      false,
+      true
+    );
+
+    return $new_item;
+  },
+
+  check: function($element) {
+    $element.find('.__items').each(function() {
+      if($(this).children('.__item').length === 0) {
+        if($(this).children('.m--classify-empty').length === 0) {
+          $(this).append('<div class="m--classify-empty">Пусто</div>');
+        }
+      } else {
+        $(this).children('.m--classify-empty').remove();
+      }
+    });
+  },
+
+  create_class: function(title, items, special_class, indicator_index) {
+    var self = this;
+    var $new_class = $(loads.get('Elements/Modules/Test/generate/' +
+                                 'data/elements/answer/classify/'));
+
+    var $items = $new_class.find('.__items');
+    if(items.length === 0) {
+      $items.append('<div class="m--classify-empty">Пусто</div>');
+    } else {
+      items.forEach(function(item_text) {
+        $items.append(self.create_item(item_text, indicator_index));
+      });
+    }
+
+    //binding pull_put
+    pull_put.put_zone.add($items, function(event, $this, $pulled) {
+      if($pulled.hasClass('classify_item_'+indicator_index)) {
+        $items.append($pulled);
+        console.log($pulled);
+        pull_put.reset();
+        indicator.hide(indicator_index);
+        self.check($new_class.parent());
+      }
+    });
+
+    indicator.add($items, 'add', indicator_index);
+
+    $new_class.find('.__title').text(title);
+    $new_class.addClass(special_class);
+
+    return $new_class;
+  },
+
+  builder: function(value) {
+    var self = this;
+    var indicator_index = generate.counter.classify++;
+
+    var items_copy = value.items.slice();
+
+    var $new_element = self.make_template(value);
+
+    value.classes.forEach(function(class_name) {
+      var class_items = [];
+
+      if(value.answer[class_name]) {
+        value.answer[class_name].forEach(function(item) {
+          items_copy.remove(item);
+          class_items.push(item);
+        });
+      }
+
+      $new_element.append(self.create_class(class_name, class_items, '',
+                                            indicator_index));
+    });
+
+    if(items_copy.length > 0) {
+      $new_element.append(self.create_class('', items_copy, 'm--unordered',
+                                            indicator_index));
+    }
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      classes:  ["Глаголы", "Существительные"],
+      items: ["Дом", "Стол", "Бук"],
+      answer: {}
+    }
+  }
+});
+
+generate.register.element('answer', 'radio', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var group = generate.counter.radio++;
+    value.answer = value.answer || [];
+
+    var $new_element = this.make_template(value);
+    value.items.forEach(function(label, index) {
+      var $new_checkbox = $(loads.get('Elements/Inputs/radio/'));
+      $new_checkbox.find('label').text(label);
+
+      if(value.answer.has(index)) {
+        $new_checkbox.find('input')[0].checked = true;
+      }
+
+      $new_element.append($new_checkbox);
+      $new_element.find('input').attr('name', "radio_" + group);
+    });
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
+      answer: [1],
+      worth: 1
+    }
+  }
+});
+
+generate.register.element('answer', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.append(render.inputs.text(
+      value.label,
+      '',
+      value.answer
+    ));
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      label: 'Текстовый ответ',
+      worth: 1
+    }
+  }
+})
 
 generate.register.element('question', 'file', {
   show_in_items: true,

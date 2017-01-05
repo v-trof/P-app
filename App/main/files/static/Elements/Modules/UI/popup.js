@@ -44,6 +44,8 @@ var popup = (function() {
 
       setTimeout(function() {
         $popup.addClass('m--hidden');
+        $popup.find(".__content").html('');
+        
       }, 300);
     }
   }
