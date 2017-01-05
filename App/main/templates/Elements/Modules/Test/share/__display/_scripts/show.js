@@ -48,15 +48,12 @@ share.display.funcs.import = function(data) {
       type: 'POST',
       data: {
         'csrfmiddlewaretoken': loads.csrf_token,
-        'shared_id': data.share_id
+        'shared_id': data.shared_id
       }
     }).success(function(responce) {
       console.log('imported', responce);
-      test_manager.load({
-        tasks: [],
-        title: '',
-        templates: responce
-      });
+      responce.tasks = [];
+      test_manager.load(responce);
       notification.show('success', 'Шаблоны импортированны');
       popup.hide();
     }).error(function() {
@@ -69,7 +66,7 @@ share.display.funcs.append = function(data) {
       type: 'POST',
       data: {
         'csrfmiddlewaretoken': loads.csrf_token,
-        'shared_id': data.share_id
+        'shared_id': data.shared_id
       }
   }).success(function(responce) {
     test_manager.load(responce);
@@ -79,13 +76,13 @@ share.display.funcs.append = function(data) {
     notification.show('error', 'Ошибка');
   });
 }
-share.display.funcs.repalce = function(data) {
+share.display.funcs.replace = function(data) {
   $.ajax({
       url: '/func/get_shared/',
       type: 'POST',
       data: {
         'csrfmiddlewaretoken': loads.csrf_token,
-        'shared_id': data.share_id
+        'shared_id': data.shared_id
       }
   }).success(function(responce) {
     editor.test_data.tasks = [];

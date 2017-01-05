@@ -38,6 +38,21 @@ generate.register = {
   }
 }
 
+/**
+ * Returns general blueprints of this subtype (data[type][subtype])
+ * @method get_blueprints
+ * @param  {$} element element to parse
+ * @return {Object} blueprints
+ */
+generate.get_blueprints = function(element) {
+  //to jq
+  var $element = $(element);
+  var type = $element.attr('type');
+  var subtype = $element.attr('subtype');
+
+  return generate.data[type][subtype];
+}
+
 generate.register.edit = function(type, subtype, edit_data) {
   if (!(type && subtype)) return false;
 
@@ -193,21 +208,6 @@ generate.register.external = function(type, subtype, external_data) {
 generate.register.task = function(subtype, task_data) {
   var data = this.bind_data('task', subtype, 'element', task_data);
   data.build = task_data.builder;
-}
-
-/**
- * Returns general blueprints of this subtype (data[type][subtype])
- * @method get_blueprints
- * @param  {$} element element to parse
- * @return {Object} blueprints
- */
-generate.get_blueprints = function(element) {
-  //to jq
-  var $element = $(element);
-  var type = $element.attr('type');
-  var subtype = $element.attr('subtype');
-
-  return generate.data[type][subtype];
 }
 
 /**
@@ -1302,28 +1302,6 @@ generate.register.element('answer', 'classify', {
   }
 });
 
-generate.register.element('answer', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.append(render.inputs.text(
-      value.label,
-      '',
-      value.answer
-    ));
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      label: 'Текстовый ответ',
-      worth: 1
-    }
-  }
-})
-
 generate.register.element('answer', 'radio', {
   show_in_items: true,
 
@@ -1355,6 +1333,28 @@ generate.register.element('answer', 'radio', {
     }
   }
 });
+
+generate.register.element('answer', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.append(render.inputs.text(
+      value.label,
+      '',
+      value.answer
+    ));
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      label: 'Текстовый ответ',
+      worth: 1
+    }
+  }
+})
 
 generate.register.element('question', 'file', {
   show_in_items: true,

@@ -4,6 +4,7 @@ function header_build() {
 
   var breadcrumbs_width = $(".header>.__breadcrumbs").innerWidth();
   var user_width = $(".header>.__user-info").innerWidth();
+  var max_width = Math.max(breadcrumbs_width, user_width);
 
   console.log('b', breadcrumbs_width, 'u', user_width, 'm', max_width);
 
