@@ -3383,6 +3383,7 @@ class Sharing():
 		shared_item={}
 		shared_item["course_id"]=course_id
 		shared_item["open"]=open
+		shared_item["description"]=description
 		shared_item["id"]=item_id
 		shared_item["popularity"]=0
 		if len(global_tags)==0:
@@ -3784,7 +3785,7 @@ class Search():
 			elements=Utility.sort_by_conformity(object=elements, indicator="conformity")
 		for element in elements:
 			cards.append({"type":element["type"],"content":element["content"],"conformity":element["conformity"]})
-
+		print(cards)
 		return cards
 
 	def in_shared_elements(search_query,parameters,user):
