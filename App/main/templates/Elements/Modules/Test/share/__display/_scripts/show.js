@@ -27,7 +27,13 @@ share.display.show = function(data, $item) {
       var $replace_btn = $('<button class="m--ghost">'
       + 'Добавить, заменив текущий </button>');
       $actions.append($append_btn);
+      $append_btn.click(function() {
+        share.display.funcs.append(data);
+      });
       $actions.append($replace_btn);
+      $replace_btn.click(function() {
+        share.display.funcs.replace(data);
+      });
     }
   }
 
@@ -38,7 +44,7 @@ share.display.show = function(data, $item) {
 share.display.funcs = {}
 share.display.funcs.import = function(data) {
   $.ajax({
-      url: '/func/search/',
+      url: '/func/get_shared/',
       type: 'POST',
       data: {
         'csrfmiddlewaretoken': loads.csrf_token,
@@ -54,12 +60,12 @@ share.display.funcs.import = function(data) {
       notification.show('success', 'Шаблоны импортированны');
       popup.hide();
     }).error(function() {
-      notification.show('success', 'Ошибка');
+      notification.show('error', 'Ошибка');
     })
 }
 share.display.funcs.append = function(data) {
   $.ajax({
-      url: '/func/search/',
+      url: '/func/get_shared/',
       type: 'POST',
       data: {
         'csrfmiddlewaretoken': loads.csrf_token,
@@ -70,12 +76,12 @@ share.display.funcs.append = function(data) {
     notification.show('success', 'Добавлено');
     popup.hide();
   }).error(function() {
-    notification.show('success', 'Ошибка');
+    notification.show('error', 'Ошибка');
   });
 }
 share.display.funcs.repalce = function(data) {
   $.ajax({
-      url: '/func/search/',
+      url: '/func/get_shared/',
       type: 'POST',
       data: {
         'csrfmiddlewaretoken': loads.csrf_token,

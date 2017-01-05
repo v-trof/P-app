@@ -45,6 +45,7 @@ var ripple = (function() {
 $(document).ready(function() {
   $("body").on({
     "mousedown": function(e) {
+      if($(this).parents('#popup')[0]) return;
       var element_rect = this.getBoundingClientRect();
       var position = {
         left: e.clientX - element_rect.left,

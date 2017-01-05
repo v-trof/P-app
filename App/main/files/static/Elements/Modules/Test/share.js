@@ -158,6 +158,207 @@ $(document).ready(function() {
 
 });
 
+share.ajax.get = function(share_data) {
+  var form_data = new FormData();
+  form_data.append('course_id',django.course.id);
+  if (django.test_id)
+  {
+  	form_data.append('type',"test");
+  	form_data.append('item_id',django.test_id);
+  }
+  else{
+  	form_data.append('type',"material");
+  	form_data.append('item_id',django.material_id);
+  }
+  form_data.append('shared_id',share_data.shared_id);
+  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
+  $.ajax({
+    type:"POST",
+    url:"/func/take_shared/",
+    data: form_data,
+    processData: false,
+      contentType: false,
+     success: function(response) {
+      if(response && response["type"]) {
+          notification.show(response["type"], response["message"]);
+      }
+    }
+});
+}
+share.ajax.share = function(share_data) {
+  console.log('SHOULD HAVE SHARED', share_data);
+  if( ! share_data) return;
+
+  var form_data = new FormData();
+  form_data.append('course_id',django.course.id);
+  form_data.append('description',share_data.description);
+  form_data.append('open',share_data.open);
+  form_data.append('subject_tags',JSON.stringify(share_data.tags.subject));
+  form_data.append('global_tags',JSON.stringify(share_data.tags.main));
+  var shared_query=[]
+  if (share_data.assets.material)
+  {
+  	shared_query.push('material');
+  	form_data.append('material_id',share_data.assets.material_id);
+  	if (share_data.assets.templates)
+  		shared_query.push('templates');
+  }
+  else if (share_data.assets.test)
+  {
+  	shared_query.push('test');
+  	form_data.append('test_id',share_data.assets.test_id);
+  	if (share_data.assets.templates)
+  		shared_query.push('templates');
+  }
+  else if (share_data.assets.templates){
+  	shared_query.push('templates');
+  	if (share_data.assets.test_id)
+  		form_data.append('test_id',share_data.assets.test_id);
+  	else form_data.append('material_id',share_data.assets.material_id);
+  }
+  form_data.append('shared_query',JSON.stringify(shared_query));
+  if (share_data.shared_id)
+  	form_data.append('shared_id',share_data.shared_id);
+  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
+  $.ajax({
+    type:"POST",
+    url:"/func/share/",
+    data: form_data,
+    processData: false,
+      contentType: false,
+     success: function(response) {
+      if(response && response["type"]) {
+          notification.show(response["type"], response["message"]);
+          popup.hide();
+      }
+    }
+});
+}
+
+share.ajax.unshare = function(share_data) {
+  var form_data = new FormData();
+  form_data.append('course_id',django.course.id);
+  form_data.append('shared_id',share_data.shared_id);
+  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
+  $.ajax({
+    type:"POST",
+    url:"/func/share/",
+    data: form_data,
+    processData: false,
+      contentType: false,
+     success: function(response) {
+      if(response && response["type"]) {
+          notification.show(response["type"], response["message"]);
+      }
+    }
+});
+}
+
+share.display.show = function(data, $item) {
+  var $popup = $(loads.get("Elements/Modules/Test/share/__popup_texts/__info/"));
+  $popup.find('.__item').append($item.clone());
+  $popup.find('.__neutral').remove();
+
+  console.log(data, data.open);
+  var subject;
+
+  $popup.find('.__text').html(
+    '<p> Предмет: ' + data.subject + '</p>'
+    + data.description);
+
+  var $actions = $('<div class="row"></div>');
+
+  if( ! data.open) {
+    var $request_btn = $('<button> Запросить доступ </button>');
+    $actions.append($request_btn);
+  } else {
+    if(data.type === 'templates') {
+      var $import_btn = $('<button> Импортировать шаблоны </button>');
+      $import_btn.click(function() {
+        share.display.funcs.import(data);
+      });
+      $actions.append($import_btn);
+    } else {
+      var $append_btn = $('<button> Добавить в конец </button>');
+      var $replace_btn = $('<button class="m--ghost">'
+      + 'Добавить, заменив текущий </button>');
+      $actions.append($append_btn);
+      $append_btn.click(function() {
+        share.display.funcs.append(data);
+      });
+      $actions.append($replace_btn);
+      $replace_btn.click(function() {
+        share.display.funcs.replace(data);
+      });
+    }
+  }
+
+  $popup.find('.__actions').append($actions);
+  popup.show($popup, function() {}, {'width': '60rem'});
+}
+
+share.display.funcs = {}
+share.display.funcs.import = function(data) {
+  $.ajax({
+      url: '/func/get_shared/',
+      type: 'POST',
+      data: {
+        'csrfmiddlewaretoken': loads.csrf_token,
+        'share_id': data.share_id
+      }
+    }).success(function(responce) {
+      console.log('imported', responce);
+      test_manager.load({
+        tasks: [],
+        title: '',
+        templates: responce
+      });
+      notification.show('success', 'Шаблоны импортированны');
+      popup.hide();
+    }).error(function() {
+      notification.show('error', 'Ошибка');
+    })
+}
+share.display.funcs.append = function(data) {
+  $.ajax({
+      url: '/func/get_shared/',
+      type: 'POST',
+      data: {
+        'csrfmiddlewaretoken': loads.csrf_token,
+        'share_id': data.share_id
+      }
+  }).success(function(responce) {
+    test_manager.load(responce);
+    notification.show('success', 'Добавлено');
+    popup.hide();
+  }).error(function() {
+    notification.show('error', 'Ошибка');
+  });
+}
+share.display.funcs.repalce = function(data) {
+  $.ajax({
+      url: '/func/get_shared/',
+      type: 'POST',
+      data: {
+        'csrfmiddlewaretoken': loads.csrf_token,
+        'share_id': data.share_id
+      }
+  }).success(function(responce) {
+    editor.test_data.tasks = [];
+    editor.test_data.title = '';
+    $('.preview h2').html('');
+    $('.preview .__content').html('');
+    test_manager.load(responce);
+    notification.show('success', 'Заменено');
+    popup.hide();
+  }).error(function() {
+    notification.show('success', 'Ошибка');
+  });
+}
+share.display.funcs.request = function(data) {
+  //dunno
+}
+
 share.edit.get_defaults = function() {
   return {
     share_id: false,
@@ -335,198 +536,3 @@ share.edit.parse = function($edit) {
   }
 
 }() );
-
-share.ajax.get = function(share_data) {
-  var form_data = new FormData();
-  form_data.append('course_id',django.course.id);
-  if (django.test_id)
-  {
-  	form_data.append('type',"test");
-  	form_data.append('item_id',django.test_id);
-  }
-  else{
-  	form_data.append('type',"material");
-  	form_data.append('item_id',django.material_id);
-  }
-  form_data.append('shared_id',share_data.shared_id);
-  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
-  $.ajax({
-    type:"POST",
-    url:"/func/take_shared/",
-    data: form_data,
-    processData: false,
-      contentType: false,
-     success: function(response) {
-      if(response && response["type"]) {
-          notification.show(response["type"], response["message"]);
-      }
-    }
-});
-}
-share.ajax.share = function(share_data) {
-  console.log('SHOULD HAVE SHARED', share_data);
-  if( ! share_data) return;
-
-  var form_data = new FormData();
-  form_data.append('course_id',django.course.id);
-  form_data.append('description',share_data.description);
-  form_data.append('open',share_data.open);
-  form_data.append('subject_tags',JSON.stringify(share_data.tags.subject));
-  form_data.append('global_tags',JSON.stringify(share_data.tags.main));
-  var shared_query=[]
-  if (share_data.assets.material)
-  {
-  	shared_query.push('material');
-  	form_data.append('material_id',share_data.assets.material_id);
-  	if (share_data.assets.templates)
-  		shared_query.push('templates');
-  }
-  else if (share_data.assets.test)
-  {
-  	shared_query.push('test');
-  	form_data.append('test_id',share_data.assets.test_id);
-  	if (share_data.assets.templates)
-  		shared_query.push('templates');
-  }
-  else if (share_data.assets.templates){
-  	shared_query.push('templates');
-  	if (share_data.assets.test_id)
-  		form_data.append('test_id',share_data.assets.test_id);
-  	else form_data.append('material_id',share_data.assets.material_id);
-  }
-  form_data.append('shared_query',JSON.stringify(shared_query));
-  if (share_data.shared_id)
-  	form_data.append('shared_id',share_data.shared_id);
-  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
-  $.ajax({
-    type:"POST",
-    url:"/func/share/",
-    data: form_data,
-    processData: false,
-      contentType: false,
-     success: function(response) {
-      if(response && response["type"]) {
-          notification.show(response["type"], response["message"]);
-          popup.hide();
-      }
-    }
-});
-}
-
-share.ajax.unshare = function(share_data) {
-  var form_data = new FormData();
-  form_data.append('course_id',django.course.id);
-  form_data.append('shared_id',share_data.shared_id);
-  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
-  $.ajax({
-    type:"POST",
-    url:"/func/share/",
-    data: form_data,
-    processData: false,
-      contentType: false,
-     success: function(response) {
-      if(response && response["type"]) {
-          notification.show(response["type"], response["message"]);
-      }
-    }
-});
-}
-
-share.display.show = function(data, $item) {
-  var $popup = $(loads.get("Elements/Modules/Test/share/__popup_texts/__info/"));
-  $popup.find('.__item').append($item.clone());
-  $popup.find('.__neutral').remove();
-
-  console.log(data, data.open);
-  var subject;
-
-  $popup.find('.__text').html(
-    '<p> Предмет: ' + data.subject + '</p>'
-    + data.description);
-
-  var $actions = $('<div class="row"></div>');
-
-  if( ! data.open) {
-    var $request_btn = $('<button> Запросить доступ </button>');
-    $actions.append($request_btn);
-  } else {
-    if(data.type === 'templates') {
-      var $import_btn = $('<button> Импортировать шаблоны </button>');
-      $import_btn.click(function() {
-        share.display.funcs.import(data);
-      });
-      $actions.append($import_btn);
-    } else {
-      var $append_btn = $('<button> Добавить в конец </button>');
-      var $replace_btn = $('<button class="m--ghost">'
-      + 'Добавить, заменив текущий </button>');
-      $actions.append($append_btn);
-      $actions.append($replace_btn);
-    }
-  }
-
-  $popup.find('.__actions').append($actions);
-  popup.show($popup, function() {}, {'width': '60rem'});
-}
-
-share.display.funcs = {}
-share.display.funcs.import = function(data) {
-  $.ajax({
-      url: '/func/search/',
-      type: 'POST',
-      data: {
-        'csrfmiddlewaretoken': loads.csrf_token,
-        'share_id': data.share_id
-      }
-    }).success(function(responce) {
-      console.log('imported', responce);
-      test_manager.load({
-        tasks: [],
-        title: '',
-        templates: responce
-      });
-      notification.show('success', 'Шаблоны импортированны');
-      popup.hide();
-    }).error(function() {
-      notification.show('success', 'Ошибка');
-    })
-}
-share.display.funcs.append = function(data) {
-  $.ajax({
-      url: '/func/search/',
-      type: 'POST',
-      data: {
-        'csrfmiddlewaretoken': loads.csrf_token,
-        'share_id': data.share_id
-      }
-  }).success(function(responce) {
-    test_manager.load(responce);
-    notification.show('success', 'Добавлено');
-    popup.hide();
-  }).error(function() {
-    notification.show('success', 'Ошибка');
-  });
-}
-share.display.funcs.repalce = function(data) {
-  $.ajax({
-      url: '/func/search/',
-      type: 'POST',
-      data: {
-        'csrfmiddlewaretoken': loads.csrf_token,
-        'share_id': data.share_id
-      }
-  }).success(function(responce) {
-    editor.test_data.tasks = [];
-    editor.test_data.title = '';
-    $('.preview h2').html('');
-    $('.preview .__content').html('');
-    test_manager.load(responce);
-    notification.show('success', 'Заменено');
-    popup.hide();
-  }).error(function() {
-    notification.show('success', 'Ошибка');
-  });
-}
-share.display.funcs.request = function(data) {
-  //dunno
-}

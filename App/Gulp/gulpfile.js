@@ -33,6 +33,7 @@ gulp.task('sass_to_css', function () {
       cascade: false
     }))
     .pipe(cleanCSS())
+    // .pipe(charset({to: 'utf8'}))
     .pipe(gulp.dest('../main/files/static/'));
 });
 

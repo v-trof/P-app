@@ -1,52 +1,62 @@
 @import "../../../../../sass_vars/main.sass"
 
+@media all and (max-width: 600px)
+  #popup#popup
+    padding: $padding--m
+    &>.__modal
+      min-width: 0
+      width: 100%
+
+
 #popup
-	display: flex
-	justify-content: center
-	align-items: center
-	position: fixed
-	top: 0
-	left: 0
-	height: 100vh
-	width: 100vw
-	padding: $padding--m
-	z-index: 20
-	transform: scale(1)
+  display: flex
+  justify-content: center
+  align-items: center
+  position: fixed
+  top: 0
+  left: 0
+  height: 100vh
+  width: 100vw
+  padding: $padding--m
+  z-index: 20
+  transform: scale(1)
+  button:active
+    box-shadow: inset 0 0 0 1000px rgba($grey--dark, $darkness-delta__focus)
 
-	.__overlay
-		position: absolute
-		top: 0
-		left: 0
-		height: 100vh
-		width: 100vw
-		background: rgba($black, .5)
-		z-index: 1
-		transition: $time--m
+  .__overlay
+    position: absolute
+    top: 0
+    left: 0
+    height: 100vh
+    width: 100vw
+    background: rgba($black, .5)
+    z-index: 1
+    transition: $time--m
 
-	.__modal
-		max-height: 100%
-		overflow-y: auto
-		opacity: 1
-		min-width: 25rem
-		+box-shadow(5)
-		z-index: 2
-		transition: $time--m
+  .__modal
+    max-height: 100%
+    overflow-y: auto
+    opacity: 1
+    min-width: 25rem
+    +box-shadow(5)
+    z-index: 2
+    transition: $time--m
     .__content
       overflow: hidden
-		.__close
-			position: absolute
-			top: $padding--s * 1.75
-			right: $padding--s
-			z-index: 3
+    .__close
+      position: absolute
+      top: $padding--s * 1.75
+      right: $padding--s
+      z-index: 3
 
-	&.m--hiding
-		.__modal
-			opacity: 0
-			transform: translateY(-$margin--s)
-		.__overlay
-			opacity: 0
+  &.m--hiding
+    .__modal
+      opacity: 0
+      transform: translateY(-$margin--s)
+    .__overlay
+      opacity: 0
 
 
-	&.m--hidden
-		transition: none
-		transform: scale(0)
+  &.m--hidden
+    transition: none
+    transform: scale(0)
