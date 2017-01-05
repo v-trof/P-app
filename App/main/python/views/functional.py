@@ -538,7 +538,11 @@ class Universal_views():
             type=request.POST.get('type',False)
             return HttpResponse(json.dumps(Sharing.load_tags(starting_point=starting_point,number=number, type=type)), content_type="application/json")
 
-
+    def get_shared(request):
+        if request.method == 'POST':
+            shared_id=request.POST.get('shared_id',False)
+            return HttpResponse(json.dumps(Sharing.get_shared(shared_id=shared_id)), content_type="application/json")
+            
     def search(request):
         if request.method == "POST":
             print(request.POST)

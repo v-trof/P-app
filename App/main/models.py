@@ -3606,6 +3606,11 @@ class Sharing():
 		else:
 			return Sharing.request_sharing(user_id=user_id,shared_id=shared_id,course_id=course_id,type=type)
 
+	def get_shared(shared_id):
+		with io.open('main/files/json/shared/content/'+str(shared_id)+'.json', 'r', encoding='utf8') as shared_file:
+			shared = json.load(shared_file)
+		return shared
+
 	def load_tags(number=10,starting_point=0,type=False):
 		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
 			tag_map = json.load(tag_file)
