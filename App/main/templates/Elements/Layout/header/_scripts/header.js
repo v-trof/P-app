@@ -3,18 +3,12 @@ function header_build() {
   $(".header>.__user").removeAttr('style');
 
   var breadcrumbs_width = $(".header>.__breadcrumbs").innerWidth();
-  var user_width = $(".header>.__user").innerWidth();
+  var user_width = $(".header>.__user-info").innerWidth();
 
-  if(breadcrumbs_width > user_width) {
-    breadcrumbs_width += 10;
-    user_width = breadcrumbs_width;
-  } else {
-    user_width += 10;
-    breadcrumbs_width = user_width;
-  }
+  console.log('b', breadcrumbs_width, 'u', user_width, 'm', max_width);
 
-  $(".header>.__breadcrumbs").css('width', breadcrumbs_width+10+"px");
-  $(".header>.__user-info").css('width', user_width+10+"px");
+  $(".header>.__breadcrumbs").css('width', max_width+10+"px");
+  $(".header>.__user-info").css('width', max_width+10+"px");
 }
 
 $(window).resize(function(event) {
