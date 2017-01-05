@@ -304,7 +304,7 @@ share.display.funcs.import = function(data) {
       type: 'POST',
       data: {
         'csrfmiddlewaretoken': loads.csrf_token,
-        'share_id': data.share_id
+        'shared_id': data.share_id
       }
     }).success(function(responce) {
       console.log('imported', responce);
@@ -325,7 +325,7 @@ share.display.funcs.append = function(data) {
       type: 'POST',
       data: {
         'csrfmiddlewaretoken': loads.csrf_token,
-        'share_id': data.share_id
+        'shared_id': data.share_id
       }
   }).success(function(responce) {
     test_manager.load(responce);
@@ -341,7 +341,7 @@ share.display.funcs.repalce = function(data) {
       type: 'POST',
       data: {
         'csrfmiddlewaretoken': loads.csrf_token,
-        'share_id': data.share_id
+        'shared_id': data.share_id
       }
   }).success(function(responce) {
     editor.test_data.tasks = [];
