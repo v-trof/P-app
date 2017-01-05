@@ -1,3 +1,0 @@
-share.display.hide = function() {
-
-}

@@ -86,15 +86,19 @@ $(document).ready(function() {
     $card.find('.__extension').append(
       share.search.build['tag_list'](data.subject_tags));
 
-    if( ! share.open) {
+    if( ! data.open) {
       $card.find('.__icons .__neutral')
         .append(loads["Elements/Icons/locked.svg"])
         .attr('tip', 'Доступ по запросу');
     }
 
+    var unbinded = $.extend({}, data);
     $card.click(function() {
-      share.display.show(data);
+      share.display.show(unbinded, $card);
     });
+    setTimeout(function() {
+      $card.parent().removeAttr('href');
+    }, 300);
   }
 
   //custom card builders
@@ -113,16 +117,20 @@ $(document).ready(function() {
 
     decoreate_with_share($card, data);
 
+    $card.click(function() {
+      share.display.show(data, $card);
+    });
     return $card;
   }
 
   share.search.build['templates'] = function(data) {
+    data.type = 'templates';
     var $card = Search._.build.test(data);
     var $save = $card.find('.__content').children('*:not(b)');
     $card.find('.__content').html('').append($save);
-    console.log($save);
-    decoreate_with_share($card, data);
     $card.find('b').first().before('<span>Набор, </span>');
+
+    decoreate_with_share($card, data);
 
     return $card;
   }

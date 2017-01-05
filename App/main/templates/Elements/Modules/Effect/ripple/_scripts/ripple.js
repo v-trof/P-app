@@ -2,6 +2,7 @@ var ripple = (function() {
   var $ripple = $('<div id="ripple_effect"></div>');
 
   function reset() {
+    $ripple.css('display', 'block');
     $ripple.removeAttr('style');
     $ripple.removeClass('m--hide').removeClass('m--shown');
     $(".ripple_target").removeClass("ripple_target");
@@ -36,6 +37,9 @@ var ripple = (function() {
     },
     hide: function() {
       $ripple.addClass('m--hide');
+      setTimeout(function() {
+        $ripple.css('display', 'none');
+      }, 300);
     }
   }
   return exports;

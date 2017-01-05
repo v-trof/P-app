@@ -28,12 +28,6 @@ editor.template_ui.show = function() {
       },
       icon: loads['Elements/Icons/copy.svg'],
       tip: 'Копировать шаблон'
-    }, {
-      action: function() {
-        //show share ui
-      },
-      icon: loads['Elements/Icons/share.svg'],
-      tip: 'Добавить шаблон в открытую библиотеку'
     }]
 
     var $task = generate.data.task.template

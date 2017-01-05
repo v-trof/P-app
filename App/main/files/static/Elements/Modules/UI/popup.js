@@ -31,6 +31,7 @@ var popup = (function() {
       }
     },
     hide: function() {
+      $popup.removeAttr('style');
       $popup.addClass('m--hiding');
       $popup.find('__modal').removeAttr('style');
 

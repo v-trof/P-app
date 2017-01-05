@@ -1,21 +1,24 @@
 //making shure to run after register
 $(document).ready(function() {
   generate.data.task.template.edit = {
+    collect_vars: function($edit) {
+      var new_variables = [];
+      $edit.find('.task .__value').each(function() {
+        var used_variables = generate.data.task
+                               .template.edit.check_for_vars($(this));
+
+        used_variables.forEach(function(variable) {
+          if(new_variables.indexOf(variable) === -1) {
+            new_variables.push(variable);
+          }
+        });
+      });
+      generate.data.task.template.edit.update_variables(new_variables, $edit);
+    },
+
     observe_new_vars: function($edit) {
       $edit.find('.task .__value').keyup(function() {
-
-        var new_variables = [];
-        $edit.find('.task .__value').each(function() {
-          var used_variables = generate.data.task
-                                 .template.edit.check_for_vars($(this));
-
-          used_variables.forEach(function(variable) {
-            if(new_variables.indexOf(variable) === -1) {
-              new_variables.push(variable);
-            }
-          });
-        });
-        generate.data.task.template.edit.update_variables(new_variables, $edit);
+        generate.data.task.template.edit.collect_vars($edit);
       });
     },
 
@@ -132,6 +135,7 @@ $(document).ready(function() {
                                .build_edit(template.parts, template.group));
       popup.show($edit, function() {}, {"width": "64rem"}, true);
 
+      generate.data.task.template.edit.collect_vars($edit);
       generate.data.task.template.edit.observe_new_vars($edit);
 
       generate.data.task.template.edit.handle_actions($edit, $instance);
