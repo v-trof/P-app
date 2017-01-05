@@ -71,7 +71,7 @@ class User_views():
                 code=False
             is_teacher = request.POST.get('is_teacher', False)
             password = request.POST['password']
-            name_last_name = request.POST['email']
+            name_last_name = request.POST['name_last_name']
             if request.POST.get('course_reg',False) == True:
                 message = User.objects.reg(request=request, code=code, course_id=course_id, email=email,
                                        is_teacher=is_teacher, password=password, name_last_name=name_last_name)
@@ -530,6 +530,14 @@ class Universal_views():
             item_id=request.POST.get("item_id",False)
             message = Sharing.take_shared(course_id=course_id, shared_id=shared_id, user_id=user_id, type=type, item_id=item_id)
             return HttpResponse(json.dumps(message), content_type="application/json")
+
+    def load_tags(request):
+        if request.method == 'POST':
+            starting_point=request.POST.get('starting_point',0)
+            number=request.POST.get('number',10)
+            type=request.POST.get('type',False)
+            return HttpResponse(json.dumps(Sharing.load_tags(starting_point=starting_point,number=number, type=type)), content_type="application/json")
+
 
     def search(request):
         if request.method == "POST":

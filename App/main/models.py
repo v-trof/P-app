@@ -120,6 +120,44 @@ class Utility():
 			return 100
 		else: return len(set(tags1) & set(tags2))/max(len(tags1),len(tags2))*100
 
+	def find_tags(string,tag_list):
+		words=re.findall(r"[\w']+", string)
+		tags=[]
+		it=0
+		for word in words:
+			for tag in tag_list:
+				l_it=it
+				cur_string=word
+				if Utility.compare(str1=cur_string,str2=tag)==100:
+					tags.append(tag)
+				if l_it+1<len(words) and cur_string+" "+words[l_it+1] in tag:
+					while l_it+1<len(words) and cur_string+" "+words[l_it+1] in tag:
+						cur_string+=" "+words[l_it+1]
+						tags.append(cur_string)
+						l_it+=1
+			it+=1
+		print("IMPORTANT YO",tags)
+		return tags
+
+	def count_tags(tag_map):
+		popular={"global":[],"subject":[]}
+		sorted_numbers=sorted(tag_map['numbers']["global"].items(), key=operator.itemgetter(1))
+		print(sorted_numbers)
+		result=[]
+		for list in reversed(sorted_numbers):
+			result.append(list[0])
+			print(list[0])
+		print(result)
+
+		popular["global"]=result[:min(len(sorted_numbers),50)]
+		result=[]
+		sorted_numbers=sorted(tag_map['numbers']["subject"].items(), key=operator.itemgetter(1))
+		for list in reversed(sorted_numbers):
+			result.append(list[0])
+		popular["subject"]=result[:min(len(sorted_numbers),50)]
+		tag_map["popular"]=popular
+		return tag_map
+
 	def upload_file(file, path, extensions=False):
 		if extensions:
 			if not file.name.split(".")[-1] in extensions:
@@ -2143,7 +2181,7 @@ class Material():
 					"published": Material.is_published(material_id=material_id, course_id=course_id)
 				}
 		if "shared" in material["json"].keys() and material["json"]["shared"]==True:
-			with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+			with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 				material["share_data"]=json.load(shared_file)[material["json"]["shared_id"]]
 		context = {}
 		context["material"] = material
@@ -2511,7 +2549,7 @@ class Test():
 					"published": Test.is_published(test_id=test_id, course_id=course_id)
 				}
 		if "shared" in test["json"].keys() and test["json"]["shared"]==True:
-			with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+			with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 				test["share_data"]=json.load(shared_file)[test["json"]["shared_id"]]
 		return test
 
@@ -3325,8 +3363,12 @@ class Marks():
 class Sharing():
 
 	def share(course_id, item_id, type, open=True, subject=False, description=False, global_tags=False, subject_tags=False, shared_query=False, refresh=False, shared_id=False, templates=False):
-		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+		if shared_id:
+			shared_id=str(shared_id)
+		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
+		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
+			tag_map = json.load(tag_file)
 		course=Course.objects.get(id=course_id)
 		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/control/'+item_id+'.json', 'r', encoding='utf8') as info_file:
 			item_info = json.load(info_file)
@@ -3343,28 +3385,48 @@ class Sharing():
 		shared_item["open"]=open
 		shared_item["id"]=item_id
 		shared_item["popularity"]=0
+		if len(global_tags)==0:
+			global_tags=Utility.find_tags(string=item_info["title"],tag_list=tag_map['popular']['global'])
+		if len(subject_tags)==0:
+			subject_tags=Utility.find_tags(string=item_info["title"],tag_list=tag_map['popular']['subject'])
+		if refresh:
+			global_tags=[item for item in global_tags if item not in set(shared_table[shared_id]['global_tags'])]
+			subject_tags=[item for item in subject_tags if item not in set(shared_table[shared_id]['subject_tags'])]
+		for tag in global_tags:
+			if tag in tag_map['numbers']['global'].keys():
+				tag_map['numbers']['global'][tag]+=1
+			else: 
+				tag_map['numbers']['global'][tag]=1
+
+		for tag in subject_tags:
+			if tag in tag_map['numbers']['subject'].keys():
+				tag_map['numbers']['subject'][tag]+=1
+			else: 
+				tag_map['numbers']['subject'][tag]=1
+		tag_map=Utility.count_tags(tag_map=tag_map)
 		shared_item["global_tags"]=global_tags
+		shared_item["subject_tags"]=subject_tags
 		item_info["shared"]=True
 		if not shared_query:
 			shared_query=[str(type),'templates']
 		shared_item["shared_query"]=shared_query
 		if type in shared_item["shared_query"]:
 			shared_item["type"]=type
-		else: shared_item["type"]='templates'
+		else: 
+			shared_item["type"]='templates'
 		print(type in shared_item["shared_query"],shared_item["type"])
 		item_info["shared_query"]=shared_query
 		item_info["shared_id"]=shared_id
 		shared_item["title"]=item_info["title"]
 		shared_item["subject"]=course.subject
 		shared_item["questions_number"]=full_public_file["questions_number"]
-		shared_item["subject_tags"]=subject_tags
 		shared_item["creator"]=full_public_file['creator']
 		user=User.objects.get(id=full_public_file['creator'])
 		shared_item["creator_name"]=user.name
 		shared_table[shared_id]=shared_item
 
 		if (refresh):
-			with io.open('main/files/shared/'+str(shared_id)+'.json', 'r', encoding='utf8') as info_file:
+			with io.open('main/files/shared/content/'+str(shared_id)+'.json', 'r', encoding='utf8') as info_file:
 				old_shared = json.load(info_file)
 			full_control_file=item_info
 		public_file={}
@@ -3387,14 +3449,16 @@ class Sharing():
 			public_file['templates']=old_shared['templates']
 		else: public_file['tasks']=item_info['tasks']
 
-		with io.open('main/files/json/shared/'+str(shared_id)+'.json', 'w+', encoding='utf8') as shared_file:
+		with io.open('main/files/json/shared/content/'+str(shared_id)+'.json', 'w+', encoding='utf8') as shared_file:
 			saving_data = json.dumps(public_file, ensure_ascii=False)
 			shared_file.write(saving_data)
-
+		with io.open('main/files/json/shared/tag_map.json', 'w', encoding='utf8') as tag_file:
+			saving_data = json.dumps(tag_map, ensure_ascii=False)
+			tag_file.write(saving_data)
 		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/control/'+item_id+'.json', 'w', encoding='utf8') as info_file:
 			saving_data = json.dumps(item_info, ensure_ascii=False)
 			info_file.write(saving_data)
-		with io.open('main/files/json/shared.json', 'w', encoding='utf8') as shared_file:
+		with io.open('main/files/json/shared/shared_map.json', 'w', encoding='utf8') as shared_file:
 			saving_data = json.dumps(shared_table, ensure_ascii=False)
 			shared_file.write(saving_data)
 		if type == "test":
@@ -3403,8 +3467,26 @@ class Sharing():
 			return {"type":"success","message":"Материал успешно помещен в библиотеку"}
 
 	def unshare(shared_id):
-		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+		shared_id=str(shared_id)
+		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
+			tag_map = json.load(tag_file)
+
+		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
+
+		for tag in shared_table[shared_id]['global_tags']:
+			if tag in tag_map['numbers']['global'].keys():
+				tag_map['numbers']['global'][tag]-=1
+			if tag_map['numbers']['global'][tag] == 0:
+				del tag_map['numbers']['global'][tag]
+
+		for tag in shared_table[shared_id]['global_tags']:
+			if tag in tag_map['numbers']['subject'].keys():
+				tag_map['numbers']['subject'][tag]-=1
+			if tag_map['numbers']['subject'][tag] == 0:
+				del tag_map['numbers']['subject'][tag]
+		tag_map=Utility.count_tags(tag_map=tag_map)
+
 		course=Course.objects.get(id=course_id)
 		shared_info=shared_table[shared_id]
 		item_id=shared_info['id']
@@ -3419,11 +3501,14 @@ class Sharing():
 		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/control/'+item_id+'.json', 'w', encoding='utf8') as info_file:
 			saving_data = json.dumps(item_info, ensure_ascii=False)
 			info_file.write(saving_data)
-		with io.open('main/files/json/shared.json', 'w', encoding='utf8') as shared_file:
+		with io.open('main/files/json/shared/tag_map.json', 'w', encoding='utf8') as tag_file:
+			saving_data = json.dumps(tag_map, ensure_ascii=False)
+			tag_file.write(saving_data)
+		with io.open('main/files/json/shared/shared_map.json', 'w', encoding='utf8') as shared_file:
 			saving_data = json.dumps(item_info, ensure_ascii=False)
 			shared_file_file.write(saving_data)
-		if os.path.exists('main/files/json/shared/'+shared_id+'.json'):
-			os.remove('main/files/json/shared/'+shared_id+'.json')
+		if os.path.exists('main/files/json/shared/content/'+shared_id+'.json'):
+			os.remove('main/files/json/shared/content/'+shared_id+'.json')
 		if type == "test":
 			return {"type":"success","message":"Тест успешно удален из библиотеки"}
 		else:
@@ -3475,13 +3560,13 @@ class Sharing():
 		return {"type":"info","message":"Запрос успешно отклонен"}
 
 	def take_shared(shared_id,type,course_id,user_id,inheritor_id=False,accept=False):
-		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_file:
+		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
 		shared_table[shared_id]["popularity"]+=1
-		with io.open('main/files/json/shared.json', 'w+', encoding='utf8') as shared_file:
+		with io.open('main/files/json/shared/shared_map.json', 'w+', encoding='utf8') as shared_file:
 			shared_file.write(json.dumps(shared_table, ensure_ascii=False))
 		if shared_table[shared_id]["open"] or accept:
-			with io.open('main/files/json/shared/'+shared_id+'.json', 'r', encoding='utf8') as shared_file:
+			with io.open('main/files/json/shared/content/'+shared_id+'.json', 'r', encoding='utf8') as shared_file:
 				public_file = json.load(shared_file)
 			if not "title" in public_file.keys() and not inheritor_id:
 				public_file['tasks']=[]
@@ -3520,6 +3605,18 @@ class Sharing():
 				return {"type":"success","message":"Материал успешно взят из библиотеки", "link":'/material/edit/?course_id=' + course_id + "&material_id=" + str(inheritor_id)}
 		else:
 			return Sharing.request_sharing(user_id=user_id,shared_id=shared_id,course_id=course_id,type=type)
+
+	def load_tags(number=10,starting_point=0,type=False):
+		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
+			tag_map = json.load(tag_file)
+		if type:
+			content=[]
+			content=tag_map['popular'][type][starting_point:number]
+		else:
+			content={}
+			content['subject']=tag_map['popular']['subject'][starting_point:number]
+			content['global']=tag_map['popular']['global'][starting_point:number]
+		return content
 
 class Statistics():
 
@@ -3686,23 +3783,30 @@ class Search():
 		return cards
 
 	def in_shared_elements(search_query,parameters,user):
-		print(parameters)
 		cards=[]
-		with io.open('main/files/json/shared.json', 'r', encoding='utf8') as shared_table:
+		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
+			tag_map = json.load(tag_file)
+		tag_list=tag_map["numbers"]["subject"].keys()
+		parameters["subject_tags"]+=Utility.find_tags(string=search_query,tag_list=tag_list)
+		tag_list=tag_map["numbers"]["global"].keys()
+		parameters["global_tags"]+=Utility.find_tags(string=search_query,tag_list=tag_list)
+		parameters["global_tags"]=list(set(parameters["global_tags"]))
+		parameters["subject_tags"]=list(set(parameters["subject_tags"]))
+		print(parameters["global_tags"],parameters["subject_tags"])
+		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_table:
 			shared_table=json.load(shared_table)
 		for shared_id,shared_info in shared_table.items():
 			if shared_info["type"] in parameters["shared_query"]:
 				if parameters["own"] and str(shared_info["creator"])==str(user.id) or not parameters["own"]:
-					print("own",parameters['open'],shared_info["open"])
 					if parameters['open'] and shared_info["open"] or not parameters['open']:
-						print("open")
 						if not shared_info["course_id"] in user.participation_list.split(' '):
 							global_tags_conformity=Utility.compare_tags(tags1=parameters["global_tags"],tags2=shared_info["global_tags"])
 							subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
 							shared_info["shared_id"]=shared_id
 							name_conformity=Utility.compare(str1=search_query,str2=shared_info["title"])
-							if global_tags_conformity >= 0 and subject_tags_conformity >= 0 and name_conformity>0:
-								cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity})
+							print(global_tags_conformity,subject_tags_conformity,name_conformity)
+							if global_tags_conformity > 0 or subject_tags_conformity > 0 or name_conformity>10:
+								cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity+subject_tags_conformity+global_tags_conformity})
 		if len(cards) > 0:
 			cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
 		return cards
