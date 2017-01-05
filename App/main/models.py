@@ -3405,8 +3405,8 @@ class Sharing():
 			else: 
 				tag_map['numbers']['subject'][tag]=1
 		tag_map=Utility.count_tags(tag_map=tag_map)
-		shared_item["global_tags"]=global_tags
-		shared_item["subject_tags"]=subject_tags
+		shared_item["global_tags"]=list(set(global_tags))
+		shared_item["subject_tags"]=list(set(subject_tags))
 		item_info["shared"]=True
 		if not shared_query:
 			shared_query=[str(type),'templates']
@@ -3610,6 +3610,7 @@ class Sharing():
 	def get_shared(shared_id):
 		with io.open('main/files/json/shared/content/'+str(shared_id)+'.json', 'r', encoding='utf8') as shared_file:
 			shared = json.load(shared_file)
+		print(shared)
 		return shared
 
 	def load_tags(number=10,starting_point=0,type=False):
@@ -3810,6 +3811,7 @@ class Search():
 							subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
 							shared_info["shared_id"]=shared_id
 							name_conformity=Utility.compare(str1=search_query,str2=shared_info["title"])
+							print(shared_info)
 							print(global_tags_conformity,subject_tags_conformity,name_conformity)
 							if global_tags_conformity > 0 or subject_tags_conformity > 0 or name_conformity>10:
 								cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity+subject_tags_conformity+global_tags_conformity})
