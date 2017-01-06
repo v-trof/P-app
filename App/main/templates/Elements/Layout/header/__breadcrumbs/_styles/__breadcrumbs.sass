@@ -1,11 +1,22 @@
 @import "../../../../../sass_vars/main.sass"
 
 .header>.__breadcrumbs
-	display: flex
-	align-items: center
-	a
-		white-space: nowrap
-	svg
-		display: block
-		+square("xs")
-		fill: darken($color--main, $darkness-delta__focus--percent)
+  display: flex
+  align-items: center
+  a
+    white-space: nowrap
+  svg
+    display: block
+    +square("xs")
+    fill: darken($color--main, $darkness-delta__focus--percent)
+
+  @media all and (max-width: 767px)
+    a
+      display: none
+    svg
+      display: none
+      &:first-of-type
+        display: block
+        fill: $font__color--white
+        transform: rotate(180deg)
+        +square('s')

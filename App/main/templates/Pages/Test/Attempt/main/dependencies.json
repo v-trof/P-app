@@ -7,7 +7,7 @@
                "Modules/UI/pull_put",
                "Modules/UI/summary",
                "button"],
-  "scripts": ["Pages/Test/Attempt/_shared/adapt_layout"],
+  "scripts": ["Pages/Test/Attempt/_shared/adapt_layout.js"],
   "template": "default",
   "title": "Попытка {{test.title}}"
 }

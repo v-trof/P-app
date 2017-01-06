@@ -14,6 +14,7 @@ $appbar-height: $padding--l*2 + $base
   margin-top: $appbar-height
   z-index: 2
   transition: 0ms
+
   &>.__field
     width: 100%
     background: $grey--light
@@ -63,6 +64,10 @@ $appbar-height: $padding--l*2 + $base
     background: $grey--light
     transition: $time--m
     opacity: 1
+    @media all and (max-width: 767px)
+      flex-direction: column-reverse
+      .__links
+        margin-right: 0 !important
 
     .__links
       flex: 1

@@ -1,4 +1,5 @@
 summary.make = function (test, attempt, make_summary_item) {
+  console.log('making');
   panel.show("");
   panel.actions.hide();
   var global_answer_pos = 0;

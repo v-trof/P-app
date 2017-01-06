@@ -36,23 +36,25 @@ $(document).ready(function() {
     attempt.append_send();
     summary.make(django.loaded, django.attempt, attempt.make_summary_item);
 
-    var time_s = django.loaded.time_left['{{user.id}}'];
-    var time_a = time_s.split(':');
-    var time_i = parseInt(time_a[2]) + parseInt(time_a[1]) * 60
-                  + parseInt(time_a[0]) * 3600;
+    if(django.loaded.time_left) {
+      var time_s = django.loaded.time_left['{{user.id}}'];
+      var time_a = time_s.split(':');
+      var time_i = parseInt(time_a[2]) + parseInt(time_a[1]) * 60
+      + parseInt(time_a[0]) * 3600;
+      console.log(time_a, time_i);
+      var timer = $('<div></div>');
 
-    console.log(time_a, time_i);
-    var timer = $('<div></div>');
+      timer.text('Осталось: ' + time_s);
 
-    timer.text('Осталось: ' + time_s);
+      setInterval(function() {
+        time_i--;
+        timer.text('Осталось: ' + time_to_string(time_i));
+      }, 1000);
+      panel.actions.show();
+      panel.actions.html(timer);
+    }
 
-    setInterval(function() {
-      time_i--;
-      timer.text('Осталось: ' + time_to_string(time_i));
-    }, 1000);
 
-    panel.actions.show();
-    panel.actions.html(timer);
   } else {
     $('.preview>h2').html('Ошибка при загрузке теста');
     //GET-AJAX-HERE error log
