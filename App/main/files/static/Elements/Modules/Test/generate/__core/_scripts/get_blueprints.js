@@ -1,1 +1,0 @@
-generate.get_blueprints=function(t){var e=$(t),r=e.attr("type"),a=e.attr("subtype");return generate.data[r][a]};

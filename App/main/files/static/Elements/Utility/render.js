@@ -1,1 +1,0 @@
-var render={inputs:{},cards:{},buttons:{}};render.inputs.text=function(t,n,e){var i=$(loads.get("Elements/Inputs/text/"));return i.find("label").text(t),i.find("input").attr("name",n).val(e),check_if_filled(i.find("input")),i};

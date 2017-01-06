@@ -1,1 +1,0 @@
-generate.register.task("default",{builder:function(){var e=$(loads.get("Elements/Modules/Test/generate/data/task/default/"));return defined(generate.data.task.template)?e.find(".__make-template").click(function(){generate.data.task.template.to_tempalte(e)}):e.find(".__make_template").remove(),e}});

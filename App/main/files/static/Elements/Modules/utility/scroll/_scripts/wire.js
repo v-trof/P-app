@@ -1,1 +1,0 @@
-scroll={wire:function(n,o,c){var i=parseInt($(".main").css("margin-top"));n=$(n),o=$(o).first(),"undefined"==typeof c&&(c=$(document)),n.click(function(n){c.scrollTo(o,300,{offset:-i})})}};

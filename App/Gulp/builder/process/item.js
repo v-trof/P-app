@@ -3,8 +3,8 @@ const config = require('../config');
 const fs_dig = require('../fs/dig');
 const path = require('path');
 
-const classify = require('../Utility/classify');
-const merge_sets = require('../Utility/merge_sets');
+const classify = require('../utility/classify');
+const merge_sets = require('../utility/merge_sets');
 
 const get_dependencies = require('../parsers/dependencies');
 const merge_dependencies = require('../mergers/dependencies');
@@ -14,7 +14,7 @@ const merge_loads = require('../mergers/dependencies');
 
 const build_exports = require('../build/exports');
 
-const process_utility = require('./Utility');
+const process_utility = require('./utility');
 
 var process_item = function(dir, parent) {
   if(config.log.info.item) console.log('ITEM_INFO PROCESSING:', dir);

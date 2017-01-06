@@ -1,5 +1,5 @@
-const replace = require('../Utility/replace');
-const classify = require('../Utility/classify');
+const replace = require('../utility/replace');
+const classify = require('../utility/classify');
 const config = require('../config');
 const fs = require('fs');
 const path = require('path');

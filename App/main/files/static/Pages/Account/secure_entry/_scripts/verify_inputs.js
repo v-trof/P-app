@@ -1,1 +1,0 @@
-verifier.add($('[type="password"]'), "password");

@@ -1,1 +1,0 @@
-editor.active_task={position:void 0,value:{}};

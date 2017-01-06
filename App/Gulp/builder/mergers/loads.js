@@ -1,4 +1,4 @@
-const merge_sets = require('../Utility/merge_sets');
+const merge_sets = require('../utility/merge_sets');
 
 function merge_loads(proto, addition) {
   for (let key in proto) {

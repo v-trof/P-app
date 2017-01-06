@@ -1,1 +1,0 @@
-var customMatchers={toBeNode:function(e,a){return{compare:function(e){var a={pass:e[0]instanceof Node};return a.pass?a.message="Expected "+jasmine.pp(e)+" NOT to be a DOM node.":a.message="Expected "+jasmine.pp(e)+" to be a DOM node.",a}}}};

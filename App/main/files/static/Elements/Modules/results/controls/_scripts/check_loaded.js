@@ -1,1 +1,0 @@
-results_controls.check_load=function(){var s=results_controls.active_test,t=results_controls.active_student;return results_controls.loaded.tests[s+"-"+t]?results_controls.loaded.results[s+"-"+t]?{test:!0,results:!0}:{test:!0,results:!1}:{test:!1,results:!1}};
