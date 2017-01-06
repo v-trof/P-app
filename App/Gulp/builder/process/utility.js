@@ -1,4 +1,4 @@
-const classify = require('../utility/classify');
+const classify = require('../Utility/classify');
 const config = require('../config');
 const get_dependencies = require('../parsers/dependencies');
 const fs = require('fs');

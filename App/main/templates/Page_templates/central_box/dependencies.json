@@ -1,6 +1,6 @@
 {
 	"elements" : ["Modules/Info/notification",
-                "Modules/utility/loads"],
+                "Modules/Utility/loads"],
 	"styles": ["Page_templates/_styles/main.css"],
 	"scripts": []
 }

@@ -1,5 +1,5 @@
 {
-	"elements": ["Modules/Test/editor", "Modules/utility/jasmine"],
+	"elements": ["Modules/Test/editor", "Modules/Utility/jasmine"],
 	"scripts": [],
   "styles": [],
   "title" : "SPC test_editor",

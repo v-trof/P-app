@@ -2,7 +2,7 @@
 	"elements": ["card/user/extended", "Layout/request"],
   "scripts": [],
   "styles": [
-      "Elements/Modules/results_display/_styles/css/color_quality"],
+      "Elements/Modules/Results_display/_styles/css/color_quality"],
 	"title" : "Оповещения",
 	"template": "default"
 }

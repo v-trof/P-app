@@ -1,4 +1,4 @@
-const replace = require('../utility/replace');
+const replace = require('../Utility/replace');
 const config = require('../config');
 const fs = require('fs');
 const path = require('path');

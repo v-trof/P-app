@@ -37,7 +37,7 @@ test_manager.upload_test = function(test_packed) {
 test_manager.save = function() {
   if(test_manager.is_published) {
     if(! test_manager.verify_test()) {
-      popup.show(loads.get("Elements/Modules/test_manager/__popup_texts/no_publish/"),
+      popup.show(loads.get("Elements/Modules/Test/manage/__popup_texts/no_publish/"),
       function() {
         $(".__ok").click(function(event) {
           popup.hide();
@@ -50,7 +50,7 @@ test_manager.save = function() {
   test_manager.pack();
 
   if(test_manager.upload_queue.length !== 0) {
-    popup.show(loads.get("Elements/Modules/test_manager/__popup_texts/__save/"));
+    popup.show(loads.get("Elements/Modules/Test/manage/__popup_texts/__save/"));
   }
 
   var check_queue = function() {

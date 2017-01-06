@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const config = require('../config');
-const replace = require('../utility/replace');
+const replace = require('../Utility/replace');
 
 function build_exports(dir) {
   dir = path.normalize(dir);

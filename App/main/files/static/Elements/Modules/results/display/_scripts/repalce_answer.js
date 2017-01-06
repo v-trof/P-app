@@ -132,7 +132,7 @@ $(document).ready(function() {
           user_answer, current_el).html();
       }
 
-      var $result_tempalte = $('{% include "Elements/Modules/results_controls/__answer_display/exports.html" %}');
+      var $result_tempalte = $('{% include "Elements/Modules/Results_controls/__answer_display/exports.html" %}');
       if(time) {
         var time = '<span class="m--grey m--time">' + time + '</span>';
       } else {
