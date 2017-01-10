@@ -9,8 +9,12 @@ var panel = (function() {
     $: $all,
     content: $panel,
     actions: $actions,
+    used: false,
+    shown: false,
     show: function(content, _callback, css) {
       $panel.html(content)
+      this.used = true;
+      this.shown = true;
 
       if (css) {
         $panel.css(css)
@@ -23,6 +27,7 @@ var panel = (function() {
       $all.css('transform', 'none');
     },
     hide: function() {
+      this.shown = false;
       $all.css('transform', 'translateX(16.5rem)')
     },
     change_actions: function(actions, _callback) {

@@ -25,3 +25,20 @@ $panel_width : 15rem + $padding--m*2
 		padding: $padding--m
 		border-top: $border--s solid $grey--semilight
 		background: $white
+
+.panel_mobile_open
+  position: fixed
+  bottom: $margin--s
+  right: $margin--s
+  display: none
+  transition: $time--m
+  opacity: 1
+  &.m--hidden
+    opacity: 0
+    transform: translateY($margin--l)
+  &.m--alt
+    transform: rotate(180deg) translateX(16.5rem)
+
+
+  @media all and (max-width: 767px)
+    display: block
