@@ -15,7 +15,7 @@ $('#reset_password').click(function() {
             }
             else
             {
-              notification.show('error',response);
+              notification.show('error',response["message"]);
             }
             change_message(email);
           }

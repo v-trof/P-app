@@ -117,7 +117,7 @@ class Utility():
 	def compare_tags(tags1,tags2):
 		maximum=max(len(tags1),len(tags2))
 		if maximum==0:
-			return 100
+			return 0
 		else: return len(set(tags1) & set(tags2))/max(len(tags1),len(tags2))*100
 
 	def find_tags(string,tag_list):
@@ -619,15 +619,19 @@ class CourseManager(models.Manager):
 		for user_object in User.objects.all():
 			user_object = User.objects.get(username=str(user_object))
 			if isinstance(user_object.participation_list, str):
-				if course_id in user_object.participation_list.split(' '):
-					participation_list = user_object.participation_list.split(
-						' ').remove(course_id)
-					if isinstance(user_object.participation_list, list):
-						participation_str = participation_list[:]
-					else:
-						participation_str = ''
+				try:
+					if course_id in user_object.participation_list.split(' '):
+						participation_list = user_object.participation_list.split(
+							' ').remove(course_id)
+						if isinstance(user_object.participation_list, list):
+							participation_str = participation_list[:]
+						else:
+							participation_str = ''
+						setattr(user_object, 'participation_list',
+								participation_str)
+				except:
 					setattr(user_object, 'participation_list',
-							participation_str)
+								'')
 			if isinstance(user_object.courses, str):
 				if course_id in user_object.courses.split(' '):
 					courses = user_object.courses.split(' ')
@@ -906,8 +910,11 @@ class CourseManager(models.Manager):
 								"new_users"].append(user.id)
 						data["users"].append(user.id)
 						if user.participation_list:
-							setattr(user, 'participation_list',
-									user.participation_list + " " + str(course.id))
+							try:
+								setattr(user, 'participation_list',
+										user.participation_list + " " + str(course.id))
+							except:
+								setattr(user, 'participation_list', str(course.id))
 						else:
 							setattr(user, 'participation_list', str(course.id))
 						user.save()
@@ -920,8 +927,11 @@ class CourseManager(models.Manager):
 					#Пользователь был приглашен
 					elif code in data["pending_users"][group] and not group == "teachers":
 						if user.participation_list:
-							setattr(user, 'participation_list',
-									user.participation_list + " " + str(course.id))
+							try:
+								setattr(user, 'participation_list',
+										user.participation_list + " " + str(course.id))
+							except:
+								setattr(user, 'participation_list', str(course.id))
 						else:
 							setattr(user, 'participation_list', str(course.id))
 						user.save()
@@ -1004,8 +1014,11 @@ class CourseManager(models.Manager):
 			for group_name,content in data["groups"].items():
 				if str(user.id) in content.keys():
 					content.pop(str(user.id),None)
-			list=user.participation_list.split(' ')
-			list.remove(str(course.id))
+			try:
+				list=user.participation_list.split(' ')
+				list.remove(str(course.id))
+			except:
+				list=[]
 			string=""
 			for element in list:
 				string+=element+' '
@@ -1500,9 +1513,12 @@ class CourseManager(models.Manager):
 
 	def check_participance(self, course, user):
 		if user.participation_list:
-			if str(course.id) in user.participation_list.split(' '):
-				is_participant = True
-			else:
+			try:
+				if str(course.id) in user.participation_list.split(' '):
+					is_participant = True
+				else:
+					is_participant = False
+			except:
 				is_participant = False
 		else:
 			is_participant = False
@@ -1931,8 +1947,10 @@ class UserManager(UserManager):
 				contacts_view_allowed = False
 		else:
 			if user.participation_list and requesting_user.participation_list:
-				classmates = any(i in user.participation_list.split(' ')
-								 for i in user.participation_list.split(' '))
+				try:
+					classmates = any(i in user.participation_list.split(' ')
+									 for i in user.participation_list.split(' '))
+				except: classmates = False
 			else:
 				classmates = False
 			if requesting_user.id == user.id or (user.permission_level == '0') or (user.permission_level == '1' and requesting_user.is_teacher) or (user.permission_level == '2'
@@ -1943,6 +1961,7 @@ class UserManager(UserManager):
 		return contacts_view_allowed
 
 	def reset_password(self, email):
+		print(True,email,User.objects.filter(username=email))
 		if User.objects.filter(username=email):
 			user = User.objects.get(username=email)
 			password_code = User.objects.generate_code(type="password")
@@ -1955,6 +1974,7 @@ class UserManager(UserManager):
 				codes_file.write(json.dumps(codes_dict, ensure_ascii=False))
 			send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, перейдите по ссылке для подтверждения: http://pileus.ru/secure_entry/?code=' + password_code + '&type=password.', 'p.application.bot@gmail.com',
 					  [email], fail_silently=False)
+			print(True)
 			return True
 		else:
 			return False
@@ -3383,6 +3403,8 @@ class Sharing():
 		shared_item={}
 		shared_item["course_id"]=course_id
 		shared_item["open"]=open
+		shared_item["black_list"]=[]
+		shared_item["white_list"]=[]
 		shared_item["description"]=description
 		shared_item["id"]=item_id
 		shared_item["popularity"]=0
@@ -3518,7 +3540,7 @@ class Sharing():
 	def request_sharing(user_id,shared_id,course_id,type,inheritor_course_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			course_data = json.load(data_file)
-		request={'type':'share','course_id':inheritor_course_id,'share_type':type,'shared_id':shared_id,'user_id':user_id}
+		request={'type':'sharing','course_id':inheritor_course_id,'share_type':type,'shared_id':shared_id,'user_id':user_id}
 		if not 'requests' in course_data.keys():
 			course_data['requests']={}
 		if not 'waiting' in course_data['requests'].keys():
@@ -3535,17 +3557,27 @@ class Sharing():
 		else:
 			return {"type":"info","message":"Ваш запрос уже был отклонен"}
 	
-	def accept_sharing(shared_id,course_id):
+	def accept_sharing(shared_id,course_id,inheritor_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			course_data = json.load(data_file)
 		if 'requests' in course_data.keys():
 			for request in course_data['requests']['waiting']:
 				if request['type']=='share' and request['shared_id'] == shared_id:
 					course_data['requests']['waiting'].remove(request)
-		message=Sharing.take_shared(user_id=request['user_id'],shared_id=shared_id,course_id=course_id,type=request['share_type'],accept=True)
-		return message
 
-	def decline_sharing(shared_id,course_id):
+		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
+			shared_table = json.load(shared_file)
+		print(shared_id)
+		shared_table[shared_id]["white_list"].append(inheritor_id)
+
+		with io.open('main/files/json/shared/shared_map.json', 'w', encoding='utf8') as shared_file:
+			shared_file.write(json.dumps(shared_table, ensure_ascii=False))
+
+		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as data_file:
+			data_file.write(json.dumps(course_data, ensure_ascii=False))
+		return {"type":"info","message":"Запрос принят"}
+
+	def decline_sharing(shared_id,course_id,inheritor_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			course_data = json.load(data_file)
 		if 'requests' in course_data.keys():
@@ -3556,8 +3588,17 @@ class Sharing():
 					course_data['requests']['declined'].append(request)
 					course_data['requests']['waiting'].remove(request)
 					break
+
+		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
+			shared_table = json.load(shared_file)
+		shared_table[shared_id]["black_list"].append(inheritor_id)
+
+		with io.open('main/files/json/shared/shared_map.json', 'w', encoding='utf8') as shared_file:
+			shared_file.write(json.dumps(shared_table, ensure_ascii=False))
+
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as data_file:
 			data_file.write(json.dumps(course_data, ensure_ascii=False))
+
 		return {"type":"info","message":"Запрос успешно отклонен"}
 
 	def take_shared(shared_id,type,course_id,user_id,inheritor_id=False,accept=False):
@@ -3607,11 +3648,18 @@ class Sharing():
 		else:
 			return Sharing.request_sharing(user_id=user_id,shared_id=shared_id,course_id=course_id,type=type)
 
-	def get_shared(shared_id):
-		with io.open('main/files/json/shared/content/'+str(shared_id)+'.json', 'r', encoding='utf8') as shared_file:
-			shared = json.load(shared_file)
-		print(shared)
-		return shared
+	def get_shared(shared_id,user_id=False,course_id=False):
+		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
+			shared_table = json.load(shared_file)
+		if shared_table[shared_id]["open"] or user_id in shared_table[shared_id]["white_list"] :
+			with io.open('main/files/json/shared/content/'+str(shared_id)+'.json', 'r', encoding='utf8') as shared_file:
+				shared = json.load(shared_file)
+			return shared
+		else:
+			type=shared_table[shared_id]["type"]
+			inheritor_course_id=course_id
+			course_id=shared_table[shared_id]["course_id"]
+			return Sharing.request_sharing(user_id=user_id,shared_id=shared_id,course_id=course_id,type=type,inheritor_course_id=inheritor_course_id)
 
 	def load_tags(number=10,starting_point=0,type=False):
 		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
@@ -3667,10 +3715,13 @@ class Search():
 		for user in User.objects.all():
 			user_object = User.objects.get(username=str(user))
 			if course and len(user.participation_list) > 0:
-				if str(course) in user.participation_list.split(' ') or str(course) == user.participation_list:
-					conformity=Utility.compare(str1=search_query,str2=user.name)
-					if conformity > 5:
-						users.append({"object":user_object,"conformity":conformity})
+				try:
+					if str(course) in user.participation_list.split(' ') or str(course) == user.participation_list:
+						conformity=Utility.compare(str1=search_query,str2=user.name)
+						if conformity > 5:
+							users.append({"object":user_object,"conformity":conformity})
+				except:
+					pass
 			elif course and len(user.courses) > 0:
 				if str(course) in user.courses.split(' ') or str(course) == user.courses:
 					conformity=Utility.compare(str1=search_query,str2=user.name)
@@ -3705,10 +3756,13 @@ class Search():
 					courses_all.append(Course.objects.get(id=course))
 			else: courses_all.append(Course.objects.get(id=user.courses))
 		if user is not None and len(user.participation_list) > 0:
-			if len(user.participation_list.split(' ')) > 0:
-				for course in user.participation_list.split(' '):
-					courses_all.append(Course.objects.get(id=course))
-			else: courses_all.append(Course.objects.get(id=user.participation_list))
+			try:
+				if len(user.participation_list.split(' ')) > 0:
+					for course in user.participation_list.split(' '):
+						courses_all.append(Course.objects.get(id=course))
+				else: courses_all.append(Course.objects.get(id=user.participation_list))
+			except:
+				pass
 		if len(courses_all) == 0:
 			courses_all=Course.objects.all()
 
@@ -3743,14 +3797,20 @@ class Search():
 		courses=[]
 		elements=[]
 		if not course:
-			if len(user.courses)>0:
-				if len(user.courses.split(' '))>0:
-					courses=user.courses.split(' ')
-				else: courses=user.courses
-			if len(user.participation_list)>0:
-				if len(user.participation_list.split(' '))>0:
-					courses.extend(user.participation_list.split(' '))
-				else: courses.append(user.participation_list)
+			try:
+				if len(user.courses)>0:
+					if len(user.courses.split(' '))>0:
+						courses=user.courses.split(' ')
+					else: courses=user.courses
+			except:
+				pass
+			try:
+				if len(user.participation_list)>0:
+					if len(user.participation_list.split(' '))>0:
+						courses.extend(user.participation_list.split(' '))
+					else: courses.append(user.participation_list)
+			except:
+				pass
 		else: courses.append(course)
 		for course_id in courses:
 			with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -3799,22 +3859,29 @@ class Search():
 		parameters["global_tags"]+=Utility.find_tags(string=search_query,tag_list=tag_list)
 		parameters["global_tags"]=list(set(parameters["global_tags"]))
 		parameters["subject_tags"]=list(set(parameters["subject_tags"]))
+
 		print(parameters["global_tags"],parameters["subject_tags"])
 		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_table:
 			shared_table=json.load(shared_table)
 		for shared_id,shared_info in shared_table.items():
-			if shared_info["type"] in parameters["shared_query"]:
-				if parameters["own"] and str(shared_info["creator"])==str(user.id) or not parameters["own"]:
-					if parameters['open'] and shared_info["open"] or not parameters['open']:
-						if not shared_info["course_id"] in user.participation_list.split(' '):
-							global_tags_conformity=Utility.compare_tags(tags1=parameters["global_tags"],tags2=shared_info["global_tags"])
-							subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
-							shared_info["shared_id"]=shared_id
-							name_conformity=Utility.compare(str1=search_query,str2=shared_info["title"])
-							print(shared_info)
-							print(global_tags_conformity,subject_tags_conformity,name_conformity)
-							if global_tags_conformity > 0 or subject_tags_conformity > 0 or name_conformity>10:
-								cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity+subject_tags_conformity+global_tags_conformity})
+			if not str(user.id) in shared_info['black_list']:
+				if str(user.id) in shared_info['white_list']:
+					shared_info["open"]=True
+				if shared_info["type"] in parameters["shared_query"]:
+					if parameters["own"] and str(shared_info["creator"])==str(user.id) or not parameters["own"]:
+						if parameters['open'] and shared_info["open"] or not parameters['open']:
+							try:
+								if not shared_info["course_id"] in user.participation_list.split(' '):
+									global_tags_conformity=Utility.compare_tags(tags1=parameters["global_tags"],tags2=shared_info["global_tags"])
+									subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
+									shared_info["shared_id"]=shared_id
+									name_conformity=Utility.compare(str1=search_query,str2=shared_info["title"])
+									print(shared_info)
+									print(global_tags_conformity,subject_tags_conformity,name_conformity)
+									if global_tags_conformity > 0 or subject_tags_conformity > 0 or name_conformity>10:
+										cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity+subject_tags_conformity+global_tags_conformity})
+							except:
+								pass
 		if len(cards) > 0:
 			cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
 		return cards

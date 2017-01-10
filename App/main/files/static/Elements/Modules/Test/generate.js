@@ -38,6 +38,21 @@ generate.register = {
   }
 }
 
+/**
+ * Returns general blueprints of this subtype (data[type][subtype])
+ * @method get_blueprints
+ * @param  {$} element element to parse
+ * @return {Object} blueprints
+ */
+generate.get_blueprints = function(element) {
+  //to jq
+  var $element = $(element);
+  var type = $element.attr('type');
+  var subtype = $element.attr('subtype');
+
+  return generate.data[type][subtype];
+}
+
 generate.register.edit = function(type, subtype, edit_data) {
   if (!(type && subtype)) return false;
 
@@ -196,21 +211,6 @@ generate.register.task = function(subtype, task_data) {
 }
 
 /**
- * Returns general blueprints of this subtype (data[type][subtype])
- * @method get_blueprints
- * @param  {$} element element to parse
- * @return {Object} blueprints
- */
-generate.get_blueprints = function(element) {
-  //to jq
-  var $element = $(element);
-  var type = $element.attr('type');
-  var subtype = $element.attr('subtype');
-
-  return generate.data[type][subtype];
-}
-
-/**
  * Modules/Test/generate/data/__template/(s)/default | Create wrappers for generated elements
  * @type {Object}
  */
@@ -236,6 +236,23 @@ generate.make_template = {
     }
   }
 }
+
+generate.register.task('default', {
+  builder: function() {
+    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
+
+    console.log($task, $task[1]);
+    if(defined(generate.data.task.template)) {
+      $task.find('.__make-template').click(function() {
+        generate.data.task.template.to_tempalte($task);
+      });
+    } else {
+      $task.find('.__make_template').remove();
+    }
+
+    return $task;
+  }
+});
 
 $(document).ready(function() {
   generate.data.task.template.add_to_test = function(template, $edit) {
@@ -770,23 +787,6 @@ $(document).ready(function() {
   }
 });
 
-generate.register.task('default', {
-  builder: function() {
-    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
-
-    console.log($task, $task[1]);
-    if(defined(generate.data.task.template)) {
-      $task.find('.__make-template').click(function() {
-        generate.data.task.template.to_tempalte($task);
-      });
-    } else {
-      $task.find('.__make_template').remove();
-    }
-
-    return $task;
-  }
-});
-
 generate.register.edit('answer', 'checkbox', {
   random_possible: true,
   builder: function(value) {
@@ -1193,38 +1193,6 @@ generate.register.element('answer', 'checkbox', {
   }
 });
 
-generate.register.element('answer', 'radio', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var group = generate.counter.radio++;
-    value.answer = value.answer || [];
-
-    var $new_element = this.make_template(value);
-    value.items.forEach(function(label, index) {
-      var $new_checkbox = $(loads.get('Elements/Inputs/radio/'));
-      $new_checkbox.find('label').text(label);
-
-      if(value.answer.has(index)) {
-        $new_checkbox.find('input')[0].checked = true;
-      }
-
-      $new_element.append($new_checkbox);
-      $new_element.find('input').attr('name', "radio_" + group);
-    });
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
-      answer: [1],
-      worth: 1
-    }
-  }
-});
-
 generate.register.element('answer', 'classify', {
   show_in_items: true,
 
@@ -1334,6 +1302,38 @@ generate.register.element('answer', 'classify', {
   }
 });
 
+generate.register.element('answer', 'radio', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var group = generate.counter.radio++;
+    value.answer = value.answer || [];
+
+    var $new_element = this.make_template(value);
+    value.items.forEach(function(label, index) {
+      var $new_checkbox = $(loads.get('Elements/Inputs/radio/'));
+      $new_checkbox.find('label').text(label);
+
+      if(value.answer.has(index)) {
+        $new_checkbox.find('input')[0].checked = true;
+      }
+
+      $new_element.append($new_checkbox);
+      $new_element.find('input').attr('name', "radio_" + group);
+    });
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
+      answer: [1],
+      worth: 1
+    }
+  }
+});
+
 generate.register.element('answer', 'text', {
   show_in_items: true,
 
@@ -1356,69 +1356,70 @@ generate.register.element('answer', 'text', {
   }
 })
 
-generate.register.external('answer', 'checkbox', {
-  get_value: function($element) {
-    var answers = [];
-    $element.find('.m--checkbox').each(function(index, el) {
-      if(el.querySelector('input').checked) {
-        answers.push(index);
-      }
+generate.register.element('question', 'file', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $file_template = $(loads.get("Elements/card/file/exports.html"));
+
+    $file_template.attr("href", value.url);
+    $file_template.find(".__name").text(value.name);
+    $file_template.find(".__size").text(value.size);
+
+    $new_element.append($file_template);
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      name: "Файл для скачивания",
+      size: "3.21МБ",
+      pos: undefined,
+      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
+    }
+  }
+});
+
+generate.register.element('question', 'image', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $image = $(document.createElement('img'));
+
+    $image.attr("src", value.url || value.href);
+    $image.css('max-width', '100%');
+    $new_element.css({
+      'display': 'flex',
+      'align-items': 'center',
+      'justify-content': 'center'
     });
-    return answers;
+
+    $new_element.append($image);
+
+    return $new_element;
   },
-
-  get_summary: function(value, element_data) {
-    var answers = [];
-    var big  = false;
-
-    value.forEach(function(pos) {
-      var option = element_data.items[pos];
-
-      if(option.length > 20) {
-        option = option.substring(0, 17).escape();
-        option = option + "&hellip;";
-        big = true;
-      } else {
-        option = option.escape();
-      }
-
-      answers.push(option);
-    })
-
-    if(big) {
-      answers = answers.join('<br>');
-    } else {
-      answers = answers.join(', ');
+  sample: {
+    value: {
+      url: "/media/samples/image.jpg"
     }
+  }
+});
 
-    return answers;
+generate.register.element('question', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.html('<div class="__value">' + value.text + '</div>');
+
+    return $new_element;
   },
-
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
+  sample: {
+    value: {
+      text: 'Текстовый вопрос'
     }
-
-    if( ! Array.isArray(user_answer)) {
-      user_answer = [];
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    $element.find('input').change(_change);
   }
 });
 
@@ -1513,6 +1514,72 @@ generate.register.external('answer', 'classify', {
 
 
 //TODO fix attempt icon swap
+
+generate.register.external('answer', 'checkbox', {
+  get_value: function($element) {
+    var answers = [];
+    $element.find('.m--checkbox').each(function(index, el) {
+      if(el.querySelector('input').checked) {
+        answers.push(index);
+      }
+    });
+    return answers;
+  },
+
+  get_summary: function(value, element_data) {
+    var answers = [];
+    var big  = false;
+
+    value.forEach(function(pos) {
+      var option = element_data.items[pos];
+
+      if(option.length > 20) {
+        option = option.substring(0, 17).escape();
+        option = option + "&hellip;";
+        big = true;
+      } else {
+        option = option.escape();
+      }
+
+      answers.push(option);
+    })
+
+    if(big) {
+      answers = answers.join('<br>');
+    } else {
+      answers = answers.join(', ');
+    }
+
+    return answers;
+  },
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    if( ! Array.isArray(user_answer)) {
+      user_answer = [];
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('input').change(_change);
+  }
+});
 
 generate.register.external('answer', 'radio', {
   get_value: function($element) {
@@ -1626,72 +1693,5 @@ generate.register.external('answer', 'text', {
         _change();
       }, typing_interval);
     });
-  }
-});
-
-generate.register.element('question', 'file', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $file_template = $(loads.get("Elements/card/file/exports.html"));
-
-    $file_template.attr("href", value.url);
-    $file_template.find(".__name").text(value.name);
-    $file_template.find(".__size").text(value.size);
-
-    $new_element.append($file_template);
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      name: "Файл для скачивания",
-      size: "3.21МБ",
-      pos: undefined,
-      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
-    }
-  }
-});
-
-generate.register.element('question', 'image', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $image = $(document.createElement('img'));
-
-    $image.attr("src", value.url || value.href);
-    $image.css('max-width', '100%');
-    $new_element.css({
-      'display': 'flex',
-      'align-items': 'center',
-      'justify-content': 'center'
-    });
-
-    $new_element.append($image);
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      url: "/media/samples/image.jpg"
-    }
-  }
-});
-
-generate.register.element('question', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.html('<div class="__value">' + value.text + '</div>');
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      text: 'Текстовый вопрос'
-    }
   }
 });

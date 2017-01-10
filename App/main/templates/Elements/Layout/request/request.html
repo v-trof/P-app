@@ -5,6 +5,13 @@
 	<button class="m--flat" id="button_accept" data-user-id="{{u_request.user_id}}" data-test-id="{{u_request.test.id}}" data-type="reset">Принять</button>
 	<button class="m--flat m--negative" id="button_decline" data-user-id="{{u_request.user_id}}" data-test-id="{{u_request.test.id}}" data-type="reset">Отклонить</button>
 </div>
+{% elif u_request.type == "sharing" %}
+<div class="request row">
+запрос на копирование из библиотеки
+	{# include extension for copying #}
+	<button class="m--flat" id="button_accept" data-course-id="{{u_request.course_id}}" data-user-id="{{u_request.user_id}}" data-shared-id="{{u_request.shared_id}}" data-type="sharing">Принять</button>
+	<button class="m--flat m--negative" id="button_decline" data-course-id="{{u_request.course_id}}" data-user-id="{{u_request.user_id}}" data-shared-id="{{u_request.shared_id}}" data-type="sharing">Отклонить</button>
+</div>
 {% else %}
 запрос на вступление в курс
 <div class="request row">

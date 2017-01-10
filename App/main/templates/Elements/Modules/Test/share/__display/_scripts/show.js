@@ -14,6 +14,9 @@ share.display.show = function(data, $item) {
 
   if( ! data.open) {
     var $request_btn = $('<button> Запросить доступ </button>');
+    $request_btn.click(function() {
+        share.display.funcs.request(data);
+      });
     $actions.append($request_btn);
   } else {
     if(data.type === 'templates') {
@@ -97,5 +100,18 @@ share.display.funcs.replace = function(data) {
   });
 }
 share.display.funcs.request = function(data) {
-  //dunno
+  $.ajax({
+      url: '/func/get_shared/',
+      type: 'POST',
+      data: {
+        'csrfmiddlewaretoken': loads.csrf_token,
+        'shared_id': data.shared_id,
+        'course_id': django.course.id
+      }
+  }).success(function(responce) {
+    notification.show('success', 'Заявка на копирование отправлена ');
+    popup.hide();
+  }).error(function() {
+    notification.show('error', 'Ошибка');
+  });
 }

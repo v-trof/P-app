@@ -511,14 +511,16 @@ class Universal_views():
         if request.method == 'POST':
             course_id = request.POST.get("course_id", None)
             shared_id = request.POST.get("shared_id", None)
-            message = Test.accept_sharing(shared_id=shared_id,course_id=course_id)
+            inheritor_id = request.POST.get("user_id", None)
+            message = Sharing.accept_sharing(shared_id=shared_id,course_id=course_id,inheritor_id=inheritor_id)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
     def decline_sharing(request):
         if request.method == 'POST':
             course_id = request.POST.get("course_id", None)
             shared_id = request.POST.get("shared_id", None)
-            message = Test.decline_sharing(shared_id=shared_id,course_id=course_id)
+            inheritor_id = request.POST.get("user_id", None)
+            message = Sharing.decline_sharing(shared_id=shared_id,course_id=course_id,inheritor_id=inheritor_id)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
     def take_shared(request):
@@ -541,7 +543,8 @@ class Universal_views():
     def get_shared(request):
         if request.method == 'POST':
             shared_id=request.POST.get('shared_id',False)
-            return HttpResponse(json.dumps(Sharing.get_shared(shared_id=shared_id)), content_type="application/json")
+            course_id=request.POST.get('course_id',False)
+            return HttpResponse(json.dumps(Sharing.get_shared(shared_id=shared_id,user_id=str(request.user.id),course_id=course_id)), content_type="application/json")
             
     def search(request):
         if request.method == "POST":

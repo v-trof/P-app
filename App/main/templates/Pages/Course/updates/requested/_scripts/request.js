@@ -7,7 +7,11 @@ $( "#button_accept" ).click(function() {
   form_data.append('user_id', $(this).attr("data-user-id"));
   if (type=="reset")
     form_data.append('test_id', $(this).attr("data-test-id"));
-
+  if (type=="sharing")
+  {
+    form_data.append('shared_id', $(this).attr("data-shared-id"));
+    form_data.append('course_id', $(this).attr("data-course-id"));
+  }
   $.ajax({
     type:"POST",
     url:"/func/accept_"+type+"/",
@@ -32,6 +36,11 @@ $( "#button_decline" ).click(function() {
   form_data.append('user_id', $(this).attr("data-user-id"));
   if (type=="reset")
     form_data.append('test_id', $(this).attr("data-test-id"));
+  if (type=="sharing")
+  {
+    form_data.append('shared_id', $(this).attr("data-shared-id"));
+    form_data.append('course_id', $(this).attr("data-course-id"));
+  }
   $.ajax({
     type:"POST",
     url:"/func/decline_"+type+"/",
