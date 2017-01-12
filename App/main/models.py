@@ -1632,6 +1632,9 @@ class CourseManager(models.Manager):
 					request_model['test']=Test.get_test_info(course_id=str(course.id),test_id=request_model["test_id"],user_id=request_model['user_id'],compact=True)
 					del request_model['test_id']
 				updates['requests'].append(request_model)
+		if 'requests' in data.keys() and 'info' in data['requests'].keys():
+			updates['info']=data["requests"]["info"]
+		else: updates['info']=[]
 		updates["new_results"] = []
 		updates["expired"] = {}
 		for user_id in data["users"]:
@@ -1681,6 +1684,18 @@ class CourseManager(models.Manager):
 			saving_data = json.dumps(data, ensure_ascii=False)
 			data_file.write(saving_data)
 		return updates
+
+	def delete_info(index,course_id):
+		with io.open('main/files/json/courses/' + str(inheritor_course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data = json.load(data_file)
+
+		del course_data["requests"]["info"][index]
+
+		with io.open('main/files/json/courses/' + str(inheritor_course_id) + '/info.json', 'w', encoding='utf8') as data_file:
+			saving_data = json.dumps(course_data, ensure_ascii=False)
+			data_file.write(saving_data)
+			
+		return True
 
 
 class Course(models.Model):
@@ -1880,6 +1895,9 @@ class UserManager(UserManager):
 				if 'requests' in data.keys() and 'waiting' in data["requests"].keys():
 					for request in data["requests"]["waiting"]:
 						updates[course_id]['requests'].append(request)
+				if 'requests' in data.keys() and 'info' in data['requests'].keys():
+					updates[course_id]['info']=data["requests"]["info"]
+				else: updates[course_id]['info']=[]
 				updates[course_id]["new_results"] = 0
 				print(updates[course_id])
 				for user_id in data["users"]:
@@ -3540,7 +3558,7 @@ class Sharing():
 	def request_sharing(user_id,shared_id,course_id,type,inheritor_course_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			course_data = json.load(data_file)
-		request={'type':'sharing','course_id':inheritor_course_id,'share_type':type,'shared_id':shared_id,'user_id':user_id}
+		request={'type':'sharing','parent_course_id':course_id,'course_id':inheritor_course_id,'share_type':type,'shared_id':shared_id,'user_id':user_id}
 		if not 'requests' in course_data.keys():
 			course_data['requests']={}
 		if not 'waiting' in course_data['requests'].keys():
@@ -3557,17 +3575,18 @@ class Sharing():
 		else:
 			return {"type":"info","message":"Ваш запрос уже был отклонен"}
 	
-	def accept_sharing(shared_id,course_id,inheritor_id):
+	def accept_sharing(shared_id,course_id,inheritor_id,inheritor_course_id):
+		print(shared_id,course_id,inheritor_id,inheritor_course_id)
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			course_data = json.load(data_file)
 		if 'requests' in course_data.keys():
 			for request in course_data['requests']['waiting']:
-				if request['type']=='share' and request['shared_id'] == shared_id:
+				if request['type']=='sharing' and request['shared_id'] == shared_id:
 					course_data['requests']['waiting'].remove(request)
 
 		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
-		print(shared_id)
+
 		shared_table[shared_id]["white_list"].append(inheritor_id)
 
 		with io.open('main/files/json/shared/shared_map.json', 'w', encoding='utf8') as shared_file:
@@ -3575,9 +3594,26 @@ class Sharing():
 
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as data_file:
 			data_file.write(json.dumps(course_data, ensure_ascii=False))
+
+		with io.open('main/files/json/courses/' + str(inheritor_course_id) + '/info.json', 'r', encoding='utf8') as data_file:
+			course_data = json.load(data_file)
+
+		shared_item=shared_table[shared_id]
+
+		info = {"accepted":True,"type":"sharing","shared_item":shared_item}
+
+		if "requests" in course_data.keys() and "info" in course_data["requests"].keys():
+			course_data["requests"]["info"].append(info)
+		else:
+			if "requests" in course_data.keys():
+				course_data["requests"]["info"]=[info]
+			else: course_data["requests"]={"info":[info]}
+
+		with io.open('main/files/json/courses/' + str(inheritor_course_id) + '/info.json', 'w', encoding='utf8') as data_file:
+			data_file.write(json.dumps(course_data, ensure_ascii=False))
 		return {"type":"info","message":"Запрос принят"}
 
-	def decline_sharing(shared_id,course_id,inheritor_id):
+	def decline_sharing(shared_id,course_id,inheritor_id,inheritor_course_id):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			course_data = json.load(data_file)
 		if 'requests' in course_data.keys():
@@ -3597,6 +3633,20 @@ class Sharing():
 			shared_file.write(json.dumps(shared_table, ensure_ascii=False))
 
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as data_file:
+			data_file.write(json.dumps(course_data, ensure_ascii=False))
+
+		shared_item=shared_table[shared_id]
+
+		info = {"accepted":False,"type":"sharing","shared_item":shared_item}
+
+		if "requests" in course_data.keys() and "info" in course_data["requests"].keys():
+			course_data["requests"]["info"].append(info)
+		else:
+			if "requests" in course_data.keys():
+				course_data["requests"]["info"]=[info]
+			else: course_data["requests"]={"info":[info]}
+
+		with io.open('main/files/json/courses/' + str(inheritor_course_id) + '/info.json', 'w', encoding='utf8') as data_file:
 			data_file.write(json.dumps(course_data, ensure_ascii=False))
 
 		return {"type":"info","message":"Запрос успешно отклонен"}

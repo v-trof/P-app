@@ -2,6 +2,7 @@ $( "#button_accept" ).click(function() {
   console.log('sfdf')
   var form_data = new FormData();
   var type=$(this).attr("data-type");
+  console.log(this)
   form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
   form_data.append('course_id', '{{course.id}}');
   form_data.append('user_id', $(this).attr("data-user-id"));
@@ -10,7 +11,7 @@ $( "#button_accept" ).click(function() {
   if (type=="sharing")
   {
     form_data.append('shared_id', $(this).attr("data-shared-id"));
-    form_data.append('course_id', $(this).attr("data-course-id"));
+    form_data.append('course_inheritor_id', $(this).attr("data-course-inheritor-id"));
   }
   $.ajax({
     type:"POST",
@@ -26,7 +27,7 @@ $( "#button_accept" ).click(function() {
       }
     }
   });
-  $(this).closest(".card").hide();
+   $(this).closest(".card").hide();
 });
 $( "#button_decline" ).click(function() {
   var form_data = new FormData();
@@ -39,7 +40,7 @@ $( "#button_decline" ).click(function() {
   if (type=="sharing")
   {
     form_data.append('shared_id', $(this).attr("data-shared-id"));
-    form_data.append('course_id', $(this).attr("data-course-id"));
+    form_data.append('course_inheritor_id', $(this).attr("data-course-inheritor-id"));
   }
   $.ajax({
     type:"POST",
@@ -55,5 +56,5 @@ $( "#button_decline" ).click(function() {
       }
     }
   });
-  $(this).closest(".card").hide();
+ $(this).closest(".card").hide();
 });

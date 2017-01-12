@@ -1,5 +1,5 @@
 {
-	"elements": ["card/user/extended", "Layout/request"],
+	"elements": ["card/user/extended", "card/test/extended", "card/material/extended", "card", "Layout/info_action", "Layout/request"],
   "scripts": [],
   "styles": [
       "Elements/Modules/Results_display/_styles/css/color_quality"],

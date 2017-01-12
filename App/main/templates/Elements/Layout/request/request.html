@@ -9,8 +9,8 @@
 <div class="request row">
 запрос на копирование из библиотеки
 	{# include extension for copying #}
-	<button class="m--flat" id="button_accept" data-course-id="{{u_request.course_id}}" data-user-id="{{u_request.user_id}}" data-shared-id="{{u_request.shared_id}}" data-type="sharing">Принять</button>
-	<button class="m--flat m--negative" id="button_decline" data-course-id="{{u_request.course_id}}" data-user-id="{{u_request.user_id}}" data-shared-id="{{u_request.shared_id}}" data-type="sharing">Отклонить</button>
+	<button class="m--flat" id="button_accept" data-course-inheritor-id="{{u_request.course_id}}" data-user-id="{{u_request.user_id}}" data-shared-id="{{u_request.shared_id}}" data-type="sharing">Принять</button>
+	<button class="m--flat m--negative" id="button_decline" data-course-inheritor-id="{{u_request.course_id}}" data-user-id="{{u_request.user_id}}" data-shared-id="{{u_request.shared_id}}" data-type="sharing">Отклонить</button>
 </div>
 {% else %}
 запрос на вступление в курс

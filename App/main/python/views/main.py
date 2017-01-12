@@ -148,7 +148,7 @@ class Course_group():
 
 	def updates(request, course_id):
 		if request.user.is_anonymous():
-			request.session['last_page']='/updates/'
+			request.session['last_page']='/course/'+course_id+'/updates/'
 			return redirect('/login/')
 		if not Course.objects.filter(id=course_id).exists():
 			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
@@ -204,6 +204,20 @@ class Course_group():
 		context["breadcrumbs"] = [
 			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Управление курсом"}]
 		return render(request, 'Pages/Course/manage/exports.html', context)
+
+	def unpublished(request,course_id):
+		if request.user.is_anonymous():
+			request.session['last_page']='/course/'+course_id+'/unpublished/'
+			return redirect('/login/')
+		if not Course.objects.filter(id=course_id).exists():
+			request.session['notifications']=[{"type": "error", "message": "Курс не существует"}]
+			return redirect('/')
+		context = {}
+		course = Course.objects.get(id=course_id)
+		context["unpublished"] = Course.objects.get_sections(
+			course_id=str(course.id))["unpublished"]
+		context["course"]=course
+		return render(request, 'Pages/Course/unpublished/exports.html', context)
 
 	def results(request, course_id):
 		if request.user.is_anonymous():
@@ -395,6 +409,10 @@ class Course_group():
 			"link": "Изменить задание"
 		}]
 		return render(request, 'Pages/Course/give_task/exports.html', context)
+
+class Error_group():
+	def not_found(request):
+		return render(request, 'Pages/404/exports.html', {})
 
 class Testing_group():
 
