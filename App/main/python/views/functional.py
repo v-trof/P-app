@@ -528,7 +528,6 @@ class Universal_views():
     def delete_info(request):
         if request.method == 'POST':
             index = request.POST.get("index", None)
-            print(index)
             course_id = request.POST.get("course_id", None)
             message = Course.objects.delete_info(course_id=course_id,index=index)
             return HttpResponse(json.dumps(message), content_type="application/json")
@@ -539,8 +538,8 @@ class Universal_views():
             course_id=request.POST.get("course_id",None)
             user_id=str(request.user.id)
             type=request.POST.get("type",None)
-            item_id=request.POST.get("item_id",False)
-            message = Sharing.take_shared(course_id=course_id, shared_id=shared_id, user_id=user_id, type=type, item_id=item_id)
+            inheritor_id=request.POST.get("inheritor_id",False)
+            message = Sharing.take_shared(course_id=course_id, shared_id=shared_id, user_id=user_id, type=type, inheritor_id=inheritor_id)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
     def load_tags(request):

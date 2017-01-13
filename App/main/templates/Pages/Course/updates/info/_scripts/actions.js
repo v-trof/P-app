@@ -1,12 +1,13 @@
 $( "#button_import" ).click(function() {
-  console.log('sfdf')
   var form_data = new FormData();
   var type=$(this).attr("data-type");
-  console.log(this)
+  var index=$(this).attr("data-index");
   form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
   form_data.append('course_id', '{{course.id}}');
-  form_data.append('index', $(this).attr("data-index"));
-  //add more data
+  form_data.append('shared_id', $(this).attr("data-shared-id"));
+  form_data.append('inheritor_id', $(this).attr("data-inheritor-id"));
+  form_data.append('type', $(this).attr("data-shared-type"));
+
   $.ajax({
     type:"POST",
     url:"/func/take_shared/",
@@ -19,8 +20,21 @@ $( "#button_import" ).click(function() {
       } else {
         notification.show('success', 'Тест добавлен' );
       }
+      var form_data = new FormData();
+      form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+      form_data.append('index', index);
+      form_data.append('course_id', "{{course.id}}");
+
+      $.ajax({
+        type:"POST",
+        url:"/func/delete_info/",
+        processData: false,
+        contentType: false,
+        data: form_data
+      });
     }
   });
+
    $(this).closest(".card").hide();
 });
 $( "#button_delay" ).click(function() {

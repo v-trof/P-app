@@ -3607,7 +3607,7 @@ class Sharing():
 
 		shared_item=shared_table[shared_id]
 
-		info = {"accepted":True,"type":"sharing","shared_id":shared_id}
+		info = {"accepted":True,"type":"sharing","shared_id":shared_id, "inheritor_id":inheritor_id}
 
 		if "requests" in course_data.keys() and "info" in course_data["requests"].keys():
 			course_data["requests"]["info"].append(info)
@@ -3658,13 +3658,14 @@ class Sharing():
 
 		return {"type":"info","message":"Запрос успешно отклонен"}
 
-	def take_shared(shared_id,type,course_id,user_id,inheritor_id=False,accept=False):
+	def take_shared(shared_id,course_id,user_id,inheritor_id=False,type=False):
 		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
-		shared_table[shared_id]["popularity"]+=1
-		with io.open('main/files/json/shared/shared_map.json', 'w+', encoding='utf8') as shared_file:
-			shared_file.write(json.dumps(shared_table, ensure_ascii=False))
+		if user_id in shared_table[shared_id]["white_list"]:
+			accept=True
+		else: accept=False
 		if shared_table[shared_id]["open"] or accept:
+			shared_table[shared_id]["popularity"]+=1
 			with io.open('main/files/json/shared/content/'+shared_id+'.json', 'r', encoding='utf8') as shared_file:
 				public_file = json.load(shared_file)
 			if not "title" in public_file.keys() and not inheritor_id:
@@ -3673,7 +3674,7 @@ class Sharing():
 				public_file["title"]=""
 			public_file['creator']=int(user_id)
 
-			if not inheritor_id:
+			if not inheritor_id or not os.path.exists('main/files/json/courses/' + course_id + '/'+type+'s/public/' + inheritor_id + '.json'):
 				with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
 					course_info = json.load(data_file)
 					max=0
@@ -3684,7 +3685,7 @@ class Sharing():
 					for unpublished in course_info['sections']['unpublished']:
 						if unpublished["type"] == type and int(unpublished["id"])>max:
 							max=int(unpublished["id"])
-				inheritor_id=max+1
+				inheritor_id=str(max+1)
 			else:
 				with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/' + inheritor_id + '.json', 'r', encoding='utf8') as file:
 					inheritor_data=json.load(file)
@@ -3698,6 +3699,8 @@ class Sharing():
 					{"id": inheritor_id, "type": type})
 			with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 				info_file.write(json.dumps(course_info, ensure_ascii=False))
+			with io.open('main/files/json/shared/shared_map.json', 'w+', encoding='utf8') as shared_file:
+				shared_file.write(json.dumps(shared_table, ensure_ascii=False))
 			if type == "test":
 				return {"type":"success","message":"Тест успешно взят из библиотеки", "link":'/test/edit/?course_id=' + course_id + "&test_id=" + str(inheritor_id)}
 			else:
@@ -3760,11 +3763,9 @@ class Statistics():
 				most_frequent[question_id]=int(frequency/results_count*100)
 		return most_frequent
 			#user_id= results[:-5].split("/")[5][6:]
-			#user=User.objects.get(id=user_id)
+			#user=User.objects.get(id=user_id)f
 
 class Search():
-# {"type" : "{{card_type}}","content":{{content}} }
-
 
 	def in_users(search_query,course=None):
 		cards=[]
@@ -3798,7 +3799,6 @@ class Search():
 			content["avatar"]=user["object"].avatar.url
 			content["is_teacher"]=user["object"].is_teacher
 			cards.append({"type":"user","content":content,"conformity":user["conformity"]})
-		print(cards)
 		return cards
 
 	def in_courses(search_query,user=None):
@@ -3822,7 +3822,6 @@ class Search():
 				pass
 		if len(courses_all) == 0:
 			courses_all=Course.objects.all()
-
 		for course in courses_all:
 			if not course.is_closed:
 				conformity=Utility.compare(str1=search_query,str2=course.name)
@@ -3903,7 +3902,6 @@ class Search():
 			elements=Utility.sort_by_conformity(object=elements, indicator="conformity")
 		for element in elements:
 			cards.append({"type":element["type"],"content":element["content"],"conformity":element["conformity"]})
-		print(cards)
 		return cards
 
 	def in_shared_elements(search_query,parameters,user):
@@ -3916,8 +3914,6 @@ class Search():
 		parameters["global_tags"]+=Utility.find_tags(string=search_query,tag_list=tag_list)
 		parameters["global_tags"]=list(set(parameters["global_tags"]))
 		parameters["subject_tags"]=list(set(parameters["subject_tags"]))
-
-		print(parameters["global_tags"],parameters["subject_tags"])
 		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_table:
 			shared_table=json.load(shared_table)
 		for shared_id,shared_info in shared_table.items():
@@ -3933,8 +3929,6 @@ class Search():
 									subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
 									shared_info["shared_id"]=shared_id
 									name_conformity=Utility.compare(str1=search_query,str2=shared_info["title"])
-									print(shared_info)
-									print(global_tags_conformity,subject_tags_conformity,name_conformity)
 									if global_tags_conformity > 0 or subject_tags_conformity > 0 or name_conformity>10:
 										cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity+subject_tags_conformity+global_tags_conformity})
 							except:
@@ -3970,9 +3964,7 @@ class Search():
 					cards.extend(Search.types[type](search_query=search_query))
 			elif type=="shared":
 				cards.extend(Search.types[type](search_query=search_query,parameters=search_types["shared"],user=user))
-
 		cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
-
 		return cards
 
 	types = {
