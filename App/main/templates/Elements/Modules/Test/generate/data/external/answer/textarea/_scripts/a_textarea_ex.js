@@ -1,10 +1,13 @@
-generate.register.external('answer', 'text', {
+generate.register.external('answer', 'textarea', {
   get_value: function($element) {
-    return $element.find('input').val();
+    return $element.find('.__value').html();
   },
 
   get_summary: function(value) {
     if( ! value) value = "";
+
+    var $adapter = $('<div></div>');
+    value = $adapter.html(value).text();
 
     if(value.length > 20) {
       value = value.substring(0, 17).escape();
@@ -22,7 +25,7 @@ generate.register.external('answer', 'text', {
     function make_DOM(answer) {
       element_data.answer = answer;
       var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
+      $element.find('.__value').removeAttr('contenteditable');
 
       return $element;
     }

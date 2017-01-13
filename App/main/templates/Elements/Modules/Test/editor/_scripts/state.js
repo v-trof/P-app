@@ -15,7 +15,6 @@ editor.active_element = {
 }
 $(document).ready(function() {
   pull_put.pre_actions.pull = function($pulled) {
-    console.log($pulled);
     if( ! $pulled.attr('subtype')) {
       $pulled = $pulled.children();
     }
@@ -26,12 +25,11 @@ $(document).ready(function() {
     if($pulled.parents('.preview').length > 0) {
       editor.active_element.is_new = false;
 
-      //TODO: calculate position
       var $task_parent = $pulled.parents('.__task');
       var position = {
         task: $('.preview .__task').index($task_parent[0]),
         number: $task_parent.find('.__content').
-          children('[subtype]').index($pulled[0])
+          children('.generate-item').index($pulled[0])
       }
 
       editor.active_element.position = position;

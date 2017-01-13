@@ -4,7 +4,8 @@ editor.test_data = {
   templates: [],
 
   change: function(old_position, new_position, value) {
-    // console.log('changing ', new_position, 'to', value);
+    console.log('changing ', new_position, 'to', value);
+    console.log('changed form ', old_position);
 
     if(old_position === new_position) {
       return editor.test_data.update(old_position, value);
@@ -118,13 +119,14 @@ $(document).ready(function() {
     if($put_zone.hasClass('__gap')) return;
     var value = editor.edit.change_value();
 
-    var number = $put_zone.parent().children('[subtype]').index($put_zone);
+    var number = $put_zone.parent().children('.generate-item').index($put_zone);
     number+=1;
     var new_position = {
       task: $('.preview .__task').index($put_zone.parents('.__task')),
       number: number
     }
 
+    console.log('PUT:', new_position);
     editor.test_data.change(editor.active_element.position, new_position, value);
   }
 

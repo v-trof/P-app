@@ -10,13 +10,8 @@ module.exports = function(item_path, relative = item_path) {
    'compared to', relative);}
 
   var info = by_path(item_path, relative);
-
-  if (info.type && info.parent) {
-    if(config.log.item.class) console.log('classified:', info);
-    return info;
-  }
-
-  info.type = by_dependencies(item_path);
+  var dep_type = by_dependencies(item_path);
+  if(dep_type === 'page' || ! info.type) info.type = dep_type;
 
   if(config.log.item.class) console.log('classified:', info);
   return info;

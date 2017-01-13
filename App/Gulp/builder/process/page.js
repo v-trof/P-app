@@ -108,6 +108,16 @@ function collect_blocks(dir) {
   }
 
 
+  console.log('Barr:', block_dependencies_arr)
+
+  if( ! block_dependencies_arr.length) {
+    return {
+      dependencies: get_dependencies.defaults(),
+      loads: get_loads.defaults()
+    }
+  }
+
+
   return block_dependencies_arr[0];
 }
 

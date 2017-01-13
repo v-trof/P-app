@@ -11,13 +11,4 @@
 	{% endif %}
 	{% endfor %}
 {% endif %}
-
-{% if sections.unpublished %}
-	<section class="course-part">
-		<h3>Неопубликованные</h3>
-		{% for element in sections.unpublished %}
-			{% include "#&/element/" %}
-		{% endfor %}
-	</section>
-{% endif %}
 </section>

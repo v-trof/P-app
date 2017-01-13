@@ -1,6 +1,6 @@
 {
 	"elements": ["Modules/Test/generate", "Modules/Utility/jasmine"],
-	"scripts": [],
+	"scripts": ["#&/_scripts/core_spec.js", "#&/_scripts/template_spec.js"],
   "styles": [],
   "title" : "SPC test_generate",
 	"template": "default"

@@ -1,0 +1,12 @@
+{% if unpublished %}
+	<section class="course-part">
+		<h3>Неопубликованные</h3>
+		{% for element in unpublished %}
+			{% include "#&/element/" %}
+		{% endfor %}
+	</section>
+{% else %}
+  <section class="course-part">
+    <h3> Здесь будут неопубликованные тесты </h3>
+  </section>
+{% endif %}

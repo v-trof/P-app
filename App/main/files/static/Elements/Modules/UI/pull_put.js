@@ -50,6 +50,7 @@ var indicator = (function() {
     $new_indicator.find('button').html(icons[icon]);
 
     $new_indicator.addClass('m--' + icon);
+    $new_indicator.css('pointer-events', 'all');
     return $new_indicator;
   };
 

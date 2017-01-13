@@ -64,7 +64,15 @@ function add_scripts(exports_file, page_info) {
   var modules_html = '';
   for(let dir of page_info.dependencies.scripts.module) {
     dir = dir.split(path.sep).join('/');
-    dir += '.js';
+    if( ! dir.endsWith('.js')) {
+      dir += '.js';
+    } else {
+      dir = dir.replace(config.path.main, '');
+      modules_html += `<script src='{% static "` + dir + `"%}' defer>
+                       </script> \n`;
+      continue;
+    }
+
 
     //loads are TOP priority
     if(dir.endsWith('loads.js')) {

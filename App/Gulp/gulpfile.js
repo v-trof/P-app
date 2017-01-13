@@ -111,9 +111,18 @@ gulp.task('min_module_js', function(cb) {
 
 gulp.task('min_element_js', function(cb) {
   pump([
-    gulp.src(['../main/templates/Elements/**/*.js', '!../main/templates/Elements/Modules/**/*.js']),
+    gulp.src(['../main/templates/Elements/**/*.js',
+     '../main/templates/Elements/Modules/**/test_suite/**/*.js',
+     '!../main/templates/Elements/Modules/**/*.js']),
     uglify(),
     gulp.dest('../main/files/static/Elements')
+  ], cb);
+});
+
+gulp.task('min_test_js', function(cb) {
+  pump([
+    gulp.src('../main/templates/Elements/Modules/**/test_suite/**/*.js'),
+    gulp.dest('../main/files/static/Elements/Modules')
   ], cb);
 });
 
