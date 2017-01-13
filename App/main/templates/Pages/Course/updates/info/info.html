@@ -8,7 +8,7 @@
 			{% include "Elements/card/material/extended/" with extension="Elements/Layout/info_action/" material=state.shared_item pos=forloop.counter0 %}
 		{% endif %}
 	{% elif state.type == "sharing" %}
-		{% include "Elements/card/" with content="Ваш запрос на копирование теста "|add:state.test.name|add:" отклонен" %}
+		{% include "Elements/card/" with content="Ваш запрос на копирование теста "|add:state.shared_item.title|add:" отклонен" %}
 	{% endif %}
 
 {% endfor %}

@@ -28,12 +28,18 @@ $( "#button_delay" ).click(function() {
   form_data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
   form_data.append('index', $(this).attr("data-index"));
   form_data.append('course_id', "{{course.id}}");
+  console.log($(this).attr("data-index"));
   $.ajax({
     type:"POST",
-    url:"/func/delete_info",
+    url:"/func/delete_info/",
     processData: false,
     contentType: false,
-    data: form_data
+    data: form_data,
+    success: function(response) {
+      if(response && response["type"]) {
+        notification.show(response["type"], response["message"]);
+      }
+    }
   });
  $(this).closest(".card").hide();
 });

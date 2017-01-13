@@ -528,8 +528,9 @@ class Universal_views():
     def delete_info(request):
         if request.method == 'POST':
             index = request.POST.get("index", None)
+            print(index)
             course_id = request.POST.get("course_id", None)
-            message = Course.delete_info(course_id=course_id,index=index)
+            message = Course.objects.delete_info(course_id=course_id,index=index)
             return HttpResponse(json.dumps(message), content_type="application/json")
 
     def take_shared(request):
