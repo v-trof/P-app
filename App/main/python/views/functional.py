@@ -32,536 +32,536 @@ import collections
 
 class User_views():
 
-    def login(request):
-        if request.method == 'POST':
-            email = request.POST['email']
-            password = request.POST['password']
-            message = User.objects.login(
-                request=request, email=email, password=password)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def login(request):
+		if request.method == 'POST':
+			email = request.POST['email']
+			password = request.POST['password']
+			message = User.objects.login(
+				request=request, email=email, password=password)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def login_with_reg(request, course_id):
-        if request.method == 'POST':
-            email = request.POST['email']
-            password = request.POST['password']
-            code=request.GET.get('code',False)
-            User.objects.login(
-                request=request, email=email, password=password)
-            message = Course.objects.reg_user(course=Course.objects.get(id=course_id), user=User.objects.get(email=email), code=code)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def login_with_reg(request, course_id):
+		if request.method == 'POST':
+			email = request.POST['email']
+			password = request.POST['password']
+			code=request.GET.get('code',False)
+			User.objects.login(
+				request=request, email=email, password=password)
+			message = Course.objects.reg_user(course=Course.objects.get(id=course_id), user=User.objects.get(email=email), code=code)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def change_permission_level(request):
-        if request.method == 'POST':
-            message = User.objects.change_permission_level(
-                user=request.user, permission_level=request.POST['permission_level'])
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def change_permission_level(request):
+		if request.method == 'POST':
+			message = User.objects.change_permission_level(
+				user=request.user, permission_level=request.POST['permission_level'])
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def logout(request):
-        logout(request)
-        return redirect('/')
+	def logout(request):
+		logout(request)
+		return redirect('/')
 
-    def reg(request):
-        if request.method == 'POST':
-            if not request.user.is_anonymous():
-                logout(request)
-            course_id = request.POST.get('course_id', False)
-            email = request.POST['email']
-            code=request.POST.get('code',False)
-            if code == "":
-                code=False
-            is_teacher = request.POST.get('is_teacher', False)
-            password = request.POST['password']
-            name_last_name = request.POST['name_last_name']
-            if request.POST.get('course_reg',False) == True:
-                message = User.objects.reg(request=request, code=code, course_id=course_id, email=email,
-                                       is_teacher=is_teacher, password=password, name_last_name=name_last_name)
-            else: message = User.objects.reg(request=request, email=email,
-                                       is_teacher=is_teacher, password=password, name_last_name=name_last_name)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def reg(request):
+		if request.method == 'POST':
+			if not request.user.is_anonymous():
+				logout(request)
+			course_id = request.POST.get('course_id', False)
+			email = request.POST['email']
+			code=request.POST.get('code',False)
+			if code == "":
+				code=False
+			is_teacher = request.POST.get('is_teacher', False)
+			password = request.POST['password']
+			name_last_name = request.POST['name_last_name']
+			if request.POST.get('course_reg',False) == True:
+				message = User.objects.reg(request=request, code=code, course_id=course_id, email=email,
+									   is_teacher=is_teacher, password=password, name_last_name=name_last_name)
+			else: message = User.objects.reg(request=request, email=email,
+									   is_teacher=is_teacher, password=password, name_last_name=name_last_name)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def change_data(request):
-        if request.method == 'POST':
-            data_list = json.loads(request.POST["data_list"])
-            message = User.objects.change_profile_data(
-                user=request.user, data_list=data_list)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def change_data(request):
+		if request.method == 'POST':
+			data_list = json.loads(request.POST["data_list"])
+			message = User.objects.change_profile_data(
+				user=request.user, data_list=data_list)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def create_contact(request):
-        if request.method == 'POST':
-            contact_type = request.POST['contact_type']
-            contact_info = request.POST['contact_info']
-            message = User.objects.create_contact(
-                contact_type=contact_type, user=request.user, contact_info=contact_info)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def create_contact(request):
+		if request.method == 'POST':
+			contact_type = request.POST['contact_type']
+			contact_info = request.POST['contact_info']
+			message = User.objects.create_contact(
+				contact_type=contact_type, user=request.user, contact_info=contact_info)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def delete_contact(request):
-        if request.method == 'POST':
-            contact_type = request.POST['contact_type']
-            message = User.objects.delete_contact(
-                contact_type=contact_type, user=request.user)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def delete_contact(request):
+		if request.method == 'POST':
+			contact_type = request.POST['contact_type']
+			message = User.objects.delete_contact(
+				contact_type=contact_type, user=request.user)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def reset_password(request):
-        if request.method == 'POST':
-            email = request.POST['email']
-            if User.objects.reset_password(email=email):
-                return HttpResponse(json.dumps({"type":"success","message":"Письмо для подтверждения отправлено вам на почту"}), content_type="application/json")
-            else:
-                return HttpResponse(json.dumps({"type":"error","message":"Введен несуществующий email"}), content_type="application/json")
+	def reset_password(request):
+		if request.method == 'POST':
+			email = request.POST['email']
+			if User.objects.reset_password(email=email):
+				return HttpResponse(json.dumps({"type":"success","message":"Письмо для подтверждения отправлено вам на почту"}), content_type="application/json")
+			else:
+				return HttpResponse(json.dumps({"type":"error","message":"Введен несуществующий email"}), content_type="application/json")
 
-    def change_email(request):
-        if request.method == 'POST':
-            new_email = request.POST['new_email']
-            if User.objects.change_email(user=request.user, new_email=new_email):
-                return HttpResponse(json.dumps({"type":"success","message":"Письмо для подтверждения отправлено вам на новую почту"}), content_type="application/json")
-            else:
-                return HttpResponse(json.dumps({"type":"error","message":"Email занят"}), content_type="application/json")
+	def change_email(request):
+		if request.method == 'POST':
+			new_email = request.POST['new_email']
+			if User.objects.change_email(user=request.user, new_email=new_email):
+				return HttpResponse(json.dumps({"type":"success","message":"Письмо для подтверждения отправлено вам на новую почту"}), content_type="application/json")
+			else:
+				return HttpResponse(json.dumps({"type":"error","message":"Email занят"}), content_type="application/json")
 
-    def approve_email(request):
-        if request.method == 'POST':
-            if not User.objects.filter(id=int(request.POST['user_id'])).exists():
-                return HttpResponse(json.dumps({"type":"error","message":"Несуществующий пользователь"}), content_type="application/json")
+	def approve_email(request):
+		if request.method == 'POST':
+			if not User.objects.filter(id=int(request.POST['user_id'])).exists():
+				return HttpResponse(json.dumps({"type":"error","message":"Несуществующий пользователь"}), content_type="application/json")
 
-            user = User.objects.get(id=int(request.POST['user_id']))
-            if user.check_password(request.POST['password']):
-                if User.objects.approve(type=request.POST['type'], code=request.POST['code'])["user_id"] == str(user.id):
-                    setattr(user, 'username', request.POST['requesting_data'])
-                    setattr(user, 'email', request.POST['requesting_data'])
-                    user.save()
-                    User.objects.login(request=request, email=request.POST['requesting_data'], password=request.POST['password'])
-                    return HttpResponse(json.dumps({"type":"success","message":"Email успешно изменен"}), content_type="application/json")
-            else:
-                return HttpResponse(json.dumps({"type":"error","message":"Неправильный пароль"}), content_type="application/json")
+			user = User.objects.get(id=int(request.POST['user_id']))
+			if user.check_password(request.POST['password']):
+				if User.objects.approve(type=request.POST['type'], code=request.POST['code'])["user_id"] == str(user.id):
+					setattr(user, 'username', request.POST['requesting_data'])
+					setattr(user, 'email', request.POST['requesting_data'])
+					user.save()
+					User.objects.login(request=request, email=request.POST['requesting_data'], password=request.POST['password'])
+					return HttpResponse(json.dumps({"type":"success","message":"Email успешно изменен"}), content_type="application/json")
+			else:
+				return HttpResponse(json.dumps({"type":"error","message":"Неправильный пароль"}), content_type="application/json")
 
-    def approve_password(request):
-        if request.method == 'POST':
-            user = User.objects.get(id=int(request.POST['user_id']))
-            if User.objects.approve(type=request.POST['type'], code=request.POST['code'])["user_id"] == str(user.id):
-                setattr(user, 'password', strip_tags(
-                    make_password(request.POST['new_password'])))
-                user.save()
-                User.objects.login(request=request, email=user.email, password=request.POST['new_password'])
-                return HttpResponse(json.dumps({"type":"success","message":"Пароль успешно изменен"}), content_type="application/json")
-            else:
-                return HttpResponse(json.dumps({"type":"error","message":"Ошибка"}), content_type="application/json")
+	def approve_password(request):
+		if request.method == 'POST':
+			user = User.objects.get(id=int(request.POST['user_id']))
+			if User.objects.approve(type=request.POST['type'], code=request.POST['code'])["user_id"] == str(user.id):
+				setattr(user, 'password', strip_tags(
+					make_password(request.POST['new_password'])))
+				user.save()
+				User.objects.login(request=request, email=user.email, password=request.POST['new_password'])
+				return HttpResponse(json.dumps({"type":"success","message":"Пароль успешно изменен"}), content_type="application/json")
+			else:
+				return HttpResponse(json.dumps({"type":"error","message":"Ошибка"}), content_type="application/json")
 
-    def upload_avatar(request):
-        if request.method == 'POST':
-            return HttpResponse(User.objects.upload_avatar(user=request.user, new_avatar=request.FILES['new_avatar']))
+	def upload_avatar(request):
+		if request.method == 'POST':
+			return HttpResponse(User.objects.upload_avatar(user=request.user, new_avatar=request.FILES['new_avatar']))
 
-    def send_mail(request):
-        if request.method == 'POST':
-            email = request.POST.get('email', False)
-            text = request.POST.get('message_text', False)
-            print(email,text)
-            if email and text:
-                send_mail('Новое сообщение от '+email, text, email,
-                          ['ru.pileus@gmail.com'], fail_silently=False)
-                return HttpResponse(json.dumps({"type":"success","message":"Письмо успешно отправлено"}), content_type="application/json")
-            else: return HttpResponse(json.dumps({"type":"error","message":"Произошла ошибка. Проверьте введенные данные"}), content_type="application/json")
+	def send_mail(request):
+		if request.method == 'POST':
+			email = request.POST.get('email', False)
+			text = request.POST.get('message_text', False)
+			print(email,text)
+			if email and text:
+				send_mail('Новое сообщение от '+email, text, email,
+						  ['ru.pileus@gmail.com'], fail_silently=False)
+				return HttpResponse(json.dumps({"type":"success","message":"Письмо успешно отправлено"}), content_type="application/json")
+			else: return HttpResponse(json.dumps({"type":"error","message":"Произошла ошибка. Проверьте введенные данные"}), content_type="application/json")
 
 
 
 class Course_views():
 
-    def create(request):
-        if request.method == 'POST':
-            db = sqlite3.connect('db.sqlite3')
-            name = request.POST.get('course_name', None)
-            if not request.user.is_teacher:
-                request.user.is_teacher = True
-                request.user.save()
-            creator = User.objects.get(id=request.user.id)
-            if name=="+s":
-                course = Course.objects.create_course(
-                    name="Русский язык 9-11 класс", subject="Русский язык", creator=creator, is_closed=False)
-                print(course)
-                response = Course.objects.load_sample(course=course,user=request.user)
-                redirect_url = '/course/' + str(course.id) + '/'
-            else:
-                subject = request.POST.get('subject', None)
-                is_closed = request.POST.get('is_closed', False)
-                course = Course.objects.create_course(
-                    name=name, subject=subject, creator=creator, is_closed=is_closed)
-                redirect_url = '/course/' + str(course.id) + '/'
-            return HttpResponse(redirect_url)
+	def create(request):
+		if request.method == 'POST':
+			db = sqlite3.connect('db.sqlite3')
+			name = request.POST.get('course_name', None)
+			if not request.user.is_teacher:
+				request.user.is_teacher = True
+				request.user.save()
+			creator = User.objects.get(id=request.user.id)
+			if name=="+s":
+				course = Course.objects.create_course(
+					name="Русский язык 9-11 класс", subject="Русский язык", creator=creator, is_closed=False)
+				print(course)
+				response = Course.objects.load_sample(course=course,user=request.user)
+				redirect_url = '/course/' + str(course.id) + '/'
+			else:
+				subject = request.POST.get('subject', None)
+				is_closed = request.POST.get('is_closed', False)
+				course = Course.objects.create_course(
+					name=name, subject=subject, creator=creator, is_closed=is_closed)
+				redirect_url = '/course/' + str(course.id) + '/'
+			return HttpResponse(redirect_url)
 
-    def edit(request):
-        if request.method == 'POST':
-            db = sqlite3.connect('db.sqlite3')
-            name = request.POST.get('course_name', None)
-            subject = request.POST.get('subject', None)
-            course = Course.objects.get(id=request.POST.get('course_id', None))
-            is_closed = request.POST.get('is_closed', False)
-            message = Course.objects.edit(
-                name=name, subject=subject, course=course, is_closed=is_closed)
-            return HttpResponse(json.dumps(message), content_type="application/json")
-        else:
-            return HttpResponse(json.dumps({"type":"error","message":"Нет полномочий"}, content_type="application/json"))
+	def edit(request):
+		if request.method == 'POST':
+			db = sqlite3.connect('db.sqlite3')
+			name = request.POST.get('course_name', None)
+			subject = request.POST.get('subject', None)
+			course = Course.objects.get(id=request.POST.get('course_id', None))
+			is_closed = request.POST.get('is_closed', False)
+			message = Course.objects.edit(
+				name=name, subject=subject, course=course, is_closed=is_closed)
+			return HttpResponse(json.dumps(message), content_type="application/json")
+		else:
+			return HttpResponse(json.dumps({"type":"error","message":"Нет полномочий"}, content_type="application/json"))
 
-    def delete(request):
-        if request.method == 'POST':
-            course_id = request.POST.get('course_id', None)
-            message = Course.objects.delete(course_id=course_id)
-            request.session['notifications']=message
-            return HttpResponse(json.dumps(message), content_type="application/json")
-        else:
-            return HttpResponse(json.dumps({"type":"error","message":"Нет полномочий"}, content_type="application/json"))
+	def delete(request):
+		if request.method == 'POST':
+			course_id = request.POST.get('course_id', None)
+			message = Course.objects.delete(course_id=course_id)
+			request.session['notifications']=message
+			return HttpResponse(json.dumps(message), content_type="application/json")
+		else:
+			return HttpResponse(json.dumps({"type":"error","message":"Нет полномочий"}, content_type="application/json"))
 
-    def add_source(request):
-        if request.method == "POST":
-            name = request.POST.get("name", None)
-            size = request.POST.get("size", None)
-            link = request.POST.get("link", None)
-            course_id = request.POST.get("course_id", None)
-            source_id = Course.objects.add_source(
-                course_id=course_id, user=request.user, name=name, size=size, link=link)
-            return HttpResponse(source_id)
+	def add_source(request):
+		if request.method == "POST":
+			name = request.POST.get("name", None)
+			size = request.POST.get("size", None)
+			link = request.POST.get("link", None)
+			course_id = request.POST.get("course_id", None)
+			source_id = Course.objects.add_source(
+				course_id=course_id, user=request.user, name=name, size=size, link=link)
+			return HttpResponse(source_id)
 
-    def edit_source(request):
-        if request.method == "POST":
-            link = request.POST.get("link", None)
-            name = request.POST.get("name", None)
-            size = request.POST.get("size", None)
-            source_id = request.POST.get("source_id", None)
-            course_id = request.POST.get("course_id", None)
-            message = Course.objects.edit_source(
-                link=link, name=name, size=size, course_id=course_id, source_id=source_id, user=request.user)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def edit_source(request):
+		if request.method == "POST":
+			link = request.POST.get("link", None)
+			name = request.POST.get("name", None)
+			size = request.POST.get("size", None)
+			source_id = request.POST.get("source_id", None)
+			course_id = request.POST.get("course_id", None)
+			message = Course.objects.edit_source(
+				link=link, name=name, size=size, course_id=course_id, source_id=source_id, user=request.user)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def delete_source(request):
-        if request.method == "POST":
-            source_id = request.POST.get("source_id", None)
-            course_id = request.POST.get("course_id", None)
-            message = Course.objects.delete_source(
-                course_id=course_id, source_id=source_id)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def delete_source(request):
+		if request.method == "POST":
+			source_id = request.POST.get("source_id", None)
+			course_id = request.POST.get("course_id", None)
+			message = Course.objects.delete_source(
+				course_id=course_id, source_id=source_id)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def add_section(request):
-        if request.method == "POST":
-            section = request.POST.get("section", None)
-            type = request.POST.get("type", None)
-            course_id = request.POST.get("course_id", None)
-            message = Course.objects.add_section(
-                section=section, course_id=course_id, type=type)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def add_section(request):
+		if request.method == "POST":
+			section = request.POST.get("section", None)
+			type = request.POST.get("type", None)
+			course_id = request.POST.get("course_id", None)
+			message = Course.objects.add_section(
+				section=section, course_id=course_id, type=type)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def edit_sections(request):
-        if request.method == "POST":
-            sections = json.loads(request.POST.get("sections", None))
-            course_id = request.POST.get("course_id", None)
-            message = Course.objects.edit_sections(
-                sections=sections, course_id=course_id)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def edit_sections(request):
+		if request.method == "POST":
+			sections = json.loads(request.POST.get("sections", None))
+			course_id = request.POST.get("course_id", None)
+			message = Course.objects.edit_sections(
+				sections=sections, course_id=course_id)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def add_announcement(request):
-        if request.method == "POST":
-            text = request.POST.get("text", None)
-            heading = request.POST.get("heading", None)
-            course_id = request.POST.get("course_id", None)
-            due_date = request.POST.get("due_date", False)
-            announcement_id = Course.objects.add_announcement(
-                text=text, heading=heading, course_id=course_id, user=request.user, due_date=due_date)
-            return HttpResponse(announcement_id)
+	def add_announcement(request):
+		if request.method == "POST":
+			text = request.POST.get("text", None)
+			heading = request.POST.get("heading", None)
+			course_id = request.POST.get("course_id", None)
+			due_date = request.POST.get("due_date", False)
+			announcement_id = Course.objects.add_announcement(
+				text=text, heading=heading, course_id=course_id, user=request.user, due_date=due_date)
+			return HttpResponse(announcement_id)
 
-    def edit_announcement(request):
-        if request.method == "POST":
-            announcement_id = request.POST.get("announcement_id", None)
-            text = request.POST.get("text", None)
-            heading = request.POST.get("heading", None)
-            course_id = request.POST.get("course_id", None)
-            due_date = request.POST.get("due_date", False)
-            message = Course.objects.edit_announcement(
-                text=text, heading=heading, course_id=course_id, announcement_id=announcement_id, user=request.user, due_date=due_dateс)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def edit_announcement(request):
+		if request.method == "POST":
+			announcement_id = request.POST.get("announcement_id", None)
+			text = request.POST.get("text", None)
+			heading = request.POST.get("heading", None)
+			course_id = request.POST.get("course_id", None)
+			due_date = request.POST.get("due_date", False)
+			message = Course.objects.edit_announcement(
+				text=text, heading=heading, course_id=course_id, announcement_id=announcement_id, user=request.user, due_date=due_dateс)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def delete_announcement(request):
-        if request.method == "POST":
-            announcement_id = request.POST.get("announcement_id", None)
-            course_id = request.POST.get("course_id", None)
-            announcement = Course.objects.delete_announcement(
-                course_id=course_id, announcement_id=announcement_id)
-            return HttpResponse(announcement)
+	def delete_announcement(request):
+		if request.method == "POST":
+			announcement_id = request.POST.get("announcement_id", None)
+			course_id = request.POST.get("course_id", None)
+			announcement = Course.objects.delete_announcement(
+				course_id=course_id, announcement_id=announcement_id)
+			return HttpResponse(announcement)
 
-    def edit_groups(request):
-        if request.method == 'POST':
-            groups_data = json.loads(request.POST.get("groups_data", None))
-            renames = json.loads(request.POST.get("renames", None))
-            course = Course.objects.get(id=request.POST.get("course_id", None))
-            message = Course.objects.edit_groups(
-                course=course, groups_data=groups_data, renames=renames)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def edit_groups(request):
+		if request.method == 'POST':
+			groups_data = json.loads(request.POST.get("groups_data", None))
+			renames = json.loads(request.POST.get("renames", None))
+			course = Course.objects.get(id=request.POST.get("course_id", None))
+			message = Course.objects.edit_groups(
+				course=course, groups_data=groups_data, renames=renames)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def invite_students(request):
-        if request.method == 'POST':
-            email_list = json.loads(request.POST.get("email_list", []))
-            email_file = request.FILES.get("email_file", False)
-            print(email_file)
-            group = request.POST.get('group', None)
-            course = Course.objects.get(id=request.POST.get('course_id', None))
-            message = Course.objects.invite_students(email_file=email_file,
-                email_list=email_list, group=group, course=course, user=request.user)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def invite_students(request):
+		if request.method == 'POST':
+			email_list = json.loads(request.POST.get("email_list", []))
+			email_file = request.FILES.get("email_file", False)
+			print(email_file)
+			group = request.POST.get('group', None)
+			course = Course.objects.get(id=request.POST.get('course_id', None))
+			message = Course.objects.invite_students(email_file=email_file,
+				email_list=email_list, group=group, course=course, user=request.user)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def invite_teacher(request):
-        if request.method == 'POST':
-            email = request.POST.get('email', None)
-            course = Course.objects.get(id=request.POST.get('course_id', None))
-            message = Course.objects.invite_teacher(
-                user=request.user, course=course, email=email)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def invite_teacher(request):
+		if request.method == 'POST':
+			email = request.POST.get('email', None)
+			course = Course.objects.get(id=request.POST.get('course_id', None))
+			message = Course.objects.invite_teacher(
+				user=request.user, course=course, email=email)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def register(request, course_id):
-        if request.user.is_anonymous():
-            return redirect('/login/' + course_id)
-        code=request.GET.get('code',None)
-        course = Course.objects.get(id=course_id)
-        message = Course.objects.reg_user(user=request.user, course=course, code=code)
-        request.session['notifications']=message
-        return redirect('/course/' + str(course_id) + '/')
+	def register(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/login/' + course_id)
+		code=request.GET.get('code',None)
+		course = Course.objects.get(id=course_id)
+		message = Course.objects.reg_user(user=request.user, course=course, code=code)
+		request.session['notifications']=message
+		return redirect('/course/' + str(course_id) + '/')
 
-    def exit(request, course_id):
-        if request.user.is_anonymous():
-            return redirect('/login/' + course_id+'/exit/')
-        course = Course.objects.get(id=course_id)
-        message = Course.objects.exit(user=request.user, course=course)
-        request.session['notifications']=message
-        return redirect('/course/' + str(course_id) + '/')
+	def exit(request, course_id):
+		if request.user.is_anonymous():
+			return redirect('/login/' + course_id+'/exit/')
+		course = Course.objects.get(id=course_id)
+		message = Course.objects.exit(user=request.user, course=course)
+		request.session['notifications']=message
+		return redirect('/course/' + str(course_id) + '/')
 
-    def accept_request(request):
-        if request.method == 'POST':
-            user_id = request.POST.get('user_id', None)
-            if not User.objects.filter(id=int(user_id)).exists():
-                return HttpResponse('Пользователь не существует')
-            user = User.objects.get(id=user_id)
-            course_id = request.POST.get('course_id', None)
-            message = Course.objects.accept_request(
-                user=user, course_id=course_id)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def accept_request(request):
+		if request.method == 'POST':
+			user_id = request.POST.get('user_id', None)
+			if not User.objects.filter(id=int(user_id)).exists():
+				return HttpResponse('Пользователь не существует')
+			user = User.objects.get(id=user_id)
+			course_id = request.POST.get('course_id', None)
+			message = Course.objects.accept_request(
+				user=user, course_id=course_id)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def decline_request(request):
-        if request.method == 'POST':
-            user_id = request.POST.get('user_id', None)
-            user = User.objects.get(id=int(user_id))
-            course_id = request.POST.get('course_id', None)
-            message = Course.objects.decline_request(
-                user=user, course_id=course_id)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def decline_request(request):
+		if request.method == 'POST':
+			user_id = request.POST.get('user_id', None)
+			user = User.objects.get(id=int(user_id))
+			course_id = request.POST.get('course_id', None)
+			message = Course.objects.decline_request(
+				user=user, course_id=course_id)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def accept_reset(request):
-        if request.method == 'POST':
-            course_id = request.POST.get("course_id", None)
-            test_id = request.POST.get("test_id", None)
-            user_id = request.POST.get("user_id", None)
-            message = Test.accept_reset(test_id=test_id,user_id=user_id,course_id=course_id)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def accept_reset(request):
+		if request.method == 'POST':
+			course_id = request.POST.get("course_id", None)
+			test_id = request.POST.get("test_id", None)
+			user_id = request.POST.get("user_id", None)
+			message = Test.accept_reset(test_id=test_id,user_id=user_id,course_id=course_id)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def decline_reset(request):
-        if request.method == 'POST':
-            course_id = request.POST.get("course_id", None)
-            test_id = request.POST.get("test_id", None)
-            user_id = request.POST.get("user_id", None)
-            message = Test.decline_reset(test_id=test_id,user_id=user_id,course_id=course_id)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def decline_reset(request):
+		if request.method == 'POST':
+			course_id = request.POST.get("course_id", None)
+			test_id = request.POST.get("test_id", None)
+			user_id = request.POST.get("user_id", None)
+			message = Test.decline_reset(test_id=test_id,user_id=user_id,course_id=course_id)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def create_assignment(request):
-        if request.method == 'POST':
-            course_id = request.POST.get('course_id', None)
-            test_list = request.POST.get('test_list', None)
-            material_list = request.POST.get('material_list', None)
-            traditionals_list = request.POST.get('traditionals_list', None)
-            group_list = request.POST.get('group_list', None)
-            due_date = request.POST.get('due_date', None)
-            message = Course.objects.create_assignment(course_id=course_id, test_list=test_list, group_list=group_list,
-                                                       material_list=material_list, traditionals_list=traditionals_list, due_date=due_date)
-            if message["type"]=="success":
-                request.session['notifications']=[message]
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def create_assignment(request):
+		if request.method == 'POST':
+			course_id = request.POST.get('course_id', None)
+			test_list = request.POST.get('test_list', None)
+			material_list = request.POST.get('material_list', None)
+			traditionals_list = request.POST.get('traditionals_list', None)
+			group_list = request.POST.get('group_list', None)
+			due_date = request.POST.get('due_date', None)
+			message = Course.objects.create_assignment(course_id=course_id, test_list=test_list, group_list=group_list,
+													   material_list=material_list, traditionals_list=traditionals_list, due_date=due_date)
+			if message["type"]=="success":
+				request.session['notifications']=[message]
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def edit_assignment(request):
-        if request.method == 'POST':
-            course_id = request.POST.get('course_id', None)
-            assignment_id = request.POST.get("assignment_id", None)
-            test_list = request.POST.get('test_list', None)
-            material_list = request.POST.get('material_list', None)
-            traditionals_list = request.POST.get('traditionals_list', None)
-            group_list = request.POST.get('group_list', None)
-            due_date = request.POST.get('due_date', None)
-            message = Course.objects.edit_assignment(course_id=course_id, assignment_id=assignment_id, test_list=test_list, group_list=group_list,
-                                                     material_list=material_list, traditionals_list=traditionals_list, due_date=due_date)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def edit_assignment(request):
+		if request.method == 'POST':
+			course_id = request.POST.get('course_id', None)
+			assignment_id = request.POST.get("assignment_id", None)
+			test_list = request.POST.get('test_list', None)
+			material_list = request.POST.get('material_list', None)
+			traditionals_list = request.POST.get('traditionals_list', None)
+			group_list = request.POST.get('group_list', None)
+			due_date = request.POST.get('due_date', None)
+			message = Course.objects.edit_assignment(course_id=course_id, assignment_id=assignment_id, test_list=test_list, group_list=group_list,
+													 material_list=material_list, traditionals_list=traditionals_list, due_date=due_date)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def delete_assignment(request):
-        if request.method == 'POST':
-            course_id = request.POST.get('course_id', None)
-            assignment_id = request.POST.get("assignment_id", None)
-            message = Course.objects.delete_assignment(
-                course_id=course_id, assignment_id=assignment_id)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def delete_assignment(request):
+		if request.method == 'POST':
+			course_id = request.POST.get('course_id', None)
+			assignment_id = request.POST.get("assignment_id", None)
+			message = Course.objects.delete_assignment(
+				course_id=course_id, assignment_id=assignment_id)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
 
 class Task_views():
 
-    def set_done(request):
-        if request.method == "POST":
-            assignment_id = str(int(request.POST.get("assignment_id", None)))
-            traditional_id = int(request.POST.get("traditional_id", None))
-            course_id = int(request.POST.get("course_id", None))
-            message = Course.objects.task_set_done(
-                assignment_id=assignment_id, traditional_id=traditional_id, course_id=course_id, user=request.user)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def set_done(request):
+		if request.method == "POST":
+			assignment_id = str(int(request.POST.get("assignment_id", None)))
+			traditional_id = int(request.POST.get("traditional_id", None))
+			course_id = int(request.POST.get("course_id", None))
+			message = Course.objects.task_set_done(
+				assignment_id=assignment_id, traditional_id=traditional_id, course_id=course_id, user=request.user)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def set_undone(request):
-        if request.method == "POST":
-            assignment_id = str(int(request.POST.get("assignment_id", None)))
-            traditional_id = int(request.POST.get("traditional_id", None))
-            course_id = int(request.POST.get("course_id", None))
-            message = Course.objects.task_set_undone(
-                assignment_id=assignment_id, traditional_id=traditional_id, course_id=course_id, user=request.user)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def set_undone(request):
+		if request.method == "POST":
+			assignment_id = str(int(request.POST.get("assignment_id", None)))
+			traditional_id = int(request.POST.get("traditional_id", None))
+			course_id = int(request.POST.get("course_id", None))
+			message = Course.objects.task_set_undone(
+				assignment_id=assignment_id, traditional_id=traditional_id, course_id=course_id, user=request.user)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
 
 def get_group_list(request, course_id=None):
-    if request.method:
-        course = Course.objects.get(id=course_id)
-        message = Course.objects.get_group_list(course=course)
-        return HttpResponse(json.dumps(message), content_type="application/json")
+	if request.method:
+		course = Course.objects.get(id=course_id)
+		message = Course.objects.get_group_list(course=course)
+		return HttpResponse(json.dumps(message), content_type="application/json")
 
 class Utility_views():
 
-    def upload_file(request):
-        if request.method == 'POST':
-            file = request.FILES.get("file", False)
-            path = request.POST.get("path", False)
-            extensions = request.POST.get("extensions", False)
-            filepath = Utility.upload_file(file=file, path=path, extensions=extensions)
-            return HttpResponse(filepath)
+	def upload_file(request):
+		if request.method == 'POST':
+			file = request.FILES.get("file", False)
+			path = request.POST.get("path", False)
+			extensions = request.POST.get("extensions", False)
+			filepath = Utility.upload_file(file=file, path=path, extensions=extensions)
+			return HttpResponse(filepath)
 
 
-    def upload_file_by_url(request):
-        if request.method == 'POST':
-            file_url = request.POST.get("file_url", False)
-            path = request.POST.get("path", False)
-            extensions = request.POST.get("extensions", False)
-            filepath = Utility.upload_file_by_url(url=file_url, path=path, extensions=extensions)
-            return HttpResponse(filepath)
+	def upload_file_by_url(request):
+		if request.method == 'POST':
+			file_url = request.POST.get("file_url", False)
+			path = request.POST.get("path", False)
+			extensions = request.POST.get("extensions", False)
+			filepath = Utility.upload_file_by_url(url=file_url, path=path, extensions=extensions)
+			return HttpResponse(filepath)
 
 
-    def delete_file(request):
-        if request.method == 'POST':
-            path = request.POST.get("path", None)
-            status = Utility.delete_file(path=path)
-            return HttpResponse(status)
+	def delete_file(request):
+		if request.method == 'POST':
+			path = request.POST.get("path", None)
+			status = Utility.delete_file(path=path)
+			return HttpResponse(status)
 
-    def delete_notification(request):
-        if request.method == 'POST':
-            del request.session['notifications']
-            return HttpResponse('ok')
+	def delete_notification(request):
+		if request.method == 'POST':
+			del request.session['notifications']
+			return HttpResponse('ok')
 
-    def delete_last_page(request):
-        if request.method == 'POST':    
-            del request.session['last_page']
-            return HttpResponse('ok')
+	def delete_last_page(request):
+		if request.method == 'POST':    
+			del request.session['last_page']
+			return HttpResponse('ok')
 
 class Universal_views():
 
-    def share(request):
-        if request.method == 'POST':
-            print(request.POST)
-            course_id = request.POST.get("course_id", None)
-            subject_tags = request.POST.get("subject_tags", False)
-            global_tags = request.POST.get("global_tags", False)
-            if global_tags:
-                global_tags=json.loads(global_tags)
-            if subject_tags:
-                subject_tags=json.loads(subject_tags)
-            description=request.POST.get('description',False)
-            test_id = request.POST.get("test_id", False)
-            material_id = request.POST.get("material_id", False)
-            shared_query = request.POST.get("shared_query", False)
-            shared_id= request.POST.get("shared_id", False)
-            templates= request.POST.get("templates", False)
-            open= request.POST.get("open", False)
-            if open=="true":
-                open=True
-            else: open=False
-            if templates:
-                templates=json.loads(templates)
-            if shared_id:
-                refresh=True
-            else: refresh=False
-            if shared_query:
-                shared_query=json.loads(shared_query)
-            if test_id:
-                type="test"
-                item_id=test_id
-            elif material_id:
-                type="material"
-                item_id=material_id
-            message = Sharing.share(course_id=course_id, item_id=item_id, type=type, open=open, subject_tags=subject_tags, global_tags=global_tags, description=description, shared_query=shared_query, refresh=refresh, shared_id=shared_id,templates=templates)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def share(request):
+		if request.method == 'POST':
+			print(request.POST)
+			course_id = request.POST.get("course_id", None)
+			subject_tags = request.POST.get("subject_tags", False)
+			global_tags = request.POST.get("global_tags", False)
+			if global_tags:
+				global_tags=json.loads(global_tags)
+			if subject_tags:
+				subject_tags=json.loads(subject_tags)
+			description=request.POST.get('description',False)
+			test_id = request.POST.get("test_id", False)
+			material_id = request.POST.get("material_id", False)
+			shared_query = request.POST.get("shared_query", False)
+			shared_id= request.POST.get("shared_id", False)
+			templates= request.POST.get("templates", False)
+			open= request.POST.get("open", False)
+			if open=="true":
+				open=True
+			else: open=False
+			if templates:
+				templates=json.loads(templates)
+			if shared_id:
+				refresh=True
+			else: refresh=False
+			if shared_query:
+				shared_query=json.loads(shared_query)
+			if test_id:
+				type="test"
+				item_id=test_id
+			elif material_id:
+				type="material"
+				item_id=material_id
+			message = Sharing.share(course_id=course_id, item_id=item_id, type=type, open=open, subject_tags=subject_tags, global_tags=global_tags, description=description, shared_query=shared_query, refresh=refresh, shared_id=shared_id,templates=templates)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def unshare(request):
-        if request.method == 'POST':
-            shared_id = request.POST.get("shared_id", None)
-            message = Sharing.unshare(course_id=course_id, item_id=item_id, type=type)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def unshare(request):
+		if request.method == 'POST':
+			shared_id = request.POST.get("shared_id", None)
+			message = Sharing.unshare(course_id=course_id, item_id=item_id, type=type)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def accept_sharing(request):
-        if request.method == 'POST':
-            course_id = request.POST.get("course_id", None)
-            inheritor_course_id = request.POST.get("course_inheritor_id", None)
-            shared_id = request.POST.get("shared_id", None)
-            inheritor_id = request.POST.get("user_id", None)
-            message = Sharing.accept_sharing(shared_id=shared_id,course_id=course_id,inheritor_id=inheritor_id,inheritor_course_id=inheritor_course_id)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def accept_sharing(request):
+		if request.method == 'POST':
+			course_id = request.POST.get("course_id", None)
+			inheritor_course_id = request.POST.get("course_inheritor_id", None)
+			shared_id = request.POST.get("shared_id", None)
+			inheritor_id = request.POST.get("user_id", None)
+			message = Sharing.accept_sharing(shared_id=shared_id,course_id=course_id,inheritor_id=inheritor_id,inheritor_course_id=inheritor_course_id)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def decline_sharing(request):
-        if request.method == 'POST':
-            course_id = request.POST.get("course_id", None)
-            inheritor_course_id = request.POST.get("course_inheritor_id", None)
-            shared_id = request.POST.get("shared_id", None)
-            inheritor_id = request.POST.get("user_id", None)
-            message = Sharing.decline_sharing(shared_id=shared_id,course_id=course_id,inheritor_id=inheritor_id,inheritor_course_id=inheritor_course_id)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def decline_sharing(request):
+		if request.method == 'POST':
+			course_id = request.POST.get("course_id", None)
+			inheritor_course_id = request.POST.get("course_inheritor_id", None)
+			shared_id = request.POST.get("shared_id", None)
+			inheritor_id = request.POST.get("user_id", None)
+			message = Sharing.decline_sharing(shared_id=shared_id,course_id=course_id,inheritor_id=inheritor_id,inheritor_course_id=inheritor_course_id)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def delete_info(request):
-        if request.method == 'POST':
-            index = request.POST.get("index", None)
-            course_id = request.POST.get("course_id", None)
-            message = Course.objects.delete_info(course_id=course_id,index=index)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def delete_info(request):
+		if request.method == 'POST':
+			index = request.POST.get("index", None)
+			course_id = request.POST.get("course_id", None)
+			message = Course.objects.delete_info(course_id=course_id,index=index)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def take_shared(request):
-        if request.method == 'POST':
-            shared_id = request.POST.get("shared_id", None)
-            course_id=request.POST.get("course_id",None)
-            user_id=str(request.user.id)
-            type=request.POST.get("type",None)
-            inheritor_id=request.POST.get("inheritor_id",False)
-            message = Sharing.take_shared(course_id=course_id, shared_id=shared_id, user_id=user_id, type=type, inheritor_id=inheritor_id)
-            return HttpResponse(json.dumps(message), content_type="application/json")
+	def take_shared(request):
+		if request.method == 'POST':
+			shared_id = request.POST.get("shared_id", None)
+			course_id=request.POST.get("course_id",None)
+			user_id=str(request.user.id)
+			type=request.POST.get("type",None)
+			inheritor_id=request.POST.get("inheritor_id",False)
+			message = Sharing.take_shared(course_id=course_id, shared_id=shared_id, user_id=user_id, type=type, inheritor_id=inheritor_id)
+			return HttpResponse(json.dumps(message), content_type="application/json")
 
-    def load_tags(request):
-        if request.method == 'POST':
-            starting_point=request.POST.get('starting_point',0)
-            number=request.POST.get('number',10)
-            type=request.POST.get('type',False)
-            return HttpResponse(json.dumps(Sharing.load_tags(starting_point=starting_point,number=number, type=type)), content_type="application/json")
+	def load_tags(request):
+		if request.method == 'POST':
+			starting_point=request.POST.get('starting_point',0)
+			number=request.POST.get('number',10)
+			type=request.POST.get('type',False)
+			return HttpResponse(json.dumps(Sharing.load_tags(starting_point=starting_point,number=number, type=type)), content_type="application/json")
 
-    def get_shared(request):
-        if request.method == 'POST':
-            shared_id=request.POST.get('shared_id',False)
-            course_id=request.POST.get('course_id',False)
-            return HttpResponse(json.dumps(Sharing.get_shared(shared_id=shared_id,user_id=str(request.user.id),course_id=course_id)), content_type="application/json")
-            
-    def search(request):
-        if request.method == "POST":
-            print(request.POST)
-            search_query=request.POST.get("search_query","")
-            if "search_types" in request.POST.keys():
-                search_types=json.loads(request.POST["search_types"])
-            else: search_types=None
-            cards=Search.complex(search_query=search_query,search_types=search_types,user=request.user)
-            return HttpResponse(json.dumps(cards), content_type="application/json")
+	def get_shared(request):
+		if request.method == 'POST':
+			shared_id=request.POST.get('shared_id',False)
+			course_id=request.POST.get('course_id',False)
+			return HttpResponse(json.dumps(Sharing.get_shared(shared_id=shared_id,user_id=str(request.user.id),course_id=course_id)), content_type="application/json")
+			
+	def search(request):
+		if request.method == "POST":
+			print(request.POST)
+			search_query=request.POST.get("search_query","")
+			if "search_types" in request.POST.keys():
+				search_types=json.loads(request.POST["search_types"])
+			else: search_types=None
+			cards=Search.complex(search_query=search_query,search_types=search_types,user=request.user)
+			return HttpResponse(json.dumps(cards), content_type="application/json")
 

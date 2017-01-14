@@ -217,6 +217,8 @@ class Course_group():
 		context["unpublished"] = Course.objects.get_sections(
 			course_id=str(course.id))["unpublished"]
 		context["course"]=course
+		context["breadcrumbs"] = [
+			{"href": "/course/" + str(course.id), "link": course.name}, {"href": "#", "link": "Нераспределенные"}]
 		return render(request, 'Pages/Course/unpublished/exports.html', context)
 
 	def results(request, course_id):
