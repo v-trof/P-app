@@ -1,4 +1,27 @@
 $('#register').click(function() {
+  var $name_last_name = $("input[name$='name_last_name']");
+  var $pass = $( "input[name$='password']" );
+  var $email = $( "input[name$='email']" );
+  var data_ok = true;
+
+  if( ! verifier.verify($pass, verifier.expressions.password)) {
+    data_ok = false;
+    notification.show('warning', 'Проверьте формат пароля');
+  }
+
+  if( ! verifier.verify($email, verifier.expressions.email)) {
+    data_ok = false;
+    notification.show('warning', 'Проверьте формат email');
+  }
+
+  if( ! verifier.verify($name_last_name, verifier.expressions.words2)) {
+    data_ok = false;
+    notification.show('warning', 'Проверьте формат имени');
+  }
+
+  if( ! data_ok) return;
+
+
     $.ajax({
       type:"POST",
       url:"/func/reg/",
