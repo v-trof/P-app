@@ -64,6 +64,8 @@ $(document).ready(function() {
 
   function decoreate_with_share($card, data) {
     var $changable = $card.find('.__content .m--grey');
+    console.log(data);
+
     if(data.templates_number) {
       $changable.before('<div><b>' + data.templates_number + '</b> '
         + Search._.build.num_form(data.templates_number,
@@ -94,7 +96,11 @@ $(document).ready(function() {
 
     var unbinded = $.extend({}, data);
     $card.click(function() {
-      share.display.show(unbinded, $card);
+      if(data.creator === parseInt(loads['user.id'])) {
+        share.edit.show(unbinded);
+      } else {
+        share.display.show(unbinded, $card);
+      }
     });
     setTimeout(function() {
       $card.parent().removeAttr('href');

@@ -6,7 +6,6 @@
     $share_btn.click(function() {
       var data = share.edit.parse($new_edit);
 
-      console.log(data);
       if(data) {
         test_manager.save(function() {
           share.ajax.share(data);
@@ -17,12 +16,21 @@
     return $actions;
   }
 
-  function make_edit_actions($new_edit) {
-    var $actions = $('<div class="row></div>');
-    $actions.append('<button>Сохранить изменения</button>');
-    $actions.append('<button class="m--ghost">Добавить как новое</button>');
-    $actions.append(
-      '<button class="m--ghost" class="m--negative"> Удалить </button>');
+  function make_edit_actions($new_edit, old_data) {
+    var $save = $('<button>Сохранить изменения</button>');
+    var $save_as = $('<button class="m--ghost">Добавить как новое</button>');
+    var $unshare = $(
+              '<button class="m--ghost m--negative">Удалить</button>');
+    var $actions = $('<div class="row"></div>');
+    $actions.append($save);
+    $actions.append($save_as);
+    $actions.append($unshare);
+
+    $save.click(function()    {share.edit.funcs.save($new_edit, old_data);});
+    $save_as.click(function() {share.edit.funcs.save_as($new_edit);});
+    $unshare.click(function() {share.edit.funcs.unshare(old_data.shared_id);});
+
+    console.log('MADE:', $actions);
     return $actions;
   }
 
@@ -54,6 +62,8 @@
       $core.find('label').html('Материал');
       $core.addClass('share_material');
     }
+    $core.find('input')[0].checked = (share_data.type === 'test' ||
+                                      share_data.type === 'material');
     $specification.append($core);
 
     if(editor.test_data.templates || share_data.assets.template) {
@@ -61,6 +71,7 @@
       $templates.addClass('share_templates');
       $templates.find('label').text('Шаблоны');
       $specification.append($templates);
+      $templates.find('input')[0].checked = share_data.templates_number;
     }
 
     return $specification;
@@ -71,6 +82,7 @@
                       'Elements/Modules/Test/share/__popup_texts/__edit/'));
 
     var $desc = $new_edit.find('.__text.__value');
+    var $actions = $new_edit.find('.__actions');
     $desc.html(share_data.description);
 
     check_if_filled($desc);
@@ -79,17 +91,20 @@
     $new_edit.find('.__specification').html(make_specification(share_data));
 
     $new_edit.find('.__tags>.__overall').append(render.inputs.text(
-      'Через запятую, не более 4', 'overall-tags',  share_data.tags.main.join(', ')
+      'Через запятую, не более 4',
+      'overall-tags',  share_data.global_tags.join(', ')
     ));
 
     $new_edit.find('.__tags>.__subject').append(render.inputs.text(
-      'Через запятую, не более 4', 'subject-tags', share_data.tags.subject.join(', ')
+      'Через запятую, не более 4',
+      'subject-tags', share_data.subject_tags.join(', ')
     ));
 
-    if(share_data.share_id) {
-      $new_edit.find('.__actions').append(make_edit_actions($new_edit));
+    if(share_data.id) {
+      $actions.append(make_edit_actions($new_edit, share_data));
+      $actions.append(share.display.make_actions(share_data));
     } else {
-      $new_edit.find('.__actions').append(make_create_actions($new_edit));
+      $actions.append(make_create_actions($new_edit));
     }
 
     if( ! share_data.open ) {

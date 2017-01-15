@@ -10,6 +10,12 @@ share.display.show = function(data, $item) {
     '<p> Предмет: ' + data.subject + '</p>'
     + data.description);
 
+  $popup.find('.__actions').append(share.display.make_actions(data));
+  popup.show($popup, function() {}, {'width': '60rem'});
+}
+
+share.display.funcs = {}
+share.display.make_actions = function(data) {
   var $actions = $('<div class="row"></div>');
 
   if( ! data.open) {
@@ -40,11 +46,9 @@ share.display.show = function(data, $item) {
     }
   }
 
-  $popup.find('.__actions').append($actions);
-  popup.show($popup, function() {}, {'width': '60rem'});
+  return $actions;
 }
 
-share.display.funcs = {}
 share.display.funcs.import = function(data) {
   $.ajax({
       url: '/func/get_shared/',
