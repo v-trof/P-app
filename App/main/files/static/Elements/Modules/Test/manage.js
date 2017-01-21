@@ -104,7 +104,8 @@ test_manager.fix_test_strict = function(test) {
     }
 
     elements.forEach(function(element) {
-      if(element.type === 'answer' && ! ( ! element.never_check
+      console.log(element);
+      if(element.type === 'answer' && ! (element.never_check
         || element.answer)) {
       if(element.answers.length == 0) {
         test_manager.drop('publish');
