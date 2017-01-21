@@ -24,12 +24,12 @@ test_manager.fix_test_strict = function(test) {
     }
 
     elements.forEach(function(element) {
-      if(element.type === 'answer' &&
-         ! (! element.never_check || element.answer
-            || element.answers.length > 0)) {
+      if(element.type === 'answer' && ! ( ! element.never_check
+        || element.answer)) {
+      if(element.answers.length == 0) {
         test_manager.drop('publish');
         fixable = false;
-      }
+      }}
     });
 
     if(task.group) {
