@@ -3116,12 +3116,14 @@ class Test():
 			attempt_data = json.load(json_file)
 			question_id=0
 			for question in attempt_data:
-				if "hidden" in question.keys() or not "answer" in question.keys():
+				print(question)
+				overall_score += question["worth"]
+				if "hidden" in question.keys() or not "answer" in question.keys() or "never_check" in question.keys() or question["answer"]==None:
+					question["user_score"] = 0
 					unknown += 1
 					test_results["unknown"].append(question_id)
 					question["result"] = "unknown"
 				else:
-					overall_score += question["worth"]
 					if question["user_answer"] == False:
 						question["time"] = "-"
 						missed += 1
@@ -3159,7 +3161,10 @@ class Test():
 		test_results["score"]=score
 		test_results["overall_score"]=overall_score
 		test_results["right_answers"] = right + forgiving
-		test_results["questions_overall"] = right + mistakes + missed + forgiving
+		test_results["questions_overall"] = right + mistakes + missed + forgiving + unknown
+		if unknown>0:
+			test_results["score"]="?"
+			test_results["right_answers"]="?"
 		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
 			saving_data = json.dumps(test_results, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -3216,6 +3221,8 @@ class Test():
 			test_results["forgiving"].remove(answer_id)
 		elif answer_id in test_results["missed"]:
 			test_results["missed"].remove(answer_id)
+		elif answer_id in test_results["unknown"]:
+			test_results["unknown"].remove(answer_id)
 		else:
 			test_results["mistakes"].remove(answer_id)
 		attempt_data[answer_id]["user_score"]=int(score)
