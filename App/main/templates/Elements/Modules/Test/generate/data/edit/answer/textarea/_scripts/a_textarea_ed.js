@@ -16,8 +16,6 @@ generate.register.edit('answer', 'textarea', {
     }
 
     value.label = $edit.find('[name="label"]').val();
-    value.answer = '';
-
     return value;
   }
 });

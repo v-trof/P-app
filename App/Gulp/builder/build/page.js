@@ -94,6 +94,9 @@ function add_scripts(exports_file, page_info) {
   var page_html = '<script> \n';
   for(let dir of page_info.dependencies.scripts.page) {
     dir = path.normalize(dir);
+    if( ! dir.endsWith('.js')) {
+      dir += '.js';
+    }
     dir = dir.replace(path.normalize(config.path.main), '');
     dir = dir.split(path.sep).join('/');
     page_html += '{% include "' + dir + '" %} \n';

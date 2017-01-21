@@ -1,5 +1,6 @@
 var False = false;
 var True = true;
+var None = false;
 
 var django = {
   course: {

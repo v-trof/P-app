@@ -1,5 +1,6 @@
 var False = false;
 var True = true;
+var None = false;
 
 var django = {
   course: {
@@ -19,6 +20,7 @@ var django = {
   django.loaded = {{test.json|safe}};
 {% endif %}
 
+console.log("{{attempt|safe}}");
 django.attempt = {{attempt|safe}};
 console.log(django.loaded)
 $(document).ready(function() {

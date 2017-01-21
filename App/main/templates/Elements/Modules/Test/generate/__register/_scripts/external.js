@@ -29,23 +29,28 @@ generate.register.external = function(type, subtype, external_data) {
     var $score = $new_answer.find('.__score');
 
     $new_answer.find('.__user>.__answer').html(answers.user);
-    $new_answer.find('.__right>.__answer').html(answers.right);
 
     $score.find('.__current').html(user_score);
     $score.find('.__max').html(worth);
 
+
     summary.set_icon(result, $new_answer.find('.__data>.__icon'));
 
-    setTimeout(function() {
-      accordion.add($new_answer.find('.__right'), 'h3');
-      var $accordion_toggle = $new_answer.find('.m--accordion-toggle');
-      $accordion_toggle.css({
-        "left": $accordion_toggle[0].offsetLeft,
-        "right": "auto"
-      });
+    if(data.element.never_check) {
+      $new_answer.find('.__right').remove();
+    } else {
+      $new_answer.find('.__right>.__answer').html(answers.right);
+      setTimeout(function() {
+        accordion.add($new_answer.find('.__right'), 'h3');
+        var $accordion_toggle = $new_answer.find('.m--accordion-toggle');
+        $accordion_toggle.css({
+          "left": $accordion_toggle[0].offsetLeft,
+          "right": "auto"
+        });
 
-      $accordion_toggle.click();
-    }, 100);
+        $accordion_toggle.click();
+      }, 100);
+    }
 
     return $new_answer;
   }

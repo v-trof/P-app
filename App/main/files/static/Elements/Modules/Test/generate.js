@@ -38,6 +38,21 @@ generate.register = {
   }
 }
 
+/**
+ * Returns general blueprints of this subtype (data[type][subtype])
+ * @method get_blueprints
+ * @param  {$} element element to parse
+ * @return {Object} blueprints
+ */
+generate.get_blueprints = function(element) {
+  //to jq
+  var $element = $(element);
+  var type = $element.attr('type');
+  var subtype = $element.attr('subtype');
+
+  return generate.data[type][subtype];
+}
+
 generate.register.edit = function(type, subtype, edit_data) {
   if (!(type && subtype)) return false;
 
@@ -78,6 +93,10 @@ generate.register.edit = function(type, subtype, edit_data) {
 
     if(data.edit.random_possible) {
       value.random = $edit.find('[name="random"]')[0].checked;
+    }
+
+    if(data.element.never_check) {
+      value.never_check = true;
     }
 
     value.type = type;
@@ -160,23 +179,28 @@ generate.register.external = function(type, subtype, external_data) {
     var $score = $new_answer.find('.__score');
 
     $new_answer.find('.__user>.__answer').html(answers.user);
-    $new_answer.find('.__right>.__answer').html(answers.right);
 
     $score.find('.__current').html(user_score);
     $score.find('.__max').html(worth);
 
+
     summary.set_icon(result, $new_answer.find('.__data>.__icon'));
 
-    setTimeout(function() {
-      accordion.add($new_answer.find('.__right'), 'h3');
-      var $accordion_toggle = $new_answer.find('.m--accordion-toggle');
-      $accordion_toggle.css({
-        "left": $accordion_toggle[0].offsetLeft,
-        "right": "auto"
-      });
+    if(data.element.never_check) {
+      $new_answer.find('.__right').remove();
+    } else {
+      $new_answer.find('.__right>.__answer').html(answers.right);
+      setTimeout(function() {
+        accordion.add($new_answer.find('.__right'), 'h3');
+        var $accordion_toggle = $new_answer.find('.m--accordion-toggle');
+        $accordion_toggle.css({
+          "left": $accordion_toggle[0].offsetLeft,
+          "right": "auto"
+        });
 
-      $accordion_toggle.click();
-    }, 100);
+        $accordion_toggle.click();
+      }, 100);
+    }
 
     return $new_answer;
   }
@@ -193,21 +217,6 @@ generate.register.external = function(type, subtype, external_data) {
 generate.register.task = function(subtype, task_data) {
   var data = this.bind_data('task', subtype, 'element', task_data);
   data.build = task_data.builder;
-}
-
-/**
- * Returns general blueprints of this subtype (data[type][subtype])
- * @method get_blueprints
- * @param  {$} element element to parse
- * @return {Object} blueprints
- */
-generate.get_blueprints = function(element) {
-  //to jq
-  var $element = $(element);
-  var type = $element.attr('type');
-  var subtype = $element.attr('subtype');
-
-  return generate.data[type][subtype];
 }
 
 /**
@@ -1065,8 +1074,6 @@ generate.register.edit('answer', 'textarea', {
     }
 
     value.label = $edit.find('[name="label"]').val();
-    value.answer = '';
-
     return value;
   }
 });
@@ -1186,104 +1193,6 @@ generate.register.edit('question', 'text', {
   }
 });
 
-generate.register.element('question', 'image', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $image = $(document.createElement('img'));
-
-    $image.attr("src", value.url || value.href);
-    $image.css('max-width', '100%');
-    $new_element.css({
-      'display': 'flex',
-      'align-items': 'center',
-      'justify-content': 'center'
-    });
-
-    $new_element.append($image);
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      url: "/media/samples/image.jpg"
-    }
-  }
-});
-
-generate.register.element('question', 'file', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $file_template = $(loads.get("Elements/card/file/exports.html"));
-
-    $file_template.attr("href", value.url);
-    $file_template.find(".__name").text(value.name);
-    $file_template.find(".__size").text(value.size);
-
-    $new_element.append($file_template);
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      name: "Файл для скачивания",
-      size: "3.21МБ",
-      pos: undefined,
-      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
-    }
-  }
-});
-
-generate.register.element('question', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.html('<div class="__value">' + value.text + '</div>');
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      text: 'Текстовый вопрос'
-    }
-  }
-});
-
-generate.register.element('answer', 'checkbox', {
-  show_in_items: true,
-
-  builder: function(value) {
-
-    value.answer = value.answer || [];
-
-    var $new_element = this.make_template(value);
-    value.items.forEach(function(label, index) {
-      var $new_checkbox = $(loads.get('Elements/Inputs/checkbox/'));
-      $new_checkbox.find('label').text(label);
-
-      if(value.answer.has(index)) {
-        $new_checkbox.find('input')[0].checked = true;
-      }
-
-      $new_element.append($new_checkbox);
-    });
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
-      answer: [1],
-      worth: 1
-    }
-  }
-});
-
 generate.register.element('answer', 'classify', {
   show_in_items: true,
 
@@ -1393,6 +1302,37 @@ generate.register.element('answer', 'classify', {
   }
 });
 
+generate.register.element('answer', 'checkbox', {
+  show_in_items: true,
+
+  builder: function(value) {
+
+    value.answer = value.answer || [];
+
+    var $new_element = this.make_template(value);
+    value.items.forEach(function(label, index) {
+      var $new_checkbox = $(loads.get('Elements/Inputs/checkbox/'));
+      $new_checkbox.find('label').text(label);
+
+      if(value.answer.has(index)) {
+        $new_checkbox.find('input')[0].checked = true;
+      }
+
+      $new_element.append($new_checkbox);
+    });
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
+      answer: [1],
+      worth: 1
+    }
+  }
+});
+
 generate.register.element('answer', 'radio', {
   show_in_items: true,
 
@@ -1425,30 +1365,6 @@ generate.register.element('answer', 'radio', {
   }
 });
 
-generate.register.element('answer', 'textarea', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.append(render.inputs.textarea(
-      value.label,
-      '',
-      value.answer,
-      true
-    ));
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      label: 'Развернутый ответ',
-      answer: '',
-      worth: 1
-    }
-  }
-})
-
 generate.register.element('answer', 'text', {
   show_in_items: true,
 
@@ -1471,6 +1387,97 @@ generate.register.element('answer', 'text', {
     }
   }
 })
+
+generate.register.element('answer', 'textarea', {
+  show_in_items: true,
+  never_check: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.append(render.inputs.textarea(
+      value.label,
+      '',
+      value.answer,
+      true
+    ));
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      label: 'Развернутый ответ',
+      worth: 1
+    }
+  }
+})
+
+generate.register.element('question', 'file', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $file_template = $(loads.get("Elements/card/file/exports.html"));
+
+    $file_template.attr("href", value.url);
+    $file_template.find(".__name").text(value.name);
+    $file_template.find(".__size").text(value.size);
+
+    $new_element.append($file_template);
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      name: "Файл для скачивания",
+      size: "3.21МБ",
+      pos: undefined,
+      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
+    }
+  }
+});
+
+generate.register.element('question', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.html('<div class="__value">' + value.text + '</div>');
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      text: 'Текстовый вопрос'
+    }
+  }
+});
+
+generate.register.element('question', 'image', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $image = $(document.createElement('img'));
+
+    $image.attr("src", value.url || value.href);
+    $image.css('max-width', '100%');
+    $new_element.css({
+      'display': 'flex',
+      'align-items': 'center',
+      'justify-content': 'center'
+    });
+
+    $new_element.append($image);
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      url: "/media/samples/image.jpg"
+    }
+  }
+});
 
 generate.register.external('answer', 'checkbox', {
   get_value: function($element) {
@@ -1696,54 +1703,6 @@ generate.register.external('answer', 'radio', {
   }
 });
 
-generate.register.external('answer', 'text', {
-  get_value: function($element) {
-    return $element.find('input').val();
-  },
-
-  get_summary: function(value) {
-    if( ! value) value = "";
-
-    if(value.length > 20) {
-      value = value.substring(0, 17).escape();
-      value += "&hellip;"
-    } else {
-      value = value.escape();
-    }
-
-    return value;
-  },
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    var timer;
-    var typing_interval = 1000;
-
-    $element.keydown(function() {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        _change();
-      }, typing_interval);
-    });
-  }
-});
-
 generate.register.external('answer', 'textarea', {
   get_value: function($element) {
     return $element.find('.__value').html();
@@ -1772,6 +1731,54 @@ generate.register.external('answer', 'textarea', {
       element_data.answer = answer;
       var $element = self.element.build(element_data);
       $element.find('.__value').removeAttr('contenteditable');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    var timer;
+    var typing_interval = 1000;
+
+    $element.keydown(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        _change();
+      }, typing_interval);
+    });
+  }
+});
+
+generate.register.external('answer', 'text', {
+  get_value: function($element) {
+    return $element.find('input').val();
+  },
+
+  get_summary: function(value) {
+    if( ! value) value = "";
+
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
+    } else {
+      value = value.escape();
+    }
+
+    return value;
+  },
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
 
       return $element;
     }

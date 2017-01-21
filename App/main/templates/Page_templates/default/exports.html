@@ -17,9 +17,13 @@
 	<script src="/static/scripts/jquery.js"></script>
   <script src="https://cdn.ravenjs.com/3.9.1/raven.min.js"></script>
   <script>
-    Raven
+    try {
+      Raven
       .config('https://6101c6a086ff48d1b1a5ccedc184acb7@sentry.io/127499')
       .install();
+    } catch(err) {
+      console.error('CATCHED RAVEN', err);
+    }
   </script>
 	{ ##*js }
 </body>

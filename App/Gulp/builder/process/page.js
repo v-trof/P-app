@@ -28,6 +28,7 @@ function process_page(dir) {
 
   //init
   var initial_dependencies = get_dependencies(dir);
+  var initial_loads = get_loads(dir);
   var tempalte = process_item(config.path.template +
                               initial_dependencies.template, 'template');
   var collected = collect_blocks(dir);
@@ -38,6 +39,8 @@ function process_page(dir) {
   merge_dependencies(page_info.dependencies, initial_dependencies);
   merge_dependencies(page_info.dependencies, tempalte.dependencies);
   merge_dependencies(page_info.dependencies, collected.dependencies);
+
+  merge_loads(page_info.loads, initial_loads);
   merge_loads(page_info.loads, collected.loads);
 
   //recursively scan & merge

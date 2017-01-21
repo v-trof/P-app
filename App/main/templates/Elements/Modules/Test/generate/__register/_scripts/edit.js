@@ -40,6 +40,10 @@ generate.register.edit = function(type, subtype, edit_data) {
       value.random = $edit.find('[name="random"]')[0].checked;
     }
 
+    if(data.element.never_check) {
+      value.never_check = true;
+    }
+
     value.type = type;
     value.subtype = subtype;
 

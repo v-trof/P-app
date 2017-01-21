@@ -1,5 +1,6 @@
 generate.register.element('answer', 'textarea', {
   show_in_items: true,
+  never_check: true,
 
   builder: function(value) {
     var $new_element = this.make_template(value);
@@ -16,7 +17,6 @@ generate.register.element('answer', 'textarea', {
   sample: {
     value: {
       label: 'Развернутый ответ',
-      answer: '',
       worth: 1
     }
   }
