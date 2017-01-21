@@ -23,7 +23,12 @@ $(document).ready(function() {
        check_if_filled($input);
      }, 10);
   });
-  $("input").each(function(index, el) {
-     check_if_filled($(this))
-  });
+  function check_all() {
+    $("input").each(function(index, el) {
+       check_if_filled($(this))
+    });
+  }
+
+  check_all();
+  setTimeout(check_all, 500);
 });

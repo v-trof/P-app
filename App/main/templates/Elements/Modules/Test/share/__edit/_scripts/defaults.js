@@ -3,10 +3,9 @@ share.edit.get_defaults = function() {
     share_id: false,
     open: true,
     description: "",
-    tags: {
-      main: [],
-      subject: []
-    },
+    global_tags: [],
+    subject_tags: [],
+    tags: {},
     assets: {
       test: false,
       material: false,
