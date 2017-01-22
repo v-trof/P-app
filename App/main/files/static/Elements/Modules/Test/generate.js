@@ -246,23 +246,6 @@ generate.make_template = {
   }
 }
 
-generate.register.task('default', {
-  builder: function() {
-    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
-
-    console.log($task, $task[1]);
-    if(defined(generate.data.task.template)) {
-      $task.find('.__make-template').click(function() {
-        generate.data.task.template.to_tempalte($task);
-      });
-    } else {
-      $task.find('.__make_template').remove();
-    }
-
-    return $task;
-  }
-});
-
 $(document).ready(function() {
   generate.data.task.template.add_to_test = function(template, $edit) {
     template = JSON.parse(JSON.stringify(template));
@@ -793,6 +776,23 @@ $(document).ready(function() {
     }
 
     return obj;
+  }
+});
+
+generate.register.task('default', {
+  builder: function() {
+    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
+
+    console.log($task, $task[1]);
+    if(defined(generate.data.task.template)) {
+      $task.find('.__make-template').click(function() {
+        generate.data.task.template.to_tempalte($task);
+      });
+    } else {
+      $task.find('.__make_template').remove();
+    }
+
+    return $task;
   }
 });
 
@@ -1412,31 +1412,6 @@ generate.register.element('answer', 'textarea', {
   }
 })
 
-generate.register.element('question', 'file', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $file_template = $(loads.get("Elements/card/file/exports.html"));
-
-    $file_template.attr("href", value.url);
-    $file_template.find(".__name").text(value.name);
-    $file_template.find(".__size").text(value.size);
-
-    $new_element.append($file_template);
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      name: "Файл для скачивания",
-      size: "3.21МБ",
-      pos: undefined,
-      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
-    }
-  }
-});
-
 generate.register.element('question', 'image', {
   show_in_items: true,
 
@@ -1459,6 +1434,31 @@ generate.register.element('question', 'image', {
   sample: {
     value: {
       url: "/media/samples/image.jpg"
+    }
+  }
+});
+
+generate.register.element('question', 'file', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $file_template = $(loads.get("Elements/card/file/exports.html"));
+
+    $file_template.attr("href", value.url);
+    $file_template.find(".__name").text(value.name);
+    $file_template.find(".__size").text(value.size);
+
+    $new_element.append($file_template);
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      name: "Файл для скачивания",
+      size: "3.21МБ",
+      pos: undefined,
+      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
     }
   }
 });

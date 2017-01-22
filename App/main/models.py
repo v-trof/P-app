@@ -3416,6 +3416,7 @@ class Sharing():
 	def share(course_id, item_id, type, open=True, subject=False, description=False, global_tags=False, subject_tags=False, shared_query=False, refresh=False, shared_id=False, templates=False):
 		if shared_id:
 			shared_id=str(shared_id)
+			refresh=True
 		with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 			shared_table = json.load(shared_file)
 		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
@@ -3520,7 +3521,7 @@ class Sharing():
 		else:
 			return {"type":"success","message":"Материал успешно помещен в библиотеку"}
 
-	def unshare(shared_id):
+	def unshare(shared_id, course_id):
 		shared_id=str(shared_id)
 		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
 			tag_map = json.load(tag_file)
@@ -3531,13 +3532,13 @@ class Sharing():
 		for tag in shared_table[shared_id]['global_tags']:
 			if tag in tag_map['numbers']['global'].keys():
 				tag_map['numbers']['global'][tag]-=1
-			if tag_map['numbers']['global'][tag] == 0:
+			if tag in tag_map['numbers']['global'].keys() and tag_map['numbers']['global'][tag] == 0:
 				del tag_map['numbers']['global'][tag]
 
 		for tag in shared_table[shared_id]['global_tags']:
 			if tag in tag_map['numbers']['subject'].keys():
 				tag_map['numbers']['subject'][tag]-=1
-			if tag_map['numbers']['subject'][tag] == 0:
+			if tag in tag_map['numbers']['subject'].keys() and tag_map['numbers']['subject'][tag] == 0:
 				del tag_map['numbers']['subject'][tag]
 		tag_map=Utility.count_tags(tag_map=tag_map)
 
@@ -3560,7 +3561,7 @@ class Sharing():
 			tag_file.write(saving_data)
 		with io.open('main/files/json/shared/shared_map.json', 'w', encoding='utf8') as shared_file:
 			saving_data = json.dumps(item_info, ensure_ascii=False)
-			shared_file_file.write(saving_data)
+			shared_file.write(saving_data)
 		if os.path.exists('main/files/json/shared/content/'+shared_id+'.json'):
 			os.remove('main/files/json/shared/content/'+shared_id+'.json')
 		if type == "test":
