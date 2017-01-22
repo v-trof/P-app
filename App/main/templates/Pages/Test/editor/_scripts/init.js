@@ -25,13 +25,12 @@ var django = {
   material: {
     id: "{{material.id}}"
   },
-  {% if share_data %}
-    share_data: {{share_data|safe}},
+  {% if test.share_data %}
+    share_data: {{test.share_data|safe}},
   {% endif %}
   csrf_token: "{{ csrf_token }}",
   current_type: "{{type}}"
 }
-
 {% if test.json %}
   django.loaded = {{test.json|safe}};
 {% endif %}

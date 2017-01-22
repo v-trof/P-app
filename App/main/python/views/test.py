@@ -74,6 +74,7 @@ def load(request):
 	test = Test.load(course_id=course_id, test_id=test_id)
 	context = {}
 	context["test"] = test
+	print(test)
 	context["test"]["id"] = test_id
 	context["course"] = Course.objects.get(id=course_id)
 	context["breadcrumbs"] = [{

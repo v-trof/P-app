@@ -796,6 +796,71 @@ generate.register.task('default', {
   }
 });
 
+generate.register.edit('answer', 'radio', {
+  random_possible: true,
+  builder: function(value) {
+    var $new_edit = this.make_template();
+    var group = generate.counter.radio++;
+
+    var create_field = function(label) {
+      var $radio = $(loads.get('Elements/Inputs/radio/'));
+      var $input = render.inputs.text('', '', label);
+
+      var $field = $("<div class='__edit_item'></div>");
+
+      $radio.find('input').attr('name', "new_radio_" + group);
+
+      $field.append($radio).append($input);
+      button_delete.add($field);
+
+      return $field;
+    }
+
+    if(value.items && value.items.length) {
+      value.items.forEach(function(label, index) {
+        var $field = create_field(label);
+
+        $new_edit.append($field);
+        if(value.answer.has(index)) {
+          $field.find('[type="radio"]')[0].checked = true;
+        }
+      });
+    } else {
+      $new_edit.append(create_field());
+    }
+
+
+    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
+
+    $new_edit.append($add_option);
+
+    $add_option.click(function() {
+      $add_option.before(create_field());
+    });
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      items: [],
+      answer: []
+    }
+
+    $edit.find(".m--radio").each(function(index, el) {
+      var label = $(el).siblings().find(".__value").val();
+
+      value.items.push(label);
+
+      if($(el).find("input").is(":checked")) {
+        value.answer.push(index);
+      }
+    });
+
+    return value;
+  }
+});
+
 generate.register.edit('answer', 'checkbox', {
   random_possible: true,
   builder: function(value) {
@@ -963,67 +1028,24 @@ generate.register.edit('answer', 'classify', {
   }
 });
 
-generate.register.edit('answer', 'radio', {
-  random_possible: true,
+generate.register.edit('answer', 'textarea', {
   builder: function(value) {
     var $new_edit = this.make_template();
-    var group = generate.counter.radio++;
 
-    var create_field = function(label) {
-      var $radio = $(loads.get('Elements/Inputs/radio/'));
-      var $input = render.inputs.text('', '', label);
-
-      var $field = $("<div class='__edit_item'></div>");
-
-      $radio.find('input').attr('name', "new_radio_" + group);
-
-      $field.append($radio).append($input);
-      button_delete.add($field);
-
-      return $field;
-    }
-
-    if(value.items && value.items.length) {
-      value.items.forEach(function(label, index) {
-        var $field = create_field(label);
-
-        $new_edit.append($field);
-        if(value.answer.has(index)) {
-          $field.find('[type="radio"]')[0].checked = true;
-        }
-      });
-    } else {
-      $new_edit.append(create_field());
-    }
-
-
-    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
-
-    $new_edit.append($add_option);
-
-    $add_option.click(function() {
-      $add_option.before(create_field());
-    });
+    //for label (tip)
+    var $label = render.inputs.text(
+      'Формат ответа / примечание', 'label', value.label);
+    $new_edit.prepend($label);
 
     return $new_edit;
   },
 
   parser: function($edit) {
     var value = {
-      items: [],
-      answer: []
+      label: '',
     }
 
-    $edit.find(".m--radio").each(function(index, el) {
-      var label = $(el).siblings().find(".__value").val();
-
-      value.items.push(label);
-
-      if($(el).find("input").is(":checked")) {
-        value.answer.push(index);
-      }
-    });
-
+    value.label = $edit.find('[name="label"]').val();
     return value;
   }
 });
@@ -1056,24 +1078,44 @@ generate.register.edit('answer', 'text', {
   }
 });
 
-generate.register.edit('answer', 'textarea', {
+generate.register.edit('question', 'image', {
   builder: function(value) {
     var $new_edit = this.make_template();
 
-    //for label (tip)
-    var $label = render.inputs.text(
-      'Формат ответа / примечание', 'label', value.label);
-    $new_edit.prepend($label);
+    var $file_input = $(loads.get("Elements/Inputs/file/"));
+
+    $new_edit.append($file_input);
+    var file_data = file_catcher.add($file_input);
+
+    if(defined(value.asset_id) || defined(value.url)) {
+      $file_input.find('.__text').text(value.file_name);
+      file_data.value.change(function() {
+        editor.assets.replace(value.asset_id, file_data);
+      });
+    }
+
+    if( ! defined(value.asset_id)) {
+      value.asset_id = editor.assets.add(file_data);
+    }
 
     return $new_edit;
   },
 
   parser: function($edit) {
-    var value = {
-      label: '',
+    var value = {};
+    value.asset_id = editor.active_element.value.asset_id;
+
+    var event = editor.assets.get(value.asset_id);
+
+    if(defined(event)) {
+      value.file_name = editor.assets.get(value.asset_id).name;
+      value.href = URL.createObjectURL(event.files[0]);
+      value.url = undefined;
+    } else {
+      value.href = value.url || editor.active_element.value.href;
+      value.file_name = editor.active_element.value.file_name;
     }
 
-    value.label = $edit.find('[name="label"]').val();
     return value;
   }
 });
@@ -1127,72 +1169,6 @@ generate.register.edit('question', 'file', {
   }
 });
 
-generate.register.edit('question', 'image', {
-  builder: function(value) {
-    var $new_edit = this.make_template();
-
-    var $file_input = $(loads.get("Elements/Inputs/file/"));
-
-    $new_edit.append($file_input);
-    var file_data = file_catcher.add($file_input);
-
-    if(defined(value.asset_id) || defined(value.url)) {
-      $file_input.find('.__text').text(value.file_name);
-      file_data.value.change(function() {
-        editor.assets.replace(value.asset_id, file_data);
-      });
-    }
-
-    if( ! defined(value.asset_id)) {
-      value.asset_id = editor.assets.add(file_data);
-    }
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    var value = {};
-    value.asset_id = editor.active_element.value.asset_id;
-
-    var event = editor.assets.get(value.asset_id);
-
-    if(defined(event)) {
-      value.file_name = editor.assets.get(value.asset_id).name;
-      value.href = URL.createObjectURL(event.files[0]);
-      value.url = undefined;
-    } else {
-      value.href = value.url || editor.active_element.value.href;
-      value.file_name = editor.active_element.value.file_name;
-    }
-
-    return value;
-  }
-});
-
-generate.register.edit('question', 'text', {
-  builder: function(value) {
-    var $new_edit = this.make_template();
-    $new_edit.prepend(loads.get("Elements/Inputs/text/textarea/"));
-
-    $new_edit.find('label').text('Текст');
-    $new_edit.find('.__value').html(value.text);
-
-    if(value.text) {
-      $new_edit.find('label').addClass('m--top');
-    }
-
-    inline_editor.start($new_edit.find('.__value')[0]);
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    return {
-      text: $edit.find('.__value').html()
-    }
-  }
-});
-
 generate.register.element('answer', 'checkbox', {
   show_in_items: true,
 
@@ -1220,6 +1196,30 @@ generate.register.element('answer', 'checkbox', {
       items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
       answer: [1],
       worth: 1
+    }
+  }
+});
+
+generate.register.edit('question', 'text', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+    $new_edit.prepend(loads.get("Elements/Inputs/text/textarea/"));
+
+    $new_edit.find('label').text('Текст');
+    $new_edit.find('.__value').html(value.text);
+
+    if(value.text) {
+      $new_edit.find('label').addClass('m--top');
+    }
+
+    inline_editor.start($new_edit.find('.__value')[0]);
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    return {
+      text: $edit.find('.__value').html()
     }
   }
 });
@@ -1365,6 +1365,31 @@ generate.register.element('answer', 'radio', {
   }
 });
 
+generate.register.element('question', 'file', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $file_template = $(loads.get("Elements/card/file/exports.html"));
+
+    $file_template.attr("href", value.url);
+    $file_template.find(".__name").text(value.name);
+    $file_template.find(".__size").text(value.size);
+
+    $new_element.append($file_template);
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      name: "Файл для скачивания",
+      size: "3.21МБ",
+      pos: undefined,
+      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
+    }
+  }
+});
+
 generate.register.element('answer', 'text', {
   show_in_items: true,
 
@@ -1438,31 +1463,6 @@ generate.register.element('question', 'image', {
   }
 });
 
-generate.register.element('question', 'file', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $file_template = $(loads.get("Elements/card/file/exports.html"));
-
-    $file_template.attr("href", value.url);
-    $file_template.find(".__name").text(value.name);
-    $file_template.find(".__size").text(value.size);
-
-    $new_element.append($file_template);
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      name: "Файл для скачивания",
-      size: "3.21МБ",
-      pos: undefined,
-      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
-    }
-  }
-});
-
 generate.register.element('question', 'text', {
   show_in_items: true,
 
@@ -1500,6 +1500,72 @@ generate.register.external('answer', 'checkbox', {
       if(option.length > 20) {
         option = option.substring(0, 17).escape();
         option = option + "&hellip;";
+        big = true;
+      } else {
+        option = option.escape();
+      }
+
+      answers.push(option);
+    })
+
+    if(big) {
+      answers = answers.join('<br>');
+    } else {
+      answers = answers.join(', ');
+    }
+
+    return answers;
+  },
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    if( ! Array.isArray(user_answer)) {
+      user_answer = [];
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('input').change(_change);
+  }
+});
+
+generate.register.external('answer', 'radio', {
+  get_value: function($element) {
+    var answers = [];
+    $element.find('.m--radio').each(function(index, el) {
+      if(el.querySelector('input').checked) {
+        answers.push(index);
+      }
+    });
+    return answers;
+  },
+
+  get_summary: function(value, element_data) {
+    var answers = [];
+    var big  = false;
+
+    value.forEach(function(pos) {
+      var option = element_data.items[pos];
+
+      if(option.length > 20) {
+        option = option.substring(0, 17).escape();
+        option = option +  "&hellip;";
         big = true;
       } else {
         option = option.escape();
@@ -1636,72 +1702,6 @@ generate.register.external('answer', 'classify', {
 
 
 //TODO fix attempt icon swap
-
-generate.register.external('answer', 'radio', {
-  get_value: function($element) {
-    var answers = [];
-    $element.find('.m--radio').each(function(index, el) {
-      if(el.querySelector('input').checked) {
-        answers.push(index);
-      }
-    });
-    return answers;
-  },
-
-  get_summary: function(value, element_data) {
-    var answers = [];
-    var big  = false;
-
-    value.forEach(function(pos) {
-      var option = element_data.items[pos];
-
-      if(option.length > 20) {
-        option = option.substring(0, 17).escape();
-        option = option +  "&hellip;";
-        big = true;
-      } else {
-        option = option.escape();
-      }
-
-      answers.push(option);
-    })
-
-    if(big) {
-      answers = answers.join('<br>');
-    } else {
-      answers = answers.join(', ');
-    }
-
-    return answers;
-  },
-
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    if( ! Array.isArray(user_answer)) {
-      user_answer = [];
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    $element.find('input').change(_change);
-  }
-});
 
 generate.register.external('answer', 'text', {
   get_value: function($element) {

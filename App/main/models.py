@@ -3432,6 +3432,11 @@ class Sharing():
 			else:
 				maximum = 0
 			shared_id=str(maximum+1)
+		full_public_file["shared"]=True
+		full_public_file["shared_id"]=shared_id
+		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/'+item_id+'.json', 'w+', encoding='utf8') as info_file:
+			saving_data = json.dumps(full_public_file, ensure_ascii=False)
+			info_file.write(saving_data)
 		shared_item={}
 		shared_item["course_id"]=course_id
 		shared_item["open"]=open
@@ -3517,9 +3522,9 @@ class Sharing():
 			saving_data = json.dumps(shared_table, ensure_ascii=False)
 			shared_file.write(saving_data)
 		if type == "test":
-			return {"type":"success","message":"Тест успешно помещен в библиотеку"}
+			return {"type":"success","message":"Тест успешно помещен в библиотеку","shared_id":shared_id}
 		else:
-			return {"type":"success","message":"Материал успешно помещен в библиотеку"}
+			return {"type":"success","message":"Материал успешно помещен в библиотеку","shared_id":shared_id}
 
 	def unshare(shared_id, course_id):
 		shared_id=str(shared_id)
@@ -3556,6 +3561,14 @@ class Sharing():
 		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/control/'+item_id+'.json', 'w', encoding='utf8') as info_file:
 			saving_data = json.dumps(item_info, ensure_ascii=False)
 			info_file.write(saving_data)
+
+		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/'+item_id+'.json', 'r', encoding='utf8') as info_file:
+			full_public_file = json.load(info_file)
+		full_public_file["shared"]=False
+		with io.open('main/files/json/courses/' + course_id + '/'+type+'s/public/'+item_id+'.json', 'w+', encoding='utf8') as info_file:
+			saving_data = json.dumps(full_public_file, ensure_ascii=False)
+			info_file.write(saving_data)
+
 		with io.open('main/files/json/shared/tag_map.json', 'w', encoding='utf8') as tag_file:
 			saving_data = json.dumps(tag_map, ensure_ascii=False)
 			tag_file.write(saving_data)
@@ -3937,7 +3950,7 @@ class Search():
 									subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
 									shared_info["shared_id"]=shared_id
 									name_conformity=Utility.compare(str1=search_query,str2=shared_info["title"])
-									if global_tags_conformity > 0 or subject_tags_conformity > 0 or name_conformity>10:
+									if global_tags_conformity > 0 or subject_tags_conformity > 0 or name_conformity>10 or search_query=="" and str(shared_info["creator"])==str(user.id):
 										cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity+subject_tags_conformity+global_tags_conformity})
 							except:
 								pass
