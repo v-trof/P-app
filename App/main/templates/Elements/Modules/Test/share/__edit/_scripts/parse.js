@@ -9,9 +9,11 @@ share.edit.parse = function($edit) {
 
   if(tags_overall) {
     share_data.tags.main = tags_overall.replace(', ', ',').split(',');
+    share_data.global_tags = share_data.tags.main;
   }
   if(tags_subject) {
     share_data.tags.subject = tags_subject.replace(', ', ',').split(',');
+    share_data.subject_tags = share_data.tags.subject;
   }
   share_data.description = $edit.find('.__text.__value').html();
   share_data.open = ! $edit.find('.__open')[0].checked;
@@ -21,11 +23,13 @@ share.edit.parse = function($edit) {
      $edit.find('.share_test input')[0].checked) {
       share_data.assets.test_id = django.test.id;
       share_data.assets.test = true;
+      share_data.type = 'test';
   }
 
   if($edit.find('.share_templates input')[0] &&
      $edit.find('.share_templates input')[0].checked) {
       share_data.assets.templates = true;
+      share_data.templates_number = true;
       if (django.material.id)
         share_data.assets.material_id = django.material.id;
       else  share_data.assets.test_id = django.test.id;
@@ -35,6 +39,7 @@ share.edit.parse = function($edit) {
      $edit.find('.share_material input')[0].checked) {
       share_data.assets.material_id = django.material.id;
       share_data.assets.material = true;
+      share_data.type = 'material';
   }
 
   if( ! share_data.assets.test

@@ -164,102 +164,6 @@ $(document).ready(function() {
 
 });
 
-share.ajax.get = function(share_data) {
-  var form_data = new FormData();
-  form_data.append('course_id',django.course.id);
-  if (django.test_id)
-  {
-  	form_data.append('type',"test");
-  	form_data.append('item_id',django.test_id);
-  }
-  else{
-  	form_data.append('type',"material");
-  	form_data.append('item_id',django.material_id);
-  }
-  form_data.append('shared_id',share_data.shared_id);
-  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
-  $.ajax({
-    type:"POST",
-    url:"/func/take_shared/",
-    data: form_data,
-    processData: false,
-      contentType: false,
-     success: function(response) {
-      if(response && response["type"]) {
-          notification.show(response["type"], response["message"]);
-      }
-    }
-});
-}
-share.ajax.share = function(share_data) {
-  console.log('SHOULD HAVE SHARED', share_data);
-  if( ! share_data) return;
-
-  var form_data = new FormData();
-  form_data.append('course_id',django.course.id);
-  form_data.append('description',share_data.description);
-  form_data.append('open',share_data.open);
-  form_data.append('subject_tags',JSON.stringify(share_data.tags.subject));
-  form_data.append('global_tags',JSON.stringify(share_data.tags.main));
-  var shared_query=[]
-  if (share_data.assets.material)
-  {
-  	shared_query.push('material');
-  	form_data.append('material_id',share_data.assets.material_id);
-  	if (share_data.assets.templates)
-  		shared_query.push('templates');
-  }
-  else if (share_data.assets.test)
-  {
-  	shared_query.push('test');
-  	form_data.append('test_id',share_data.assets.test_id);
-  	if (share_data.assets.templates)
-  		shared_query.push('templates');
-  }
-  else if (share_data.assets.templates){
-  	shared_query.push('templates');
-  	if (share_data.assets.test_id)
-  		form_data.append('test_id',share_data.assets.test_id);
-  	else form_data.append('material_id',share_data.assets.material_id);
-  }
-  form_data.append('shared_query',JSON.stringify(shared_query));
-  if (share_data.shared_id)
-  	form_data.append('shared_id',share_data.shared_id);
-  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
-  $.ajax({
-    type:"POST",
-    url:"/func/share/",
-    data: form_data,
-    processData: false,
-      contentType: false,
-     success: function(response) {
-      if(response && response["type"]) {
-          notification.show(response["type"], response["message"]);
-          popup.hide();
-      }
-    }
-});
-}
-
-share.ajax.unshare = function(share_data) {
-  var form_data = new FormData();
-  form_data.append('course_id',django.course.id);
-  form_data.append('shared_id',share_data.shared_id);
-  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
-  $.ajax({
-    type:"POST",
-    url:"/func/share/",
-    data: form_data,
-    processData: false,
-      contentType: false,
-     success: function(response) {
-      if(response && response["type"]) {
-          notification.show(response["type"], response["message"]);
-      }
-    }
-});
-}
-
 share.display.show = function(data, $item) {
   var $popup = $(loads.get("Elements/Modules/Test/share/__popup_texts/__info/"));
   $popup.find('.__item').append($item.clone());
@@ -429,9 +333,11 @@ share.edit.parse = function($edit) {
 
   if(tags_overall) {
     share_data.tags.main = tags_overall.replace(', ', ',').split(',');
+    share_data.global_tags = share_data.tags.main;
   }
   if(tags_subject) {
     share_data.tags.subject = tags_subject.replace(', ', ',').split(',');
+    share_data.subject_tags = share_data.tags.subject;
   }
   share_data.description = $edit.find('.__text.__value').html();
   share_data.open = ! $edit.find('.__open')[0].checked;
@@ -441,11 +347,13 @@ share.edit.parse = function($edit) {
      $edit.find('.share_test input')[0].checked) {
       share_data.assets.test_id = django.test.id;
       share_data.assets.test = true;
+      share_data.type = 'test';
   }
 
   if($edit.find('.share_templates input')[0] &&
      $edit.find('.share_templates input')[0].checked) {
       share_data.assets.templates = true;
+      share_data.templates_number = true;
       if (django.material.id)
         share_data.assets.material_id = django.material.id;
       else  share_data.assets.test_id = django.test.id;
@@ -455,6 +363,7 @@ share.edit.parse = function($edit) {
      $edit.find('.share_material input')[0].checked) {
       share_data.assets.material_id = django.material.id;
       share_data.assets.material = true;
+      share_data.type = 'material';
   }
 
   if( ! share_data.assets.test
@@ -488,7 +397,7 @@ share.edit.parse = function($edit) {
 
   function make_edit_actions($new_edit, old_data) {
     var $save = $('<button>Сохранить изменения</button>');
-    var $save_as = $('<button class="m--ghost">Добавить как новое</button>');
+    var $save_as = $('<button class="m--ghost">Сохранить отдельной версией</button>');
     var $unshare = $(
               '<button class="m--ghost m--negative">Удалить</button>');
     var $actions = $('<div class="row"></div>');
@@ -572,7 +481,10 @@ share.edit.parse = function($edit) {
 
     if(share_data.id) {
       $actions.append(make_edit_actions($new_edit, share_data));
-      $actions.append(share.display.make_actions(share_data));
+
+      if( ! share_data.is_django) {
+        $actions.append(share.display.make_actions(share_data));
+      }
     } else {
       $actions.append(make_create_actions($new_edit));
     }
@@ -585,7 +497,14 @@ share.edit.parse = function($edit) {
   }
 
   share.edit.show = function(share_data) {
-    if( ! share_data) share_data = share.edit.get_defaults();
+    if( ! share_data) {
+      if(django.share_data) {
+        share_data = django.share_data;
+          django.share_data.is_django = true;
+      } else {
+        share_data = share.edit.get_defaults();
+      }
+    };
 
     var $new_edit = make_edit(share_data);
 
@@ -593,3 +512,100 @@ share.edit.parse = function($edit) {
   }
 
 }() );
+
+share.ajax.get = function(share_data) {
+  var form_data = new FormData();
+  form_data.append('course_id',django.course.id);
+  if (django.test_id)
+  {
+  	form_data.append('type',"test");
+  	form_data.append('item_id',django.test_id);
+  }
+  else{
+  	form_data.append('type',"material");
+  	form_data.append('item_id',django.material_id);
+  }
+  form_data.append('shared_id',share_data.shared_id);
+  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
+  $.ajax({
+    type:"POST",
+    url:"/func/take_shared/",
+    data: form_data,
+    processData: false,
+      contentType: false,
+     success: function(response) {
+      if(response && response["type"]) {
+          notification.show(response["type"], response["message"]);
+      }
+    }
+});
+}
+share.ajax.share = function(share_data) {
+  console.log('SHOULD HAVE SHARED', share_data);
+  if( ! share_data) return;
+
+  var form_data = new FormData();
+  form_data.append('course_id',django.course.id);
+  form_data.append('description',share_data.description);
+  form_data.append('open',share_data.open);
+  form_data.append('subject_tags',JSON.stringify(share_data.tags.subject));
+  form_data.append('global_tags',JSON.stringify(share_data.tags.main));
+  var shared_query=[]
+  if (share_data.assets.material)
+  {
+  	shared_query.push('material');
+  	form_data.append('material_id',share_data.assets.material_id);
+  	if (share_data.assets.templates)
+  		shared_query.push('templates');
+  }
+  else if (share_data.assets.test)
+  {
+  	shared_query.push('test');
+  	form_data.append('test_id',share_data.assets.test_id);
+  	if (share_data.assets.templates)
+  		shared_query.push('templates');
+  }
+  else if (share_data.assets.templates){
+  	shared_query.push('templates');
+  	if (share_data.assets.test_id)
+  		form_data.append('test_id',share_data.assets.test_id);
+  	else form_data.append('material_id',share_data.assets.material_id);
+  }
+  form_data.append('shared_query',JSON.stringify(shared_query));
+  if (share_data.shared_id)
+  	form_data.append('shared_id',share_data.shared_id);
+  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
+  $.ajax({
+    type:"POST",
+    url:"/func/share/",
+    data: form_data,
+    processData: false,
+      contentType: false,
+     success: function(response) {
+      django.share_data = share_data;
+      if(response && response["type"]) {
+          notification.show(response["type"], response["message"]);
+          popup.hide();
+      }
+    }
+});
+}
+
+share.ajax.unshare = function(share_data) {
+  var form_data = new FormData();
+  form_data.append('course_id',django.course.id);
+  form_data.append('shared_id',share_data.shared_id);
+  form_data.append('csrfmiddlewaretoken', loads.csrf_token);
+  $.ajax({
+    type:"POST",
+    url:"/func/share/",
+    data: form_data,
+    processData: false,
+      contentType: false,
+     success: function(response) {
+      if(response && response["type"]) {
+          notification.show(response["type"], response["message"]);
+      }
+    }
+});
+}

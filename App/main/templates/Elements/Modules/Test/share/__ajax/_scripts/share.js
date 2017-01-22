@@ -40,6 +40,7 @@ share.ajax.share = function(share_data) {
     processData: false,
       contentType: false,
      success: function(response) {
+      django.share_data = share_data;
       if(response && response["type"]) {
           notification.show(response["type"], response["message"]);
           popup.hide();

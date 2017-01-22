@@ -18,7 +18,7 @@
 
   function make_edit_actions($new_edit, old_data) {
     var $save = $('<button>Сохранить изменения</button>');
-    var $save_as = $('<button class="m--ghost">Добавить как новое</button>');
+    var $save_as = $('<button class="m--ghost">Сохранить отдельной версией</button>');
     var $unshare = $(
               '<button class="m--ghost m--negative">Удалить</button>');
     var $actions = $('<div class="row"></div>');
@@ -102,7 +102,10 @@
 
     if(share_data.id) {
       $actions.append(make_edit_actions($new_edit, share_data));
-      $actions.append(share.display.make_actions(share_data));
+
+      if( ! share_data.is_django) {
+        $actions.append(share.display.make_actions(share_data));
+      }
     } else {
       $actions.append(make_create_actions($new_edit));
     }
@@ -115,7 +118,14 @@
   }
 
   share.edit.show = function(share_data) {
-    if( ! share_data) share_data = share.edit.get_defaults();
+    if( ! share_data) {
+      if(django.share_data) {
+        share_data = django.share_data;
+          django.share_data.is_django = true;
+      } else {
+        share_data = share.edit.get_defaults();
+      }
+    };
 
     var $new_edit = make_edit(share_data);
 

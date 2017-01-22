@@ -1,3 +1,7 @@
+var False = false;
+var True = true;
+var None = false;
+
 editor.check.empty_text = 'Добавьте сюда элемент вопроса';
 
 editor.fill_item_list(
@@ -21,6 +25,9 @@ var django = {
   material: {
     id: "{{material.id}}"
   },
+  {% if share_data %}
+    share_data: {{share_data|safe}},
+  {% endif %}
   csrf_token: "{{ csrf_token }}",
   current_type: "{{type}}"
 }
