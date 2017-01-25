@@ -2754,6 +2754,7 @@ class Test():
 			value["answer"] = None
 			# textarea
 		elif item["subtype"] == "radio" or item["subtype"]=="select":
+			print(item["items"])
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
@@ -2770,7 +2771,10 @@ class Test():
 					if item in list(answers):
 						value["answer"].append(it)
 					it+=1
+				print(value["items"])
+				print(value["answer"])
 		elif item["subtype"] == "checkbox":
+			print(item["items"])
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
@@ -2787,6 +2791,8 @@ class Test():
 					if item in answers:
 						value["answer"].append(it)
 					it+=1
+				print(value["items"])
+				print(value["answer"])
 		elif item["subtype"] == "classify":
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
@@ -2876,6 +2882,7 @@ class Test():
 								value["control_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
 								value["real_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
 								test.append(value)
+								print(value)
 
 					if "random" in test_info.keys() and test_info["random"]["do"]==True:
 						for task in test_info["tasks"]:
@@ -2888,6 +2895,7 @@ class Test():
 										value["control_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
 										value["real_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
 										value["hidden"]=True
+										print(value)
 										test.append(value)
 				data = test
 				json_file.write(json.dumps(test, ensure_ascii=False))
@@ -2933,7 +2941,7 @@ class Test():
 							item.pop("answer", None)
 
 				test["json"]["tasks"]=Test.compile_tasks(tasks=test["json"]["tasks"].copy(),attempt_data=data)
-
+				print(test["json"]["tasks"])
 				context = {"test": test, "course": course, "attempt":data}
 				context["breadcrumbs"] = [{
 					"href": "/course/" + str(course_id),
