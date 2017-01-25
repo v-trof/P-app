@@ -552,10 +552,10 @@ class CourseManager(models.Manager):
 		creator.save()
 		os.makedirs('main/files/json/courses/' + str(course.id) + '/tests/public/')
 		os.makedirs('main/files/json/courses/' + str(course.id) + '/tests/control/')
+		os.makedirs('main/files/json/courses/' + str(course.id) + '/materials/public/')
+		os.makedirs('main/files/json/courses/' + str(course.id) + '/materials/control/')
 		os.makedirs('main/files/json/courses/' +
 					str(course.id) + '/assignments/')
-		os.makedirs('main/files/json/courses/' +
-					str(course.id) + '/materials/')
 		os.makedirs('main/files/media/courses/' + str(course.id) + '/assets/')
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w+', encoding='utf8') as json_file:
 			data = {}
@@ -1453,7 +1453,7 @@ class CourseManager(models.Manager):
 			for element in list(values):
 				if element["type"] == "material":
 					material_id = element["id"]
-					with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
+					with io.open('main/files/json/courses/' + course_id + '/materials/public/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 						material_data = json.load(info_file)
 						materials[section_name].append({"title": material_data[
 													   "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
@@ -1484,7 +1484,7 @@ class CourseManager(models.Manager):
 					context["published"][section].append(test)
 				else:
 					material_id = element["id"]
-					with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
+					with io.open('main/files/json/courses/' + course_id + '/materials/public/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 						material_data = json.load(info_file)
 						context["published"][section].append({"type": "material", "title": material_data[
 															 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
@@ -1499,7 +1499,7 @@ class CourseManager(models.Manager):
 												  "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
 			else:
 				material_id = element["id"]
-				with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
+				with io.open('main/files/json/courses/' + course_id + '/materials/public/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 					material_data = json.load(info_file)
 					context["unpublished"].append({"type": "material", "title": material_data[
 												  "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
@@ -2807,6 +2807,7 @@ class Test():
 
 	def build_answer(item, data):
 		type = item["subtype"]
+		print(item,"---------------------------",data)
 		if type == "text":
 			item["answer"] = data["user_answer"]
 		elif type == "textarea":
@@ -2941,7 +2942,6 @@ class Test():
 							item.pop("answer", None)
 
 				test["json"]["tasks"]=Test.compile_tasks(tasks=test["json"]["tasks"].copy(),attempt_data=data)
-				print(test["json"]["tasks"])
 				context = {"test": test, "course": course, "attempt":data}
 				context["breadcrumbs"] = [{
 					"href": "/course/" + str(course_id),
@@ -2955,6 +2955,7 @@ class Test():
 	def compile_tasks(tasks,attempt_data):
 		global_tasks=[]
 		it=0
+		print(attempt_data)
 		for task in attempt_data:
 			if "renewed_questions" in task.keys() or "renewed_items" in task.keys():
 				for task_info in tasks:
@@ -2975,8 +2976,9 @@ class Test():
 						global_tasks[it]["content"][task["real_ids"]["item_id"]]["items"]=task["items"]
 				else:
 					global_tasks.append(tasks[task["real_ids"]["task_id"]])
+					if "items" in global_tasks[it]["content"][task["real_ids"]["item_id"]].keys():
+						global_tasks[it]["content"][task["real_ids"]["item_id"]]["items"]=task["items"]
 					global_tasks[it]["content"][task["real_ids"]["item_id"]]["answer"]=""
-
 			it+=1
 		tasks=global_tasks
 		return tasks
@@ -3530,7 +3532,8 @@ class Sharing():
 		item_info["shared_id"]=shared_id
 		shared_item["title"]=item_info["title"]
 		shared_item["subject"]=course.subject
-		shared_item["questions_number"]=full_public_file["questions_number"]
+		if "questions_number" in full_public_file.keys():
+			shared_item["questions_number"]=full_public_file["questions_number"]
 		shared_item["creator"]=full_public_file['creator']
 		user=User.objects.get(id=full_public_file['creator'])
 		shared_item["creator_name"]=user.name
@@ -3544,7 +3547,8 @@ class Sharing():
 		public_file['templates']=[]
 		if type in shared_item["shared_query"]:
 			public_file['tasks']=full_public_file['tasks']
-			public_file["questions_number"]=full_public_file["questions_number"]
+			if "questions_number" in full_public_file.keys():
+				public_file["questions_number"]=full_public_file["questions_number"]
 			public_file["title"]=full_public_file["title"]
 		elif refresh:
 			public_file['tasks']=old_shared['tasks']
@@ -3963,7 +3967,7 @@ class Search():
 							content=test
 						else:
 							material_id = element["id"]
-							with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as info_file:
+							with io.open('main/files/json/courses/' + course_id + '/materials/public/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 								material_data = json.load(info_file)
 							conformity=Utility.compare(str1=search_query,str2=material_data["title"])
 							content={"type": "material","course_name":str(course.name),"title": material_data[

@@ -60,6 +60,7 @@ def load(request):
 	material=Material.load(course_id=course_id, material_id=material_id)["material"]
 	context={}
 	context["material"]=material
+	print(material)
 	context["material"]["id"]=material_id
 	context["course"]=Course.objects.get(id=course_id)
 	context["breadcrumbs"] = [{
@@ -90,7 +91,7 @@ def publish(request):
 	if request.method == 'POST':
 		course_id = request.POST.get("course_id",None)
 		material_id = request.POST.get("material_id",None)
-		section = request.POST.get("publish_data")["section"]
+		section = json.loads(request.POST.get("publish_data"))["section"]
 		response = Material.publish(course_id=course_id, material_id=material_id,section=section)
 		return HttpResponse(json.dumps(response), content_type="application/json")
 

@@ -19,9 +19,6 @@ var django = {
   course: {
     id: "{{course.id}}"
   },
-  test: {
-    id: "{{test.id}}"
-  },
   material: {
     id: "{{material.id}}"
   },

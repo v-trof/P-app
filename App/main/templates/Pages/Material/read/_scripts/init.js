@@ -18,3 +18,4 @@ var django = {
 {% if test.json %}
   django.loaded = {{test.json|safe}};
 {% endif %}
+console.log("sdfsf")

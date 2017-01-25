@@ -59,13 +59,10 @@ test_manager.publish_parse_material = function(test) {
 
   if(data_is_fine) {
     var formData = new FormData();
+    console.log(django.material);
     formData.append("json_file", JSON.stringify(test_manager.packed_test));
     formData.append("course_id", django.course.id);
-    if(defined(django.test.id)) {
-      formData.append("test_id", django.test.id);
-    } else {
-      formData.append("material_id", django.material.id);
-    }
+    formData.append("material_id", django.material.id);
     formData.append('csrfmiddlewaretoken', django.csrf_token);
 
     formData.append('publish_data', JSON.stringify(parsed));

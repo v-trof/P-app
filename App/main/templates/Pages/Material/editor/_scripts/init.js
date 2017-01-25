@@ -1,10 +1,19 @@
-editor.check.empty_text = 'Добавьте сюда элемент';
+var False = false;
+var True = true;
+var None = false;
+
+editor.check.empty_text = 'Добавьте сюда элемент вопроса';
 
 editor.fill_item_list(
   $('.item-list.m--question'), 'question'
 );
 
-test_manager.publish_popup = '{% include "Pages/Test/editor/_publish_popup/exports.html" %}'
+editor.fill_item_list(
+  $('.item-list.m--answer'), 'answer'
+);
+
+
+test_manager.publish_popup = '{% include "Pages/Material/editor/_publish_popup/exports.html" %}'
 
 var django = {
   course: {
@@ -22,6 +31,12 @@ var django = {
   csrf_token: "{{ csrf_token }}",
   current_type: "{{type}}"
 }
-{% if test.json %}
+{% if material.json %}
   django.loaded = {{material.json|safe}};
 {% endif %}
+console.log(django.loaded)
+$(document).ready(function() {
+if(defined(django.loaded)) {
+test_manager.load(django.loaded);
+}
+}); 
