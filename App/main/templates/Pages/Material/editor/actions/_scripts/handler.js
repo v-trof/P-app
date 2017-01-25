@@ -27,5 +27,13 @@ $(document).ready(function() {
 
   $('#test_templates').click(function() {
     editor.template_ui.show();
-  })
+  });
+
+  $("#material_share").click(function(event) {
+    share.edit.show();
+  });
+
+  $("#material_import").click(function(event) {
+    share.search.show();
+  });
 });

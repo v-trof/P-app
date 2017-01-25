@@ -30,10 +30,16 @@ $(document).ready(function() {
     });
   };
 
+  type_names = ['Материалы', 'Наборы шаблонов'];
+  types = ['material', 'templates'];
+  if(django.current_type === 'test') {
+    type_names = ['Тесты', 'Материалы', 'Наборы шаблонов'];
+    types = ['test', 'material', 'templates'];
+  }
   share.search = new Search(
     request,
-    ['test', 'material', 'templates'],
-    ['Тесты', 'Материалы', 'Наборы шаблонов'],
+    types,
+    type_names,
     ['templates']
   );
 

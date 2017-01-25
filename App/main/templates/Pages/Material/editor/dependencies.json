@@ -1,9 +1,7 @@
 {
-  "elements": ["Modules/Test/generate/data/edit",
-               "Modules/Test/generate/data/elements",
-               "Modules/Test/generate/data/task",
+  "elements": ["Modules/Test/generate",
                "Modules/Test/manage/edit",
-               "Modules/Test/editor",
+               "Modules/Test/editor", "Modules/Test/share",
                "button/ghost/icon", "card"],
 
   "template": "default",

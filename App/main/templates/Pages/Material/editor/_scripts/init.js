@@ -1,4 +1,4 @@
-editor.check.empty_text = 'Добавьте сюда элемент вопроса';
+editor.check.empty_text = 'Добавьте сюда элемент';
 
 editor.fill_item_list(
   $('.item-list.m--question'), 'question'
@@ -16,16 +16,12 @@ var django = {
   material: {
     id: "{{material.id}}"
   },
+  {% if material.share_data %}
+    share_data: {{material.share_data|safe}},
+  {% endif %}
   csrf_token: "{{ csrf_token }}",
   current_type: "{{type}}"
 }
-
 {% if test.json %}
-  django.loaded = {{test.json|safe}};
+  django.loaded = {{material.json|safe}};
 {% endif %}
-
-$(document).ready(function() {
-  if(defined(django.loaded)) {
-    test_manager.load(django.loaded);
-  }
-});

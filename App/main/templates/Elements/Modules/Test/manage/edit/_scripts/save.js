@@ -37,16 +37,15 @@ test_manager.upload_test = function(success_cb) {
   delete serialized_test.templates;
 
   var formData = new FormData();
+  var type = django.current_type;
   formData.append("json_file", JSON.stringify(test_manager.packed_test));
   formData.append("course_id", django.course.id);
-  if(defined(django.test.id)) {
-    formData.append("test_id", django.test.id);
-  } else {
-    formData.append("material_id", django.material.id);
-  }
+  formData.append(type + "_id", django[type].id);
   formData.append('csrfmiddlewaretoken', django.csrf_token);
 
-  formData.append('compiled_test', JSON.stringify(serialized_test));
+  formData.append('compiled_' + type, JSON.stringify(serialized_test));
+
+  console.log('SAVING:', formData.getAll('compiled_'+type), serialized_test, test_manager.packed_test);
 
   $.ajax({
     type:"POST",
@@ -56,7 +55,7 @@ test_manager.upload_test = function(success_cb) {
     contentType: false,
     success: function(response) {
       notification.show(response["type"], response["message"]);
-      if(defined(django.test.id)) {
+      if(django.current_type === 'test') {
         window.history.pushState('Редактирование ' + test_manager.packed_test.title, 'Редактирование ' + test_manager.packed_test.heading, '/test/edit/?course_id=' + django.course.id + '&test_id=' + django.test.id);
 
         $('.header>.__breadcrumbs>a').last().
