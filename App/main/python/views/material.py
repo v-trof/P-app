@@ -60,7 +60,6 @@ def load(request):
 	material=Material.load(course_id=course_id, material_id=material_id)["material"]
 	context={}
 	context["material"]=material
-	print(material)
 	context["material"]["id"]=material_id
 	context["course"]=Course.objects.get(id=course_id)
 	context["breadcrumbs"] = [{
@@ -109,7 +108,6 @@ def read(request):
 	if request.user.is_anonymous():
 		request.session['notifications']=[{"type": "error", "message": "Вы должны зайти в систему"}]
 		return redirect('/login')
-	print("11111")
 	if Utility.is_teacher(user=request.user,course_id=course_id):
 		return redirect("/material/edit/?course_id="+course_id+"&material_id="+material_id)
 	if Utility.is_member(user=request.user,course_id=course_id) and Material.is_published(material_id=material_id,course_id=course_id):

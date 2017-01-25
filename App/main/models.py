@@ -2017,7 +2017,6 @@ class UserManager(UserManager):
 		return contacts_view_allowed
 
 	def reset_password(self, email):
-		print(True,email,User.objects.filter(username=email))
 		if User.objects.filter(username=email):
 			user = User.objects.get(username=email)
 			password_code = User.objects.generate_code(type="password")
@@ -2030,7 +2029,6 @@ class UserManager(UserManager):
 				codes_file.write(json.dumps(codes_dict, ensure_ascii=False))
 			send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, перейдите по ссылке для подтверждения: http://pileus.ru/secure_entry/?code=' + password_code + '&type=password.', 'p.application.bot@gmail.com',
 					  [email], fail_silently=False)
-			print(True)
 			return True
 		else:
 			return False
@@ -2511,7 +2509,6 @@ class Test():
 				real_ids=list(range(0, len(control_file["tasks"])))
 				it=0
 				for task_info in attempt_data.copy():
-					print(task_info["control_ids"]["task_id"])
 					task_found=False
 					renewed_task_ind=0
 					for task in control_file["tasks"]:
@@ -2564,10 +2561,8 @@ class Test():
 								if not "renewed_questions" in attempt_data[it].keys():
 									attempt_data[it]["renewed_questions"]=[]
 								attempt_data[it]["renewed_questions"].append(task_info["control_ids"]["item_id"])
-						print(real_item_ids)
 						for ind in real_item_ids:
 							item=renewed_task["content"][ind]
-							print(item)
 							if item["type"] == "question":
 								current_question = item
 							else:
@@ -2592,7 +2587,6 @@ class Test():
 							value["real_ids"]={"task_id":ind,"item_id":item_ind}
 							attempt_data.append(value)
 						item_ind+=1
-				print(attempt_data)
 				#attempt_data = sorted(attempt_data, key=lambda k: k["real_ids"])
 
 				with io.open(attempt, 'w', encoding='utf8') as attempt_file:
@@ -2700,7 +2694,6 @@ class Test():
 				test_data = json.load(info_file)
 		else:
 			test_data={}
-		print(publish_data)
 		test_data["allowed_mistakes"] = []
 		for mistake in publish_data["forgive"]:
 			if publish_data["forgive"][mistake]:
@@ -2715,15 +2708,16 @@ class Test():
 		if "mark_setting" in test_data.keys():
 			for key in publish_data["marks"]:
 				test_data["mark_setting"][key] = publish_data["marks"][key]
-			#print(glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'))
-			#for attempt in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'):
-			#	user_id=attempt.split('/')[-1].split('\\')[1]
-			#	print(user_id)
-			#	user=User.objects.get(id=user_id)
-			#	Test.attempt_check(test_id=test_id,user=user,course_id=course_id)
-		else: test_data["mark_setting"]=publish_data["marks"]
-		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
-			info_file.write(json.dumps(test_data, ensure_ascii=False))
+			with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
+				info_file.write(json.dumps(test_data, ensure_ascii=False))
+			for attempt in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'):
+				user_id=attempt.split('/')[-1].split('\\')[1]
+				user=User.objects.get(id=user_id)
+				Test.attempt_check(test_id=test_id,user=user,course_id=course_id, recheck=True)
+		else: 
+			test_data["mark_setting"]=publish_data["marks"]
+			with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
+				info_file.write(json.dumps(test_data, ensure_ascii=False))
 		return {"type":"success","message":"Тест был опубликован"}
 
 	def unpublish(course_id, test_id):
@@ -2784,7 +2778,6 @@ class Test():
 			value["answer"] = None
 			# textarea
 		elif item["subtype"] == "radio" or item["subtype"]=="select":
-			print(item["items"])
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
@@ -2801,10 +2794,11 @@ class Test():
 					if item in list(answers):
 						value["answer"].append(it)
 					it+=1
-				print(value["items"])
-				print(value["answer"])
 		elif item["subtype"] == "checkbox":
-			print(item["items"])
+			if "split_score" in item.keys():
+				value["split_score"] = item["split_score"]
+			else: 
+				value["split_score"]=False
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
@@ -2821,9 +2815,11 @@ class Test():
 					if item in answers:
 						value["answer"].append(it)
 					it+=1
-				print(value["items"])
-				print(value["answer"])
 		elif item["subtype"] == "classify":
+			if "split_score" in item.keys():
+				value["split_score"] = item["split_score"]
+			else: 
+				value["split_score"]=False
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
@@ -2837,7 +2833,6 @@ class Test():
 
 	def build_answer(item, data):
 		type = item["subtype"]
-		print(item,"---------------------------",data)
 		if type == "text":
 			item["answer"] = data["user_answer"]
 		elif type == "textarea":
@@ -2913,7 +2908,6 @@ class Test():
 								value["control_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
 								value["real_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
 								test.append(value)
-								print(value)
 
 					if "random" in test_info.keys() and test_info["random"]["do"]==True:
 						for task in test_info["tasks"]:
@@ -2926,7 +2920,6 @@ class Test():
 										value["control_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
 										value["real_ids"]={"task_id":task["task_id"],"item_id":item["item_id"]}
 										value["hidden"]=True
-										print(value)
 										test.append(value)
 				data = test
 				json_file.write(json.dumps(test, ensure_ascii=False))
@@ -2985,7 +2978,6 @@ class Test():
 	def compile_tasks(tasks,attempt_data):
 		global_tasks=[]
 		it=0
-		print(attempt_data)
 		for task in attempt_data:
 			if "renewed_questions" in task.keys() or "renewed_items" in task.keys():
 				for task_info in tasks:
@@ -3014,7 +3006,6 @@ class Test():
 		return tasks
 
 	def attempt_save(test_id, question_id, course_id, answer, user):
-		print(answer)
 		if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
 			return {"type":"error","message":"Тест уже был выполнен"}
 		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as info_file:
@@ -3098,7 +3089,6 @@ class Test():
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			course_data = json.load(data_file)
 		request={'type':'reset','test_id':test_id,'user_id':user_id}
-		print(test_id)
 		if not 'requests' in course_data.keys():
 			course_data['requests']={}
 		if not 'waiting' in course_data['requests'].keys():
@@ -3168,15 +3158,15 @@ class Test():
 		if question["type"]=="textarea":
 			return False
 		if question["type"]=="checkbox":
-			return check_selected(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
+			return check_selected(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes, split_score=question["split_score"],worth=question["worth"])
 		elif question["type"]=="select" or question["type"]=="radio":
-			return check_selected(answer_right=str(question["answer"]), answer=str(question["user_answer"]), allowed=allowed_mistakes)
+			return check_selected(answer_right=str(question["answer"]), answer=str(question["user_answer"]), allowed=allowed_mistakes, split_score=False,worth=question["worth"])
 		elif question["type"]=="classify":
-			return check_classify(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
+			return check_classify(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes, split_score=question["split_score"],worth=question["worth"])
 		return check(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 
-	def attempt_check(user, test_id, course_id):
-		if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json'):
+	def attempt_check(user, test_id, course_id, recheck=False):
+		if os.path.exists('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/results/' + test_id + '.json') and not recheck:
 			return {"type":"error","message":"Тест уже был выполнен"}
 		right = 0
 		missed = 0
@@ -3199,7 +3189,6 @@ class Test():
 			attempt_data = json.load(json_file)
 			question_id=0
 			for question in attempt_data:
-				print(question)
 				overall_score += question["worth"]
 				if "hidden" in question.keys() or not "answer" in question.keys() or "never_check" in question.keys() or question["answer"]==None:
 					question["user_score"] = 0
@@ -3212,24 +3201,29 @@ class Test():
 						missed += 1
 						test_results["missed"].append(question_id)
 						question["result"] = "missed"
-						question["user_score"] = 0 
-					elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "right":
-						right += 1
-						score+= question["worth"]
-						test_results["right"].append(question_id)
-						question["result"] = "right"
-						question["user_score"] = question["worth"]
-					elif Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"]) == "forgiving":
-						forgiving += 1
-						test_results["forgiving"].append(question_id)
-						question["result"] = "forgiving"
-						question["user_score"] = question["worth"]
-						score+= question["worth"]
-					else:
-						mistakes += 1
-						test_results["mistakes"].append(question_id)
-						question["result"] = "wrong"
 						question["user_score"] = 0
+					else:
+						status=Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"])
+						if status == "right" or isinstance(status,int) and status == question["worth"]:
+							right += 1
+							score+= question["worth"]
+							test_results["right"].append(question_id)
+							question["result"] = "right"
+							question["user_score"] = question["worth"]
+							score+=question["worth"]
+						elif status == "forgiving" or isinstance(status,int) and status < question["worth"] and status>0:
+							forgiving += 1
+							test_results["forgiving"].append(question_id)
+							question["result"] = "forgiving"
+							if status=="forgiving":
+								status=question["worth"]
+							question["user_score"] = status
+							score+= status
+						else:
+							mistakes += 1
+							test_results["mistakes"].append(question_id)
+							question["result"] = "wrong"
+							question["user_score"] = 0
 				question_id+=1
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
 			course_data = json.load(data_file)
@@ -3339,7 +3333,6 @@ class Test():
 			return {"type":"error","message":"Тест не был выполнен"}
 
 	def get_test_info(course_id, test_id, compiled=False, user_id=False, compact=False):
-		print(test_id)
 		if os.path.exists('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json'):
 			with io.open('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 				test_info = json.load(info_file)
@@ -3557,7 +3550,6 @@ class Sharing():
 			shared_item["type"]=type
 		else: 
 			shared_item["type"]='templates'
-		print(type in shared_item["shared_query"],shared_item["type"])
 		item_info["shared_query"]=shared_query
 		item_info["shared_id"]=shared_id
 		shared_item["title"]=item_info["title"]

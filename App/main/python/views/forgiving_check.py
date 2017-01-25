@@ -40,13 +40,23 @@ def check(answer, answer_right, allowed):
 	if answer == answer_right:
 		return "right"
 	if not isinstance(answer,dict):
+		if "register" in allowed:
+			answer=answer.lower()
+			answer_right=answer_right.lower()
+			if answer == answer_right:
+				return "forgiving"
 		if "word_order" in allowed:
 			if forgiving["word_order"](answer=answer,answer_right=answer_right):
 				return "forgiving"
+		if "spaces" in allowed:
+			answer = answer.replace(" ", "")
+			answer_right=answer_right.replace(" ", "")
+			if answer == answer_right:
+				return "forgiving"	
 		for mistake in allowed:
 			prev_answer=answer
-			#simple replacements
-			if mistake != "word_order":
+			#simple replacement
+			if not mistake == "word_order" and not mistake == "register" and not mistake == "spaces":
 				if mistake == "typo":
 					answer = forgiving[mistake](answer=answer,answer_right=answer_right)
 					if answer == answer_right:
@@ -61,20 +71,35 @@ def check(answer, answer_right, allowed):
 						return "forgiving"
 	return "false"
 
-def check_selected(answer, answer_right, allowed):
+def check_selected(answer, answer_right, allowed, split_score=False,worth=False):
 	print("chck",answer,answer_right)
 	if set(answer) == set(answer_right):
 		return "right"
-	else: return "false"
+	else: 
+		if split_score:
+			score=floor(len(answer&answer_right)/(len(set(answer_right))+len(set(answer)-set(answer_right)))*worth)
+			return score
+		else:
+			return "false"
 
-def check_classify(answer, answer_right, allowed):
+def check_classify(answer, answer_right, allowed, split_score=False,worth=False):
+	right=0
+	wrong=0
+	overall=0
 	for group,content in answer.items():
 		for right_group,right_content in answer_right.items():
 			if group==right_group:
-				if set(content) != set(right_content):
-					return "false"
-				else: break
-	return "right"
+				right+=len(set(content) & set(right_content))
+				overall+=len(set(right_content))
+				wrong+=len(set(content) - set(right_content))
+				break
+	if split_score:
+		score=floor(right/(overall+wrong)*worth)
+		return score
+	elif right==overall:
+		return "right"
+	else:
+		return "false"
 
 def spaces(answer):
 	answer = answer.replace(" ", "")
