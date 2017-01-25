@@ -38,21 +38,6 @@ generate.register = {
   }
 }
 
-/**
- * Returns general blueprints of this subtype (data[type][subtype])
- * @method get_blueprints
- * @param  {$} element element to parse
- * @return {Object} blueprints
- */
-generate.get_blueprints = function(element) {
-  //to jq
-  var $element = $(element);
-  var type = $element.attr('type');
-  var subtype = $element.attr('subtype');
-
-  return generate.data[type][subtype];
-}
-
 generate.register.edit = function(type, subtype, edit_data) {
   if (!(type && subtype)) return false;
 
@@ -217,6 +202,21 @@ generate.register.external = function(type, subtype, external_data) {
 generate.register.task = function(subtype, task_data) {
   var data = this.bind_data('task', subtype, 'element', task_data);
   data.build = task_data.builder;
+}
+
+/**
+ * Returns general blueprints of this subtype (data[type][subtype])
+ * @method get_blueprints
+ * @param  {$} element element to parse
+ * @return {Object} blueprints
+ */
+generate.get_blueprints = function(element) {
+  //to jq
+  var $element = $(element);
+  var type = $element.attr('type');
+  var subtype = $element.attr('subtype');
+
+  return generate.data[type][subtype];
 }
 
 /**
@@ -963,34 +963,6 @@ generate.register.edit('answer', 'classify', {
   }
 });
 
-generate.register.edit('answer', 'text', {
-  builder: function(value) {
-    var $new_edit = this.make_template();
-
-    //for label (tip)
-    var $label = render.inputs.text('Формат ответа', 'label', value.label);
-    $new_edit.prepend($label);
-
-    //for right answer
-    var $answer = render.inputs.text('Верный ответ', 'answer', value.answer);
-    $new_edit.prepend($answer);
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    var value = {
-      label: '',
-      answer: undefined
-    }
-
-    value.label = $edit.find('[name="label"]').val();
-    value.answer = $edit.find('[name="answer"]').val();
-
-    return value;
-  }
-});
-
 generate.register.edit('answer', 'radio', {
   random_possible: true,
   builder: function(value) {
@@ -1051,6 +1023,34 @@ generate.register.edit('answer', 'radio', {
         value.answer.push(index);
       }
     });
+
+    return value;
+  }
+});
+
+generate.register.edit('answer', 'text', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    //for label (tip)
+    var $label = render.inputs.text('Формат ответа', 'label', value.label);
+    $new_edit.prepend($label);
+
+    //for right answer
+    var $answer = render.inputs.text('Верный ответ', 'answer', value.answer);
+    $new_edit.prepend($answer);
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      label: '',
+      answer: undefined
+    }
+
+    value.label = $edit.find('[name="label"]').val();
+    value.answer = $edit.find('[name="answer"]').val();
 
     return value;
   }
@@ -1656,29 +1656,6 @@ generate.register.element('answer', 'classify', {
   }
 });
 
-generate.register.element('answer', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.append(render.inputs.text(
-      value.label,
-      '',
-      value.answer
-    ));
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      label: 'Текстовый ответ',
-      answer: '',
-      worth: 1
-    }
-  }
-})
-
 generate.register.element('answer', 'radio', {
   show_in_items: true,
 
@@ -1710,6 +1687,29 @@ generate.register.element('answer', 'radio', {
     }
   }
 });
+
+generate.register.element('answer', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.append(render.inputs.text(
+      value.label,
+      '',
+      value.answer
+    ));
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      label: 'Текстовый ответ',
+      answer: '',
+      worth: 1
+    }
+  }
+})
 
 generate.register.element('answer', 'textarea', {
   show_in_items: true,

@@ -19,8 +19,8 @@ var django = {
   course: {
     id: "{{course.id}}"
   },
-  material: {
-    id: "{{material.id}}"
+  test: {
+    id: "{{test.id}}"
   },
   {% if test.share_data %}
     share_data: {{test.share_data|safe}},

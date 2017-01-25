@@ -537,6 +537,36 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 
 
+		for test_path in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/*/*'):
+			test_path=test_path.replace('\\','/')
+			with io.open(test_path, 'r', encoding='utf8') as data_file:
+				test=json.load(data_file)
+				test["creator"]=str(user.id)
+			with io.open(test_path, 'w', encoding='utf8') as data_file:
+				saving_data = json.dumps(test, ensure_ascii=False)
+				data_file.write(saving_data)
+
+		for material_path in glob.glob('main/files/json/courses/' + str(course.id) + '/materials/*/*'):
+			material_path=material_path.replace('\\','/')
+			with io.open(material_path, 'r', encoding='utf8') as data_file:
+				material=json.load(data_file)
+				material["creator"]=str(user.id)
+			with io.open(material_path, 'w', encoding='utf8') as data_file:
+				saving_data = json.dumps(material, ensure_ascii=False)
+				data_file.write(saving_data)
+
+		for assignment_path in glob.glob('main/files/json/courses/' + str(course.id) + '/assignments/*.json'):
+			assignment_path=assignment_path.replace('\\','/')
+			assignment_id = assignment_path[:-5].split("/")[-1]
+			with io.open(assignment_path, 'r', encoding='utf8') as data_file:
+				assignment = json.load(data_file)
+				for material in assignment["content"]["materials"]:
+					material["link"]="?course_id="+str(course.id)+"&"+material["link"].split('&')[1]
+				for test in assignment["content"]["tests"]:
+					test["link"]="?course_id="+str(course.id)+"&"+test["link"].split('&')[1]	
+			with io.open(assignment_path, 'w', encoding='utf8') as data_file:
+				saving_data = json.dumps(assignment, ensure_ascii=False)
+				data_file.write(saving_data)
 
 		return course
 

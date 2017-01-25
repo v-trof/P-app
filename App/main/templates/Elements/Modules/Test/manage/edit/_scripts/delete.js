@@ -1,7 +1,7 @@
 test_manager.delete = function() {
   var formData = new FormData();
   formData.append("course_id", django.course.id);
-  if(defined(django.test.id)) {
+  if(defined(django.test)) {
     formData.append("test_id", django.test.id);
   } else {
     formData.append("material_id", django.material.id);

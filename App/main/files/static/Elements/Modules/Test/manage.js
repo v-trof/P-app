@@ -54,7 +54,7 @@ test_manager.load = function(test) {
 test_manager.delete = function() {
   var formData = new FormData();
   formData.append("course_id", django.course.id);
-  if(defined(django.test.id)) {
+  if(defined(django.test)) {
     formData.append("test_id", django.test.id);
   } else {
     formData.append("material_id", django.material.id);
@@ -555,8 +555,8 @@ test_manager.publish_parse_material = function(test) {
       contentType: false,
       success: function(response) {
         notification.show(response["type"], response["message"]);
-        $("#" + django.current_type + "_publish").hide();
-        $("#" + django.current_type + "_unpublish").show();
+        $("#test_publish").hide();
+        $("#test_unpublish").show();
         popup.hide();
         test_manager.save();
       },

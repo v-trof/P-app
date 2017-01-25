@@ -77,8 +77,8 @@ test_manager.publish_parse_material = function(test) {
       contentType: false,
       success: function(response) {
         notification.show(response["type"], response["message"]);
-        $("#" + django.current_type + "_publish").hide();
-        $("#" + django.current_type + "_unpublish").show();
+        $("#test_publish").hide();
+        $("#test_unpublish").show();
         popup.hide();
         test_manager.save();
       },
