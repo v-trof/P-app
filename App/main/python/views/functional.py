@@ -174,8 +174,7 @@ class Course_views():
 			creator = User.objects.get(id=request.user.id)
 			if name=="+s":
 				course = Course.objects.create_course(
-					name="Русский язык 9-11 класс", subject="Русский язык", creator=creator, is_closed=False)
-				print(course)
+					name="Английский язык 9-11 класс", subject="Английский язык", creator=creator, is_closed=False)
 				response = Course.objects.load_sample(course=course,user=request.user)
 				redirect_url = '/course/' + str(course.id) + '/'
 			else:
