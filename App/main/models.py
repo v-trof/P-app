@@ -536,6 +536,8 @@ class CourseManager(models.Manager):
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 
+
+
 		return course
 
 	def create_course(self, name, subject, creator, is_closed):
@@ -2147,7 +2149,9 @@ class Material():
 	def delete(course_id, material_id):
 		# moves material to trash bin
 		os.remove('main/files/json/courses/' + course_id +
-				  '/materials/' + material_id + '.json')
+				  '/materials/public/' + material_id + '.json')
+		os.remove('main/files/json/courses/' + course_id +
+				  '/materials/control/' + material_id + '.json')
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
@@ -2195,11 +2199,50 @@ class Material():
 					assignments_map, ensure_ascii=False))
 		return {"type":"success","message":"Материал удален"}
 
-	def save(json_file, course_id, material_id, user):
+	def save(json_file, compiled_json, course_id, material_id, user):
 		json_file = json.loads(json_file)
+		control_file= json.loads(compiled_json)
 		json_file["creator"] = user.id
-		with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'w+', encoding='utf8') as material_file:
+		control_file["creator"] = user.id
+		if os.path.exists('main/files/json/courses/' + course_id + '/materials/control/' + material_id + '.json'):
+			task_id=0
+			for task in json_file["tasks"]:
+				task["task_id"]=task_id
+				item_id=0
+				if "content" in task.keys():
+					for item in task["content"]:
+						item["item_id"]=item_id
+						item_id+=1
+				else: 
+					for item in task["parts"]:
+						item["item_id"]=item_id
+						item_id+=1
+				task_id+=1
+
+			task_id=0
+			for task in control_file["tasks"]:
+				task["task_id"]=task_id
+				item_id=0
+				for item in task["content"]:
+					item["item_id"]=item_id
+					item_id+=1
+				task_id+=1
+
+		with io.open('main/files/json/courses/' + course_id + '/materials/public/' + material_id + '.json', 'w+', encoding='utf8') as material_file:
 			material_file.write(json.dumps(json_file, ensure_ascii=False))
+
+		if "templates" in control_file.keys():
+			del control_file["templates"]
+
+		for task in control_file["tasks"]:
+			if "is_template" in task.keys() and task["is_template"]==True:
+				task["content"]=generated_task["parts"]
+				del task["parts"]
+				del task["is_template"]
+
+		with io.open('main/files/json/courses/' + course_id + '/materials/control/' + material_id + '.json', 'w+', encoding='utf8') as material_file:
+			material_file.write(json.dumps(control_file, ensure_ascii=False))
+
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 		material_unpublished = False
@@ -2214,8 +2257,8 @@ class Material():
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
 		return {"type":"success","message":"Материал сохранен"}
 
-	def load(course_id, material_id):
-		with io.open('main/files/json/courses/' + course_id + '/materials/' + material_id + '.json', 'r', encoding='utf8') as json_file:
+	def load(course_id, material_id, type="public"):
+		with io.open('main/files/json/courses/' + course_id + '/materials/' + type + '/' + material_id + '.json', 'r', encoding='utf8') as json_file:
 			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 				course_info = json.load(info_file)
 				material = {
@@ -2293,12 +2336,12 @@ class Material():
 		return {"type":"success","message":"Материал скрыт"}
 
 	def get_material_info(course_id, material_id):
-		with io.open('main/files/json/courses/' + str(course_id) + '/materials/' + str(material_id) + '.json', 'r', encoding='utf8') as info_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/materials/control/' + str(material_id) + '.json', 'r', encoding='utf8') as info_file:
 			material_info = json.load(info_file)
 		return material_info
 
 	def is_creator(user, material_id, course_id):
-		with io.open('main/files/json/courses/' + str(course_id) + '/materials/' + str(material_id) + '.json', 'r', encoding='utf8') as info_file:
+		with io.open('main/files/json/courses/' + str(course_id) + '/materials/public/' + str(material_id) + '.json', 'r', encoding='utf8') as info_file:
 			material_info = json.load(info_file)
 		return material_info["creator"] == user.id
 
@@ -2397,6 +2440,7 @@ class Test():
 		return {"type":"success","message":"Тест удален"}
 
 	def save(json_file, compiled_json, course_id, test_id, user):
+
 		json_file = json.loads(json_file)
 		control_file= json.loads(compiled_json)
 
@@ -2923,7 +2967,6 @@ class Test():
 						global_tasks[it]["content"][task["real_ids"]["item_id"]]["items"]=task["items"]
 				else:
 					global_tasks.append(tasks[task["real_ids"]["task_id"]])
-					print(global_tasks,it)
 					global_tasks[it]["content"][task["real_ids"]["item_id"]]["answer"]=""
 
 			it+=1

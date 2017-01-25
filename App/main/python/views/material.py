@@ -78,9 +78,10 @@ def save(request):
 	# saves material file
 	if request.method == 'POST':
 		json_file = request.POST.get("json_file",None)
+		compiled_json = request.POST.get("compiled_json",None)
 		course_id = request.POST.get("course_id",None)
 		material_id = request.POST.get("material_id",None)
-		response = Material.save(json_file=json_file, course_id=course_id, material_id=material_id, user=request.user)
+		response = Material.save(json_file=json_file, course_id=course_id, material_id=material_id, user=request.user,compiled_json=compiled_json)
 		return HttpResponse(json.dumps(response), content_type="application/json")
 
 
