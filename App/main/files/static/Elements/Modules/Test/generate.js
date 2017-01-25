@@ -38,6 +38,21 @@ generate.register = {
   }
 }
 
+/**
+ * Returns general blueprints of this subtype (data[type][subtype])
+ * @method get_blueprints
+ * @param  {$} element element to parse
+ * @return {Object} blueprints
+ */
+generate.get_blueprints = function(element) {
+  //to jq
+  var $element = $(element);
+  var type = $element.attr('type');
+  var subtype = $element.attr('subtype');
+
+  return generate.data[type][subtype];
+}
+
 generate.register.edit = function(type, subtype, edit_data) {
   if (!(type && subtype)) return false;
 
@@ -64,6 +79,19 @@ generate.register.edit = function(type, subtype, edit_data) {
         $random.find('input')[0].checked = value.random;
         $edit.append($random);
       }
+
+      if(data.edit.split_score_possible) {
+        var $split_score = $(loads["Elements/Inputs/checkbox/exports.html"]);
+        $split_score.find('label')
+          .text('Баллы пропорционально соответствию верному ответу');
+        $split_score.attr('tip', 'При неполном соответствии вернуму ответу'
+          + 'ученику будет выставлена часть максимального балла, '
+          + 'пропорционально соответствию. Округляется вниз.');
+
+        $split_score.find('input').attr('name', "split_score");
+        $split_score.find('input')[0].checked = value.split_score;
+        $edit.append($split_score);
+      }
     }
 
     return $edit;
@@ -78,6 +106,10 @@ generate.register.edit = function(type, subtype, edit_data) {
 
     if(data.edit.random_possible) {
       value.random = $edit.find('[name="random"]')[0].checked;
+    }
+
+    if(data.edit.split_score_possible) {
+      value.split_score = $edit.find('[name="split_score"]')[0].checked;
     }
 
     if(data.element.never_check) {
@@ -202,21 +234,6 @@ generate.register.external = function(type, subtype, external_data) {
 generate.register.task = function(subtype, task_data) {
   var data = this.bind_data('task', subtype, 'element', task_data);
   data.build = task_data.builder;
-}
-
-/**
- * Returns general blueprints of this subtype (data[type][subtype])
- * @method get_blueprints
- * @param  {$} element element to parse
- * @return {Object} blueprints
- */
-generate.get_blueprints = function(element) {
-  //to jq
-  var $element = $(element);
-  var type = $element.attr('type');
-  var subtype = $element.attr('subtype');
-
-  return generate.data[type][subtype];
 }
 
 /**
@@ -796,69 +813,9 @@ $(document).ready(function() {
   }
 });
 
-generate.register.edit('answer', 'checkbox', {
-  random_possible: true,
-  builder: function(value) {
-    var $new_edit = this.make_template();
-
-    var create_field = function(label) {
-      var $checkbox = $(loads.get('Elements/Inputs/checkbox/'));
-      var $input = render.inputs.text('', '', label);
-
-      var $field = $("<div class='__edit_item'></div>");
-      $field.append($checkbox).append($input);
-      button_delete.add($field);
-
-      return $field;
-    }
-
-    if(value.items && value.items.length) {
-      value.items.forEach(function(label, index) {
-        var $field = create_field(label);
-
-        $new_edit.append($field);
-        if(value.answer.has(index)) {
-          $field.find('[type="checkbox"]')[0].checked = true;
-        }
-      });
-    } else {
-      $new_edit.append(create_field());
-    }
-
-
-    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
-
-    $new_edit.append($add_option);
-
-    $add_option.click(function() {
-      $add_option.before(create_field());
-    });
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    var value = {
-      items: [],
-      answer: []
-    }
-
-    $edit.find(".m--checkbox").each(function(index, el) {
-      var label = $(el).siblings().find(".__value").val();
-
-      value.items.push(label);
-
-      if($(el).find("input").is(":checked")) {
-        value.answer.push(index);
-      }
-    });
-
-    return value;
-  }
-});
-
 generate.register.edit('answer', 'classify', {
   random_possible: true,
+  split_score_possible: true,
 
   create_item: function(item_text) {
     var $new_item = $(loads.get('Elements/Modules/Test/generate/' +
@@ -960,6 +917,69 @@ generate.register.edit('answer', 'classify', {
       classes: classes,
       answer: answer
     }
+  }
+});
+
+generate.register.edit('answer', 'checkbox', {
+  random_possible: true,
+  split_score_possible: true,
+  
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    var create_field = function(label) {
+      var $checkbox = $(loads.get('Elements/Inputs/checkbox/'));
+      var $input = render.inputs.text('', '', label);
+
+      var $field = $("<div class='__edit_item'></div>");
+      $field.append($checkbox).append($input);
+      button_delete.add($field);
+
+      return $field;
+    }
+
+    if(value.items && value.items.length) {
+      value.items.forEach(function(label, index) {
+        var $field = create_field(label);
+
+        $new_edit.append($field);
+        if(value.answer.has(index)) {
+          $field.find('[type="checkbox"]')[0].checked = true;
+        }
+      });
+    } else {
+      $new_edit.append(create_field());
+    }
+
+
+    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
+
+    $new_edit.append($add_option);
+
+    $add_option.click(function() {
+      $add_option.before(create_field());
+    });
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      items: [],
+      answer: []
+    }
+
+    $edit.find(".m--checkbox").each(function(index, el) {
+      var label = $(el).siblings().find(".__value").val();
+
+      value.items.push(label);
+
+      if($(el).find("input").is(":checked")) {
+        value.answer.push(index);
+      }
+    });
+
+    return value;
   }
 });
 
@@ -1078,6 +1098,48 @@ generate.register.edit('answer', 'textarea', {
   }
 });
 
+generate.register.edit('question', 'image', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    var $file_input = $(loads.get("Elements/Inputs/file/"));
+
+    $new_edit.append($file_input);
+    var file_data = file_catcher.add($file_input);
+
+    if(defined(value.asset_id) || defined(value.url)) {
+      $file_input.find('.__text').text(value.file_name);
+      file_data.value.change(function() {
+        editor.assets.replace(value.asset_id, file_data);
+      });
+    }
+
+    if( ! defined(value.asset_id)) {
+      value.asset_id = editor.assets.add(file_data);
+    }
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {};
+    value.asset_id = editor.active_element.value.asset_id;
+
+    var event = editor.assets.get(value.asset_id);
+
+    if(defined(event)) {
+      value.file_name = editor.assets.get(value.asset_id).name;
+      value.href = URL.createObjectURL(event.files[0]);
+      value.url = undefined;
+    } else {
+      value.href = value.url || editor.active_element.value.href;
+      value.file_name = editor.active_element.value.file_name;
+    }
+
+    return value;
+  }
+});
+
 generate.register.edit('question', 'file', {
   builder: function(value) {
     var $new_edit = this.make_template();
@@ -1127,48 +1189,6 @@ generate.register.edit('question', 'file', {
   }
 });
 
-generate.register.edit('question', 'image', {
-  builder: function(value) {
-    var $new_edit = this.make_template();
-
-    var $file_input = $(loads.get("Elements/Inputs/file/"));
-
-    $new_edit.append($file_input);
-    var file_data = file_catcher.add($file_input);
-
-    if(defined(value.asset_id) || defined(value.url)) {
-      $file_input.find('.__text').text(value.file_name);
-      file_data.value.change(function() {
-        editor.assets.replace(value.asset_id, file_data);
-      });
-    }
-
-    if( ! defined(value.asset_id)) {
-      value.asset_id = editor.assets.add(file_data);
-    }
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    var value = {};
-    value.asset_id = editor.active_element.value.asset_id;
-
-    var event = editor.assets.get(value.asset_id);
-
-    if(defined(event)) {
-      value.file_name = editor.assets.get(value.asset_id).name;
-      value.href = URL.createObjectURL(event.files[0]);
-      value.url = undefined;
-    } else {
-      value.href = value.url || editor.active_element.value.href;
-      value.file_name = editor.active_element.value.file_name;
-    }
-
-    return value;
-  }
-});
-
 generate.register.edit('question', 'text', {
   builder: function(value) {
     var $new_edit = this.make_template();
@@ -1190,329 +1210,6 @@ generate.register.edit('question', 'text', {
     return {
       text: $edit.find('.__value').html()
     }
-  }
-});
-
-generate.register.external('answer', 'checkbox', {
-  get_value: function($element) {
-    var answers = [];
-    $element.find('.m--checkbox').each(function(index, el) {
-      if(el.querySelector('input').checked) {
-        answers.push(index);
-      }
-    });
-    return answers;
-  },
-
-  get_summary: function(value, element_data) {
-    var answers = [];
-    var big  = false;
-
-    value.forEach(function(pos) {
-      var option = element_data.items[pos];
-
-      if(option.length > 20) {
-        option = option.substring(0, 17).escape();
-        option = option + "&hellip;";
-        big = true;
-      } else {
-        option = option.escape();
-      }
-
-      answers.push(option);
-    })
-
-    if(big) {
-      answers = answers.join('<br>');
-    } else {
-      answers = answers.join(', ');
-    }
-
-    return answers;
-  },
-
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    if( ! Array.isArray(user_answer)) {
-      user_answer = [];
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    $element.find('input').change(_change);
-  }
-});
-
-generate.register.external('answer', 'classify', {
-  get_value: function($element) {
-    var answer = {};
-
-    $element.children('.__class').each(function() {
-      if($(this).hasClass('m--unordered')) return;
-
-      var title = $(this).children('h3').text();
-      answer[title] = [];
-
-      //loop over items
-      $(this).find('.__item').each(function() {
-        answer[title].push($(this).text());
-      });
-    });
-
-    return answer;
-  },
-
-  unwrap_answer: function(value, reduce) {
-    var items = [],
-        classes = [];
-
-    for(class_name in value) {
-      for(var i = 0; i < value[class_name].length; i++) {
-        if(value[class_name][i].length > 20 && reduce) {
-          value[class_name][i] = value[class_name][i].substring(0, 17).escape();
-          value[class_name][i] = value[class_name][i] + "...";
-        } else {
-          value[class_name][i] = value[class_name][i].escape();
-        }
-        classes.remove(class_name);
-        classes.push(class_name);
-        items.push(value[class_name][i]);
-      }
-    }
-
-    return {
-      classes: classes,
-      items: items,
-      answer: value
-    };
-  },
-
-  get_summary: function(value, element_data) {
-    //build & item_reduce
-    value = this.unwrap_answer(value, true);
-
-    if(value.items.length === 0) {
-      console.log('empty');
-      return "";
-    }
-
-    var $summary = this.self.element.build(value);
-
-    $summary.find('*').unbind('click');
-
-    return $summary;
-  },
-
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    // build
-    var self = this;
-    var make_DOM = function(answer) {
-      console.log(answer);
-      answer = self.unwrap_answer(answer, true);
-      var $element = self.self.element.build(answer);
-
-      $element.find('*').unbind('click');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    $element.find('.__items').click(function(event) {
-      if(pull_put.is_pulled) {
-        _change();
-      }
-    });
-  }
-});
-
-
-//TODO fix attempt icon swap
-
-generate.register.external('answer', 'radio', {
-  get_value: function($element) {
-    var answers = [];
-    $element.find('.m--radio').each(function(index, el) {
-      if(el.querySelector('input').checked) {
-        answers.push(index);
-      }
-    });
-    return answers;
-  },
-
-  get_summary: function(value, element_data) {
-    var answers = [];
-    var big  = false;
-
-    value.forEach(function(pos) {
-      var option = element_data.items[pos];
-
-      if(option.length > 20) {
-        option = option.substring(0, 17).escape();
-        option = option +  "&hellip;";
-        big = true;
-      } else {
-        option = option.escape();
-      }
-
-      answers.push(option);
-    })
-
-    if(big) {
-      answers = answers.join('<br>');
-    } else {
-      answers = answers.join(', ');
-    }
-
-    return answers;
-  },
-
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    if( ! Array.isArray(user_answer)) {
-      user_answer = [];
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    $element.find('input').change(_change);
-  }
-});
-
-generate.register.external('answer', 'text', {
-  get_value: function($element) {
-    return $element.find('input').val();
-  },
-
-  get_summary: function(value) {
-    if( ! value) value = "";
-
-    if(value.length > 20) {
-      value = value.substring(0, 17).escape();
-      value += "&hellip;"
-    } else {
-      value = value.escape();
-    }
-
-    return value;
-  },
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    var timer;
-    var typing_interval = 1000;
-
-    $element.keydown(function() {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        _change();
-      }, typing_interval);
-    });
-  }
-});
-
-generate.register.external('answer', 'textarea', {
-  get_value: function($element) {
-    return $element.find('.__value').html();
-  },
-
-  get_summary: function(value) {
-    if( ! value) value = "";
-
-    var $adapter = $('<div></div>');
-    value = $adapter.html(value).text();
-
-    if(value.length > 20) {
-      value = value.substring(0, 17).escape();
-      value += "&hellip;"
-    } else {
-      value = value.escape();
-    }
-
-    return value;
-  },
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-      var $element = self.element.build(element_data);
-      $element.find('.__value').removeAttr('contenteditable');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    var timer;
-    var typing_interval = 1000;
-
-    $element.keydown(function() {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        _change();
-      }, typing_interval);
-    });
   }
 });
 
@@ -1688,29 +1385,6 @@ generate.register.element('answer', 'radio', {
   }
 });
 
-generate.register.element('answer', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.append(render.inputs.text(
-      value.label,
-      '',
-      value.answer
-    ));
-
-    return $new_element;
-  },
-
-  sample: {
-    value: {
-      label: 'Текстовый ответ',
-      answer: '',
-      worth: 1
-    }
-  }
-})
-
 generate.register.element('answer', 'textarea', {
   show_in_items: true,
   never_check: true,
@@ -1730,6 +1404,29 @@ generate.register.element('answer', 'textarea', {
   sample: {
     value: {
       label: 'Развернутый ответ',
+      worth: 1
+    }
+  }
+})
+
+generate.register.element('answer', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.append(render.inputs.text(
+      value.label,
+      '',
+      value.answer
+    ));
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      label: 'Текстовый ответ',
+      answer: '',
       worth: 1
     }
   }
@@ -1760,6 +1457,114 @@ generate.register.element('question', 'file', {
   }
 });
 
+generate.register.element('question', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.html('<div class="__value">' + value.text + '</div>');
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      text: 'Текстовый вопрос'
+    }
+  }
+});
+
+generate.register.external('answer', 'classify', {
+  get_value: function($element) {
+    var answer = {};
+
+    $element.children('.__class').each(function() {
+      if($(this).hasClass('m--unordered')) return;
+
+      var title = $(this).children('h3').text();
+      answer[title] = [];
+
+      //loop over items
+      $(this).find('.__item').each(function() {
+        answer[title].push($(this).text());
+      });
+    });
+
+    return answer;
+  },
+
+  unwrap_answer: function(value, reduce) {
+    var items = [],
+        classes = [];
+
+    for(class_name in value) {
+      for(var i = 0; i < value[class_name].length; i++) {
+        if(value[class_name][i].length > 20 && reduce) {
+          value[class_name][i] = value[class_name][i].substring(0, 17).escape();
+          value[class_name][i] = value[class_name][i] + "...";
+        } else {
+          value[class_name][i] = value[class_name][i].escape();
+        }
+        classes.remove(class_name);
+        classes.push(class_name);
+        items.push(value[class_name][i]);
+      }
+    }
+
+    return {
+      classes: classes,
+      items: items,
+      answer: value
+    };
+  },
+
+  get_summary: function(value, element_data) {
+    //build & item_reduce
+    value = this.unwrap_answer(value, true);
+
+    if(value.items.length === 0) {
+      console.log('empty');
+      return "";
+    }
+
+    var $summary = this.self.element.build(value);
+
+    $summary.find('*').unbind('click');
+
+    return $summary;
+  },
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    // build
+    var self = this;
+    var make_DOM = function(answer) {
+      console.log(answer);
+      answer = self.unwrap_answer(answer, true);
+      var $element = self.self.element.build(answer);
+
+      $element.find('*').unbind('click');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('.__items').click(function(event) {
+      if(pull_put.is_pulled) {
+        _change();
+      }
+    });
+  }
+});
+
+
+//TODO fix attempt icon swap
+
 generate.register.element('question', 'image', {
   show_in_items: true,
 
@@ -1786,18 +1591,233 @@ generate.register.element('question', 'image', {
   }
 });
 
-generate.register.element('question', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.html('<div class="__value">' + value.text + '</div>');
-
-    return $new_element;
+generate.register.external('answer', 'checkbox', {
+  get_value: function($element) {
+    var answers = [];
+    $element.find('.m--checkbox').each(function(index, el) {
+      if(el.querySelector('input').checked) {
+        answers.push(index);
+      }
+    });
+    return answers;
   },
-  sample: {
-    value: {
-      text: 'Текстовый вопрос'
+
+  get_summary: function(value, element_data) {
+    var answers = [];
+    var big  = false;
+
+    value.forEach(function(pos) {
+      var option = element_data.items[pos];
+
+      if(option.length > 20) {
+        option = option.substring(0, 17).escape();
+        option = option + "&hellip;";
+        big = true;
+      } else {
+        option = option.escape();
+      }
+
+      answers.push(option);
+    })
+
+    if(big) {
+      answers = answers.join('<br>');
+    } else {
+      answers = answers.join(', ');
     }
+
+    return answers;
+  },
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    if( ! Array.isArray(user_answer)) {
+      user_answer = [];
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('input').change(_change);
+  }
+});
+
+generate.register.external('answer', 'radio', {
+  get_value: function($element) {
+    var answers = [];
+    $element.find('.m--radio').each(function(index, el) {
+      if(el.querySelector('input').checked) {
+        answers.push(index);
+      }
+    });
+    return answers;
+  },
+
+  get_summary: function(value, element_data) {
+    var answers = [];
+    var big  = false;
+
+    value.forEach(function(pos) {
+      var option = element_data.items[pos];
+
+      if(option.length > 20) {
+        option = option.substring(0, 17).escape();
+        option = option +  "&hellip;";
+        big = true;
+      } else {
+        option = option.escape();
+      }
+
+      answers.push(option);
+    })
+
+    if(big) {
+      answers = answers.join('<br>');
+    } else {
+      answers = answers.join(', ');
+    }
+
+    return answers;
+  },
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    if( ! Array.isArray(user_answer)) {
+      user_answer = [];
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('input').change(_change);
+  }
+});
+
+generate.register.external('answer', 'text', {
+  get_value: function($element) {
+    return $element.find('input').val();
+  },
+
+  get_summary: function(value) {
+    if( ! value) value = "";
+
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
+    } else {
+      value = value.escape();
+    }
+
+    return value;
+  },
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    var timer;
+    var typing_interval = 1000;
+
+    $element.keydown(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        _change();
+      }, typing_interval);
+    });
+  }
+});
+
+generate.register.external('answer', 'textarea', {
+  get_value: function($element) {
+    return $element.find('.__value').html();
+  },
+
+  get_summary: function(value) {
+    if( ! value) value = "";
+
+    var $adapter = $('<div></div>');
+    value = $adapter.html(value).text();
+
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
+    } else {
+      value = value.escape();
+    }
+
+    return value;
+  },
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+      var $element = self.element.build(element_data);
+      $element.find('.__value').removeAttr('contenteditable');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    var timer;
+    var typing_interval = 1000;
+
+    $element.keydown(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        _change();
+      }, typing_interval);
+    });
   }
 });

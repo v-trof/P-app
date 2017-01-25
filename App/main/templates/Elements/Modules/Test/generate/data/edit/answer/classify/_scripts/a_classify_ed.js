@@ -1,5 +1,6 @@
 generate.register.edit('answer', 'classify', {
   random_possible: true,
+  split_score_possible: true,
 
   create_item: function(item_text) {
     var $new_item = $(loads.get('Elements/Modules/Test/generate/' +

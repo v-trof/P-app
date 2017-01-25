@@ -24,6 +24,19 @@ generate.register.edit = function(type, subtype, edit_data) {
         $random.find('input')[0].checked = value.random;
         $edit.append($random);
       }
+
+      if(data.edit.split_score_possible) {
+        var $split_score = $(loads["Elements/Inputs/checkbox/exports.html"]);
+        $split_score.find('label')
+          .text('Баллы пропорционально соответствию верному ответу');
+        $split_score.attr('tip', 'При неполном соответствии вернуму ответу'
+          + 'ученику будет выставлена часть максимального балла, '
+          + 'пропорционально соответствию. Округляется вниз.');
+
+        $split_score.find('input').attr('name', "split_score");
+        $split_score.find('input')[0].checked = value.split_score;
+        $edit.append($split_score);
+      }
     }
 
     return $edit;
@@ -38,6 +51,10 @@ generate.register.edit = function(type, subtype, edit_data) {
 
     if(data.edit.random_possible) {
       value.random = $edit.find('[name="random"]')[0].checked;
+    }
+
+    if(data.edit.split_score_possible) {
+      value.split_score = $edit.find('[name="split_score"]')[0].checked;
     }
 
     if(data.element.never_check) {

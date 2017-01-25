@@ -43,8 +43,9 @@ results_controls.display = function() {
   $('.preview>.__content').html('');
   results_display.init(test_info, attempt_info, results_info);
 
-  var $redo = $('<button>Сбросить результаты</button>');
+  var $redo = $('<button class="redo">Сбросить результаты</button>');
 
+  $('.preview .redo').remove();
   $('.preview').append($redo);
   $redo.click(function() {
     $.ajax({

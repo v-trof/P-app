@@ -1,5 +1,7 @@
 generate.register.edit('answer', 'checkbox', {
   random_possible: true,
+  split_score_possible: true,
+  
   builder: function(value) {
     var $new_edit = this.make_template();
 
