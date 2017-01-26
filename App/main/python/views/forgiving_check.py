@@ -4,6 +4,7 @@ import html
 import re
 import io
 import json
+from math import floor
 
 def swap(c, i, j):
 	c = list(c)
@@ -86,6 +87,7 @@ def check_classify(answer, answer_right, allowed, split_score=False,worth=False)
 	right=0
 	wrong=0
 	overall=0
+	print(split_score)
 	for group,content in answer.items():
 		for right_group,right_content in answer_right.items():
 			if group==right_group:
@@ -94,6 +96,7 @@ def check_classify(answer, answer_right, allowed, split_score=False,worth=False)
 				wrong+=len(set(content) - set(right_content))
 				break
 	if split_score:
+		print(right/(overall+wrong)*worth)
 		score=floor(right/(overall+wrong)*worth)
 		return score
 	elif right==overall:

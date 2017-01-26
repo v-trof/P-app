@@ -80,7 +80,7 @@ def save(request):
 		json_file = request.POST.get("json_file",None)
 		compiled_json = request.POST.get("compiled_material",None)
 		course_id = request.POST.get("course_id",None)
-		material_id = request.POST.get("material_id",None)
+		material_id = request.POST.get("material_id",False)
 		response = Material.save(json_file=json_file, course_id=course_id, material_id=material_id, user=request.user,compiled_json=compiled_json)
 		return HttpResponse(json.dumps(response), content_type="application/json")
 

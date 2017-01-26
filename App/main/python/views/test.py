@@ -61,7 +61,7 @@ def save(request):
 		json_file = request.POST.get("json_file", None)
 		compiled_json = request.POST.get("compiled_test", None)
 		course_id = request.POST.get("course_id", None)
-		test_id = request.POST.get("test_id", None)
+		test_id = request.POST.get("test_id", False)
 		message = Test.save(
 			json_file=json_file, compiled_json=compiled_json, course_id=course_id, test_id=test_id, user=request.user)
 		return HttpResponse(json.dumps(message), content_type="application/json")

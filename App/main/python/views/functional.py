@@ -29,7 +29,6 @@ import glob
 from http import cookies
 import collections
 
-
 class User_views():
 
 	def login(request):

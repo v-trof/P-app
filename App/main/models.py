@@ -508,7 +508,7 @@ class CourseManager(models.Manager):
 			bot=User.objects.get(id=bot_id)
 			string=bot.participation_list+str(course.id)+" "
 			setattr(bot, 'participation_list', string)
-			bot.save
+			bot.save()
 
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as json_file:
 			data = json.load(json_file)
@@ -2159,18 +2159,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Material():
 
 	def create(course_id):
-		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
-			course_info = json.load(data_file)
-			material_id = 1
-			for section, elements in course_info['sections']['published'].items():
-				for element in elements:
-					if element["type"] == "material":
-						material_id += 1
-			for unpublished in course_info['sections']['unpublished']:
-				if unpublished["type"] == "material":
-					material_id += 1
 		course = {"id": course_id}
-		material = {"id": str(material_id), "loaded": 0}
+		material = {"loaded": 0}
 		context = {"material": material, "course": course}
 		return context
 
@@ -2227,7 +2217,19 @@ class Material():
 					assignments_map, ensure_ascii=False))
 		return {"type":"success","message":"Материал удален"}
 
-	def save(json_file, compiled_json, course_id, material_id, user):
+	def save(json_file, compiled_json, course_id, user, material_id=False):
+		if not material_id:
+			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
+				course_info = json.load(data_file)
+				max=0
+				for section, elements in course_info['sections']['published'].items():
+					for element in elements:
+						if element["type"] == "material" and int(element["id"])>max:
+							max=int(element["id"])
+				for unpublished in course_info['sections']['unpublished']:
+					if unpublished["type"] == "material" and int(unpublished["id"])>max:
+						max=int(unpublished["id"])
+			material_id=str(max+1)
 		json_file = json.loads(json_file)
 		control_file= json.loads(compiled_json)
 		json_file["creator"] = user.id
@@ -2283,7 +2285,7 @@ class Material():
 				{"id": material_id, "type": "material"})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
-		return {"type":"success","message":"Материал сохранен"}
+		return {"type":"success","message":"Материал сохранен","id":material_id}
 
 	def load(course_id, material_id, type="public"):
 		with io.open('main/files/json/courses/' + course_id + '/materials/' + type + '/' + material_id + '.json', 'r', encoding='utf8') as json_file:
@@ -2389,18 +2391,8 @@ class Material():
 class Test():
 
 	def create(course_id):
-		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
-			course_info = json.load(data_file)
-			max=0
-			for section, elements in course_info['sections']['published'].items():
-				for element in elements:
-					if element["type"] == "test" and int(element["id"])>max:
-						max=int(element["id"])
-			for unpublished in course_info['sections']['unpublished']:
-				if unpublished["type"] == "test" and int(unpublished["id"])>max:
-					max=int(unpublished["id"])
 		course = {"id": course_id}
-		test = {"id": str(max+1), "loaded": 0}
+		test = {"loaded": 0}
 		context = {"test": test, "course": course}
 		return context
 
@@ -2467,8 +2459,19 @@ class Test():
 					assignments_map, ensure_ascii=False))
 		return {"type":"success","message":"Тест удален"}
 
-	def save(json_file, compiled_json, course_id, test_id, user):
-
+	def save(json_file, compiled_json, course_id, user, test_id=False):
+		if not test_id:
+			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
+				course_info = json.load(data_file)
+				max=0
+				for section, elements in course_info['sections']['published'].items():
+					for element in elements:
+						if element["type"] == "test" and int(element["id"])>max:
+							max=int(element["id"])
+				for unpublished in course_info['sections']['unpublished']:
+					if unpublished["type"] == "test" and int(unpublished["id"])>max:
+						max=int(unpublished["id"])
+			test_id=str(max+1)
 		json_file = json.loads(json_file)
 		control_file= json.loads(compiled_json)
 
@@ -2650,7 +2653,7 @@ class Test():
 				{"id": test_id, "type": "test"})
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'w+', encoding='utf8') as info_file:
 			info_file.write(json.dumps(course_info, ensure_ascii=False))
-		return {"type":"success","message":"Тест сохранен"}
+		return {"type":"success","message":"Тест сохранен", "id":test_id}
 
 	def load(course_id, test_id, type="public"):
 		with io.open('main/files/json/courses/' + course_id + '/tests/'+type+'/' + test_id + '.json', 'r', encoding='utf8') as json_file:
@@ -3162,6 +3165,7 @@ class Test():
 		elif question["type"]=="select" or question["type"]=="radio":
 			return check_selected(answer_right=str(question["answer"]), answer=str(question["user_answer"]), allowed=allowed_mistakes, split_score=False,worth=question["worth"])
 		elif question["type"]=="classify":
+			print(question["split_score"])
 			return check_classify(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes, split_score=question["split_score"],worth=question["worth"])
 		return check(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 
@@ -3203,6 +3207,7 @@ class Test():
 						question["result"] = "missed"
 						question["user_score"] = 0
 					else:
+						print(question)
 						status=Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"])
 						if status == "right" or isinstance(status,int) and status == question["worth"]:
 							right += 1
