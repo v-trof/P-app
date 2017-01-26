@@ -32,7 +32,7 @@ attempt.append_send = function(index, value) {
 }
 
 attempt.send_value = function(index, value, _success_cb, _error_cb) {
-  console.log(index);
+  console.log(index, value);
 
   if(typeof value != typeof "") {
     value = JSON.stringify(value);

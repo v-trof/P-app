@@ -13,6 +13,9 @@ generate.register.external('answer', 'checkbox', {
     var answers = [];
     var big  = false;
 
+    //unbinding
+    value = JSON.parse(JSON.stringify(value));
+
     value.forEach(function(pos) {
       var option = element_data.items[pos];
 

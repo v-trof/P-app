@@ -21,10 +21,13 @@ generate.register.external('answer', 'classify', {
     var items = [],
         classes = [];
 
+    //unbinding
+    value = JSON.parse(JSON.stringify(value));
+
     for(class_name in value) {
       for(var i = 0; i < value[class_name].length; i++) {
         if(value[class_name][i].length > 20 && reduce) {
-          value[class_name][i] = value[class_name][i].substring(0, 17).escape();
+          value[class_name][i] = value[class_name][i].substring(0, 16).escape();
           value[class_name][i] = value[class_name][i] + "...";
         } else {
           value[class_name][i] = value[class_name][i].escape();

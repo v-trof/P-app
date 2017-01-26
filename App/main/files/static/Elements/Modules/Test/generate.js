@@ -1098,48 +1098,6 @@ generate.register.edit('answer', 'textarea', {
   }
 });
 
-generate.register.edit('question', 'image', {
-  builder: function(value) {
-    var $new_edit = this.make_template();
-
-    var $file_input = $(loads.get("Elements/Inputs/file/"));
-
-    $new_edit.append($file_input);
-    var file_data = file_catcher.add($file_input);
-
-    if(defined(value.asset_id) || defined(value.url)) {
-      $file_input.find('.__text').text(value.file_name);
-      file_data.value.change(function() {
-        editor.assets.replace(value.asset_id, file_data);
-      });
-    }
-
-    if( ! defined(value.asset_id)) {
-      value.asset_id = editor.assets.add(file_data);
-    }
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    var value = {};
-    value.asset_id = editor.active_element.value.asset_id;
-
-    var event = editor.assets.get(value.asset_id);
-
-    if(defined(event)) {
-      value.file_name = editor.assets.get(value.asset_id).name;
-      value.href = URL.createObjectURL(event.files[0]);
-      value.url = undefined;
-    } else {
-      value.href = value.url || editor.active_element.value.href;
-      value.file_name = editor.active_element.value.file_name;
-    }
-
-    return value;
-  }
-});
-
 generate.register.edit('question', 'file', {
   builder: function(value) {
     var $new_edit = this.make_template();
@@ -1213,33 +1171,111 @@ generate.register.edit('question', 'text', {
   }
 });
 
-generate.register.element('answer', 'checkbox', {
+generate.register.edit('question', 'image', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    var $file_input = $(loads.get("Elements/Inputs/file/"));
+
+    $new_edit.append($file_input);
+    var file_data = file_catcher.add($file_input);
+
+    if(defined(value.asset_id) || defined(value.url)) {
+      $file_input.find('.__text').text(value.file_name);
+      file_data.value.change(function() {
+        editor.assets.replace(value.asset_id, file_data);
+      });
+    }
+
+    if( ! defined(value.asset_id)) {
+      value.asset_id = editor.assets.add(file_data);
+    }
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {};
+    value.asset_id = editor.active_element.value.asset_id;
+
+    var event = editor.assets.get(value.asset_id);
+
+    if(defined(event)) {
+      value.file_name = editor.assets.get(value.asset_id).name;
+      value.href = URL.createObjectURL(event.files[0]);
+      value.url = undefined;
+    } else {
+      value.href = value.url || editor.active_element.value.href;
+      value.file_name = editor.active_element.value.file_name;
+    }
+
+    return value;
+  }
+});
+
+generate.register.element('question', 'text', {
   show_in_items: true,
 
   builder: function(value) {
-
-    value.answer = value.answer || [];
-
     var $new_element = this.make_template(value);
-    value.items.forEach(function(label, index) {
-      var $new_checkbox = $(loads.get('Elements/Inputs/checkbox/'));
-      $new_checkbox.find('label').text(label);
-
-      if(value.answer.has(index)) {
-        $new_checkbox.find('input')[0].checked = true;
-      }
-
-      $new_element.append($new_checkbox);
-    });
+    $new_element.html('<div class="__value">' + value.text + '</div>');
 
     return $new_element;
   },
-
   sample: {
     value: {
-      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
-      answer: [1],
-      worth: 1
+      text: 'Текстовый вопрос'
+    }
+  }
+});
+
+generate.register.element('question', 'file', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $file_template = $(loads.get("Elements/card/file/exports.html"));
+
+    $file_template.attr("href", value.url);
+    $file_template.find(".__name").text(value.name);
+    $file_template.find(".__size").text(value.size);
+
+    $new_element.append($file_template);
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      name: "Файл для скачивания",
+      size: "3.21МБ",
+      pos: undefined,
+      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
+    }
+  }
+});
+
+generate.register.element('question', 'image', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $image = $(document.createElement('img'));
+
+    $image.attr("src", value.url || value.href);
+    $image.css('max-width', '100%');
+    $new_element.css({
+      'display': 'flex',
+      'align-items': 'center',
+      'justify-content': 'center'
+    });
+
+    $new_element.append($image);
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      url: "/media/samples/image.jpg"
     }
   }
 });
@@ -1353,6 +1389,37 @@ generate.register.element('answer', 'classify', {
   }
 });
 
+generate.register.element('answer', 'checkbox', {
+  show_in_items: true,
+
+  builder: function(value) {
+
+    value.answer = value.answer || [];
+
+    var $new_element = this.make_template(value);
+    value.items.forEach(function(label, index) {
+      var $new_checkbox = $(loads.get('Elements/Inputs/checkbox/'));
+      $new_checkbox.find('label').text(label);
+
+      if(value.answer.has(index)) {
+        $new_checkbox.find('input')[0].checked = true;
+      }
+
+      $new_element.append($new_checkbox);
+    });
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      items: ['Вариант 1', 'Вариант 2', 'Вариант 3'],
+      answer: [1],
+      worth: 1
+    }
+  }
+});
+
 generate.register.element('answer', 'radio', {
   show_in_items: true,
 
@@ -1432,44 +1499,72 @@ generate.register.element('answer', 'text', {
   }
 })
 
-generate.register.element('question', 'file', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $file_template = $(loads.get("Elements/card/file/exports.html"));
-
-    $file_template.attr("href", value.url);
-    $file_template.find(".__name").text(value.name);
-    $file_template.find(".__size").text(value.size);
-
-    $new_element.append($file_template);
-
-    return $new_element;
+generate.register.external('answer', 'checkbox', {
+  get_value: function($element) {
+    var answers = [];
+    $element.find('.m--checkbox').each(function(index, el) {
+      if(el.querySelector('input').checked) {
+        answers.push(index);
+      }
+    });
+    return answers;
   },
-  sample: {
-    value: {
-      name: "Файл для скачивания",
-      size: "3.21МБ",
-      pos: undefined,
-      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
+
+  get_summary: function(value, element_data) {
+    var answers = [];
+    var big  = false;
+
+    //unbinding
+    value = JSON.parse(JSON.stringify(value));
+
+    value.forEach(function(pos) {
+      var option = element_data.items[pos];
+
+      if(option.length > 20) {
+        option = option.substring(0, 17).escape();
+        option = option + "&hellip;";
+        big = true;
+      } else {
+        option = option.escape();
+      }
+
+      answers.push(option);
+    })
+
+    if(big) {
+      answers = answers.join('<br>');
+    } else {
+      answers = answers.join(', ');
     }
-  }
-});
 
-generate.register.element('question', 'text', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    $new_element.html('<div class="__value">' + value.text + '</div>');
-
-    return $new_element;
+    return answers;
   },
-  sample: {
-    value: {
-      text: 'Текстовый вопрос'
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
     }
+
+    if( ! Array.isArray(user_answer)) {
+      user_answer = [];
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('input').change(_change);
   }
 });
 
@@ -1496,10 +1591,13 @@ generate.register.external('answer', 'classify', {
     var items = [],
         classes = [];
 
+    //unbinding
+    value = JSON.parse(JSON.stringify(value));
+
     for(class_name in value) {
       for(var i = 0; i < value[class_name].length; i++) {
         if(value[class_name][i].length > 20 && reduce) {
-          value[class_name][i] = value[class_name][i].substring(0, 17).escape();
+          value[class_name][i] = value[class_name][i].substring(0, 16).escape();
           value[class_name][i] = value[class_name][i] + "...";
         } else {
           value[class_name][i] = value[class_name][i].escape();
@@ -1565,85 +1663,33 @@ generate.register.external('answer', 'classify', {
 
 //TODO fix attempt icon swap
 
-generate.register.element('question', 'image', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $image = $(document.createElement('img'));
-
-    $image.attr("src", value.url || value.href);
-    $image.css('max-width', '100%');
-    $new_element.css({
-      'display': 'flex',
-      'align-items': 'center',
-      'justify-content': 'center'
-    });
-
-    $new_element.append($image);
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      url: "/media/samples/image.jpg"
-    }
-  }
-});
-
-generate.register.external('answer', 'checkbox', {
+generate.register.external('answer', 'text', {
   get_value: function($element) {
-    var answers = [];
-    $element.find('.m--checkbox').each(function(index, el) {
-      if(el.querySelector('input').checked) {
-        answers.push(index);
-      }
-    });
-    return answers;
+    return $element.find('input').val();
   },
 
-  get_summary: function(value, element_data) {
-    var answers = [];
-    var big  = false;
+  get_summary: function(value) {
+    if( ! value) value = "";
 
-    value.forEach(function(pos) {
-      var option = element_data.items[pos];
-
-      if(option.length > 20) {
-        option = option.substring(0, 17).escape();
-        option = option + "&hellip;";
-        big = true;
-      } else {
-        option = option.escape();
-      }
-
-      answers.push(option);
-    })
-
-    if(big) {
-      answers = answers.join('<br>');
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
     } else {
-      answers = answers.join(', ');
+      value = value.escape();
     }
 
-    return answers;
+    return value;
   },
-
 
   to_answer: function(user_answer, right_answer, element_data) {
     var self = this.self;
 
     function make_DOM(answer) {
       element_data.answer = answer;
-
       var $element = self.element.build(element_data);
       $element.find('input').attr('disabled', 'disabled');
 
       return $element;
-    }
-
-    if( ! Array.isArray(user_answer)) {
-      user_answer = [];
     }
 
     return {
@@ -1653,7 +1699,15 @@ generate.register.external('answer', 'checkbox', {
   },
 
   observer: function($element, _change) {
-    $element.find('input').change(_change);
+    var timer;
+    var typing_interval = 1000;
+
+    $element.keydown(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        _change();
+      }, typing_interval);
+    });
   }
 });
 
@@ -1671,6 +1725,9 @@ generate.register.external('answer', 'radio', {
   get_summary: function(value, element_data) {
     var answers = [];
     var big  = false;
+
+    //unbinding
+    value = JSON.parse(JSON.stringify(value));
 
     value.forEach(function(pos) {
       var option = element_data.items[pos];
@@ -1720,54 +1777,6 @@ generate.register.external('answer', 'radio', {
 
   observer: function($element, _change) {
     $element.find('input').change(_change);
-  }
-});
-
-generate.register.external('answer', 'text', {
-  get_value: function($element) {
-    return $element.find('input').val();
-  },
-
-  get_summary: function(value) {
-    if( ! value) value = "";
-
-    if(value.length > 20) {
-      value = value.substring(0, 17).escape();
-      value += "&hellip;"
-    } else {
-      value = value.escape();
-    }
-
-    return value;
-  },
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    var timer;
-    var typing_interval = 1000;
-
-    $element.keydown(function() {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        _change();
-      }, typing_interval);
-    });
   }
 });
 
