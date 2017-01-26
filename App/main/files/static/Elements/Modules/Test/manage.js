@@ -20,6 +20,8 @@ test_manager.load = function(test) {
     test.templates.forEach(function(template) {
       editor.test_data.templates.push(template);
     });
+  } else {
+    $('.preview h2').html(test.title);
   }
 
   test.tasks.forEach(function(task, index) {
