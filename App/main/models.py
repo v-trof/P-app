@@ -536,8 +536,22 @@ class CourseManager(models.Manager):
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
 
+		files_grabbed = []
+		files_grabbed.extend(glob.glob('main/files/json/courses/' + str(course.id) + '/users/*/tests/results/*.json'))
+		for results in files_grabbed:
+			results_path=results.replace('\\','/')
+			with io.open(results_path, 'r', encoding='utf8') as data_file:
+				results=json.load(data_file)
+				results["unseen_by"]=[user.id]
+			with io.open(results_path, 'w', encoding='utf8') as data_file:
+				saving_data = json.dumps(results, ensure_ascii=False)
+				data_file.write(saving_data)
 
-		for test_path in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/*/*'):
+		files_grabbed = []
+		files_grabbed.extend(glob.glob('main/files/json/courses/' + str(course.id) + '/tests/control/*'))
+		files_grabbed.extend(glob.glob('main/files/json/courses/' + str(course.id) + '/tests/public/*'))
+
+		for test_path in files_grabbed:
 			test_path=test_path.replace('\\','/')
 			with io.open(test_path, 'r', encoding='utf8') as data_file:
 				test=json.load(data_file)
@@ -546,7 +560,11 @@ class CourseManager(models.Manager):
 				saving_data = json.dumps(test, ensure_ascii=False)
 				data_file.write(saving_data)
 
-		for material_path in glob.glob('main/files/json/courses/' + str(course.id) + '/materials/*/*'):
+		files_grabbed = []
+		files_grabbed.extend(glob.glob('main/files/json/courses/' + str(course.id) + '/materials/control/*'))
+		files_grabbed.extend(glob.glob('main/files/json/courses/' + str(course.id) + '/materials/public/*'))
+
+		for material_path in files_grabbed:
 			material_path=material_path.replace('\\','/')
 			with io.open(material_path, 'r', encoding='utf8') as data_file:
 				material=json.load(data_file)
@@ -2826,12 +2844,17 @@ class Test():
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
-			value["answer"] = item["answer"].copy()
 			value["items"] = item["items"].copy()
 			value["classes"] = item["classes"].copy()
 			if value["random"]:
 				rand.shuffle(value["classes"])
 				rand.shuffle(value["items"])
+			value["answer"] = {}
+			for key,val in item["answer"].items():
+				key_id=value["classes"].index(key)
+				value["answer"][key_id]=[]
+				for item in val:
+					value["answer"][key_id].append(value["items"].index(item))
 		return value
 
 	def build_answer(item, data):
@@ -2848,8 +2871,11 @@ class Test():
 		elif type == "checkbox":
 			item["answer"] = data["user_answer"]
 		elif type == "classify":
-			item["answer"] = data["user_answer"]
-
+			item["answer"] = {}
+			for key,val in data["user_answer"].items():
+				item["answer"][item["classes"][int(key)]]=[]
+				for l_item in val:
+					item["answer"][item["classes"][int(key)]].append(item["items"][l_item])
 		return item
 
 	def global_random(random,tasks):
@@ -2993,6 +3019,7 @@ class Test():
 								item["was_changed"]=True
 			if not "hidden" in task.keys():
 				if not task["user_answer"] == False:
+
 					local_task=tasks[task["real_ids"]["task_id"]].copy()
 					local_task["content"][task["real_ids"]["item_id"]]=Test.build_answer(
 						item=tasks[task["real_ids"]["task_id"]]["content"][task["real_ids"]["item_id"]].copy(), data=task.copy())
@@ -3038,7 +3065,14 @@ class Test():
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
 			if answer=="":
 				answer=False
-			data[question_id]["user_answer"] = answer
+			user_answer={}
+			if data[question_id]["type"]=="classify":
+				for key,val in answer.items():
+					key_id=data[question_id]["classes"].index(key)
+					user_answer[key_id]=[]
+					for item in val:
+						user_answer[key_id].append(data[question_id]["items"].index(item))
+			data[question_id]["user_answer"] = user_answer
 			data[question_id]["time"]=time
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -3165,7 +3199,6 @@ class Test():
 		elif question["type"]=="select" or question["type"]=="radio":
 			return check_selected(answer_right=str(question["answer"]), answer=str(question["user_answer"]), allowed=allowed_mistakes, split_score=False,worth=question["worth"])
 		elif question["type"]=="classify":
-			print(question["split_score"])
 			return check_classify(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes, split_score=question["split_score"],worth=question["worth"])
 		return check(answer_right=question["answer"], answer=question["user_answer"], allowed=allowed_mistakes)
 
