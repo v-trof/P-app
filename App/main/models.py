@@ -2846,15 +2846,10 @@ class Test():
 			value["user_score"] = 0
 			value["items"] = item["items"].copy()
 			value["classes"] = item["classes"].copy()
-			if value["random"]:
-				rand.shuffle(value["classes"])
-				rand.shuffle(value["items"])
-			value["answer"] = {}
-			for key,val in item["answer"].items():
-				key_id=value["classes"].index(key)
-				value["answer"][key_id]=[]
-				for item in val:
-					value["answer"][key_id].append(value["items"].index(item))
+			#if value["random"]:
+			#	rand.shuffle(value["classes"])
+			#	rand.shuffle(value["items"])
+			value["answer"] = item["answer"].copy()
 		return value
 
 	def build_answer(item, data):
@@ -2871,11 +2866,12 @@ class Test():
 		elif type == "checkbox":
 			item["answer"] = data["user_answer"]
 		elif type == "classify":
-			item["answer"] = {}
-			for key,val in data["user_answer"].items():
-				item["answer"][item["classes"][int(key)]]=[]
-				for l_item in val:
-					item["answer"][item["classes"][int(key)]].append(item["items"][l_item])
+			#item["answer"] = {}
+			#for key,val in data["user_answer"].items():
+			#	item["answer"][item["classes"][int(key)]]=[]
+			#	for l_item in val:
+			#		item["answer"][item["classes"][int(key)]].append(item["items"][l_item])
+			item["answer"] = data["user_answer"]
 		return item
 
 	def global_random(random,tasks):
@@ -3065,14 +3061,15 @@ class Test():
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/' + test_id + '.json', 'w', encoding='utf8') as json_file:
 			if answer=="":
 				answer=False
-			user_answer={}
-			if data[question_id]["type"]=="classify":
-				for key,val in answer.items():
-					key_id=data[question_id]["classes"].index(key)
-					user_answer[key_id]=[]
-					for item in val:
-						user_answer[key_id].append(data[question_id]["items"].index(item))
-			data[question_id]["user_answer"] = user_answer
+			data[question_id]["user_answer"]=answer
+			#user_answer={}
+			#if data[question_id]["type"]=="classify":
+			#	for key,val in answer.items():
+			#		key_id=data[question_id]["classes"].index(key)
+			#		user_answer[key_id]=[]
+			#		for item in val:
+			#			user_answer[key_id].append(data[question_id]["items"].index(item))
+			#data[question_id]["user_answer"] = user_answer
 			data[question_id]["time"]=time
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
