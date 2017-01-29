@@ -626,7 +626,7 @@ test_manager.upload_test = function(success_cb) {
     success: function(response) {
       notification.show(response["type"], response["message"]);
       django[type].id = response['id'];
-      console.log('NEW ID:', django[type].id, 'recived:', responce['id']);
+      console.log('NEW ID:', django[type].id, 'recived:', response['id']);
 
       if(django.current_type === 'test') {
         window.history.pushState('Редактирование ' + test_manager.packed_test.title, 'Редактирование ' + test_manager.packed_test.heading, '/test/edit/?course_id=' + django.course.id + '&test_id=' + django.test.id);
