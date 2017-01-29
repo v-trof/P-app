@@ -1,10 +1,12 @@
 @import "../../../../sass_vars/main.sass"
 
 .input.m--file
-	display: flex
-	flex-direction: row
-	flex-wrap: nowrap
-	align-items: center
-	margin-bottom: $margin--s
-	.__text
-		margin-left: $padding--s
+  display: flex
+  flex-direction: row
+  flex-wrap: nowrap
+  align-items: center
+  margin-bottom: $margin--s
+  &:last-child
+    margin-bottom: 0
+  .__text
+    margin-left: $padding--s
