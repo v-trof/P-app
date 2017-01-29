@@ -14,7 +14,9 @@ $(document).ready(function() {
     if(pull_put.is_pulled) {
       pull_put.puller.cancel();
     }
-    setTimeout(test_manager.publish_material, 200);
+    setTimeout(function() {
+      test_manager.save(test_manager.publish_material);
+    }, 200);
   });
 
   $("#test_unpublish").click(function(event) {

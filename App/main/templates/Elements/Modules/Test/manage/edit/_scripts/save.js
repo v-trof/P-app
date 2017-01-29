@@ -40,7 +40,10 @@ test_manager.upload_test = function(success_cb) {
   var type = django.current_type;
   formData.append("json_file", JSON.stringify(test_manager.packed_test));
   formData.append("course_id", django.course.id);
-  formData.append(type + "_id", django[type].id);
+  if(django[type] && django[type].id) {
+    formData.append(type + "_id", django[type].id);
+  }
+
   formData.append('csrfmiddlewaretoken', django.csrf_token);
 
   formData.append('compiled_' + type, JSON.stringify(serialized_test));
@@ -55,6 +58,7 @@ test_manager.upload_test = function(success_cb) {
     contentType: false,
     success: function(response) {
       notification.show(response["type"], response["message"]);
+      django[type].id = response['id'];
       if(django.current_type === 'test') {
         window.history.pushState('Редактирование ' + test_manager.packed_test.title, 'Редактирование ' + test_manager.packed_test.heading, '/test/edit/?course_id=' + django.course.id + '&test_id=' + django.test.id);
 
@@ -64,7 +68,9 @@ test_manager.upload_test = function(success_cb) {
         window.history.pushState('Редактирование ' + test_manager.packed_test.title, 'Редактирование ' + test_manager.packed_test.heading, '/material/edit/?course_id='+ django.course.id +'&material_id='+ django.material.id +'');
       }
 
-      if(success_cb) success_cb();
+      setTimeout(function() {
+        if(success_cb) success_cb();
+      }, 300);
     }
   });
 }

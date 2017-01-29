@@ -80,7 +80,6 @@ test_manager.publish_parse_material = function(test) {
         $("#test_publish").hide();
         $("#test_unpublish").show();
         popup.hide();
-        test_manager.save();
       },
       error: function(response) {
         notification.show(response["type"], response["message"]);

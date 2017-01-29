@@ -182,7 +182,6 @@ test_manager.publish_parse = function(test) {
         $("#" + django.current_type + "_publish").hide();
         $("#" + django.current_type + "_unpublish").show();
         popup.hide();
-        test_manager.save();
       },
       error: function(response) {
         notification.show(response["type"], response["message"]);
