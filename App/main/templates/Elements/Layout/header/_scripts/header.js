@@ -10,10 +10,11 @@ function header_build() {
     var $links = $(".header>.__breadcrumbs a");
     var $left = $(".header>.__back_btn");
     if($links.length > 2) {
-      var $source =$links.eq(1);
+      var $source = $links.eq(1);
     } else if($links.length == 2) {
       var $source = $links.eq(0);
     } else {
+        var $source = $links.eq(0);
         $(".header>.__back_btn").hide();
         $('.header>.__search').addClass('m--first')
     }
