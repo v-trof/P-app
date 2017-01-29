@@ -1,31 +1,34 @@
 function header_build() {
   $(".header>.__breadcrumbs").removeAttr('style');
-  $(".header>.__user").removeAttr('style');
+  $(".header>.__user-info").removeAttr('style');
+  $('.__back_btn').removeAttr('style');
+  var $left;
 
-  var breadcrumbs_width = $(".header>.__breadcrumbs").innerWidth();
-  var user_width = $(".header>.__user-info").innerWidth();
-  var max_width = Math.max(breadcrumbs_width, user_width);
-
-  console.log('b', breadcrumbs_width, 'u', user_width, 'm', max_width);
-
-  $(".header>.__breadcrumbs").css('width', max_width+10+"px");
-  $(".header>.__user-info").css('width', max_width+10+"px");
-
-  if(window.innerWidth < 768) {
-    $(".header>.__breadcrumbs svg").slice(1).hide();
-    $(".header>.__breadcrumbs svg").eq(0).click(function() {
-      window.location = $(".header>.__breadcrumbs a").eq(-2).attr('href');
-    });
-    $(".header>.__breadcrumbs a").eq(-1).click(function() {
-      window.location = $(".header>.__breadcrumbs a").eq(-2).attr('href');
-    });
-    $(".header>.__breadcrumbs a").hide();
-    $(".header>.__breadcrumbs a").eq(-1).show();
+  if(window.innerWidth > 768) {
+    var $left = $(".header>.__breadcrumbs");
   } else {
-    $(".header>.__breadcrumbs svg").slice(1).show();
-    $(".header>.__breadcrumbs a").show();
-    $(".header>.__breadcrumbs svg, .header>.__breadcrumbs a").unbind('click');
+    var $links = $(".header>.__breadcrumbs a");
+    var $left = $(".header>.__back_btn");
+    if($links.length > 2) {
+      var $source =$links.eq(1);
+    } else if($links.length == 2) {
+      var $source = $links.eq(0);
+    } else {
+        $(".header>.__back_btn").hide();
+        $('.header>.__search').addClass('m--first')
+    }
+    $(".header>.__back_btn>.__text").text($source.text());
+    $(".header>.__back_btn").attr('href', $source.attr('href'));
   }
+
+  var left_width = $left.innerWidth();
+  var user_width = $(".header>.__user-info").innerWidth();
+  var max_width = Math.max(left_width, user_width);
+
+  console.log('l', left_width, 'u', user_width, 'm', max_width);
+
+  $left.css('width', max_width+10+"px");
+  $(".header>.__user-info").css('width', max_width+10+"px");
 }
 
 $(window).resize(function(event) {

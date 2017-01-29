@@ -4,32 +4,47 @@
 @import "../__breadcrumbs/_styles/__breadcrumbs.sass"
 
 .header
-	display: flex
-	flex-direction: row
-	align-items: center
-	justify-content: space-between
-	position: fixed
-	top: 0
-	left: 0
-	width: 100%
-	padding: 0 $padding--s
-	color: $font__color--white
-	background: $color--main
-	z-index: 10
-	+box-shadow(2)
+  display: flex
+  flex-direction: row
+  align-items: center
+  justify-content: space-between
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  padding: 0 $padding--s
+  color: $font__color--white
+  background: $color--main
+  z-index: 10
+  +box-shadow(2)
 
-	&>*
-		height: $base*2 + $padding--s * 2
+  .__back_btn
+    display: none
+    border-radius: 0
+    svg
+      display: block
+      +square("s")
+      fill: darken($color--main, $darkness-delta__focus--percent)
+      transform: rotate(180deg)
+    .__text
+      margin-left: $margin--xs
+    @media all and (max-width: 767px)
+      display: flex
+      flex-direction: row
+      align-items: center
 
-	a, span
-		display: flex
-		align-items: center
-		padding: $padding--s $padding--m
-		font-weight: 400
-		color: $font__color--white
-		cursor: pointer
-		transition: $time--s
-		border-radius: $border--m
-		&:hover, &:focus
-			color: $font__color--white
-			background: rgba($white, $darkness-delta__focus)
+  &>*
+    height: $base*2 + $padding--s * 2
+
+  a, span
+    display: flex
+    align-items: center
+    padding: $padding--s $padding--m
+    font-weight: 400
+    color: $font__color--white
+    cursor: pointer
+    transition: $time--s
+    border-radius: $border--m
+    &:hover, &:focus
+      color: $font__color--white
+      background: rgba($white, $darkness-delta__focus)

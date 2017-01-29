@@ -1,16 +1,18 @@
 @import "../../../../../sass_vars/main.sass"
 
 .header > .__user-info
-	display: flex
-	align-items: center
-	justify-content: flex-end
+  display: flex
+  align-items: center
+  justify-content: flex-end
 
-	.__avatar
-		+square("s")
-		display: block
-		border-radius: 50%
-		margin-left: $padding--m
-	
-	.__name
-		color: $font__color--white
-		white-space: nowrap
+  .__avatar
+    +square("s")
+    display: block
+    border-radius: 50%
+    margin-left: $padding--m
+
+  .__name
+    color: $font__color--white
+    white-space: nowrap
+    @media all and (max-width: 767px)
+      display: none
