@@ -312,7 +312,7 @@ class Course_views():
 	def register(request, course_id):
 		if request.user.is_anonymous():
 			return redirect('/login/' + course_id)
-		code=request.GET.get('code',None)
+		code=request.GET.get('code',False)
 		course = Course.objects.get(id=course_id)
 		message = Course.objects.reg_user(user=request.user, course=course, code=code)
 		request.session['notifications']=message

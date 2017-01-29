@@ -911,23 +911,21 @@ class CourseManager(models.Manager):
 
 		if not code:
 			group="Нераспределенные"
-
 		with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'r', encoding='utf8') as data_file:
 			data = json.load(data_file)
-
 			#Пользователь уже зарегистрирован в курсе
 			if not user.id in data["users"]:
-
 				#Пользователь уже отправил заявку
+				print("ssdfsfddsf",code)
 				if not user.id in data["pending_users"]["Заявки"]:
 					is_invited = False
-
-					if user.id in data["teachers"]:
+					print("ssdfsfddsf",is_invited,code)
+					if str(user.id) in data["teachers"].keys():
 						return [{"type":"info","message":'Вы уже являетесь учителем в этом курсе'}]
-
+					print("ssdfsfddsf",is_invited,code)
 					#Проверка: ученик был приглашен
-
 					for c_group in data["pending_users"]:
+						print("ssdfsfddsf",is_invited,code)
 						if c_group != "Заявки" and c_group != "teachers":
 							if user.id in data["groups"][c_group].keys():
 								return [{"type":"info","message":'Вы уже состоите в этом курсе'}]
@@ -968,8 +966,8 @@ class CourseManager(models.Manager):
 								for teacher in data["teachers"]:
 									data["teachers"][teacher][
 										"new_users"].append(user.id)
+					print("ssdfsfddsf",is_invited,code)
 					#Проверка: открытый вход в группу
-
 					if not course.is_closed and not is_invited and not code:
 						group = "Нераспределенные"
 						data["groups"][group][str(user.id)] = {}
@@ -1038,14 +1036,14 @@ class CourseManager(models.Manager):
 							saving_data = json.dumps(data, ensure_ascii=False)
 							data_file.write(saving_data)
 
-				else: return [{"type":"info","message":"Вы уже отправили заявку в этот курс"}]
+				else: return {"type":"info","message":"Вы уже отправили заявку в этот курс"}
 
-			else: return [{"type":"info","message":"Вы уже состоите в этом курсе"}]
+			else: return {"type":"info","message":"Вы уже состоите в этом курсе"}
 
 		if request:
-			return [{"type":"success","message":"Вы успешно отправили заявку на вступление в курс"}]
+			return {"type":"info","message":"Вы успешно отправили заявку на вступление в курс"}
 
-		return [{"type":"success","message":"Вы были успешно зарегистрированы в курсе"}]
+		return {"type":"success","message":"Вы были успешно зарегистрированы в курсе"}
 
 
 	def exit(self,course,user):
@@ -2816,10 +2814,12 @@ class Test():
 		else: value["random"]=False
 		if item["subtype"] == "text":
 			value["answer"] = item["answer"]
+			value["answer"] = item["label"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
 		elif item["subtype"] == "textarea":
+			value["label"] = item["label"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
@@ -2926,6 +2926,7 @@ class Test():
 
 
 	def attempt(course_id, user, test_id):
+		
 		# creates or continues attempt
 		# loads test file
 		started=True
@@ -3015,7 +3016,8 @@ class Test():
 					for item in element["content"]:
 						if item["type"] == "answer" and "answer" in item.keys():
 							item.pop("answer", None)
-
+				with io.open('main/files/json/courses/' + course_id + '/users/' + str(user.id) + '/tests/attempts/test.json', 'w+', encoding='utf8') as json_file:
+					json_file.write(json.dumps(test, ensure_ascii=False))
 				test["json"]["tasks"]=Test.compile_tasks(tasks=test["json"]["tasks"].copy(),attempt_data=data)
 				context = {"test": test, "course": course, "attempt":data}
 				context["breadcrumbs"] = [{

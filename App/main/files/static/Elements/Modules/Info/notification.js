@@ -82,17 +82,3 @@ $(document).ready(function() {
   });
   }
 });
-// {% for notification in request.session.notifications %}
-//
-//   {% if notification.type %}
-//     notification.show(
-//       '{{notification.type}}',
-//       '{{notification.message}}'
-//     );
-//
-//   {% else %}
-//     notification.show('success', '{{notification.text}}');
-//   {% endif %}
-//
-
-// {% endfor %}

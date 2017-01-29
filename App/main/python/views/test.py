@@ -132,7 +132,7 @@ def attempt(request):
 			"href": "#",
 			"link": "Попытка"
 		}]
-		return render(request, 'Pages/Test/attempt/main/exports.html', context)
+		return render(request, 'Pages/Test/Attempt/main/exports.html', context)
 	else:
 		request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
 		return redirect('/')
