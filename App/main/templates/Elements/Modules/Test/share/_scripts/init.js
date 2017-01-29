@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function() {setTimeout(function() {
   var request = function(search) {
     //getting types
     var query = search.$.find('.__query').val();
@@ -160,4 +160,5 @@ $(document).ready(function() {
     return $tags;
   }
 
-});
+//delayed init
+}, 1000);});

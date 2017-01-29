@@ -1,7 +1,9 @@
-@import "../../../../../sass_vars/main.sass"
+@import "../../../../../../sass_vars/main.sass"
 
 .preview .__task
   .generate-item
     margin-bottom: $margin--s
+    &[subtype='image']
+      display: block //ie fix
     &:last-child
       margin-bottom: 0

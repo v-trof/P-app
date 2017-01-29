@@ -48,8 +48,6 @@ test_manager.upload_test = function(success_cb) {
 
   formData.append('compiled_' + type, JSON.stringify(serialized_test));
 
-  console.log('SAVING:', formData.getAll('compiled_'+type), serialized_test, test_manager.packed_test);
-
   $.ajax({
     type:"POST",
     url:"/" + django.current_type + "/save/",
