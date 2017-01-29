@@ -506,7 +506,10 @@ class CourseManager(models.Manager):
 		bot_ids=[3,4,5,6]
 		for bot_id in bot_ids:
 			bot=User.objects.get(id=bot_id)
-			string=bot.participation_list+str(course.id)+" "
+			if len(bot.participation_list)>0:
+				string=bot.participation_list+' '+str(course.id)
+			else:
+				string=str(course.id)
 			setattr(bot, 'participation_list', string)
 			bot.save()
 
@@ -923,6 +926,7 @@ class CourseManager(models.Manager):
 						return [{"type":"info","message":'Вы уже являетесь учителем в этом курсе'}]
 
 					#Проверка: ученик был приглашен
+
 					for c_group in data["pending_users"]:
 						if c_group != "Заявки" and c_group != "teachers":
 							if user.id in data["groups"][c_group].keys():
@@ -930,6 +934,24 @@ class CourseManager(models.Manager):
 						if code in data["pending_users"][c_group]:
 							group=c_group
 							is_invited = True
+							if code in data["pending_users"][group] and not group == "teachers":
+								if user.participation_list:
+									try:
+										setattr(user, 'participation_list',
+											user.participation_list + " " + str(course.id))
+									except:
+										setattr(user, 'participation_list', str(course.id))
+								else:
+									setattr(user, 'participation_list', str(course.id))
+								user.save()
+							elif code in data["pending_users"][group] and group == "teachers":
+								setattr(user, 'is_teacher', True)
+								if user.courses:
+									setattr(user, 'courses',
+											user.courses + " " + str(course.id))
+								else:
+									setattr(user, 'courses', str(course.id))
+								user.save()
 							if group == "teachers":
 								data["teachers"][str(user.id)] = {}
 								data["users"].append(user.id)
@@ -971,27 +993,6 @@ class CourseManager(models.Manager):
 					elif course.is_closed and not code:
 						request=True
 						data["pending_users"]["Заявки"].append(user.id)
-
-					#Пользователь был приглашен
-					elif code in data["pending_users"][group] and not group == "teachers":
-						if user.participation_list:
-							try:
-								setattr(user, 'participation_list',
-										user.participation_list + " " + str(course.id))
-							except:
-								setattr(user, 'participation_list', str(course.id))
-						else:
-							setattr(user, 'participation_list', str(course.id))
-						user.save()
-
-					elif code in data["pending_users"][group] and group == "teachers":
-						setattr(user, 'is_teacher', True)
-						if user.courses:
-							setattr(user, 'courses',
-									user.courses + " " + str(course.id))
-						else:
-							setattr(user, 'courses', str(course.id))
-						user.save()
 
 					with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as json_file:
 						saving_data = json.dumps(data, ensure_ascii=False)
@@ -2337,6 +2338,19 @@ class Material():
 
 	def publish(course_id, material_id, section):
 		# makes material visible in course screen
+
+		if not material_id or len(material_id)==0:
+			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
+				course_info = json.load(data_file)
+				max=0
+				for section, elements in course_info['sections']['published'].items():
+					for element in elements:
+						if element["type"] == "material" and int(element["id"])>max:
+							max=int(element["id"])
+				for unpublished in course_info['sections']['unpublished']:
+					if unpublished["type"] == "material" and int(unpublished["id"])>max:
+						max=int(unpublished["id"])
+			material_id=str(max+1)
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
@@ -2688,6 +2702,19 @@ class Test():
 
 	def publish(course_id, test_id, publish_data):
 		# makes test visible in course screen
+		print(test_id)
+		if not test_id or len(test_id)==0:
+			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
+				course_info = json.load(data_file)
+				max=0
+				for section, elements in course_info['sections']['published'].items():
+					for element in elements:
+						if element["type"] == "test" and int(element["id"])>max:
+							max=int(element["id"])
+				for unpublished in course_info['sections']['unpublished']:
+					if unpublished["type"] == "test" and int(unpublished["id"])>max:
+						max=int(unpublished["id"])
+			test_id=str(max+1)
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 		it=0

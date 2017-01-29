@@ -30,7 +30,7 @@ share.edit.parse = function($edit) {
      $edit.find('.share_templates input')[0].checked) {
       share_data.assets.templates = true;
       share_data.templates_number = true;
-      if (django.material.id)
+      if (defined(django.material))
         share_data.assets.material_id = django.material.id;
       else  share_data.assets.test_id = django.test.id;
   }
