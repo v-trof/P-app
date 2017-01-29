@@ -1,0 +1,23 @@
+<div class="request">
+  <div>Запрос на копирование из библиотеки</div>
+
+  {# include extension for copying #}
+
+  <div class='row __actions'>
+    <button class="m--flat" id="button_accept"
+      data-course-inheritor-id="{{u_request.course_id}}"
+      data-user-id="{{u_request.user_id}}"
+      data-shared-id="{{u_request.shared_id}}"
+      data-type="sharing">
+        Принять
+    </button>
+
+    <button class="m--flat m--negative" id="button_decline"
+      data-course-inheritor-id="{{u_request.course_id}}"
+      data-user-id="{{u_request.user_id}}"
+      data-shared-id="{{u_request.shared_id}}"
+      data-type="sharing">
+        Отклонить
+    </button>
+  </div>
+</div>

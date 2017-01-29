@@ -1,13 +1,14 @@
 {% load ext_humanize %}
 <span>
-  Оценка 
+  Оценка
   <b class='m--{{result.mark.quality}}'>{{result.mark.value}}</b>
-  за 
+  за
 </span>
 
 <a class="__link" href="/test/attempt/results?course_id={{result.course.id}}&test_id={{result.test.id}}&user_id={{result.user.id}}">
   {{result.test.title}}
 </a>
-<br>
-<span class="__percentage">{{ result.right_answers|of:result.questions_overall|safe }}</span>
 
+<br>
+
+<span class="__percentage">{{ result.right_answers|of:result.questions_overall|safe }}</<span>

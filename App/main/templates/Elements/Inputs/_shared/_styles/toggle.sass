@@ -1,28 +1,30 @@
 @import "../../../../sass_vars/main.sass"
 
 label
-	&.m--checkbox, &.m--radio
-		display: flex
-		flex-direction: row
-		align-items: center
-		margin-bottom: $margin--s
-		
-		.__box
-			display: flex
-			align-items: center
-			justify-content: center
-			+square("s")
-			margin-right: $margin--s
-			border: $font__color--grey solid $border--s
-			transition: $time--s
+  &.m--checkbox, &.m--radio
+    display: flex
+    flex-direction: row
+    align-items: center
+    margin-bottom: $margin--s
+    &:last-child
+      margin-bottom: 0
 
-		label
-			display: block
+    .__box
+      display: flex
+      align-items: center
+      justify-content: center
+      +square("s")
+      margin-right: $margin--s
+      border: $font__color--grey solid $border--s
+      transition: $time--s
 
-		input
-			display: none
-			&:focus
-				& ~ .__box
-					border-color: $color--accent
-			&:disabled ~ .__box, &:disabled:checked ~ .__box
-				border-color: $grey--semilight
+    label
+      display: block
+
+    input
+      display: none
+      &:focus
+        & ~ .__box
+          border-color: $color--accent
+      &:disabled ~ .__box, &:disabled:checked ~ .__box
+        border-color: $grey--semilight

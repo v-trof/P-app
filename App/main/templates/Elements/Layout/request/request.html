@@ -1,21 +1,7 @@
 {% if u_request.type == "reset" %}
-<div class="request row">
-запрос на пересдачу теста
-	{% include "Pages/course/updates/_extensions/result_preview/" with result=u_request.test.results %}
-	<button class="m--flat" id="button_accept" data-user-id="{{u_request.user_id}}" data-test-id="{{u_request.test.id}}" data-type="reset">Принять</button>
-	<button class="m--flat m--negative" id="button_decline" data-user-id="{{u_request.user_id}}" data-test-id="{{u_request.test.id}}" data-type="reset">Отклонить</button>
-</div>
+  {% include "#&/__reset/" %}
 {% elif u_request.type == "sharing" %}
-<div class="request row">
-запрос на копирование из библиотеки
-	{# include extension for copying #}
-	<button class="m--flat" id="button_accept" data-course-inheritor-id="{{u_request.course_id}}" data-user-id="{{u_request.user_id}}" data-shared-id="{{u_request.shared_id}}" data-type="sharing">Принять</button>
-	<button class="m--flat m--negative" id="button_decline" data-course-inheritor-id="{{u_request.course_id}}" data-user-id="{{u_request.user_id}}" data-shared-id="{{u_request.shared_id}}" data-type="sharing">Отклонить</button>
-</div>
+  {% include "#&/__share/" %}
 {% else %}
-запрос на вступление в курс
-<div class="request row">
-	<button class="m--flat" id="button_accept" data-user-id="{{u_request.user_id}}" data-type="request">Принять</button>
-	<button class="m--flat m--negative" id="button_decline" data-user-id="{{u_request.user_id}}" data-type="request">Отклонить</button>
-</div>
+  {% include "#&/__join/" %}
 {% endif %}

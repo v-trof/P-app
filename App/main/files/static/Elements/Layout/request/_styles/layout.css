@@ -1,1 +1,1 @@
-.request{width:100%;height:100%;display:-webkit-box;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;-webkit-box-pack:end;justify-content:flex-end;-webkit-box-align:center;align-items:center}.request button{margin-bottom:0}
+.request{width:100%;height:100%;display:block}.request .__actions{-webkit-box-align:center;align-items:center}.request .__description{margin-bottom:.375rem}.request button{margin-bottom:0}
