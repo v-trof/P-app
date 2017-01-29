@@ -71,7 +71,7 @@ class User_views():
 			is_teacher = request.POST.get('is_teacher', False)
 			password = request.POST['password']
 			name_last_name = request.POST['name_last_name']
-			if request.POST.get('course_reg',False) == True:
+			if request.POST.get('course_reg',False) == "true":
 				message = User.objects.reg(request=request, code=code, course_id=course_id, email=email,
 									   is_teacher=is_teacher, password=password, name_last_name=name_last_name)
 			else: message = User.objects.reg(request=request, email=email,
