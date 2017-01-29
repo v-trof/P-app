@@ -3,7 +3,7 @@
                "Modules/Test/generate/data/task",
                "Modules/Test/manage",
                "button"],
-  "scripts": ["Pages/Test/Attempt/_shared/adapt_layout"],
+  "scripts": [],
   "template": "default",
   "title": "Просмотр материала"
 }
