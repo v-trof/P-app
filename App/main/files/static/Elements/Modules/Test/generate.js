@@ -38,6 +38,21 @@ generate.register = {
   }
 }
 
+/**
+ * Returns general blueprints of this subtype (data[type][subtype])
+ * @method get_blueprints
+ * @param  {$} element element to parse
+ * @return {Object} blueprints
+ */
+generate.get_blueprints = function(element) {
+  //to jq
+  var $element = $(element);
+  var type = $element.attr('type');
+  var subtype = $element.attr('subtype');
+
+  return generate.data[type][subtype];
+}
+
 generate.register.edit = function(type, subtype, edit_data) {
   if (!(type && subtype)) return false;
 
@@ -219,21 +234,6 @@ generate.register.external = function(type, subtype, external_data) {
 generate.register.task = function(subtype, task_data) {
   var data = this.bind_data('task', subtype, 'element', task_data);
   data.build = task_data.builder;
-}
-
-/**
- * Returns general blueprints of this subtype (data[type][subtype])
- * @method get_blueprints
- * @param  {$} element element to parse
- * @return {Object} blueprints
- */
-generate.get_blueprints = function(element) {
-  //to jq
-  var $element = $(element);
-  var type = $element.attr('type');
-  var subtype = $element.attr('subtype');
-
-  return generate.data[type][subtype];
 }
 
 /**
@@ -876,6 +876,71 @@ generate.register.edit('answer', 'checkbox', {
   }
 });
 
+generate.register.edit('answer', 'radio', {
+  random_possible: true,
+  builder: function(value) {
+    var $new_edit = this.make_template();
+    var group = generate.counter.radio++;
+
+    var create_field = function(label) {
+      var $radio = $(loads.get('Elements/Inputs/radio/'));
+      var $input = render.inputs.text('', '', label);
+
+      var $field = $("<div class='__edit_item'></div>");
+
+      $radio.find('input').attr('name', "new_radio_" + group);
+
+      $field.append($radio).append($input);
+      button_delete.add($field);
+
+      return $field;
+    }
+
+    if(value.items && value.items.length) {
+      value.items.forEach(function(label, index) {
+        var $field = create_field(label);
+
+        $new_edit.append($field);
+        if(value.answer.has(index)) {
+          $field.find('[type="radio"]')[0].checked = true;
+        }
+      });
+    } else {
+      $new_edit.append(create_field());
+    }
+
+
+    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
+
+    $new_edit.append($add_option);
+
+    $add_option.click(function() {
+      $add_option.before(create_field());
+    });
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      items: [],
+      answer: []
+    }
+
+    $edit.find(".m--radio").each(function(index, el) {
+      var label = $(el).siblings().find(".__value").val();
+
+      value.items.push(label);
+
+      if($(el).find("input").is(":checked")) {
+        value.answer.push(index);
+      }
+    });
+
+    return value;
+  }
+});
+
 generate.register.edit('answer', 'classify', {
   random_possible: true,
   split_score_possible: true,
@@ -980,71 +1045,6 @@ generate.register.edit('answer', 'classify', {
       classes: classes,
       answer: answer
     }
-  }
-});
-
-generate.register.edit('answer', 'radio', {
-  random_possible: true,
-  builder: function(value) {
-    var $new_edit = this.make_template();
-    var group = generate.counter.radio++;
-
-    var create_field = function(label) {
-      var $radio = $(loads.get('Elements/Inputs/radio/'));
-      var $input = render.inputs.text('', '', label);
-
-      var $field = $("<div class='__edit_item'></div>");
-
-      $radio.find('input').attr('name', "new_radio_" + group);
-
-      $field.append($radio).append($input);
-      button_delete.add($field);
-
-      return $field;
-    }
-
-    if(value.items && value.items.length) {
-      value.items.forEach(function(label, index) {
-        var $field = create_field(label);
-
-        $new_edit.append($field);
-        if(value.answer.has(index)) {
-          $field.find('[type="radio"]')[0].checked = true;
-        }
-      });
-    } else {
-      $new_edit.append(create_field());
-    }
-
-
-    var $add_option = $("<button class='__add_option'>Ещё вариант</button>");
-
-    $new_edit.append($add_option);
-
-    $add_option.click(function() {
-      $add_option.before(create_field());
-    });
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    var value = {
-      items: [],
-      answer: []
-    }
-
-    $edit.find(".m--radio").each(function(index, el) {
-      var label = $(el).siblings().find(".__value").val();
-
-      value.items.push(label);
-
-      if($(el).find("input").is(":checked")) {
-        value.answer.push(index);
-      }
-    });
-
-    return value;
   }
 });
 
@@ -1377,6 +1377,54 @@ generate.register.external('answer', 'classify', {
 
 //TODO fix attempt icon swap
 
+generate.register.external('answer', 'text', {
+  get_value: function($element) {
+    return $element.find('input').val();
+  },
+
+  get_summary: function(value) {
+    if( ! value) value = "";
+
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
+    } else {
+      value = value.escape();
+    }
+
+    return value;
+  },
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    var timer;
+    var typing_interval = 1000;
+
+    $element.keydown(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        _change();
+      }, typing_interval);
+    });
+  }
+});
+
 generate.register.external('answer', 'radio', {
   get_value: function($element) {
     var answers = [];
@@ -1443,54 +1491,6 @@ generate.register.external('answer', 'radio', {
 
   observer: function($element, _change) {
     $element.find('input').change(_change);
-  }
-});
-
-generate.register.external('answer', 'text', {
-  get_value: function($element) {
-    return $element.find('input').val();
-  },
-
-  get_summary: function(value) {
-    if( ! value) value = "";
-
-    if(value.length > 20) {
-      value = value.substring(0, 17).escape();
-      value += "&hellip;"
-    } else {
-      value = value.escape();
-    }
-
-    return value;
-  },
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    var timer;
-    var typing_interval = 1000;
-
-    $element.keydown(function() {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        _change();
-      }, typing_interval);
-    });
   }
 });
 

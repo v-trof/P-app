@@ -908,7 +908,7 @@ class CourseManager(models.Manager):
 	def reg_user(self, course, user, code=False):
 
 		request=False
-
+		print("reg",code)
 		if not code:
 			group="Нераспределенные"
 
@@ -1808,6 +1808,7 @@ class UserManager(UserManager):
 			user = authenticate(username=email, password=password)
 			auth(request, user)
 			request.session.set_expiry(36000)
+			print("reg",code,course_id)
 			if course_id:
 				course = Course.objects.get(id=course_id)
 				Course.objects.reg_user(course=course, user=user,code=code)
@@ -2975,7 +2976,6 @@ class Test():
 										test.append(value)
 				data = test
 				json_file.write(json.dumps(test, ensure_ascii=False))
-
 		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as json_file:
 			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:  
 				course_info = json.load(info_file)
