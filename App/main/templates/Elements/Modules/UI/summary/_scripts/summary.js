@@ -19,6 +19,8 @@ summary.make = function (test, attempt, make_summary_item) {
       global_answer_pos+=1;
       var value;
       var $new_summary;
+      var $current_task = $(this).parent().parent();
+      console.log($current_task);
 
       item_it+=1; //step after last found
       while (test.tasks[task_index].content[item_it].type !== "answer") {
@@ -40,7 +42,8 @@ summary.make = function (test, attempt, make_summary_item) {
                                            attempt[real_index]);
       panel.content.append($new_summary);
 
-      scroll.wire($new_summary, $(this).parent().parent());
+
+      scroll.wire($new_summary, $current_task);
     });
   });
 }

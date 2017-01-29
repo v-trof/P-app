@@ -63,7 +63,8 @@ if(loads['request.session.notifications|safe']) {
 }
 
 $(document).ready(function() {
-  if(notification.deffered) {
+  if(notification.deffered && notification.deffered.length
+     && notification.deffered instanceof Array) {
     notification.deffered.forEach(function(info) {
       if(! info.type) {
         info.type = 'success';
