@@ -23,7 +23,9 @@ var panel = (function() {
       if (_callback) {
         _callback()
       }
-
+      if (typeof tooltip !== 'undefined') {
+        tooltip.hide();
+      }
       $all.css('transform', 'none');
     },
     hide: function() {

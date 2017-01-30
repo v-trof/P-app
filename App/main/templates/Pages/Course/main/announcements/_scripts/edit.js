@@ -4,17 +4,30 @@ $(document).ready(function() {
   $(".announcements").on("click", ".card", function() {
     var $original = $(this);
     popup.show('{% include "Pages/Course/main/_popup_texts/add_announcement/exports.html" %}', function() {
-      
+
       var today = new Date();
 
       $('.__due-date input').pickmeup({
         format: 'd-m-Y',
         min: today
-      })
+      }).click(function() {
+        var rect = $('.pickmeup')[0].getBoundingClientRect();
+        console.log(rect);
+        if(rect.left + rect.width > window.innerWidth
+        || rect.top + rect.height > window.innerHeight) {
+          $('.pickmeup')
+            .removeAttr('style')
+            .css({
+              'top': (window.innerHeight - rect.height)/2 + 'px',
+              'border': '1px solid #f5f5f5'
+            })
+            .show();
+        }
+      });
 
       //change to edit & autofill
       $("#add_el").text("Сохранить");
-      
+
       $('#due_date').val($original.attr('due-date'));
       $('.announcement_text').html(
         $original.find(".__content").html()).focus();
@@ -51,7 +64,7 @@ $(document).ready(function() {
             }
           },
           error: function() {
-            notification.show('error','Произошла ошибка');            
+            notification.show('error','Произошла ошибка');
           }
         });
       });

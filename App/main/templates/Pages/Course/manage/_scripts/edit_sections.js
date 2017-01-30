@@ -63,7 +63,7 @@ $(document).ready(function() {
       }
     });
   }
-  
+
   section_editor.init({
     $parent: $('.tests-materials'),
     $section_template: $('<section class="course-part"><h3></h3></section>'),
@@ -77,6 +77,9 @@ $(document).ready(function() {
   });
 
   $(".tests-materials").children(section_selector).each(function(index, el) {
-    accordion.add($(this), heading_selector);  
+    accordion.add($(this), heading_selector);
   });
+  setTimeout(function() {
+    section_editor.$unordered.hide();
+  }, 100);
 });

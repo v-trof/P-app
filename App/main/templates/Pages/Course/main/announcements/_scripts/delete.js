@@ -17,7 +17,7 @@ function announcement_delete(id) {
     },
     error: function(data) {
       // console.log(data);
-      notification.show('error','Произошла ошибка');            
+      notification.show('error','Произошла ошибка');
     }
   });
 }

@@ -26,6 +26,10 @@ var popup = (function() {
         $popup.find("input").first().focus();
       }
 
+      if (typeof tooltip !== 'undefined') {
+        tooltip.hide();
+      }
+
       if (_callback) {
         _callback();
       }
@@ -36,7 +40,7 @@ var popup = (function() {
       $popup.find('__modal').removeAttr('style');
 
       if (typeof tooltip !== 'undefined') {
-        tooltip.hide()
+        tooltip.hide();
       }
       if (typeof context_menu !== 'undefined') {
         context_menu.hide()
@@ -45,7 +49,7 @@ var popup = (function() {
       setTimeout(function() {
         $popup.addClass('m--hidden');
         $popup.find(".__content").html('');
-        
+
       }, 300);
     }
   }
