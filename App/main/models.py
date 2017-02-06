@@ -2814,7 +2814,7 @@ class Test():
 		else: value["random"]=False
 		if item["subtype"] == "text":
 			value["answer"] = item["answer"]
-			value["answer"] = item["label"]
+			value["label"] = item["label"]
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
 			value["user_score"] = 0
@@ -3274,7 +3274,6 @@ class Test():
 							test_results["right"].append(question_id)
 							question["result"] = "right"
 							question["user_score"] = question["worth"]
-							score+=question["worth"]
 						elif status == "forgiving" or isinstance(status,int) and status < question["worth"] and status>0:
 							forgiving += 1
 							test_results["forgiving"].append(question_id)
