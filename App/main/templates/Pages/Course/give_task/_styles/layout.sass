@@ -1,24 +1,28 @@
 @import "../../../../sass_vars/main.sass"
 
 .row
-	align-items: top
-	flex-wrap: wrap
-	min-height: $base*2
-	h4.__heading
-		margin: 0
-	.card.m--small
-		margin-bottom: $padding--s
-		margin-left: $padding--s
-	&.m--nowrap
-		flex-wrap: nowrap
+  align-items: top
+  flex-wrap: wrap
+  min-height: $base*2
+  h4.__heading
+    margin: $padding--s 0
+  &.m--nowrap
+    flex-wrap: nowrap
+
+#assignment--new__tests, #assignment--new__materials
+  button
+    margin: $padding--s 0
+  .card.m--small
+    margin-bottom: $padding--s
+    margin-left: $padding--s
 
 #assignment--new__traditional
-	.__heading
-		margin: 0
-	.card
-		margin-bottom: $margin--s
-		&:last-child
-			margin: 0
+  .__heading
+    margin: 0
+  .card
+    margin-bottom: $margin--s
+    &:last-child
+      margin: 0
 
 .card.m--small
-	cursor: pointer
+  cursor: pointer

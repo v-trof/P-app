@@ -1,33 +1,33 @@
 @import "../../../../sass_vars/main.sass"
 
 .preview
-	display: flex
-	flex-direction: column
-	align-items: center
-	width: 100%
-	overflow-y: scroll
-	overflow-x: hidden
-	padding: 0 $padding--m
-	margin-left: 16px !important
-	&>h2.__heading
-		margin-bottom: 0
-	&>.__heading
-		min-width: 4rem
-		text-align: center
-		border-bottom: $border--s solid $grey--semilight
-		transition: $time--s
-		&:hover, &:focus
-			border-bottom: $border--s solid $font__color--accent
-		&:empty:before
-		  content: "Название теста..."
-		  color: lighten($font__color--grey, 15%)
-		  display: block /* For Firefox */
-	&>.__content
-		width: 100%
-		max-width: 50rem + $padding--s*2
-		.__put-margin
-			height: $margin--l
-		.__task
-			margin: 0
-		.__task:last-child
-			margin-bottom: $margin--xl
+  display: flex
+  flex-direction: column
+  align-items: center
+  width: 100%
+  overflow-y: scroll
+  overflow-x: hidden
+  padding: 0 $padding--m
+  // margin-left: 16px !important
+  &>h2.__heading
+    margin-bottom: 0
+  &>.__heading
+    min-width: 4rem
+    text-align: center
+    border-bottom: $border--s solid $grey--semilight
+    transition: $time--s
+    &:hover, &:focus
+      border-bottom: $border--s solid $font__color--accent
+    &:empty:before
+      content: "Название теста..."
+      color: lighten($font__color--grey, 15%)
+      display: block /* For Firefox */
+  &>.__content
+    width: 100%
+    max-width: 50rem + $padding--s*2
+    .__put-margin
+      height: $margin--l
+    .__task
+      margin: 0
+    .__task:last-child
+      margin-bottom: $margin--xl

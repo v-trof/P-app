@@ -18,7 +18,14 @@ function header_build() {
         $(".header>.__back_btn").hide();
         $('.header>.__search').addClass('m--first')
     }
-    $(".header>.__back_btn>.__text").text($source.text());
+      var new_text = $source.text();
+
+      console.log('n_t', new_text.length);
+      if(new_text && new_text.length > 11) {
+        new_text = new_text.substring(0, 8) + '...';
+      }
+
+      $(".header>.__back_btn>.__text").text(new_text);
     $(".header>.__back_btn").attr('href', $source.attr('href'));
   }
 
