@@ -14,7 +14,9 @@
 
 <script>
   window.onload = function() {
-    // console.log('load');
+    if (document.documentMode || /Edge/.test(navigator.userAgent)) {
+      $('body').append('<style>a, a *{transition: none !important}</style>');
+    }
     setTimeout(function() {
       document.getElementById("svgfix").innerHTML = '';
     }, 100);
