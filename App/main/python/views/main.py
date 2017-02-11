@@ -162,7 +162,7 @@ class Course_group():
 			course=course, user=request.user)
 		context["tasks_info"] = Marks.tasks_info(course_id=course_id)
 		context["course"] = Course.objects.get(id=course_id)
-		context["breadcrumbs"] = [{"href": "/course/" + str(course.id), "link": course.name},{"href": "#", "link": "Обновления"}]
+		context["breadcrumbs"] = [{"href": "/course/" + str(course.id), "link": course.name},{"href": "#", "link": "Оповещения"}]
 		return render(request, 'Pages/Course/updates/exports.html', context)
 
 	def sources(request, course_id):
