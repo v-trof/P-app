@@ -916,16 +916,12 @@ class CourseManager(models.Manager):
 			#Пользователь уже зарегистрирован в курсе
 			if not user.id in data["users"]:
 				#Пользователь уже отправил заявку
-				print("ssdfsfddsf",code)
 				if not user.id in data["pending_users"]["Заявки"]:
 					is_invited = False
-					print("ssdfsfddsf",is_invited,code)
 					if str(user.id) in data["teachers"].keys():
 						return [{"type":"info","message":'Вы уже являетесь учителем в этом курсе'}]
-					print("ssdfsfddsf",is_invited,code)
 					#Проверка: ученик был приглашен
 					for c_group in data["pending_users"]:
-						print("ssdfsfddsf",is_invited,code)
 						if c_group != "Заявки" and c_group != "teachers":
 							if user.id in data["groups"][c_group].keys():
 								return [{"type":"info","message":'Вы уже состоите в этом курсе'}]
@@ -966,7 +962,6 @@ class CourseManager(models.Manager):
 								for teacher in data["teachers"]:
 									data["teachers"][teacher][
 										"new_users"].append(user.id)
-					print("ssdfsfddsf",is_invited,code)
 					#Проверка: открытый вход в группу
 					if not course.is_closed and not is_invited and not code:
 						group = "Нераспределенные"
@@ -2700,7 +2695,6 @@ class Test():
 
 	def publish(course_id, test_id, publish_data):
 		# makes test visible in course screen
-		print(test_id)
 		if not test_id or len(test_id)==0:
 			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as data_file:
 				course_info = json.load(data_file)
@@ -3266,7 +3260,6 @@ class Test():
 						question["result"] = "missed"
 						question["user_score"] = 0
 					else:
-						print(question)
 						status=Test.check_question_correctness(question=question, allowed_mistakes=test_data["allowed_mistakes"])
 						if status == "right" or isinstance(status,int) and status == question["worth"]:
 							right += 1
@@ -4098,7 +4091,7 @@ class Search():
 			cards=Utility.sort_by_conformity(object=cards, indicator="conformity")
 		return cards
 
-	def complex(search_query, search_types=None, user=None):
+	def complex(search_query, search_types=False, user=None):
 		if not search_types:
 			search_types={}
 			types=["users","courses","elements"]

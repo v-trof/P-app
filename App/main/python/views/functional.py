@@ -152,7 +152,6 @@ class User_views():
 		if request.method == 'POST':
 			email = request.POST.get('email', False)
 			text = request.POST.get('message_text', False)
-			print(email,text)
 			if email and text:
 				send_mail('Новое сообщение от '+email, text, email,
 						  ['ru.pileus@gmail.com'], fail_silently=False)
@@ -294,7 +293,6 @@ class Course_views():
 		if request.method == 'POST':
 			email_list = json.loads(request.POST.get("email_list", []))
 			email_file = request.FILES.get("email_file", False)
-			print(email_file)
 			group = request.POST.get('group', None)
 			course = Course.objects.get(id=request.POST.get('course_id', None))
 			message = Course.objects.invite_students(email_file=email_file,
@@ -465,7 +463,6 @@ class Universal_views():
 
 	def share(request):
 		if request.method == 'POST':
-			print(request.POST)
 			course_id = request.POST.get("course_id", None)
 			subject_tags = request.POST.get("subject_tags", False)
 			global_tags = request.POST.get("global_tags", False)
@@ -556,11 +553,10 @@ class Universal_views():
 			
 	def search(request):
 		if request.method == "POST":
-			print(request.POST)
 			search_query=request.POST.get("search_query","")
-			if "search_types" in request.POST.keys():
-				search_types=json.loads(request.POST["search_types"])
-			else: search_types=None
+			search_types=request.POST.get("search_types",{})
+			if search_types != {}:
+				search_types=json.loads(search_types)
 			cards=Search.complex(search_query=search_query,search_types=search_types,user=request.user)
 			return HttpResponse(json.dumps(cards), content_type="application/json")
 

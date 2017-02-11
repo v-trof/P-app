@@ -156,12 +156,13 @@ class Course_group():
 		if not Utility.is_teacher(user=request.user, course_id=course_id):
 			request.session['notifications']=[{"type": "error", "message": "Доступ ограничен"}]
 			return redirect('/course/' + course_id + '/')
+		course=Course.objects.get(id=course_id)
 		context = {}
 		context = Course.objects.load_updates(
-			course=Course.objects.get(id=course_id), user=request.user)
+			course=course, user=request.user)
 		context["tasks_info"] = Marks.tasks_info(course_id=course_id)
 		context["course"] = Course.objects.get(id=course_id)
-		context["breadcrumbs"] = [{"href": "#", "link": "Обновления"}]
+		context["breadcrumbs"] = [{"href": "/course/" + str(course.id), "link": course.name},{"href": "#", "link": "Обновления"}]
 		return render(request, 'Pages/Course/updates/exports.html', context)
 
 	def sources(request, course_id):
