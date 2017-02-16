@@ -1,12 +1,12 @@
 {% if unpublished %}
 	<section class="course-part">
-		<h3>Неопубликованные</h3>
+		<h3>Черновики</h3>
 		{% for element in unpublished %}
 			{% include "#&/element/" %}
 		{% endfor %}
 	</section>
 {% else %}
   <section class="course-part">
-    <h3> Здесь будут неопубликованные тесты </h3>
+    <h3> Здесь будут черновики тестов и материалов </h3>
   </section>
 {% endif %}
