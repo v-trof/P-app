@@ -1,61 +1,61 @@
 @import "../../../../../sass_vars/main.sass"
 
 body
-	height: 100vh
+  height: 100vh
 
 section.main
-	width: 100%
-	height: 100vh
-	margin-top: 0
-	padding-top: $margin--xl + $padding--m
-	&>div
-		height: 100%
+  width: 100%
+  height: 100vh
+  margin-top: 0
+  padding-top: $margin--xl + $padding--m
+  &>div
+    height: 100%
 .students
-	min-width: 24rem
-	margin-left: -$padding--m
-	padding: $border--s + $padding--m
-	overflow-y: auto
-	overflow-x: hidden
-	.card.m--user
-		.__extension
-			display: flex
-			flex-direction: row
-			button
-				margin: 0
-			flex: 0
-	@media screen and (max-width: 1025px)
-		min-width: 30%
-		@media screen and (max-width: 769px)
-			.__extension
-				flex-wrap: wrap
+  min-width: 24rem
+  margin-left: -$padding--m
+  padding: $border--s + $padding--m
+  overflow-y: auto
+  overflow-x: hidden
+  .card.m--user
+    .__extension
+      display: flex
+      flex-direction: row
+      button
+        margin: 0
+      flex: 0
+  @media screen and (max-width: 1025px)
+    min-width: 30%
+    @media screen and (max-width: 769px)
+      .__extension
+        flex-wrap: wrap
 .card.m--divider
-	margin: -$padding--m 0
-	margin-right: $padding--m
-	margin-top: -$margin--xl + $padding--m
-	border-radius: 0
-	width: 2rem
+  margin: -$padding--m 0
+  margin-right: $padding--m
+  margin-top: -$margin--xl + $padding--m
+  border-radius: 0
+  width: 2rem
 
 .tests
-	display: flex
-	flex-direction: column
-	align-items: center
-	width: 100%
-	padding-right: 16.5rem
-	.linkbox
-		max-width: 50rem
+  display: flex
+  flex-direction: column
+  align-items: center
+  width: 100%
+  padding-right: 16.5rem
+  .linkbox
+    max-width: 50rem
 
-	@media screen and (max-width: 1025px)
-		padding-right: 20%
+  @media screen and (max-width: 1025px)
+    padding-right: 20%
 
 .panel
-	@media screen and (max-width: 1025px)
+  @media screen and (max-width: 1025px)
     .__actions
       max-width: 20%
-		max-width: 20%
-		min-width: 20%
+    max-width: 20%
+    min-width: 20%
 .redo
   min-height: 2.25rem
 
 .card.panel
-	div.__actions
-		display: none
+  div.__actions
+    display: none

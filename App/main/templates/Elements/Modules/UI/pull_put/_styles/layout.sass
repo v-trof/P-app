@@ -1,37 +1,39 @@
 @import "../../../../../sass_vars/main.sass"
 
 .pull_put_ui
-	display: flex
-	flex-direction: row
-	position: fixed
-	bottom: 0
-	left: 50%
-	margin-bottom: $margin--m
-	transition: $time--m
-	transition-property: transform
-	z-index: 15
-	&>.__content
-		max-height: 16rem + $padding--m*2
-		overflow-y: auto
-		padding: $padding--m
-		&.card
-			margin-bottom: 0
-			+box-shadow(2)
-		&:not(.card)>*
-			margin-top: -$padding--m
-			margin-bottom: 0
-			+box-shadow(2)
-	.__actions
-		display: flex
-		flex-direction: row
-		align-items: flex-start
-		.card
-			margin: 0 $margin--xs
-			height: auto
-			+box-shadow(2)
-	&.m--hidden
-		bottom: -100%
-		transform: translateY($margin--xl)
+  display: flex
+  flex-direction: row
+  position: fixed
+  bottom: 0
+  left: 50%
+  margin-bottom: $margin--m
+  transition: $time--m
+  transition-property: transform
+  z-index: 15
+  &>.__content
+    max-height: 16rem + $padding--m*2
+    overflow-y: auto
+    padding: $padding--m
+    &.card
+      border: 1px solid $grey--light
+      margin-bottom: 0
+      +box-shadow(2)
+    &:not(.card)>*
+      border: 1px solid $grey--light
+      margin-top: -$padding--m
+      margin-bottom: 0
+      +box-shadow(2)
+  .__actions
+    display: flex
+    flex-direction: row
+    align-items: flex-start
+    .card
+      margin: 0 $margin--xs
+      height: auto
+      +box-shadow(2)
+  &.m--hidden
+    bottom: -100%
+    transform: translateY($margin--xl)
 
 .m--pullable
-	cursor: pointer
+  cursor: pointer
