@@ -34,7 +34,6 @@ def numbers(answer):
 	return romanResult
 
 def check(answer, answer_right, allowed):
-	print("ans", answer)
 	if not isinstance(answer_right,list) and not isinstance(answer,dict):
 		answer_right = re.sub('[<.*>]', '', answer_right)
 		answer =  re.sub('[<.*>]', '', answer)
@@ -73,7 +72,6 @@ def check(answer, answer_right, allowed):
 	return "false"
 
 def check_selected(answer, answer_right, allowed, split_score=False,worth=False):
-	print("chck",answer,answer_right)
 	if set(answer) == set(answer_right):
 		return "right"
 	else: 
@@ -87,7 +85,6 @@ def check_classify(answer, answer_right, allowed, split_score=False,worth=False)
 	right=0
 	wrong=0
 	overall=0
-	print(split_score)
 	for group,content in answer.items():
 		for right_group,right_content in answer_right.items():
 			if group==right_group:
@@ -96,7 +93,6 @@ def check_classify(answer, answer_right, allowed, split_score=False,worth=False)
 				wrong+=len(set(content) - set(right_content))
 				break
 	if split_score:
-		print(right/(overall+wrong)*worth)
 		score=floor(right/(overall+wrong)*worth)
 		return score
 	elif right==overall:
@@ -148,7 +144,6 @@ def full_delta(answer, answer_right):
 			it+=1
 	else: 
 		for letter in answer:
-			print(answer_right,letter)
 			if single_delta(letter.lower(),answer_right[it].lower()):
 				k=k[:it] + answer_right[it] + k[it+1:]
 			it+=1
@@ -241,7 +236,6 @@ def cutting(answer, right_answer, delta):
 def typo(answer, right_answer, delta):
 	k=answer
 	if not isinstance(answer,dict):
-		print("dggfdgf")
 		if len(k)<len(right_answer):
 			k=lost_chars(k,right_answer)
 		max=correctness(k,right_answer,delta)

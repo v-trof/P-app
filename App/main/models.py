@@ -3395,13 +3395,13 @@ class Test():
 			if compact:
 				test={"type": "test", "title": test_info["title"], "id": test_id, "questions_number": test_info[
 															 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id}
-				if user_id:
+				if user_id and os.path.exists('main/files/json/courses/' + str(course_id) + '/users/'+ str(user_id) + '/tests/results/' + str(test_id) + '.json'):
 					with io.open('main/files/json/courses/' + str(course_id) + '/users/'+ str(user_id) + '/tests/results/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 						results_data = json.load(info_file)
 					test['results']=results_data
 				return test
 			else:
-				if compiled and user_id:
+				if compiled and user_id and os.path.exists('main/files/json/courses/' + str(course_id) + '/users/'+ str(user_id) + '/tests/attempts/' + str(test_id) + '.json'):
 					with io.open('main/files/json/courses/' + str(course_id) + '/users/'+ str(user_id) + '/tests/attempts/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 						attempt_data = json.load(info_file)
 					test_info["tasks"]=Test.compile_tasks(tasks=test_info["tasks"].copy(),attempt_data=attempt_data)

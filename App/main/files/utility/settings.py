@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'q!)pcvgp*&5q+b8%l^-oj32lae(!_qynk5ze73=+jsn@@15=q5'
 # SECURITY WARNING: don't run with debug turned on in production!
-ALLOWED_HOSTS = ["pileus.ru","www.pileus.ru"]
+ALLOWED_HOSTS = ["pileus.ru","www.pileus.ru","46.101.152.163"]
 
 # Application definition
 
