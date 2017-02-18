@@ -31,7 +31,7 @@ def edit(request):
 def create(request):
 	# creates material environment (no material exists as file untill saved)
 	course_id = request.GET.get("course_id",None)
-	context = Material.create(course_id=course_id)
+	context = Material.create(course_id=course_id,user_id=str(request.user.id))
 	context["breadcrumbs"] = [{
 			"href": "/course/" + str(course_id),
 			"link": Course.objects.get(id=course_id).name

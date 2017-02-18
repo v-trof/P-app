@@ -32,7 +32,7 @@ def edit(request):
 def create(request):
 	# creates test environment (no test exists as file untill saved)
 	course_id = request.GET.get("course_id", None)
-	context = Test.create(course_id=course_id)
+	context = Test.create(course_id=course_id,user_id=str(request.user.id))
 	context["breadcrumbs"] = [{
 		"href": "/course/" + str(course_id),
 		"link": Course.objects.get(id=course_id).name
@@ -43,6 +43,7 @@ def create(request):
 	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
 	context["sections"].append('Новая...')
 	context["type"] = "test"
+	print(context)
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
 

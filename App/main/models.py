@@ -1784,6 +1784,7 @@ class UserManager(UserManager):
 			os.makedirs('main/files/json/users/' + str(user.id) + '/')
 			with io.open('main/files/json/users/' + str(user.id) + '/info.json', 'w+', encoding='utf8') as json_file:
 				data = {}
+				data["tutorials"] = {"test":True}
 				data["contacts"] = {}
 				data["contacts"]["email"] = user.email
 				saving_data = json.dumps(data, ensure_ascii=False)
@@ -2170,10 +2171,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Material():
 
-	def create(course_id):
+	def create(course_id,user_id=False):
 		course = {"id": course_id}
 		material = {"loaded": 0}
-		context = {"material": material, "course": course}
+		context = {"material": material, "course": course,"show_tutorial":False}
+		if user_id:
+			with io.open('main/files/json/users/' + str(user_id) + '/info.json', 'r', encoding='utf8') as json_file:
+				user_info = json.load(json_file)
+				if not "tutorials" in user_info.keys():
+					user_info["tutorials"]={"test":True}
+				with io.open('main/files/json/users/' + str(user_id) + '/info.json', 'w+', encoding='utf8') as json_file:
+					json_file.write(json.dumps(user_info, ensure_ascii=False))
+				if user_info["tutorials"]["test"]:
+					context["show_tutorial"] = True
 		return context
 
 	def delete(course_id, material_id):
@@ -2415,10 +2425,19 @@ class Material():
 
 class Test():
 
-	def create(course_id):
+	def create(course_id,user_id=False):
 		course = {"id": course_id}
 		test = {"loaded": 0}
-		context = {"test": test, "course": course}
+		context = {"test": test, "course": course, "show_tutorial":False}
+		if user_id:
+			with io.open('main/files/json/users/' + str(user_id) + '/info.json', 'r', encoding='utf8') as json_file:
+				user_info = json.load(json_file)
+				if not "tutorials" in user_info.keys():
+					user_info["tutorials"]={"test":True}
+				with io.open('main/files/json/users/' + str(user_id) + '/info.json', 'w+', encoding='utf8') as json_file:
+					json_file.write(json.dumps(user_info, ensure_ascii=False))
+				if user_info["tutorials"]["test"]:
+					context["show_tutorial"] = True
 		return context
 
 	def delete(course_id, test_id):
