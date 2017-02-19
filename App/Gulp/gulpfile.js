@@ -131,6 +131,7 @@ gulp.task('watch', function() {
   gulp.watch("../main/templates/**/*.scss", ['move_module_css']);
   gulp.watch('../main/templates/Elements/Modules/**/*.js', ['min_module_js']);
   gulp.watch('../main/templates/**/*.js', ['min_element_js']);
+  gulp.watch('../main/templates/**/test_suite/**/*.js', ['min_test_js']);
 });
 
 gulp.task('default', ['watch']);

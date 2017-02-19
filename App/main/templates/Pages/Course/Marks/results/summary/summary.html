@@ -3,11 +3,11 @@
 	{% for id, test in tests.items %}
 		<div class="__test">
 			<h3>{{test.title}}</h3>
-			{% for question, percent in 
+			{% for question, percent in
 				test.summary.frequent_mistakes.items %}
 				{% include "#&/mistake/" %}
 			{% empty %}
-				Ничего особенного
+			   Закономерности не были найдены
 			{% endfor %}
 		</div>
 	{% endfor %}

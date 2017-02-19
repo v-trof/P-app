@@ -1,0 +1,7 @@
+{
+	"elements": ["Modules/UI/tutorial", "Modules/Utility/jasmine"],
+	"scripts": [],
+  "styles": [],
+  "title" : "SPC tutorial",
+	"template": "default"
+}
