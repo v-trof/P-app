@@ -66,7 +66,8 @@
                                       share_data.type === 'material');
     $specification.append($core);
 
-    if(editor.test_data.templates || share_data.assets.template) {
+    if(editor.test_data.templates.length ||
+       (share_data.assets.template && share_data.assets.template.length)) {
       var $templates = $(loads.get('Elements/Inputs/checkbox/'));
       $templates.addClass('share_templates');
       $templates.find('label').text('Шаблоны');
@@ -118,7 +119,7 @@
   }
 
   share.edit.show = function(share_data) {
-    if( ! share_data) {
+    if(typeof share_data === 'undefined') {
       if(django.share_data) {
         share_data = django.share_data;
           django.share_data.is_django = true;

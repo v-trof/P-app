@@ -1,6 +1,6 @@
 share.ajax.unshare = function(share_data) {
   var form_data = new FormData();
-  console.log("ddd")
+  console.log(share_data);
   form_data.append('course_id',django.course.id);
   form_data.append('shared_id',share_data.shared_id);
   form_data.append('csrfmiddlewaretoken', loads.csrf_token);
