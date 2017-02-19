@@ -1,8 +1,5 @@
 editor.insert_new_task = function($gap) {
   var position = $('.preview>.__content .__gap').index($gap[0]);
-
-  console.log('GAP POS:', position);
-
   if(pull_put.ui.$.find(".__content").attr('state') === 'edit') {
     editor.edit.change_value();
   }
@@ -29,10 +26,7 @@ editor.create_new_task = function() {
   var $catcher = $('<div class="__catcher"></div>');
 
   pull_put.put_zone.add($gap, function() {
-    console.log('GAP CLICKED');
     editor.insert_new_task($gap);
-
-
     pull_put.reset();
   });
   indicator.add($gap, 'add', 1);

@@ -41,33 +41,38 @@ results_controls.display = function() {
   var results_info = results_controls.loaded.results[user_key].mark;
 
   $('.preview>.__content').html('');
-  results_display.init(test_info, attempt_info, results_info);
+  if(results_info.type !== 'error') {
+    results_display.init(test_info, attempt_info, results_info);
 
-  var $redo = $('<button class="redo">Сбросить результаты</button>');
+    var $redo = $('<button class="redo">Сбросить результаты</button>');
 
-  $('.preview .redo').remove();
-  $('.preview').append($redo);
-  $redo.click(function() {
-    $.ajax({
-      url: '/test/reset_attempt/',
-      type:'POST',
-      data: {
-        'course_id': django.course.id,
-        'test_id': test_id,
-        'user_id': user_id,
-        'csrfmiddlewaretoken': django.csrf_token
-      }
-    }).success(function(response) {
-       if(response && response["type"]) {
-           notification.show(response["type"], response["message"]);
-       } else {
-         notification.show('success',
-                           'Результаты сброшены, ученик может переписать');
-       }
-    }).error(function(error) {
-      notification.show('error', "Произошла ошибка");
-    });
-  })
+    $('.preview .redo').remove();
+    $('.preview').append($redo);
+    $redo.click(function() {
+      $.ajax({
+        url: '/test/reset_attempt/',
+        type:'POST',
+        data: {
+          'course_id': django.course.id,
+          'test_id': test_id,
+          'user_id': user_id,
+          'csrfmiddlewaretoken': django.csrf_token
+        }
+      }).success(function(response) {
+         if(response && response["type"]) {
+             notification.show(response["type"], response["message"]);
+         } else {
+           notification.show('success',
+                             'Результаты сброшены, ученик может переписать');
+         }
+      }).error(function(error) {
+        notification.show('error', "Произошла ошибка");
+      });
+    })
+  } else {
+    $('.preview>.__content').html(results_info.message);
+  }
+
 }
 
 results_controls.load = function() {

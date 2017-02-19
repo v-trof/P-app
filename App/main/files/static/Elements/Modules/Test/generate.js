@@ -983,34 +983,6 @@ generate.register.edit('answer', 'classify', {
   }
 });
 
-generate.register.edit('answer', 'text', {
-  builder: function(value) {
-    var $new_edit = this.make_template();
-
-    //for label (tip)
-    var $label = render.inputs.text('Формат ответа', 'label', value.label);
-    $new_edit.prepend($label);
-
-    //for right answer
-    var $answer = render.inputs.text('Верный ответ', 'answer', value.answer);
-    $new_edit.prepend($answer);
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    var value = {
-      label: '',
-      answer: undefined
-    }
-
-    value.label = $edit.find('[name="label"]').val();
-    value.answer = $edit.find('[name="answer"]').val();
-
-    return value;
-  }
-});
-
 generate.register.edit('answer', 'radio', {
   random_possible: true,
   builder: function(value) {
@@ -1071,6 +1043,34 @@ generate.register.edit('answer', 'radio', {
         value.answer.push(index);
       }
     });
+
+    return value;
+  }
+});
+
+generate.register.edit('answer', 'text', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    //for label (tip)
+    var $label = render.inputs.text('Формат ответа', 'label', value.label);
+    $new_edit.prepend($label);
+
+    //for right answer
+    var $answer = render.inputs.text('Верный ответ', 'answer', value.answer);
+    $new_edit.prepend($answer);
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      label: '',
+      answer: undefined
+    }
+
+    value.label = $edit.find('[name="label"]').val();
+    value.answer = $edit.find('[name="answer"]').val();
 
     return value;
   }
@@ -1408,6 +1408,29 @@ generate.register.element('answer', 'text', {
   }
 })
 
+generate.register.element('answer', 'text', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    $new_element.append(render.inputs.text(
+      value.label,
+      '',
+      value.answer
+    ));
+
+    return $new_element;
+  },
+
+  sample: {
+    value: {
+      label: 'Текстовый ответ',
+      answer: '',
+      worth: 1
+    }
+  }
+})
+
 generate.register.element('answer', 'textarea', {
   show_in_items: true,
   never_check: true,
@@ -1431,31 +1454,6 @@ generate.register.element('answer', 'textarea', {
     }
   }
 })
-
-generate.register.element('question', 'file', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $file_template = $(loads.get("Elements/card/file/exports.html"));
-
-    $file_template.attr("href", value.url);
-    $file_template.find(".__name").text(value.name);
-    $file_template.find(".__size").text(value.size);
-
-    $new_element.append($file_template);
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      name: "Файл для скачивания",
-      size: "3.21МБ",
-      pos: undefined,
-      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
-    }
-  }
-});
 
 generate.register.element('question', 'image', {
   show_in_items: true,
@@ -1495,6 +1493,31 @@ generate.register.element('question', 'text', {
   sample: {
     value: {
       text: 'Текстовый вопрос'
+    }
+  }
+});
+
+generate.register.element('question', 'file', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $file_template = $(loads.get("Elements/card/file/exports.html"));
+
+    $file_template.attr("href", value.url);
+    $file_template.find(".__name").text(value.name);
+    $file_template.find(".__size").text(value.size);
+
+    $new_element.append($file_template);
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      name: "Файл для скачивания",
+      size: "3.21МБ",
+      pos: undefined,
+      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
     }
   }
 });
@@ -1637,7 +1660,7 @@ generate.register.external('answer', 'classify', {
     var self = this;
     var make_DOM = function(answer) {
       console.log(answer);
-      answer = self.unwrap_answer(answer, true);
+      answer = self.unwrap_answer(answer, false);
       var $element = self.self.element.build(answer);
 
       $element.find('*').unbind('click');

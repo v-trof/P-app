@@ -67,7 +67,7 @@ generate.register.external('answer', 'classify', {
     var self = this;
     var make_DOM = function(answer) {
       console.log(answer);
-      answer = self.unwrap_answer(answer, true);
+      answer = self.unwrap_answer(answer, false);
       var $element = self.self.element.build(answer);
 
       $element.find('*').unbind('click');
