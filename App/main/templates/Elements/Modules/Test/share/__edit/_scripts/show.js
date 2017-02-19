@@ -67,7 +67,8 @@
     $specification.append($core);
 
     if(editor.test_data.templates.length ||
-       (share_data.assets.template && share_data.assets.template.length)) {
+       (share_data.assets && share_data.assets.template
+         && share_data.assets.template.length)) {
       var $templates = $(loads.get('Elements/Inputs/checkbox/'));
       $templates.addClass('share_templates');
       $templates.find('label').text('Шаблоны');
