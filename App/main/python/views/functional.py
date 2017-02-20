@@ -498,6 +498,7 @@ class Universal_views():
 
 	def unshare(request):
 		if request.method == 'POST':
+			print(request.POST)
 			shared_id = request.POST.get("shared_id", None)
 			course_id = request.POST.get("course_id", None)
 			message = Sharing.unshare(course_id=course_id, shared_id=shared_id)

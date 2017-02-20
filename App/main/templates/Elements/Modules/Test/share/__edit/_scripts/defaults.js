@@ -1,6 +1,6 @@
 share.edit.get_defaults = function() {
   return {
-    share_id: false,
+    shared_id: false,
     open: true,
     description: "",
     global_tags: [],

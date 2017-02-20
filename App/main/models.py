@@ -1064,7 +1064,7 @@ class CourseManager(models.Manager):
 			string=""
 			for element in list:
 				string+=element+' '
-			setattr(user, 'participation_list', string)
+			setattr(user, 'participation_list', string[:-1])
 			user.save()
 			with io.open('main/files/json/courses/' + str(course.id) + '/info.json', 'w', encoding='utf8') as data_file:
 				saving_data = json.dumps(data, ensure_ascii=False)
@@ -2322,6 +2322,7 @@ class Material():
 		if "shared" in material["json"].keys() and material["json"]["shared"]==True:
 			with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 				material["share_data"]=json.load(shared_file)[material["json"]["shared_id"]]
+				material["share_data"]["shared_id"]=material["json"]["shared_id"]
 		context = {}
 		context["material"] = material
 		context["material"]["id"] = material_id
@@ -2710,6 +2711,7 @@ class Test():
 		if "shared" in test["json"].keys() and test["json"]["shared"]==True:
 			with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 				test["share_data"]=json.load(shared_file)[test["json"]["shared_id"]]
+				test["share_data"]["shared_id"]=test["json"]["shared_id"]
 		return test
 
 	def publish(course_id, test_id, publish_data):
@@ -2770,7 +2772,8 @@ class Test():
 			with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
 				info_file.write(json.dumps(test_data, ensure_ascii=False))
 			for attempt in glob.glob('main/files/json/courses/' + str(course_id) + '/users/*/tests/attempts/'+test_id+'.json'):
-				user_id=attempt.split('/')[-1].split('\\')[1]
+				attempt=attempt.replace('\\','/')
+				user_id=attempt.split('/')[-4]
 				user=User.objects.get(id=user_id)
 				Test.attempt_check(test_id=test_id,user=user,course_id=course_id, recheck=True)
 		else: 
@@ -3489,7 +3492,7 @@ class Marks():
 	def by_tests(course_id):
 		course = Course.objects.get(id=int(course_id))
 		test_list=[]
-		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/control/'):
+		for test in glob.glob('main/files/json/courses/' + str(course.id) + '/tests/control/*'):
 			test=test.replace("\\","/")
 			test_id=test[:-5].split("/")[-1]
 			test_list.append(test_id)
@@ -3679,6 +3682,7 @@ class Sharing():
 			return {"type":"success","message":"Материал успешно помещен в библиотеку","shared_id":shared_id}
 
 	def unshare(shared_id, course_id):
+		print(shared_id)
 		shared_id=str(shared_id)
 		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
 			tag_map = json.load(tag_file)
