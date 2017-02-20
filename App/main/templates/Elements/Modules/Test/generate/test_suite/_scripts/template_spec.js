@@ -94,6 +94,7 @@ describe('Task Tempalte build', function() {
 
 describe('Task Tempalte edit', function() {
   it('should generate whole bunch of edit`s', function() {
+      editor.active_element = {};
       var $task = generate.data.task.template.element.build_edit([{
         subtype: "text",
         text: '1',

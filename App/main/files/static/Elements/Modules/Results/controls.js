@@ -41,12 +41,11 @@ results_controls.display = function() {
   var results_info = results_controls.loaded.results[user_key].mark;
 
   $('.preview>.__content').html('');
+  $('.preview .redo').remove();
   if(results_info.type !== 'error') {
     results_display.init(test_info, attempt_info, results_info);
 
     var $redo = $('<button class="redo">Сбросить результаты</button>');
-
-    $('.preview .redo').remove();
     $('.preview').append($redo);
     $redo.click(function() {
       $.ajax({
