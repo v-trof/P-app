@@ -81,6 +81,7 @@ $(document).ready(function() {
         editor.test_data.tasks[position].is_template = true;
 
         editor.check.numbers();
+        popup.hide();
       });
     } else {
       $save.click(function() {
@@ -114,6 +115,7 @@ $(document).ready(function() {
           }
       });
         editor.check.numbers();
+        popup.hide();
       });
     }
   }

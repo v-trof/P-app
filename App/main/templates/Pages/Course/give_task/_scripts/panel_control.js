@@ -13,7 +13,8 @@ var used_links = []
 
 
 $(document).ready(function() {
-  panel.actions.html('<button class="m--ghost" id="cancel">Отмена</button><button class="m--ghost m--negative" id="delete">Удалить</button>');
+  panel.actions.html('<button class="m--ghost" id="cancel">Закрыть</button>' +
+    '<button class="m--ghost m--negative" id="delete">Удалить</button>');
     $("#delete").css('color', '#F44336');
 
   panel.content.on("click", ".card.m--small", function(event) {
@@ -26,7 +27,7 @@ $(document).ready(function() {
       $("#assignment--new__add_"+as_g.current_type).before($(this))
     }
     used_links.push( $(this).attr("href") )
-    panel.hide();
+    // panel.hide();
   });
 
   $("#delete").click(function(event) {
@@ -38,4 +39,3 @@ $(document).ready(function() {
     panel.hide()
   });
 });
-

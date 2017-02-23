@@ -108,7 +108,7 @@ class Utility():
 				char="е"
 		for char in str2:
 			if char=="ё":
-				char="е"	
+				char="е"
 		if not str2.find(str1) == -1:
 			conformity=len(str1)/len(str2)*100
 
@@ -299,7 +299,7 @@ class Utility():
 		except:
 			try:
 				hour2=int(date2[:2])
-			except: hour2=0	
+			except: hour2=0
 
 		try:
 			minute1=int(date1[14:16])
@@ -376,7 +376,7 @@ class Utility():
 		except:
 			try:
 				hour2=int(date2[:2])
-			except: hour2=0	
+			except: hour2=0
 
 		try:
 			minute1=int(date1[14:16])
@@ -479,7 +479,7 @@ class Utility():
 						sorted(object[indictator].items()))
 				else:
 					object = collections.OrderedDict(sorted(object.items()))
-			else: object = sorted(object, key=lambda k: k[indicator], reverse=True) 
+			else: object = sorted(object, key=lambda k: k[indicator], reverse=True)
 		return object
 
 
@@ -584,7 +584,7 @@ class CourseManager(models.Manager):
 				for material in assignment["content"]["materials"]:
 					material["link"]="?course_id="+str(course.id)+"&"+material["link"].split('&')[1]
 				for test in assignment["content"]["tests"]:
-					test["link"]="?course_id="+str(course.id)+"&"+test["link"].split('&')[1]	
+					test["link"]="?course_id="+str(course.id)+"&"+test["link"].split('&')[1]
 			with io.open(assignment_path, 'w', encoding='utf8') as data_file:
 				saving_data = json.dumps(assignment, ensure_ascii=False)
 				data_file.write(saving_data)
@@ -1745,7 +1745,7 @@ class CourseManager(models.Manager):
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as data_file:
 			saving_data = json.dumps(course_data, ensure_ascii=False)
 			data_file.write(saving_data)
-			
+
 		return {"type":"info","message":'Отложено'}
 
 
@@ -1772,7 +1772,7 @@ class UserManager(UserManager):
 			if is_teacher == "false":
 				is_teacher = False
 			else: is_teacher = True
-			
+
 			user = User.objects.create_user(
 				username=email,
 				email=email,
@@ -2074,7 +2074,7 @@ class UserManager(UserManager):
 									   for i in range(length))
 					else:
 						break
-				else: 
+				else:
 					with io.open('main/files/json/other/code_bank.json', 'r', encoding='utf8') as codes_file:
 						codes_dict = json.load(codes_file)
 		return code
@@ -2265,7 +2265,7 @@ class Material():
 					for item in task["content"]:
 						item["item_id"]=item_id
 						item_id+=1
-				else: 
+				else:
 					for item in task["parts"]:
 						item["item_id"]=item_id
 						item_id+=1
@@ -2658,7 +2658,7 @@ class Test():
 					for item in task["content"]:
 						item["item_id"]=item_id
 						item_id+=1
-				else: 
+				else:
 					for item in task["parts"]:
 						item["item_id"]=item_id
 						item_id+=1
@@ -2776,7 +2776,7 @@ class Test():
 				user_id=attempt.split('/')[-4]
 				user=User.objects.get(id=user_id)
 				Test.attempt_check(test_id=test_id,user=user,course_id=course_id, recheck=True)
-		else: 
+		else:
 			test_data["mark_setting"]=publish_data["marks"]
 			with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'w+', encoding='utf8') as info_file:
 				info_file.write(json.dumps(test_data, ensure_ascii=False))
@@ -2861,7 +2861,7 @@ class Test():
 		elif item["subtype"] == "checkbox":
 			if "split_score" in item.keys():
 				value["split_score"] = item["split_score"]
-			else: 
+			else:
 				value["split_score"]=False
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
@@ -2882,7 +2882,7 @@ class Test():
 		elif item["subtype"] == "classify":
 			if "split_score" in item.keys():
 				value["split_score"] = item["split_score"]
-			else: 
+			else:
 				value["split_score"]=False
 			value["user_answer"] = False
 			value["worth"] = item["worth"]
@@ -2942,7 +2942,7 @@ class Test():
 
 
 	def attempt(course_id, user, test_id):
-		
+
 		# creates or continues attempt
 		# loads test file
 		started=True
@@ -2994,7 +2994,7 @@ class Test():
 				json_file.write(json.dumps(test, ensure_ascii=False))
 
 		with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as json_file:
-			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:  
+			with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 				course_info = json.load(info_file)
 				course = {"id": course_id}
 				test = {
@@ -3020,7 +3020,7 @@ class Test():
 					if test["json"]["max_time"]!="00:00:00":
 						test["json"]["finish_time"][str(user.id)]=Utiliy.merge_time(test["json"]["max_time"],test["json"]["start_time"][str(user.id)])
 						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
-				else: 
+				else:
 					if test["json"]["max_time"]!="00:00:00":
 						test["json"]["time_left"][str(user.id)]=Utility.time_delta(test["json"]["finish_time"][str(user.id)],time_now)
 				with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'w', encoding='utf8') as json_file:
@@ -3052,10 +3052,10 @@ class Test():
 			if "renewed_questions" in task.keys() or "renewed_items" in task.keys():
 				for task_info in tasks:
 					for item in task_info["content"]:
-						if "renewed_questions" in task.keys():	
+						if "renewed_questions" in task.keys():
 							if item["item_id"] in task["renewed_questions"]:
 								item["was_changed"]=True
-						if "renewed_items" in task.keys():	
+						if "renewed_items" in task.keys():
 							if item["item_id"] in task["renewed_items"]:
 								item["was_changed"]=True
 			if not "hidden" in task.keys():
@@ -3132,7 +3132,7 @@ class Test():
 
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'w', encoding='utf8') as data_file:
 			data_file.write(json.dumps(course_data, ensure_ascii=False))
-						
+
 		with io.open('main/files/json/courses/' + str(course_id) + '/tests/control/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 			test_info = json.load(info_file)
 
@@ -3183,7 +3183,7 @@ class Test():
 			return {"type":"info","message":"Запрос уже был отправлен"}
 		else:
 			return {"type":"info","message":"Ваш запрос уже был отклонен"}
-	
+
 	def accept_reset(user_id,test_id,course_id):
 		message=Test.reset_attempt(user_id=user_id,test_id=test_id,course_id=course_id)
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -3387,7 +3387,7 @@ class Test():
 		elif attempt_data[answer_id]["user_score"]==0:
 			test_results["mistakes"].append(answer_id)
 			attempt_data[answer_id]["result"]="wrong"
-		else: 
+		else:
 			test_results["forgiving"].append(answer_id)
 			attempt_data[answer_id]["result"]="forgiving"
 
@@ -3398,7 +3398,7 @@ class Test():
 		with io.open('main/files/json/courses/' + course_id + '/users/' + str(user_id) + '/tests/attempts/' + test_id + '.json', 'w+', encoding='utf8') as json_file:
 			json_file.write(json.dumps(attempt_data, ensure_ascii=False))
 		with io.open('main/files/json/courses/' + str(course_id) + '/users/' + str(user_id) + '/tests/results/' + test_id + '.json', 'w+', encoding='utf8') as results_file:
-			results_file.write(json.dumps(test_results, ensure_ascii=False))	
+			results_file.write(json.dumps(test_results, ensure_ascii=False))
 
 		return test_results["mark"]
 
@@ -3609,13 +3609,13 @@ class Sharing():
 		for tag in global_tags:
 			if tag in tag_map['numbers']['global'].keys():
 				tag_map['numbers']['global'][tag]+=1
-			else: 
+			else:
 				tag_map['numbers']['global'][tag]=1
 
 		for tag in subject_tags:
 			if tag in tag_map['numbers']['subject'].keys():
 				tag_map['numbers']['subject'][tag]+=1
-			else: 
+			else:
 				tag_map['numbers']['subject'][tag]=1
 		tag_map=Utility.count_tags(tag_map=tag_map)
 		shared_item["global_tags"]=list(set(global_tags))
@@ -3626,7 +3626,7 @@ class Sharing():
 		shared_item["shared_query"]=shared_query
 		if type in shared_item["shared_query"]:
 			shared_item["type"]=type
-		else: 
+		else:
 			shared_item["type"]='templates'
 		item_info["shared_query"]=shared_query
 		item_info["shared_id"]=shared_id
@@ -3757,7 +3757,7 @@ class Sharing():
 			return {"type":"info","message":"Запрос уже был отправлен"}
 		else:
 			return {"type":"info","message":"Ваш запрос уже был отклонен"}
-	
+
 	def accept_sharing(shared_id,course_id,inheritor_id,inheritor_course_id):
 
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as data_file:
@@ -4106,8 +4106,8 @@ class Search():
 									subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
 									shared_info["shared_id"]=shared_id
 									name_conformity=Utility.compare(str1=search_query,str2=shared_info["title"])
-									if global_tags_conformity > 0 or subject_tags_conformity > 0 or name_conformity>10 or search_query=="" and str(shared_info["creator"])==str(user.id):
-										cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity+subject_tags_conformity+global_tags_conformity})
+									if global_tags_conformity > 0 and subject_tags_conformity > 0 or name_conformity>10 and subject_tags_conformity > 0 or search_query=="" and str(shared_info["creator"])==str(user.id):
+										cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity+subject_tags_conformity*2+global_tags_conformity})
 							except:
 								pass
 		if len(cards) > 0:

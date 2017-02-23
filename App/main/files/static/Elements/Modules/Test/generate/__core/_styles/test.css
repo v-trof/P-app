@@ -1,1 +1,1 @@
-.preview .__task .generate-item{margin-bottom:.75rem}.preview .__task .generate-item[subtype=image]{display:block}.preview .__task .generate-item:last-child{margin-bottom:0}
+.preview .__task .generate-item,.template_ui .generate-item{margin-bottom:.75rem}.preview .__task .generate-item[subtype=image],.template_ui .generate-item[subtype=image]{display:block}.preview .__task .generate-item:last-child,.template_ui .generate-item:last-child{margin-bottom:0}
