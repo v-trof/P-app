@@ -79,18 +79,20 @@ $(document).ready(function() {setTimeout(function() {
 
   var $tags = $('<div class="tags"></div>');
   var $tags_subject = $('<div class="__subject"><h3>' +
-    'Популярные ключевые слова (' + loads['course.subject'] + ')</h3></div>');
+    'Популярные ключевые слова (' + loads['course.subject'] + ')</h3>' +
+    '<div class="row"></div></div>');
   var $tags_global = $('<div class="__general"><h3>' +
-    'Популярные ключевые слова (Общие)</h3></div>');
+    'Популярные ключевые слова (Общие)</h3>' +
+    '<div class="row"></div></div>');
   var $new_tag = {};
   var popular_tags = JSON.parse(loads['test.popular_tags|safe']
                                   .replace(/(?:')/g, '"'));
   popular_tags.subject.forEach(function(item_text) {
-    $tags_subject.append(create_tag(item_text));
+    $tags_subject.find('.row').append(create_tag(item_text));
   });
 
   popular_tags.global.forEach(function(item_text) {
-    $tags_global.append(create_tag(item_text));
+    $tags_global.find('.row').append(create_tag(item_text));
   });
 
   if(popular_tags.subject.length) $tags.append($tags_subject);

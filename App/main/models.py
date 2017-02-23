@@ -2324,6 +2324,8 @@ class Material():
 				material["share_data"]=json.load(shared_file)[material["json"]["shared_id"]]
 				material["share_data"]["shared_id"]=material["json"]["shared_id"]
 		context = {}
+		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
+			context["test"]={"popular_tags":json.load(tag_file)["popular"]}
 		context["material"] = material
 		context["material"]["id"] = material_id
 		context["course"] = Course.objects.get(id=course_id)
@@ -2714,7 +2716,6 @@ class Test():
 			with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 				test["share_data"]=json.load(shared_file)[test["json"]["shared_id"]]
 				test["share_data"]["shared_id"]=test["json"]["shared_id"]
-		print(test["popular_tags"])
 		return test
 
 	def publish(course_id, test_id, publish_data):
