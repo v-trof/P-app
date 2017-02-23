@@ -7,7 +7,7 @@ module.exports = {
     },
     loads: {
       list: false,
-      read_error: false,
+      read_error: true,
       parse_error: true
     },
     exports: {

@@ -263,6 +263,23 @@ generate.make_template = {
   }
 }
 
+generate.register.task('default', {
+  builder: function() {
+    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
+
+    console.log($task, $task[1]);
+    if(defined(generate.data.task.template)) {
+      $task.find('.__make-template').click(function() {
+        generate.data.task.template.to_tempalte($task);
+      });
+    } else {
+      $task.find('.__make_template').remove();
+    }
+
+    return $task;
+  }
+});
+
 $(document).ready(function() {
   generate.data.task.template.add_to_test = function(template, $edit) {
     template = JSON.parse(JSON.stringify(template));
@@ -798,23 +815,6 @@ $(document).ready(function() {
   }
 });
 
-generate.register.task('default', {
-  builder: function() {
-    var $task = $(loads.get("Elements/Modules/Test/generate/data/task/default/"));
-
-    console.log($task, $task[1]);
-    if(defined(generate.data.task.template)) {
-      $task.find('.__make-template').click(function() {
-        generate.data.task.template.to_tempalte($task);
-      });
-    } else {
-      $task.find('.__make_template').remove();
-    }
-
-    return $task;
-  }
-});
-
 generate.register.edit('answer', 'checkbox', {
   random_possible: true,
   split_score_possible: true,
@@ -1050,6 +1050,28 @@ generate.register.edit('answer', 'radio', {
   }
 });
 
+generate.register.edit('answer', 'textarea', {
+  builder: function(value) {
+    var $new_edit = this.make_template();
+
+    //for label (tip)
+    var $label = render.inputs.text(
+      'Формат ответа / примечание', 'label', value.label);
+    $new_edit.prepend($label);
+
+    return $new_edit;
+  },
+
+  parser: function($edit) {
+    var value = {
+      label: '',
+    }
+
+    value.label = $edit.find('[name="label"]').val();
+    return value;
+  }
+});
+
 generate.register.edit('answer', 'text', {
   builder: function(value) {
     var $new_edit = this.make_template();
@@ -1074,28 +1096,6 @@ generate.register.edit('answer', 'text', {
     value.label = $edit.find('[name="label"]').val();
     value.answer = $edit.find('[name="answer"]').val();
 
-    return value;
-  }
-});
-
-generate.register.edit('answer', 'textarea', {
-  builder: function(value) {
-    var $new_edit = this.make_template();
-
-    //for label (tip)
-    var $label = render.inputs.text(
-      'Формат ответа / примечание', 'label', value.label);
-    $new_edit.prepend($label);
-
-    return $new_edit;
-  },
-
-  parser: function($edit) {
-    var value = {
-      label: '',
-    }
-
-    value.label = $edit.find('[name="label"]').val();
     return value;
   }
 });
@@ -1212,6 +1212,338 @@ generate.register.edit('question', 'text', {
     return {
       text: $edit.find('.__value').html()
     }
+  }
+});
+
+generate.register.external('answer', 'classify', {
+  get_value: function($element) {
+    var answer = {};
+
+    $element.children('.__class').each(function() {
+      if($(this).hasClass('m--unordered')) return;
+
+      var title = $(this).children('h3').text();
+      answer[title] = [];
+
+      //loop over items
+      $(this).find('.__item').each(function() {
+        answer[title].push($(this).text());
+      });
+    });
+
+    return answer;
+  },
+
+  unwrap_answer: function(value, reduce) {
+    var items = [],
+        classes = [];
+
+    //unbinding
+    value = JSON.parse(JSON.stringify(value));
+
+    for(class_name in value) {
+      for(var i = 0; i < value[class_name].length; i++) {
+        if(value[class_name][i].length > 20 && reduce) {
+          value[class_name][i] = value[class_name][i].substring(0, 16).escape();
+          value[class_name][i] = value[class_name][i] + "...";
+        } else {
+          value[class_name][i] = value[class_name][i].escape();
+        }
+        classes.remove(class_name);
+        classes.push(class_name);
+        items.push(value[class_name][i]);
+      }
+    }
+
+    return {
+      classes: classes,
+      items: items,
+      answer: value
+    };
+  },
+
+  get_summary: function(value, element_data) {
+    //build & item_reduce
+    value = this.unwrap_answer(value, true);
+
+    if(value.items.length === 0) {
+      console.log('empty');
+      return "";
+    }
+
+    var $summary = this.self.element.build(value);
+
+    $summary.find('*').unbind('click');
+
+    return $summary;
+  },
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    // build
+    var self = this;
+    var make_DOM = function(answer) {
+      console.log(answer);
+      answer = self.unwrap_answer(answer, false);
+      var $element = self.self.element.build(answer);
+
+      $element.find('*').unbind('click');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('.__items').click(function(event) {
+      if(pull_put.is_pulled) {
+        _change();
+      }
+    });
+  }
+});
+
+
+//TODO fix attempt icon swap
+
+generate.register.external('answer', 'checkbox', {
+  get_value: function($element) {
+    var answers = [];
+    $element.find('.m--checkbox').each(function(index, el) {
+      if(el.querySelector('input').checked) {
+        answers.push(index);
+      }
+    });
+    return answers;
+  },
+
+  get_summary: function(value, element_data) {
+    var answers = [];
+    var big  = false;
+
+    //unbinding
+    value = JSON.parse(JSON.stringify(value));
+
+    value.forEach(function(pos) {
+      var option = element_data.items[pos];
+
+      if(option.length > 20) {
+        option = option.substring(0, 17).escape();
+        option = option + "&hellip;";
+        big = true;
+      } else {
+        option = option.escape();
+      }
+
+      answers.push(option);
+    })
+
+    if(big) {
+      answers = answers.join('<br>');
+    } else {
+      answers = answers.join(', ');
+    }
+
+    return answers;
+  },
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    if( ! Array.isArray(user_answer)) {
+      user_answer = [];
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('input').change(_change);
+  }
+});
+
+generate.register.external('answer', 'radio', {
+  get_value: function($element) {
+    var answers = [];
+    $element.find('.m--radio').each(function(index, el) {
+      if(el.querySelector('input').checked) {
+        answers.push(index);
+      }
+    });
+    return answers;
+  },
+
+  get_summary: function(value, element_data) {
+    var answers = [];
+    var big  = false;
+
+    //unbinding
+    value = JSON.parse(JSON.stringify(value));
+
+    value.forEach(function(pos) {
+      var option = element_data.items[pos];
+
+      if(option.length > 20) {
+        option = option.substring(0, 17).escape();
+        option = option +  "&hellip;";
+        big = true;
+      } else {
+        option = option.escape();
+      }
+
+      answers.push(option);
+    })
+
+    if(big) {
+      answers = answers.join('<br>');
+    } else {
+      answers = answers.join(', ');
+    }
+
+    return answers;
+  },
+
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    if( ! Array.isArray(user_answer)) {
+      user_answer = [];
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    $element.find('input').change(_change);
+  }
+});
+
+generate.register.external('answer', 'text', {
+  get_value: function($element) {
+    return $element.find('input').val();
+  },
+
+  get_summary: function(value) {
+    if( ! value) value = "";
+
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
+    } else {
+      value = value.escape();
+    }
+
+    return value;
+  },
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+      var $element = self.element.build(element_data);
+      $element.find('input').attr('disabled', 'disabled');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    var timer;
+    var typing_interval = 1000;
+
+    $element.keydown(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        _change();
+      }, typing_interval);
+    });
+  }
+});
+
+generate.register.external('answer', 'textarea', {
+  get_value: function($element) {
+    return $element.find('.__value').html();
+  },
+
+  get_summary: function(value) {
+    if( ! value) value = "";
+
+    var $adapter = $('<div></div>');
+    value = $adapter.html(value).text();
+
+    if(value.length > 20) {
+      value = value.substring(0, 17).escape();
+      value += "&hellip;"
+    } else {
+      value = value.escape();
+    }
+
+    return value;
+  },
+
+  to_answer: function(user_answer, right_answer, element_data) {
+    var self = this.self;
+
+    function make_DOM(answer) {
+      element_data.answer = answer;
+      var $element = self.element.build(element_data);
+      $element.find('.__value').removeAttr('contenteditable');
+
+      return $element;
+    }
+
+    return {
+      user: make_DOM(user_answer),
+      right: make_DOM(right_answer)
+    }
+  },
+
+  observer: function($element, _change) {
+    var timer;
+    var typing_interval = 1000;
+
+    $element.keydown(function() {
+      clearTimeout(timer);
+      timer = setTimeout(function() {
+        _change();
+      }, typing_interval);
+    });
   }
 });
 
@@ -1378,17 +1710,15 @@ generate.register.element('answer', 'text', {
   }
 })
 
-generate.register.element('answer', 'textarea', {
+generate.register.element('answer', 'text', {
   show_in_items: true,
-  never_check: true,
 
   builder: function(value) {
     var $new_element = this.make_template(value);
-    $new_element.append(render.inputs.textarea(
+    $new_element.append(render.inputs.text(
       value.label,
       '',
-      value.answer,
-      true
+      value.answer
     ));
 
     return $new_element;
@@ -1396,7 +1726,8 @@ generate.register.element('answer', 'textarea', {
 
   sample: {
     value: {
-      label: 'Развернутый ответ',
+      label: 'Текстовый ответ',
+      answer: '',
       worth: 1
     }
   }
@@ -1434,15 +1765,17 @@ generate.register.element('answer', 'radio', {
   }
 });
 
-generate.register.element('answer', 'text', {
+generate.register.element('answer', 'textarea', {
   show_in_items: true,
+  never_check: true,
 
   builder: function(value) {
     var $new_element = this.make_template(value);
-    $new_element.append(render.inputs.text(
+    $new_element.append(render.inputs.textarea(
       value.label,
       '',
-      value.answer
+      value.answer,
+      true
     ));
 
     return $new_element;
@@ -1450,12 +1783,36 @@ generate.register.element('answer', 'text', {
 
   sample: {
     value: {
-      label: 'Текстовый ответ',
-      answer: '',
+      label: 'Развернутый ответ',
       worth: 1
     }
   }
 })
+
+generate.register.element('question', 'file', {
+  show_in_items: true,
+
+  builder: function(value) {
+    var $new_element = this.make_template(value);
+    var $file_template = $(loads.get("Elements/card/file/exports.html"));
+
+    $file_template.attr("href", value.url);
+    $file_template.find(".__name").text(value.name);
+    $file_template.find(".__size").text(value.size);
+
+    $new_element.append($file_template);
+
+    return $new_element;
+  },
+  sample: {
+    value: {
+      name: "Файл для скачивания",
+      size: "3.21МБ",
+      pos: undefined,
+      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
+    }
+  }
+});
 
 generate.register.element('question', 'image', {
   show_in_items: true,
@@ -1483,31 +1840,6 @@ generate.register.element('question', 'image', {
   }
 });
 
-generate.register.element('question', 'file', {
-  show_in_items: true,
-
-  builder: function(value) {
-    var $new_element = this.make_template(value);
-    var $file_template = $(loads.get("Elements/card/file/exports.html"));
-
-    $file_template.attr("href", value.url);
-    $file_template.find(".__name").text(value.name);
-    $file_template.find(".__size").text(value.size);
-
-    $new_element.append($file_template);
-
-    return $new_element;
-  },
-  sample: {
-    value: {
-      name: "Файл для скачивания",
-      size: "3.21МБ",
-      pos: undefined,
-      url: "https://thetomatos.com/wp-content/uploads/2016/05/file-clipart-3.png"
-    }
-  }
-});
-
 generate.register.element('question', 'text', {
   show_in_items: true,
 
@@ -1521,337 +1853,5 @@ generate.register.element('question', 'text', {
     value: {
       text: 'Текстовый вопрос'
     }
-  }
-});
-
-generate.register.external('answer', 'checkbox', {
-  get_value: function($element) {
-    var answers = [];
-    $element.find('.m--checkbox').each(function(index, el) {
-      if(el.querySelector('input').checked) {
-        answers.push(index);
-      }
-    });
-    return answers;
-  },
-
-  get_summary: function(value, element_data) {
-    var answers = [];
-    var big  = false;
-
-    //unbinding
-    value = JSON.parse(JSON.stringify(value));
-
-    value.forEach(function(pos) {
-      var option = element_data.items[pos];
-
-      if(option.length > 20) {
-        option = option.substring(0, 17).escape();
-        option = option + "&hellip;";
-        big = true;
-      } else {
-        option = option.escape();
-      }
-
-      answers.push(option);
-    })
-
-    if(big) {
-      answers = answers.join('<br>');
-    } else {
-      answers = answers.join(', ');
-    }
-
-    return answers;
-  },
-
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    if( ! Array.isArray(user_answer)) {
-      user_answer = [];
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    $element.find('input').change(_change);
-  }
-});
-
-generate.register.external('answer', 'classify', {
-  get_value: function($element) {
-    var answer = {};
-
-    $element.children('.__class').each(function() {
-      if($(this).hasClass('m--unordered')) return;
-
-      var title = $(this).children('h3').text();
-      answer[title] = [];
-
-      //loop over items
-      $(this).find('.__item').each(function() {
-        answer[title].push($(this).text());
-      });
-    });
-
-    return answer;
-  },
-
-  unwrap_answer: function(value, reduce) {
-    var items = [],
-        classes = [];
-
-    //unbinding
-    value = JSON.parse(JSON.stringify(value));
-
-    for(class_name in value) {
-      for(var i = 0; i < value[class_name].length; i++) {
-        if(value[class_name][i].length > 20 && reduce) {
-          value[class_name][i] = value[class_name][i].substring(0, 16).escape();
-          value[class_name][i] = value[class_name][i] + "...";
-        } else {
-          value[class_name][i] = value[class_name][i].escape();
-        }
-        classes.remove(class_name);
-        classes.push(class_name);
-        items.push(value[class_name][i]);
-      }
-    }
-
-    return {
-      classes: classes,
-      items: items,
-      answer: value
-    };
-  },
-
-  get_summary: function(value, element_data) {
-    //build & item_reduce
-    value = this.unwrap_answer(value, true);
-
-    if(value.items.length === 0) {
-      console.log('empty');
-      return "";
-    }
-
-    var $summary = this.self.element.build(value);
-
-    $summary.find('*').unbind('click');
-
-    return $summary;
-  },
-
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    // build
-    var self = this;
-    var make_DOM = function(answer) {
-      console.log(answer);
-      answer = self.unwrap_answer(answer, false);
-      var $element = self.self.element.build(answer);
-
-      $element.find('*').unbind('click');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    $element.find('.__items').click(function(event) {
-      if(pull_put.is_pulled) {
-        _change();
-      }
-    });
-  }
-});
-
-
-//TODO fix attempt icon swap
-
-generate.register.external('answer', 'text', {
-  get_value: function($element) {
-    return $element.find('input').val();
-  },
-
-  get_summary: function(value) {
-    if( ! value) value = "";
-
-    if(value.length > 20) {
-      value = value.substring(0, 17).escape();
-      value += "&hellip;"
-    } else {
-      value = value.escape();
-    }
-
-    return value;
-  },
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    var timer;
-    var typing_interval = 1000;
-
-    $element.keydown(function() {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        _change();
-      }, typing_interval);
-    });
-  }
-});
-
-generate.register.external('answer', 'radio', {
-  get_value: function($element) {
-    var answers = [];
-    $element.find('.m--radio').each(function(index, el) {
-      if(el.querySelector('input').checked) {
-        answers.push(index);
-      }
-    });
-    return answers;
-  },
-
-  get_summary: function(value, element_data) {
-    var answers = [];
-    var big  = false;
-
-    //unbinding
-    value = JSON.parse(JSON.stringify(value));
-
-    value.forEach(function(pos) {
-      var option = element_data.items[pos];
-
-      if(option.length > 20) {
-        option = option.substring(0, 17).escape();
-        option = option +  "&hellip;";
-        big = true;
-      } else {
-        option = option.escape();
-      }
-
-      answers.push(option);
-    })
-
-    if(big) {
-      answers = answers.join('<br>');
-    } else {
-      answers = answers.join(', ');
-    }
-
-    return answers;
-  },
-
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-
-      var $element = self.element.build(element_data);
-      $element.find('input').attr('disabled', 'disabled');
-
-      return $element;
-    }
-
-    if( ! Array.isArray(user_answer)) {
-      user_answer = [];
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    $element.find('input').change(_change);
-  }
-});
-
-generate.register.external('answer', 'textarea', {
-  get_value: function($element) {
-    return $element.find('.__value').html();
-  },
-
-  get_summary: function(value) {
-    if( ! value) value = "";
-
-    var $adapter = $('<div></div>');
-    value = $adapter.html(value).text();
-
-    if(value.length > 20) {
-      value = value.substring(0, 17).escape();
-      value += "&hellip;"
-    } else {
-      value = value.escape();
-    }
-
-    return value;
-  },
-
-  to_answer: function(user_answer, right_answer, element_data) {
-    var self = this.self;
-
-    function make_DOM(answer) {
-      element_data.answer = answer;
-      var $element = self.element.build(element_data);
-      $element.find('.__value').removeAttr('contenteditable');
-
-      return $element;
-    }
-
-    return {
-      user: make_DOM(user_answer),
-      right: make_DOM(right_answer)
-    }
-  },
-
-  observer: function($element, _change) {
-    var timer;
-    var typing_interval = 1000;
-
-    $element.keydown(function() {
-      clearTimeout(timer);
-      timer = setTimeout(function() {
-        _change();
-      }, typing_interval);
-    });
   }
 });

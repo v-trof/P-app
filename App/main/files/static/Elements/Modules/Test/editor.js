@@ -431,86 +431,6 @@ editor.check.numbers = function() {
   });
 }
 
-editor.edit.pull_put_actions = {
-  edit: {
-    icon: loads["Elements/Icons/edit.svg"],
-    tip: 'Редактировать',
-    _action: function() {
-      editor.edit.start();
-    }
-  },
-  preview: {
-    icon: loads["Elements/Icons/visibility.svg"],
-    tip: 'Показать элемент',
-    _action: function() {
-      editor.edit.stop();
-    }
-  }
-}
-
-editor.edit.change_value = function() {
-  if(pull_put.ui.$.find(".__content").attr('state') === 'edit') {
-    var blueprints = editor.active_element.blueprints;
-    var parse_value = blueprints.edit.parse(pull_put.ui.$.find(".__content"));
-
-    editor.active_element.value = parse_value;
-  } else {
-    return editor.active_element.value;
-  }
-
-  return parse_value;
-}
-
-editor.edit.let = function($element) {
-  pull_put.puller.add(
-    $element,
-    ['add', 'delete', 'save'],
-    editor.edit.pull_put_actions.edit,
-    function() {
-      console.log('showing');
-      indicator.show(1);
-    },
-    false,
-    true
-  )
-
-  pull_put.put_zone.add(
-    $element,
-    function(e, $this, $pulled) {
-      $this.after(editor.active_element.build());
-      pull_put.reset();
-    }
-
-  )
-  indicator.add($element, 'down', 1);
-}
-
-editor.edit.start = function() {
-  pull_put.ui.$.find(".__content").attr('state', 'edit');
-  indicator.show(1);
-
-  var element_value = editor.active_element.value;
-  blueprints = editor.active_element.blueprints;
-  var $edit = blueprints.edit.build(element_value);
-
-  pull_put.ui.$.find(".__content")
-    .html($edit);
-
-  pull_put.ui.add_action(editor.edit.pull_put_actions.preview);
-}
-
-editor.edit.stop = function() {
-  var parse_value = editor.edit.change_value();
-  pull_put.ui.$.find(".__content").attr('state', 'preview');
-
-  var $element = blueprints.element.build(parse_value);
-
-  pull_put.ui.element = $element;
-  pull_put.ui.$.find(".__content").html($element);
-
-  pull_put.ui.add_action(editor.edit.pull_put_actions.edit);
-}
-
 editor.active_task = {
   position: undefined,
   value: {}
@@ -594,4 +514,84 @@ editor.template_ui.show = function() {
   setTimeout(function() {
     editor.template_ui.$.removeClass('m--hiding');
   }, 10);
+}
+
+editor.edit.pull_put_actions = {
+  edit: {
+    icon: loads["Elements/Icons/edit.svg"],
+    tip: 'Редактировать',
+    _action: function() {
+      editor.edit.start();
+    }
+  },
+  preview: {
+    icon: loads["Elements/Icons/visibility.svg"],
+    tip: 'Показать элемент',
+    _action: function() {
+      editor.edit.stop();
+    }
+  }
+}
+
+editor.edit.change_value = function() {
+  if(pull_put.ui.$.find(".__content").attr('state') === 'edit') {
+    var blueprints = editor.active_element.blueprints;
+    var parse_value = blueprints.edit.parse(pull_put.ui.$.find(".__content"));
+
+    editor.active_element.value = parse_value;
+  } else {
+    return editor.active_element.value;
+  }
+
+  return parse_value;
+}
+
+editor.edit.let = function($element) {
+  pull_put.puller.add(
+    $element,
+    ['add', 'delete', 'save'],
+    editor.edit.pull_put_actions.edit,
+    function() {
+      console.log('showing');
+      indicator.show(1);
+    },
+    false,
+    true
+  )
+
+  pull_put.put_zone.add(
+    $element,
+    function(e, $this, $pulled) {
+      $this.after(editor.active_element.build());
+      pull_put.reset();
+    }
+
+  )
+  indicator.add($element, 'down', 1);
+}
+
+editor.edit.start = function() {
+  pull_put.ui.$.find(".__content").attr('state', 'edit');
+  indicator.show(1);
+
+  var element_value = editor.active_element.value;
+  blueprints = editor.active_element.blueprints;
+  var $edit = blueprints.edit.build(element_value);
+
+  pull_put.ui.$.find(".__content")
+    .html($edit);
+
+  pull_put.ui.add_action(editor.edit.pull_put_actions.preview);
+}
+
+editor.edit.stop = function() {
+  var parse_value = editor.edit.change_value();
+  pull_put.ui.$.find(".__content").attr('state', 'preview');
+
+  var $element = blueprints.element.build(parse_value);
+
+  pull_put.ui.element = $element;
+  pull_put.ui.$.find(".__content").html($element);
+
+  pull_put.ui.add_action(editor.edit.pull_put_actions.edit);
 }

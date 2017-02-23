@@ -61,9 +61,44 @@ $(document).ready(function() {setTimeout(function() {
   $flags.append($open);
   share.search.$.find('.__filters').parent().append($flags);
 
+
   //adding tags
-  //
-  //
+  function create_tag(item_text) {
+    var $new_tag = $('<button> + ' + item_text + '</button>');
+    $new_tag.click(function() {
+      var $query = share.search.$.find('.__query');
+      $query.val(
+        $query.val()
+        + ($query.val() ? ', ' : '')
+        + item_text
+      );
+    })
+
+    return $new_tag;
+  }
+
+  var $tags = $('<div class="tags"></div>');
+  var $tags_subject = $('<div class="__subject"><h3>' +
+    'Популярные ключевые слова (' + loads['course.subject'] + ')</h3></div>');
+  var $tags_global = $('<div class="__general"><h3>' +
+    'Популярные ключевые слова (Общие)</h3></div>');
+  var $new_tag = {};
+  var popular_tags = JSON.parse(loads['test.popular_tags|safe']
+                                  .replace(/(?:')/g, '"'));
+  popular_tags.subject.forEach(function(item_text) {
+    $tags_subject.append(create_tag(item_text));
+  });
+
+  popular_tags.global.forEach(function(item_text) {
+    $tags_global.append(create_tag(item_text));
+  });
+
+  if(popular_tags.subject.length) $tags.append($tags_subject);
+  if(popular_tags.global.length) $tags.append($tags_global);
+
+  share.search.$.find('.__filters').parent().append($tags);
+
+
   share.search.$.find('.m--close').click(function(event) {
     share.search.hide();
   });

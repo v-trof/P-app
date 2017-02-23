@@ -36,7 +36,7 @@ function parse_assignment() {
     $('[name="group_choose"]').each(function(index, el) {
         if( $(this).is(":checked") ) {
             res.group_list.push($(this).val());
-        }    
+        }
     });
 
     for(key in res) {
@@ -47,5 +47,3 @@ function parse_assignment() {
 
     return res;
 }
-
-

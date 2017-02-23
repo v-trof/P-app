@@ -1,4 +1,7 @@
 ["Elements/Modules/Test/share/__popup_texts/__edit/",
  "Elements/Modules/Test/share/__popup_texts/__info/",
  "Elements/Icons/locked.svg",
- "Elements/Inputs/checkbox/", "{{csrf_token}}", "{{course.id}}", "{{user.id}}"]
+ "Elements/Inputs/checkbox/",
+ "{{csrf_token}}", "{{course.id}}", "{{user.id}}",
+ "{{test.popular_tags|safe}}", "{{course.subject}}"
+]

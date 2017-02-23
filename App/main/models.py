@@ -166,7 +166,7 @@ class Utility():
 		while os.path.exists(path + filename):
 			if not os.path.getsize(path + filename) == file._size:
 				filename = str(filename.rsplit('.', 1)[
-							   0]) + '(' + str(it) + ')' + '.' + str(filename.split('.')[-1])
+								 0]) + '(' + str(it) + ')' + '.' + str(filename.split('.')[-1])
 				it += 1
 			else:
 				break
@@ -186,7 +186,7 @@ class Utility():
 		temp = tempfile.NamedTemporaryFile()
 		while os.path.exists(path + filename):
 			filename = str(filename.rsplit('.', 1)[
-						   0]) + '(' + str(it) + ')' + '.' + str(filename.split('.')[-1])
+							 0]) + '(' + str(it) + ')' + '.' + str(filename.split('.')[-1])
 			it += 1
 		for block in request.iter_content(1024 * 8):
 			if not block:
@@ -741,7 +741,7 @@ class CourseManager(models.Manager):
 		if user:
 			course_users.remove(user.id)
 		data[str(maximum + 1)] = {"unseen_by": course_users,
-								  "name": name, "size": size, "link": link}
+									"name": name, "size": size, "link": link}
 		with io.open('main/files/json/courses/' + str(course_id) + '/sources.json', 'w', encoding='utf8') as json_file:
 			saving_data = json.dumps(data, ensure_ascii=False)
 			json_file.write(saving_data)
@@ -803,7 +803,7 @@ class CourseManager(models.Manager):
 		if user:
 			course_users.remove(user.id)
 		data[str(maximum + 1)] = ({"heading": heading,
-								   "text": text, "unseen_by": course_users})
+									 "text": text, "unseen_by": course_users})
 		if due_date:
 			data[str(maximum+1)]["due_date"]=due_date
 		with io.open('main/files/json/courses/' + str(course_id) + '/announcements.json', 'w', encoding='utf8') as json_file:
@@ -876,10 +876,10 @@ class CourseManager(models.Manager):
 			text_content = 'Вам поступило приглашение на курс ' + course.name + ' от ' + user.name + ' . Перейдите по ссылке для регистрации на курс http://pileus.ru/func/course_reg/'+str(course.id)+'?code='+str(code)
 			if User.objects.filter(email=value):
 				send_mail(subject, text_content, from_email,
-						  [value], fail_silently=False)
+							[value], fail_silently=False)
 			else:
 				send_mail(subject, text_content_nonreg,
-						  from_email, [value], fail_silently=False)
+							from_email, [value], fail_silently=False)
 		return [{"type":"success","message":"Ученики приглашены"}]
 
 	def invite_teacher(self, course, user, email):
@@ -899,10 +899,10 @@ class CourseManager(models.Manager):
 			json_file.write(saving_data)
 		if User.objects.filter(email=email):
 			send_mail(subject, text_content, from_email,
-					  [email], fail_silently=False)
+						[email], fail_silently=False)
 		else:
 			send_mail(subject, text_content_nonreg,
-					  from_email, [email], fail_silently=False)
+						from_email, [email], fail_silently=False)
 		return [{"type":"success","message":"Учитель приглашен"}]
 
 	def reg_user(self, course, user, code=False):
@@ -1334,7 +1334,7 @@ class CourseManager(models.Manager):
 							if it in data[str(assignment_id)]["done"]["traditionals"]:
 								if traditional in assignment["content"]["traditionals"]:
 									equals.append(assignment["content"][
-												  "traditionals"][it])
+													"traditionals"][it])
 							it += 1
 						data[str(assignment_id)]["done"]["traditionals"] = []
 						data[str(assignment_id)]["in_process"]["traditionals"] = []
@@ -1389,7 +1389,7 @@ class CourseManager(models.Manager):
 			assignment = json.load(json_file)
 		group_list = assignment["group_list"]
 		os.remove('main/files/json/courses/' + str(course_id) +
-				  '/assignments/' + str(assignment_id) + '.json')
+					'/assignments/' + str(assignment_id) + '.json')
 		with io.open('main/files/json/courses/' + str(course_id) + '/info.json', 'r', encoding='utf8') as json_file:
 			course_info = json.load(json_file)
 		for group in group_list:
@@ -1482,7 +1482,7 @@ class CourseManager(models.Manager):
 					with io.open('main/files/json/courses/' + str(course_id) + '/tests/public/' + str(test_id) + '.json', 'r', encoding='utf8') as info_file:
 						test_data = json.load(info_file)
 						tests[section_name].append({"title": test_data["title"], "id": test_id, "questions_number": test_data[
-												   "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
+													 "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
 		return tests
 
 	def get_materials(self, course_id):
@@ -1498,7 +1498,7 @@ class CourseManager(models.Manager):
 					with io.open('main/files/json/courses/' + course_id + '/materials/public/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 						material_data = json.load(info_file)
 						materials[section_name].append({"title": material_data[
-													   "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
+														 "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
 		return materials
 
 	def get_sections(self, course_id, user=None):
@@ -1538,13 +1538,13 @@ class CourseManager(models.Manager):
 				with io.open('main/files/json/courses/' + course_id + '/tests/control/' + test_id + '.json', 'r', encoding='utf8') as info_file:
 					test_data = json.load(info_file)
 					context["unpublished"].append({"type": "test", "title": test_data["title"], "id": test_id, "questions_number": test_data[
-												  "questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
+													"questions_number"], "link": '?course_id=' + course_id + "&test_id=" + test_id})
 			else:
 				material_id = element["id"]
 				with io.open('main/files/json/courses/' + course_id + '/materials/public/' + material_id + '.json', 'r', encoding='utf8') as info_file:
 					material_data = json.load(info_file)
 					context["unpublished"].append({"type": "material", "title": material_data[
-												  "title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
+													"title"], "id": material_id, "link": '?course_id=' + course_id + "&material_id=" + material_id})
 		return context
 
 	def load_course_requests(self, course_id):
@@ -2041,7 +2041,7 @@ class UserManager(UserManager):
 			with io.open('main/files/json/other/code_bank.json', 'w', encoding='utf8') as codes_file:
 				codes_file.write(json.dumps(codes_dict, ensure_ascii=False))
 			send_mail('Сброс пароля', 'Вы запрашивали сброс пароля на сервисе p-app, перейдите по ссылке для подтверждения: http://pileus.ru/secure_entry/?code=' + password_code + '&type=password.', 'p.application.bot@gmail.com',
-					  [email], fail_silently=False)
+						[email], fail_silently=False)
 			return True
 		else:
 			return False
@@ -2071,7 +2071,7 @@ class UserManager(UserManager):
 				if type in codes.keys():
 					if codes[type] == code:
 						code = ''.join(random.choice(chars)
-									   for i in range(length))
+										 for i in range(length))
 					else:
 						break
 				else:
@@ -2093,7 +2093,7 @@ class UserManager(UserManager):
 		with io.open('main/files/json/other/code_bank.json', 'w', encoding='utf8') as codes_file:
 			codes_file.write(json.dumps(codes_dict, ensure_ascii=False))
 		send_mail('Изменение email', 'Вы запрашивали изменение email на сервисе p-app, перейдите по ссылке для подтверждения: http://pileus.ru/secure_entry/?code=' + email_code + '&type=email.', 'p.application.bot@gmail.com',
-				  [new_email], fail_silently=False)
+					[new_email], fail_silently=False)
 		return True
 
 	def approve(self, code, type):
@@ -2189,9 +2189,9 @@ class Material():
 	def delete(course_id, material_id):
 		# moves material to trash bin
 		os.remove('main/files/json/courses/' + course_id +
-				  '/materials/public/' + material_id + '.json')
+					'/materials/public/' + material_id + '.json')
 		os.remove('main/files/json/courses/' + course_id +
-				  '/materials/control/' + material_id + '.json')
+					'/materials/control/' + material_id + '.json')
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
@@ -2444,9 +2444,9 @@ class Test():
 	def delete(course_id, test_id):
 		# moves test to trash bin
 		os.remove('main/files/json/courses/' +
-				  course_id + '/tests/public/' + test_id + '.json')
+					course_id + '/tests/public/' + test_id + '.json')
 		os.remove('main/files/json/courses/' +
-				  course_id + '/tests/control/' + test_id + '.json')
+					course_id + '/tests/control/' + test_id + '.json')
 		with io.open('main/files/json/courses/' + course_id + '/info.json', 'r', encoding='utf8') as info_file:
 			course_info = json.load(info_file)
 
@@ -2708,10 +2708,13 @@ class Test():
 					"json": json.load(json_file),
 					"published": Test.is_published(test_id=test_id, course_id=course_id)
 				}
+				with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
+					test["popular_tags"]=json.load(tag_file)["popular"]
 		if "shared" in test["json"].keys() and test["json"]["shared"]==True:
 			with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 				test["share_data"]=json.load(shared_file)[test["json"]["shared_id"]]
 				test["share_data"]["shared_id"]=test["json"]["shared_id"]
+		print(test["popular_tags"])
 		return test
 
 	def publish(course_id, test_id, publish_data):
@@ -3611,7 +3614,7 @@ class Sharing():
 				tag_map['numbers']['global'][tag]+=1
 			else:
 				tag_map['numbers']['global'][tag]=1
-
+				subject_tags.append(Course.objects.get(id=course_id).subject)
 		for tag in subject_tags:
 			if tag in tag_map['numbers']['subject'].keys():
 				tag_map['numbers']['subject'][tag]+=1
