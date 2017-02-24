@@ -139,19 +139,30 @@ class Utility():
 		return tags
 
 	def count_tags(tag_map):
-		popular={"global":[],"subject":[]}
+		popular={"global":[],"subject":{}}
 		sorted_numbers=sorted(tag_map['numbers']["global"].items(), key=operator.itemgetter(1))
 		result=[]
 		for list in reversed(sorted_numbers):
 			result.append(list[0])
 		popular["global"]=result[:min(len(sorted_numbers),50)]
-		result=[]
-		sorted_numbers=sorted(tag_map['numbers']["subject"].items(), key=operator.itemgetter(1))
-		for list in reversed(sorted_numbers):
-			result.append(list[0])
-		popular["subject"]=result[:min(len(sorted_numbers),50)]
+		g_result={}
+		for subject in tag_map['numbers']["subject"].keys():
+			result=[]
+			sorted_numbers=sorted(tag_map['numbers']["subject"][subject].items(), key=operator.itemgetter(1))
+			for list in reversed(sorted_numbers):
+				result.append(list[0])
+			g_result[subject]=result[:min(len(sorted_numbers),50)]
+		popular["subject"]=g_result
 		tag_map["popular"]=popular
 		return tag_map
+
+	def load_tags(subject=False):
+		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
+			popular=json.load(tag_file)["popular"]
+			if subject and subject in popular["subject"].keys():
+				popular["subject"]=popular["subject"][subject]
+			else: popular["subject"]=[]
+			return popular
 
 	def upload_file(file, path, extensions=False):
 		if extensions:
@@ -2324,8 +2335,6 @@ class Material():
 				material["share_data"]=json.load(shared_file)[material["json"]["shared_id"]]
 				material["share_data"]["shared_id"]=material["json"]["shared_id"]
 		context = {}
-		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
-			context["test"]={"popular_tags":json.load(tag_file)["popular"]}
 		context["material"] = material
 		context["material"]["id"] = material_id
 		context["course"] = Course.objects.get(id=course_id)
@@ -2710,8 +2719,6 @@ class Test():
 					"json": json.load(json_file),
 					"published": Test.is_published(test_id=test_id, course_id=course_id)
 				}
-				with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
-					test["popular_tags"]=json.load(tag_file)["popular"]
 		if "shared" in test["json"].keys() and test["json"]["shared"]==True:
 			with io.open('main/files/json/shared/shared_map.json', 'r', encoding='utf8') as shared_file:
 				test["share_data"]=json.load(shared_file)[test["json"]["shared_id"]]
@@ -3572,6 +3579,7 @@ class Marks():
 class Sharing():
 
 	def share(course_id, item_id, type, open=True, subject=False, description=False, global_tags=False, subject_tags=False, shared_query=False, refresh=False, shared_id=False, templates=False):
+		course=Course.objects.get(id=course_id)
 		if shared_id:
 			shared_id=str(shared_id)
 			refresh=True
@@ -3603,24 +3611,27 @@ class Sharing():
 		shared_item["description"]=description
 		shared_item["id"]=item_id
 		shared_item["popularity"]=0
+		if not course.subject in tag_map['popular']['subject'].keys():
+			tag_map['popular']['subject'][course.subject]=[]
+		if not course.subject in tag_map['numbers']['subject'].keys():
+			tag_map['numbers']['subject'][course.subject]={}
 		if len(global_tags)==0:
 			global_tags=Utility.find_tags(string=item_info["title"],tag_list=tag_map['popular']['global'])
 		if len(subject_tags)==0:
-			subject_tags=Utility.find_tags(string=item_info["title"],tag_list=tag_map['popular']['subject'])
+			subject_tags=Utility.find_tags(string=item_info["title"],tag_list=tag_map['popular']['subject'][course.subject])
 		if refresh:
 			global_tags=[item for item in global_tags if item not in set(shared_table[shared_id]['global_tags'])]
-			subject_tags=[item for item in subject_tags if item not in set(shared_table[shared_id]['subject_tags'])]
+			subject_tags=[item for item in subject_tags if item not in set(shared_table[shared_id]['subject_tags'][course.subject])]
 		for tag in global_tags:
 			if tag in tag_map['numbers']['global'].keys():
 				tag_map['numbers']['global'][tag]+=1
 			else:
 				tag_map['numbers']['global'][tag]=1
-				subject_tags.append(Course.objects.get(id=course_id).subject)
 		for tag in subject_tags:
-			if tag in tag_map['numbers']['subject'].keys():
-				tag_map['numbers']['subject'][tag]+=1
+			if tag in tag_map['numbers']['subject'][course.subject]:
+				tag_map['numbers']['subject'][course.subject][tag]+=1
 			else:
-				tag_map['numbers']['subject'][tag]=1
+				tag_map['numbers']['subject'][course.subject][tag]=1
 		tag_map=Utility.count_tags(tag_map=tag_map)
 		shared_item["global_tags"]=list(set(global_tags))
 		shared_item["subject_tags"]=list(set(subject_tags))
@@ -3686,7 +3697,7 @@ class Sharing():
 			return {"type":"success","message":"Материал успешно помещен в библиотеку","shared_id":shared_id}
 
 	def unshare(shared_id, course_id):
-		print(shared_id)
+		course=Course.objects.get(id=course_id)
 		shared_id=str(shared_id)
 		with io.open('main/files/json/shared/tag_map.json', 'r', encoding='utf8') as tag_file:
 			tag_map = json.load(tag_file)
@@ -3700,13 +3711,15 @@ class Sharing():
 			if tag in tag_map['numbers']['global'].keys() and tag_map['numbers']['global'][tag] == 0:
 				del tag_map['numbers']['global'][tag]
 
-		for tag in shared_table[shared_id]['global_tags']:
-			if tag in tag_map['numbers']['subject'].keys():
-				tag_map['numbers']['subject'][tag]-=1
-			if tag in tag_map['numbers']['subject'].keys() and tag_map['numbers']['subject'][tag] == 0:
-				del tag_map['numbers']['subject'][tag]
+		for tag in shared_table[shared_id]['subject_tags'][course.subject]:
+			if tag in tag_map['numbers']['subject'][course.subject]:
+				tag_map['numbers']['subject'][course.subject][tag]-=1
+			if tag in tag_map['numbers']['subject'][course.subject] and tag_map['numbers']['subject'][course.subject][tag] == 0:
+				del tag_map['numbers']['subject'][course.subject][tag]
 		tag_map=Utility.count_tags(tag_map=tag_map)
-
+		if len(tag_map['numbers']['subject'][course.subject])==0:
+			del tag_map['numbers']['subject'][course.subject]
+			del tag_map['popular']['subject'][course.subject]
 		course=Course.objects.get(id=course_id)
 		shared_info=shared_table[shared_id]
 		item_id=shared_info['id']
@@ -3733,7 +3746,7 @@ class Sharing():
 			saving_data = json.dumps(tag_map, ensure_ascii=False)
 			tag_file.write(saving_data)
 		with io.open('main/files/json/shared/shared_map.json', 'w', encoding='utf8') as shared_file:
-			saving_data = json.dumps(item_info, ensure_ascii=False)
+			saving_data = json.dumps(shared_table, ensure_ascii=False)
 			shared_file.write(saving_data)
 		if os.path.exists('main/files/json/shared/content/'+shared_id+'.json'):
 			os.remove('main/files/json/shared/content/'+shared_id+'.json')
@@ -4110,7 +4123,7 @@ class Search():
 									subject_tags_conformity=Utility.compare_tags(tags1=parameters["subject_tags"],tags2=shared_info["subject_tags"])
 									shared_info["shared_id"]=shared_id
 									name_conformity=Utility.compare(str1=search_query,str2=shared_info["title"])
-									if global_tags_conformity > 0 and subject_tags_conformity > 0 or name_conformity>10 and subject_tags_conformity > 0 or search_query=="" and str(shared_info["creator"])==str(user.id):
+									if global_tags_conformity > 0 or subject_tags_conformity > 0 or name_conformity>10 or search_query=="" and str(shared_info["creator"])==str(user.id):
 										cards.append({"type":shared_info["type"],"shared":True,"content":shared_info,"conformity":name_conformity+subject_tags_conformity*2+global_tags_conformity})
 							except:
 								pass

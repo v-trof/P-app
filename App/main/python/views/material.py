@@ -42,6 +42,8 @@ def create(request):
 	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
 	context["sections"].append('Новая...')
 	context["type"]= "material"
+	context["test"]={"popular_tags":Utility.load_tags()}
+	context["course"]=Course.objects.get(id=course_id)
 	return render(request, 'Pages/Material/editor/exports.html', context)
 
 

@@ -32,6 +32,7 @@ def edit(request):
 def create(request):
 	# creates test environment (no test exists as file untill saved)
 	course_id = request.GET.get("course_id", None)
+	course=Course.objects.get(id=course_id)
 	context = Test.create(course_id=course_id,user_id=str(request.user.id))
 	context["breadcrumbs"] = [{
 		"href": "/course/" + str(course_id),
@@ -43,6 +44,8 @@ def create(request):
 	context["sections"] = Course.objects.get_sections_list(course_id=course_id)
 	context["sections"].append('Новая...')
 	context["type"] = "test"
+	context["test"]={"popular_tags":Utility.load_tags(subject=course.subject)}
+	context["course"]=Course.objects.get(id=course_id)
 	print(context)
 	return render(request, 'Pages/Test/editor/exports.html', context)
 
@@ -71,10 +74,12 @@ def save(request):
 def load(request):
 	# loads test file
 	course_id = request.GET.get("course_id", None)
+	course=Course.objects.get(id=course_id)
 	test_id = request.GET.get("test_id", None)
 	test = Test.load(course_id=course_id, test_id=test_id)
 	context = {}
 	context["test"] = test
+	context["test"]["popular_tags"]=Utility.load_tags(subject=course.subject)
 	context["test"]["id"] = test_id
 	context["course"] = Course.objects.get(id=course_id)
 	context["breadcrumbs"] = [{
@@ -144,7 +149,7 @@ def reset_attempt(request):
 		test_id = request.POST.get("test_id", None)
 		user_id = request.POST.get("user_id", None)
 		message = Test.reset_attempt(test_id=test_id,user_id=user_id,course_id=course_id)
-		return HttpResponse(json.dumps(message), content_type="application/json") 
+		return HttpResponse(json.dumps(message), content_type="application/json")
 
 def request_reset(request):
 	if request.method == 'POST':
@@ -205,7 +210,7 @@ def results(request):
 		context = {"course": Course.objects.get(id=course_id),
 				   "results": Test.get_results(user_id=str(user.id), course_id=course_id, test_id=test_id),
 				   "attempt": Test.get_attempt_info(user_id=str(user.id), course_id=course_id, test_id=test_id),
-				   "test": {"json":Test.get_test_info(course_id=course_id, test_id=test_id, compiled=True, user_id=user_id),"id":test_id}, 
+				   "test": {"json":Test.get_test_info(course_id=course_id, test_id=test_id, compiled=True, user_id=user_id),"id":test_id},
 				   "user_status": Course.objects.load_user_status(course=Course.objects.get(id=course_id), user=request.user)}
 		context["breadcrumbs"] = [{
 		"href": "/course/" + str(course_id),
